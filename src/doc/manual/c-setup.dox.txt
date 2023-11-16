@@ -1,0 +1,88 @@
+/* Flow-IPC
+ * Copyright 2023 Akamai Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in
+ * compliance with the License.  You may obtain a copy
+ * of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in
+ * writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing
+ * permissions and limitations under the License. */
+
+/**
+
+@page setup Prerequisites and Setup
+
+<center>**MANUAL NAVIGATION:** @ref api_overview "Preceding Page" - @ref async_loop "Next Page" - [**Table of Contents**](./pages.html)</center>
+
+---
+
+Here we discuss the environmental requirements for using Flow-IPC as well as quality-of-life setup basics
+including logging.  (Or go back to preceding page: @ref api_overview.)
+
+OS and build environment
+------------------------
+@note In the short term (as of October 2023) this may become an open-source library with potentially wide distribution.  Some of the below items may change in that case; for example it may become a header-only library or have that mode, and it may support additional OS rather than Linux.  We would also include specific information on building it from source as befits a wide-release project.  Until then we leave out specific instructions on building the library itself as outside the scope of the present document; while listing the environmental requirements/recommendations as follows.  It is vaguely informational; until this is a wide-release library we stay away from rigorous build instructions here.  Even once it becomes a wide-release product, possibly such instructions shall live outside this manual.  Looking outside the src/ directory you'll certainly find the relevant build scripts which cover all that.
+
+This is a Linux library, as of this writing to be built in 64-bit mode (x86-64 a/k/a AMD64).  (Most code by far is not architecture-specific, but certain aspects of the optionally-used SHM-jemalloc component are.)  It is generally intended for use in a deployed server setting.  As of this writing it relies on some Linux-specific techniques such as /proc/...pid.../ and /dev/shm/ semantics.  In the future it is quite conceivable it could be extended to other OS and architectures -- possibly even Windows, but definitely MacOS/Darwin and FreeBSD -- but currently that is not a specific aim/priority of the project, as we concentrate on Linux.
+
+It is a linked library that must be built in **C++17** compiler mode, as must any of its `#include`rs (translation units).  It has been specifically tested with gcc-8 and gcc-9 as of this writing.  common.hpp will `#error` out if an `#include`r is not being built with a supported compiler; and will `#warning` for compilers that would probably work but have not been tested, such as gcc below gcc-8.  (Support for clang is likely attainable and may arrive in the short term, if it has not already.  Again: look outside src/ for build scripts and related instructions if any.)
+
+Flow-IPC strongly relies on a foundational library named Flow.  We expose certain aspects of Flow, most notably for logging (discussed below), through the API as well.  Informally and orthogonally, Flow is a nice tool we feel you're likely to find useful in any case at times.  (For capnp users: an analogy might be capnp's use of their in-house `kj` library both internally and at times exposed in capnp's own API.)  In any case you'll need to link and build with Flow to use Flow-IPC.
+
+Flow has some dependencies, notably Boost, including certain linked (non-header-only) Boost libraries.  So you'll need those.
+
+capnp (Cap'n Proto) is an important dependency; you must build and link with capnp to use Flow-IPC.  In particular that one, at the version we require, requires all `#include`rs to be built in C++17 mode.  Flow-IPC inherits this requirement from capnp (as well as Flow) and is not shy about using C++17 including in .hpp files.
+
+All in all, if you've got a reasonably modern Linux build and runtime environment, your application is built in at least C++17 mode, then there's nothing too exotic going on that would prevent the use of Flow-IPC (or Flow).  Boost and capnp do not introduce any array of exotic dependencies.
+
+Error reporting
+---------------
+The standards and mechanics w/r/t error reporting are entirely inherited from Flow.  Therefore, see the `namespace flow` doc header's "Error reporting" section.  It applies verbatim (within reason) here.  To summarize for your convenience, though: The error reporting is based on boost.system semantics which themselves are now adopted in standard C++ ("STL").
+  - If a function/method synchronously reports errors, it will take a (usually optional, defaulting to null) ipc::Error_code (a/k/a `boost::system::error_code`) *pointer* argument.
+    - If it is null: Any error is reported via thrown exception object; through this one can obtain the triggering `Error_code E`; and both `E` itself and `E.message()` are reasonable to print/log/analyze in that event.  There is a wide range of Flow-IPC error codes indicating what went wrong; system (`errno`-based) and Boost codes may be generated too.  Reference documentation announces which codes are possible for which APIs.
+    - If it is not null: On success, the `Error_code` pointee is cleared (made falsy).  On error it is filled with a truthy code `E`.  See preceding paragraph regarding how to treat it.
+  - If any async API reports errors, then its handler function shall take a `const Error_code&` argument.  When the handler function is invoked, the `Error_code` shall be falsy on success, truthy on Error.  In the latter case see preceding bullet point regarding how to treat it.
+
+Informally we recommend, when invoking a synchronous API:
+  - When prototyping just pass-in null `Error_code*`.  It'll throw on error; you can catch it around the top level of your application, print the `Error_code` (from the exception object) and its `.message()`, and abort.
+  - For production code it's your choice whether to use the exception-throwing or code-setting mode of a given API.  For max performance *of the error path only* the safer choice is the code-setting mode.  (If there is no error, then it does not matter.  If errors are not expected in perf-critical paths of your application, then it also does not matter.)
+
+Logging
+-------
+Flow-IPC goes to great lengths to log all relevant details while taking care not to affect performance while doing so, unless the log-level is raised to a specific level where detail takes precedence over performance impact.  That said, as with other libraries like this (for example Boost, capnp) the primary -- mandatory -- way of supplying information about what has happened is through error reporting (see above).  Logging is, therefore, optional.  However we strongly suggest hooking up Flow-IPC's logging, so that you can reap the benefits of knowing what's going on.
+
+Flow-IPC logs using `flow::log`, Flow's logging module.  Do not be alarmed: this in *no* way dooms you to having to use some kind of heavy-weight rigid log-output system that you don't like.  It is an API: it prepares the log message (spending processor cycles) *only* if the particular message's log-filter passes.  Moreover if a message *is* deemed loggable, the actual method of output of the message -- whether to stdout, a file, the network, whatever -- is entirely your decision.  Formally further information is available in `flow::log` documentation.  For your convenience we *summarize* some basic information and typical options here.  (Again -- `flow::log` documentation gets into all the details.  We're just trying to ease your mind here.)  Here we go:
+
+The simplest thing to do (though, again, we do not recommend it, as it's giving away a valuable source of visibility) is to disable logging from Flow-IPC entirely.  To do so simply pass-in null whenever a particular ::ipc API requires a `flow::log::Logger*` argument.  ~No cycles will be spent on logging as a result.
+
+The next simplest thing, and likely suitable at least for prototyping situations, is to output Flow-IPC logs to stdout and/or stderr.  To do so construct a `flow::log::Simple_ostream_logger` (near the top of your application most likely), passing in the desired verbosity `enum` setting to its constructor's `Config` arg; plus `std::cout` and/or `std::cerr`.  Then pass-in a pointer to this `Logger` throughout your application, when Flow-IPC requires a `Logger*` argument.  Logs will go to stdout and/or stderr.  (However beware that some log interleaving may occur if other parts of your application also log to the same stream concurrently -- unless they, too, use the same `Simple_ostream_logger` object for this purpose.)
+
+If your application is not based on `flow::log` (which of course is very much a possibility) then you will, longer-term, want to instead hook up your log system of choice to Flow-IPC.  Don't worry: this is not hard.  You need to implement the `flow::log::Logger` interface which consists of basically two parts:
+  - `bool should_log()` which determines whethere a given message (based on its severity `enum` and, possibly, `Component` input) should in fact be output (for example your `should_log()` might translate the input `flow::log::Sev` to your own verbosity setting and output `true` or `false` accordingly).
+  - `void do_log()` which takes a pointer to the message string and metadata info (severity, file/line info among a few other things) and outputs some subset of this information as it sees fit.  For example it might forward these to your own logging API -- perhaps prefixing the message with some indication it's coming from Flow-IPC.
+
+Lastly, if your application *is* based on `flow::log` -- or you would consider making it be that way -- then we'd recommend the use of `flow::log::Async_file_logger`.  This is a heavy-duty file logger: it performs log writing asynchronously in a separate thread and is rotation-friendly.  (It even will, optionally, capture SIGHUP itself and reopen the file, so that your rotate daemon might rename the now-completed log file, moving it out of the way and archiving it or what-not.)  `Async_file_logger` is meant for heavy-duty logging (and as of this writing may be gaining more features such as gzip-on-the-fly).
+
+Logging verbosity setting
+-------------------------
+Regardless of which option you choose (null `Logger*` excepted, as then it is moot), it is important for proper visibility/performance balance to effect the correct log verbosity (a/k/a log-severity, log-level) setting for Flow-IPC.  Per `flow::log` semantics:
+  - A log-level of `INFO` is recommended in production.  Both error conditions and important non-error events shall be logged, but anything that would affect performance shall not.
+    - A log-level of `WARNING` would limit it to error conditions only.  We don't recommend this in production, as it gives away too much interesting visibility and usually defeats the point of reasonably-performant logging.
+  - While debugging (and similar) the log-level `TRACE` is recommended.  This may affect performance and produce large log files but will give great visibility into what's going on behind the scenes.
+    - You may pump it up to `DATA` which will add messages that include readouts of entire user messages.  Files will get even larger, and performance will be possibly affected even more.  However you may gain even nicer information on what exactly is flying around the IPC system.
+      - That said -- in the specific case where you might want to log, specifically, a structured (capnp) message, you can do so yourself.  `ostream<<` of ipc::transport::struc::Msg_out or @link ipc::transport::struc::Msg_in struc::Msg_in@endlink and/or direct use of capnp's pretty-print API (see ipc::transport::struc::Msg_out::body_root() and ipc::transport::struc::Msg_out::body_root() docs for tips on that).
+
+With this setup stuff out of the way we're almost ready to start using Flow-IPC.  Just one more bit of prerequisite knowledge necessary: @ref async_loop.
+
+---
+
+<center>**MANUAL NAVIGATION:** @ref api_overview "Preceding Page" - @ref async_loop "Next Page" - [**Table of Contents**](./pages.html)</center>
+
+*/

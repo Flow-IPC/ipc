@@ -1,0 +1,114 @@
+/* Flow-IPC
+ * Copyright 2023 Akamai Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in
+ * compliance with the License.  You may obtain a copy
+ * of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in
+ * writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing
+ * permissions and limitations under the License. */
+
+/**
+
+@page api_overview API Overview
+
+<center>**MANUAL NAVIGATION:** @ref about "Preceding Page" - @ref setup "Next Page" - [**Table of Contents**](./pages.html)</center>
+
+---
+
+Here we show how Flow-IPC fulfills its aims; let's take a high-level tour through the available API.  (The preceding page @ref about summarizes the aims of Flow-IPC.)
+
+Sessions
+--------
+No matter the particular IPC transport (local stream socket, MQ, SHM pool), an ever-present need is to establish a naming scheme and coordinate it between the participant processes.  To connect one Unix domain socket, one needs to name a server socket, and the connecting process needs to know that name.  An MQ requires a name, as does a SHM pool.  Developing and maintaining a convention is, normally, both necessary and annoying.  Instead:
+
+There is a simple scheme that designates one side of a conversation as the **session server**, the other a **client**; the latter connects to the former.  (A session server process can carry on multiple sessions with different client processes.)  The user need only specify the basic facts of the IPC-participating applications (like executable names and owners, and which ones are servers, and which clients they'll accept as the opposing side).  This is done via the straightforward `struct` ipc::session::App + its children.  The rest of ipc::session establishes internal naming conventions based off that information.  Having specified those `App` basics the user, opens (on each side) an equally capable ipc::session::Session that is the context for all subsequent IPC between those 2 processes.
+
+Having obtained a `Session`, the application can open transport channels (and, if desired, SHM arenas) without any naming decisions to make.  At that point it's off to the races... namely:
+
+Transport (unstructured)
+------------------------
+A **channel** is a bundling of the resources required for, essentially, a bidirectional pipe capable of transmitting binary messages (**blobs**) and, optionally, native handles.  A particular ipc::transport::Channel (as specified at compile-time via its template parameters) may, for example, consist of an outgoing [POSIX MQ (message queue)](https://man7.org/linux/man-pages/man7/mq_overview.7.html) handle and a similar incoming-MQ handle; or conceptually similar SHM-backed MQs (boost.ipc MQs).  Alternatively it can consist of a Unix domain socket endpoint (which is bidirectional).  (Other combinations are generically possible.)  If one uses the ipc::session API, one need not worry about any detail of opening these various handles and feeding them to the particular `Channel`.  Alternatively a simple application or prototype may want to manually set them up without ipc::session.
+
+All transport APIs at this layer, as well the structured layer (see below), have an API that is as-synchronous-as-possible.  In particular all send operations are non-blocking and synchronous and never return "would-block" -- while guaranteeing good performance in practice.  Receive APIs are asynchronous by their nature.  A proactor-style API (a-la boost.asio) is provided for this and other async ops (such as connect and accept of various types)
+
+@note An alternative API is available for all objects with any async operations (generally: any subset of send, receive, connect, accept).  This is called the `sync_io` **pattern**, contrasting with the above **async-I/O pattern**.  The `sync_io`-pattern alternative for each given I/O object is similar in spirit to reactor-style (non-blocking) APIs a-la OpenSSL's.  It may help you integrate with a reactor-style event loop such as one built on `epoll()` or `poll()`.  It is also the way to strictly control the background threads in your application arising for Flow-IPC's operation: if desired you can have it operate entirely within your own threads and event loop(s).  See @ref async_loop for more discussion of this somewhat-hairy topic.
+
+@note This async-I/O-versus-`sync_io` choice is available for all other parts of Flow-IPC, including: ipc::transport structured layer (`struc::sync_io::Channel` versus just `struc::Channel` for async-I/O alternative) and ipc::session.
+
+Transport (structured)
+----------------------
+While a `Channel` transports blobs and/or native handles, it is likely the Flow-IPC user will want to be able to transmit schema-based structured data, gaining the benefits of that approach including arbitrary data-structuree complexity and forward/backward-compatibility.  [capnp (Cap'n Proto)](https://capnproto.org) is the best-in-class third-party framework for schema-based structured data; ipc::transport's structured layer works by integrating with capnp.
+
+To deal with structured data instead of mere blobs (though a schema-based structure can, of course, itself store blobs such as images), one simply constructs an ipc::transport::struc::Channel, feeding it an `std::move()`d already-opened @link ipc::transport::Channel Channel@endlink.  This is called **upgrading** an unstructured `Channel` to a `struc::Channel`.  A key template parameter to `struc::Channel` is a capnp-generated root schema class of the user's choice.  This declares, at compile-time, what data structures (messages) one can transmit via that `struc::Channel` (and an identically-typed counterpart `struc::Channel` in the opposing process).
+
+@link ipc::transport::struc::Channel struc::Channel@endlink provides fundamental niceties for a structured-channel protocol:
+    - If I receive a message M of type X (from available types A, B, C, ... as allowed by the top-level capnp-`union` in the specified root schema), I ask `struc::Channel` to please invoke a particular handler `F(M)` (typically given as a lambda).
+    - When I send a message M', I can optionally specify that it's a **response** to earlier in-message M.
+    - When I send a message M', I can optionally specify that I expect either up-to-1, or an arbitrary number of, **responses** to it.  I ask that when such a response M is received, `struc::Channel` please invoke a particular handler `F(M)`.
+
+@link ipc::transport::struc::Msg_out struc::Msg_out@endlink is a container-like data structure representing an out-message M'.  @link ipc::transport::struc::Msg_in struc::Msg_in@endlink is a receiver's read-only view into such a message M upon its receipt.
+
+Transport (structured): Zero-copy
+---------------------------------
+Say I prepare a message M': I construct it (`struc::Msg_out`), I mutate it via its capnp-generated mutators (as the required backing memory is gradually allocated behind the scenes), and then I @link ipc::transport::struc::Channel::send() struc::Channel::send()@endlink it.  The receiver receives it as `struc::Msg_in` M subsequently and accesses its various parts via capnp-generated accessors.  *Zero-copy* means that the backing memory allocated for M' is never copied into any low-level transport.  Instead only some tiny, constant-sized handle is (internally) copied into and out of the transport -- and the accessors of M are directly reading the memory in M'.
+
+The obvious benefit of this is performance.  Notably, also, it is possible to subsequently modify M' and send it (and receive it) again.  The backing memory is freed once M' and all in-messsage views like M have been destroyed.  (The Ms are made available exclusively via `shared_ptr`.)
+
+While zero-copy is optional, in general we recommend using it.  Fortunately it is quite easy to enable.  *Internally* it is accomplished by using SHM; but in terms of the public API, all you have to do is -- when writing the code for opening your ipc::session::Session -- simply choose a SHM-backed session type.  That is:
+  - Zero-copy (a/k/a SHM-backed): Use `"ipc::session::shm::...::Client_session"` and `"ipc::session::shm::...::Session_server"`.
+  - Non-zero-copy: Use ipc::session::Client_session and ipc::session::Session_server.
+Whichever you choose, their APIs are identical.  In particular, suppose you chose `Session` type `S`; then `S::Structured_channel<Your_capnp_schema>` is the alias for the proper SHM-backed-or-not `struc::Channel` type.
+
+At no point do you have to worry about naming a SHM pool, removing it from the file-system on cleanup (including following a crash), and so on.  All is handled internally.  Simply choose a SHM-backed `Session` type on each side at compile-time.
+
+It is also possible to set this up without ipc::session.
+
+Orthogonally, for advanced needs likely driven by tight performance needs, it is possible to develop your own backing-allocation scheme: Implement the ipc::transport::struc::Struct_builder and @link ipc::transport::struc::Struct_reader Struct_reader@endlink concepts.  For example, especially if sending small messages from one thread and not requiring end-to-end zero-copy, one could allocate out-messages from a single pre-heap-allocated buffer to reduce the cycles spent in the heap allocator to (amortized) zero.
+
+Direct storage in SHared Memory (SHM)
+-------------------------------------
+This topic is optional:  One can reap zero-copy performance by exclusively keeping IPC-communicated data structures in your `struc::Channel`-transmitted message schema of choice.  Internally, we use our own SHM capabilities to accomplish this, invisibly to the API user.  We reasonably claim that if you can keep your shared data structures in a capnp-schema-backed object, then it is best to do so.  That said:
+
+Some applications may prefer to have the two (or more) conversant processes cooperate by reading/writing directly to a non-capnp-backed data structure but rather a straight C++ `struct`.  Flow-IPC provides this ability out-of-the-box.  This means the user need not figure out a number of *very* hairy topics such as how to develop and use a SHM-friendly allocator.  We summarize this here.
+
+If and only if you used a SHM-enabled ipc::session::Session implementation (as noted in the preceding section -- for example ipc::session::shm::classic::Client_session), then upon opening such a session, you immediately have access to 2 SHM **arenas**.
+  - @link ipc::session::shm::classic::Session_mv::session_shm() Session::session_shm()@endlink is an arena pertaining to that session (pair of processes).
+  - @link ipc::session::shm::classic::Session_mv::app_shm() Session::app_shm()@endlink is an arena pertaining to multiple sessions; so it continues to persist across all sessions, until the big-daddy `Session_server` is destroyed (and thus no further session are possible to open).
+
+Each of these returns an `Arena`.
+
+@link ipc::shm::classic::Pool_arena::construct<T>() Arena::construct<T>(...)@endlink returns `shared_ptr<T>` which points to a newly constructed-in-SHM-arena object of type `T`.  The sender prepares object `*x` of type `T`, then calls @link ipc::session::shm::classic::Session_mv::lend_object() Session::lend_object(x)@endlink which returns a tiny payload to transmit over IPC (typically, but not necessarily, via a `struc::Channel` as part of a capnp-encoded message).  The receiver then invokes @link ipc::session::shm::classic::Session_mv::borrow_object() `auto x = Arena::borrow_object()`@endlink, passing in that aforementioned tiny payload.  This recovers `*x` of type `T` in the receiver where it can be read like any C/C++ structure -- because it *is* one.  The backing RAM is auto-returned to the arena once all these handles (in this example `x` on each side) (and other derived `shared_ptr`s in their respective shared-groups -- e.g., obtained via `auto x2 = x`) are destroyed.  In a sense `x` is part of a *cross-process* `shared_ptr` group.
+
+The real power comes from the possibilities for what type `T` can be.  `T` can be any combination (recursively speaking) of: the basic scalars (`int`, `float`, etc.); `struct`s; and STL-compliant containers.  So it can be, say, a `vector` of `unordered_map`s mapping from `basic_string` to `struct S { ... }`, where `...` itself stores anything equally arbitrarily complex.  The STL-compliant container types must merely specify the allocator `ipc::shm::stl::Stateless_allocator<Arena>`.  We've provided the allocator implementation, so you need not worry about that stuff -- just use it.
+
+You can also directly store pointers in `T`, as long as you use `Stateless_allocator<Arena>::Pointer<P>` (not raw `P*`); though we'd informally recommend against it for the maintainability of your own algorithms.  That is what the allocator concept in STL is for after all.  (This advice is independent of Flow-IPC; just a general opinion.)
+
+Further capabilities are outside our scope here; but the main point is: At a minimum:
+  - if you simply used a SHM-backed session type when setting up IPC, immediately available to you are arenas in which to allocate objects and share them between the processes involved; and
+  - the object type can be an arbitrarily complex combo of C++ plain-old data-types (PODs) and STL-compliant container types, as long as you use the Flow-IPC-supplied allocator for the latter.
+
+Low level, utilities
+--------------------
+It is possible to eschew the higher-level abstractions such as `Channel`, `struc::Channel`, and `Session`; and work more directly on the low level of IPC transports including Unix domain sockets, POSIX MQs, SHM-backed (boost.interprocess) MQs.  Even in that case Flow-IPC may have useful APIs for you.
+
+Of these, on the higher-level end are ipc::transport::Native_socket_stream (blob/handle transmission over local stream socket) and @link ipc::transport::Native_socket_stream_acceptor Native_socket_stream_acceptor@endlink (listening for incoming connections of that type) and @link ipc::transport::Blob_stream_mq_sender Blob_stream_mq_sender@endlink and @link ipc::transport::Blob_stream_mq_receiver Blob_stream_mq_receiver@endlink (blob transmission over MQ, with MQ type specified as template parameter).
+
+Below that are the specific MQ APIs (ipc::transport::Posix_mq_handle and @link ipc::transport::Bipc_mq_handle Bipc_mq_handle@endlink) and the stream-socket-focused boost.asio extensions in sub-namespace ipc::transport::asio_local_stream_socket.
+
+ipc::util stores further miscellaneous low-level utility APIs such as ipc::util::Process_credentials and permissions abstraction @link ipc::util::Permissions_level Permissions_level@endlink.
+
+Next let's get to the nitty-gritty of actually using this library: @ref setup.
+
+---
+
+<center>**MANUAL NAVIGATION:** @ref about "Preceding Page" - @ref setup "Next Page" - [**Table of Contents**](./pages.html)</center>
+
+*/
