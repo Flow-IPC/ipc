@@ -1,0 +1,209 @@
+# Flow-IPC
+# Copyright 2023 Akamai Technologies, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in
+# compliance with the License.  You may obtain a copy
+# of the License at
+#
+#   https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in
+# writing, software distributed under the License is
+# distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing
+# permissions and limitations under the License.
+
+# <cmd> <sh-name>
+SOCK_STREAM_ACC_LISTEN _socks_1
+# -> acc 0
+
+# <cmd> <acc-slot> <n-calls> <timeout> <timeout-units>
+SOCK_STREAM_ACC_ACCEPT 0 1 10 s
+# -> stm 0
+
+# <cmd> <stm-slot> <blob-sz-or-0> <expected-ipc-err-or-success> <expected-sock?> <expected-blob-sz>
+#       <timeout> <timeout-units>
+SOCK_STREAM_RECV 0 5050 0 1 5050 50 ms
+# -> sock 0
+
+# <cmd> <sock-slot>
+SOCK_STREAM_CREATE_FROM_HNDL 0
+# -> stm 1
+
+# <cmd> <stm-slot> <sock-slot-or-none> <blob-sz-or-0> <expected-ipc-err-or-success>
+SOCK_STREAM_SEND 1 -1 77 0
+
+# Cli will send 12000 -- intentionally provide 11000-buffer and get error.
+SOCK_STREAM_RECV 1 11000 MESSAGE_SIZE_EXCEEDS_USER_STORAGE 0 11000 50 ms
+# Next attempt should immediately get same error regardless of buffer size offered.
+# Use Blob_receiver form too.
+# <cmd> <stm-slot> <blob-sz> <expected-ipc-err-or-success> <expected-blob-sz>
+#       <timeout> <timeout-units>
+SOCK_STREAM_RECV_BLOB 1 15000 MESSAGE_SIZE_EXCEEDS_USER_STORAGE 15000 50 ms
+
+# But the outgoing half-pipe is fine.
+SOCK_STREAM_SEND 1 -1 60606 0
+# Use Blob_sender form too.
+# <cmd> <stml-slot> <blob-sz> <expected-ipc-err-or-success>
+SOCK_STREAM_SEND_BLOB 1 60606 0
+
+# Sleep same as cli, so we're about even for the next step.
+SLEEP 2 s
+
+# Now sleep some more, while cli has receives pending.
+SLEEP 2 s
+
+SOCK_STREAM_SEND 1 -1 30606 0
+SOCK_STREAM_SEND_BLOB 1 10606 0
+
+# <cmd> <stm-slot> <dupe-call?> <expected-ipc-err-or-success> <timeout> <timeout-units>
+SOCK_STREAM_SEND_END 1 0 0 50 ms
+SOCK_STREAM_SEND_BLOB 1 10606 SENDS_FINISHED_CANNOT_SEND
+SOCK_STREAM_SEND_END 1 1 0 0 s
+
+# Switch to (the original) stm 0 here.
+
+# Send native socket through with a blob (other side can fail by trying Blob_receiver concept).
+HNDL_CONNECT_PAIR
+# -> sock 1, 2
+SOCK_STREAM_SEND 0 1 121 0
+
+# TODO: Moar....
+
+# <cmd> <sh-name> <create-else-open?> <max-n-msg> <max-msg-sz> <expected-create-or-open-fail?>
+#       <expected-ipc-err-or-success>
+BLOB_STREAM_MQ_POSIX_SND_CREATE _mqd_0 1 3 10 0 0
+# -> Posix:snd 0
+BLOB_STREAM_MQ_POSIX_SND_CREATE _mqd_0 0 3 10 0 BLOB_STREAM_MQ_SENDER_EXISTS
+BLOB_STREAM_MQ_POSIX_RCV_CREATE _mqd_0 1 3 10 1 0
+BLOB_STREAM_MQ_POSIX_RCV_CREATE _mqd_0 0 0 0 0 0
+# -> Posix:rcv 0
+BLOB_STREAM_MQ_POSIX_RCV_CREATE _mqd_0 0 0 0 0 BLOB_STREAM_MQ_RECEIVER_EXISTS
+# <cmd> <stm-slot> <timeout> <timeout-units>
+BLOB_STREAM_MQ_POSIX_RCV_DESTROY 0 300 ms
+BLOB_STREAM_MQ_POSIX_SND_DESTROY 0 300 ms
+# Should be possible to create another MQ at the same name after both peers gone.
+BLOB_STREAM_MQ_POSIX_RCV_CREATE _mqd_0 1 3 10 0 0
+# -> Posix:rcv 1
+# It's destroyed but can't create underlying MQ again (name-exists error).
+BLOB_STREAM_MQ_POSIX_SND_CREATE _mqd_0 1 3 10 1 0
+# But can open it.
+BLOB_STREAM_MQ_POSIX_SND_CREATE _mqd_0 0 0 0 0 0
+# -> Posix:snd 1
+
+# Repeat for bipc MQs.
+BLOB_STREAM_MQ_BIPC_SND_CREATE _mqd_0 1 3 10 0 0
+BLOB_STREAM_MQ_BIPC_SND_CREATE _mqd_0 0 3 10 0 BLOB_STREAM_MQ_SENDER_EXISTS
+BLOB_STREAM_MQ_BIPC_RCV_CREATE _mqd_0 1 3 10 1 0
+BLOB_STREAM_MQ_BIPC_RCV_CREATE _mqd_0 0 0 0 0 0
+BLOB_STREAM_MQ_BIPC_RCV_CREATE _mqd_0 0 0 0 0 BLOB_STREAM_MQ_RECEIVER_EXISTS
+BLOB_STREAM_MQ_BIPC_RCV_DESTROY 0 300 ms
+BLOB_STREAM_MQ_BIPC_SND_DESTROY 0 300 ms
+BLOB_STREAM_MQ_BIPC_RCV_CREATE _mqd_0 1 3 10 0 0
+BLOB_STREAM_MQ_BIPC_SND_CREATE _mqd_0 1 3 10 1 0
+BLOB_STREAM_MQ_BIPC_SND_CREATE _mqd_0 0 0 0 0 0
+
+# Let's actually do some IPC (between processes).
+
+BLOB_STREAM_MQ_POSIX_RCV_CREATE _mqd_1 1 3 10 0 0
+# -> Posix: rcv 2
+# <cmd> <stm-slot> <blob-sz> <expected-ipc-err-or-success> <expected-blob-sz>
+#       <timeout> <timeout-units>
+# They will sleep for 1 sec; we issue this to have a buffer ready by the time
+# they subsequently send this.
+# Tests receipt during *deficit*.
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 9 2 s
+# And then immediately this (hence short timeout).
+# This one will probably test *surplus*; but best to test it separately
+# next.
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 10 50 microseconds
+# They'll send 5 more quickly; we will wait and *then* receive.  ~2 of those should would-block on the send-side
+# which will exercise that (typically rarely exercised) logic.
+# Tests receive-side *surplus* and send-side *would-block*.
+SLEEP 2 s
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 1 50 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 10 50 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 1 50 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 10 50 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 1 50 microseconds
+# Try too-small *versus MQ requirement that rcv buf always be big-enough to receive the biggest possible msg* receive
+# buffer -- regardless of actual message size it should fail but not fatally, with INVALID_ARGUMENT.
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 9 INVALID_ARGUMENT 0 50 microseconds
+# Pipe OK given large enough buffer size this time.  In fact let's use a bigger-than-needed one for fun.
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 11 0 5 50 microseconds
+
+SLEEP 1 s
+
+# Open 2 pipes created by other side (bipc this time).
+BLOB_STREAM_MQ_BIPC_RCV_CREATE _mqd_2 0 0 0 0 0
+# -> Bipc:rcv 2
+BLOB_STREAM_MQ_BIPC_SND_CREATE _mqd_3 0 0 0 0 0
+# -> Bipc:snd 2
+# Do other side of 3-way handshake (see other side which does the opposite).
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 1 1 ms
+BLOB_STREAM_MQ_BIPC_SEND_BLOB 2 1 0
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 1 1 ms
+# Now just receive some stuff -- first 2 sans send-would-block -- last 5 after partial would-block.
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 1 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 1 ms
+SLEEP 2 s
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 1 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 1 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 1 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 1 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 1 ms
+# Then graceful-close.
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 1 ms
+
+# Mess with channels now.
+
+# Prep our side of socket stream.
+SOCK_STREAM_ACC_ACCEPT 0 1 5 s
+# -> stm 2
+
+# <cmd> <mq-sh-name-prefix> <mq-create-else-open?> <stm-slot>
+CHAN_BUNDLE_POSIX_CREATE _mqd_4 1 2
+# -> Posix:chan 0
+# (Dead: stm 0)
+# Let's do 3 way handshake again as a quick test.  BTW this a bit illustrates why a Channel by itself
+# is fairly nice (it might seem useless by itself potentially even to me (ygoldfel)): it combines
+# even unidirectional pipes into something that can be used to both send and receive on one peer
+# object.
+# <cmd> <stm-slot> <blob-sz> <expected-ipc-err-or-success>
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1 0
+# <cmd> <stm-slot> <blob-sz> <expected-ipc-err-or-success> <expected-blob-sz>
+#       <timeout> <timeout-units>
+CHAN_BUNDLE_POSIX_RECV_BLOB 0 8192 0 1 500 ms
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1 0
+# Send, receive some sockets and stuff.  BTW the MQ pipe takes 8KiB max, so try sending bigger things
+# (it will go through NSS hence no problem).
+# <cmd> <stm-slot> <sock-slot-or-none> <blob-sz-or-0> <expected-ipc-err-or-success>
+CHAN_BUNDLE_POSIX_SEND 0 2 10101 0
+# <cmd> <stm-slot> <blob-sz-or-0> <expected-ipc-err-or-success> <expected-sock?> <expected-blob-sz>
+#       <timeout> <timeout-units>
+CHAN_BUNDLE_POSIX_RECV 0 20202 0 1 20202 10 ms
+# -> sock 3
+CHAN_BUNDLE_POSIX_RECV 0 30303 0 0 30303 10 ms
+# <cmd> <stm-slot> <dupe-call?> <expected-ipc-err-or-success> <timeout> <timeout-units>
+CHAN_BUNDLE_POSIX_SEND_END 0 0 0 1 ms
+CHAN_BUNDLE_POSIX_SEND_END 0 1 0 1 ms
+
+# Now bipc instead of POSIX.
+
+SOCK_STREAM_ACC_ACCEPT 0 1 1 s
+# -> stm 3
+CHAN_BUNDLE_BIPC_CREATE _mqd_4 1 3
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1 0
+CHAN_BUNDLE_BIPC_RECV_BLOB 0 8192 0 1 500 ms
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1 0
+CHAN_BUNDLE_BIPC_SEND 0 2 10101 0
+CHAN_BUNDLE_BIPC_RECV 0 20202 0 1 20202 10 ms
+CHAN_BUNDLE_BIPC_RECV 0 30303 0 0 30303 10 ms
+CHAN_BUNDLE_BIPC_SEND_END 0 0 0 1 ms
+CHAN_BUNDLE_BIPC_SEND_END 0 1 0 1 ms
+
+# TODO: Moar....
+
+SLEEP 3 s

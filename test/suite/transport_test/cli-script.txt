@@ -1,0 +1,150 @@
+# Flow-IPC
+# Copyright 2023 Akamai Technologies, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in
+# compliance with the License.  You may obtain a copy
+# of the License at
+#
+#   https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in
+# writing, software distributed under the License is
+# distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing
+# permissions and limitations under the License.
+
+# <cmd> <sh-name> <timeout> <timeout-units>
+SOCK_STREAM_CONNECT _socks_1 50 ms
+# -> stm 0
+
+HNDL_CONNECT_PAIR
+# -> sock 0, 1
+
+# <cmd> <sock-slot>
+SOCK_STREAM_CREATE_FROM_HNDL 0
+# -> stm 1
+
+# <cmd> <stm-slot> <sock-slot-or-none> <blob-sz-or-0> <expected-ipc-err-or-success>
+SOCK_STREAM_SEND 0 1 5050 0
+
+# <cmd> <stm-slot> <blob-sz-or-0> <expected-ipc-err-or-success> <expected-sock?> <expected-blob-sz>
+#       <timeout> <timeout-units>
+SOCK_STREAM_RECV 1 77 0 0 77 50 ms
+
+SOCK_STREAM_SEND 1 -1 12000 0
+
+# Intentionally wait before receiving.  Stuff will be collected internally in background (surplus).
+SLEEP 2 s
+
+# Now receive both things.
+SOCK_STREAM_RECV 1 128000 0 0 60606 50 ms
+SOCK_STREAM_RECV 1 60606 0 0 60606 50 ms
+
+# Next receive 2 more: srv will pause before they're sent (deficit).
+SOCK_STREAM_RECV 1 128000 0 0 30606 2500 ms
+# Use Blob_receiver form too.
+# <cmd> <stm-slot> <blob-sz> <expected-ipc-err-or-success> <expected-blob-sz>
+#       <timeout> <timeout-units>
+SOCK_STREAM_RECV_BLOB 1 60606 0 10606 50 ms
+
+SOCK_STREAM_RECV_BLOB 1 0 RECEIVES_FINISHED_CANNOT_RECEIVE 0 50 ms
+SOCK_STREAM_RECV 1 0 RECEIVES_FINISHED_CANNOT_RECEIVE 0 0 50 ms
+
+# Switch to (the original) stm 0 here.
+# They will intentionally send a native socket, while we try to read with Blob_receiver concept.
+SOCK_STREAM_RECV_BLOB 0 121 BLOB_RECEIVER_GOT_NON_BLOB 121 50 ms
+
+# Let's do MQ stream IPC.
+# Give them time to create first guy.
+SLEEP 1 s
+
+# <cmd> <sh-name> <create-else-open?> <max-n-msg> <max-msg-sz> <expected-create-or-open-fail?>
+#       <expected-ipc-err-or-success>
+BLOB_STREAM_MQ_POSIX_SND_CREATE _mqd_1 0 0 0 0 0
+# Posix:snd -> 0
+
+# <cmd> <stm-slot> <blob-sz> <expected-ipc-err-or-success>
+BLOB_STREAM_MQ_POSIX_SEND_BLOB 0 9 0
+BLOB_STREAM_MQ_POSIX_SEND_BLOB 0 10 0
+BLOB_STREAM_MQ_POSIX_SEND_BLOB 0 1 0
+BLOB_STREAM_MQ_POSIX_SEND_BLOB 0 10 0
+BLOB_STREAM_MQ_POSIX_SEND_BLOB 0 1 0
+# Should would-block around here due to opposing sleep.
+BLOB_STREAM_MQ_POSIX_SEND_BLOB 0 10 0
+BLOB_STREAM_MQ_POSIX_SEND_BLOB 0 1 0
+BLOB_STREAM_MQ_POSIX_SEND_BLOB 0 5 0
+
+# Let's do more, bipc MQ this time. Do a 3-way handshake.
+BLOB_STREAM_MQ_BIPC_SND_CREATE _mqd_2 1 3 10 0 0
+# Bipc:snd -> 0
+BLOB_STREAM_MQ_BIPC_RCV_CREATE _mqd_3 1 3 10 0 0
+# Bipc:rcv -> 0
+BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 1 0
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 0 10 0 1 5 s
+BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 1 0
+BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 8 0
+BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 8 0
+BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 8 0
+BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 8 0
+BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 8 0
+# Should would-block around here due to opposing sleep.
+BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 8 0
+BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 8 0
+# End with graceful-close.  It's take > the time opposing side will sleep for that to report end-sending done:
+# thus we test graceful-close queueing (would-block) and reporting thereof.
+# <cmd> <stm-slot> <dupe-call?> <expected-ipc-err-or-success> <timeout> <timeout-units>
+BLOB_STREAM_MQ_BIPC_SEND_END 0 0 0 2100 ms
+# And a lame dupe.
+BLOB_STREAM_MQ_BIPC_SEND_END 0 1 0 0 s
+
+# Channels now.
+
+# Prepare our side of socket stream.
+SOCK_STREAM_CONNECT _socks_1 3 s
+# -> stm 2
+
+# A brief pause while they create MQs.
+SLEEP 100 ms
+
+# <cmd> <mq-sh-name-prefix> <mq-create-else-open?> <stm-slot>
+CHAN_BUNDLE_POSIX_CREATE _mqd_4 0 2
+# Posix:chan -> 0
+# (Dead: stm 2)
+# Other side of 3-way handshake.
+# <cmd> <stm-slot> <blob-sz> <expected-ipc-err-or-success> <expected-blob-sz>
+#       <timeout> <timeout-units>
+CHAN_BUNDLE_POSIX_RECV_BLOB 0 8192 0 1 1 ms
+# <cmd> <stm-slot> <blob-sz> <expected-ipc-err-or-success>
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1 0
+CHAN_BUNDLE_POSIX_RECV_BLOB 0 8192 0 1 1 ms
+# <cmd> <stm-slot> <blob-sz-or-0> <expected-ipc-err-or-success> <expected-sock?> <expected-blob-sz>
+#       <timeout> <timeout-units>
+CHAN_BUNDLE_POSIX_RECV 0 10101 0 1 10101 1 ms
+# -> sock 2
+# Similar to other side.
+# <cmd> <stm-slot> <sock-slot-or-none> <blob-sz-or-0> <expected-ipc-err-or-success>
+CHAN_BUNDLE_POSIX_SEND 0 1 20202 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 30303 0
+CHAN_BUNDLE_POSIX_RECV_BLOB 0 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 1 ms
+CHAN_BUNDLE_POSIX_RECV 0 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 0 1 ms
+
+# Now bipc instead of POSIX.
+
+SOCK_STREAM_CONNECT _socks_1 1 s
+# -> stm 3
+SLEEP 100 ms
+CHAN_BUNDLE_BIPC_CREATE _mqd_4 0 3
+CHAN_BUNDLE_BIPC_RECV_BLOB 0 8192 0 1 1 ms
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1 0
+CHAN_BUNDLE_BIPC_RECV_BLOB 0 8192 0 1 1 ms
+CHAN_BUNDLE_BIPC_RECV 0 10101 0 1 10101 1 ms
+CHAN_BUNDLE_BIPC_SEND 0 1 20202 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 30303 0
+CHAN_BUNDLE_BIPC_RECV_BLOB 0 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 1 ms
+CHAN_BUNDLE_BIPC_RECV 0 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 0 1 ms
+
+# TODO: Moar....
+
+SLEEP 3 s

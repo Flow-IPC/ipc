@@ -1,0 +1,179 @@
+/* Flow-IPC
+ * Copyright 2023 Akamai Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in
+ * compliance with the License.  You may obtain a copy
+ * of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in
+ * writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing
+ * permissions and limitations under the License. */
+
+/**
+
+@page chan_struct_advanced Structured Message Transport: Messages As Long-lived Data Structures / Advanced Topics
+
+<center>**MANUAL NAVIGATION:** @ref chan_struct "Preceding Page" - @ref transport_shm "Next Page" - [**Table of Contents**](./pages.html)</center>
+
+---
+
+We previously discussed how to transmit structured messages; in this page we get into advanced techniques that treat messages as long-lived data structures to re-share multiple times and potentially modify throughout.  (Or go back to the prerequisite preceding page: @ref chan_struct.)
+
+`struc::Channel` and serialization
+----------------------------------
+In @ref chan_struct we kept things simple: Create `struc::Channel`.  Create a message `struc::Msg_out` using its `.create_msg()`.  Mutate it via capnp-generated setters.  Send it via `.send()` or `.*_request()`.  Receive it on the other side as a `Msg_in` (`struc::Msg_in`) and access it via capnp-generated getters.  This may well be perfectly sufficient for many use cases: Messaging is a common IPC paradigm, and in the described capacity `struc::Channel` provides, on top of the basics: structured data via capnp schemas; and basic request-response/multiplex-demultiplex APIs.
+
+However the abilities of the ipc::transport **structured layer** go beyond that basic and effective paradigm.  Hand-wavily speaking, an ipc::transport::struc::Msg_out (which represents a **message**, as opposed to message instance, and is not so different conceptually from a container) can be seen as not a short-lived message -- that exists essentially just before sending and just after receiving -- but as a *data structure* whose lifetime is practically unlimited (if so desired).
+
+It is probably clear already that capnp provides the ability to express many data structures (as ~anything can be built on top of `struct`s, `union`s, and `List`s).  (Granted, things like sorted trees and hash-tables would need some some added code to be conveniently accessed directly within a capnp schema, but that is also possible.)
+
+@note If a native capnp schema is insufficient for your data structure's performance or semantic needs, we provide first-class-citizen support for direct C++ data structures, including STL-compliant containers, in shared memory.  See @ref transport_shm.
+
+However, beyond that, a number of capabilities are necessary to treat `struc::Msg_out` and the associated **message instances** (ipc::transport::struc::Msg_in a/k/a ipc::transport::struc::Channel::Msg_in upon receipt) as long-lived data structures shared among processes.  The most basic such capabilities are:
+  - modifying a `Msg_out` after `.send()`ing (et al);
+  - re-`.send()`ing (et al) a `Msg_out` over the same channel;
+  - re-`.send()`ing (et al) a `Msg_out` over a different channel.
+
+As you will soon see, all of these are quite simple and in fact don't even involve any more APIs than those explained in @ref chan_struct.
+
+Potentially one might also want the following property:
+  - if a change is made to the original `Msg_out`, the change is immediately reflected in an associated `Msg_in` already received by a process (subject to synchronization that is the user's responsibility).
+
+As you will soon see, this merely requires the use of a SHM-backed serializer -- but that is already assumed at least in the default recommendation and example code in @ref chan_struct.
+
+Finally, there is the matter of the the **lifetime** of a given `Msg_out` and associated `Msg_in`s.  There are a few ways to think about this, but supposing one uses the ipc::session paradigm for channel opening (and possibly SHM use), it can be roughly described as the following capabilities:
+  - a `Msg_out` (+ `Msg_in`s) lifetime that is at least equal to that of a particular ipc::session::Session;
+  - a lifetime exceeding that of the session's.
+
+@note For completeness we should mention that to be usable 100% completely as simply a data structure coequally shared among all relevant processes, a particular `Msg_*` would also need to be modifiable (via capnp-generated mutating API) on the receiver side.  As of this writing Flow-IPC does not offer such an API.  However this would be an incremental and not particularly difficult addition to Flow-IPC.  We may add this in the foreseeable future.  (Exception: The SHM-provider ipc::shm::arena_lend (SHM-jemalloc) is such that it is conceptually impossible to offer this feature in its case.  However ipc::shm::classic is fine in this respect.)
+
+Advice: The topics in this page are not difficult, as long as one simply adjusts their understanding of what a `struc::Msg_out` (+ associated message instance objects `struc::Msg_in`) really is.  The main adjustment: despite the existence of the convenience method ipc::transport::struc::Channel::create_msg(), and the `struc::Channel` constructor arguments that make that work, a message is not in reality in any way "attached" to a particular channel.  It is actually *an independent data structure* -- in a way like a container.  Once one understands its lifetime and this orthogonality to channels, it all (we feel) makes straightforward sense.
+
+### A word on `Native_handle` transmission ###
+We've already mentioned this in @ref chan_struct but to recap/expand: One can load a native handle (FD in POSIX/Unix/Linux parlance) into a `Msg_out`.  A received `Msg_in` will then contain a handle referring to the same resource description, accessible via ipc::transport::struc::Msg_in::native_handle_or_null().  The `Msg_out`-stored `Native_handle` can be unloaded or replaced with another one; this has no effect on the associated `Msg_in`s.  (The underlying resource, such as a file handle or network socket, will be freed once *all* handles proliferated this way have been freed.  `Msg_out` will do that to its handle on destruction or replacement/unloading via `.store_native_handle_or_null()`.  `Msg_in`-stored such handles are not auto-freed; it is the user's responsibility upon receipt to access via `.native_handle_or_null()` and further handle it as she will.)
+
+Fundamentally these `Native_handle`s should be viewed as light-weight; in at least POSIX/Unix/Linux they are `int`s.  Furthermore, as shown above, conceptually (not literally -- it is not a mere `int` copy when crossing a process boundary) speaking they are always *copied* on transmission.  In the rest of the page we speak at length about message payloads being copied or not-copied (zero-copy).  To be clear, when we talk of this, we are speaking about the structured-data payload *only*.  `Native_handle`s (conceptually) are always copied when transmitted.
+
+Re-sending a `Msg_out`; modifying a `Msg_out`
+---------------------------------------------
+These actions are so simple that we felt it best to just give recipes for them here at the top, without even first philosophizing about message lifetimes and the like.
+
+To send a `Msg_out`, you already know you can use `struc::Channel` methods `.send()`, `async_request()`, `sync_request()`.  Obviously up to that point you already know you can mutate the payload via capnp mutating API accessible via `struc::Msg_out::body_root()->`.
+
+To modify it *after* a send: You just... do it.  `body_root()->`, etc.  Any `Builder`s you've saved from before the send will work just fine too (and be indistinguishable from those re-obtained via a re-invocation of `body_root()`.)
+
+To re-send a `Msg_out`, whether you've modified it or not: You just... do it.  Use the same `Msg_out`.  (There is no way to copy it, as of this writing, so....  Though, technically, you could do that yourself via capnp fanciness; but I digress.)
+
+All of that said, simple as it is, it doesn't answer questions that naturally arise; for example, if one modifies a `Msg_out`, does an existing related-`Msg_in` observer "see" it?  Time to discuss all that.
+
+---
+
+@par Send 1 message over 2+ different channels, with this one weird trick
+Actually there is no trick.  Got a `Msg_out`?  You can send it over any `struc::Channel` you've got, as long as the template parameters match (most notably `Message_body`, the schema); or it won't compile.  It doesn't matter which one's `.create_msg()` you used, or whether you used one at all (it can be @ref msg_ct "explicitly constructed instead").
+
+@par
+However this opens up further questions; like "Is it safe?" (Laurence Olivier -> Dustin Hoffman).  The answer is slightly tricky.  Hopefully we will reveal all in the next couple of sections of this Manual page.
+
+---
+
+Messages, message instances, message lifetime
+---------------------------------------------
+A **message** begins existence when an ipc::transport::struc::Msg_out (a/k/a `struc::Channel::Msg_out`) is constructed.  A **message instance** begins existence *when it is sent via a `struc::Channel`* via a send-method of thereof.  It is never accessible, per se, by the user in the sender process; it is first accessible by a user upon receipt via a `struc::Channel` API (`.sync_request()` return value, an `.expect_*()` handler, or an `.async_request()` handler).  Specifically, that message instance lives in that `struc::Msg_in` (a/k/a `struc::Channel::Msg_in`).
+
+So the `Msg_out` is the message; the `Msg_in`s are the message instances *as they are sent+received, each time that occurs*.
+
+The key idea to understand is the relationship between the message (`Msg_out`) and its 0+ message instances -- `Msg_in`s.  Simply put:
+  - A message instance is a read-only view of the message.  (Per the "Note" above the "read-only" restriction may be lifted, in most cases, in an Flow-IPC in the foreseeable future.)
+  - If the message is **SHM-backed**: A message instance accesses the same location in memory, directly, as the message.  Perf-wise: no copy is made when the instance is created (i.e., it is sent/received).  Algorithmic possibilities-wise: the message instance *is* the same data structure as the message.
+  - If the message is **heap-backed**: A message instance accesses a different location in memory than the message.  Perf-wise: a copy is made when the instance is created (again, at send/receive time).  Algorithmic possibilities-wise: the message instance has the same structured as the message but is a *copy* thereof.
+
+We'll explain "SHM-backed" and "heap-backed" shortly.
+
+### Message lifetime ###
+A message's **lifetime** ends at a certain time depending on whether it's SHM-backed or heap-backed.  Ditto for message instance lifetime.
+
+For heap-backed messages it is straightforward, as there's the message, and the instances are subsequent copies thereof.
+  - A heap-backed *message* lasts as long as the process in which it was allocated.  One can even shut down all IPC sessions: it is still accessible, modifiable, everything.  (This could be useful in its own right.)  Saved capnp-generated `Builder`s continue working equally well and so on.
+  - A heap-backed message *instance* lasts as long as the process in which its `Msg_in` was initially received-into (hence allocated, in the bowels of a `struc::Channel`).  It's a copy of the original message: it's just (as of this writing) a read-only copy.  Just as with the original message, you can end all IPC, and you can still access the message instance just fine including via saved capnp-generated `Reader`s.
+
+For SHM-backed messages it is more fun, as the message and subsequent message instances refer to the same data in RAM.  The lifetime of those underlying data ends in the last destructor to complete among:
+  - the destructor of the original `struc::Msg_out`;
+  - the destructor of each subsequently created `struc::Msg_in`.
+
+Thus, conceptually, there is a ref-count: 1 for the `Msg_out`; 1 for each `Msg_in`.  Once it reaches zero, the lifetime of the data ends, and the RAM resources are returned for use by other items.  (This is all thread-safe in cross-process fashion.  It's fine if destructors run concurrently to each other, with a new related `Msg_in` being created in another process, etc.)
+
+@note `Msg_in`s are exclusively trafficked via `Msg_in_ptr`s which are mere `shared_ptr<Msg_in>`s; hence once a particular `shared_ptr` group reaches ref-count-zero, the destructor is invoked, and voilà for that particular *one* message instance.  This applies regardless of SHM-backed versus heap-backed messages.  Meanwile `Msg_out` can live wherever you want (you can wrap it in a `shared_ptr` if you want); but don't confuse where these *objects* live as opposed to where the *data structure* lives (similarly to a regular `std::vector` potentially living on the stack but allocating its buffer elsewhere, typically heap but depending on the `Allocator` used elsewhere).
+
+@anchor msg_ct
+### Constructing messages; reusing messages among different `struc::Channel`s ###
+We can now discuss freely how one creates a `Msg_out`.  You already know about `struc::Channel::create_msg()`, but in our expanded context here -- of infinite lifetimes and SHM-arenas, oh my -- it is not quite sufficient and possibly somewhat confusing, as it appears to associate a *message* with a *channel*; but the two are (as we've stated earlier) actually orthogonal.
+
+@note A message *instance* is created internally by `struc::Channel` at receipt time.  By the time you get the `Msg_in_ptr` into your code, it's already in existence, and it will go out of existence when that `shared_ptr<Msg_in> = Msg_in_ptr`'s shared-pointer group reaches ref-count-zero.
+
+Formally speaking the backing (SHM versus heap; plus config) of any given `Msg_out` is controlled via the formal concepts ipc::transport::struc::Struct_builder and ipc::transport::struc::Struct_builder::Config (and the deserialization counterparts ipc::transport::struc::Struct_reader and ipc::transport::struc::Struct_reader::Config).  You can read all about them and their impls -- or even potentially how to create your own for truly advanced fanciness -- by following those links into the Reference and going from there.  (In that case you will also need to understand `struc::Channel` non-tag constructor form as well as the related `Struct_builder_config` and `Struct_reader_config` class template paramers which match `Struct_builder::Config` and `Struct_reader::Config` concepts repsectively.)  Here in the guided Manual we won't get into it to that level of formality and depth.  We strive to keep it immediately useful but nevertheless sufficiently advanced for most needs.
+
+So here are the relevant recipes with all currently available types of message backing.  Let's start with the simplest one: **heap-backed messages**.
+
+---
+
+@par When to choose heap-backing (over SHM-backing)?
+As explained above transmitting a heap-backed message means a copy is made.  This has the obvious undesirable performance hit: a copy is made at least into the transport and another out of the transport (possibly another inside the transport, depending on the transport) -- instead of *zero* copies end-to-end.  Furthermore this limits the size of a capnp data structure's *leaf* to what can be serialized into one unstructured message bearable by the underlying ipc::transport::Channel transport(s).  (For detail of this limitation see ipc::transport::struc::Heap_fixed_builder class doc header.  It also expands on the present discussion generally.)  However it may well still be useful for many applications.  Informally we recommend SHM-backing as the default choice; but certainly there are use cases where heap-backing works better due to its simplicity.  Internally we use it to *implement* certain internal aspects of the SHM-jemalloc SHM-provider (for example).
+
+---
+
+For SHM-backed message transmission: Use ipc::transport::struc::Channel_via_heap as your `Structured_channel_t` template in place of what we used in the example in @ref chan_struct.  There we used ipc::transport::struc::shm::classic::Channel albeit invisibly via `Session::Structured_channel` alias.  If your chosen `Session` type is *not* SHM-backed -- meaning you will not be using `ipc::session`-provided SHM capabilities at all and ultimately thus chose to use ipc::session::Client_session or ipc::session::Session_server as opposed to a SHM-backed variant thereof -- then `Session::Structured_channel` will yield ipc::transport::struc::Channel_via_heap.  Otherwise you can use ipc::session::Session_mv::Structured_channel alias; or ipc::transport::struc::Channel_via_heap explicitly.
+
+There is a number of ways to construct a heap-backed `Msg_out`.  Assuming you use ipc::session to obtain channels, which you generally should barring a very good reason not to, then `.create_msg()` will work most easily.  The resulting `Msg_out` (and any resulting `Msg_in`s) are transmissible over that channel or any other `struc::Channel` upgraded-from a `Channel` opened from the same `Session` or `Session` of the same concrete C++ type.  The latter includes (on session-server side) any `Session` arising from the same `Session_server` (of which there should be exactly 1 per process).
+
+Messages are conceptually decoupled from specific channels, and your program may be structured in such a way as to not have a `struc::Channel` available easily when constructing the `Msg_out`.  In that case you can easily construct a matching-type `struc::Msg_out` explicitly without `.create_msg()`.  You will need a `Struct_builder::Config` object (which is a light-weight item).  This is obtained easily via ipc::session::Session_mv::heap_fixed_builder_config() including the `static` overload that merely requires a `Logger*` (which can itself be null if desired).
+
+Going outside the ipc::session paradigm is (as earlier forewarned) outside our scope here, but briefly we can explain that if you go that way you can construct the `Struct_builder::Config` -- actually concretely an ipc::transport::struc::Heap_fixed_builder::Config -- explicitly.  Certain values will be required for *that* constructor, and they must be such that all `Channel`s over which the message shall be transmitted (recall that with heap-backed messages the actual message's serialization is copied into/out of the transport) shall be capable of transmitting even the largest possible capnp-serialization segment that would ever be generated given your data.  Again: this is outside our scope here, but the Reference includes all necessary information for this advanced use case.
+
+Now let's talk about constructing **SHM-backed messages**.
+
+In fact, in @ref chan_struct, we provided the recipe for a common use case; namely:
+  - Scope: session-scope (specified by ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM tag arg to `struc::Channel` constructor);
+  - SHM-provider: SHM-classic (ipc::shm::classic -- specified via the compile-time `struc::Channel` type selected, namely in our example code `Session::Structured_channel` which resolved to ipc::transport::struc::shm::classic::Channel due to the concrete type of `Session`).
+
+What does session-scope mean?  Briefly it means that the lifetime of any resulting messages is limited to that of the `Session` given by you as an argument to the `struc::Channel` constructor.  The alternative is app-scope.  (Please read [elsewhere in the Manual](./session_app_org.html#scope) to understand these 2 alternatives.)  In many applications session-scope is sufficient.
+
+If indeed session-scope is sufficient, then you can use SHM-classic SHM-provider as above; or else select SHM-jemalloc.  If writing code in the fashion recommended in this Manual this will flow automatically from your original choice of `Client_session` (ipc::session::shm::classic::Client_session versus ipc::session::shm::arena_lend::jemalloc::Client_session) or `Session_server` (ditto modulo the last identifier name).  Otherwise use ipc::transport::struc::shm::arena_lend::jemalloc::Channel.
+
+If app-scope is required, then:
+  - Use ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_APP_SHM tag arg to `struc::Channel` constructor.
+  - You can still select either SHM-classic or SHM-jemalloc.
+    - However, in the latter case (and the latter case only): The `session` argument to that constructor must be a `Server_session`; trying to use a `Client_session` will result in a compile error.  With SHM-jemalloc, on the session-client side, it is only possible to construct session-scope SHM-backed data.  This is due to the nature of client-sessions combined with the nature of arena-lend style of SHM-provider.
+
+Which SHM-provider to use?  That is a major decision and affects not just SHM-backed messages but direct-storage of C++ structures in SHM; see @ref transport_shm w/r/t the latter.  Without a deep dive: See a [safety-oriented discussion](./safety_perms.html#shm_safety) and [nearby recap of non-safety considerations](./safety_perms.html#shm_safety_other_considerations).  A lengthier description can be @link ipc::shm found in the Reference@endlink.
+
+Having constructed the properly-typed SHM-backed-config `struc::Channel` properly using these knobs, it is easiest to use `.create_msg()` to create `Msg_out`.  Any allocation required as you subsequently mutate it shall occur in the proper SHM arena, and resulting `Msg_in`s on the receiving side shall properly access it directly there.
+
+Messages are conceptually decoupled from specific channels, and your program may be structured in such a way as to not have a `struc::Channel` available easily when constructing the `Msg_out`.  In that case you can easily construct a matching-type `struc::Msg_out` explicitly without `.create_msg()`.  You will need a `Struct_builder::Config` object (which is a light-weight item).  This is obtained via ipc::session::shm::classic::Session_mv::session_shm_builder_config() (session-scope, SHM-classic) or ipc::session::shm::classic::Session_mv::app_shm_builder_config() (app-scope, SHM-classic).  For SHM-jemalloc substitute ipc::session::shm::arena_lend::jemalloc::Session_mv::session_shm_builder_config() or ipc::session::shm::arena_lend::jemalloc::Server_session::app_shm_builder_config().  All four methods are available via your `Session` object (e.g., `session.session_shm_builder_config()`).  The 2 app-scope methods have counterparts ipc::session::shm::classic::Session_server::app_shm_builder_config() and ipc::session::shm::arena_lend::jemalloc::Session_server::app_shm_builder_config() in case an individual `Session` is not easily accessible.
+
+Going outside the ipc::session paradigm is (as earlier forewarned) outside our scope here, but briefly we can explain that, if you go that way, you can explicitly construct the `Struct_builder::Config` -- actually concretely an `ipc::transport::struc::shm::Builder::Config<A>` (where `A` is SHM-provider-determined `Shm_arena` type, namely ipc::shm::classic::Pool_arena or ipc::shm::arena_lend::jemalloc::Ipc_arena.  The `Config` can, basically, take zeroes for the framing integers and, crucially, a pointer to the `Shm_arena` in which to allocate.  Details as to where to get that `Shm_arena` are well beyond our scope here; but if you're foregoing ipc::session, you presumably know what you're doing in the first place in this regard.
+
+The last, and considerably important, subject to discuss about SHM-backed `Msg_out`s is: Which channels can safely/properly transmit a given `Msg_out`, once it has been constructed and filled out via mutation?
+
+Let's take the session-scope `Msg_out`s, the simpler case, first.  The answer: regardless of what API was used to construct one, it can be sent over any `struc::Channel` upgraded-from a `Channel` opened via the same ipc::session::Session as the one SHM-backing the original `Msg_out`.  What `Session` is that?  Answer: If you used `.create_msg()`, then it's the one passed-in, by you, to `struc::Channel` constructor.  If you used explicit `struc::Msg_out` constructor, then the backing session is the one you used when calling `session.session_shm_builder_config()` to provide the required `Struct_builder::Config`.
+
+So the simplest use case is simply using `x.create_msg()` and then sending it (as many times as desired) via `x.send()` (et al); but instead of `x.send()` (et al) you can use various values instead of `x` -- as long as it's from the same session as `x`.  Also -- as channels are otherwise decoupled from their source sessions -- ensure the source session is still open.  (If you followed advice in @ref session_app_org, you will be good to go.  You would have ceased to use a channel upon learning of the closure of its source session; that is assuming you didn't yourself close them both in the first place.)
+
+If not using `x.create_msg()` but direct `Msg_out` construction, you're still fine: Just make sure you keep a clean design as to which session corresponds to what channel(s) and message(s).
+
+As to app-scope `Msg_out`s: On the session-client side, with SHM-jemalloc there are no app-scope `Msg_out`s, so it's a moot question.  On the session-client side, with SHM-classic, however, there are app-scope `Msg_out`s... but it is improper to let a `Msg_out` survive past the end of a given client-side session.  *However* resulting `Msg_in`s (on the opposing side, so the session-server side) will survive just fine -- until the entire `Session_server` is destroyed; which would occur only if one intends to end all relevant IPC work in the process.  The ability to make client-created messages survive past a given session is unique to SHM-classic over SHM-jemalloc.  (It is easy to conceive of this being useful in a server-side cache application.)
+
+App-scope `Msg_out`s on the session-server side can be transmitted over any channel from *any* session from the same `Session_server` -- of which, again, there shall be exactly 1 per process -- as long as the `Session_server` object has not been destroyed.
+
+The next page is: @ref transport_shm.
+
+---
+
+<center>**MANUAL NAVIGATION:** @ref chan_struct "Preceding Page" - @ref transport_shm "Next Page" - [**Table of Contents**](./pages.html)</center>
+
+*/

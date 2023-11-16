@@ -1,0 +1,151 @@
+/* Flow-IPC
+ * Copyright 2023 Akamai Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in
+ * compliance with the License.  You may obtain a copy
+ * of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in
+ * writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing
+ * permissions and limitations under the License. */
+
+/**
+
+@page safety_perms Safety and Permissions
+
+<center>**MANUAL NAVIGATION:** @ref session_app_org "Preceding Page" - @ref universes "Next Page" - [**Table of Contents**](./pages.html)</center>
+
+---
+
+This page is about the mechanics of resource ownership and permissions as (optionally) enforced by ipc::session and friends; as well as brief recommendations about approaches to this topic in production applications.  (Or go back to preceding page: @ref session_app_org.  @ref session_setup, particularly the parts about the ipc::session::App hierarchy, would also be a natural immediate pre-requisite for the current page.)
+
+About safety
+------------
+You might note that the word we use here is **safety**, not *security*.  Of course your semantic preferences may differ, but what we mean to convey is this:
+
+  - **Security** is about protection from malicious code, wherever it may live.  Flow-IPC deals with IPC, and IPC by definition occurs within one OS instance ("machine"), so the potential malicious code would *probably* be running within the same machine, possibly even within the same application/process being developed.
+  - **Safety** is about being generally safe with respect to one's data strucutures and code, so that (for example, and for example *only*):
+    - If application A wants to talk to application B, it is indeed talking to application B and not application C.
+      - In particular, if application A talks to B and C, and (say) SHared Memory is used all around, ideally the system should segregate vaddr (virtual address) areas in such a way as to make it impossible or at least unlikely that (due to an un-malicious user-code bug, maybe buffer overflow) data meant for B ends up being read by C.  (Customers might see that as *security*, but in our nomenclature it's about safety, since it's not an attack that caused the potential data breach but the vendor's own bug.)
+    - If application B goes down, gracefully or especially ungracefully, application A should be wary of accessing resources shared (e.g., in SHared Memory -- SHM) with application B, and ideally it would know about the problem as soon as physically possible so as to limit the scope of damage in the meantime.
+
+This page is in no way a rigorous overview on how to maintain safety or how Flow-IPC is developed with it in mind.  (There may be such a document elsewhere.)  We merely wanted to point out that the specific features/APIs we are about to explain are targeting *safety* as opposed to security.  (For example an auth token is used by ipc::session, but it is not intentionally designed to be cryptographically strong, nor can it be revoked.  As another example: Akamai-API internals assume the opposing process is using genuine Akamai-API internals as well; the sky is the limit for possible damage, if that is not the case.)
+
+The described are a best effort aimed at safety, and as you make decisions about how to apply these APIs to your application(s), do keep in mind the idea is to keep code and data safe(r) from chaos as opposed to protect from malicious/unauthorized code.  If the latter is your concern, you must take your own additional measures.
+
+Specific safety mechanisms
+--------------------------
+Again, our goal here is not to provide a rigorous overview of the Flow-IPC safety story, though such documents may exist elsewhere.  Here is a short compendium of potential items of interest.
+
+@anchor shm_safety
+### SHM; zero-copy ###
+
+---
+
+@par Shared memory: background and related topics
+Check these out (possibly before, after, or during perusing this section).
+  - [**shared-data scope**](./session_app_org.html#scope);
+  - @ref chan_struct_advanced "SHM-backed structured messages";
+  - @ref transport_shm "direct access to SHM".
+
+---
+
+Via ipc::session two types of shared memory (SHM) providers (**SHM-providers**) are supported out of the box.  To reiterate, if used -- no matter which you choose -- these are typically, at a minimum, automatically used as backing for ipc::transport::struc::Channel::Msg_out, the out-message quasi-container type (and the corresponding `Msg_in` type).  In addition one can place C++ structures, including ones involving arbitrary combinations of STL-compliant containers (and, if desired, allocator-aware pointers), into SHM.
+
+Firstly, one is not required to use SHM backing.  Simply use vanilla ipc::session::Session_server and ipc::session::Client_session as your top-level `Session_server_t` and `Client_session_t` aliases (see @ref session_setup snippets), instead of `ipc::session::shm::...`.  This will decrease performance (due to adding a copy on each side) for larger messages and put size limits on the resulting per-message serializations, plus certain algorithms relying on in-place modification become impossible without adding retransmission.  However it may be a reasonable trade-off depending.  In terms of safety the resulting RAM decoupling (i.e., avoiding shared-access memory) may be worth it in some cases.
+
+Secondly, if one does decide to use SHM backing (which we do encourage, all else being equal), a key safety-related decision is about which of the 2 available SHM-providers to use:
+  - **SHM-classic** (ipc::session::shm::classic); or
+  - **arena-lending SHM-jemalloc** (ipc::session::shm::arena_lend::jemalloc).
+
+Consider a simple-enough scenario in which applications Ap and Bp have an A-B session going, and each creates/transmits messages and/or manual C++ data structures in SHM-arenas accessible via their respective `session->session_shm()` accessors.  For now suppose process B never writes into data received from A (only reads) -- and vice versa.  Now suppose process B crashes terribly -- perhaps due to a buffer-overflow bug that (say) accidentally wrote into the typically-invisible data used by the memory-manager algorithm to track allocation state (free lists? object size? who knows).
+
+With SHM-classic: `session->session_shm()`, on either side, are both really referring to the *same* SHM arena (in fact, same pool as of this writing).  Process B never writes (in our stipulation above) to objects/messages received from A, but process B does its own allocations which *do* write to the same SHM-pool as one where A-written/allocated data do reside.  In fact (as we stipulated) the buffer-overflow bug wrote where it wasn't supposed to within `session->session_shm()` pool (from B's perspective)... but that's the same pool as A.  And when they allocate "their" respective objects, they're allocating from the same memory area, using a shared set of memory-manager control data (allocation state).  So, the bottom line is, A -- having detected B's ill health/death -- cannot safely continue operating on *its* data structures it has allocated or wants to allocate (or deallocate) subsequently.  B died, but A-"owned" data are no longer safe.
+
+The same is true of `session->app_shm()` ([app-scope](./session_app_org.html#scope) data).  If B ever allocates messages and/or obejcts in its `session->app_shm()` and then goes down ungracefully, A -- to remain safe-ish -- must drop *all* app-scope data thus affecting potentially all other sessions A has ongoing.  In fact, SHM-classic's operation involves B writing to the shared SHM-pool even if it, itself, *never* allocates out-messages or structures (i.e., is logically entirely read-only).  (Internally, when one `lend_object()`s an object from A to `borrow_object()`ing B, SHM-classic atomically-increments a hidden ref-count near the object.  ipc::transport::struc::Channel::send() and `*sync_request()` internally invoke these lend-borrow operations as well.)  So, even if B is logically read-only, an ungraceful death of B still involves *some* safety risk to A-owned data in SHM.
+
+Now consider SHM-jemalloc.  A's `session->session_shm()` is a SHM-arena maintained (internally) by A; B's `session->session_shm()` is a completely separate arena maintained by B.  B went down?  Though the user code that uses SHM-jemalloc can remain (almost) completely identical to SHM-classic alternative, once B is down: Data allocated and written by A, in its `session->session_shm()`, remain safe to use.
+
+Furthermore, again, consider data allocated and living in `session->app_shm()` (app-scope data).  With SHM-jemalloc, there *is* no `session->app_shm()` in B, so that's moot (see note just below on this and other such items).  However, lend-from-A operations do not involve writing anything by B or in B's arena(s), unlike with SHM-classic.  So nothing B can do via SHM can somehow poison `session->app_shm()` and thus poison other sessions connected to A, then or subsequently.
+
+Lastly, SHM-jemalloc (as of this writing, though this could be optionally changed in a subsequent version) simply disallows A to write in objects constructed by B and vice versa.  (See note just below.)  Naturally this reduces what algorithms can be used, albeit only with direct C++-object storing in SHM, not `struc::Channel` messages -- which as of this writing are always read-only on the receiving side in any case.  Receiver can't write to sender-created objects; mutexes cannot be stored in SHM (as locking/unlocking is a write).  This is a deficiency or lacking capability from one point of view, yes; but from the point of view of safety it can be seen as an advantage.  By limiting algorithms to that certain style, overall safety of the system goes up, as entropy goes down.
+
+---
+
+@anchor shm_safety_other_considerations
+@par Other aspects of SHM-classic versus SHM-jemalloc choice
+Safety is a major factor w/r/t which to choose, but it is not the *only* factor.  This is outside our scope here, but for convenience we restate: Spoiler alert: SHM-classic is fast/low-risk to set up and tear down (meaning, the logic executed during session/server opening and closing), lightning-fast in lend/borrow operations, easy to debug and understand, allows full symmetric read/write, and provides app-scope arena allocation on both sides (as opposed to only the session-server side).  SHM-jemalloc, in contrast, lacks those benefits but packs a *huge* benefit that arguably more than makes up for them: the use of commercial-grade *jemalloc `malloc()` memory manager* for heap management, at allocation (`Arena::construct<T>(...)`) and deallocation time.  (SHM-classic uses a [built-in algorithm](https://www.boost.org/doc/libs/1_82_0/doc/html/interprocess/memory_algorithms.html) by the Boost guys, or whatever replacement one can cook up to replace it.  Out of the box this lacks jemalloc perf-boosting goodies like mature fragmentation avoidance algorithms and thread caching: things we take for granted in conventional stack-and-heap-based memory use.  It may be absolutely fine for many applications, but it is no commerical-grade `malloc()`er.)
+
+---
+
+@par Message queues (MQs) in SHM
+ipc::transport provides the *MQ (message queue)* low-level transport mechanism, parameterized on ipc::transport::Persistent_mq_handle concept for which 2 impls are available out of the box.  One of them is ipc::transport::Bipc_mq_handle (in ipc::session enabled using the MQ-type `MqType::BIPC` in session-type template knob).  This is based on the boost.ipc [`message_queue` API](https://www.boost.org/doc/libs/1_82_0/doc/html/interprocess/synchronization_mechanisms.html#interprocess.synchronization_mechanisms.message_queue).  That API's impl, in turn, uses a SHM pool per MQ (in our case a channel, if configured to use MQs, uses 2 MQs, 1 for traffic in each direction).  (Formally speaking the documentation does not even mention it, but perusing its straightforward source code makes it clear.)  We mention this for completeness; whether you consider this a significant part of your SHM-safety story is your call.  Do note this is 100% orthogonal to SHM-classic and/or SHM-jemalloc use in the same application.  (That said, algorithmically, boost.ipc essentially maintains a SHM-classic arena per MQ.)
+
+---
+
+@par Mandatory cross-process garbage collection
+When speaking of safety, it should be noted that standard use of either SHM-provider, especially via ipc::session, and any likely SHM-provider(s) to be added over time, garbage-collection of constructed-in-SHM objects is essentially mandatory.  `Arena::construct<T>(...)` always returns `shared_ptr<T>`, and -- quite importantly -- regardless of SHM-provider, `borrow_object()` on the receiving side also returns `shared_ptr<T>`.  Critically, the object is destroyed when, and only when, *all* cross-process `shared_ptr` groups for a given object in SHM have reached ref-count=zero.  Hence, assuming normative use of `shared_ptr` (not doing `delete p.get()`, etc.), leaks and double-free should not exist.
+
+@par
+ipc::shm::stl::Stateless_allocator-backed STL-compliant structures (which, internally, includes `struc::Channel` messages) take care of any needed deallocation without the user worrying about it, so it does not break the aforementioned cross-process garbage collection.  (First-class -- outer -- SHM-handles are clever cross-process `shared_ptr`s.  Second-class -- inner -- SHM pointers are handled by bug-free STL-compliant code, such as boost.container containers and `flow::util::Basic_blob`.)
+
+@par
+It is only in the unlikely, and discouraged, case of storing explicit pointers in your C++ structures that the need to allocate/deallocate manually (without GC) might arise.  As long as you avoid writing such code, this risk will not arise.  However, one can do it more conscientiously by writing a custom allocator-compliant container.  (In fact `flow::util::Basic_blob` is exactly that, to give an example.)
+
+### Permissions; levels of permissions ###
+ipc::session and ipc::transport objects may require writing items into the file system; and those or other objects may need to read them there.  Hence when writing a new item into a directory permissions are set; and various APIs accordingly take ipc::util::Permissions arguments.  These *can* be specified directly in certain ipc::transport and ipc::shm APIs; for example some ipc::transport::Persistent_mq_handle and ipc::shm::classic::Pool_arena constructors.  (Directly would mean, for example, supplying an octal value such as 0644 to the `util::Permissions` constructor.)
+
+However we recommend against doing so on 2 levels.
+  - Firstly if using ipc::session to open ipc::transport channels and/or create ipc::shm arenas, then one never needs to invoke such low-level ipc::transport and/or ipc::shm constructors anyway; the `Channel` and/or `Arena` of the appropriate type will be constructed internally, and permissions will be set without your direct involvement along with other painful details like resource names (`Shared_name`s).
+  - Secondly, even if foregoing ipc::session and creating low-level objects directly, in practice most likely only certain specific permissions values are actually useful.  Therefore we have provided ipc::util::Permissions_level `enum` and ipc::util::shared_resource_permissions() that can be used as follows, e.g.: `const Permissions perms = shared_resource_permissions(Permissions_level::S_GROUP_ACCESS)`.
+
+All that aside, if using ipc::session as recommended, then you will need to worry about exactly one setting per session-server application, when [configuring the IPC universe](./session_setup.html#universe_desc): ipc::session::Server_app::m_permissions_level_for_client_apps.  In that Manual page we specified ipc::util::Permissions_level::S_USER_ACCESS and directed you to the present page for more discussion and more robust setups.  So, welcome.
+
+---
+
+@par Kernel-persistent runtime directory (/var/run)
+Flow-IPC's ipc::session places some important non-temporary files into /var/run (in Linux); most notably PID files written by session-server applications and read by others.  This is a sensible default in a production server environment.  However it usually requires admin privilege on the session-server's part and thus may fail due to a permissions error (which is why we mention it in this Manual page).  For test/debug purposes, and possibly other purposes, it may be useful to place these files in another location; for example the author uses $HOME/tmp/var/run (where $HOME is the user's home directory a/k/a ~).
+
+@par
+To do so, when [defining the `Server_app`](./session_setup.html#universe_desc), set ipc::session::Server_app::m_kernel_persistent_run_dir_override to the absolute path.  If not set the default (/var/run in Linux) shall be used.  To be clear, shell things like literally "$HOME" or "~" may not be used inside this data member.
+
+---
+
+Let us now delve into the possible values for the aforementioned `Server_app::m_permissions_level_for_client_apps` setting and their implications for safety.  `Permissions_level::S_NO_ACCESS` is essentially for test/debug scenarios only, so we won't talk about it.
+
+### Permissions level: UNRESTRICTED ###
+This is the least safe setting for `m_permissions_level_for_client_apps`.  ipc::util::Permissions_level::S_UNRESTRICTED will ensure that the relevant resources will never fail to be accessed by the relevant processes due to a permissions error.  (Internally, producer-consumer items like PID files shall be 0644; while symmetrically accessed items like SHM pools and MQs shall be 0666.)
+
+We would recommend against this in most production server setups.  However, it is at least useful in initial development and possibly test/debug scenarios.
+
+### Permissions level: USER_ACCESS ###
+This is, in our view, one of the two viable settings for `m_permissions_level_for_client_apps` in production; the other one being GROUP_ACCESS.  ipc::util::Permissions_level::S_USER_ACCESS means access to a resource may fail if the accessing application is running as a different **user** than the writing application, even if they are in the same **group**.  (Internally items shall have permissions mode 0600.)
+
+Despite implying *more* restrictive permissions values, ironically to be usable in practice it will require a *less* fine-grained (safety-wise) user/group setup in your production server.  That is, both applications in a split will need to be running as the *same user* (same UID and GID).
+
+To summarize, you can set `m_permissions_level_for_client_apps = Permissions_level::S_USER_ACCESS` and then run the 2+ split-connected applications all as the same user (UID and GID).
+
+This might be okay depending on your or your organization's philosophy on these matters.  However, and particularly in IPC universes with 3 or more applications, you may opt for GROUP_ACCESS instead (which is what we would recommend for maximum fine-grainedness safety-wise):
+
+### Permissions level: GROUP_ACCESS ###
+ipc::util::Permissions_level::S_GROUP_ACCESS means access to a resource may fail if the accessing application is running as a different **group** than the writing application, but it will work if they're in the same group but are running as different users.  (Internally, producer-consumer items like PID files shall be 0640; while symmetrically accessed items like SHM pools and MQs shall be 0660.)
+
+With this setting, you may still run both applications as the same user (equal UID/GIDs); but you may now split up the owner user as follows:
+  - Same group (GID) for both applications.
+  - Different user (UID) for the 2 applications.
+
+To summarize, you can set `m_permissions_level_for_client_apps = Permissions_level::S_GROUP_ACCESS` and then run the 2+ split-connected applications in the same group (same GID) but as distinct users (differing UIDs).
+
+The next page is: @ref universes.
+
+---
+
+<center>**MANUAL NAVIGATION:** @ref session_app_org "Preceding Page" - @ref universes "Next Page" - [**Table of Contents**](./pages.html)</center>
+
+*/
