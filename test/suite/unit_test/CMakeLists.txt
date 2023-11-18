@@ -34,6 +34,22 @@ block()
   endif()
   message("CMake uber-searcher find_library() located Google unit-test gtest lib (see below); "
             "though you can override this via cache setting.")
+
+  # Search for its include-root.
+  find_path(GTEST_INCLUDE_DIR NAMES gtest/gtest.h)
+  if(NOT GTEST_INCLUDE_DIR)
+    message(FATAL_ERROR
+              "Could not find Google unit-test gtest/*.h include-path via CMake uber-searcher "
+              "find_path(gtest/gtest.h).  Do not fret: Please build gtest if not yet done and try again; "
+              "if it is still not found then please supply the full path to gtest/gtest.h (excluding the "
+              "directory and file themselves) as the CMake knob (cache setting) GTEST_INCLUDE_DIR.")
+  endif()
+
+  # Note: These days Google's unit-test framework, at least when built with CMake, exports
+  # the stuff needed to just do find_package(GTest).  We could use that above, as we do for Cap'n Proto
+  # and others.  However I (ygoldfel) have it on good authority that people build the notoriously easy-to-build
+  # GTest in a myriad ways, and this find_package() support may not be produced.  So we go with the
+  # naughty more-manual way above.
 endblock()
 
 message("Google unit-test gtest lib location: [${GTEST_LIB}].")
@@ -84,6 +100,7 @@ function(handle_binary name) # Load SRCS and CAPNP_SCHEMAS before calling.
   # Test header files are *not* exported for user to include; rather they exist only to be cross-included by
   # each other (namely the support files are).  For that to work add the source dir(s) into the include-path.
   target_include_directories(${name} PRIVATE
+                             ${GTEST_INCLUDE_DIR}
                              ${IPC_META_ROOT_ipc_core}/src
                              ${IPC_META_ROOT_ipc_transport_structured}/src
                              ${IPC_META_ROOT_ipc_session}/src
