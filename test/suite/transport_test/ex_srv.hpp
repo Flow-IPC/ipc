@@ -369,35 +369,52 @@ void CLASS::server_accept_loop()
         const unsigned int idx = m_app_sessions.size();
         m_app_sessions.emplace_back(make_uptr<App_session>(this, idx, [this, idx]()
         {
-          // Already in our thread W....
-          FLOW_LOG_INFO("App_session in slot [" << idx << "] reports it's done-for.  Deleting object from outside "
-                        "its own code.");
-          ASSERT(m_app_sessions[idx]);
-          m_app_sessions[idx].reset();
-          ASSERT(!m_app_sessions[idx]);
-
-          /* This is completely contrived, but we happen to stop after 2 sessions (1st one tests most stuff; 2nd one
-           * test the rest -- including reusing some ASSERTs intentionally reused from the 1st one). */
-          if (m_app_sessions.size() != 2)
+          /* Already in our thread W....  However, this code is being invoked as (App_session::m_i_am_done_func)(),
+           * and our plan is to delete that App_session -- along with m_i_am_done_func.  At least clang's
+           * ASAN (-fsanitize=address) complains/aborts just past the .reset() call causing that deletion.
+           * However if we post() the deletion (and everything else following it) onto thread W as a separate task,
+           * then m_i_am_done_func can be safely deleted along with its containing App_session (its *this).
+           *
+           * @todo In general this code (*waves at Ex_srv and Ex_cli*) is way too insane.  I (ygoldfel) tend to be
+           * very deliberate and careful in production code itself but then get lax with test code; I really shouldn't
+           * do that, at least not to this extent.  More specifically, all this code should be following most
+           * best practices from (my own) guided Manual for Flow-IPC, regarding setup and teardown of sessions and
+           * how to organize one's code nicely.  There's a whole manual page on this topic (to be fair, I wrote it
+           * after this code). */
+          post([this, idx]()
           {
-            return;
-          }
-          // else
+            FLOW_LOG_INFO("App_session in slot [" << idx << "] reports it's done-for.  Deleting object from outside "
+                          "its own code.");
 
-          FLOW_LOG_INFO("App_session in slot [" << idx << "] is the last expected one.  Ensuring all sessions, not "
-                        "just this one, are done-for; if not it's a FAIL; if so then we quit nicely.");
+            ASSERT(m_app_sessions[idx]);
 
-          if (!std::all_of(m_app_sessions.begin(), m_app_sessions.end(),
-                           [](const auto& app_session) { return !app_session; }))
-          {
-            FLOW_LOG_WARNING("One of the sessions is still alive (unexpected).  FAIL.");
-            ASSERT(false);
-            return;
-          }
-          // else
+            m_app_sessions[idx].reset();
 
-          FLOW_LOG_INFO("That's the last App_session to have been deleted.  Quitting.");
-          done_and_done(true);
+            ASSERT(!m_app_sessions[idx]);
+
+            /* This is completely contrived, but we happen to stop after 2 sessions (1st one tests most stuff; 2nd one
+             * test the rest -- including reusing some ASSERTs intentionally reused from the 1st one). */
+            if (m_app_sessions.size() != 2)
+            {
+              return;
+            }
+            // else
+
+            FLOW_LOG_INFO("App_session in slot [" << idx << "] is the last expected one.  Ensuring all sessions, not "
+                          "just this one, are done-for; if not it's a FAIL; if so then we quit nicely.");
+
+            if (!std::all_of(m_app_sessions.begin(), m_app_sessions.end(),
+                             [](const auto& app_session) { return !app_session; }))
+            {
+              FLOW_LOG_WARNING("One of the sessions is still alive (unexpected).  FAIL.");
+              ASSERT(false);
+              return;
+            }
+            // else
+
+            FLOW_LOG_INFO("That's the last App_session to have been deleted.  Quitting.");
+            done_and_done(true);
+          }); // post()
         })); // App_session::ctor() i_am_done_func() body
       } // else if (app.m_name == S_CLI_NAME)
 
@@ -1278,13 +1295,15 @@ void CLASS::App_session::use_channels_round_2a()
 
     FLOW_LOG_INFO("Opened.");
 
-    boost::array<uint8_t, 8192> dummy;
-    Native_handle dummy2;
-      FLOW_LOG_INFO("Channel Y [" << *y << "]: Should be dead due to no auto-pings once idle-timeout period passes.  "
-                    "Trying async-receive (for each channel pipe); expecting idle-timeout error in a few seconds.");
+    using Dummy = boost::array<uint8_t, 8192>;
+    Sptr<Dummy> dummy(new Dummy);
+    Sptr<Native_handle> dummy2(new Native_handle);
+
+    FLOW_LOG_INFO("Channel Y [" << *y << "]: Should be dead due to no auto-pings once idle-timeout period passes.  "
+                  "Trying async-receive (for each channel pipe); expecting idle-timeout error in a few seconds.");
     const auto started_at = flow::Fine_clock::now();
-    y->async_receive_blob(util::Blob_mutable(&dummy, sizeof(dummy)),
-                          [this, y, TIMEOUT, started_at]
+    y->async_receive_blob(util::Blob_mutable(dummy.get(), sizeof(Dummy)),
+                          [this, y, dummy, TIMEOUT, started_at]
                             (const Error_code& err_code, size_t) mutable
     {
       /* Mark it now; we might be doing horrible SHM-related blocking computations (filling/checking giant structured)
@@ -1301,8 +1320,8 @@ void CLASS::App_session::use_channels_round_2a()
         ping_b(S_RESERVED_CHAN_IDX);
       }); // post()
     }); // y->async_receive_blob()
-    y->async_receive_native_handle(&dummy2, util::Blob_mutable(&dummy, sizeof(dummy)),
-                                   [this, y, TIMEOUT, started_at]
+    y->async_receive_native_handle(dummy2.get(), util::Blob_mutable(dummy.get(), sizeof(Dummy)),
+                                   [this, y, dummy, dummy2, TIMEOUT, started_at]
                                      (const Error_code& err_code, size_t) mutable
     {
       // Mark it now (see above cmnt).
@@ -1321,8 +1340,8 @@ void CLASS::App_session::use_channels_round_2a()
 
     FLOW_LOG_INFO("Channel X [" << *x << "]: Should stay alive due to auto-pings.  Trying async-receive x 2, waiting "
                   "a bit (then deleting channel; async-receive should yield operation-aborted at that time).");
-    x->async_receive_blob(util::Blob_mutable(&dummy, sizeof(dummy)),
-                                             [this, TIMEOUT, started_at]
+    x->async_receive_blob(util::Blob_mutable(dummy.get(), sizeof(Dummy)),
+                                             [this, dummy, TIMEOUT, started_at]
                                                (const Error_code& err_code, size_t) mutable
     {
       // Mark it now (see above cmnt).
@@ -1338,8 +1357,8 @@ void CLASS::App_session::use_channels_round_2a()
         ping_b(S_RESERVED_CHAN_IDX);
       }); // post()
     }); // x->async_receive_blob()
-    x->async_receive_native_handle(&dummy2, util::Blob_mutable(&dummy, sizeof(dummy)),
-                                   [this, TIMEOUT, started_at]
+    x->async_receive_native_handle(dummy2.get(), util::Blob_mutable(dummy.get(), sizeof(Dummy)),
+                                   [this, dummy, dummy2, TIMEOUT, started_at]
                                      (const Error_code& err_code, size_t) mutable
     {
       // Mark it now (see above cmnt).
