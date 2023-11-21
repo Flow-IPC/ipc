@@ -40,8 +40,8 @@ private:
   flow::log::Logger* get_logger() const;
   const flow::log::Component& get_log_component() const;
 
-  std::unique_ptr<flow::log::Logger> m_console_logger; // Null until top of main().
-  std::unique_ptr<flow::log::Config> m_console_logger_cfg; // Ditto.
+  std::unique_ptr<flow::log::Config> m_console_logger_cfg; // Null until top of main().
+  std::unique_ptr<flow::log::Logger> m_console_logger; // Ditto.
   const flow::log::Component m_log_component;
 }; // class Driver
 
@@ -90,8 +90,8 @@ int Driver::main(int argc, char const * const * argv)
   }
 
   // Set up Flow-IPC logging (to file) / get the test mode.
-  unique_ptr<log::Async_file_logger> ipc_logger;
   unique_ptr<log::Config> ipc_logger_cfg;
+  unique_ptr<log::Async_file_logger> ipc_logger;
 
   const auto quit = [&]() -> int
   {
