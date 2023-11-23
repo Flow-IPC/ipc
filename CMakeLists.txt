@@ -77,24 +77,26 @@ foreach(ipc_meta_project ${IPC_META_PROJECTS})
   endblock()
 endforeach()
 
-if(CFG_ENABLE_TEST_SUITE)
-  # We're about to add_subdirectory(test/suite), wherein there shall be much building too.
-  # First a subtlety though: in the above kids we build various C++ and capnp things in a uniform way;
-  # and that way is ensured by each kid on their own.  However since they're kids, in CMake that means we don't
-  # inherit most things.  (E.g., the C++17 setting will not apply to us.)  To solve this just load the same
-  # thingie the kids use to set up the environment.  However set this flag to prevent it from actually going
-  # on to build our src/ and test/, etc.  We'll take care of that ourselves.
-  set(FLOW_LIKE_PROJECT_ROOT_ENV_ONLY TRUE)
-  include("${IPC_META_ROOT_flow}/tools/cmake/FlowLikeProjectRoot.cmake")
+if(NOT CFG_SKIP_CODE_GEN)
+  if(CFG_ENABLE_TEST_SUITE)
+    # We're about to add_subdirectory(test/suite), wherein there shall be much building too.
+    # First a subtlety though: in the above kids we build various C++ and capnp things in a uniform way;
+    # and that way is ensured by each kid on their own.  However since they're kids, in CMake that means we don't
+    # inherit most things.  (E.g., the C++17 setting will not apply to us.)  To solve this just load the same
+    # thingie the kids use to set up the environment.  However set this flag to prevent it from actually going
+    # on to build our src/ and test/, etc.  We'll take care of that ourselves.
+    set(FLOW_LIKE_PROJECT_ROOT_ENV_ONLY TRUE)
+    include("${IPC_META_ROOT_flow}/tools/cmake/FlowLikeProjectRoot.cmake")
 
-  message("This meta-project has a test/suite/ dir; and CFG_ENABLE_TEST_SUITE=ON enabled building/installing "
-          "its contents (in addition to any such tests in the individual sub-projects).  "
-          "This increases build time but allows serious testing of this meta-project as a whole.")
-  add_subdirectory(test/suite)
-else()
-  message("This project has a test/suite/ dir; but CFG_ENABLE_TEST_SUITE=OFF disabled building/installing its contents "
-          "(as well as any such tests in the individual sub-projects).  "
-          "This decreases build time; but the orthogonal CFG_SKIP_BASIC_TESTS=ON can still ensure the basics are okay.")
+    message("This meta-project has a test/suite/ dir; and CFG_ENABLE_TEST_SUITE=ON enabled building/installing "
+            "its contents (in addition to any such tests in the individual sub-projects).  "
+            "This increases build time but allows serious testing of this meta-project as a whole.")
+    add_subdirectory(test/suite)
+  else()
+    message("This project has a test/suite/ dir; but CFG_ENABLE_TEST_SUITE=OFF disabled building/installing its contents "
+            "(as well as any such tests in the individual sub-projects).  "
+            "This decreases build time; but the orthogonal CFG_SKIP_BASIC_TESTS=ON can still ensure the basics are okay.")
+  endif()
 endif()
 
 # See this guy; it'll explain inside.  It mandates the following procedure and documents details.
