@@ -15,10 +15,14 @@
 # See the License for the specific language governing
 # permissions and limitations under the License.
 
-cmake_minimum_required(VERSION 3.26.3) # See FlowLikeProjectRoot.cmake for details.
+cmake_minimum_required(VERSION 3.26.3) # See FlowLikeCodeGenerate.cmake for details.
 # See that guy; it'll explain inside.  It mandates the following procedure and documents details.
 
 set(PROJ "ipc")
+
+message(CHECK_START "(Project [${PROJ}] root CMake script executing.)")
+list(APPEND CMAKE_MESSAGE_INDENT "- ")
+
 set(PROJ_CAMEL "Ipc")
 set(PROJ_VERSION "1.0")
 set(PROJ_HUMAN "Flow-IPC")
@@ -31,6 +35,34 @@ project(${PROJ_CAMEL} VERSION ${PROJ_VERSION} LANGUAGES CXX)
 # (Whereas otherwise each kid is on its own and assumes the all its dependencies have had `make` and `make install`
 # done, and the exported stuff is somewhere the `make` will know to search.)
 set(IPC_META_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+
+# The following might be a little tough to realize if looking through multiple layers of CMake scripts, so
+# for your convenience let's summarize how we do the whole thing.
+#   - For each project X of the sub-projects (listed just below in $IPC_META_PROJECTS), in dependency order:
+#     - Run its X/CMakeLists.txt.  It will:
+#       - include(FlowLikeCodeGenerate).  This makes code generation targets (unless turned off via a particular CFG_):
+#         - Build library (from its X/src/CMakeLists.txt).
+#         - Build tests (from its X/test/{basic|suite}/CMakeLists.txt); can be enabled/disabled via CFG_ x 2.
+#       - include(FlowLikeDocGenerate).  This makes doc generation targets (unless turned off via a particular CFG_):
+#         - (As of this writing only X = `flow` has its own documentation.  The rest of the docs are monolithic;
+#           see a few lines down.  So only `flow` does that; the rest do not include(FlowLikeDocGenerate).
+#   - For our own project, which of course depends on ~all of the above: We are already in our CMakeLists.txt;
+#     you are reading it.  So after the above add_subdirectory() x (# of $IPC_META_PROJECTS), we do:
+#       - include(FlowLikeCodeGenerate).  Same as for each guy above.
+#         - Build tests (from its X/test/{basic|suite}/CMakeLists.txt); can be enabled/disabled via CFG_ x 2.
+#         - (As of this writing no library to build; though it'd be easy to add it if it made sense.)
+#       - include(FlowLikeDocGenerate).  Same as for each guy above.
+#         - (This is where we generate the targets for monolithic documentation for all of ipc_* together.
+#
+# Thus, assuming *nix, after going through each bullet above in order, the following is possible:
+#   - `make`: Makes all the libraries and all the tests (modulo CFG_* enabling/disabling parts).
+#   - `make flow_doc_full flow_doc_public`: Makes `flow` docs.
+#   - `make ipc_doc_full ipc_doc_public`: Makes `ipc_*` monolithic docs.
+#   - `make install`: Exports the results of `make` (code, not docs) into $CMAKE_INSTALL_PREFIX/{lib|bin|include|...}.
+#   - There are also a couple of trivial and boring scripts named stage_generated_docs.sh which will package up
+#     the flow and ipc docs into 2 tarballs suitable for HTTP(S) hosting; and place them in a certain location nearby.
+#
+# So now let's do the bullet points listed above.  First, the sub-projects.
 
 # Load these guys in dependency order (each guy precedes the guy that needs it, matching the required-dependency
 # statements present in each guy's own project()y CMakeLists.txt).  Normally we'd just add_subdirectory() each
@@ -45,59 +77,62 @@ set(IPC_META_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 #     setting.  (No known use case truly requires this; a symlink should be possible to set up; but the
 #     CMake-yness of it feels compelling.)
 # So we do both.
-
-# In dependency order.
+#
+# Now, in dependency order:
 set(IPC_META_PROJECTS flow ipc_core ipc_transport_structured ipc_session ipc_shm ipc_shm_arena_lend)
+
 foreach(ipc_meta_project ${IPC_META_PROJECTS})
   block()
+    message(CHECK_START "(Determining absolute/un-symlinked path for sub-project [${ipc_meta_project}].)")
+    list(APPEND CMAKE_MESSAGE_INDENT "- ")
+
     # Regardless of anything try to resolve ./${ipc_meta_project} (whether it's simply a dir or a symlink).
     set(ipc_meta_project_dir ${CMAKE_CURRENT_SOURCE_DIR}/${ipc_meta_project})
     if(EXISTS ${ipc_meta_project_dir})
       file(REAL_PATH ${ipc_meta_project_dir} ipc_meta_project_dir)
-      message("[./${ipc_meta_project}] exists; resolves to absolute un-symlinked path [${ipc_meta_project_dir}].  "
-              "You may override it via cache setting.")
+      message(VERBOSE "[./${ipc_meta_project}] exists => [${ipc_meta_project_dir}].  "
+                        "You may override it via cache setting.")
     else()
-      message("[./${ipc_meta_project}] = [${ipc_meta_project_dir}] does not exist (as a dir or symlink); "
-              "will need to be supplied via cache setting.")
+      message(VERBOSE "[./${ipc_meta_project}] = [${ipc_meta_project_dir}] does not exist (as a dir or symlink); "
+                        "will need to be supplied via cache setting.")
       set(ipc_meta_project_dir "<unknown>")
     endif()
+
     set(IPC_META_ROOT_${ipc_meta_project} ${ipc_meta_project_dir} CACHE STRING
         "Location of sub-project [${ipc_meta_project}]; defaults to resolved [./${ipc_meta_project}] if exists.")
-    message("After considering [./${ipc_meta_project}] and cache setting IPC_META_ROOT_${ipc_meta_project} "
-            "determined ultimate location [${IPC_META_ROOT_${ipc_meta_project}}].")
+
     if(NOT (EXISTS ${IPC_META_ROOT_${ipc_meta_project}}))
-      message(FATAL_ERROR "Unable to determine IPC_META_ROOT_${ipc_meta_project}; either symlink "
-                          "[./${ipc_meta_project}], place sub-project there directly, or set "
-                          "cache setting explicitly.  You may need to now clear cache (or blow away build) "
-                          "for the symlink or direct-placement methods to work.")
+      message(FATAL_ERROR "[${IPC_META_ROOT_${ipc_meta_project}}] does not exist.  Therefore: "
+                            "Unable to determine IPC_META_ROOT_${ipc_meta_project}; either symlink "
+                            "[./${ipc_meta_project}], place sub-project there directly, or set "
+                            "cache setting explicitly.  You may need to now clear cache (or blow away build) "
+                            "for the symlink or direct-placement methods to work.")
     endif()
 
-    # Finally!  Note in the build output the name is normalized to simply ${ipc_meta_project} (e.g., "flow").
-    add_subdirectory(${IPC_META_ROOT_${ipc_meta_project}} ${ipc_meta_project})
+    list(POP_BACK CMAKE_MESSAGE_INDENT)
+    message(CHECK_PASS "(Path = [${IPC_META_ROOT_${ipc_meta_project}}]; it exists.)")
   endblock()
 endforeach()
 
-if(NOT CFG_SKIP_CODE_GEN)
-  if(CFG_ENABLE_TEST_SUITE)
-    # We're about to add_subdirectory(test/suite), wherein there shall be much building too.
-    # First a subtlety though: in the above kids we build various C++ and capnp things in a uniform way;
-    # and that way is ensured by each kid on their own.  However since they're kids, in CMake that means we don't
-    # inherit most things.  (E.g., the C++17 setting will not apply to us.)  To solve this just load the same
-    # thingie the kids use to set up the environment.  However set this flag to prevent it from actually going
-    # on to build our src/ and test/, etc.  We'll take care of that ourselves.
-    set(FLOW_LIKE_PROJECT_ROOT_ENV_ONLY TRUE)
-    include("${IPC_META_ROOT_flow}/tools/cmake/FlowLikeProjectRoot.cmake")
+# Got through that; now actually do the add_subdirectory()s.  Output/error handling is crisper this way than doing
+# add_subdirectory() within the above loop.
+foreach(ipc_meta_project ${IPC_META_PROJECTS})
+  # Finally!  Note in the build output the name is normalized to simply ${ipc_meta_project} (e.g., "flow").
+  add_subdirectory(${IPC_META_ROOT_${ipc_meta_project}} ${ipc_meta_project})
+endforeach()
 
-    message("This meta-project has a test/suite/ dir; and CFG_ENABLE_TEST_SUITE=ON enabled building/installing "
-            "its contents (in addition to any such tests in the individual sub-projects).  "
-            "This increases build time but allows serious testing of this meta-project as a whole.")
-    add_subdirectory(test/suite)
-  else()
-    message("This project has a test/suite/ dir; but CFG_ENABLE_TEST_SUITE=OFF disabled building/installing its contents "
-            "(as well as any such tests in the individual sub-projects).  "
-            "This decreases build time; but the orthogonal CFG_SKIP_BASIC_TESTS=ON can still ensure the basics are okay.")
-  endif()
-endif()
+# Going back to the summary comment, we're now done with the sub-projects' code generation and, where applicable,
+# per-project doc generation.  Now finish up by doing our own stuff.
+
+# The code generation, as noted, as of this writing = tests.  (Conceivably, if we had src/ stuff to build, then
+# that would also get built just as for each of the IPC_META_PROJECTs.  We'd still just need the following line;
+# no changes.)
+
+include("${IPC_META_ROOT_flow}/tools/cmake/FlowLikeCodeGenerate.cmake")
+
+# As noted in the summary FlowLikeCodeGenerate.cmake does not do doc generation.
+# FlowLikeDocGenerate.cmake does that; and it's up to each project root CMake script to include() it.
+# So let's do it, much like flow/CMakeLists.txt (which handles its own docs) does.
 
 # See this guy; it'll explain inside.  It mandates the following procedure and documents details.
 set(DOC_GEN_CMAKE_SCRIPT "${IPC_META_ROOT_flow}/tools/cmake/FlowLikeDocGenerate.cmake")
@@ -121,15 +156,8 @@ set(DOC_INPUT
 # at large; I just have not gone over it and polished and eliminated Doxy-warnings and what-not.  echan may have
 # partially; anyway it'll be done soon.
 # TODO: That.
-foreach(doc_input ${DOC_INPUT})
-  if(${doc_input} MATCHES ".*/test/.*")
-    message(FATAL_ERROR "A Doxygen peculiarity combined with our desire to skip doc-generating from */test/* "
-                          "files sadly means your source locations like [${doc_input}] may not contain */test/* "
-                          "anywhere in the path prefix... please rename those.  Sorry.")
-  endif()
-endforeach()
 set(DOC_EXCLUDE_PATTERNS
-    */test/* */ipc/session/standalone/shm/arena_lend/* */ipc/shm/arena_lend/*)
+    */ipc/session/standalone/shm/arena_lend/* */ipc/shm/arena_lend/*)
 
 # Lastly the guided Manual has some images which live here.
 set(DOC_IMAGE_PATH src/doc/manual/assets/img)
@@ -140,3 +168,6 @@ include(${DOC_GEN_CMAKE_SCRIPT})
 # By doing add_subdirectory(flow) we added the `make` (or equivalent) targets flow_doc_*.
 # By doing the stuff immediately above we added the targets ipc_doc_*.
 # Yay!
+
+list(POP_BACK CMAKE_MESSAGE_INDENT)
+message(CHECK_PASS "(Done, success.)")
