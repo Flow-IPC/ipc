@@ -41,8 +41,6 @@ target_include_directories(${NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 # Do stuff we've resolved to do on all our targets.
 common_set_target_properties(${NAME})
 
-target_compile_options(${NAME} PRIVATE ${WARN_FLAGS})
-
 # Link good ol' libipc_shm_arena_lend.
 target_link_libraries(${NAME} PRIVATE ipc_shm_arena_lend)
 

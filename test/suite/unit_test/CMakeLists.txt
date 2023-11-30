@@ -32,8 +32,8 @@ block()
               "if it is still not found then please supply the full path to the library file (including "
               "the file itself) as the CMake knob (cache setting) GTEST_LIB.")
   endif()
-  message("CMake uber-searcher find_library() located Google unit-test gtest lib (see below); "
-            "though you can override this via cache setting.")
+  message(VERBOSE "CMake uber-searcher find_library() located Google unit-test gtest lib (see below); "
+                    "though you can override this via cache setting.")
 
   # Search for its include-root.
   find_path(GTEST_INCLUDE_DIR NAMES gtest/gtest.h)
@@ -52,7 +52,7 @@ block()
   # naughty more-manual way above.
 endblock()
 
-message("Google unit-test gtest lib location: [${GTEST_LIB}].")
+message(STATUS "Google unit-test gtest lib location: [${GTEST_LIB}].")
 
 # This test requires some little silly capnp schemas.
 find_package(CapnProto CONFIG REQUIRED)
@@ -111,8 +111,6 @@ function(handle_binary name) # Load SRCS and CAPNP_SCHEMAS before calling.
 
   # Do stuff we've resolved to do on all our targets.
   common_set_target_properties(${name})
-
-  target_compile_options(${name} PRIVATE ${WARN_FLAGS})
 
   # Link good ol' libipc_shm_arena_lend; and gtest.
   target_link_libraries(${name} PRIVATE ipc_shm_arena_lend ${GTEST_LIB})
