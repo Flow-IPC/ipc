@@ -146,21 +146,21 @@ jobs:
 
     - name: Run session link test
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin/
+        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
         ./ipc_session_link_test_srv.exec & 
         sleep 1
         ./ipc_session_link_test_cli.exec
 
     - name: Run shared memory link test
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin/
+        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
         ./ipc_shm_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_link_test_cli.exec
         
     - name: Run SHM-jemalloc link test
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin/
+        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_arena_lend_link_test_cli.exec
