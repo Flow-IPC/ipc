@@ -1,7 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import cmake_layout, CMakeDeps
 
-class IpcConanFile(ConanFile):
+class IpcRecipe(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = (
         "CMakeToolchain"
