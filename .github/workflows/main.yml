@@ -172,15 +172,13 @@ jobs:
         tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
         tools.env.virtualenv:auto_use = True 
   
-        [options]
-        jemalloc:enable_cxx = False 
-        jemalloc:prefix = je_
-  
         [buildenv]
         CC = ${{ matrix.compiler.c-path }}
         CXX = ${{ matrix.compiler.cpp-path }}
 
         [options]
+        jemalloc:enable_cxx = False 
+        jemalloc:prefix = je_
         ipc:build = True
         ipc:doc = False
         flow:build = True
