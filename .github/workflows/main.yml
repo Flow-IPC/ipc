@@ -117,14 +117,14 @@ jobs:
 
     - name: Build targets like unit tests with makefile
       run: |
-        make \
+        VERBOSE=1 make \
           --keep-going \
           --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
           -j${{ steps.cpu-cores.outputs.count }}
 
     - name: Install targets with makefile
       run: |
-        make install \
+        VERBOSE=1 make install \
           --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
           -j${{ steps.cpu-cores.outputs.count }}
             
@@ -166,7 +166,7 @@ jobs:
 
     - name: Create doxygen documentation with makefile
       run: |
-        make \
+        VERBOSE=1 make \
           --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
           -j${{ steps.cpu-cores.outputs.count }} \
           ipc_doc_public \
