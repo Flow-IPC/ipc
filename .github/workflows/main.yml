@@ -9,7 +9,99 @@ on:
       - main
   
 jobs:
-  ipc_pipeline:
+    ipc_pipeline:
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+          - { id: clang-15, name: clang, version: 15, c-path: /usr/bin/clang-15, cpp-path: /usr/bin/clang++-15 }
+        build-type:
+          - { id: debug, conan-name: Debug, conan-jemalloc: Debug, conan-preset: debug }
+
+    runs-on: ubuntu-latest
+        
+    name: |
+      doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+      
+    steps: 
+    - name: Update available software list for apt-get
+      run: sudo apt-get update
+      
+    - name: Checkout IPC repository and submodules like flow
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Install IPC dependencies with apt-get
+      run: |
+        sudo apt-get install -y graphviz
+
+    - name: Install conan
+      run: |
+        pip install "conan<2"
+    
+    - name: Create conan profile
+      run: |
+        cat <<EOF > conan_profile   
+        [settings]
+        compiler = ${{ matrix.compiler.name }}
+        compiler.version = ${{ matrix.compiler.version }}
+        compiler.cppstd = 17
+        compiler.libcxx = libstdc++11
+        arch = x86_64
+        os = Linux
+        build_type = ${{ matrix.build-type.conan-name }}
+        jemalloc:build_type = ${{ matrix.build-type.conan-jemalloc }}
+          
+        [conf]
+        tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
+        tools.env.virtualenv:auto_use = True 
+  
+        [buildenv]
+        CC = ${{ matrix.compiler.c-path }}
+        CXX = ${{ matrix.compiler.cpp-path }}
+
+        [options]
+        ipc:build = False
+        ipc:doc = True
+        EOF
+    
+    - name: Install IPC dependencies with conan using the profile
+      run: |
+        conan install \
+          . \
+          --profile:build=conan_profile \
+          --profile:host=conan_profile \
+          --build=missing
+
+    - name: Prepare makefile
+      run: |
+        cmake \
+          --preset ${{ matrix.build-type.conan-preset }} \
+          -DCFG_ENABLE_DOC_GEN=ON \
+          -DCFG_SKIP_CODE_GEN=ON
+
+    - name: Get the number of CPU cores for parallelization like the build process
+      uses: SimenB/github-actions-cpu-cores@v1
+      id: cpu-cores
+
+    - name: Create doxygen documentation with makefile
+      run: |
+        VERBOSE=1 make \
+          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
+          -j${{ steps.cpu-cores.outputs.count }} \
+          ipc_doc_public \
+          ipc_doc_full
+
+    - name: Upload doxygen documentation
+      uses: actions/upload-artifact@v3
+      with:
+        name: doxygen-doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+        path: |
+          ${{ github.workspace }}/build/${{ matrix.build-type.conan-name }}/html_ipc_doc_public/**/* 
+          ${{ github.workspace }}/build/${{ matrix.build-type.conan-name }}/html_ipc_doc_full/**/* 
+
+  build:
     strategy:
       fail-fast: false
       matrix:
@@ -31,7 +123,7 @@ jobs:
     runs-on: ubuntu-latest
         
     name: |
-      ${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+      build-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
       
     steps: 
     - name: Update available software list for apt-get
@@ -58,10 +150,6 @@ jobs:
         sudo apt-get install -y gcc-${{ matrix.compiler.version }} g++-${{ matrix.compiler.version }}
       if: |
         matrix.compiler.install && matrix.compiler.name == 'gcc'
-
-    - name: Install IPC dependencies with apt-get
-      run: |
-        sudo apt-get install -y graphviz
 
     - name: Install conan
       run: |
@@ -91,6 +179,12 @@ jobs:
         [buildenv]
         CC = ${{ matrix.compiler.c-path }}
         CXX = ${{ matrix.compiler.cpp-path }}
+
+        [options]
+        ipc:build = True
+        ipc:doc = False
+        flow:build = True
+        flow:doc = False
         EOF
     
     - name: Install IPC dependencies with conan using the profile
@@ -110,7 +204,6 @@ jobs:
       run: |
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
-          -DCFG_ENABLE_DOC_GEN=ON \
           -DCFG_ENABLE_TEST_SUITE=ON \
           -DJEMALLOC_PREFIX=je_ \
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install 
@@ -163,19 +256,3 @@ jobs:
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_arena_lend_link_test_cli.exec
-
-    - name: Create doxygen documentation with makefile
-      run: |
-        VERBOSE=1 make \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
-          -j${{ steps.cpu-cores.outputs.count }} \
-          ipc_doc_public \
-          ipc_doc_full
-
-    - name: Upload doxygen documentation
-      uses: actions/upload-artifact@v3
-      with:
-        name: doxygen-doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
-        path: |
-          ${{ github.workspace }}/build/${{ matrix.build-type.conan-name }}/html_ipc_doc_public/**/* 
-          ${{ github.workspace }}/build/${{ matrix.build-type.conan-name }}/html_ipc_doc_full/**/* 
