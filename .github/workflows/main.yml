@@ -95,8 +95,8 @@ jobs:
     
     - name: Install IPC dependencies with conan using the profile
       run: |
-        CONAN_VERBOSE_TRACE=1 conan editable add flow flow/1.0
-        CONAN_VERBOSE_TRACE=1 conan install \
+        conan editable add flow flow/1.0
+        conan install \
           . \
           --profile:build=conan_profile \
           --profile:host=conan_profile \
@@ -109,7 +109,6 @@ jobs:
     - name: Prepare makefile
       run: |
         cmake \
-          --log-level=DEBUG \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_DOC_GEN=ON \
           -DCFG_ENABLE_TEST_SUITE=ON \
@@ -118,14 +117,14 @@ jobs:
 
     - name: Build targets like unit tests with makefile
       run: |
-        VERBOSE=1 make \
+        make \
           --keep-going \
           --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
           -j${{ steps.cpu-cores.outputs.count }}
 
     - name: Install targets with makefile
       run: |
-        VERBOSE=1 make install \
+        make install \
           --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
           -j${{ steps.cpu-cores.outputs.count }}
             
@@ -167,7 +166,7 @@ jobs:
 
     - name: Create doxygen documentation with makefile
       run: |
-        VERBOSE=1 make \
+        make \
           --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
           -j${{ steps.cpu-cores.outputs.count }} \
           ipc_doc_public \
