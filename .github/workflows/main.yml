@@ -212,15 +212,13 @@ jobs:
     # TODO: Ideally let our CMake interrogate jemalloc-config to find jemalloc-prefix itself.
     # Less stuff for us to worry about that way here.  If it has not been tried, try it.
     # If it does not work, apply a small effort to see if it can be easily made to work.
-    #
-    # TODO: It seems unusual to place install-prefix inside build-prefix.
     - name: Prepare Makefile using CMake
       run: |
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_TEST_SUITE=ON \
           -DJEMALLOC_PREFIX=je_ \
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install 
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}
 
     - name: Build targets (libraries, demos/tests) with Makefile
       run: |
@@ -237,45 +235,45 @@ jobs:
             
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin
         ./ipc_core_link_test.exec
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin
         ./ipc_transport_structured_link_test.exec
 
     # Server will exit automatically (same below).
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin
         ./ipc_session_link_test_srv.exec & 
         sleep 1
         ./ipc_session_link_test_cli.exec
 
     - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin
         ./ipc_shm_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_link_test_cli.exec
         
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_arena_lend_link_test_cli.exec
 
     - name: Run unit tests
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin
         ./libipc_unit_test.exec
 
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Run integration test [transport_test - Scripted mode]
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin/transport_test
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test
         mkdir -p runs/scripted
         ./transport_test.exec scripted runs/scripted/transport_test.srv.log info info \
           < srv-script.txt > runs/scripted/transport_test.srv.console.log 2>&1 &
@@ -294,7 +292,7 @@ jobs:
       with:
         name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
         path: |
-          ${{ github.workspace }}/build/${{ matrix.build-type.conan-name }}/install/bin/transport_test/runs
+          ${{ github.workspace }}/install/${{ matrix.build-type.conan-name }}/bin/transport_test/runs
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
 # Do we need to manually save it as an artifact?  For that matter we would then need the binary and
