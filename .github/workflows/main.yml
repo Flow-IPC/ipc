@@ -14,6 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Just pick one that's pre-installed and reasonably new.
         compiler:
           - { id: clang-15, name: clang, version: 15, c-path: /usr/bin/clang-15, cpp-path: /usr/bin/clang++-15 }
         build-type:
@@ -142,7 +143,8 @@ jobs:
       uses: actions/checkout@v4
       with:
         submodules: true
-    
+
+    # Many compilers are pre-installed; if not then fetch it.
     - name: Install clang compiler
       run: |
         wget https://apt.llvm.org/llvm.sh
@@ -275,11 +277,11 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin/transport_test
         mkdir -p runs/scripted
-        ./transport_test.exec scripted runs/scripted/transport_test.srv.log info info |
+        ./transport_test.exec scripted runs/scripted/transport_test.srv.log info info \
           < srv-script.txt > runs/scripted/transport_test.srv.console.log 2>&1 &
         srv_pid=$!
         sleep 1
-        ./transport_test.exec scripted runs/scripted/transport_test.cli.log info info |
+        ./transport_test.exec scripted runs/scripted/transport_test.cli.log info info \
           < cli-script.txt > runs/scripted/transport_test.cli.console.log 2>&1 &
         cli_pid=$!
         wait $srv_pid
