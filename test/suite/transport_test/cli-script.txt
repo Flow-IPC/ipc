@@ -92,10 +92,10 @@ BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 8 0
 # Should would-block around here due to opposing sleep.
 BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 8 0
 BLOB_STREAM_MQ_BIPC_SEND_BLOB 0 8 0
-# End with graceful-close.  It's take > the time opposing side will sleep for that to report end-sending done:
+# End with graceful-close.  It'd take > the time opposing side will sleep for that to report end-sending done:
 # thus we test graceful-close queueing (would-block) and reporting thereof.
 # <cmd> <stm-slot> <dupe-call?> <expected-ipc-err-or-success> <timeout> <timeout-units>
-BLOB_STREAM_MQ_BIPC_SEND_END 0 0 0 2100 ms
+BLOB_STREAM_MQ_BIPC_SEND_END 0 0 0 2500 ms
 # And a lame dupe.
 BLOB_STREAM_MQ_BIPC_SEND_END 0 1 0 0 s
 
