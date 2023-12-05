@@ -38,7 +38,7 @@ jobs:
       run: |
         sudo apt-get install -y graphviz
 
-    - name: Install Conan 1.x
+    - name: Install the latest version of Conan which is less than 2
       run: |
         pip install "conan<2"
     
@@ -162,7 +162,7 @@ jobs:
       if: |
         matrix.compiler.install && matrix.compiler.name == 'gcc'
 
-    - name: Install Conan 1.x
+    - name: Install the latest version of Conan which is less than 2
       run: |
         pip install "conan<2"
     
