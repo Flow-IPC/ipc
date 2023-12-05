@@ -287,7 +287,9 @@ jobs:
         wait $cli_pid
         echo "Client finished OK (logs will be uploaded as artifacts)."
 
+    # Upload even if something failed before; it can help diagnose.
     - name: Upload logs for [transport_test - All modes]
+      if: ${{ always() }}
       uses: actions/upload-artifact@v3
       with:
         name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
