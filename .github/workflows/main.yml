@@ -269,3 +269,36 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
         ./libipc_unit_test.exec
+
+    # This follows the instructions in bin/transport_test/README.txt.
+    - name: Run integration test [transport_test - Scripted mode]
+      run: |
+        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin/transport_test
+        mkdir -p runs/scripted
+        ./transport_test.exec scripted runs/scripted/transport_test.srv.log info info |
+          < srv-script.txt > runs/scripted/transport_test.srv.console.log 2>&1 &
+        srv_pid=$!
+        sleep 1
+        ./transport_test.exec scripted runs/scripted/transport_test.cli.log info info |
+          < cli-script.txt > runs/scripted/transport_test.cli.console.log 2>&1 &
+        cli_pid=$!
+        wait $srv_pid
+        echo "Server finished OK (logs will be uploaded as artifacts)."
+        wait $cli_pid
+        echo "Client finished OK (logs will be uploaded as artifacts)."
+
+    - name: Upload logs: [transport_test - All modes]
+      uses: actions/upload-artifact@v3
+      with:
+        name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+        path: |
+          ${{ github.workspace }}/build/${{ matrix.build-type.conan-name }}/install/bin/transport_test/runs
+
+# TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
+# Do we need to manually save it as an artifact?  For that matter we would then need the binary and
+# ideally the source.  For now we save any logs that are not printed to console, and where possible
+# our demos/tests keep it the console exclusively (but in some cases, such as transport_test, it
+# is not practical due to parallel execution and other aspects).  In general it is always better that
+# logs are sufficient; but look into situations where they are not.
+#
+# Possibly this is all handled beautifully automatically; then this should be deleted.
