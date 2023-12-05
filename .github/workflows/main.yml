@@ -21,7 +21,8 @@ jobs:
         build-type:
           - { id: release, conan-name: Release, conan-preset: release }
 
-    runs-on: ubuntu-latest
+    # EXPERIMENTAL - DO NOT MERGE.
+    runs-on: ubuntu-64-core-1
         
     name: |
       doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
@@ -131,7 +132,8 @@ jobs:
           - { id: relwithdebinfo, conan-name: RelWithDebInfo, conan-jemalloc: Release, conan-preset: relwithdebinfo }
           - { id: minsizerel, conan-name: MinSizeRel, conan-jemalloc: Release, conan-preset: minsizerel}
 
-    runs-on: ubuntu-latest
+    # EXPERIMENTAL - DO NOT MERGE.
+    runs-on: ubuntu-64-core-1
         
     name: |
       build-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
