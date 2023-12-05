@@ -236,6 +236,7 @@ jobs:
 
     # From now on use always() to try to run any demo/test that exists regardless
     # of preceding failures if any.  Same with the log-upload at the end.
+    # Worst-case they'll all fail in super-basic ways and immediately; no extra harm done.
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: always()
@@ -288,14 +289,81 @@ jobs:
         mkdir -p runs/scripted
         ./transport_test.exec scripted runs/scripted/transport_test.srv.log info info \
           < srv-script.txt > runs/scripted/transport_test.srv.console.log 2>&1 &
-        srv_pid=$!
+        SRV_PID=$!
         sleep 1
         ./transport_test.exec scripted runs/scripted/transport_test.cli.log info info \
           < cli-script.txt > runs/scripted/transport_test.cli.console.log 2>&1 &
-        cli_pid=$!
-        wait $srv_pid
+        CLI_PID=$!
+        wait $SRV_PID
         echo "Server finished OK (logs will be uploaded as artifacts)."
-        wait $cli_pid
+        wait $CLI_PID
+        echo "Client finished OK (logs will be uploaded as artifacts)."
+
+    # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
+    # Note that the creation of ~/bin/ex_..._run and placement of executables there, plus
+    # /tmp/var/run for run-time files (PID files and similar), is a necessary consequence of
+    # the ipc::session safety model for estabshing IPC conversations (sessions).
+
+    - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
+      if: always()
+      run: |
+        mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
+        mkdir -p /tmp/var/run
+        cp -v $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test/transport_test.exec \
+          ~/bin/ex_srv.exec
+        cp -v ~/bin/ex_srv.exec ~/bin/ex_cli.exec
+
+    - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
+      if: always()
+      run: |
+        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test/runs/exercise/heap
+        mkdir -p $OUT_DIR
+        cd ~/bin/ex_srv_run
+        ~/bin/ex_srv.exec exercise-srv $OUT_DIR/transport_test.srv.log info info \
+          > $OUT_DIR/transport_test.srv.console.log 2>&1 &
+        SRV_PID=$!
+        ~/bin/ex_cli.exec exercise-cli $OUT_DIR/transport_test.cli.log info info \
+          > $OUT_DIR/transport_test.cli.console.log 2>&1 &
+        CLI_PID=$!
+        wait $SRV_PID
+        echo "Server finished OK (logs will be uploaded as artifacts)."
+        wait $CLI_PID
+        echo "Client finished OK (logs will be uploaded as artifacts)."
+
+    # TODO: Surely there's a way to make a subroutine of sorts instead of copy/pasting the above 2x more
+    # with small changes.
+    - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
+      if: always()
+      run: |
+        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test/runs/exercise/shm-c
+        mkdir -p $OUT_DIR
+        cd ~/bin/ex_srv_run
+        ~/bin/ex_srv.exec exercise-srv-shm-c $OUT_DIR/transport_test.srv.log info info \
+          > $OUT_DIR/transport_test.srv.console.log 2>&1 &
+        SRV_PID=$!
+        ~/bin/ex_cli.exec exercise-cli-shm-c $OUT_DIR/transport_test.cli.log info info \
+          > $OUT_DIR/transport_test.cli.console.log 2>&1 &
+        CLI_PID=$!
+        wait $SRV_PID
+        echo "Server finished OK (logs will be uploaded as artifacts)."
+        wait $CLI_PID
+        echo "Client finished OK (logs will be uploaded as artifacts)."
+
+    - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
+      if: always()
+      run: |
+        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test/runs/exercise/shm-j
+        mkdir -p $OUT_DIR
+        cd ~/bin/ex_srv_run
+        ~/bin/ex_srv.exec exercise-srv-shm-j $OUT_DIR/transport_test.srv.log info info \
+          > $OUT_DIR/transport_test.srv.console.log 2>&1 &
+        SRV_PID=$!
+        ~/bin/ex_cli.exec exercise-cli-shm-j $OUT_DIR/transport_test.cli.log info info \
+          > $OUT_DIR/transport_test.cli.console.log 2>&1 &
+        CLI_PID=$!
+        wait $SRV_PID
+        echo "Server finished OK (logs will be uploaded as artifacts)."
+        wait $CLI_PID
         echo "Client finished OK (logs will be uploaded as artifacts)."
 
     - name: Upload logs for [transport_test - All modes]
