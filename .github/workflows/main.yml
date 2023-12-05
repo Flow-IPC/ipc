@@ -1,4 +1,4 @@
-name: Inter-Process Communication (IPC) pipeline 
+name: Flow-IPC pipeline 
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
   
 jobs:
   doc:
@@ -16,7 +17,7 @@ jobs:
         compiler:
           - { id: clang-15, name: clang, version: 15, c-path: /usr/bin/clang-15, cpp-path: /usr/bin/clang++-15 }
         build-type:
-          - { id: debug, conan-name: Debug, conan-jemalloc: Debug, conan-preset: debug }
+          - { id: release, conan-name: Release, conan-preset: release }
 
     runs-on: ubuntu-latest
         
@@ -27,20 +28,20 @@ jobs:
     - name: Update available software list for apt-get
       run: sudo apt-get update
       
-    - name: Checkout IPC repository and submodules like flow
+    - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
       uses: actions/checkout@v4
       with:
         submodules: true
 
-    - name: Install IPC dependencies with apt-get
+    - name: Install Flow-IPC dependencies (inc. Graphviz) with apt-get
       run: |
         sudo apt-get install -y graphviz
 
-    - name: Install conan
+    - name: Install Conan 1.x
       run: |
         pip install "conan<2"
     
-    - name: Create conan profile
+    - name: Create Conan profile
       run: |
         cat <<EOF > conan_profile   
         [settings]
@@ -51,7 +52,6 @@ jobs:
         arch = x86_64
         os = Linux
         build_type = ${{ matrix.build-type.conan-name }}
-        jemalloc:build_type = ${{ matrix.build-type.conan-jemalloc }}
           
         [conf]
         tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
@@ -66,7 +66,7 @@ jobs:
         ipc:doc = True
         EOF
     
-    - name: Install IPC dependencies with conan using the profile
+    - name: Install Flow-IPC dependencies (inc. Doxygen) with Conan using the profile
       run: |
         conan install \
           . \
@@ -74,32 +74,41 @@ jobs:
           --profile:host=conan_profile \
           --build=missing
 
-    - name: Prepare makefile
+    - name: Prepare Makefile using CMake
       run: |
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_DOC_GEN=ON \
           -DCFG_SKIP_CODE_GEN=ON
 
-    - name: Get the number of CPU cores for parallelization like the build process
+    - name: Get the number of processor cores for parallelized work
       uses: SimenB/github-actions-cpu-cores@v1
       id: cpu-cores
 
-    - name: Create doxygen documentation with makefile
+    # Note that `flow_doc_public` and `flow_doc_full` targets are also available; and a user locally
+    # may well want to use them.  We, however, have chosen to dedicate a Flow-only workflow
+    # (in `flow` repo) to Flow; it will generate the Flow docs.  Meanwhile ipc_doc_* targets create
+    # monolithic documentation from the ipc_* submodules and `ipc` itself -- but *not* from
+    # `flow` submodule.
+    - name: Doxygen-generate documentation sets using Makefile
       run: |
         VERBOSE=1 make \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
-          -j${{ steps.cpu-cores.outputs.count }} \
           ipc_doc_public \
-          ipc_doc_full
+          ipc_doc_full \
+          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
+          -j${{ steps.cpu-cores.outputs.count }}
 
-    - name: Upload doxygen documentation
+    - name: Package doc tarball [Doxygen documentation sets (full, API-only), landing page]
+      run: |
+        cd $GITHUB_WORKSPACE/doc/ipc_doc
+        $GITHUB_WORKSPACE/tools/doc/stage_generated_docs.sh $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}
+
+    - name: Upload documentation tarball
       uses: actions/upload-artifact@v3
       with:
-        name: doxygen-doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+        name: ipc-doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
         path: |
-          ${{ github.workspace }}/build/${{ matrix.build-type.conan-name }}/html_ipc_doc_public/**/* 
-          ${{ github.workspace }}/build/${{ matrix.build-type.conan-name }}/html_ipc_doc_full/**/* 
+          ${{ github.workspace }}/doc/ipc_doc.tgz
 
   build:
     strategy:
@@ -129,7 +138,7 @@ jobs:
     - name: Update available software list for apt-get
       run: sudo apt-get update
       
-    - name: Checkout IPC repository and submodules like flow
+    - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
       uses: actions/checkout@v4
       with:
         submodules: true
@@ -142,7 +151,7 @@ jobs:
       if: |
         matrix.compiler.install && matrix.compiler.name == 'clang'
 
-    - name: Install GCC compiler
+    - name: Install gcc compiler
       run: |
         sudo apt-get install -y software-properties-common
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
@@ -151,11 +160,11 @@ jobs:
       if: |
         matrix.compiler.install && matrix.compiler.name == 'gcc'
 
-    - name: Install conan
+    - name: Install Conan 1.x
       run: |
         pip install "conan<2"
     
-    - name: Create conan profile
+    - name: Create Conan profile
       run: |
         cat <<EOF > conan_profile   
         [settings]
@@ -185,7 +194,7 @@ jobs:
         flow:doc = False
         EOF
     
-    - name: Install IPC dependencies with conan using the profile
+    - name: Install Flow-IPC dependencies with Conan using the profile
       run: |
         conan editable add flow flow/1.0
         conan install \
@@ -194,11 +203,16 @@ jobs:
           --profile:host=conan_profile \
           --build=missing
 
-    - name: Get the number of CPU cores for parallelization like the build process
+    - name: Get the number of processor cores for parallelized work
       uses: SimenB/github-actions-cpu-cores@v1
       id: cpu-cores
 
-    - name: Prepare makefile
+    # TODO: Ideally let our CMake interrogate jemalloc-config to find jemalloc-prefix itself.
+    # Less stuff for us to worry about that way here.  If it has not been tried, try it.
+    # If it does not work, apply a small effort to see if it can be easily made to work.
+    #
+    # TODO: It seems unusual to place install-prefix inside build-prefix.
+    - name: Prepare Makefile using CMake
       run: |
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
@@ -206,51 +220,52 @@ jobs:
           -DJEMALLOC_PREFIX=je_ \
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install 
 
-    - name: Build targets like unit tests with makefile
+    - name: Build targets (libraries, demos/tests) with Makefile
       run: |
         VERBOSE=1 make \
           --keep-going \
           --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
           -j${{ steps.cpu-cores.outputs.count }}
 
-    - name: Install targets with makefile
+    - name: Install targets with Makefile
       run: |
         VERBOSE=1 make install \
           --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }} \
           -j${{ steps.cpu-cores.outputs.count }}
             
-    - name: Run unit tests
-      run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
-        ./libipc_unit_test.exec
-
-    - name: Run core link test
+    - name: Run link test [`ipc_core` - Flow-IPC Core]
       run: |
         cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
         ./ipc_core_link_test.exec
 
-    - name: Run structured transport link test
+    - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
       run: |
         cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
         ./ipc_transport_structured_link_test.exec
 
-    - name: Run session link test
+    # Server will exit automatically (same below).
+    - name: Run link test [`ipc_session` - Flow-IPC Sessions]
       run: |
         cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
         ./ipc_session_link_test_srv.exec & 
         sleep 1
         ./ipc_session_link_test_cli.exec
 
-    - name: Run shared memory link test
+    - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
       run: |
         cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
         ./ipc_shm_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_link_test_cli.exec
         
-    - name: Run SHM-jemalloc link test
+    - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
       run: |
         cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_arena_lend_link_test_cli.exec
+
+    - name: Run unit tests
+      run: |
+        cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
+        ./libipc_unit_test.exec
