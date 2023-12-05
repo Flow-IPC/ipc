@@ -20,8 +20,7 @@ jobs:
         build-type:
           - { id: release, conan-name: Release, conan-preset: release }
 
-    # EXPERIMENTAL!  DO NOT PUSH!  Use larger runner.
-    runs-on: ubuntu-latest-m
+    runs-on: ubuntu-latest
         
     name: |
       doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
@@ -131,8 +130,7 @@ jobs:
           - { id: relwithdebinfo, conan-name: RelWithDebInfo, conan-jemalloc: Release, conan-preset: relwithdebinfo }
           - { id: minsizerel, conan-name: MinSizeRel, conan-jemalloc: Release, conan-preset: minsizerel}
 
-    # EXPERIMENTAL!  DO NOT PUSH!  Use larger runner.
-    runs-on: ubuntu-latest-m
+    runs-on: ubuntu-latest
         
     name: |
       build-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
