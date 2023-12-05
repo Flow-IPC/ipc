@@ -52,7 +52,6 @@ jobs:
         arch = x86_64
         os = Linux
         build_type = ${{ matrix.build-type.conan-name }}
-        jemalloc:build_type = ${{ matrix.build-type.conan-jemalloc }}
           
         [conf]
         tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
