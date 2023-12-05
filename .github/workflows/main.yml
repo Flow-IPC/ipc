@@ -287,7 +287,7 @@ jobs:
         wait $cli_pid
         echo "Client finished OK (logs will be uploaded as artifacts)."
 
-    - name: Upload logs: [transport_test - All modes]
+    - name: Upload logs for [transport_test - All modes]
       uses: actions/upload-artifact@v3
       with:
         name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
