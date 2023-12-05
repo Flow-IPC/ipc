@@ -260,7 +260,7 @@ jobs:
         ./ipc_shm_link_test_cli.exec
         
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
-       run: |
+      run: |
         cd $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/install/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
