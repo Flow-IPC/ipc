@@ -224,10 +224,10 @@ jobs:
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: always()
       run: |
-        cat <<EOF > $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/run_transport_test_ex.sh
+        cat <<'EOF' > $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/run_transport_test_ex.sh
         # Script created by pipeline during job.
         echo "Exercise sub-mode: [$1]."
-        echo "Sub-mode snippet (none or `shm-?`): [$2]."
+        echo "Sub-mode snippet (none or 'shm-?'): [$2]."
         OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test/runs/exercise/$1
         mkdir -p $OUT_DIR
         cd ~/bin/ex_srv_run
