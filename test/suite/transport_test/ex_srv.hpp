@@ -200,6 +200,15 @@ void CLASS::server_listen()
 
   m_srv = make_uptr<Server_sio>(m_ipc_logger, m_srv_apps.find(S_SRV_NAME)->second, m_cli_apps);
 
+  /* We make a bunch of sessions and have a few apps; the virtual pool sizes (note: not actual physical RAM)
+   * can add up and hit kernel limit for active pool vaddr space (in sum).  So we reduce this to about how much
+   * we need for the largest pool in practice.  That is only relevant to SHM-classic; SHM-jemalloc adjusts
+   * automatically and uses many smaller pools (and obv it's totally irrelevant if SHM not involved). */
+  if constexpr(S_SHM_ENABLED && S_CLASSIC_ELSE_JEM)
+  {
+    m_srv->core()->pool_size_limit_mi(320);
+  }
+
   m_srv->replace_event_wait_handles([this]() -> auto
                                       { return Asio_waitable_native_handle(*(task_engine())); });
   m_srv->start_ops([this](Asio_waitable_native_handle* hndl_of_interest,
@@ -1470,7 +1479,7 @@ void CLASS::App_session::send_req_b(size_t chan_idx, util::String_view ctx, bool
       } // if (reuse_shm_payload)
 
       // Add (to empty or non-empty) another big amount of stuff.
-      constexpr size_t N = 25 * 1000;
+      constexpr size_t N = 125 * 1000;
       for (size_t idx = 0; idx != N; ++idx)
       {
         payload_list_ptr->emplace_back(payload); // Make a deep copy of all of that struct!
