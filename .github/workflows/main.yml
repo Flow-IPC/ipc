@@ -119,10 +119,10 @@ jobs:
       matrix:
         compiler:
           - { id: gcc-9, name: gcc, version: 9, c-path: /usr/bin/gcc-9, cpp-path: /usr/bin/g++-9 }
-          - { id: gcc-10, name: gcc, version: 10, c-path: /usr/bin/gcc-10, cpp-path: /usr/bin/g++-10 }
-          - { id: gcc-11, name: gcc, version: 11, c-path: /usr/bin/gcc-11, cpp-path: /usr/bin/g++-11 }
+#          - { id: gcc-10, name: gcc, version: 10, c-path: /usr/bin/gcc-10, cpp-path: /usr/bin/g++-10 }
+#          - { id: gcc-11, name: gcc, version: 11, c-path: /usr/bin/gcc-11, cpp-path: /usr/bin/g++-11 }
           - { id: gcc-13, name: gcc, version: 13, c-path: /usr/bin/gcc-13, cpp-path: /usr/bin/g++-13 }
-          - { id: clang-13, name: clang, version: 13, c-path: /usr/bin/clang-13, cpp-path: /usr/bin/clang++-13 }
+#          - { id: clang-13, name: clang, version: 13, c-path: /usr/bin/clang-13, cpp-path: /usr/bin/clang++-13 }
           - { id: clang-15, name: clang, version: 15, c-path: /usr/bin/clang-15, cpp-path: /usr/bin/clang++-15 }
 # XXX
 #          - { id: clang-16, name: clang, version: 16, c-path: /usr/bin/clang-16, cpp-path: /usr/bin/clang++-16, install: True }
@@ -130,7 +130,7 @@ jobs:
         build-type:
           - { id: debug, conan-name: Debug, conan-jemalloc: Debug, conan-preset: debug }
 # XXX
-#          - { id: release, conan-name: Release, conan-jemalloc: Release, conan-preset: release }
+          - { id: release, conan-name: Release, conan-jemalloc: Release, conan-preset: release }
 #          - { id: relwithdebinfo, conan-name: RelWithDebInfo, conan-jemalloc: Release, conan-preset: relwithdebinfo }
 #          - { id: minsizerel, conan-name: MinSizeRel, conan-jemalloc: Release, conan-preset: minsizerel}
 
