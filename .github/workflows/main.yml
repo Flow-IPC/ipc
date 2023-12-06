@@ -72,8 +72,8 @@ jobs:
       run: |
         conan install \
           . \
-          --profile:build=conan_profile \
-          --profile:host=conan_profile \
+          --profile:build conan_profile \
+          --profile:host conan_profile \
           --build missing
 
     - name: Prepare Makefile using CMake
@@ -202,8 +202,8 @@ jobs:
         conan editable add flow flow/1.0
         conan install \
           . \
-          --profile:build=conan_profile \
-          --profile:host=conan_profile \
+          --profile:build conan_profile \
+          --profile:host conan_profile \
           --build missing
 
     - name: Get the number of processor cores for parallelized work
