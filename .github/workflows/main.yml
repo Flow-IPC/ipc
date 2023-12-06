@@ -315,6 +315,7 @@ jobs:
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: always()
+      run: |
         cat <<EOF > $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/run_transport_test_ex.sh
         # Script created by pipeline during job.
         OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test/runs/exercise/$1
