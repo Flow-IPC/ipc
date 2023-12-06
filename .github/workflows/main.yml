@@ -283,7 +283,8 @@ jobs:
         ./libipc_unit_test.exec
 
     # Runner can easily run out of space due to logs, so we tar-up log dir
-    # at the end of each step.
+    # at the end of each step.  We also blow away the build dir, as all
+    # should be installed in install dir by then.
 
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Run integration test [transport_test - Scripted mode]
@@ -314,6 +315,7 @@ jobs:
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: always()
       run: |
+        rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
         mkdir -p /tmp/var/run
         cp -v $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test/transport_test.exec \
@@ -323,7 +325,7 @@ jobs:
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: always()
       run: |
-        cat <<'EOF' > $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/run_transport_test_ex.sh
+        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
         echo "Exercise sub-mode: [$1]."
         echo "Sub-mode snippet (none or 'shm-?'): [$2]."
@@ -350,21 +352,21 @@ jobs:
       if: always()
       run: |
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/run_transport_test_ex.sh \
             heap
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       if: always()
       run: |
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/run_transport_test_ex.sh \
             shm-c -shm-c
 
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       if: always()
       run: |
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/run_transport_test_ex.sh \
             shm-j -shm-j
 
     - name: Upload logs for [transport_test - All modes]
