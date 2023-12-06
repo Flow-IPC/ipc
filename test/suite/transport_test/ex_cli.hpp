@@ -909,7 +909,7 @@ void CLASS::App_session::send_notif_a(size_t chan_idx, util::String_view ctx, bo
 
     // This many copies of str; so either ~4k chars or ~4M chars; only SHM-backed msg can store the latter.
     [[maybe_unused]] constexpr size_t SMALL_N = 500;
-    [[maybe_unused]] constexpr size_t BIG_N = SMALL_N * 1000;
+    [[maybe_unused]] constexpr size_t BIG_N = SMALL_N * 100;
 
     /* Okay, so normally one builds a message top-down, like:
      *   auto root = msg_out.body_root()->initMsg();

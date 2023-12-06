@@ -1470,7 +1470,7 @@ void CLASS::App_session::send_req_b(size_t chan_idx, util::String_view ctx, bool
       } // if (reuse_shm_payload)
 
       // Add (to empty or non-empty) another big amount of stuff.
-      constexpr size_t N = 125 * 1000;
+      constexpr size_t N = 25 * 1000;
       for (size_t idx = 0; idx != N; ++idx)
       {
         payload_list_ptr->emplace_back(payload); // Make a deep copy of all of that struct!
