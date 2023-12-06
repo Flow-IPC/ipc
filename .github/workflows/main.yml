@@ -104,6 +104,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/doc/ipc_doc
         $GITHUB_WORKSPACE/tools/doc/stage_generated_docs.sh $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}
+        rm -rf generated # Save runner space.
 
     - name: Upload documentation tarball
       uses: actions/upload-artifact@v3
@@ -281,6 +282,9 @@ jobs:
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin
         ./libipc_unit_test.exec
 
+    # Runner can easily run out of space due to logs, so we tar-up log dir
+    # at the end of each step.
+
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Run integration test [transport_test - Scripted mode]
       if: always()
@@ -298,6 +302,9 @@ jobs:
         echo "Server finished OK (logs will be uploaded as artifacts)."
         wait $CLI_PID
         echo "Client finished OK (logs will be uploaded as artifacts)."
+        cd runs
+        tar cvzf scripted.tgz scripted
+        rm -rf scripted
 
     # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
     # Note that the creation of ~/bin/ex_..._run and placement of executables there, plus
@@ -334,6 +341,9 @@ jobs:
         echo "Server finished OK (logs will be uploaded as artifacts)."
         wait $CLI_PID
         echo "Client finished OK (logs will be uploaded as artifacts)."
+        cd $OUT_DIR/..
+        tar cvzf $1.tgz $1
+        rm -rf $1
         EOF
 
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
