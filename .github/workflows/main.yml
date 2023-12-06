@@ -221,31 +221,6 @@ jobs:
           -DJEMALLOC_PREFIX=je_ \
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}
 
-    - name: Prepare run script for [transport_test - Exercise mode] variations below
-      if: always()
-      run: |
-        cat <<'EOF' > $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/run_transport_test_ex.sh
-        # Script created by pipeline during job.
-        echo "Exercise sub-mode: [$1]."
-        echo "Sub-mode snippet (none or 'shm-?'): [$2]."
-        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test/runs/exercise/$1
-        mkdir -p $OUT_DIR
-        cd ~/bin/ex_srv_run
-        ~/bin/ex_srv.exec exercise-srv$2 $OUT_DIR/transport_test.srv.log info info \
-          > $OUT_DIR/transport_test.srv.console.log 2>&1 &
-        SRV_PID=$!
-        sleep 5
-        ~/bin/ex_cli.exec exercise-cli$2 $OUT_DIR/transport_test.cli.log info info \
-          > $OUT_DIR/transport_test.cli.console.log 2>&1 &
-        CLI_PID=$!
-        wait $SRV_PID
-        echo "Server finished OK (logs will be uploaded as artifacts)."
-        wait $CLI_PID
-        echo "Client finished OK (logs will be uploaded as artifacts)."
-        EOF
-        cat $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/run_transport_test_ex.sh
-        echo Hi.
-
     - name: Build targets (libraries, demos/tests) with Makefile
       run: |
         VERBOSE=1 make \
@@ -337,6 +312,29 @@ jobs:
         cp -v $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test/transport_test.exec \
           ~/bin/ex_srv.exec
         cp -v ~/bin/ex_srv.exec ~/bin/ex_cli.exec
+
+    - name: Prepare run script for [transport_test - Exercise mode] variations below
+      if: always()
+      run: |
+        cat <<'EOF' > $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-name }}/run_transport_test_ex.sh
+        # Script created by pipeline during job.
+        echo "Exercise sub-mode: [$1]."
+        echo "Sub-mode snippet (none or 'shm-?'): [$2]."
+        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-name }}/bin/transport_test/runs/exercise/$1
+        mkdir -p $OUT_DIR
+        cd ~/bin/ex_srv_run
+        ~/bin/ex_srv.exec exercise-srv$2 $OUT_DIR/transport_test.srv.log info info \
+          > $OUT_DIR/transport_test.srv.console.log 2>&1 &
+        SRV_PID=$!
+        sleep 5
+        ~/bin/ex_cli.exec exercise-cli$2 $OUT_DIR/transport_test.cli.log info info \
+          > $OUT_DIR/transport_test.cli.console.log 2>&1 &
+        CLI_PID=$!
+        wait $SRV_PID
+        echo "Server finished OK (logs will be uploaded as artifacts)."
+        wait $CLI_PID
+        echo "Client finished OK (logs will be uploaded as artifacts)."
+        EOF
 
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       if: always()
