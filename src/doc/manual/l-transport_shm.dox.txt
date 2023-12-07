@@ -129,7 +129,10 @@ How much "stuff" is it possible to allocate in each arena?  The answer is: it is
 More specifically, with SHM-jemalloc it is simply unlimited for all practical purposes.
 
 @par
-With SHM-classic there is as of this writing a hard-coded limit in the *gigabytes* (search source code for `S_SHM_CLASSIC_POOL_SIZE_LIMIT_MI =`).  If it proves insufficient we could bump it up further (or perhaps make it compile-time-configurable via a preprocessor symbol or some-such).  Rest assured that all these gigabytes are *not* taken-away from general OS use from the get-go: Rather a given *page* (default size 4Ki) is taken-away from general use, only once it is "touched" by an allocation or write.
+With SHM-classic there is as of this writing a hard-coded limit in the *gigabytes* (query ipc::session::shm::classic::Session_server::pool_size_limit_mi() to get the value).  If it proves insufficient, you can increase it via the similarly-named mutator `pool_size_limit_mi()`.  Rest assured that all these gigabytes are *not* taken-away from general OS use from the get-go: Rather a given *page* (default size 4Ki) is taken-away from general use, only once it is "touched" by an allocation or write.
+
+@param
+Unfortunately, however, at least in Linux there are some kernel parameters governing how much virtual SHM space can be reserved in such a way, even though ~no physical RAM is taken by just creating a pool sized in the gigabytes.  In particular if system-wide active pools exceed a certain parameter `Session_server::async_accept()` can yield "No space left on device" (`ENOSPC`) error.  In this case one can: (1) tweak the kernel parameter(s) as admin; (2) reduce a given `Session_server`s' pool-size via the aforementioned mutator; or (3) use SHM-jemalloc provider which adjusts dynamically and creates/destroys smaller pools internally as needed.
 
 ---
 

@@ -110,6 +110,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/doc/ipc_doc
         $GITHUB_WORKSPACE/tools/doc/stage_generated_docs.sh $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }}
+        rm -rf generated # Save runner space.
 
     - name: Upload documentation tarball
       uses: actions/upload-artifact@v3
@@ -288,6 +289,7 @@ jobs:
 
     # From now on use always() to try to run any demo/test that exists regardless
     # of preceding failures if any.  Same with the log-upload at the end.
+    # Worst-case they'll all fail in super-basic ways and immediately; no extra harm done.
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: always()
@@ -332,6 +334,10 @@ jobs:
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./libipc_unit_test.exec
 
+    # Runner can easily run out of space due to logs, so we tar-up log dir
+    # at the end of each step.  We also blow away the build dir, as all
+    # should be installed in install dir by then.
+
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Run integration test [transport_test - Scripted mode]
       if: always()
@@ -340,15 +346,83 @@ jobs:
         mkdir -p runs/scripted
         ./transport_test.exec scripted runs/scripted/transport_test.srv.log info info \
           < srv-script.txt > runs/scripted/transport_test.srv.console.log 2>&1 &
-        srv_pid=$!
+        SRV_PID=$!
         sleep 1
         ./transport_test.exec scripted runs/scripted/transport_test.cli.log info info \
           < cli-script.txt > runs/scripted/transport_test.cli.console.log 2>&1 &
-        cli_pid=$!
-        wait $srv_pid
+        CLI_PID=$!
+        wait $SRV_PID
         echo "Server finished OK (logs will be uploaded as artifacts)."
-        wait $cli_pid
+        wait $CLI_PID
         echo "Client finished OK (logs will be uploaded as artifacts)."
+        cd runs
+        tar cvzf scripted.tgz scripted
+        rm -rf scripted
+
+    # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
+    # Note that the creation of ~/bin/ex_..._run and placement of executables there, plus
+    # /tmp/var/run for run-time files (PID files and similar), is a necessary consequence of
+    # the ipc::session safety model for estabshing IPC conversations (sessions).
+
+    - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
+      if: always()
+      run: |
+        rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }}
+        mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
+        mkdir -p /tmp/var/run
+        cp -v $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test/transport_test.exec \
+          ~/bin/ex_srv.exec
+        cp -v ~/bin/ex_srv.exec ~/bin/ex_cli.exec
+
+    - name: Prepare run script for [transport_test - Exercise mode] variations below
+      if: always()
+      run: |
+        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh
+        # Script created by pipeline during job.
+        echo "Log level: [$1]."
+        echo "Exercise sub-mode: [$2]."
+        echo "Sub-mode snippet (none or 'shm-?'): [$3]."
+        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test/runs/exercise/$2
+        mkdir -p $OUT_DIR
+        cd ~/bin/ex_srv_run
+        ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/transport_test.srv.log info $1 \
+          > $OUT_DIR/transport_test.srv.console.log 2>&1 &
+        SRV_PID=$!
+        sleep 5
+        ~/bin/ex_cli.exec exercise-cli$3 $OUT_DIR/transport_test.cli.log info $1 \
+          > $OUT_DIR/transport_test.cli.console.log 2>&1 &
+        CLI_PID=$!
+        wait $SRV_PID
+        echo "Server finished OK (logs will be uploaded as artifacts)."
+        wait $CLI_PID
+        echo "Client finished OK (logs will be uploaded as artifacts)."
+        cd $OUT_DIR/..
+        tar cvzf $2.tgz $2
+        rm -rf $2
+        EOF
+
+    - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
+      if: always()
+      run: |
+        /usr/bin/bash -e \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+            info heap
+
+    - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
+      if: always()
+      run: |
+        /usr/bin/bash -e \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+            info shm-c -shm-c
+
+    - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
+      # Temporary while I (ygoldfel) work on this.
+      # if: always()
+      if: false
+      run: |
+        /usr/bin/bash -e \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+            info shm-j -shm-j
 
     - name: Upload logs for [transport_test - All modes]
       if: always()
