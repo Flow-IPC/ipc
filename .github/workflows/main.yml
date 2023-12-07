@@ -293,7 +293,7 @@ jobs:
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_TEST_SUITE=ON \
-          -DCFG_SKIP_BASIC_TESTS \
+          -DCFG_SKIP_BASIC_TESTS=ON \
           -DJEMALLOC_PREFIX=je_ \
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}
 
