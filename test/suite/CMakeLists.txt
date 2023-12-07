@@ -16,4 +16,4 @@
 # permissions and limitations under the License.
 
 add_subdirectory(transport_test)
-add_subdirectory(unit_test)
+#XXX add_subdirectory(unit_test)

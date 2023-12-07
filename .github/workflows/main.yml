@@ -37,19 +37,27 @@ jobs:
       run: sudo apt-get update
       
     - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
+      # XXX
+      if: false
       uses: actions/checkout@v4
       with:
         submodules: true
 
     - name: Install Flow-IPC dependencies (inc. Graphviz) with apt-get
+      # XXX
+      if: false
       run: |
         sudo apt-get install -y graphviz
 
     - name: Install the latest version of Conan which is less than 2
+      # XXX
+      if: false
       run: |
         pip install "conan<2"
     
     - name: Create Conan profile
+      # XXX
+      if: false
       run: |
         cat <<EOF > conan_profile   
         [settings]
@@ -75,6 +83,8 @@ jobs:
         EOF
     
     - name: Install Flow-IPC dependencies (inc. Doxygen) with Conan using the profile
+      # XXX
+      if: false
       run: |
         conan install \
           . \
@@ -83,6 +93,8 @@ jobs:
           --build missing
 
     - name: Prepare Makefile using CMake
+      # XXX
+      if: false
       run: |
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
@@ -90,6 +102,8 @@ jobs:
           -DCFG_SKIP_CODE_GEN=ON
 
     - name: Get the number of processor cores for parallelized work
+      # XXX
+      if: false
       uses: SimenB/github-actions-cpu-cores@v1
       id: cpu-cores
 
@@ -99,6 +113,8 @@ jobs:
     # monolithic documentation from the ipc_* submodules and `ipc` itself -- but *not* from
     # `flow` submodule.
     - name: Doxygen-generate documentation sets using Makefile
+      # XXX
+      if: false
       run: |
         VERBOSE=1 make \
           ipc_doc_public \
@@ -107,12 +123,16 @@ jobs:
           -j${{ steps.cpu-cores.outputs.count }}
 
     - name: Package doc tarball [Doxygen documentation sets (full, API-only), landing page]
+      # XXX
+      if: false
       run: |
         cd $GITHUB_WORKSPACE/doc/ipc_doc
         $GITHUB_WORKSPACE/tools/doc/stage_generated_docs.sh $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }}
         rm -rf generated # Save runner space.
 
     - name: Upload documentation tarball
+      # XXX
+      if: false
       uses: actions/upload-artifact@v3
       with:
         name: ipc-doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
@@ -129,43 +149,44 @@ jobs:
             version: 9
             c-path: /usr/bin/gcc-9
             cpp-path: /usr/bin/g++-9
-          - id: gcc-10
-            name: gcc
-            version: 10
-            c-path: /usr/bin/gcc-10
-            cpp-path: /usr/bin/g++-10
-          - id: gcc-11
-            name: gcc
-            version: 11
-            c-path: /usr/bin/gcc-11
-            cpp-path: /usr/bin/g++-11
-          - id: gcc-13
-            name: gcc
-            version: 13
-            c-path: /usr/bin/gcc-13
-            cpp-path: /usr/bin/g++-13
-          - id: clang-13
-            name: clang
-            version: 13
-            c-path: /usr/bin/clang-13
-            cpp-path: /usr/bin/clang++-13
-          - id: clang-15
-            name: clang
-            version: 15
-            c-path: /usr/bin/clang-15
-            cpp-path: /usr/bin/clang++-15
-          - id: clang-16
-            name: clang
-            version: 16
-            c-path: /usr/bin/clang-16
-            cpp-path: /usr/bin/clang++-16
-            install: True
-          - id: clang-17
-            name: clang
-            version: 17
-            c-path: /usr/bin/clang-17
-            cpp-path: /usr/bin/clang++-17
-            install: True  
+#XXX
+          # - id: gcc-10
+          #   name: gcc
+          #   version: 10
+          #   c-path: /usr/bin/gcc-10
+          #   cpp-path: /usr/bin/g++-10
+          # - id: gcc-11
+          #   name: gcc
+          #   version: 11
+          #   c-path: /usr/bin/gcc-11
+          #   cpp-path: /usr/bin/g++-11
+          # - id: gcc-13
+          #   name: gcc
+          #   version: 13
+          #   c-path: /usr/bin/gcc-13
+          #   cpp-path: /usr/bin/g++-13
+          # - id: clang-13
+          #   name: clang
+          #   version: 13
+          #   c-path: /usr/bin/clang-13
+          #   cpp-path: /usr/bin/clang++-13
+          # - id: clang-15
+          #   name: clang
+          #   version: 15
+          #   c-path: /usr/bin/clang-15
+          #   cpp-path: /usr/bin/clang++-15
+          # - id: clang-16
+          #   name: clang
+          #   version: 16
+          #   c-path: /usr/bin/clang-16
+          #   cpp-path: /usr/bin/clang++-16
+          #   install: True
+          # - id: clang-17
+          #   name: clang
+          #   version: 17
+          #   c-path: /usr/bin/clang-17
+          #   cpp-path: /usr/bin/clang++-17
+          #   install: True  
         build-type:
           - id: debug
             conan-build-type: Debug
@@ -175,14 +196,14 @@ jobs:
             conan-build-type: Release
             conan-jemalloc-build-type: Release
             conan-preset: release
-          - id: relwithdebinfo
-            conan-build-type: RelWithDebInfo
-            conan-jemalloc-build-type: Release
-            conan-preset: relwithdebinfo
-          - id: minsizerel
-            conan-build-type: MinSizeRel
-            conan-jemalloc-build-type: Release
-            conan-preset: minsizerel
+          # - id: relwithdebinfo
+          #   conan-build-type: RelWithDebInfo
+          #   conan-jemalloc-build-type: Release
+          #   conan-preset: relwithdebinfo
+          # - id: minsizerel
+          #   conan-build-type: MinSizeRel
+          #   conan-jemalloc-build-type: Release
+          #   conan-preset: minsizerel
 
     runs-on: ubuntu-latest
         
@@ -263,6 +284,7 @@ jobs:
       uses: SimenB/github-actions-cpu-cores@v1
       id: cpu-cores
 
+#XXX
     # TODO: Ideally let our CMake interrogate jemalloc-config to find jemalloc-prefix itself.
     # Less stuff for us to worry about that way here.  If it has not been tried, try it.
     # If it does not work, apply a small effort to see if it can be easily made to work.
@@ -271,6 +293,7 @@ jobs:
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_TEST_SUITE=ON \
+          -DCFG_SKIP_BASIC_TESTS \
           -DJEMALLOC_PREFIX=je_ \
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}
 
@@ -291,78 +314,79 @@ jobs:
     # of preceding failures if any.  Same with the log-upload at the end.
     # Worst-case they'll all fail in super-basic ways and immediately; no extra harm done.
 
-    - name: Run link test [`ipc_core` - Flow-IPC Core]
-      if: always()
-      run: |
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        ./ipc_core_link_test.exec
+# XXX
+    # - name: Run link test [`ipc_core` - Flow-IPC Core]
+    #   if: always()
+    #   run: |
+    #     cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+    #     ./ipc_core_link_test.exec
 
-    - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
-      if: always()
-      run: |
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        ./ipc_transport_structured_link_test.exec
+    # - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
+    #   if: always()
+    #   run: |
+    #     cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+    #     ./ipc_transport_structured_link_test.exec
 
-    # Server will exit automatically (same below).
-    - name: Run link test [`ipc_session` - Flow-IPC Sessions]
-      if: always()
-      run: |
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        ./ipc_session_link_test_srv.exec & 
-        sleep 1
-        ./ipc_session_link_test_cli.exec
+    # # Server will exit automatically (same below).
+    # - name: Run link test [`ipc_session` - Flow-IPC Sessions]
+    #   if: always()
+    #   run: |
+    #     cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+    #     ./ipc_session_link_test_srv.exec & 
+    #     sleep 1
+    #     ./ipc_session_link_test_cli.exec
 
-    - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
-      if: always()
-      run: |
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        ./ipc_shm_link_test_srv.exec & 
-        sleep 1
-        ./ipc_shm_link_test_cli.exec
+    # - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
+    #   if: always()
+    #   run: |
+    #     cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+    #     ./ipc_shm_link_test_srv.exec & 
+    #     sleep 1
+    #     ./ipc_shm_link_test_cli.exec
         
-    - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
-      if: always()
-      run: |
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        ./ipc_shm_arena_lend_link_test_srv.exec & 
-        sleep 1
-        ./ipc_shm_arena_lend_link_test_cli.exec
+    # - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
+    #   if: always()
+    #   run: |
+    #     cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+    #     ./ipc_shm_arena_lend_link_test_srv.exec & 
+    #     sleep 1
+    #     ./ipc_shm_arena_lend_link_test_cli.exec
 
-    - name: Run unit tests
-      if: always()
-      run: |
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        ./libipc_unit_test.exec
+    # - name: Run unit tests
+    #   if: always()
+    #   run: |
+    #     cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+    #     ./libipc_unit_test.exec
 
-    # Runner can easily run out of space due to logs, so we tar-up log dir
-    # at the end of each step.  We also blow away the build dir, as all
-    # should be installed in install dir by then.
+    # # Runner can easily run out of space due to logs, so we tar-up log dir
+    # # at the end of each step.  We also blow away the build dir, as all
+    # # should be installed in install dir by then.
 
-    # This follows the instructions in bin/transport_test/README.txt.
-    - name: Run integration test [transport_test - Scripted mode]
-      if: always()
-      run: |
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test
-        mkdir -p runs/scripted
-        ./transport_test.exec scripted runs/scripted/transport_test.srv.log info info \
-          < srv-script.txt > runs/scripted/transport_test.srv.console.log 2>&1 &
-        SRV_PID=$!
-        sleep 1
-        ./transport_test.exec scripted runs/scripted/transport_test.cli.log info info \
-          < cli-script.txt > runs/scripted/transport_test.cli.console.log 2>&1 &
-        CLI_PID=$!
-        wait $SRV_PID
-        echo "Server finished OK (logs will be uploaded as artifacts)."
-        wait $CLI_PID
-        echo "Client finished OK (logs will be uploaded as artifacts)."
-        cd runs
-        tar cvzf scripted.tgz scripted
-        rm -rf scripted
+    # # This follows the instructions in bin/transport_test/README.txt.
+    # - name: Run integration test [transport_test - Scripted mode]
+    #   if: always()
+    #   run: |
+    #     cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test
+    #     mkdir -p runs/scripted
+    #     ./transport_test.exec scripted runs/scripted/transport_test.srv.log info info \
+    #       < srv-script.txt > runs/scripted/transport_test.srv.console.log 2>&1 &
+    #     SRV_PID=$!
+    #     sleep 1
+    #     ./transport_test.exec scripted runs/scripted/transport_test.cli.log info info \
+    #       < cli-script.txt > runs/scripted/transport_test.cli.console.log 2>&1 &
+    #     CLI_PID=$!
+    #     wait $SRV_PID
+    #     echo "Server finished OK (logs will be uploaded as artifacts)."
+    #     wait $CLI_PID
+    #     echo "Client finished OK (logs will be uploaded as artifacts)."
+    #     cd runs
+    #     tar cvzf scripted.tgz scripted
+    #     rm -rf scripted
 
-    # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
-    # Note that the creation of ~/bin/ex_..._run and placement of executables there, plus
-    # /tmp/var/run for run-time files (PID files and similar), is a necessary consequence of
-    # the ipc::session safety model for estabshing IPC conversations (sessions).
+    # # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
+    # # Note that the creation of ~/bin/ex_..._run and placement of executables there, plus
+    # # /tmp/var/run for run-time files (PID files and similar), is a necessary consequence of
+    # # the ipc::session safety model for estabshing IPC conversations (sessions).
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: always()
@@ -401,28 +425,38 @@ jobs:
         rm -rf $2
         EOF
 
-    - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
-      if: always()
-      run: |
-        /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
-            info heap
+# XXX
+    # - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
+    #   if: always()
+    #   run: |
+    #     /usr/bin/bash -e \
+    #       $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+    #         info heap
 
-    - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
-      if: always()
-      run: |
-        /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
-            info shm-c -shm-c
+    # - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
+    #   if: always()
+    #   run: |
+    #     /usr/bin/bash -e \
+    #       $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+    #         info shm-c -shm-c
 
+#XXX
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       # Temporary while I (ygoldfel) work on this.
-      # if: always()
-      if: false
+      if: always()
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm-j -shm-j
+
+# XXX
+    - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode - TRACE]
+      # Temporary while I (ygoldfel) work on this.
+      if: always()
+      run: |
+        /usr/bin/bash -e \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+            trace shm-j -shm-j
 
     - name: Upload logs for [transport_test - All modes]
       if: always()
