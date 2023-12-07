@@ -456,7 +456,7 @@ jobs:
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
-            trace shm-j -shm-j
+            trace shm-j-trace -shm-j
 
     - name: Upload logs for [transport_test - All modes]
       if: always()
