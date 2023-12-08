@@ -342,14 +342,14 @@ jobs:
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_core_link_test.exec
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_transport_structured_link_test.exec
@@ -357,7 +357,7 @@ jobs:
     # Server will exit automatically (same below).
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_session_link_test_srv.exec & 
@@ -366,7 +366,7 @@ jobs:
 
     - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_shm_link_test_srv.exec & 
@@ -375,7 +375,7 @@ jobs:
         
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
@@ -384,7 +384,7 @@ jobs:
 
     - name: Run unit tests
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./libipc_unit_test.exec
@@ -396,7 +396,7 @@ jobs:
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Run integration test [transport_test - Scripted mode]
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test
         mkdir -p runs/scripted
@@ -422,7 +422,7 @@ jobs:
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }}
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
@@ -433,7 +433,7 @@ jobs:
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
@@ -461,7 +461,7 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
@@ -469,7 +469,7 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
@@ -477,7 +477,7 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       if: |
-        !cancelled() && matrix.build-type.id == 'relwithdebinfo-tsan'
+        !cancelled() && matrix.build-type.id != 'relwithdebinfo-tsan'
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
