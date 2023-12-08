@@ -63,7 +63,6 @@ jobs:
           
         [conf]
         tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
-        tools.env.virtualenv:auto_use = True 
   
         [buildenv]
         CC = ${{ matrix.compiler.c-path }}
@@ -84,6 +83,7 @@ jobs:
 
     - name: Prepare Makefile using CMake
       run: |
+        source activate.sh
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_DOC_GEN=ON \
