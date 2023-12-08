@@ -83,7 +83,6 @@ jobs:
 
     - name: Prepare Makefile using CMake
       run: |
-        source activate.sh
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_DOC_GEN=ON \
@@ -189,6 +188,10 @@ jobs:
               tools.build:exelinkflags = [ "-fsanitize=thread" ]
             conan-profile-custom-settings: |
               compiler.sanitizer = thread   
+            conan-profile-custom-buildenv: |
+              LDFLAGS = -fsanitize=thread
+              CXXFLAGS = -fsanitize=thread
+              CFLAGS = -fsanitize=thread
             before-each-test: |
               export TSAN_OPTIONS="suppressions=$GITHUB_WORKSPACE/tsan_suppressions.cfg second_deadlock_stack=1"
           - id: relwithdebinfo
@@ -290,6 +293,7 @@ jobs:
         [buildenv]
         CC = ${{ matrix.compiler.c-path }}
         CXX = ${{ matrix.compiler.cpp-path }}
+        ${{ matrix.build-type.conan-profile-custom-buildenv }}
 
         [options]
         jemalloc:enable_cxx = False 
@@ -318,7 +322,6 @@ jobs:
     # If it does not work, apply a small effort to see if it can be easily made to work.
     - name: Prepare Makefile using CMake
       run: |
-        source activate.sh
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_TEST_SUITE=ON \
