@@ -318,6 +318,7 @@ jobs:
     # If it does not work, apply a small effort to see if it can be easily made to work.
     - name: Prepare Makefile using CMake
       run: |
+        source activate.sh
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_TEST_SUITE=ON \
