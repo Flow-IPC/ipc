@@ -7,7 +7,8 @@ class IpcRecipe(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     
     generators = (
-        "CMakeToolchain"
+        "CMakeToolchain",
+        "virtualenv"
     )
 
     tool_requires = (
