@@ -484,7 +484,8 @@ jobs:
             info shm-j -shm-j
 
     - name: Upload logs for [transport_test - All modes]
-      if: always()
+      if: |
+        always() && matrix.build-type.id != 'relwithdebinfo-tsan'
       uses: actions/upload-artifact@v3
       with:
         name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
