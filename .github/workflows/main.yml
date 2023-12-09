@@ -445,7 +445,8 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failed')
+        failure() && (!cancelled()) && (steps.transport_test_scripted.outcome == 'failed')
+        # ^-- Yes, the failure() check is necessary (or it silently adds `success() &&`).
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
@@ -506,7 +507,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failed')
+        failure() && (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failed')
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
@@ -523,7 +524,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failed')
+        failure() && (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failed')
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
@@ -540,7 +541,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failed')
+        failure() && (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failed')
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
