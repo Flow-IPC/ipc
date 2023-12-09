@@ -441,7 +441,7 @@ jobs:
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
             info
-        false # Temporary!  DO NOT PUSH!
+        false # Temporary!  DO NOT MERGE!
 
     # (Yes, the failure() check is necessary (or it silently adds `success() &&`).)
     - name: Re-run with increased logging, on failure only
@@ -507,7 +507,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        failure() && (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failed')
+        failure() && (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
@@ -521,10 +521,11 @@ jobs:
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_classic -shm-c
+        false
 
     - name: Re-run with increased logging, on failure only
       if: |
-        failure() && (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failed')
+        failure() && (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
@@ -538,10 +539,11 @@ jobs:
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_jemalloc -shm-j
+        false # Temporary!  DO NOT MERGE!
 
     - name: Re-run with increased logging, on failure only
       if: |
-        failure() && (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failed')
+        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
