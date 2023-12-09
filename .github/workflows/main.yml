@@ -441,6 +441,7 @@ jobs:
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
             info
+        false # Temporary!  DO NOT PUSH!
 
     - name: Re-run with increased logging, on failure only
       if: |
