@@ -443,10 +443,10 @@ jobs:
             info
         false # Temporary!  DO NOT PUSH!
 
+    # (Yes, the failure() check is necessary (or it silently adds `success() &&`).)
     - name: Re-run with increased logging, on failure only
       if: |
         failure() && (!cancelled()) && (steps.transport_test_scripted.outcome == 'failed')
-        # ^-- Yes, the failure() check is necessary (or it silently adds `success() &&`).
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
