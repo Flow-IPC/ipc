@@ -503,6 +503,7 @@ jobs:
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info heap
+        false # Temporary!  DO NOT MERGE!
 
     - name: Re-run with increased logging, on failure only
       if: |
@@ -520,7 +521,6 @@ jobs:
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_classic -shm-c
-        false # Temporary!  DO NOT MERGE!
 
     - name: Re-run with increased logging, on failure only
       if: |
@@ -538,7 +538,6 @@ jobs:
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_jemalloc -shm-j
-        false # Temporary!  DO NOT MERGE!
 
     - name: Re-run with increased logging, on failure only
       if: |
