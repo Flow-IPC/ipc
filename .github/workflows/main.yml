@@ -193,7 +193,7 @@ jobs:
               CXXFLAGS = -fsanitize=thread
               CFLAGS = -fsanitize=thread
             gtest-unit-tests-params: |
-              --gtest_filter=-Shm_session_test.In_process_array:-Shm_session_test.External_process_vector_offset_ptr
+              --gtest_filter=-Shm_session_test.In_process_array
           - id: relwithdebinfo
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
