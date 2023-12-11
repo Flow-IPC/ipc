@@ -193,7 +193,7 @@ jobs:
               CXXFLAGS = -fsanitize=thread
               CFLAGS = -fsanitize=thread
             before-each-test: |
-              export TSAN_OPTIONS="suppressions=$GITHUB_WORKSPACE/tsan_suppressions.cfg second_deadlock_stack=1"
+              export TSAN_OPTIONS="suppressions=$GITHUB_WORKSPACE/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg second_deadlock_stack=1"
           - id: relwithdebinfo
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
