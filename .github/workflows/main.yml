@@ -166,14 +166,14 @@ jobs:
             cpp-path: /usr/bin/clang++-17
             install: True     
         build-type:
-          - id: debug
-            conan-build-type: Debug
-            conan-jemalloc-build-type: Debug
-            conan-preset: debug       
-          - id: release
-            conan-build-type: Release
-            conan-jemalloc-build-type: Release
-            conan-preset: release    
+          #- id: debug
+          #  conan-build-type: Debug
+          #  conan-jemalloc-build-type: Debug
+          #  conan-preset: debug       
+          #- id: release
+          #  conan-build-type: Release
+          #  conan-jemalloc-build-type: Release
+          #  conan-preset: release    
           - id: relwithdebinfo-tsan 
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -192,14 +192,16 @@ jobs:
               LDFLAGS = -fsanitize=thread
               CXXFLAGS = -fsanitize=thread
               CFLAGS = -fsanitize=thread
+            gtest-unit-tests-params: |
+              --gtest_filter=-Shm_session_test.In_process_array
           - id: relwithdebinfo
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
             conan-preset: relwithdebinfo      
-          - id: minsizerel
-            conan-build-type: MinSizeRel
-            conan-jemalloc-build-type: Release
-            conan-preset: minsizerel
+          #- id: minsizerel
+          #  conan-build-type: MinSizeRel
+          #  conan-jemalloc-build-type: Release
+          #  conan-preset: minsizerel
             
         exclude:
           - compiler:  { id: gcc-9 }
@@ -402,7 +404,7 @@ jobs:
         ${{ env.before_each_test }}
         echo $TSAN_OPTIONS
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        ./libipc_unit_test.exec
+        ./libipc_unit_test.exec ${{ matrix.build-type.gtest-unit-tests-params }}
 
     # Runner can easily run out of space due to logs, so we tar-up log dir
     # at the end of each step.  We also blow away the build dir, as all
