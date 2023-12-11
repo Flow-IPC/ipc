@@ -367,7 +367,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_session_link_test_srv.exec & 
         sleep 1
@@ -377,7 +377,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_shm_link_test_srv.exec & 
         sleep 1
@@ -387,7 +387,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
@@ -419,7 +419,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh
         # Script created by pipeline during job.
         echo "Log level: [$1]."
@@ -447,7 +447,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
             info
@@ -456,7 +456,7 @@ jobs:
       if: |
         (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
             data
@@ -510,7 +510,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info heap
@@ -519,7 +519,7 @@ jobs:
       if: |
         (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             data heap_log_level_data
@@ -529,7 +529,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_classic -shm-c
@@ -538,7 +538,7 @@ jobs:
       if: |
         (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             data shm_classic_log_level_data -shm-c
@@ -548,7 +548,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_jemalloc -shm-j
@@ -557,7 +557,7 @@ jobs:
       if: |
         (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             data shm_jemalloc_log_level_data -shm-j
