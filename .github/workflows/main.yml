@@ -400,7 +400,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         echo $TSAN_OPTIONS
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./libipc_unit_test.exec
