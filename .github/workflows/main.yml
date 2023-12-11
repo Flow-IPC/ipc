@@ -249,7 +249,6 @@ jobs:
 
     - name: Install the latest version of Conan which is less than 2
       run: |
-        echo $TSAN_OPTIONS
         pip install "conan<2"
 
     - name: Add custom settings for Conan packages
@@ -352,7 +351,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
-        $before_each_test
+        ${{ env.before_each_test }}
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_core_link_test.exec
 
