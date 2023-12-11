@@ -192,8 +192,6 @@ jobs:
               LDFLAGS = -fsanitize=thread
               CXXFLAGS = -fsanitize=thread
               CFLAGS = -fsanitize=thread
-            before-each-test: |
-              export TSAN_OPTIONS="suppressions=$GITHUB_WORKSPACE/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg second_deadlock_stack=1"
           - id: relwithdebinfo
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -217,7 +215,11 @@ jobs:
         
     name: |
       build-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
-      
+
+
+    env: 
+      before_each_test: export TSAN_OPTIONS="suppressions=$GITHUB_WORKSPACE/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg second_deadlock_stack=1"
+    
     steps: 
     - name: Update available software list for apt-get
       run: sudo apt-get update
@@ -247,6 +249,8 @@ jobs:
 
     - name: Install the latest version of Conan which is less than 2
       run: |
+        $before_each_test
+        echo $TSAN_OPTIONS
         pip install "conan<2"
 
     - name: Add custom settings for Conan packages
@@ -349,6 +353,7 @@ jobs:
       if: |
         (!cancelled())
       run: |
+        $before_each_test
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_core_link_test.exec
 
