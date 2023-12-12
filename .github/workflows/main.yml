@@ -252,9 +252,6 @@ jobs:
         chmod u+x llvm.sh
         sudo ./llvm.sh ${{ matrix.compiler.version }}
 
-        /usr/bin/llvm-symbolizer-17
-        
-
     - name: Install gcc compiler
       if: |
         matrix.compiler.install && (matrix.compiler.name == 'gcc')
