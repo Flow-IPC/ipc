@@ -250,7 +250,10 @@ jobs:
       run: |
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
-        sudo ./llvm.sh ${{ matrix.compiler.version }} all
+        sudo ./llvm.sh ${{ matrix.compiler.version }}
+
+        /usr/bin/llvm-symbolizer-17
+        
 
     - name: Install gcc compiler
       if: |
