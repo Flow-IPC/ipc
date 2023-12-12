@@ -232,7 +232,7 @@ jobs:
       build-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
 
     env: 
-      before_each_test: export TSAN_OPTIONS="suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg second_deadlock_stack=1 external_symbolizer_path="
+      before_each_test: export TSAN_OPTIONS="suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg second_deadlock_stack=1 allow_addr2line=true"
     
     steps: 
     - name: Update available software list for apt-get
@@ -251,8 +251,6 @@ jobs:
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh ${{ matrix.compiler.version }} all
-
-        sudo ls -al /usr/bin/llvm-*
 
     - name: Install gcc compiler
       if: |
@@ -340,6 +338,7 @@ jobs:
     # If it does not work, apply a small effort to see if it can be easily made to work.
     - name: Prepare Makefile using CMake
       run: |
+        echo $LLVM_SYMBOLIZER_PATH
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_TEST_SUITE=ON \
