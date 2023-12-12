@@ -232,7 +232,7 @@ jobs:
       build-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
 
     env: 
-      before_each_test: export TSAN_OPTIONS="suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg second_deadlock_stack=1"
+      before_each_test: export TSAN_OPTIONS="suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg second_deadlock_stack=1 external_symbolizer_path="
     
     steps: 
     - name: Update available software list for apt-get
