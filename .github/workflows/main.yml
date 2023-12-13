@@ -174,6 +174,24 @@ jobs:
             conan-build-type: Release
             conan-jemalloc-build-type: Release
             conan-preset: release    
+          - id: relwithdebinfo-asan
+            conan-build-type: RelWithDebInfo
+            conan-jemalloc-build-type: Release
+            conan-preset: relwithdebinfo
+            conan-custom-settings: |
+              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined-behavior']
+              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined-behavior']
+            conan-profile-custom-conf: |
+              tools.build:cflags = [ "-fsanitize=address" ]
+              tools.build:cxxflags = [ "-fsanitize=address" ]
+              tools.build:sharedlinkflags = [ "-fsanitize=address" ]
+              tools.build:exelinkflags = [ "-fsanitize=address" ]
+            conan-profile-custom-settings: |
+              compiler.sanitizer = address
+            conan-profile-custom-buildenv: |
+              LDFLAGS = -fsanitize=address
+              CXXFLAGS = -fsanitize=address
+              CFLAGS = -fsanitize=address
           - id: relwithdebinfo-tsan 
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -202,16 +220,25 @@ jobs:
             conan-build-type: MinSizeRel
             conan-jemalloc-build-type: Release
             conan-preset: minsizerel
-            
+
+        # XXX (TSAN off)
+        # XXX (ASAN on for only one clang)
         exclude:
+          - build-type: { id: relwithdebinfo-tsan }
           - compiler:  { id: gcc-9 }
-            build-type: { id: relwithdebinfo-tsan }
+            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-10 }
-            build-type: { id: relwithdebinfo-tsan }
+            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-11 }
-            build-type: { id: relwithdebinfo-tsan }
+            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-13 }
-            build-type: { id: relwithdebinfo-tsan }
+            build-type: { id: relwithdebinfo-asan }
+          - compiler:  { id: clang-13 }
+            build-type: { id: relwithdebinfo-asan }
+          - compiler:  { id: clang-15 }
+            build-type: { id: relwithdebinfo-asan }
+          - compiler:  { id: clang-16 }
+            build-type: { id: relwithdebinfo-asan }
 
     runs-on: ubuntu-latest
         
