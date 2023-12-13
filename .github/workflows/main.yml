@@ -471,7 +471,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        !cancelled()
+        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
@@ -532,7 +532,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        !cancelled()
+        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
@@ -549,7 +549,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        !cancelled()
+        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
@@ -566,7 +566,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        !cancelled()
+        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
