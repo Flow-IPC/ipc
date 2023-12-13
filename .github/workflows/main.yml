@@ -182,16 +182,16 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             conan-profile-custom-conf: |
-              tools.build:cflags = [ "-fsanitize=address" ]
-              tools.build:cxxflags = [ "-fsanitize=address" ]
+              tools.build:cflags = [ "-fsanitize=address -fno-omit-frame-pointer" ] # ASAN, UBSAN, MSAN recommend this for good stack traces. XXX
+              tools.build:cxxflags = [ "-fsanitize=address -fno-omit-frame-pointer" ] # XXX ensure stack traces readable... might need llvm-symbolizer in PATH etc.
               tools.build:sharedlinkflags = [ "-fsanitize=address" ]
               tools.build:exelinkflags = [ "-fsanitize=address" ]
             conan-profile-custom-settings: |
               compiler.sanitizer = address
             conan-profile-custom-buildenv: |
               LDFLAGS = -fsanitize=address
-              CXXFLAGS = -fsanitize=address
-              CFLAGS = -fsanitize=address
+              CXXFLAGS = -fsanitize=address -fno-omit-frame-pointer
+              CFLAGS = -fsanitize=address -fno-omit-frame-pointer
           - id: relwithdebinfo-ubsan
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -200,16 +200,18 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             conan-profile-custom-conf: |
-              tools.build:cflags = [ "-fsanitize=undefined" ]
-              tools.build:cxxflags = [ "-fsanitize=undefined" ]
+              tools.build:cflags = [ "-fsanitize=undefined -fno-omit-frame-pointer" ]
+              tools.build:cxxflags = [ "-fsanitize=undefined -fno-omit-frame-pointer" ]
               tools.build:sharedlinkflags = [ "-fsanitize=undefined" ]
               tools.build:exelinkflags = [ "-fsanitize=undefined" ]
             conan-profile-custom-settings: |
               compiler.sanitizer = undefined
             conan-profile-custom-buildenv: |
               LDFLAGS = -fsanitize=undefined
-              CXXFLAGS = -fsanitize=undefined
-              CFLAGS = -fsanitize=undefined
+              CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
+              CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
+            before-each-test: |
+              export UBSAN_OPTIONS=print_stacktrace=1
           - id: relwithdebinfo-msan
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -218,16 +220,16 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             conan-profile-custom-conf: |
-              tools.build:cflags = [ "-fsanitize=memory" ]
-              tools.build:cxxflags = [ "-fsanitize=memory" ]
+              tools.build:cflags = [ "-fsanitize=memory -fno-omit-frame-pointer" ]
+              tools.build:cxxflags = [ "-fsanitize=memory -fno-omit-frame-pointer" ]
               tools.build:sharedlinkflags = [ "-fsanitize=memory" ]
               tools.build:exelinkflags = [ "-fsanitize=memory" ]
             conan-profile-custom-settings: |
               compiler.sanitizer = memory
             conan-profile-custom-buildenv: |
               LDFLAGS = -fsanitize=memory
-              CXXFLAGS = -fsanitize=memory
-              CFLAGS = -fsanitize=memory
+              CXXFLAGS = -fsanitize=memory -fno-omit-frame-pointer
+              CFLAGS = -fsanitize=memory -fno-omit-frame-pointer
           - id: relwithdebinfo-tsan 
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -413,6 +415,7 @@ jobs:
       if: |
         !cancelled()
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_core_link_test.exec
 
@@ -420,6 +423,7 @@ jobs:
       if: |
         !cancelled()
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_transport_structured_link_test.exec
 
@@ -428,6 +432,7 @@ jobs:
       if: |
         !cancelled()
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_session_link_test_srv.exec & 
         sleep 1
@@ -437,6 +442,7 @@ jobs:
       if: |
         !cancelled()
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_shm_link_test_srv.exec & 
         sleep 1
@@ -446,6 +452,7 @@ jobs:
       if: |
         !cancelled()
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
@@ -502,6 +509,7 @@ jobs:
       if: |
         !cancelled()
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
             info
@@ -510,6 +518,7 @@ jobs:
       if: |
         (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
             data
@@ -563,6 +572,7 @@ jobs:
       if: |
         !cancelled()
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info heap
@@ -571,6 +581,7 @@ jobs:
       if: |
         (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             data heap_log_level_data
@@ -580,6 +591,7 @@ jobs:
       if: |
         !cancelled()
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_classic -shm-c
@@ -588,6 +600,7 @@ jobs:
       if: |
         (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             data shm_classic_log_level_data -shm-c
@@ -597,6 +610,7 @@ jobs:
       if: |
         !cancelled()
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_jemalloc -shm-j
@@ -605,6 +619,7 @@ jobs:
       if: |
         (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
       run: |
+        ${{ matrix.build-type.before-each-test }} # XXX
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             data shm_jemalloc_log_level_data -shm-j
