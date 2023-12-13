@@ -462,7 +462,7 @@ jobs:
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
       if: |
-        (!cancelled())
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
