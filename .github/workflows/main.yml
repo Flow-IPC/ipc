@@ -192,8 +192,22 @@ jobs:
               LDFLAGS = -fsanitize=thread
               CXXFLAGS = -fsanitize=thread
               CFLAGS = -fsanitize=thread
-            before-each-test: |
-              export TSAN_OPTIONS="suppressions=$GITHUB_WORKSPACE/tsan_suppressions.cfg second_deadlock_stack=1"
+            gtest-unit-tests-params: |
+              --gtest_filter=-Shm_session_test.In_process_array:\
+              Shm_session_test.In_process_vector_offset_ptr:\
+              Shm_session_test.In_process_string_offset_ptr:\
+              Shm_session_test.In_process_list_offset_ptr:\
+              Shm_session_test.Multisession_in_process:\
+              Shm_session_test.Allocation_performance_five:\
+              Jemalloc_shm_pool_collection_test.Interface:\
+              Jemalloc_shm_pool_collection_test.Multiprocess:\
+              Jemalloc_shm_pool_collection_test.Owner_shm_pool_removal:\
+              Jemalloc_shm_pool_collection_test.Multithread_load:\
+              Borrower_shm_pool_collection_test.Interface:\
+              Borrower_shm_pool_collection_test.Multiprocess:\
+              Shm_pool_collection_test.Interface:\
+              Shm_pool_collection_test.Multiprocess:\
+              Shm_session_data_test.Multithread_object_database
           - id: relwithdebinfo
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -217,7 +231,11 @@ jobs:
         
     name: |
       build-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
-      
+
+    env: 
+      before_each_test: |
+        export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
+    
     steps: 
     - name: Update available software list for apt-get
       run: sudo apt-get update
@@ -347,23 +365,26 @@ jobs:
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled())
       run: |
+        ${{ env.before_each_test }}
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_core_link_test.exec
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled())
       run: |
+        $before_each_test
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_transport_structured_link_test.exec
 
     # Server will exit automatically (same below).
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled())
       run: |
+        ${{ env.before_each_test }}
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_session_link_test_srv.exec & 
         sleep 1
@@ -371,8 +392,9 @@ jobs:
 
     - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled())
       run: |
+        ${{ env.before_each_test }}
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_shm_link_test_srv.exec & 
         sleep 1
@@ -380,8 +402,9 @@ jobs:
         
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled())
       run: |
+        ${{ env.before_each_test }}
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
@@ -391,10 +414,12 @@ jobs:
     # like the ones below.
     - name: Run unit tests
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled())
       run: |
+        ${{ env.before_each_test }}
+        echo $TSAN_OPTIONS
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        ./libipc_unit_test.exec
+        ./libipc_unit_test.exec ${{ matrix.build-type.gtest-unit-tests-params }}
 
     # Runner can easily run out of space due to logs, so we tar-up log dir
     # at the end of each step.  We also blow away the build dir, as all
@@ -409,8 +434,9 @@ jobs:
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
+        ${{ env.before_each_test }}
         cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh
         # Script created by pipeline during job.
         echo "Log level: [$1]."
@@ -436,16 +462,18 @@ jobs:
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
             info
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
             data
@@ -457,7 +485,7 @@ jobs:
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }}
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
@@ -468,7 +496,7 @@ jobs:
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
@@ -497,16 +525,18 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       id: transport_test_ex_heap
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info heap
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             data heap_log_level_data
@@ -514,16 +544,18 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_classic -shm-c
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             data shm_classic_log_level_data -shm-c
@@ -531,23 +563,25 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_jemalloc -shm-j
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
+        ${{ env.before_each_test }}
         /usr/bin/bash -e \
           $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
             data shm_jemalloc_log_level_data -shm-j
 
     - name: Upload logs for [transport_test - All modes]
       if: |
-        always() && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        always() && matrix.build-type.id != 'relwithdebinfo-tsan' 
       uses: actions/upload-artifact@v3
       with:
         name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
