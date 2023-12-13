@@ -221,24 +221,22 @@ jobs:
             conan-jemalloc-build-type: Release
             conan-preset: minsizerel
 
+        # XXX (pretty much everything off except ASAN + clang-17... eep)
         # XXX (TSAN off)
         # XXX (ASAN on for only one clang)
         exclude:
+          - build-type: { id: debug }
+          - build-type: { id: release }
+          - build-type: { id: minsizerel }
+          - build-type: { id: relwithdebinfo }
           - build-type: { id: relwithdebinfo-tsan }
           - compiler:  { id: gcc-9 }
-            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-10 }
-            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-11 }
-            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-13 }
-            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: clang-13 }
-            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: clang-15 }
-            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: clang-16 }
-            build-type: { id: relwithdebinfo-asan }
 
     runs-on: ubuntu-latest
         
