@@ -166,14 +166,14 @@ jobs:
             cpp-path: /usr/bin/clang++-17
             install: True     
         build-type:
-          #- id: debug
-          #  conan-build-type: Debug
-          #  conan-jemalloc-build-type: Debug
-          #  conan-preset: debug       
-          #- id: release
-          #  conan-build-type: Release
-          #  conan-jemalloc-build-type: Release
-          #  conan-preset: release    
+          - id: debug
+            conan-build-type: Debug
+            conan-jemalloc-build-type: Debug
+            conan-preset: debug       
+          - id: release
+            conan-build-type: Release
+            conan-jemalloc-build-type: Release
+            conan-preset: release    
           - id: relwithdebinfo-tsan 
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -211,10 +211,10 @@ jobs:
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
             conan-preset: relwithdebinfo      
-          #- id: minsizerel
-          #  conan-build-type: MinSizeRel
-          #  conan-jemalloc-build-type: Release
-          #  conan-preset: minsizerel
+          - id: minsizerel
+            conan-build-type: MinSizeRel
+            conan-jemalloc-build-type: Release
+            conan-preset: minsizerel
             
         exclude:
           - compiler:  { id: gcc-9 }
@@ -233,8 +233,7 @@ jobs:
 
     env: 
       before_each_test: |
-        export TSAN_OPTIONS="suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg second_deadlock_stack=1 external_symbolizer_path=/usr/bin/llvm-symbolizer-${{ matrix.compiler.version }}"
-        export LLVM_SYMBOLIZER_PATH=/usr/bin/llvm-symbolizer-${{ matrix.compiler.version }}
+        export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
     
     steps: 
     - name: Update available software list for apt-get
@@ -434,7 +433,7 @@ jobs:
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
       if: |
-        (!cancelled())
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         ${{ env.before_each_test }}
         cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh
@@ -471,7 +470,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
@@ -485,7 +484,7 @@ jobs:
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: |
-        (!cancelled())
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }}
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
@@ -496,7 +495,7 @@ jobs:
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: |
-        (!cancelled())
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
@@ -525,7 +524,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       id: transport_test_ex_heap
       if: |
-        (!cancelled())
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
@@ -534,7 +533,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
@@ -544,7 +543,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
       if: |
-        (!cancelled())
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
@@ -553,7 +552,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
@@ -563,7 +562,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        (!cancelled())
+        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
@@ -572,7 +571,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
@@ -581,7 +580,7 @@ jobs:
 
     - name: Upload logs for [transport_test - All modes]
       if: |
-        always()
+        always() && matrix.build-type.id != 'relwithdebinfo-tsan' 
       uses: actions/upload-artifact@v3
       with:
         name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
