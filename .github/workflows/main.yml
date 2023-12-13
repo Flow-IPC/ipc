@@ -345,11 +345,13 @@ jobs:
     # TODO: Ideally let our CMake interrogate jemalloc-config to find jemalloc-prefix itself.
     # Less stuff for us to worry about that way here.  If it has not been tried, try it.
     # If it does not work, apply a small effort to see if it can be easily made to work.
+    # XXX LTO disabled to maybe simplify ASAN situation/get rid of crazy linker errors
     - name: Prepare Makefile using CMake
       run: |
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_TEST_SUITE=ON \
+          -DCFG_NO_LTRO=ON \
           -DJEMALLOC_PREFIX=je_ \
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}
 
