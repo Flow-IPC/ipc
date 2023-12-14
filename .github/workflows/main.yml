@@ -182,8 +182,8 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             conan-profile-custom-conf: |
-              tools.build:cflags = | # no-omit-frame-pointer recommended in (A|UB|M)SAN docs for nice stack traces.
-                ["-fsanitize=address -fno-omit-frame-pointer"]
+              # no-omit-frame-pointer recommended in (A|UB|M)SAN docs for nice stack traces.
+              tools.build:cflags = ["-fsanitize=address -fno-omit-frame-pointer"]
               tools.build:cxxflags = ["-fsanitize=address -fno-omit-frame-pointer"] 
               tools.build:sharedlinkflags = ["-fsanitize=address"]
               tools.build:exelinkflags = ["-fsanitize=address" ]
@@ -201,8 +201,8 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             conan-profile-custom-conf: |
-              tools.build:cflags = | # no-sanitize-recover is key for UBSAN; else it tends to just print and continue.
-                ["-fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover"]
+              # no-sanitize-recover is key for UBSAN; else it tends to just print and continue.
+              tools.build:cflags = ["-fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover"]
               tools.build:cxxflags = ["-fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover"]
               tools.build:sharedlinkflags = ["-fsanitize=undefined"]
               tools.build:exelinkflags = ["-fsanitize=undefined"]
@@ -221,10 +221,9 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             conan-profile-custom-conf: |
-              tools.build:cflags = | # See comment near step below where this ignorelist file is prepped.
-                ["-fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=${{ github.workspace }}/build/RelWithDebInfo/msan_ignore_list.cfg"]
-              tools.build:cxxflags = |
-                ["-fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=${{ github.workspace }}/build/RelWithDebInfo/msan_ignore_list.cfg"]
+              # See comment near step below where this ignorelist file is prepped.
+              tools.build:cflags = ["-fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=${{ github.workspace }}/build/RelWithDebInfo/msan_ignore_list.cfg"]
+              tools.build:cxxflags = ["-fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=${{ github.workspace }}/build/RelWithDebInfo/msan_ignore_list.cfg"]
               tools.build:sharedlinkflags = ["-fsanitize=memory"]
               tools.build:exelinkflags = ["-fsanitize=memory"]
             conan-profile-custom-settings: |
