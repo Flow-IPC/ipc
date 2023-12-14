@@ -36,7 +36,7 @@ class IpcRecipe(ConanFile):
     def build(self):
         cmake = CMake(self)
         cmake.configure()
-        cmake.build(args=["--keep-going"])
+        cmake.build()
     
     def requirements(self):
         if self.options.build:
