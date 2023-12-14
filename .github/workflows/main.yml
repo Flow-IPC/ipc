@@ -332,12 +332,7 @@ jobs:
 
     - name: Install targets with Conan
       run: |
-        conan export-pkg .
-        ls -al
-
-    # From now on use !cancelled() to try to run any demo/test that exists regardless
-    # of preceding failures if any.  Same-ish (always()) with the log-upload at the end.
-    # Worst-case they'll all fail in super-basic ways and immediately; no extra harm done.
+        conan export-pkg . --package-folder=.
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: |
