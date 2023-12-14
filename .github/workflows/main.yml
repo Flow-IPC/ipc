@@ -333,8 +333,10 @@ jobs:
 
     - name: Install targets with Conan
       run: |
-        conan export-pkg . --package-folder=.
-        ls -al 
+        conan export-pkg \
+        . \
+        --package-folder=. \
+        --profile:host conan_profile
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: |
