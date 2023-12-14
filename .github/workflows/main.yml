@@ -1,4 +1,4 @@
-name: Flow-IPC pipeline 
+name: Flow-IPC pipeline
 
 on:
   push:
@@ -369,7 +369,6 @@ jobs:
           yaml.dump(data, file)
         "
 
-    # XXX use sep file for MSAN; do not use /tmp anymore
     - name: Create Conan profile
       run: |
         cat <<EOF > conan_profile   
@@ -402,7 +401,23 @@ jobs:
         flow:build = True
         flow:doc = False
         EOF
-    
+
+    # We need to prepare a sanitizer ignore-list in MSAN mode.  Background for this is subtle and annoying:
+    # As it stands, whatever matrix compiler/build-type is chosen applies not just to our code (correct)
+    # and 3rd party libraries we link like lib{boost_*|capnp|kj|jemalloc} (semi-optional but good) but also
+    # unfortunately any items built from source during "Install Flow-IPC dependencies" step that we then
+    # use during during the build step for our own code subsequently.  At a minimum this will slow down
+    # such programs.  (For the time being we accept this as not-so-bad; to target this config at some things
+    # but not others is hard/a ticket.)  In particular, though, the capnp compiler binary is built this way;
+    # and our "Build targets" step uses it to build key things (namely convert .capnp schemas into .c++
+    # and .h sources which are then themselves compiled/used in compilation).  In the case of MSAN, this
+    # version of capnp compiler happens to trigger several MSAN failures (presumably they are not a true
+    # problem, and it's not our job really to sanitize capnp -- though we can file tickets for them and/or
+    # issue PRs; but I digress).  So in MSAN mode our build step fails, when capnp compiler itself aborts
+    # with MSAN failures.  One approach is to not apply MSAN to capnp compiler (no-go for now; it's a ticket
+    # as mentioned); another is to uses Conan to patch capnp package for them (not a bad idea; ticket filed);
+    # and lastly we can put the specific failures on the ignore-list for MSAN.  For now we do that; while
+    # unpleasant it does get the job done.  TODO: Revisit/resolve tickets/improve (see above).
     - name: Prepare MSAN sanitizer compile-time config file(s)
       if: |
         (!cancelled()) && (matrix.build-type.id == 'relwithdebinfo-msan')
@@ -411,22 +426,11 @@ jobs:
         # but that var isn't available in `strategy` up above, where we specify the compiler option
         # pointing to this file.  Surely we could cook something up; but meantime /tmp should work;
         # I think jobs don't execute concurrently in one file-system, and it should be safe enough in /tmp.
-        # Though /tmp can get cleared spuriously or something....  XXX explanation below is wrong
+        # Though /tmp can get cleared spuriously or something....
         cat <<'EOF' > /tmp/msan_ignore_list.cfg
         [memory]
-        # At least with clang-17 we get the following at *compile* time for, strangely, certain
-        # capnp-linked ipc_* objects:
-        #   ==73219==WARNING: MemorySanitizer: use-of-uninitialized-value
-        #   #0 0x811805 in kj::(anonymous namespace)::DiskFilesystem::computeCurrentPath() \
-        #     .../src/c++/src/kj/filesystem-disk-unix.c++:1730:46
-        #   ...
-        # The compiler exits with error; and that's that.
-        # Possibly compiler is invoking code at compile-time for optimization which hits this
-        # MSAN error.  This is capnp code; we must assume it is fine.  Though as of this writing
-        # it is only the above specific function, it seems best to just ignore the whole file.
-        # (There is a clang-18 breaking change w/r/t glob/regex format; to avoid mentioning
-        # + in .c++ we use a terminating glob that should work either way.)
-        fun:*CompilerMain*
+        # capnp compiler MSAN failures suppressed:
+        src:*/src/kj/filesystem-disk-unix.c*
         EOF
 
     - name: Install Flow-IPC dependencies with Conan using the profile
