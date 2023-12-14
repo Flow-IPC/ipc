@@ -328,34 +328,35 @@ jobs:
           --profile:build conan_profile \
           --profile:host conan_profile \
           --build missing
+        conan build .
 
-    - name: Get the number of processor cores for parallelized work
-      uses: SimenB/github-actions-cpu-cores@v1
-      id: cpu-cores
+#    - name: Get the number of processor cores for parallelized work
+#      uses: SimenB/github-actions-cpu-cores@v1
+#      id: cpu-cores
 
     # TODO: Ideally let our CMake interrogate jemalloc-config to find jemalloc-prefix itself.
     # Less stuff for us to worry about that way here.  If it has not been tried, try it.
     # If it does not work, apply a small effort to see if it can be easily made to work.
-    - name: Prepare Makefile using CMake
-      run: |
-        cmake \
-          --preset ${{ matrix.build-and-test-config.conan-preset }} \
-          -DCFG_ENABLE_TEST_SUITE=ON \
-          -DJEMALLOC_PREFIX=je_ \
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}
+#    - name: Prepare Makefile using CMake
+#      run: |
+#        cmake \
+#          --preset ${{ matrix.build-and-test-config.conan-preset }} \
+#          -DCFG_ENABLE_TEST_SUITE=ON \
+#          -DJEMALLOC_PREFIX=je_ \
+#          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}
 
-    - name: Build targets (libraries, demos/tests) with Makefile
-      run: |
-        VERBOSE=1 make \
-          --keep-going \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }} \
-          -j${{ steps.cpu-cores.outputs.count }}
+#    - name: Build targets (libraries, demos/tests) with Makefile
+#      run: |
+#        VERBOSE=1 make \
+#          --keep-going \
+#          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }} \
+#          -j${{ steps.cpu-cores.outputs.count }}
 
-    - name: Install targets with Makefile
-      run: |
-        VERBOSE=1 make install \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }} \
-          -j${{ steps.cpu-cores.outputs.count }}
+#    - name: Install targets with Makefile
+#      run: |
+#        VERBOSE=1 make install \
+#          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }} \
+#          -j${{ steps.cpu-cores.outputs.count }}
 
     # From now on use !cancelled() to try to run any demo/test that exists regardless
     # of preceding failures if any.  Same-ish (always()) with the log-upload at the end.
