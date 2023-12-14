@@ -496,6 +496,7 @@ jobs:
     - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
       if: |
         !cancelled()
+      run: |
         ${{ env.before_each_test }}
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_shm_link_test_srv.exec & 
