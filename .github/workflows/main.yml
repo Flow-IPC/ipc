@@ -429,8 +429,11 @@ jobs:
         # Though /tmp can get cleared spuriously or something....
         cat <<'EOF' > /tmp/msan_ignore_list.cfg
         [memory]
+        # Warning: In clang-18 there are breaking changes in how globs/regexes are interpreted.  See docs.
+        # Currently assuming clang-17 or lower.
+        #
         # capnp compiler MSAN failures suppressed:
-        src:*/src/kj/filesystem-disk-unix.c*
+        src:.*/src/kj/filesystem-disk-unix.c\+\+
         EOF
 
     - name: Install Flow-IPC dependencies with Conan using the profile
