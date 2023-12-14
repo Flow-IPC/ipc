@@ -5,10 +5,6 @@ class IpcRecipe(ConanFile):
     name = "ipc"
     
     settings = "os", "compiler", "build_type", "arch"
-    
-    generators = (
-        "CMakeToolchain"
-    )
 
     tool_requires = (
         "cmake/3.26.3", 
