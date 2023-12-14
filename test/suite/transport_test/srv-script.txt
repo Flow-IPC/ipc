@@ -15,6 +15,22 @@
 # See the License for the specific language governing
 # permissions and limitations under the License.
 
+# Timeout notes:
+#
+# - There are very tight timeouts below -- in "microseconds" -- and the idea is to ensure
+#   it doesn't block at all in situations, e.g., where we know there are N messages queued-up
+#   locally at that point.  However the actual time depends on computer speed, and on slower machines
+#   like default GitHub runners it can take longer than one experiences in a powerful lab machine.
+#   We are not benchmarking here or perf-testing, so to avoid false failures we use a less tight
+#   timeout that's still in the microseconds.  So 50usec is realistic usually, but we use 250usec.
+# - Moreover... particularly in open-source automated CI/CD pipeline... we sometimes run these
+#   tests (1) on slow machines *and* (2) while compiled with run-time sanitizers (ASAN, MSAN, etc.),
+#   some of which slow-down the code by up to, like, 5x.
+#   So bottom line is some of the below (e.g., 15ms) will look pretty generous even for slower machines;
+#   but the *SANs are the reason it is like that.  TODO: Consider varying this depending on build type (via CMake
+#   build).  That said, again, we are not benchmarking or perf-testing here; timeouts here are to ensure stuff
+#   does not hang for seconds mainly.
+
 # <cmd> <sh-name>
 SOCK_STREAM_ACC_LISTEN _socks_1
 # -> acc 0
@@ -107,13 +123,6 @@ BLOB_STREAM_MQ_BIPC_SND_CREATE _mqd_0 0 0 0 0 0
 
 # Let's actually do some IPC (between processes).
 
-# Note: There are very tight timeouts below -- in "microseconds" -- and the idea is to ensure
-# it doesn't block at all in situations, e.g., where we know there are N messages queued-up
-# locally at that point.  However the actual time depends on computer speed, and on slower machines
-# like default GitHub runners it can take longer than one experiences in a powerful lab machine.
-# We are not benchmarking here or perf-testing, so to avoid false failures we use a less tight
-# timeout that's still in the microseconds.  So 50usec is realistic usually, but we use 250usec.
-
 BLOB_STREAM_MQ_POSIX_RCV_CREATE _mqd_1 1 3 10 0 0
 # -> Posix: rcv 2
 # <cmd> <stm-slot> <blob-sz> <expected-ipc-err-or-success> <expected-blob-sz>
@@ -149,20 +158,20 @@ BLOB_STREAM_MQ_BIPC_RCV_CREATE _mqd_2 0 0 0 0 0
 BLOB_STREAM_MQ_BIPC_SND_CREATE _mqd_3 0 0 0 0 0
 # -> Bipc:snd 2
 # Do other side of 3-way handshake (see other side which does the opposite).
-BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 1 3 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 1 15 ms
 BLOB_STREAM_MQ_BIPC_SEND_BLOB 2 1 0
-BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 1 3 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 1 15 ms
 # Now just receive some stuff -- first 2 sans send-would-block -- last 5 after partial would-block.
-BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 3 ms
-BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 3 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 15 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 15 ms
 SLEEP 2 s
-BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 3 ms
-BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 3 ms
-BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 3 ms
-BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 3 ms
-BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 3 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 15 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 15 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 15 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 15 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 10 0 8 15 ms
 # Then graceful-close.
-BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 3 ms
+BLOB_STREAM_MQ_BIPC_RECV_BLOB 2 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 15 ms
 
 # Mess with channels now.
 
@@ -190,12 +199,12 @@ CHAN_BUNDLE_POSIX_SEND_BLOB 0 1 0
 CHAN_BUNDLE_POSIX_SEND 0 2 10101 0
 # <cmd> <stm-slot> <blob-sz-or-0> <expected-ipc-err-or-success> <expected-sock?> <expected-blob-sz>
 #       <timeout> <timeout-units>
-CHAN_BUNDLE_POSIX_RECV 0 20202 0 1 20202 10 ms
+CHAN_BUNDLE_POSIX_RECV 0 20202 0 1 20202 30 ms
 # -> sock 3
-CHAN_BUNDLE_POSIX_RECV 0 30303 0 0 30303 10 ms
+CHAN_BUNDLE_POSIX_RECV 0 30303 0 0 30303 30 ms
 # <cmd> <stm-slot> <dupe-call?> <expected-ipc-err-or-success> <timeout> <timeout-units>
-CHAN_BUNDLE_POSIX_SEND_END 0 0 0 3 ms
-CHAN_BUNDLE_POSIX_SEND_END 0 1 0 3 ms
+CHAN_BUNDLE_POSIX_SEND_END 0 0 0 15 ms
+CHAN_BUNDLE_POSIX_SEND_END 0 1 0 15 ms
 
 # Now bipc instead of POSIX.
 
@@ -206,10 +215,10 @@ CHAN_BUNDLE_BIPC_SEND_BLOB 0 1 0
 CHAN_BUNDLE_BIPC_RECV_BLOB 0 8192 0 1 500 ms
 CHAN_BUNDLE_BIPC_SEND_BLOB 0 1 0
 CHAN_BUNDLE_BIPC_SEND 0 2 10101 0
-CHAN_BUNDLE_BIPC_RECV 0 20202 0 1 20202 10 ms
-CHAN_BUNDLE_BIPC_RECV 0 30303 0 0 30303 10 ms
-CHAN_BUNDLE_BIPC_SEND_END 0 0 0 3 ms
-CHAN_BUNDLE_BIPC_SEND_END 0 1 0 3 ms
+CHAN_BUNDLE_BIPC_RECV 0 20202 0 1 20202 30 ms
+CHAN_BUNDLE_BIPC_RECV 0 30303 0 0 30303 30 ms
+CHAN_BUNDLE_BIPC_SEND_END 0 0 0 15 ms
+CHAN_BUNDLE_BIPC_SEND_END 0 1 0 15 ms
 
 # TODO: Moar....
 
