@@ -50,6 +50,3 @@ class IpcRecipe(ConanFile):
             
     def layout(self):
         cmake_layout(self)
-
-    def generate(self):
-
