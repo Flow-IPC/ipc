@@ -24,15 +24,17 @@ class IpcRecipe(ConanFile):
         "doc": False
     }
 
+   def generate(self):
+        tc = CMakeToolchain(self)
+        if self.options.build:
+            tc.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
+            tc.variables["JEMALLOC_PREFIX"] = "je_"
+        tc.generate()
+    
     def build(self):
         cmake = CMake(self)
-        cmake.definitions["CFG_ENABLE_TEST_SUITE"] = "ON"
-        cmake.definitions["JEMALLOC_PREFIX"] = "je_"
-        cmake.definitions["CMAKE_INSTALL_PREFIX"] = f"{self.build_folder}/install"
         cmake.configure(source_folder=self.source_folder)
         cmake.build()
-        if self.options.build:
-            cmake.install()
     
     def requirements(self):
         if self.options.build:
