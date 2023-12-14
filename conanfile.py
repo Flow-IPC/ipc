@@ -3,6 +3,7 @@ from conan.tools.cmake import CMake, cmake_layout, CMakeDeps, CMakeToolchain
 
 class IpcRecipe(ConanFile):
     name = "ipc"
+    version = "1.0"
     settings = "os", "compiler", "build_type", "arch"
 
     options = {
