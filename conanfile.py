@@ -1,5 +1,5 @@
 from conan import ConanFile
-from conan.tools.cmake import cmake_layout, CMakeDeps
+from conan.tools.cmake import CMake, cmake_layout, CMakeDeps
 
 class IpcRecipe(ConanFile):
     name = "ipc"
@@ -24,6 +24,14 @@ class IpcRecipe(ConanFile):
         "doc": False
     }
 
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
+
+        if self.options.build:
+            cmake.install()
+    
     def requirements(self):
         if self.options.build:
             self.requires("capnproto/1.0.1")
