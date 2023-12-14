@@ -284,7 +284,7 @@ jobs:
         with open('$CONAN_SETTINGS_PATH', 'r') as file:
           data = yaml.safe_load(file)
         
-        ${{ matrix.build-and-test-config.conan-profile-custom-settings }}
+        ${{ matrix.build-and-test-config.conan-custom-package-settings }}
       
         with open('$CONAN_SETTINGS_PATH', 'w') as file:
           yaml.dump(data, file)
