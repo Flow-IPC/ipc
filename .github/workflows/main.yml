@@ -487,6 +487,7 @@ jobs:
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
       if: |
         !cancelled()
+      run: |
         ${{ env.before_each_test }}
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_session_link_test_srv.exec & 
