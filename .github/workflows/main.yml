@@ -554,13 +554,14 @@ jobs:
         ./transport_test.exec scripted $OUT_DIR/transport_test.cli.log info $1 \
           < cli-script.txt > $OUT_DIR/transport_test.cli.console.log 2>&1 &
         CLI_PID=$!
-        wait $SRV_PID
-        echo "Server finished OK (logs will be uploaded as artifacts)."
-        wait $CLI_PID
-        echo "Client finished OK (logs will be uploaded as artifacts)."
+        if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
+        echo "Server finished with code [$SRV_EC] (logs will be uploaded as artifacts)."
+        if wait $CLI_PID; then CLI_EC=0; else CLI_EC=$?; fi
+        echo "Client finished with code [$CLI_EC] (logs will be uploaded as artifacts)."
         cd $OUT_DIR/..
         tar cvzf $OUT_DIR_NAME.tgz $OUT_DIR_NAME
         rm -rf $OUT_DIR_NAME
+        [ $SRV_EC -eq 0 ] && [ $CLI_EC -eq 0 ]
 
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
@@ -616,13 +617,14 @@ jobs:
         ~/bin/ex_cli.exec exercise-cli$3 $OUT_DIR/transport_test.cli.log info $1 \
           > $OUT_DIR/transport_test.cli.console.log 2>&1 &
         CLI_PID=$!
-        wait $SRV_PID
-        echo "Server finished OK (logs will be uploaded as artifacts)."
-        wait $CLI_PID
-        echo "Client finished OK (logs will be uploaded as artifacts)."
+        if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
+        echo "Server finished with code [$SRV_EC] (logs will be uploaded as artifacts)."
+        if wait $CLI_PID; then CLI_EC=0; else CLI_EC=$?; fi
+        echo "Client finished with code [$CLI_EC] (logs will be uploaded as artifacts)."
         cd $OUT_DIR/..
         tar cvzf $2.tgz $2
         rm -rf $2
+        [ $SRV_EC -eq 0 ] && [ $CLI_EC -eq 0 ]
         EOF
 
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
