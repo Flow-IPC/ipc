@@ -202,16 +202,16 @@ jobs:
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             conan-profile-custom-conf: |
               # no-sanitize-recover is key for UBSAN; else error => print and continue at run-time.
-              tools.build:cflags = ["-fsanitize=address -fno-omit-frame-pointer"]
-              tools.build:cxxflags = ["-fsanitize=address -fno-omit-frame-pointer"]
-              tools.build:sharedlinkflags = ["-fsanitize=address"]
-              tools.build:exelinkflags = ["-fsanitize=address"]
+              tools.build:cflags = ["-fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover"]
+              tools.build:cxxflags = ["-fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover"]
+              tools.build:sharedlinkflags = ["-fsanitize=undefined"]
+              tools.build:exelinkflags = ["-fsanitize=undefined"]
             conan-profile-custom-settings: |
-              compiler.sanitizer = address
+              compiler.sanitizer = undefined
             conan-profile-custom-buildenv: |
-              CXXFLAGS = -fsanitize=address -fno-omit-frame-pointer
-              CFLAGS = -fsanitize=address -fno-omit-frame-pointer
-              LDFLAGS = -fsanitize=address
+              CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover
+              CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover
+              LDFLAGS = -fsanitize=undefined
           - id: relwithdebinfo-msan
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -428,6 +428,7 @@ jobs:
         # (There is a clang-18 breaking change w/r/t glob/regex format; to avoid mentioning
         # + in .c++ we use a terminating glob that should work either way.)
         fun:*capnp::compiler::CompilerMain::getMain
+        fun:*capnp::compiler::CompilerMain::CompilerMain
         EOF
 
     - name: Install Flow-IPC dependencies with Conan using the profile
