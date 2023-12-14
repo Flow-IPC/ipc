@@ -343,8 +343,7 @@ jobs:
         (!cancelled())
       run: |
         ${{ env.setup-tests-env-vars }}
-        pwd
-        cd bin
+        cd ${{ github.workspace }}/install/${{ matrix.build-type.conan-build-type }}/bin
         ./ipc_core_link_test.exec
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
