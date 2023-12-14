@@ -25,11 +25,16 @@ class IpcRecipe(ConanFile):
     }
 
    def generate(self):
-        tc = CMakeToolchain(self)
+        deps = CMakeDeps(self)
+        if self.options.doc:
+            deps.build_context_activated = ["doxygen/1.9.4"]
+        deps.generate()
+       
+        toolchain = CMakeToolchain(self)
         if self.options.build:
-            tc.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
-            tc.variables["JEMALLOC_PREFIX"] = "je_"
-        tc.generate()
+            toolchain.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
+            toolchain.variables["JEMALLOC_PREFIX"] = "je_"
+        toolchain.generate()
     
     def build(self):
         cmake = CMake(self)
@@ -51,7 +56,4 @@ class IpcRecipe(ConanFile):
         cmake_layout(self)
 
     def generate(self):
-        cmake = CMakeDeps(self)
-        if self.options.doc:
-            cmake.build_context_activated = ["doxygen/1.9.4"]
-        cmake.generate()
+
