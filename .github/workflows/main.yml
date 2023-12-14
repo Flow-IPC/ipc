@@ -212,7 +212,6 @@ jobs:
               CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover
               CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover
               LDFLAGS = -fsanitize=undefined
-            before-each-test: |
           - id: relwithdebinfo-msan
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
