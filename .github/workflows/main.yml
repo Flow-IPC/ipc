@@ -178,16 +178,16 @@ jobs:
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
             conan-profile-custom-conf: |
-              ipc:tools.build:cflags = [ "-fsanitize=thread" ]
-              ipc:tools.build:cxxflags = [ "-fsanitize=thread" ]
-              ipc:tools.build:sharedlinkflags = [ "-fsanitize=thread" ]
-              ipc:tools.build:exelinkflags = [ "-fsanitize=thread" ]
+              tools.build:cflags = [ "-fsanitize=thread" ]
+              tools.build:cxxflags = [ "-fsanitize=thread" ]
+              tools.build:sharedlinkflags = [ "-fsanitize=thread" ]
+              tools.build:exelinkflags = [ "-fsanitize=thread" ]
             conan-profile-custom-settings: |
               compiler.sanitizer = thread   
             conan-profile-custom-buildenv: |
-              ipc:LDFLAGS = -fsanitize=thread
-              ipc:CXXFLAGS = -fsanitize=thread
-              ipc:CFLAGS = -fsanitize=thread
+              LDFLAGS = -fsanitize=thread
+              CXXFLAGS = -fsanitize=thread
+              CFLAGS = -fsanitize=thread
             conan-custom-package-settings: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined-behavior']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined-behavior']
