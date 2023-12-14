@@ -303,6 +303,11 @@ jobs:
         [conf]
         tools.env.virtualenv:auto_use = True
         tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
+        tools.build:defines = [
+          "-DCFG_ENABLE_TEST_SUITE=ON", 
+          "-DJEMALLOC_PREFIX=je_", 
+          "-DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install/${{ matrix.build-type.conan-build-type }}" 
+        ]
         ${{ matrix.build-and-test-config.conan-profile-custom-conf }}
   
         [buildenv]
