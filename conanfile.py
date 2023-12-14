@@ -8,12 +8,14 @@ class IpcRecipe(ConanFile):
 
     options = {
         "build": [True, False], 
-        "doc": [True, False]
+        "doc": [True, False],
+        "instal_path": "ANY"
     }
     
     default_options = {
         "build": True, 
-        "doc": False
+        "doc": False,
+        "install_path": "."
     }
 
     def configure(self):
@@ -32,6 +34,7 @@ class IpcRecipe(ConanFile):
             toolchain.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
             toolchain.variables["CMAKE_VERBOSE_MAKEFILE"] = True
             toolchain.variables["JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
+            toolchain.variables["CMAKE_PREFIX_PATH"] = self.options.install_path
         toolchain.generate()
     
     def build(self):
