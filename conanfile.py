@@ -52,3 +52,7 @@ class IpcRecipe(ConanFile):
             
     def layout(self):
         cmake_layout(self)
+
+    def package(self):
+        cmake = CMake(self)
+        cmake.install()
