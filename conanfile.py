@@ -9,7 +9,7 @@ class IpcRecipe(ConanFile):
     options = {
         "build": [True, False], 
         "doc": [True, False],
-        "instal_path": "ANY"
+        "install_path": "ANY"
     }
     
     default_options = {
