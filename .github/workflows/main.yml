@@ -743,6 +743,8 @@ jobs:
         echo "No errors found in logs."
 
     - name: Package test/demo logs tarball
+      if: |
+        always()
       run: |
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         tar cvzf logs.tgz logs
