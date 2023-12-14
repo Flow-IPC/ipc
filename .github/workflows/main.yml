@@ -434,8 +434,8 @@ jobs:
       if: |
         (!cancelled()) && (matrix.build-type.id == 'relwithdebinfo-msan')
       run: |
-        # TODO: Ideally would go, like other things, under ${{ github.workspace }} somewhere (maybe build/),
-        # but that ${{}} isn't available in `strategy` up above, where we specify the compiler option
+        # TODO: Ideally would go, like other things, under github.workspace somewhere (maybe build/),
+        # but that var isn't available in `strategy` up above, where we specify the compiler option
         # pointing to this file.  Surely we could cook something up; but meantime /tmp should work;
         # I think jobs don't execute concurrently in one file-system, and it should be safe enough in /tmp.
         # Though /tmp can get cleared spuriously or something....
