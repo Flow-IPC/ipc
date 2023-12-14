@@ -26,7 +26,7 @@ jobs:
             conan-profile-build-type: Release
             conan-preset: release
 
-    runs-on: ubuntu-22.04.03
+    runs-on: ubuntu-22.04
         
     name: |
       doc-${{ matrix.compiler.id }}-${{ matrix.build-config.id }}
@@ -223,7 +223,7 @@ jobs:
           - compiler:  { id: gcc-13 }
             build-and-test-config: { id: relwithdebinfo-tsan }
 
-    runs-on: ubuntu-22.04.03
+    runs-on: ubuntu-22.04
         
     name: |
       build-${{ matrix.compiler.id }}-${{ matrix.build-and-test-config.id }}
