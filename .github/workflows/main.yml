@@ -330,12 +330,9 @@ jobs:
       run: |
         conan build .
 
-    - name: Install targets with Conan
+    - name: Install targets with CMake
       run: |
-        conan export-pkg \
-          . \
-          --profile:host conan_profile \
-          --output-folder ${{ github.workspace }}/install/${{ matrix.build-type.conan-build-type }}
+        cmake . install --prefix ${{ github.workspace }}/install/${{ matrix.build-type.conan-build-type }}
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: |
