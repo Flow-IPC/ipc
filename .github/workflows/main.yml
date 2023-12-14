@@ -202,15 +202,15 @@ jobs:
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             conan-profile-custom-conf: |
               # no-sanitize-recover is key for UBSAN; else error => print and continue at run-time.
-              tools.build:cflags = ["-fsanitize=undefined", "-fno-omit-frame-pointer", "-fno-sanitize-recover"]
-              tools.build:cxxflags = ["-fsanitize=undefined", "-fno-omit-frame-pointer", "-fno-sanitize-recover"]
+              tools.build:cflags = ["-fsanitize=undefined", "-fno-omit-frame-pointer"]
+              tools.build:cxxflags = ["-fsanitize=undefined", "-fno-omit-frame-pointer"]
               tools.build:sharedlinkflags = ["-fsanitize=undefined"]
               tools.build:exelinkflags = ["-fsanitize=undefined"]
             conan-profile-custom-settings: |
               compiler.sanitizer = undefined
             conan-profile-custom-buildenv: |
-              CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover
-              CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover
+              CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
+              CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=undefined
           - id: relwithdebinfo-msan
             conan-build-type: RelWithDebInfo
