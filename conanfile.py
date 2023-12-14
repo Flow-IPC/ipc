@@ -49,6 +49,10 @@ class IpcRecipe(ConanFile):
         self.tool_requires("cmake/3.26.3")
         if self.options.doc:
             self.tool_requires("doxygen/1.9.4")
+
+    def package(self):
+        cmake = CMake(self)
+        cmake.install()
             
     def layout(self):
         cmake_layout(self)
