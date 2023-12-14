@@ -427,8 +427,7 @@ jobs:
         # it is only the above specific function, it seems best to just ignore the whole file.
         # (There is a clang-18 breaking change w/r/t glob/regex format; to avoid mentioning
         # + in .c++ we use a terminating glob that should work either way.)
-        fun:*capnp::compiler::CompilerMain::getMain
-        fun:*capnp::compiler::CompilerMain::CompilerMain
+        fun:*CompilerMain*
         EOF
 
     - name: Install Flow-IPC dependencies with Conan using the profile
