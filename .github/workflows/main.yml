@@ -197,21 +197,21 @@ jobs:
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
             conan-preset: relwithdebinfo
-            conan-custom-settings: |
+            conan-custom-settings: | # Could we not copy/paste these 4x?
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             conan-profile-custom-conf: |
-              # no-sanitize-recover is key for UBSAN; else it tends to just print and continue.
-              tools.build:cflags = ["-fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover"]
-              tools.build:cxxflags = ["-fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover"]
-              tools.build:sharedlinkflags = ["-fsanitize=undefined"]
-              tools.build:exelinkflags = ["-fsanitize=undefined"]
+              # no-omit-frame-pointer recommended in (A|UB|M)SAN docs for nice stack traces.
+              tools.build:cflags = ["-fsanitize=address -fno-omit-frame-pointer"]
+              tools.build:cxxflags = ["-fsanitize=address -fno-omit-frame-pointer"] 
+              tools.build:sharedlinkflags = ["-fsanitize=address"]
+              tools.build:exelinkflags = ["-fsanitize=address" ]
             conan-profile-custom-settings: |
-              compiler.sanitizer = undefined
+              compiler.sanitizer = address
             conan-profile-custom-buildenv: |
-              CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover
-              CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover
-              LDFLAGS = -fsanitize=undefined
+              CXXFLAGS = -fsanitize=address -fno-omit-frame-pointer
+              CFLAGS = -fsanitize=address -fno-omit-frame-pointer
+              LDFLAGS = -fsanitize=address
           - id: relwithdebinfo-msan
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -412,7 +412,7 @@ jobs:
         # but that var isn't available in `strategy` up above, where we specify the compiler option
         # pointing to this file.  Surely we could cook something up; but meantime /tmp should work;
         # I think jobs don't execute concurrently in one file-system, and it should be safe enough in /tmp.
-        # Though /tmp can get cleared spuriously or something....
+        # Though /tmp can get cleared spuriously or something....  XXX explanation below is wrong
         cat <<'EOF' > /tmp/msan_ignore_list.cfg
         [memory]
         # At least with clang-17 we get the following at *compile* time for, strangely, certain
@@ -427,7 +427,7 @@ jobs:
         # it is only the above specific function, it seems best to just ignore the whole file.
         # (There is a clang-18 breaking change w/r/t glob/regex format; to avoid mentioning
         # + in .c++ we use a terminating glob that should work either way.)
-        src:*/kj/filesystem-disk-unix.*
+        fun:*capnp::compiler::CompilerMain::getMain
         EOF
 
     - name: Install Flow-IPC dependencies with Conan using the profile
