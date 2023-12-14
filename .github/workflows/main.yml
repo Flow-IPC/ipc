@@ -91,11 +91,6 @@ jobs:
       uses: SimenB/github-actions-cpu-cores@v1
       id: cpu-cores
 
-    # Note that `flow_doc_public` and `flow_doc_full` targets are also available; and a user locally
-    # may well want to use them.  We, however, have chosen to dedicate a Flow-only workflow
-    # (in `flow` repo) to Flow; it will generate the Flow docs.  Meanwhile ipc_doc_* targets create
-    # monolithic documentation from the ipc_* submodules and `ipc` itself -- but *not* from
-    # `flow` submodule.
     - name: Doxygen-generate documentation sets using Makefile
       run: |
         VERBOSE=1 make \
@@ -228,7 +223,7 @@ jobs:
           - compiler:  { id: gcc-13 }
             build-and-test-config: { id: relwithdebinfo-tsan }
 
-    runs-on: ubuntu-22.04.3
+    runs-on: ubuntu-22.04
         
     name: |
       build-${{ matrix.compiler.id }}-${{ matrix.build-and-test-config.id }}
