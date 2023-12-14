@@ -15,22 +15,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Just pick one that's pre-installed and reasonably new.
         compiler:
           - id: clang-15
             name: clang
             version: 15
             c-path: /usr/bin/clang-15
             cpp-path: /usr/bin/clang++-15
-        build-type:
+        build-config:
           - id: release
-            conan-build-type: Release
+            conan-profile-build-type: Release
             conan-preset: release
 
     runs-on: ubuntu-latest
         
     name: |
-      doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+      doc-${{ matrix.compiler.id }}-${{ matrix.build-config.id }}
       
     steps: 
     - name: Update available software list for apt-get
@@ -59,7 +58,7 @@ jobs:
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
-        build_type = ${{ matrix.build-type.conan-build-type }}
+        build_type = ${{ matrix.build-config.conan-build-type }}
           
         [conf]
         tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
@@ -84,7 +83,7 @@ jobs:
     - name: Prepare Makefile using CMake
       run: |
         cmake \
-          --preset ${{ matrix.build-type.conan-preset }} \
+          --preset ${{ matrix.build-config.conan-preset }} \
           -DCFG_ENABLE_DOC_GEN=ON \
           -DCFG_SKIP_CODE_GEN=ON
 
@@ -102,19 +101,19 @@ jobs:
         VERBOSE=1 make \
           ipc_doc_public \
           ipc_doc_full \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }} \
+          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-config.conan-profile-build-type }} \
           -j${{ steps.cpu-cores.outputs.count }}
 
     - name: Package doc tarball [Doxygen documentation sets (full, API-only), landing page]
       run: |
         cd $GITHUB_WORKSPACE/doc/ipc_doc
-        $GITHUB_WORKSPACE/tools/doc/stage_generated_docs.sh $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }}
+        $GITHUB_WORKSPACE/tools/doc/stage_generated_docs.sh $GITHUB_WORKSPACE/build/${{ matrix.build-config.conan-profile-build-type }}
         rm -rf generated # Save runner space.
 
     - name: Upload documentation tarball
       uses: actions/upload-artifact@v3
       with:
-        name: ipc-doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+        name: ipc-doc-${{ matrix.compiler.id }}-${{ matrix.build-config.id }}
         path: |
           ${{ github.workspace }}/doc/ipc_doc.tgz
 
@@ -165,22 +164,19 @@ jobs:
             c-path: /usr/bin/clang-17
             cpp-path: /usr/bin/clang++-17
             install: True     
-        build-type:
+        build-and-test-config:
           - id: debug
-            conan-build-type: Debug
-            conan-jemalloc-build-type: Debug
-            conan-preset: debug       
+            conan-preset: debug  
+            conan-profile-build-type: Debug
+            conan-profile-jemalloc-build-type: Debug     
           - id: release
-            conan-build-type: Release
-            conan-jemalloc-build-type: Release
-            conan-preset: release    
+            conan-preset: release  
+            conan-profile-build-type: Release
+            conan-profile-jemalloc-build-type: Release  
           - id: relwithdebinfo-tsan 
-            conan-build-type: RelWithDebInfo
-            conan-jemalloc-build-type: Release
             conan-preset: relwithdebinfo
-            conan-custom-settings: |
-              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined-behavior']
-              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined-behavior']
+            conan-profile-build-type: RelWithDebInfo
+            conan-profile-jemalloc-build-type: Release
             conan-profile-custom-conf: |
               ipc:tools.build:cflags = [ "-fsanitize=thread" ]
               ipc:tools.build:cxxflags = [ "-fsanitize=thread" ]
@@ -192,7 +188,10 @@ jobs:
               ipc:LDFLAGS = -fsanitize=thread
               ipc:CXXFLAGS = -fsanitize=thread
               ipc:CFLAGS = -fsanitize=thread
-            gtest-unit-tests-params: |
+            conan-custom-package-settings: |
+              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined-behavior']
+              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined-behavior']
+            unit-tests-params: |
               --gtest_filter=-Shm_session_test.In_process_array:\
               Shm_session_test.In_process_vector_offset_ptr:\
               Shm_session_test.In_process_string_offset_ptr:\
@@ -208,29 +207,31 @@ jobs:
               Shm_pool_collection_test.Interface:\
               Shm_pool_collection_test.Multiprocess:\
               Shm_session_data_test.Multithread_object_database
+            skip_transport_tests: |
+              true
           - id: relwithdebinfo
-            conan-build-type: RelWithDebInfo
-            conan-jemalloc-build-type: Release
-            conan-preset: relwithdebinfo      
+            conan-preset: relwithdebinfo 
+            conan-profile-build-type: RelWithDebInfo
+            conan-profile-jemalloc-build-type: Release     
           - id: minsizerel
-            conan-build-type: MinSizeRel
-            conan-jemalloc-build-type: Release
             conan-preset: minsizerel
+            conan-profile-build-type: MinSizeRel
+            conan-profile-jemalloc-build-type: Release
             
         exclude:
           - compiler:  { id: gcc-9 }
-            build-type: { id: relwithdebinfo-tsan }
+            build-and-test-config: { id: relwithdebinfo-tsan }
           - compiler:  { id: gcc-10 }
-            build-type: { id: relwithdebinfo-tsan }
+            build-and-test-config: { id: relwithdebinfo-tsan }
           - compiler:  { id: gcc-11 }
-            build-type: { id: relwithdebinfo-tsan }
+            build-and-test-config: { id: relwithdebinfo-tsan }
           - compiler:  { id: gcc-13 }
-            build-type: { id: relwithdebinfo-tsan }
+            build-and-test-config: { id: relwithdebinfo-tsan }
 
     runs-on: ubuntu-latest
         
     name: |
-      build-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+      build-${{ matrix.compiler.id }}-${{ matrix.build-and-test-config.id }}
 
     env: 
       before_each_test: |
@@ -269,7 +270,7 @@ jobs:
 
     - name: Add custom settings for Conan packages
       if: |
-        matrix.build-type.conan-custom-settings
+        matrix.build-and-test-config.conan-custom-settings
       run: |
         conan config init
         
@@ -283,7 +284,7 @@ jobs:
         with open('$CONAN_SETTINGS_PATH', 'r') as file:
           data = yaml.safe_load(file)
         
-        ${{ matrix.build-type.conan-custom-settings }}
+        ${{ matrix.build-and-test-config.conan-custom-settings }}
       
         with open('$CONAN_SETTINGS_PATH', 'w') as file:
           yaml.dump(data, file)
@@ -299,19 +300,19 @@ jobs:
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
-        build_type = ${{ matrix.build-type.conan-build-type }}
-        jemalloc:build_type = ${{ matrix.build-type.conan-jemalloc-build-type }}
-        ${{ matrix.build-type.conan-profile-custom-settings }}
+        build_type = ${{ matrix.build-and-test-config.conan-build-type }}
+        jemalloc:build_type = ${{ matrix.build-and-test-config.conan-jemalloc-build-type }}
+        ${{ matrix.build-and-test-config.conan-profile-custom-settings }}
           
         [conf]
         tools.env.virtualenv:auto_use = True
         tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
-        ${{ matrix.build-type.conan-profile-custom-conf }}
+        ${{ matrix.build-and-test-config.conan-profile-custom-conf }}
   
         [buildenv]
         CC = ${{ matrix.compiler.c-path }}
         CXX = ${{ matrix.compiler.cpp-path }}
-        ${{ matrix.build-type.conan-profile-custom-buildenv }}
+        ${{ matrix.build-and-test-config.conan-profile-custom-buildenv }}
 
         [options]
         jemalloc:enable_cxx = False 
@@ -341,22 +342,22 @@ jobs:
     - name: Prepare Makefile using CMake
       run: |
         cmake \
-          --preset ${{ matrix.build-type.conan-preset }} \
+          --preset ${{ matrix.build-and-test-config.conan-preset }} \
           -DCFG_ENABLE_TEST_SUITE=ON \
           -DJEMALLOC_PREFIX=je_ \
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}
 
     - name: Build targets (libraries, demos/tests) with Makefile
       run: |
         VERBOSE=1 make \
           --keep-going \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }} \
+          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-build-type }} \
           -j${{ steps.cpu-cores.outputs.count }}
 
     - name: Install targets with Makefile
       run: |
         VERBOSE=1 make install \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }} \
+          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-build-type }} \
           -j${{ steps.cpu-cores.outputs.count }}
 
     # From now on use !cancelled() to try to run any demo/test that exists regardless
@@ -368,7 +369,7 @@ jobs:
         (!cancelled())
       run: |
         ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
         ./ipc_core_link_test.exec
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
@@ -376,7 +377,7 @@ jobs:
         (!cancelled())
       run: |
         $before_each_test
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
         ./ipc_transport_structured_link_test.exec
 
     # Server will exit automatically (same below).
@@ -385,7 +386,7 @@ jobs:
         (!cancelled())
       run: |
         ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
         ./ipc_session_link_test_srv.exec & 
         sleep 1
         ./ipc_session_link_test_cli.exec
@@ -395,7 +396,7 @@ jobs:
         (!cancelled())
       run: |
         ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
         ./ipc_shm_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_link_test_cli.exec
@@ -405,7 +406,7 @@ jobs:
         (!cancelled())
       run: |
         ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_arena_lend_link_test_cli.exec
@@ -418,8 +419,8 @@ jobs:
       run: |
         ${{ env.before_each_test }}
         echo $TSAN_OPTIONS
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        ./libipc_unit_test.exec ${{ matrix.build-type.gtest-unit-tests-params }}
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
+        ./libipc_unit_test.exec ${{ matrix.build-and-test-config.gtest-unit-tests-params }}
 
     # Runner can easily run out of space due to logs, so we tar-up log dir
     # at the end of each step.  We also blow away the build dir, as all
@@ -434,15 +435,15 @@ jobs:
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
       if: |
-        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
       run: |
         ${{ env.before_each_test }}
-        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh
+        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_sc.sh
         # Script created by pipeline during job.
         echo "Log level: [$1]."
         OUT_DIR_NAME=log_level_$1
         OUT_DIR=runs/scripted/$OUT_DIR_NAME
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/transport_test
         mkdir -p $OUT_DIR
         ./transport_test.exec scripted $OUT_DIR/transport_test.srv.log info $1 \
           < srv-script.txt > $OUT_DIR/transport_test.srv.console.log 2>&1 &
@@ -462,20 +463,20 @@ jobs:
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
       if: |
-        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_sc.sh \
             info
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure') && !matrix.build-and-test-config.skip_transport_tests
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_sc.sh \
             data
 
     # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
@@ -485,25 +486,25 @@ jobs:
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: |
-        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
       run: |
-        rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }}
+        rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-build-type }}
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
         mkdir -p /tmp/var/run
-        cp -v $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test/transport_test.exec \
+        cp -v $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/transport_test/transport_test.exec \
           ~/bin/ex_srv.exec
         cp -v ~/bin/ex_srv.exec ~/bin/ex_cli.exec
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: |
-        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
       run: |
-        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh
+        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
         echo "Log level: [$1]."
         echo "Exercise sub-mode: [$2]."
         echo "Sub-mode snippet (none or 'shm-?'): [$3]."
-        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test/runs/exercise/$2
+        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/transport_test/runs/exercise/$2
         mkdir -p $OUT_DIR
         cd ~/bin/ex_srv_run
         ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/transport_test.srv.log info $1 \
@@ -525,68 +526,68 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       id: transport_test_ex_heap
       if: |
-        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
             info heap
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure') && !matrix.build-and-test-config.skip_transport_tests
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
             data heap_log_level_data
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
       if: |
-        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_classic -shm-c
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure') && !matrix.build-and-test-config.skip_transport_tests
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
             data shm_classic_log_level_data -shm-c
 
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        (!cancelled()) && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
             info shm_jemalloc -shm-j
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure') && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure') && !matrix.build-and-test-config.skip_transport_tests 
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
             data shm_jemalloc_log_level_data -shm-j
 
     - name: Upload logs for [transport_test - All modes]
       if: |
-        always() && matrix.build-type.id != 'relwithdebinfo-tsan' 
+        always() && !matrix.build-and-test-config.skip_transport_tests
       uses: actions/upload-artifact@v3
       with:
-        name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+        name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-and-test-config.id }}
         path: |
-          ${{ github.workspace }}/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test/runs
+          ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/transport_test/runs
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
 # Do we need to manually save it as an artifact?  For that matter we would then need the binary and
