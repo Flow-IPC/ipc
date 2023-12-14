@@ -239,14 +239,15 @@ jobs:
     
     steps: 
     - name: Update available software list for apt-get
-      run: sudo apt-get update
+      run: |
+        lsb_release -a
+        sudo apt-get update
       
     - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
       uses: actions/checkout@v4
       with:
         submodules: true
 
-    # Many compilers are pre-installed; if not then fetch it.
     - name: Install clang compiler
       if: |
         matrix.compiler.install && (matrix.compiler.name == 'clang')
