@@ -58,7 +58,7 @@ jobs:
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
-        build_type = ${{ matrix.build-config.conan-build-type }}
+        build_type = ${{ matrix.build-config.conan-profile-build-type }}
           
         [conf]
         tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
