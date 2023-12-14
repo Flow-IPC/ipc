@@ -20,7 +20,7 @@ class IpcRecipe(ConanFile):
         "doc": False
     }
 
-   def generate(self):
+    def generate(self):
         deps = CMakeDeps(self)
         if self.options.doc:
             deps.build_context_activated = ["doxygen/1.9.4"]
