@@ -329,11 +329,11 @@ jobs:
     - name: Build targets (libraries, demos/tests) with Conan
       run: |
         conan build .
-        ls -al 
 
     - name: Install targets with Conan
       run: |
-        conan package .
+        conan export-pkg .
+        ls -al
 
     # From now on use !cancelled() to try to run any demo/test that exists regardless
     # of preceding failures if any.  Same-ish (always()) with the log-upload at the end.
