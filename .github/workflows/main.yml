@@ -300,7 +300,7 @@ jobs:
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
-        build_type = ${{ matrix.build-and-test-config.conan-build-type }}
+        build_type = ${{ matrix.build-and-test-config.conan-profile-build-type }}
         jemalloc:build_type = ${{ matrix.build-and-test-config.conan-jemalloc-build-type }}
         ${{ matrix.build-and-test-config.conan-profile-custom-settings }}
           
@@ -345,19 +345,19 @@ jobs:
           --preset ${{ matrix.build-and-test-config.conan-preset }} \
           -DCFG_ENABLE_TEST_SUITE=ON \
           -DJEMALLOC_PREFIX=je_ \
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}
 
     - name: Build targets (libraries, demos/tests) with Makefile
       run: |
         VERBOSE=1 make \
           --keep-going \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-build-type }} \
+          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }} \
           -j${{ steps.cpu-cores.outputs.count }}
 
     - name: Install targets with Makefile
       run: |
         VERBOSE=1 make install \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-build-type }} \
+          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }} \
           -j${{ steps.cpu-cores.outputs.count }}
 
     # From now on use !cancelled() to try to run any demo/test that exists regardless
@@ -369,7 +369,7 @@ jobs:
         (!cancelled())
       run: |
         ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin
         ./ipc_core_link_test.exec
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
@@ -377,7 +377,7 @@ jobs:
         (!cancelled())
       run: |
         $before_each_test
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin
         ./ipc_transport_structured_link_test.exec
 
     # Server will exit automatically (same below).
@@ -386,7 +386,7 @@ jobs:
         (!cancelled())
       run: |
         ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin
         ./ipc_session_link_test_srv.exec & 
         sleep 1
         ./ipc_session_link_test_cli.exec
@@ -396,7 +396,7 @@ jobs:
         (!cancelled())
       run: |
         ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin
         ./ipc_shm_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_link_test_cli.exec
@@ -406,7 +406,7 @@ jobs:
         (!cancelled())
       run: |
         ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
         ./ipc_shm_arena_lend_link_test_cli.exec
@@ -419,7 +419,7 @@ jobs:
       run: |
         ${{ env.before_each_test }}
         echo $TSAN_OPTIONS
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin
         ./libipc_unit_test.exec ${{ matrix.build-and-test-config.gtest-unit-tests-params }}
 
     # Runner can easily run out of space due to logs, so we tar-up log dir
@@ -438,12 +438,12 @@ jobs:
         (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
       run: |
         ${{ env.before_each_test }}
-        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_sc.sh
+        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/run_transport_test_sc.sh
         # Script created by pipeline during job.
         echo "Log level: [$1]."
         OUT_DIR_NAME=log_level_$1
         OUT_DIR=runs/scripted/$OUT_DIR_NAME
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/transport_test
+        cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/transport_test
         mkdir -p $OUT_DIR
         ./transport_test.exec scripted $OUT_DIR/transport_test.srv.log info $1 \
           < srv-script.txt > $OUT_DIR/transport_test.srv.console.log 2>&1 &
@@ -467,7 +467,7 @@ jobs:
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_sc.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/run_transport_test_sc.sh \
             info
 
     - name: Re-run with increased logging, on failure only
@@ -476,7 +476,7 @@ jobs:
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_sc.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/run_transport_test_sc.sh \
             data
 
     # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
@@ -488,10 +488,10 @@ jobs:
       if: |
         (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
       run: |
-        rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-build-type }}
+        rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }}
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
         mkdir -p /tmp/var/run
-        cp -v $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/transport_test/transport_test.exec \
+        cp -v $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/transport_test/transport_test.exec \
           ~/bin/ex_srv.exec
         cp -v ~/bin/ex_srv.exec ~/bin/ex_cli.exec
 
@@ -499,12 +499,12 @@ jobs:
       if: |
         (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
       run: |
-        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh
+        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
         echo "Log level: [$1]."
         echo "Exercise sub-mode: [$2]."
         echo "Sub-mode snippet (none or 'shm-?'): [$3]."
-        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/transport_test/runs/exercise/$2
+        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/transport_test/runs/exercise/$2
         mkdir -p $OUT_DIR
         cd ~/bin/ex_srv_run
         ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/transport_test.srv.log info $1 \
@@ -530,7 +530,7 @@ jobs:
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
             info heap
 
     - name: Re-run with increased logging, on failure only
@@ -539,7 +539,7 @@ jobs:
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
             data heap_log_level_data
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
@@ -549,7 +549,7 @@ jobs:
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
             info shm_classic -shm-c
 
     - name: Re-run with increased logging, on failure only
@@ -558,7 +558,7 @@ jobs:
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
             data shm_classic_log_level_data -shm-c
 
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
@@ -568,7 +568,7 @@ jobs:
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
             info shm_jemalloc -shm-j
 
     - name: Re-run with increased logging, on failure only
@@ -577,7 +577,7 @@ jobs:
       run: |
         ${{ env.before_each_test }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/run_transport_test_ex.sh \
+          $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
             data shm_jemalloc_log_level_data -shm-j
 
     - name: Upload logs for [transport_test - All modes]
@@ -587,7 +587,7 @@ jobs:
       with:
         name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-and-test-config.id }}
         path: |
-          ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-build-type }}/bin/transport_test/runs
+          ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin/transport_test/runs
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
 # Do we need to manually save it as an artifact?  For that matter we would then need the binary and
