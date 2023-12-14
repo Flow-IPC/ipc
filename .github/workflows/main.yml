@@ -313,7 +313,6 @@ jobs:
         [options]
         ipc:build = True
         ipc:doc = False
-        ipc:install_path = "${{ github.workspace }}/install/${{ matrix.build-type.conan-build-type }}/bin"
         flow:build = True
         flow:doc = False
         EOF
@@ -335,8 +334,8 @@ jobs:
       run: |
         conan export-pkg \
           . \
-          --package-folder=. \
-          --profile:host conan_profile
+          --profile:host conan_profile \
+          --output-folder ${{ github.workspace }}/install/${{ matrix.build-type.conan-build-type }}
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: |
