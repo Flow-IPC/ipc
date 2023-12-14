@@ -404,6 +404,30 @@ jobs:
         flow:doc = False
         EOF
     
+    - name: Prepare MSAN sanitizer compile-time config file(s)
+      if: |
+        (!cancelled()) && (matrix.build-type.id == 'relwithdebinfo-msan')
+      run: |
+        # TODO: Ideally would go, like other things, under github.workspace somewhere (maybe build/),
+        # but that var isn't available in `strategy` up above, where we specify the compiler option
+        # pointing to this file.  Surely we could cook something up; but meantime /tmp should work;
+        # I think jobs don't execute concurrently in one file-system, and it should be safe enough in /tmp.
+        # Though /tmp can get cleared spuriously or something....
+        cat <<'EOF' > /tmp/msan_ignore_list.cfg
+        [memory]
+        # At least with clang-17 we get the following at *compile* time for, strangely, certain
+        # capnp-linked ipc_* objects:
+        #   ==73219==WARNING: MemorySanitizer: use-of-uninitialized-value
+        #   #0 0x811805 in kj::(anonymous namespace)::DiskFilesystem::computeCurrentPath() \
+        #     .../src/c++/src/kj/filesystem-disk-unix.c++:1730:46
+        #   ...
+        # The compiler exits with error; and that's that.
+        # Possibly compiler is invoking code at compile-time for optimization which hits this
+        # MSAN error.  This is capnp code; we must assume it is fine.  Though as of this writing
+        # it is only the above specific function, it seems best to just ignore the whole file.
+        src:*/kj/filesystem-disk-unix.c++
+        EOF
+
     - name: Install Flow-IPC dependencies with Conan using the profile
       run: |
         conan editable add flow flow/1.0
@@ -429,30 +453,6 @@ jobs:
           -DCFG_NO_LTO=ON \
           -DJEMALLOC_PREFIX=je_ \
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}
-
-    - name: Prepare MSAN sanitizer compile-time config file(s)
-      if: |
-        (!cancelled()) && (matrix.build-type.id == 'relwithdebinfo-msan')
-      run: |
-        # TODO: Ideally would go, like other things, under github.workspace somewhere (maybe build/),
-        # but that var isn't available in `strategy` up above, where we specify the compiler option
-        # pointing to this file.  Surely we could cook something up; but meantime /tmp should work;
-        # I think jobs don't execute concurrently in one file-system, and it should be safe enough in /tmp.
-        # Though /tmp can get cleared spuriously or something....
-        cat <<'EOF' > /tmp/msan_ignore_list.cfg
-        [memory]
-        # At least with clang-17 we get the following at *compile* time for, strangely, certain
-        # capnp-linked ipc_* objects:
-        #   ==73219==WARNING: MemorySanitizer: use-of-uninitialized-value
-        #   #0 0x811805 in kj::(anonymous namespace)::DiskFilesystem::computeCurrentPath() \
-        #     .../src/c++/src/kj/filesystem-disk-unix.c++:1730:46
-        #   ...
-        # The compiler exits with error; and that's that.
-        # Possibly compiler is invoking code at compile-time for optimization which hits this
-        # MSAN error.  This is capnp code; we must assume it is fine.  Though as of this writing
-        # it is only the above specific function, it seems best to just ignore the whole file.
-        src:*/kj/filesystem-disk-unix.c++
-        EOF
 
     - name: Build targets (libraries, demos/tests) with Makefile
       run: |
