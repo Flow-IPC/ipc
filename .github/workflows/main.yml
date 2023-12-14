@@ -416,7 +416,7 @@ jobs:
         ${{ env.setup-tests-env-vars }}
         echo $TSAN_OPTIONS
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/bin
-        ./libipc_unit_test.exec ${{ matrix.build-and-test-config.gtest-unit-tests-params }}
+        ./libipc_unit_test.exec ${{ matrix.build-and-test-config.unit-tests-params }}
 
     # Runner can easily run out of space due to logs, so we tar-up log dir
     # at the end of each step.  We also blow away the build dir, as all
