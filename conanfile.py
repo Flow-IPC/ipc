@@ -1,5 +1,5 @@
-from conan import ConanFile
-from conan.tools.cmake import CMake, cmake_layout, CMakeDeps
+from conan import CMake, ConanFile
+from conan.tools.cmake import cmake_layout, CMakeDeps
 
 class IpcRecipe(ConanFile):
     name = "ipc"
