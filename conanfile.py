@@ -34,7 +34,7 @@ class IpcRecipe(ConanFile):
     
     def build(self):
         cmake = CMake(self)
-        cmake.configure(source_folder=self.source_folder)
+        cmake.configure()
         cmake.build()
     
     def requirements(self):
