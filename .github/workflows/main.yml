@@ -186,7 +186,7 @@ jobs:
               tools.build:cflags = ["-fsanitize=address -fno-omit-frame-pointer"]
               tools.build:cxxflags = ["-fsanitize=address -fno-omit-frame-pointer"] 
               tools.build:sharedlinkflags = ["-fsanitize=address"]
-              tools.build:exelinkflags = ["-fsanitize=address" ]
+              tools.build:exelinkflags = ["-fsanitize=address"]
             conan-profile-custom-settings: |
               compiler.sanitizer = address
             conan-profile-custom-buildenv: |
@@ -197,15 +197,15 @@ jobs:
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
             conan-preset: relwithdebinfo
-            conan-custom-settings: | # Could we not copy/paste these 4x?
+            conan-custom-settings: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             conan-profile-custom-conf: |
-              # no-omit-frame-pointer recommended in (A|UB|M)SAN docs for nice stack traces.
+              # no-sanitize-recover is key for UBSAN; else error => print and continue at run-time.
               tools.build:cflags = ["-fsanitize=address -fno-omit-frame-pointer"]
-              tools.build:cxxflags = ["-fsanitize=address -fno-omit-frame-pointer"] 
+              tools.build:cxxflags = ["-fsanitize=address -fno-omit-frame-pointer"]
               tools.build:sharedlinkflags = ["-fsanitize=address"]
-              tools.build:exelinkflags = ["-fsanitize=address" ]
+              tools.build:exelinkflags = ["-fsanitize=address"]
             conan-profile-custom-settings: |
               compiler.sanitizer = address
             conan-profile-custom-buildenv: |
