@@ -333,12 +333,14 @@ jobs:
     - name: Install targets with Conan
       run: |
         conan export-pkg . --package-folder=.
+        ls -al 
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: |
         (!cancelled())
       run: |
         ${{ env.setup-tests-env-vars }}
+        pwd
         cd bin
         ./ipc_core_link_test.exec
 
@@ -350,7 +352,6 @@ jobs:
         cd bin
         ./ipc_transport_structured_link_test.exec
 
-    # Server will exit automatically (same below).
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
       if: |
         (!cancelled())
