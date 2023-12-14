@@ -188,6 +188,10 @@ jobs:
               ipc:tools.build:exelinkflags = [ "-fsanitize=thread" ]
             conan-profile-custom-settings: |
               compiler.sanitizer = thread   
+            conan-profile-custom-buildenv: |
+              ipc:LDFLAGS = -fsanitize=thread
+              ipc:CXXFLAGS = -fsanitize=thread
+              ipc:CFLAGS = -fsanitize=thread
             gtest-unit-tests-params: |
               --gtest_filter=-Shm_session_test.In_process_array:\
               Shm_session_test.In_process_vector_offset_ptr:\
