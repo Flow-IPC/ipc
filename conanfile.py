@@ -24,7 +24,6 @@ class IpcRecipe(ConanFile):
         toolchain = CMakeToolchain(self)
         if self.options.build:
             toolchain.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
-            toolchain.variables["JEMALLOC_PREFIX"] = "je_"
             toolchain.variables["CMAKE_VERBOSE_MAKEFILE"] = True
         toolchain.generate()
     
