@@ -270,7 +270,7 @@ jobs:
 
     - name: Add custom settings for Conan packages
       if: |
-        matrix.build-and-test-config.conan-custom-settings
+        matrix.build-and-test-config.conan-custom-package-settings
       run: |
         conan config init
         
