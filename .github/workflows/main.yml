@@ -425,9 +425,9 @@ jobs:
         # Possibly compiler is invoking code at compile-time for optimization which hits this
         # MSAN error.  This is capnp code; we must assume it is fine.  Though as of this writing
         # it is only the above specific function, it seems best to just ignore the whole file.
-        # (Caution: In clang-18 there is a breaking change; for it this will need to remove the
-        # dot in front of the *, as they do globs instead of regexes.)
-        src:.*/kj/filesystem-disk-unix.c++
+        # (There is a clang-18 breaking change w/r/t glob/regex format; to avoid mentioning
+        # + in .c++ we use a terminating glob that should work either way.)
+        src:*/kj/filesystem-disk-unix.*
         EOF
 
     - name: Install Flow-IPC dependencies with Conan using the profile
