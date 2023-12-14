@@ -3,12 +3,7 @@ from conan.tools.cmake import CMake, cmake_layout, CMakeDeps, CMakeToolchain
 
 class IpcRecipe(ConanFile):
     name = "ipc"
-    
     settings = "os", "compiler", "build_type", "arch"
-
-    tool_requires = (
-        "cmake/3.26.3", 
-    )
 
     options = {
         "build": [True, False], 
@@ -46,6 +41,7 @@ class IpcRecipe(ConanFile):
             self.requires("jemalloc/5.2.1")
     
     def build_requirements(self):
+        self.tool_requires("cmake/3.26.3")
         if self.options.doc:
             self.tool_requires("doxygen/1.9.4")
             
