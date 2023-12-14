@@ -15,6 +15,11 @@ class IpcRecipe(ConanFile):
         "doc": False
     }
 
+    def configure(self):
+        if self.options.build:
+            self.options["jemalloc"].enable_cxx = False 
+            self.options["jemalloc"].prefix = "je_"
+    
     def generate(self):
         deps = CMakeDeps(self)
         if self.options.doc:
@@ -25,6 +30,7 @@ class IpcRecipe(ConanFile):
         if self.options.build:
             toolchain.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
             toolchain.variables["CMAKE_VERBOSE_MAKEFILE"] = True
+            toolchain.variables["JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
         toolchain.generate()
     
     def build(self):
