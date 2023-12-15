@@ -82,10 +82,7 @@ jobs:
 
     - name: Prepare Makefile using CMake
       run: |
-        cmake \
-          --preset ${{ matrix.build-config.conan-preset }} \
-          -DCFG_ENABLE_DOC_GEN=ON \
-          -DCFG_SKIP_CODE_GEN=ON
+        conan build .
 
     - name: Get the number of processor cores for parallelized work
       uses: SimenB/github-actions-cpu-cores@v1
