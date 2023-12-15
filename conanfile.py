@@ -28,9 +28,9 @@ class IpcRecipe(ConanFile):
         deps.generate()
        
         toolchain = CMakeToolchain(self)
+        toolchain.variables["CMAKE_VERBOSE_MAKEFILE"] = True
         if self.options.build:
             toolchain.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
-            toolchain.variables["CMAKE_VERBOSE_MAKEFILE"] = True
             toolchain.variables["JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
         if self.options.doc:
             toolchain.variables["CFG_ENABLE_DOC_GEN"] = "ON"
