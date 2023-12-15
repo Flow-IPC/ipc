@@ -435,6 +435,10 @@ jobs:
         # capnp compiler MSAN failures suppressed:
         src:*/kj/filesystem-disk-unix.*
         src:*/bits/stl_tree.h
+        #
+        # XXX Other suppressions (cmnt, maybe take sep file?).
+        # boost.chrono duration global initializer => std::string uninit value (TODO: too general but...).
+        fun:*_M_is_local*
         EOF
 
     - name: Install Flow-IPC dependencies with Conan using the profile
