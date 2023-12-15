@@ -281,6 +281,7 @@ jobs:
           - build-type: { id: release }
           - build-type: { id: minsizerel }
           - build-type: { id: relwithdebinfo }
+          - build-type: { id: relwithdebinfo-asan }
           - build-type: { id: relwithdebinfo-tsan }
           - compiler:  { id: gcc-9 }
           - compiler:  { id: gcc-10 }
@@ -435,13 +436,15 @@ jobs:
         # capnp compiler MSAN failures suppressed:
         src:*/kj/filesystem-disk-unix.*
         src:*/bits/stl_tree.h
-        #
-        # XXX Other suppressions (cmnt, maybe take sep file?).
-        # boost.chrono duration global initializer => std::string uninit value (TODO: too general but...).
-        # There is a number of these, including things like operator+() which are tough to specify in
-        # this format; for now going in for a pound, as they say: the entire file.
-        src:*/bit/basic_string.h
         EOF
+        # Append to that the suppressed items from the source tree.  These apply to the real code being
+        # built below, so just stylistically it is nicer to keep them there along with other
+        # sanitizers' suppressions.  (Note, though, that MSAN does not have a run-time suppression
+        # system; only these ignore-lists.  The others do also have ignore-lists though.
+        # The format is totally different between the 2 types of suppression.)
+        cat $GITHUB_WORKSPACE/msan_ignore_list_${{ matrix.compiler.name }}.cfg >> /tmp/msan_ignore_list.cfg
+        echo "The combined MSAN ignore-list config file follows:"
+        cat /tmp/msan_ignore_list.cfg
 
     - name: Install Flow-IPC dependencies with Conan using the profile
       run: |
