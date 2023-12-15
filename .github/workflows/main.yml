@@ -342,6 +342,12 @@ jobs:
         export ASAN_OPTIONS="disable_coredump=0"
         export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
         export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
+        # XXX
+        echo "$UBSAN_OPTIONS"
+        cat ${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        echo "$TSAN_OPTIONS"
+        cat ${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        echo "--"
     
     steps: 
     - name: Update available software list for apt-get
@@ -474,6 +480,13 @@ jobs:
 
     - name: Install Flow-IPC dependencies with Conan using the profile
       run: |
+        ${{ env.before_each_test }}
+        # XXX
+        echo "$UBSAN_OPTIONS"
+        cat ${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        echo "$TSAN_OPTIONS"
+        cat ${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        echo "--"
         conan editable add flow flow/1.0
         conan install \
           . \
@@ -488,7 +501,6 @@ jobs:
     # TODO: Ideally let our CMake interrogate jemalloc-config to find jemalloc-prefix itself.
     # Less stuff for us to worry about that way here.  If it has not been tried, try it.
     # If it does not work, apply a small effort to see if it can be easily made to work.
-    # XXX LTO disabled to maybe simplify ASAN situation/get rid of crazy linker errors
     - name: Prepare Makefile using CMake
       run: |
         cmake \
@@ -549,6 +561,12 @@ jobs:
         !cancelled()
       run: |
         ${{ env.before_each_test }}
+        # XXX
+        echo "$UBSAN_OPTIONS"
+        cat ${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        echo "$TSAN_OPTIONS"
+        cat ${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        echo "--"
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         mkdir -p logs/ipc_core_link_test
         ./ipc_core_link_test.exec > logs/ipc_core_link_test/console.log 2>&1
