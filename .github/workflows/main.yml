@@ -345,8 +345,8 @@ jobs:
       # second_deadlock_stack=1 for TSAN: TODO: Explain.  Don't see it in clang TSAN docs.
       before_each_test: |
         export ASAN_OPTIONS="disable_coredump=0"
-        export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
-        export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
+        # export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
+        # export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
     
     steps: 
     - name: Update available software list for apt-get
