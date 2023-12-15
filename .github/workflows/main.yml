@@ -438,7 +438,7 @@ jobs:
         ipc:build = True
         EOF
         if [ "${{ matrix.build-test-cfg.no-lto }}" != '' ]; then
-          echo 'ipc:build_no_lto = True'
+          echo 'ipc:build_no_lto = True' >> conan_profile
         fi
 
     # We need to prepare a sanitizer ignore-list in MSAN mode.  Background for this is subtle and annoying:
