@@ -35,12 +35,12 @@ jobs:
     - name: Update available software list for apt-get
       run: sudo apt-get update
       
-    - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
+    - name: Checkout IPC repository and submodules (like Flow)
       uses: actions/checkout@v4
       with:
         submodules: true
 
-    - name: Install Flow-IPC dependencies (inc. Graphviz) with apt-get
+    - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
       run: |
         sudo apt-get install -y graphviz
 
@@ -84,7 +84,7 @@ jobs:
       run: |
         conan build .
 
-    - name: Package doc tarball [Doxygen documentation sets (full, API-only), landing page]
+    - name: Package documentation [full, API-only, landing page]
       run: |
         cd $GITHUB_WORKSPACE/doc/ipc_doc
         $GITHUB_WORKSPACE/tools/doc/stage_generated_docs.sh $GITHUB_WORKSPACE/build/${{ matrix.build-config.conan-profile-build-type }}
