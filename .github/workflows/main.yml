@@ -169,7 +169,7 @@ jobs:
           - id: debug
             conan-build-type: Debug
             conan-jemalloc-build-type: Debug
-            conan-preset: debug       
+            conan-preset: debug
           - id: release
             conan-build-type: Release
             conan-jemalloc-build-type: Release
@@ -193,6 +193,8 @@ jobs:
               CXXFLAGS = -fsanitize=address -fno-omit-frame-pointer
               CFLAGS = -fsanitize=address -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=address
+            cmake-flags: | # At least ASAN with clang + LTO => cryptic link error.  No need for LTO when *SAN.
+              -DCFG_NO_LTO=ON
           - id: relwithdebinfo-ubsan
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -211,6 +213,8 @@ jobs:
               CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=undefined
+            cmake-flags: | # While UBSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
+              -DCFG_NO_LTO=ON
           - id: relwithdebinfo-msan
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -230,6 +234,8 @@ jobs:
               LDFLAGS = -fsanitize=memory
               CXXFLAGS = -fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=/tmp/msan_ignore_list.cfg
               CFLAGS = -fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=/tmp/msan_ignore_list.cfg
+            cmake-flags: | # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
+              -DCFG_NO_LTO=ON
           - id: relwithdebinfo-tsan
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -265,6 +271,7 @@ jobs:
                 Shm_pool_collection_test.Interface:\
                 Shm_pool_collection_test.Multiprocess:\
                 Shm_session_data_test.Multithread_object_database
+            cmake-flags: # See the other *SAN; but for now I heed jkontrik's words to keep consistent with non-*SAN.
           - id: relwithdebinfo
             conan-build-type: RelWithDebInfo
             conan-jemalloc-build-type: Release
@@ -274,23 +281,42 @@ jobs:
             conan-jemalloc-build-type: Release
             conan-preset: minsizerel
 
-        # XXX (pretty much everything off except ASAN + clang-*... eep)
-        # XXX (ASAN is good; now trying UBSAN and MSAN)
+        # We concentrate on clang sanitizers; they are newer/nicer; also MSAN is clang-only.  So gcc ones excluded.
+        # TODO: Consider reducing to the newest clang.  Generally they just keep improving; the chances of something
+        # being uncaught (incorrectly) with a later version are slim.  Not impossible though.  Look into it.
         exclude:
-          - build-type: { id: debug }
-          - build-type: { id: release }
-          - build-type: { id: minsizerel }
-          - build-type: { id: relwithdebinfo }
-          - build-type: { id: relwithdebinfo-asan }
-          - build-type: { id: relwithdebinfo-tsan }
           - compiler:  { id: gcc-9 }
+            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-10 }
+            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-11 }
+            build-type: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-13 }
-
-#- compiler:  { id: clang-13 }
-#          - compiler:  { id: clang-15 }
-#          - compiler:  { id: clang-16 }
+            build-type: { id: relwithdebinfo-asan }
+          - compiler:  { id: gcc-9 }
+            build-type: { id: relwithdebinfo-ubsan }
+          - compiler:  { id: gcc-10 }
+            build-type: { id: relwithdebinfo-ubsan }
+          - compiler:  { id: gcc-11 }
+            build-type: { id: relwithdebinfo-ubsan }
+          - compiler:  { id: gcc-13 }
+            build-type: { id: relwithdebinfo-ubsan }
+          - compiler:  { id: gcc-9 }
+            build-type: { id: relwithdebinfo-msan }
+          - compiler:  { id: gcc-10 }
+            build-type: { id: relwithdebinfo-msan }
+          - compiler:  { id: gcc-11 }
+            build-type: { id: relwithdebinfo-msan }
+          - compiler:  { id: gcc-13 }
+            build-type: { id: relwithdebinfo-msan }
+          - compiler:  { id: gcc-9 }
+            build-type: { id: relwithdebinfo-tsan }
+          - compiler:  { id: gcc-10 }
+            build-type: { id: relwithdebinfo-tsan }
+          - compiler:  { id: gcc-11 }
+            build-type: { id: relwithdebinfo-tsan }
+          - compiler:  { id: gcc-13 }
+            build-type: { id: relwithdebinfo-tsan }
 
     runs-on: ubuntu-latest
         
@@ -468,9 +494,9 @@ jobs:
         cmake \
           --preset ${{ matrix.build-type.conan-preset }} \
           -DCFG_ENABLE_TEST_SUITE=ON \
-          -DCFG_NO_LTO=ON \
           -DJEMALLOC_PREFIX=je_ \
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }} \
+          ${{ matrix.build-type.cmake-flags }}
 
     - name: Build targets (libraries, demos/tests) with Makefile
       run: |
