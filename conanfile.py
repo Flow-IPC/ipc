@@ -46,9 +46,9 @@ class IpcRecipe(ConanFile):
         #    cmake.build(target="ipc_doc_public")
         #    cmake.build(target="ipc_doc_full")
         if self.options.build:
-            self.run("cmake --build . -- --verbose=1 --keep-going")
+            self.run("cmake --build . -- --keep-going VERBOSE=1")
         if self.options.doc:
-            self.run("cmake --build . -- --target ipc_doc_public ipc_doc_full --verbose=1 --keep-going")
+            self.run("cmake --build . -- --target ipc_doc_public ipc_doc_full --keep-going VERBOSE=1")
     
     def requirements(self):
         if self.options.build:
