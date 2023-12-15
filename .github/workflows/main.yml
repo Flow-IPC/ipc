@@ -160,11 +160,11 @@ jobs:
           - id: debug
             conan-preset: debug  
             conan-profile-build-type: Debug
-            conan-jemalloc-build-type: Debug
+            conan-profile-jemalloc-build-type: Debug
           - id: release
             conan-preset: release  
             conan-profile-build-type: Release
-            conan-jemalloc-build-type: Release
+            conan-profile-jemalloc-build-type: Release
           - id: relwithdebinfo-tsan 
             conan-preset: relwithdebinfo
             conan-profile-build-type: RelWithDebInfo
@@ -204,11 +204,11 @@ jobs:
           - id: relwithdebinfo
             conan-preset: relwithdebinfo 
             conan-profile-build-type: RelWithDebInfo   
-            conan-jemalloc-build-type: Release
+            conan-profile-jemalloc-build-type: Release
           - id: minsizerel
             conan-preset: minsizerel
             conan-profile-build-type: MinSizeRel
-            conan-jemalloc-build-type: Release
+            conan-profile-jemalloc-build-type: Release
             
         exclude:
           - compiler:  { id: gcc-9 }
