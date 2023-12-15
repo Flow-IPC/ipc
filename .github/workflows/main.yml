@@ -395,7 +395,7 @@ jobs:
           export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=$SAN_SUPP_CFG"
           echo "TSAN_OPTIONS = [$TSAN_OPTIONS]"
         fi
-        if [ "$SAN_SUPP" != '' ];
+        if [ "$SAN_SUPP" != '' ]; then
           echo '${{ matrix.build-type.option-env-name }} suppressions cfg contents:'
           echo '[[[ file--'
           cat $SAN_SUPP_CFG
