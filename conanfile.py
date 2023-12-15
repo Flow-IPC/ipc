@@ -40,11 +40,15 @@ class IpcRecipe(ConanFile):
     def build(self):
         cmake = CMake(self)
         cmake.configure()
+        #if self.options.build:
+        #    cmake.build()
+        #if self.options.doc:
+        #    cmake.build(target="ipc_doc_public")
+        #    cmake.build(target="ipc_doc_full")
         if self.options.build:
-            cmake.build()
+            self.run("cmake --build . --verbose --keep-going")
         if self.options.doc:
-            cmake.build(build_args=["--keep-going", "--verbose=1"], target="ipc_doc_public")
-            cmake.build(build_args=["--keep-going", "--verbose=1"], target="ipc_doc_full")
+            self.run("cmake --build . --target ipc_doc_public ipc_doc_full --verbose --keep-going")
     
     def requirements(self):
         if self.options.build:
