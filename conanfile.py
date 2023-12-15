@@ -28,7 +28,7 @@ class IpcRecipe(ConanFile):
         deps.generate()
        
         toolchain = CMakeToolchain(self)
-        toolchain.variables["CMAKE_VERBOSE_MAKEFILE"] = True
+        #toolchain.variables["CMAKE_VERBOSE_MAKEFILE"] = True
         if self.options.build:
             toolchain.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
             toolchain.variables["JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
@@ -43,8 +43,8 @@ class IpcRecipe(ConanFile):
         if self.options.build:
             cmake.build()
         if self.options.doc:
-            cmake.build("--keep-going", target="ipc_doc_public")
-            cmake.build("--keep-going", target="ipc_doc_full")
+            cmake.build("--keep-going", "--verbose=1", target="ipc_doc_public")
+            cmake.build("--keep-going", "--verbose=1", target="ipc_doc_full")
     
     def requirements(self):
         if self.options.build:
