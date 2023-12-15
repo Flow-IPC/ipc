@@ -51,7 +51,7 @@ jobs:
 
     - name: Create Conan profile
       run: |
-        cat <<EOF > conan_profile
+        cat <<'EOF' > conan_profile
         [settings]
         compiler = ${{ matrix.compiler.name }}
         compiler.version = ${{ matrix.compiler.version }}
@@ -69,8 +69,8 @@ jobs:
         CXX = ${{ matrix.compiler.cpp-path }}
 
         [options]
-        ipc:build = False
         ipc:doc = True
+        ipc:build = False
         EOF
 
     - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
@@ -178,8 +178,7 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             option-env-name: ASAN
-            cmake-flags: | # At least ASAN with clang + LTO => cryptic link error.  No need for LTO when *SAN.
-              -DCFG_NO_LTO=ON
+            no-lto: true # At least ASAN with clang + LTO => cryptic link error.  No need for LTO when *SAN.
           - id: relwithdebinfo-ubsan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -198,8 +197,7 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             option-env-name: UBSAN
-            cmake-flags: | # While UBSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
-              -DCFG_NO_LTO=ON
+            no-lto: true # While UBSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
           - id: relwithdebinfo-tsan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -235,7 +233,7 @@ jobs:
               Shm_session_data_test.Multithread_object_database
             skip-transport-tests: true # TODO: Explain why briefly (even though there's prob a ticket).
             option-env-name: TSAN
-            cmake-flags: # See the other *SAN; but for now I heed jkontrik's words to keep consistent with non-*SAN.
+            no-lto: false # See the other *SAN; but for now I heed jkontrik's words to keep consistent with non-*SAN.
           - id: relwithdebinfo-msan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -253,8 +251,7 @@ jobs:
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-            cmake-flags: | # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
-              -DCFG_NO_LTO=ON
+            no-lto: true # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
 
         # We concentrate on clang sanitizers; they are newer/nicer; also MSAN is clang-only.  So gcc ones excluded.
         # Attention!  Excluding some sanitizer job(s) (with these reasons):
@@ -412,7 +409,7 @@ jobs:
 
     - name: Create Conan profile
       run: |
-        cat <<EOF > conan_profile
+        cat <<'EOF' > conan_profile
         [settings]
         compiler = ${{ matrix.compiler.name }}
         compiler.version = ${{ matrix.compiler.version }}
@@ -435,11 +432,14 @@ jobs:
         ${{ matrix.build-test-cfg.conan-profile-custom-buildenv }}
 
         [options]
-        ipc:build = True
-        ipc:doc = False
-        flow:build = True
         flow:doc = False
+        flow:build = True
+        ipc:doc = False
+        ipc:build = True
         EOF
+        if [ "${{ matrix.build-test-cfg.no-lto }}" != '' ]; then
+          echo 'ipc:build_no_lto = True'
+        fi
 
     # We need to prepare a sanitizer ignore-list in MSAN mode.  Background for this is subtle and annoying:
     # As it stands, whatever matrix compiler/build-type is chosen applies not just to our code (correct)
