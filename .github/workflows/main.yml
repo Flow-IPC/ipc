@@ -313,7 +313,7 @@ jobs:
       # second_deadlock_stack=1 for TSAN: TODO: Explain.  Don't see it in clang TSAN docs.
       before_each_test: |
         export ASAN_OPTIONS="disable_coredump=0"
-        export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}.cfg"
+        export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
         export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
     
     steps: 
@@ -438,7 +438,9 @@ jobs:
         #
         # XXX Other suppressions (cmnt, maybe take sep file?).
         # boost.chrono duration global initializer => std::string uninit value (TODO: too general but...).
-        fun:*_M_is_local*
+        # There is a number of these, including things like operator+() which are tough to specify in
+        # this format; for now going in for a pound, as they say: the entire file.
+        src:*/bit/basic_string.h
         EOF
 
     - name: Install Flow-IPC dependencies with Conan using the profile
