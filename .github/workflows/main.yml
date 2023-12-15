@@ -167,7 +167,7 @@ jobs:
               LDFLAGS = -fsanitize=thread
               CXXFLAGS = -fsanitize=thread
               CFLAGS = -fsanitize=thread
-            conan-custom-package-settings: |
+            conan-custom-settings-definitions: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined-behavior']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined-behavior']
             unit-tests-params: |
@@ -250,7 +250,7 @@ jobs:
 
     - name: Add custom settings for Conan packages
       if: |
-        matrix.build-and-test-config.conan-custom-package-settings
+        matrix.build-and-test-config.conan-custom-settings-definitions
       run: |
         conan config init
         
@@ -264,7 +264,7 @@ jobs:
         with open('$CONAN_SETTINGS_PATH', 'r') as file:
           data = yaml.safe_load(file)
         
-        ${{ matrix.build-and-test-config.conan-custom-package-settings }}
+        ${{ matrix.build-and-test-config.conan-custom-settings-definitions }}
       
         with open('$CONAN_SETTINGS_PATH', 'w') as file:
           yaml.dump(data, file)
