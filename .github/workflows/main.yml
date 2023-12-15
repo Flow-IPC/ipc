@@ -84,18 +84,6 @@ jobs:
       run: |
         conan build .
 
-    - name: Get the number of processor cores for parallelized work
-      uses: SimenB/github-actions-cpu-cores@v1
-      id: cpu-cores
-
- #   - name: Doxygen-generate documentation sets using Makefile
- #     run: |
- #       VERBOSE=1 make \
- #         ipc_doc_public \
- #         ipc_doc_full \
- #         --directory $GITHUB_WORKSPACE/build/${{ matrix.build-config.conan-profile-build-type }} \
- #         -j${{ steps.cpu-cores.outputs.count }}
-
     - name: Package doc tarball [Doxygen documentation sets (full, API-only), landing page]
       run: |
         cd $GITHUB_WORKSPACE/doc/ipc_doc
