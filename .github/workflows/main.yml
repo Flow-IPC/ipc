@@ -199,7 +199,7 @@ jobs:
               Shm_pool_collection_test.Interface:\
               Shm_pool_collection_test.Multiprocess:\
               Shm_session_data_test.Multithread_object_database
-            skip_transport_tests: |
+            skip-transport-tests: |
               true
           - id: relwithdebinfo
             conan-preset: relwithdebinfo 
@@ -403,7 +403,7 @@ jobs:
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
       if: |
-        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
+        (!cancelled()) && !matrix.build-and-test-config.skip-transport-tests
       run: |
         ${{ env.setup-tests-env-vars }}
         cat <<'EOF' > ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_sc.sh
@@ -431,7 +431,7 @@ jobs:
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
       if: |
-        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
+        (!cancelled()) && !matrix.build-and-test-config.skip-transport-tests
       run: |
         ${{ env.setup-tests-env-vars }}
         /usr/bin/bash -e \
@@ -440,7 +440,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure') && !matrix.build-and-test-config.skip_transport_tests
+        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure') && !matrix.build-and-test-config.skip-transport-tests
       run: |
         ${{ env.setup-tests-env-vars }}
         /usr/bin/bash -e \
@@ -454,7 +454,7 @@ jobs:
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: |
-        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
+        (!cancelled()) && !matrix.build-and-test-config.skip-transport-tests
       run: |
         rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }}
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
@@ -465,7 +465,7 @@ jobs:
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: |
-        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
+        (!cancelled()) && !matrix.build-and-test-config.skip-transport-tests
       run: |
         cat <<'EOF' > ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
@@ -494,7 +494,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       id: transport_test_ex_heap
       if: |
-        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
+        (!cancelled()) && !matrix.build-and-test-config.skip-transport-tests
       run: |
         ${{ env.setup-tests-env-vars }}
         /usr/bin/bash -e \
@@ -503,7 +503,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure') && !matrix.build-and-test-config.skip_transport_tests
+        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure') && !matrix.build-and-test-config.skip-transport-tests
       run: |
         ${{ env.setup-tests-env-vars }}
         /usr/bin/bash -e \
@@ -513,7 +513,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
       if: |
-        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
+        (!cancelled()) && !matrix.build-and-test-config.skip-transport-tests
       run: |
         ${{ env.setup-tests-env-vars }}
         /usr/bin/bash -e \
@@ -522,7 +522,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure') && !matrix.build-and-test-config.skip_transport_tests
+        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure') && !matrix.build-and-test-config.skip-transport-tests
       run: |
         ${{ env.setup-tests-env-vars }}
         /usr/bin/bash -e \
@@ -532,7 +532,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        (!cancelled()) && !matrix.build-and-test-config.skip_transport_tests
+        (!cancelled()) && !matrix.build-and-test-config.skip-transport-tests
       run: |
         ${{ env.setup-tests-env-vars }}
         /usr/bin/bash -e \
@@ -541,7 +541,7 @@ jobs:
 
     - name: Re-run with increased logging, on failure only
       if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure') && !matrix.build-and-test-config.skip_transport_tests 
+        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure') && !matrix.build-and-test-config.skip-transport-tests 
       run: |
         ${{ env.setup-tests-env-vars }}
         /usr/bin/bash -e \
@@ -550,7 +550,7 @@ jobs:
 
     - name: Upload logs for [transport_test - All modes]
       if: |
-        always() && !matrix.build-and-test-config.skip_transport_tests
+        always() && !matrix.build-and-test-config.skip-transport-tests
       uses: actions/upload-artifact@v3
       with:
         name: ipc-transport-test-run-${{ matrix.compiler.id }}-${{ matrix.build-and-test-config.id }}
