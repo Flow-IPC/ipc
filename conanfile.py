@@ -20,6 +20,10 @@ class IpcRecipe(ConanFile):
         if self.options.build:
             self.options["jemalloc"].enable_cxx = False 
             self.options["jemalloc"].prefix = "je_"
+            if self.settings.build_type in ("RelWithDebInfo", "Release", "MinSizeRel"):   
+                self.options["jemalloc"].build_type = "Release"
+            else:
+                self.options["jemalloc"].build_type = "Debug"
     
     def generate(self):
         deps = CMakeDeps(self)
@@ -32,6 +36,9 @@ class IpcRecipe(ConanFile):
             toolchain.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
             toolchain.variables["CMAKE_VERBOSE_MAKEFILE"] = True
             toolchain.variables["JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
+        if self.options.doc:
+            toolchain.variables["CFG_ENABLE_DOC_GEN"] = "ON"
+            toolchain.variables["CFG_SKIP_CODE_GEN"] = "ON"
         toolchain.generate()
     
     def build(self):
