@@ -270,7 +270,7 @@ jobs:
                 Borrower_shm_pool_collection_test.Multiprocess:\
                 Shm_pool_collection_test.Interface:\
                 Shm_pool_collection_test.Multiprocess:\
-                Shm_session_data_test.Multithread_object_database\
+                Shm_session_data_test.Multithread_object_database
             cmake-flags: # See the other *SAN; but for now I heed jkontrik's words to keep consistent with non-*SAN.
           - id: relwithdebinfo
             conan-build-type: RelWithDebInfo
@@ -606,7 +606,13 @@ jobs:
         echo $TSAN_OPTIONS
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         mkdir -p logs/libipc_unit_test
-        ./libipc_unit_test.exec ${{ matrix.build-type.gtest-unit-tests-params }} > logs/libipc_unit_test/console.log 2>&1
+        # Some newline issues with the possible additional args; so need to make a wrapper script
+        # and then redirect, as desired, its output.
+        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_unit_test.sh
+        ./libipc_unit_test.exec ${{ matrix.build-type.gtest-unit-tests-params }}
+        EOF
+        /usr/bin/bash -e $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_unit_test.sh \
+          > logs/libipc_unit_test/console.log 2>&1
 
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
     # any failing step is repeated with logging hiked up.  Note that formally (and practically)
