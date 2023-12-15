@@ -42,8 +42,8 @@ class IpcRecipe(ConanFile):
         cmake.configure()
         if self.options.build:
             cmake.build()
-        else:
-            cmake.build(target="ipc_doc_public ipc_doc_full")
+        if self.options.doc:
+            cmake.build(target=["ipc_doc_public", "ipc_doc_full"])
     
     def requirements(self):
         if self.options.build:
