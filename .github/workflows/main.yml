@@ -280,7 +280,7 @@ jobs:
         #       something being uncaught (incorrectly) with a later version are slim.  Not impossible though.  Look
         #       into it.
         exclude:
-          - build-type: { id: relwithdebinfo-msan }
+          - build-test-cfg: { id: relwithdebinfo-msan }
           - compiler:  { id: gcc-9 }
             build-test-cfg: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-10 }
