@@ -344,9 +344,9 @@ jobs:
         export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
         # XXX
         echo "$UBSAN_OPTIONS"
-        cat ${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        cat ${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg || true
         echo "$TSAN_OPTIONS"
-        cat ${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        cat ${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg || true
         echo "--"
     
     steps: 
@@ -483,9 +483,9 @@ jobs:
         ${{ env.before_each_test }}
         # XXX
         echo "$UBSAN_OPTIONS"
-        cat ${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        cat ${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg || true
         echo "$TSAN_OPTIONS"
-        cat ${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        cat ${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg || true
         echo "--"
         conan editable add flow flow/1.0
         conan install \
@@ -563,9 +563,9 @@ jobs:
         ${{ env.before_each_test }}
         # XXX
         echo "$UBSAN_OPTIONS"
-        cat ${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        cat ${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg || true
         echo "$TSAN_OPTIONS"
-        cat ${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+        cat ${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg || true
         echo "--"
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         mkdir -p logs/ipc_core_link_test
