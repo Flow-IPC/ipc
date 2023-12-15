@@ -88,7 +88,9 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/doc/ipc_doc
         $GITHUB_WORKSPACE/tools/doc/stage_generated_docs.sh $GITHUB_WORKSPACE/build/${{ matrix.build-config.conan-profile-build-type }}
-        rm -rf generated # Save runner space.
+
+        # Save runner space.
+        rm -rf generated 
 
     - name: Upload documentation tarball
       uses: actions/upload-artifact@v3
@@ -146,15 +148,12 @@ jobs:
             install: True     
         build-and-test-config:
           - id: debug
-            conan-preset: debug  
             conan-profile-build-type: Debug
             conan-profile-jemalloc-build-type: Debug
           - id: release
-            conan-preset: release  
             conan-profile-build-type: Release
             conan-profile-jemalloc-build-type: Release
           - id: relwithdebinfo-tsan 
-            conan-preset: relwithdebinfo
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
             conan-profile-custom-conf: |
@@ -190,11 +189,9 @@ jobs:
             skip-transport-tests: |
               true
           - id: relwithdebinfo
-            conan-preset: relwithdebinfo 
             conan-profile-build-type: RelWithDebInfo   
             conan-profile-jemalloc-build-type: Release
           - id: minsizerel
-            conan-preset: minsizerel
             conan-profile-build-type: MinSizeRel
             conan-profile-jemalloc-build-type: Release
             
@@ -209,7 +206,7 @@ jobs:
             build-and-test-config: { id: relwithdebinfo-tsan }
 
     env: 
-      setup-tests-env-vars: |
+      setup-tests-env: |
         if [ "${{ matrix.build-and-test-config.id }}" = relwithdebinfo-tsan ]; then
           export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
         fi
@@ -320,14 +317,14 @@ jobs:
     - name: Install targets with Makefile
       run: |
         VERBOSE=1 make install \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }} \
+          --directory ${{ github.workspace }}/build/${{ matrix.build-and-test-config.conan-profile-build-type }} \
           DESTDIR=${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: |
         !cancelled()
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         cd ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin
         ./ipc_core_link_test.exec
 
@@ -335,7 +332,7 @@ jobs:
       if: |
         !cancelled()
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         cd ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin
         ./ipc_transport_structured_link_test.exec
 
@@ -343,7 +340,7 @@ jobs:
       if: |
         !cancelled()
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         cd ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin
         ./ipc_session_link_test_srv.exec & 
         sleep 1
@@ -353,7 +350,7 @@ jobs:
       if: |
         !cancelled()
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         cd ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin
         ./ipc_shm_link_test_srv.exec & 
         sleep 1
@@ -363,7 +360,7 @@ jobs:
       if: |
         !cancelled()
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         cd ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin
         ./ipc_shm_arena_lend_link_test_srv.exec & 
         sleep 1
@@ -375,7 +372,7 @@ jobs:
       if: |
         !cancelled()
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         echo $TSAN_OPTIONS
         cd ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin
         ./libipc_unit_test.exec ${{ matrix.build-and-test-config.unit-tests-params }}
@@ -395,7 +392,7 @@ jobs:
       if: |
         !cancelled() && !matrix.build-and-test-config.skip-transport-tests
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         cat <<'EOF' > ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_sc.sh
         # Script created by pipeline during job.
         echo "Log level: [$1]."
@@ -423,7 +420,7 @@ jobs:
       if: |
         !cancelled() && !matrix.build-and-test-config.skip-transport-tests
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
           ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_sc.sh \
           info
@@ -432,7 +429,7 @@ jobs:
       if: |
         !cancelled() && (steps.transport_test_scripted.outcome == 'failure') && !matrix.build-and-test-config.skip-transport-tests
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
           ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_sc.sh \
           data
@@ -486,7 +483,7 @@ jobs:
       if: |
         !cancelled() && !matrix.build-and-test-config.skip-transport-tests
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
           ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_ex.sh \
           info heap
@@ -495,7 +492,7 @@ jobs:
       if: |
         !cancelled() && (steps.transport_test_ex_heap.outcome == 'failure') && !matrix.build-and-test-config.skip-transport-tests
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
           ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_ex.sh \
           data heap_log_level_data
@@ -505,7 +502,7 @@ jobs:
       if: |
         !cancelled() && !matrix.build-and-test-config.skip-transport-tests
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
           ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_ex.sh \
           info shm_classic -shm-c
@@ -514,7 +511,7 @@ jobs:
       if: |
         !cancelled() && (steps.transport_test_ex_shm_c.outcome == 'failure') && !matrix.build-and-test-config.skip-transport-tests
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
           ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_ex.sh \
           data shm_classic_log_level_data -shm-c
@@ -524,7 +521,7 @@ jobs:
       if: |
         !cancelled() && !matrix.build-and-test-config.skip-transport-tests
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
           ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_ex.sh \
           info shm_jemalloc -shm-j
@@ -533,7 +530,7 @@ jobs:
       if: |
         !cancelled() && (steps.transport_test_ex_shm_j.outcome == 'failure') && !matrix.build-and-test-config.skip-transport-tests 
       run: |
-        ${{ env.setup-tests-env-vars }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
           ${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}/usr/local/bin/run_transport_test_ex.sh \
           data shm_jemalloc_log_level_data -shm-j
