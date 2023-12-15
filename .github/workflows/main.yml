@@ -163,15 +163,12 @@ jobs:
           - id: debug
             conan-preset: debug  
             conan-profile-build-type: Debug
-            conan-profile-jemalloc-build-type: Debug     
           - id: release
             conan-preset: release  
             conan-profile-build-type: Release
-            conan-profile-jemalloc-build-type: Release  
           - id: relwithdebinfo-tsan 
             conan-preset: relwithdebinfo
             conan-profile-build-type: RelWithDebInfo
-            conan-profile-jemalloc-build-type: Release
             conan-profile-custom-conf: |
               tools.build:cflags = [ "-fsanitize=thread" ]
               tools.build:cxxflags = [ "-fsanitize=thread" ]
@@ -206,12 +203,10 @@ jobs:
               true
           - id: relwithdebinfo
             conan-preset: relwithdebinfo 
-            conan-profile-build-type: RelWithDebInfo
-            conan-profile-jemalloc-build-type: Release     
+            conan-profile-build-type: RelWithDebInfo   
           - id: minsizerel
             conan-preset: minsizerel
             conan-profile-build-type: MinSizeRel
-            conan-profile-jemalloc-build-type: Release
             
         exclude:
           - compiler:  { id: gcc-9 }
@@ -297,7 +292,6 @@ jobs:
         arch = x86_64
         os = Linux
         build_type = ${{ matrix.build-and-test-config.conan-profile-build-type }}
-        jemalloc:build_type = ${{ matrix.build-and-test-config.conan-profile-jemalloc-build-type }}
         ${{ matrix.build-and-test-config.conan-profile-custom-settings }}
           
         [conf]
