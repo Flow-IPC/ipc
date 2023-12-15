@@ -7,51 +7,51 @@ on:
   pull_request:
     branches:
       - main
-  # To run a workflow manually, the workflow must be configured to run on the workflow_dispatch event.
+  # To create the button that runs a workflow manually (has to be in `main` at least):
   workflow_dispatch:
-  
+
 jobs:
   doc:
     strategy:
       fail-fast: false
       matrix:
-        # Just pick one that's pre-installed and reasonably new.
         compiler:
           - id: clang-15
             name: clang
             version: 15
             c-path: /usr/bin/clang-15
             cpp-path: /usr/bin/clang++-15
-        build-type:
+        build-cfg:
           - id: release
-            conan-build-type: Release
+            conan-profile-build-type: Release
             conan-preset: release
 
-    runs-on: ubuntu-latest
-        
+    # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
+    runs-on: ubuntu-22.04
+
     name: |
-      doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
-      
-    steps: 
+      doc-${{ matrix.compiler.id }}-${{ matrix.build-cfg.id }}
+
+    steps:
     - name: Update available software list for apt-get
       run: sudo apt-get update
-      
-    - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
+
+    - name: Checkout `ipc` repository and submodules (like `flow`)
       uses: actions/checkout@v4
       with:
         submodules: true
 
-    - name: Install Flow-IPC dependencies (inc. Graphviz) with apt-get
+    - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
       run: |
         sudo apt-get install -y graphviz
 
     - name: Install the latest version of Conan which is less than 2
       run: |
         pip install "conan<2"
-    
+
     - name: Create Conan profile
       run: |
-        cat <<EOF > conan_profile   
+        cat <<EOF > conan_profile
         [settings]
         compiler = ${{ matrix.compiler.name }}
         compiler.version = ${{ matrix.compiler.version }}
@@ -59,11 +59,11 @@ jobs:
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
-        build_type = ${{ matrix.build-type.conan-build-type }}
-          
+        build_type = ${{ matrix.build-cfg.conan-profile-build-type }}
+
         [conf]
         tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
-  
+
         [buildenv]
         CC = ${{ matrix.compiler.c-path }}
         CXX = ${{ matrix.compiler.cpp-path }}
@@ -72,8 +72,8 @@ jobs:
         ipc:build = False
         ipc:doc = True
         EOF
-    
-    - name: Install Flow-IPC dependencies (inc. Doxygen) with Conan using the profile
+
+    - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
       run: |
         conan install \
           . \
@@ -81,40 +81,21 @@ jobs:
           --profile:host conan_profile \
           --build missing
 
-    - name: Prepare Makefile using CMake
+    - name: Generate code documentation using Conan and Doxygen
       run: |
-        cmake \
-          --preset ${{ matrix.build-type.conan-preset }} \
-          -DCFG_ENABLE_DOC_GEN=ON \
-          -DCFG_SKIP_CODE_GEN=ON
+        conan build .
 
-    - name: Get the number of processor cores for parallelized work
-      uses: SimenB/github-actions-cpu-cores@v1
-      id: cpu-cores
-
-    # Note that `flow_doc_public` and `flow_doc_full` targets are also available; and a user locally
-    # may well want to use them.  We, however, have chosen to dedicate a Flow-only workflow
-    # (in `flow` repo) to Flow; it will generate the Flow docs.  Meanwhile ipc_doc_* targets create
-    # monolithic documentation from the ipc_* submodules and `ipc` itself -- but *not* from
-    # `flow` submodule.
-    - name: Doxygen-generate documentation sets using Makefile
+    - name: Create documentation tarball (full, API-only, landing page)
       run: |
-        VERBOSE=1 make \
-          ipc_doc_public \
-          ipc_doc_full \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }} \
-          -j${{ steps.cpu-cores.outputs.count }}
-
-    - name: Package doc tarball [Doxygen documentation sets (full, API-only), landing page]
-      run: |
-        cd $GITHUB_WORKSPACE/doc/ipc_doc
-        $GITHUB_WORKSPACE/tools/doc/stage_generated_docs.sh $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }}
-        rm -rf generated # Save runner space.
+        cd ${{ github.workspace }}/doc/ipc_doc
+        ${{ github.workspace }}/tools/doc/stage_generated_docs.sh ${{ github.workspace }}/build/${{ matrix.build-cfg.conan-profile-build-type }}
+        # Save runner space.
+        rm -rf generated
 
     - name: Upload documentation tarball
       uses: actions/upload-artifact@v3
       with:
-        name: ipc-doc-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+        name: ipc-doc-${{ matrix.compiler.id }}-${{ matrix.build-cfg.id }}
         path: |
           ${{ github.workspace }}/doc/ipc_doc.tgz
 
@@ -127,7 +108,7 @@ jobs:
             name: gcc
             version: 9
             c-path: /usr/bin/gcc-9
-            cpp-path: /usr/bin/g++-9  
+            cpp-path: /usr/bin/g++-9
           - id: gcc-10
             name: gcc
             version: 10
@@ -142,45 +123,45 @@ jobs:
             name: gcc
             version: 13
             c-path: /usr/bin/gcc-13
-            cpp-path: /usr/bin/g++-13        
+            cpp-path: /usr/bin/g++-13
           - id: clang-13
             name: clang
             version: 13
             c-path: /usr/bin/clang-13
-            cpp-path: /usr/bin/clang++-13  
+            cpp-path: /usr/bin/clang++-13
           - id: clang-15
             name: clang
             version: 15
             c-path: /usr/bin/clang-15
-            cpp-path: /usr/bin/clang++-15     
+            cpp-path: /usr/bin/clang++-15
           - id: clang-16
             name: clang
-            version: 16 
-            c-path: /usr/bin/clang-16 
+            version: 16
+            c-path: /usr/bin/clang-16
             cpp-path: /usr/bin/clang++-16
             install: True
-          - id: clang-17 
+          - id: clang-17
             name: clang
             version: 17
             c-path: /usr/bin/clang-17
             cpp-path: /usr/bin/clang++-17
             install: True
-        build-type:
+        build-test-cfg:
           - id: debug
-            conan-build-type: Debug
-            conan-jemalloc-build-type: Debug
-            conan-preset: debug
+            conan-profile-build-type: Debug
+            conan-profile-jemalloc-build-type: Debug
           - id: release
-            conan-build-type: Release
-            conan-jemalloc-build-type: Release
-            conan-preset: release    
+            conan-profile-build-type: Release
+            conan-profile-jemalloc-build-type: Release
+          - id: relwithdebinfo
+            conan-profile-build-type: RelWithDebInfo
+            conan-profile-jemalloc-build-type: Release
+          - id: minsizerel
+            conan-profile-build-type: MinSizeRel
+            conan-profile-jemalloc-build-type: Release
           - id: relwithdebinfo-asan
-            conan-build-type: RelWithDebInfo
-            conan-jemalloc-build-type: Release
-            conan-preset: relwithdebinfo
-            conan-custom-settings: | # Could we not copy/paste these 4x?
-              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
+            conan-profile-build-type: RelWithDebInfo
+            conan-profile-jemalloc-build-type: Release
             conan-profile-custom-conf: |
               # no-omit-frame-pointer recommended in (A|UB|M)SAN docs for nice stack traces.
               tools.build:cflags = ["-fsanitize=address", "-fno-omit-frame-pointer"]
@@ -193,16 +174,15 @@ jobs:
               CXXFLAGS = -fsanitize=address -fno-omit-frame-pointer
               CFLAGS = -fsanitize=address -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=address
+            conan-custom-settings-defs: | # Could we not copy/paste these 4x?
+              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
+              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             option-env-name: ASAN
             cmake-flags: | # At least ASAN with clang + LTO => cryptic link error.  No need for LTO when *SAN.
               -DCFG_NO_LTO=ON
           - id: relwithdebinfo-ubsan
-            conan-build-type: RelWithDebInfo
-            conan-jemalloc-build-type: Release
-            conan-preset: relwithdebinfo
-            conan-custom-settings: |
-              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
+            conan-profile-build-type: RelWithDebInfo
+            conan-profile-jemalloc-build-type: Release
             conan-profile-custom-conf: |
               tools.build:cflags = ["-fsanitize=undefined", "-fno-omit-frame-pointer"]
               tools.build:cxxflags = ["-fsanitize=undefined", "-fno-omit-frame-pointer"]
@@ -214,18 +194,52 @@ jobs:
               CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=undefined
+            conan-custom-settings-defs: |
+              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
+              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             option-env-name: UBSAN
             cmake-flags: | # While UBSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
               -DCFG_NO_LTO=ON
-          - id: relwithdebinfo-msan
-            conan-build-type: RelWithDebInfo
-            conan-jemalloc-build-type: Release
-            conan-preset: relwithdebinfo
-            conan-custom-settings: |
+          - id: relwithdebinfo-tsan
+            conan-profile-build-type: RelWithDebInfo
+            conan-profile-jemalloc-build-type: Release
+            conan-profile-custom-conf: |
+              tools.build:cflags = ["-fsanitize=thread"]
+              tools.build:cxxflags = ["-fsanitize=thread"]
+              tools.build:sharedlinkflags = ["-fsanitize=thread"]
+              tools.build:exelinkflags = ["-fsanitize=thread"]
+            conan-profile-custom-settings: |
+              compiler.sanitizer = thread
+            conan-profile-custom-buildenv: |
+              CXXFLAGS = -fsanitize=thread
+              CFLAGS = -fsanitize=thread
+              LDFLAGS = -fsanitize=thread
+            conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
+            unit-tests-params: | # As of this writing these trigger assert+bugs in TSAN runtime.  TODO: Revisit.
+              --gtest_filter=-Shm_session_test.In_process_array:\
+              Shm_session_test.In_process_vector_offset_ptr:\
+              Shm_session_test.In_process_string_offset_ptr:\
+              Shm_session_test.In_process_list_offset_ptr:\
+              Shm_session_test.Multisession_in_process:\
+              Shm_session_test.Allocation_performance_five:\
+              Jemalloc_shm_pool_collection_test.Interface:\
+              Jemalloc_shm_pool_collection_test.Multiprocess:\
+              Jemalloc_shm_pool_collection_test.Owner_shm_pool_removal:\
+              Jemalloc_shm_pool_collection_test.Multithread_load:\
+              Borrower_shm_pool_collection_test.Interface:\
+              Borrower_shm_pool_collection_test.Multiprocess:\
+              Shm_pool_collection_test.Interface:\
+              Shm_pool_collection_test.Multiprocess:\
+              Shm_session_data_test.Multithread_object_database
+            skip-transport-tests: true # TODO: Explain why briefly (even though there's prob a ticket).
+            option-env-name: TSAN
+            cmake-flags: # See the other *SAN; but for now I heed jkontrik's words to keep consistent with non-*SAN.
+          - id: relwithdebinfo-msan
+            conan-profile-build-type: RelWithDebInfo
+            conan-profile-jemalloc-build-type: Release
             conan-profile-custom-conf: |
-              # See comment near step below where this ignorelist file is prepped.
               tools.build:cflags = ["-fsanitize=memory", "-fno-omit-frame-pointer", "-fsanitize-ignorelist=/tmp/msan_ignore_list.cfg"]
               tools.build:cxxflags = ["-fsanitize=memory", "-fno-omit-frame-pointer", "-fsanitize-ignorelist=/tmp/msan_ignore_list.cfg"]
               tools.build:sharedlinkflags = ["-fsanitize=memory"]
@@ -236,53 +250,11 @@ jobs:
               CXXFLAGS = -fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=/tmp/msan_ignore_list.cfg
               CFLAGS = -fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=/tmp/msan_ignore_list.cfg
               LDFLAGS = -fsanitize=memory
-            cmake-flags: | # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
-              -DCFG_NO_LTO=ON
-          - id: relwithdebinfo-tsan
-            conan-build-type: RelWithDebInfo
-            conan-jemalloc-build-type: Release
-            conan-preset: relwithdebinfo
-            conan-custom-settings: |
+            conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-            conan-profile-custom-conf: |
-              tools.build:cflags = ["-fsanitize=thread"]
-              tools.build:cxxflags = ["-fsanitize=thread"]
-              tools.build:sharedlinkflags = ["-fsanitize=thread"]
-              tools.build:exelinkflags = ["-fsanitize=thread"]
-            conan-profile-custom-settings: |
-              compiler.sanitizer = thread   
-            conan-profile-custom-buildenv: |
-              CXXFLAGS = -fsanitize=thread
-              CFLAGS = -fsanitize=thread
-              LDFLAGS = -fsanitize=thread
-            gtest-unit-tests-params: | # As of this writing these trigger assert+bugs in TSAN runtime.  TODO: Revisit.
-              --gtest_filter=-\
-                Shm_session_test.In_process_array:\
-                Shm_session_test.In_process_vector_offset_ptr:\
-                Shm_session_test.In_process_string_offset_ptr:\
-                Shm_session_test.In_process_list_offset_ptr:\
-                Shm_session_test.Multisession_in_process:\
-                Shm_session_test.Allocation_performance_five:\
-                Jemalloc_shm_pool_collection_test.Interface:\
-                Jemalloc_shm_pool_collection_test.Multiprocess:\
-                Jemalloc_shm_pool_collection_test.Owner_shm_pool_removal:\
-                Jemalloc_shm_pool_collection_test.Multithread_load:\
-                Borrower_shm_pool_collection_test.Interface:\
-                Borrower_shm_pool_collection_test.Multiprocess:\
-                Shm_pool_collection_test.Interface:\
-                Shm_pool_collection_test.Multiprocess:\
-                Shm_session_data_test.Multithread_object_database
-            option-env-name: TSAN
-            cmake-flags: # See the other *SAN; but for now I heed jkontrik's words to keep consistent with non-*SAN.
-          - id: relwithdebinfo
-            conan-build-type: RelWithDebInfo
-            conan-jemalloc-build-type: Release
-            conan-preset: relwithdebinfo      
-          - id: minsizerel
-            conan-build-type: MinSizeRel
-            conan-jemalloc-build-type: Release
-            conan-preset: minsizerel
+            cmake-flags: | # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
+              -DCFG_NO_LTO=ON
 
         # We concentrate on clang sanitizers; they are newer/nicer; also MSAN is clang-only.  So gcc ones excluded.
         # Attention!  Excluding some sanitizer job(s) (with these reasons):
@@ -305,61 +277,43 @@ jobs:
         #     So the bottom line: MSAN is a tough cookie and requires more work before enabling.  In the meantime we
         #     have many layers of protection, including ASAN and UBSAN and lots of unit and integration tests.
         #     So this status quo is pretty good.  TODO: Do the work/get MSAN functional/useful; un-exclude it then.
-        #   - TSAN: Disabling but soon this shall be merged with jkontrik's parallel TSAN work and get re-enabled.
-        #     The existing TSAN state is from the middle of jkontrik's TSAN work as merged at that time.
         #   - *SAN with gcc: We concentrate on clang sanitizers; they are newer/nicer; having to worry about differences
         #     between them is an excessive burden.  So excluding gcc ASAN/UBSAN/TSAN.
         #     - TODO: Consider reducing to the newest clang.  Generally they just keep improving; the chances of
         #       something being uncaught (incorrectly) with a later version are slim.  Not impossible though.  Look
         #       into it.
         exclude:
-          - compiler:  { id: gcc-9 }
-            build-type: { id: relwithdebinfo-asan }
-          - compiler:  { id: gcc-10 }
-            build-type: { id: relwithdebinfo-asan }
-          - compiler:  { id: gcc-11 }
-            build-type: { id: relwithdebinfo-asan }
-          - compiler:  { id: gcc-13 }
-            build-type: { id: relwithdebinfo-asan }
-          - compiler:  { id: gcc-9 }
-            build-type: { id: relwithdebinfo-ubsan }
-          - compiler:  { id: gcc-10 }
-            build-type: { id: relwithdebinfo-ubsan }
-          - compiler:  { id: gcc-11 }
-            build-type: { id: relwithdebinfo-ubsan }
-          - compiler:  { id: gcc-13 }
-            build-type: { id: relwithdebinfo-ubsan }
-          - compiler:  { id: gcc-9 }
-            build-type: { id: relwithdebinfo-msan }
-          - compiler:  { id: gcc-10 }
-            build-type: { id: relwithdebinfo-msan }
-          - compiler:  { id: gcc-11 }
-            build-type: { id: relwithdebinfo-msan }
-          - compiler:  { id: gcc-13 }
-            build-type: { id: relwithdebinfo-msan }
-          - compiler:  { id: gcc-9 }
-            build-type: { id: relwithdebinfo-tsan }
-          - compiler:  { id: gcc-10 }
-            build-type: { id: relwithdebinfo-tsan }
-          - compiler:  { id: gcc-11 }
-            build-type: { id: relwithdebinfo-tsan }
-          - compiler:  { id: gcc-13 }
-            build-type: { id: relwithdebinfo-tsan }
-          - build-type: { id: relwithdebinfo }
-          - build-type: { id: release }
-          - build-type: { id: debug }
-          - build-type: { id: minsizerel }
-          - build-type: { id: relwithdebinfo-tsan }
           - build-type: { id: relwithdebinfo-msan }
+          - compiler:  { id: gcc-9 }
+            build-test-cfg: { id: relwithdebinfo-asan }
+          - compiler:  { id: gcc-10 }
+            build-test-cfg: { id: relwithdebinfo-asan }
+          - compiler:  { id: gcc-11 }
+            build-test-cfg: { id: relwithdebinfo-asan }
+          - compiler:  { id: gcc-13 }
+            build-test-cfg: { id: relwithdebinfo-asan }
+          - compiler:  { id: gcc-9 }
+            build-test-cfg: { id: relwithdebinfo-ubsan }
+          - compiler:  { id: gcc-10 }
+            build-test-cfg: { id: relwithdebinfo-ubsan }
+          - compiler:  { id: gcc-11 }
+            build-test-cfg: { id: relwithdebinfo-ubsan }
+          - compiler:  { id: gcc-13 }
+            build-test-cfg: { id: relwithdebinfo-ubsan }
+          - compiler:  { id: gcc-9 }
+            build-test-cfg: { id: relwithdebinfo-tsan }
+          - compiler:  { id: gcc-10 }
+            build-test-cfg: { id: relwithdebinfo-tsan }
+          - compiler:  { id: gcc-11 }
+            build-test-cfg: { id: relwithdebinfo-tsan }
+          - compiler:  { id: gcc-13 }
+            build-test-cfg: { id: relwithdebinfo-tsan }
 
-# XXX -^
-#          - build-type: { id: relwithdebinfo-asan }
+    # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
+    runs-on: ubuntu-22.04
 
-    runs-on: ubuntu-latest
-        
     name: |
-      build-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
-
+      build-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
     env:
       # Run-time controls for various sanitizers.  Some notes:
       #
@@ -380,38 +334,39 @@ jobs:
       # nightmare; there is some interaction in clang (at least 13-17) which causes the
       # wrong sanitizer reading suppressions from another one => suppression parse error =>
       # none of the demos/tests get anywhere at all.  So set just the right one!
-      before_each_test: |
-        if [ "${{ matrix.build-type.option-env-name }}" = ASAN ]; then
+      setup-tests-env: |
+        if [ "${{ matrix.build-test-cfg.option-env-name }}" = ASAN ]; then
           export ASAN_OPTIONS='disable_coredump=0'
           echo "ASAN_OPTIONS = [$ASAN_OPTIONS]"
-        elif [ "${{ matrix.build-type.option-env-name }}" = UBSAN ]; then
+        elif [ "${{ matrix.build-test-cfg.option-env-name }}" = UBSAN ]; then
           export SAN_SUPP=1
           export SAN_SUPP_CFG=${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
           export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=$SAN_SUPP_CFG"
           echo "UBSAN_OPTIONS = [$UBSAN_OPTIONS]"
-        elif [ "${{ matrix.build-type.option-env-name }}" = TSAN ]; then
+        elif [ "${{ matrix.build-test-cfg.option-env-name }}" = TSAN ]; then
           export SAN_SUPP=1
           export SAN_SUPP_CFG=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
           export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=$SAN_SUPP_CFG"
           echo "TSAN_OPTIONS = [$TSAN_OPTIONS]"
         fi
         if [ "$SAN_SUPP" != '' ]; then
-          echo '${{ matrix.build-type.option-env-name }} suppressions cfg contents:'
+          echo '${{ matrix.build-test-cfg.option-env-name }} suppressions cfg contents:'
           echo '[[[ file--'
           cat $SAN_SUPP_CFG
           echo '--file ]]]'
         fi
 
-    steps: 
+    steps:
     - name: Update available software list for apt-get
-      run: sudo apt-get update
-      
+      run: |
+        lsb_release -a
+        sudo apt-get update
+
     - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
       uses: actions/checkout@v4
       with:
         submodules: true
 
-    # Many compilers are pre-installed; if not then fetch it.
     - name: Install clang compiler
       if: |
         matrix.compiler.install && (matrix.compiler.name == 'clang')
@@ -435,10 +390,10 @@ jobs:
 
     - name: Add custom settings for Conan packages
       if: |
-        matrix.build-type.conan-custom-settings
+        matrix.build-test-cfg.conan-custom-settings-defs
       run: |
         conan config init
-        
+
         pip install PyYAML
 
         CONAN_SETTINGS_PATH=$(conan config home)/settings.yml
@@ -448,16 +403,16 @@ jobs:
 
         with open('$CONAN_SETTINGS_PATH', 'r') as file:
           data = yaml.safe_load(file)
-        
-        ${{ matrix.build-type.conan-custom-settings }}
-      
+
+        ${{ matrix.build-test-cfg.conan-custom-settings-defs }}
+
         with open('$CONAN_SETTINGS_PATH', 'w') as file:
           yaml.dump(data, file)
         "
 
     - name: Create Conan profile
       run: |
-        cat <<EOF > conan_profile   
+        cat <<EOF > conan_profile
         [settings]
         compiler = ${{ matrix.compiler.name }}
         compiler.version = ${{ matrix.compiler.version }}
@@ -465,23 +420,21 @@ jobs:
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
-        build_type = ${{ matrix.build-type.conan-build-type }}
-        jemalloc:build_type = ${{ matrix.build-type.conan-jemalloc-build-type }}
-        ${{ matrix.build-type.conan-profile-custom-settings }}
-          
+        jemalloc:build_type = ${{ matrix.build-test-cfg.conan-profile-jemalloc-build-type }}
+        build_type = ${{ matrix.build-test-cfg.conan-profile-build-type }}
+        ${{ matrix.build-test-cfg.conan-profile-custom-settings }}
+
         [conf]
-        tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
         tools.env.virtualenv:auto_use = True
-        ${{ matrix.build-type.conan-profile-custom-conf }}
-  
+        tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
+        ${{ matrix.build-test-cfg.conan-profile-custom-conf }}
+
         [buildenv]
         CC = ${{ matrix.compiler.c-path }}
         CXX = ${{ matrix.compiler.cpp-path }}
-        ${{ matrix.build-type.conan-profile-custom-buildenv }}
+        ${{ matrix.build-test-cfg.conan-profile-custom-buildenv }}
 
         [options]
-        jemalloc:enable_cxx = False 
-        jemalloc:prefix = je_
         ipc:build = True
         ipc:doc = False
         flow:build = True
@@ -506,7 +459,7 @@ jobs:
     # unpleasant it does get the job done.  TODO: Revisit/resolve tickets/improve (see above).
     - name: Prepare MSAN sanitizer compile-time config file(s)
       if: |
-        (!cancelled()) && (matrix.build-type.id == 'relwithdebinfo-msan')
+        (!cancelled()) && (matrix.build-test-cfg.id == 'relwithdebinfo-msan')
       run: |
         # TODO: Ideally would go, like other things, under github.workspace somewhere (maybe build/),
         # but that var isn't available in `strategy` up above, where we specify the compiler option
@@ -527,7 +480,7 @@ jobs:
         # sanitizers' suppressions.  (Note, though, that MSAN does not have a run-time suppression
         # system; only these ignore-lists.  The others do also have ignore-lists though.
         # The format is totally different between the 2 types of suppression.)
-        cat $GITHUB_WORKSPACE/msan_ignore_list_${{ matrix.compiler.name }}.cfg >> /tmp/msan_ignore_list.cfg
+        cat ${{ github.workspace }}/msan_ignore_list_${{ matrix.compiler.name }}.cfg >> /tmp/msan_ignore_list.cfg
         echo "The combined MSAN ignore-list config file follows:"
         cat /tmp/msan_ignore_list.cfg
 
@@ -540,36 +493,19 @@ jobs:
           --profile:host conan_profile \
           --build missing
 
-    - name: Get the number of processor cores for parallelized work
-      uses: SimenB/github-actions-cpu-cores@v1
-      id: cpu-cores
-
-    # TODO: Ideally let our CMake interrogate jemalloc-config to find jemalloc-prefix itself.
-    # Less stuff for us to worry about that way here.  If it has not been tried, try it.
-    # If it does not work, apply a small effort to see if it can be easily made to work.
-    - name: Prepare Makefile using CMake
+    - name: Build targets (libraries, demos/tests) with Conan
       run: |
-        cmake \
-          --preset ${{ matrix.build-type.conan-preset }} \
-          -DCFG_ENABLE_TEST_SUITE=ON \
-          -DJEMALLOC_PREFIX=je_ \
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }} \
-          ${{ matrix.build-type.cmake-flags }}
-
-    - name: Build targets (libraries, demos/tests) with Makefile
-      run: |
-        VERBOSE=1 make \
-          --keep-going \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }} \
-          -j${{ steps.cpu-cores.outputs.count }}
+        conan build .
 
     - name: Install targets with Makefile
       run: |
-        VERBOSE=1 make install \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }} \
-          -j${{ steps.cpu-cores.outputs.count }}
+        # PREFIX defaults to /usr/local, not really needed for us off of DESTDIR.
+        make install \
+          --directory ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-profile-build-type }} \
+          DESTDIR=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }} \
+          PREFIX=/
         # Save runner space: blow away build dir after install.
-        rm -rf $GITHUB_WORKSPACE/build/${{ matrix.build-type.conan-build-type }}
+        rm -rf ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-build-type }}
 
     # From now on use !cancelled() to try to run any test/demo that exists regardless
     # of preceding failures if any.  Same-ish (always()) with the log-upload at the end.
@@ -606,28 +542,31 @@ jobs:
       if: |
         !cancelled()
       run: |
-        ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        mkdir -p logs/ipc_core_link_test
-        ./ipc_core_link_test.exec > logs/ipc_core_link_test/console.log 2>&1
+        ${{ env.setup-tests-env }}
+        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
+        mkdir -p logs/ipc_shm_arena_lend_link_test
+        ./ipc_core_link_test_srv.exec > logs/ipc_core_link_test/srv.console.log 2>&1 &
+        sleep 1
+        ./ipc_core_link_test_cli.exec > logs/ipc_core_link_test/cli.console.log 2>&1
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
       if: |
         !cancelled()
       run: |
-        ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        mkdir -p logs/ipc_transport_structured_link_test
-        ./ipc_transport_structured_link_test.exec > logs/ipc_transport_structured_link_test/console.log 2>&1
+        ${{ env.setup-tests-env }}
+        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
+        mkdir -p logs/ipc_shm_arena_lend_link_test
+        ./ipc_transport_structured_link_test_srv.exec > logs/ipc_transport_structured_link_test/srv.console.log 2>&1 &
+        sleep 1
+        ./ipc_transport_structured_link_test_cli.exec > logs/ipc_transport_structured_link_test/cli.console.log 2>&1
 
-    # Server will exit automatically (same below).
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
       if: |
         !cancelled()
       run: |
-        ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
-        mkdir -p logs/ipc_session_link_test
+        ${{ env.setup-tests-env }}
+        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
+        mkdir -p logs/ipc_shm_arena_lend_link_test
         ./ipc_session_link_test_srv.exec > logs/ipc_session_link_test/srv.console.log 2>&1 &
         sleep 1
         ./ipc_session_link_test_cli.exec > logs/ipc_session_link_test/cli.console.log 2>&1
@@ -636,19 +575,19 @@ jobs:
       if: |
         !cancelled()
       run: |
-        ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+        ${{ env.setup-tests-env }}
+        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
         mkdir -p logs/ipc_shm_link_test
         ./ipc_shm_link_test_srv.exec > logs/ipc_shm_link_test/srv.console.log 2>&1 &
         sleep 1
         ./ipc_shm_link_test_cli.exec > logs/ipc_shm_link_test/cli.console.log 2>&1
-        
+
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
       if: |
         !cancelled()
       run: |
-        ${{ env.before_each_test }}
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+        ${{ env.setup-tests-env }}
+        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
         ./ipc_shm_arena_lend_link_test_srv.exec > logs/ipc_shm_arena_lend_link_test/srv.console.log 2>&1 &
         sleep 1
@@ -660,16 +599,15 @@ jobs:
       if: |
         !cancelled()
       run: |
-        ${{ env.before_each_test }}
-        echo $TSAN_OPTIONS
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+        ${{ env.setup-tests-env }}
+        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
         mkdir -p logs/libipc_unit_test
         # Some newline issues with the possible additional args; so need to make a wrapper script
         # and then redirect, as desired, its output.
-        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_unit_test.sh
-        ./libipc_unit_test.exec ${{ matrix.build-type.gtest-unit-tests-params }}
+        cat <<'EOF' > ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_unit_test.sh
+        ./libipc_unit_test.exec ${{ matrix.build-test-cfg.unit-tests-params }}
         EOF
-        /usr/bin/bash -e $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_unit_test.sh \
+        /usr/bin/bash -e ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_unit_test.sh \
           > logs/libipc_unit_test/console.log 2>&1
 
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
@@ -681,12 +619,11 @@ jobs:
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
       run: |
-        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh
-        # Script created by pipeline during job.
+        cat <<'EOF' > ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_sc.sh
         echo "Log level: [$1]."
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test
+        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/transport_test
         OUT_DIR_NAME=log_level_$1
         OUT_DIR=../logs/transport_test/scripted/$OUT_DIR_NAME
         mkdir -p $OUT_DIR
@@ -707,21 +644,21 @@ jobs:
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
       run: |
-        ${{ env.before_each_test }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
-            info
+          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_sc.sh \
+          info
 
     - name: Re-run with increased logging, on failure only
       if: |
         (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
       run: |
-        ${{ env.before_each_test }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_sc.sh \
-            data
+          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_sc.sh \
+          data
 
     # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
     # Note that the creation of ~/bin/ex_..._run and placement of executables there, plus
@@ -730,24 +667,24 @@ jobs:
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
       run: |
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
         mkdir -p /tmp/var/run
-        cp -v $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/transport_test/transport_test.exec \
+        cp -v ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/transport_test/transport_test.exec \
           ~/bin/ex_srv.exec
         cp -v ~/bin/ex_srv.exec ~/bin/ex_cli.exec
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
       run: |
-        cat <<'EOF' > $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh
+        cat <<'EOF' > ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
         echo "Log level: [$1]."
         echo "Exercise sub-mode: [$2]."
         echo "Sub-mode snippet (none or 'shm-?'): [$3]."
-        OUT_DIR=$GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/logs/transport_test/exercise/$2
+        OUT_DIR=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/logs/transport_test/exercise/$2
         mkdir -p $OUT_DIR
         cd ~/bin/ex_srv_run
         ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/srv.log info $1 \
@@ -767,85 +704,86 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       id: transport_test_ex_heap
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
       run: |
-        ${{ env.before_each_test }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
-            info heap
+          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          info heap
 
     - name: Re-run with increased logging, on failure only
       if: |
         (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
       run: |
-        ${{ env.before_each_test }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
-            data heap_log_level_data
+          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          data heap_log_level_data
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
       run: |
-        ${{ env.before_each_test }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
-            info shm_classic -shm-c
+          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          info shm_classic -shm-c
 
     - name: Re-run with increased logging, on failure only
       if: |
         (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
       run: |
-        ${{ env.before_each_test }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
-            data shm_classic_log_level_data -shm-c
+          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          data shm_classic_log_level_data -shm-c
 
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        (!cancelled()) && (matrix.build-type.id != 'relwithdebinfo-tsan')
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
       run: |
-        ${{ env.before_each_test }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
-            info shm_jemalloc -shm-j
+          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          info shm_jemalloc -shm-j
 
     - name: Re-run with increased logging, on failure only
       if: |
         (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
       run: |
-        ${{ env.before_each_test }}
+        ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin/run_transport_test_ex.sh \
-            data shm_jemalloc_log_level_data -shm-j
+          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          data shm_jemalloc_log_level_data -shm-j
 
     # See earlier comment block about why we saved all the logs including for console-output-only tests/demos.
     - name: Check test/demo logs for non-fatal sanitizer error(s)
       if: |
-        (!cancelled()) && (matrix.build-type.id == 'relwithdebinfo-ubsan')
+        (!cancelled()) && (matrix.build-test-cfg.conan-profile-build-type == 'relwithdebinfo-ubsan')
       run: |
-        cd ${{ github.workspace }}/install/${{ matrix.build-type.conan-build-type }}/bin/logs
+        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/logs
         # grep returns 0 if 1+ found, 1 if none found, 2+ on error.  So check results explicitly instead of -e.
         # Namely, for us, the only OK result is an empty stdout and empty stderr.
         # Otherwise either grep failed (unlikely) or found 1+ problems; either way redirection target will
         # be not-empty, and we will force failure.
         grep 'SUMMARY: UndefinedBehaviorSanitizer:' `find . -type f` > san_failure_summaries.txt 2>&1 || true
         if [ -s san_failure_summaries.txt ]; then
-          echo "Error(s) found.  Pipeline will fail.  Failures summarized below."
-          echo "Please peruse uploaded log artifacts, resolve the issues, and run pipeline again."
-          echo "---"
+          echo 'Error(s) found.  Pipeline will fail.  Failures summarized below.'
+          echo 'Please peruse uploaded log artifacts, resolve the issues, and run pipeline again.'
+          echo '[[[ file--'
           cat san_failure_summaries.txt
+          echo '--file ]]]'
           false
         fi
-        echo "No errors found in logs."
+        echo 'No errors found in logs.'
 
     - name: Package test/demo logs tarball
       if: |
         always()
       run: |
-        cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
+        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
         tar cvzf logs.tgz logs
         rm -rf logs # Save runner space.
 
@@ -854,9 +792,9 @@ jobs:
         always()
       uses: actions/upload-artifact@v3
       with:
-        name: ipc-logs-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
+        name: ipc-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
         path: |
-          ${{ github.workspace }}/install/${{ matrix.build-type.conan-build-type }}/bin/logs.tgz
+          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/logs.tgz
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
 # Do we need to manually save it as an artifact?  For that matter we would then need the binary and
