@@ -332,7 +332,7 @@ jobs:
 
     - name: Install targets with Makefile
       run: |
-        cd $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }}
+        #cd $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }}
         cmake --install . --prefix=${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}
         #VERBOSE=1 make install \
         #  --directory ${{ github.workspace }}/build/${{ matrix.build-and-test-config.conan-profile-build-type }}
