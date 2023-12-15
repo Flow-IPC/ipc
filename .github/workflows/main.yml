@@ -293,7 +293,7 @@ jobs:
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
-        jemalloc:build_type = ${{ matrix.build-type.conan-jemalloc-build-type }}
+        jemalloc:build_type = ${{ matrix.build-and-test-config.conan-jemalloc-build-type }}
         build_type = ${{ matrix.build-and-test-config.conan-profile-build-type }}
         ${{ matrix.build-and-test-config.conan-profile-custom-settings }}
           
