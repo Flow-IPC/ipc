@@ -72,7 +72,7 @@ jobs:
         ipc:doc = True
         EOF
     
-    - name: Install Flow-IPC dependencies (inc. Doxygen) with Conan using the profile
+    - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
       run: |
         conan install \
           . \
@@ -80,7 +80,7 @@ jobs:
           --profile:host conan_profile \
           --build missing
 
-    - name: Prepare Makefile using CMake
+    - name: Generate documentation using Conan and Doxygen
       run: |
         conan build .
 
@@ -88,13 +88,13 @@ jobs:
       uses: SimenB/github-actions-cpu-cores@v1
       id: cpu-cores
 
-    - name: Doxygen-generate documentation sets using Makefile
-      run: |
-        VERBOSE=1 make \
-          ipc_doc_public \
-          ipc_doc_full \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-config.conan-profile-build-type }} \
-          -j${{ steps.cpu-cores.outputs.count }}
+ #   - name: Doxygen-generate documentation sets using Makefile
+ #     run: |
+ #       VERBOSE=1 make \
+ #         ipc_doc_public \
+ #         ipc_doc_full \
+ #         --directory $GITHUB_WORKSPACE/build/${{ matrix.build-config.conan-profile-build-type }} \
+ #         -j${{ steps.cpu-cores.outputs.count }}
 
     - name: Package doc tarball [Doxygen documentation sets (full, API-only), landing page]
       run: |
