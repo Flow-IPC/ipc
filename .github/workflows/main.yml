@@ -333,7 +333,8 @@ jobs:
     - name: Install targets with Makefile
       run: |
         VERBOSE=1 make install \
-          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }}
+          --directory $GITHUB_WORKSPACE/build/${{ matrix.build-and-test-config.conan-profile-build-type }} \
+          DESTDIR=${{ github.workspace }}/install/${{ matrix.build-and-test-config.conan-profile-build-type }}
 
     - name: Run link test [`ipc_core` - Flow-IPC Core]
       if: |
