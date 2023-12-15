@@ -285,9 +285,33 @@ jobs:
             conan-preset: minsizerel
 
         # We concentrate on clang sanitizers; they are newer/nicer; also MSAN is clang-only.  So gcc ones excluded.
-        # TODO: Consider reducing to the newest clang.  Generally they just keep improving; the chances of something
-        # being uncaught (incorrectly) with a later version are slim.  Not impossible though.  Look into it.
-        # XXX end
+        # Attention!  Excluding some sanitizer job(s) (with these reasons):
+        #   - MSAN: MSAN protects against reads of ununitialized memory; it is clang-only (not gcc), unlike the other
+        #     *SAN.  Its mission overlaps at least partially with UBSAN's; for example for sure there were a couple of
+        #     uninitialized reads in test code which UBSAN caught.  Its current state -- if not excluded -- is as
+        #     follows: 1, due to (as of this writing) building dependencies, including the capnp compiler binary used
+        #     during our build process, with the same compiler build config as the real code, ignore-list entires had
+        #     to be added to get past these problems.  2, before main() in *all* our demos/tests Boost was doing some
+        #     global init which MSAN did not like and hence aborted before main(); these are now ignored as well.
+        #     3, this got us into main() at least, but immediately cryptic aborts started, seemingly again originating
+        #     in Boost (but requires detailed investigation to really understand).  At this point I (ygoldfel)
+        #     disabled MSAN and filed a ticket.  The overall status: MSAN is said to be useful, even with UBSAN active,
+        #     but all resources including official docs indicate that it is a high-maintenance tool:
+        #     *All* linked code, including libc and libstdc++/libc++ (the former in our case as of this writing),
+        #     must be instrumented to avoid cryptic false positives.  The good news is we do build other things
+        #     instrumented (Boost libs, jemalloc, capnp/kj, gtest); but not libstdc++ (which official docs recommend);
+        #     this can be done but requires more work (I would suggest switching to libc++ in that case from the
+        #     start, as the clang people made it and themselves build it instrumented for their testing).
+        #     So the bottom line: MSAN is a tough cookie and requires more work before enabling.  In the meantime we
+        #     have many layers of protection, including ASAN and UBSAN and lots of unit and integration tests.
+        #     So this status quo is pretty good.  TODO: Do the work/get MSAN functional/useful; un-exclude it then.
+        #   - TSAN: Disabling but soon this shall be merged with jkontrik's parallel TSAN work and get re-enabled.
+        #     The existing TSAN state is from the middle of jkontrik's TSAN work as merged at that time.
+        #   - *SAN with gcc: We concentrate on clang sanitizers; they are newer/nicer; having to worry about differences
+        #     between them is an excessive burden.  So excluding gcc ASAN/UBSAN/TSAN.
+        #     - TODO: Consider reducing to the newest clang.  Generally they just keep improving; the chances of
+        #       something being uncaught (incorrectly) with a later version are slim.  Not impossible though.  Look
+        #       into it.
         exclude:
           - compiler:  { id: gcc-9 }
             build-type: { id: relwithdebinfo-asan }
@@ -325,11 +349,11 @@ jobs:
           - build-type: { id: release }
           - build-type: { id: debug }
           - build-type: { id: minsizerel }
+          - build-type: { id: relwithdebinfo-tsan }
+          - build-type: { id: relwithdebinfo-msan }
 
-#XXX
-#- build-type: { id: relwithdebinfo-tsan }
+# XXX -^
 #          - build-type: { id: relwithdebinfo-asan }
-#          - build-type: { id: relwithdebinfo-msan }
 
     runs-on: ubuntu-latest
         
@@ -337,8 +361,7 @@ jobs:
       build-${{ matrix.compiler.id }}-${{ matrix.build-type.id }}
 
     env:
-      # Run-time controls for various sanitizers (ignored when test/demo is not build with
-      # a *SAN build-type).  Some notes:
+      # Run-time controls for various sanitizers.  Some notes:
       #
       # Unclear if we need disable_coredump=0; it might be a gcc thing due to historic
       # issues with core size with ASAN; it is not documented in the clang *SAN docs for any
@@ -351,13 +374,32 @@ jobs:
       # sanitizers).
       #
       # second_deadlock_stack=1 for TSAN: TODO: Explain.  Don't see it in clang TSAN docs.
+      #
+      # Caution!  Setting multiple *SAN_OPTIONS (while invoking only 1 sanitizer, as we do)
+      # seems like it would be harmless and avoid the `if/elif`s... but is actually a
+      # nightmare; there is some interaction in clang (at least 13-17) which causes the
+      # wrong sanitizer reading suppressions from another one => suppression parse error =>
+      # none of the demos/tests get anywhere at all.  So set just the right one!
       before_each_test: |
         if [ "${{ matrix.build-type.option-env-name }}" = ASAN ]; then
-          export ASAN_OPTIONS="disable_coredump=0"
+          export ASAN_OPTIONS='disable_coredump=0'
+          echo "ASAN_OPTIONS = [$ASAN_OPTIONS]"
         elif [ "${{ matrix.build-type.option-env-name }}" = UBSAN ]; then
-          export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
+          export SAN_SUPP=1
+          export SAN_SUPP_CFG=${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+          export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=$SAN_SUPP_CFG"
+          echo "UBSAN_OPTIONS = [$UBSAN_OPTIONS]"
         elif [ "${{ matrix.build-type.option-env-name }}" = TSAN ]; then
-          export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg"
+          export SAN_SUPP=1
+          export SAN_SUPP_CFG=${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+          export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=$SAN_SUPP_CFG"
+          echo "TSAN_OPTIONS = [$TSAN_OPTIONS]"
+        fi
+        if [ "$SAN_SUPP" != '' ];
+          echo '${{ matrix.build-type.option-env-name }} suppressions cfg contents:'
+          echo '[[[ file--'
+          cat $SAN_SUPP_CFG
+          echo '--file ]]]'
         fi
 
     steps: 
@@ -565,13 +607,6 @@ jobs:
         !cancelled()
       run: |
         ${{ env.before_each_test }}
-        # XXX
-        echo "===== ASAN_OPTIONS = [$ASAN_OPTIONS]"
-        echo "===== UBSAN_OPTIONS = [$UBSAN_OPTIONS]"
-        cat ${{ github.workspace }}/ubsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg || true
-        echo "TSAN_OPTIONS = [$TSAN_OPTIONS]"
-        cat ${{ github.workspace }}/tsan_suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg || true
-        echo "===== -----------------------"
         cd $GITHUB_WORKSPACE/install/${{ matrix.build-type.conan-build-type }}/bin
         mkdir -p logs/ipc_core_link_test
         ./ipc_core_link_test.exec > logs/ipc_core_link_test/console.log 2>&1
