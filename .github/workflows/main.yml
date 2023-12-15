@@ -168,7 +168,7 @@ jobs:
           - id: relwithdebinfo-tsan 
             conan-preset: relwithdebinfo
             conan-profile-build-type: RelWithDebInfo
-            conan-jemalloc-build-type: Release
+            conan-profile-jemalloc-build-type: Release
             conan-profile-custom-conf: |
               tools.build:cflags = [ "-fsanitize=thread" ]
               tools.build:cxxflags = [ "-fsanitize=thread" ]
@@ -293,7 +293,7 @@ jobs:
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
-        jemalloc:build_type = ${{ matrix.build-and-test-config.conan-jemalloc-build-type }}
+        jemalloc:build_type = ${{ matrix.build-and-test-config.conan-profile-jemalloc-build-type }}
         build_type = ${{ matrix.build-and-test-config.conan-profile-build-type }}
         ${{ matrix.build-and-test-config.conan-profile-custom-settings }}
           
