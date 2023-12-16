@@ -313,7 +313,8 @@ jobs:
       build-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
     env:
       build-dir: ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-profile-build-type }}
-      install-dir: ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local
+      install-root-dir: ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}
+      install-dir: ${{ env.install-root-dir }}/usr/local
       # Run-time controls for various sanitizers.  Some notes:
       #
       # Unclear if we need disable_coredump=0; it might be a gcc thing due to historic
@@ -502,7 +503,7 @@ jobs:
     - name: Install targets with Makefile
       run: |
         make install \
-          --directory ${{ env.build-dir }} DESTDIR=${{ env.install-dir }}
+          --directory ${{ env.build-dir }} DESTDIR=${{ env.install-root-dir }}
         # Save runner space: blow away build dir after install.
         rm -rf ${{ env.build-dir }}
 
