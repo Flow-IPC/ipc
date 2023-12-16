@@ -312,6 +312,8 @@ jobs:
     name: |
       build-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
     env:
+      build-dir: ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-profile-build-type }}
+      install-dir: ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local
       # Run-time controls for various sanitizers.  Some notes:
       #
       # Unclear if we need disable_coredump=0; it might be a gcc thing due to historic
@@ -499,13 +501,10 @@ jobs:
 
     - name: Install targets with Makefile
       run: |
-        # PREFIX defaults to /usr/local, not really needed for us off of DESTDIR.
         make install \
-          --directory ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-profile-build-type }} \
-          DESTDIR=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }} \
-          PREFIX=/
+          --directory ${{ env.build-dir }} DESTDIR=${{ env.install-dir }}
         # Save runner space: blow away build dir after install.
-        rm -rf ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-build-type }}
+        rm -rf ${{ env.build-dir }}
 
     # From now on use !cancelled() to try to run any test/demo that exists regardless
     # of preceding failures if any.  Same-ish (always()) with the log-upload at the end.
@@ -543,7 +542,7 @@ jobs:
         !cancelled()
       run: |
         ${{ env.setup-tests-env }}
-        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
+        cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
         ./ipc_core_link_test_srv.exec > logs/ipc_core_link_test/srv.console.log 2>&1 &
         sleep 1
@@ -554,7 +553,7 @@ jobs:
         !cancelled()
       run: |
         ${{ env.setup-tests-env }}
-        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
+        cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
         ./ipc_transport_structured_link_test_srv.exec > logs/ipc_transport_structured_link_test/srv.console.log 2>&1 &
         sleep 1
@@ -565,7 +564,7 @@ jobs:
         !cancelled()
       run: |
         ${{ env.setup-tests-env }}
-        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
+        cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
         ./ipc_session_link_test_srv.exec > logs/ipc_session_link_test/srv.console.log 2>&1 &
         sleep 1
@@ -576,7 +575,7 @@ jobs:
         !cancelled()
       run: |
         ${{ env.setup-tests-env }}
-        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
+        cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_link_test
         ./ipc_shm_link_test_srv.exec > logs/ipc_shm_link_test/srv.console.log 2>&1 &
         sleep 1
@@ -587,7 +586,7 @@ jobs:
         !cancelled()
       run: |
         ${{ env.setup-tests-env }}
-        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
+        cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
         ./ipc_shm_arena_lend_link_test_srv.exec > logs/ipc_shm_arena_lend_link_test/srv.console.log 2>&1 &
         sleep 1
@@ -600,14 +599,14 @@ jobs:
         !cancelled()
       run: |
         ${{ env.setup-tests-env }}
-        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
+        cd ${{ env.install-dir }}/bin
         mkdir -p logs/libipc_unit_test
         # Some newline issues with the possible additional args; so need to make a wrapper script
         # and then redirect, as desired, its output.
-        cat <<'EOF' > ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_unit_test.sh
+        cat <<'EOF' > ${{ env.install-dir }}/bin/run_unit_test.sh
         ./libipc_unit_test.exec ${{ matrix.build-test-cfg.unit-tests-params }}
         EOF
-        /usr/bin/bash -e ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_unit_test.sh \
+        /usr/bin/bash -e ${{ env.install-dir }}/bin/run_unit_test.sh \
           > logs/libipc_unit_test/console.log 2>&1
 
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
@@ -621,9 +620,9 @@ jobs:
       if: |
         (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
       run: |
-        cat <<'EOF' > ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_sc.sh
+        cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_sc.sh
         echo "Log level: [$1]."
-        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/transport_test
+        cd ${{ env.install-dir }}/bin/transport_test
         OUT_DIR_NAME=log_level_$1
         OUT_DIR=../logs/transport_test/scripted/$OUT_DIR_NAME
         mkdir -p $OUT_DIR
@@ -648,7 +647,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_sc.sh \
+          ${{ env.install-dir }}/bin/run_transport_test_sc.sh \
           info
 
     - name: Re-run with increased logging, on failure only
@@ -657,7 +656,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_sc.sh \
+          ${{ env.install-dir }}/bin/run_transport_test_sc.sh \
           data
 
     # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
@@ -671,7 +670,7 @@ jobs:
       run: |
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
         mkdir -p /tmp/var/run
-        cp -v ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/transport_test/transport_test.exec \
+        cp -v ${{ env.install-dir }}/bin/transport_test/transport_test.exec \
           ~/bin/ex_srv.exec
         cp -v ~/bin/ex_srv.exec ~/bin/ex_cli.exec
 
@@ -679,12 +678,12 @@ jobs:
       if: |
         (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
       run: |
-        cat <<'EOF' > ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh
+        cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
         echo "Log level: [$1]."
         echo "Exercise sub-mode: [$2]."
         echo "Sub-mode snippet (none or 'shm-?'): [$3]."
-        OUT_DIR=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/logs/transport_test/exercise/$2
+        OUT_DIR=${{ env.install-dir }}/bin/logs/transport_test/exercise/$2
         mkdir -p $OUT_DIR
         cd ~/bin/ex_srv_run
         ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/srv.log info $1 \
@@ -708,7 +707,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
           info heap
 
     - name: Re-run with increased logging, on failure only
@@ -717,7 +716,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
           data heap_log_level_data
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
@@ -727,7 +726,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
           info shm_classic -shm-c
 
     - name: Re-run with increased logging, on failure only
@@ -736,7 +735,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
           data shm_classic_log_level_data -shm-c
 
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
@@ -746,7 +745,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
           info shm_jemalloc -shm-j
 
     - name: Re-run with increased logging, on failure only
@@ -755,7 +754,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
-          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/run_transport_test_ex.sh \
+          ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
           data shm_jemalloc_log_level_data -shm-j
 
     # See earlier comment block about why we saved all the logs including for console-output-only tests/demos.
@@ -763,7 +762,7 @@ jobs:
       if: |
         (!cancelled()) && (matrix.build-test-cfg.conan-profile-build-type == 'relwithdebinfo-ubsan')
       run: |
-        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/logs
+        cd ${{ env.install-dir }}/bin/logs
         # grep returns 0 if 1+ found, 1 if none found, 2+ on error.  So check results explicitly instead of -e.
         # Namely, for us, the only OK result is an empty stdout and empty stderr.
         # Otherwise either grep failed (unlikely) or found 1+ problems; either way redirection target will
@@ -783,7 +782,7 @@ jobs:
       if: |
         always()
       run: |
-        cd ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin
+        cd ${{ env.install-dir }}/bin
         tar cvzf logs.tgz logs
         rm -rf logs # Save runner space.
 
@@ -794,7 +793,7 @@ jobs:
       with:
         name: ipc-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
         path: |
-          ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/bin/logs.tgz
+          ${{ env.install-dir }}/bin/logs.tgz
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
 # Do we need to manually save it as an artifact?  For that matter we would then need the binary and
