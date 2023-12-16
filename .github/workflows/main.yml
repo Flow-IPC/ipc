@@ -231,7 +231,8 @@ jobs:
               Shm_pool_collection_test.Interface:\
               Shm_pool_collection_test.Multiprocess:\
               Shm_session_data_test.Multithread_object_database
-            skip-transport-tests: true # TODO: Explain why briefly (even though there's prob a ticket).
+            skip-transport-tests-sc: false # XXX
+            skip-transport-tests-ex: true # TODO: Explain why briefly (even though there's prob a ticket).
             option-env-name: TSAN
             no-lto: false # See the other *SAN; but for now I heed jkontrik's words to keep consistent with non-*SAN.
           - id: relwithdebinfo-msan
@@ -615,7 +616,7 @@ jobs:
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
       if: |
-        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests-sc)
       run: |
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_sc.sh
         echo "Log level: [$1]."
@@ -640,7 +641,7 @@ jobs:
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
       if: |
-        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests-sc)
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
@@ -663,7 +664,7 @@ jobs:
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: |
-        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests-ex)
       run: |
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
         mkdir -p /tmp/var/run
@@ -673,7 +674,7 @@ jobs:
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: |
-        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests-ex)
       run: |
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
@@ -700,7 +701,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       id: transport_test_ex_heap
       if: |
-        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests-ex)
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
@@ -719,7 +720,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
       if: |
-        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests-ex)
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
@@ -738,7 +739,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests)
+        (!cancelled()) && (!matrix.build-test-cfg.skip-transport-tests-ex)
       run: |
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e \
