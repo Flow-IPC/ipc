@@ -544,7 +544,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         cd ${{ env.install-dir }}/bin
-        mkdir -p logs/ipc_shm_arena_lend_link_test
+        mkdir -p logs/ipc_core_link_test
         ./ipc_core_link_test_srv.exec > logs/ipc_core_link_test/srv.console.log 2>&1 &
         sleep 1
         ./ipc_core_link_test_cli.exec > logs/ipc_core_link_test/cli.console.log 2>&1
@@ -555,7 +555,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         cd ${{ env.install-dir }}/bin
-        mkdir -p logs/ipc_shm_arena_lend_link_test
+        mkdir -p logs/ipc_transport_structured_link_test
         ./ipc_transport_structured_link_test_srv.exec > logs/ipc_transport_structured_link_test/srv.console.log 2>&1 &
         sleep 1
         ./ipc_transport_structured_link_test_cli.exec > logs/ipc_transport_structured_link_test/cli.console.log 2>&1
@@ -566,7 +566,7 @@ jobs:
       run: |
         ${{ env.setup-tests-env }}
         cd ${{ env.install-dir }}/bin
-        mkdir -p logs/ipc_shm_arena_lend_link_test
+        mkdir -p logs/ipc_session_link_test
         ./ipc_session_link_test_srv.exec > logs/ipc_session_link_test/srv.console.log 2>&1 &
         sleep 1
         ./ipc_session_link_test_cli.exec > logs/ipc_session_link_test/cli.console.log 2>&1
