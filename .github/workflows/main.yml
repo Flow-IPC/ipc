@@ -591,10 +591,10 @@ jobs:
         ./ipc_shm_arena_lend_link_test_cli.exec > logs/ipc_shm_arena_lend_link_test/cli.console.log 2>&1
 
     # As of this writing this runs with high verbosity, so we do not re-run on failure
-    # like the ones below.
+    # like the ones below. XXX
     - name: Run unit tests
       if: |
-        !cancelled() && false # XXX
+        !cancelled() && false
       run: |
         ${{ env.setup-tests-env }}
         cd ${{ env.install-dir }}/bin
