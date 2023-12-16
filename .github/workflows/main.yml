@@ -545,9 +545,7 @@ jobs:
         ${{ env.setup-tests-env }}
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_core_link_test
-        ./ipc_core_link_test_srv.exec > logs/ipc_core_link_test/srv.console.log 2>&1 &
-        sleep 1
-        ./ipc_core_link_test_cli.exec > logs/ipc_core_link_test/cli.console.log 2>&1
+        ./ipc_core_link_test.exec > logs/ipc_core_link_test/console.log 2>&1
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
       if: |
@@ -556,9 +554,7 @@ jobs:
         ${{ env.setup-tests-env }}
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_transport_structured_link_test
-        ./ipc_transport_structured_link_test_srv.exec > logs/ipc_transport_structured_link_test/srv.console.log 2>&1 &
-        sleep 1
-        ./ipc_transport_structured_link_test_cli.exec > logs/ipc_transport_structured_link_test/cli.console.log 2>&1
+        ./ipc_transport_structured_link_test.exec > logs/ipc_transport_structured_link_test/console.log 2>&1
 
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
       if: |
