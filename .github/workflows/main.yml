@@ -326,7 +326,7 @@ jobs:
       # entries.  (Malformed and ignored if matrix.build-test-cfg is not `*san`, meaning not sanitizer-enabled.)
       san-suppress-cfg-in-file1: sanitize/${{ matrix.build-test-cfg.sanitizer-name }}/suppressions_${{ matrix.compiler.name }}.cfg
       # Same but contains compiler version-specific entries (on top of those in san-suppress-cfg-file).
-      san-suppress-cfg-in-file2: ${{ matrix.build-test-cfg.sanitizer-name }}/suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
+      san-suppress-cfg-in-file2: sanitize/${{ matrix.build-test-cfg.sanitizer-name }}/suppressions_${{ matrix.compiler.name }}_${{ matrix.compiler.version }}.cfg
       # Run-time controls for various sanitizers.  Invoke before running test but *after* assembling suppressions
       # file ${{ env.san-suppress-cfg-file}} if any (clear it if needed, as it might be left-over from a previous
       # test).  The proper technique is: 1, which of the suppression contexts (see above) are relevant?
