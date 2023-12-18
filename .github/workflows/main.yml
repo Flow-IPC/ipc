@@ -361,17 +361,17 @@ jobs:
       setup-tests-env: |
         if [ "${{ matrix.build-test-cfg.sanitizer-name }}" = asan ]; then
           export ASAN_OPTIONS='disable_coredump=0'
-          echo "ASAN_OPTIONS = [$ASAN_OPTIONS]"
+          echo "ASAN_OPTIONS = [$ASAN_OPTIONS]."
         elif [ "${{ matrix.build-test-cfg.sanitizer-name }}" = ubsan ]; then
           export SAN_SUPP=1
           export SAN_SUPP_CFG=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local/bin/san_suppressions.cfg
           export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=$SAN_SUPP_CFG"
-          echo "UBSAN_OPTIONS = [$UBSAN_OPTIONS]"
+          echo "UBSAN_OPTIONS = [$UBSAN_OPTIONS]."
         elif [ "${{ matrix.build-test-cfg.sanitizer-name }}" = tsan ]; then
           export SAN_SUPP=1
           export SAN_SUPP_CFG=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local/bin/san_suppressions.cfg
           export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=$SAN_SUPP_CFG"
-          echo "TSAN_OPTIONS = [$TSAN_OPTIONS]"
+          echo "TSAN_OPTIONS = [$TSAN_OPTIONS]."
         fi
         if [ "$SAN_SUPP" != '' ]; then
           echo 'Sanitizer [${{ matrix.build-test-cfg.sanitizer-name }}] suppressions cfg contents:'
