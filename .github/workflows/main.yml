@@ -756,6 +756,7 @@ jobs:
           { cat $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
               >> ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         fi
+        ${{ env.setup-tests-env }}
         ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/srv.log info $1 \
           > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
