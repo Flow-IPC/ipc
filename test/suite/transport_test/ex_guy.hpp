@@ -67,6 +67,7 @@ protected:
   static Sptr<T> make_sptr(Args&&... args);
 
   void done_and_done(bool ok);
+  void stop_worker();
 
   template<typename Task>
   bool run(bool srv_else_cli, Task&& body);

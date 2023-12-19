@@ -72,6 +72,11 @@ void Ex_guy::done_and_done(bool ok)
   m_exit_promise.set_value(ok);
 }
 
+void Ex_guy::stop_worker()
+{
+  m_loop.stop();
+}
+
 flow::util::Task_engine* Ex_guy::task_engine()
 {
   return m_loop.task_engine().get();

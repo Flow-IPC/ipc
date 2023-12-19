@@ -32,6 +32,7 @@ public:
   using Session = Session_t;
 
   Ex_cli(flow::log::Logger* logger_ptr, flow::log::Logger* ipc_logger_ptr);
+  ~Ex_cli();
 
   bool run();
 
@@ -149,6 +150,13 @@ CLASS::Ex_cli(flow::log::Logger* logger_ptr, flow::log::Logger* ipc_logger_ptr) 
   Base(logger_ptr, ipc_logger_ptr)
 {
   // OK.
+}
+
+TEMPLATE
+CLASS::~Ex_cli()
+{
+  // See Ex_srv dtor.  Same reasoning here.
+  Base::stop_worker();
 }
 
 TEMPLATE

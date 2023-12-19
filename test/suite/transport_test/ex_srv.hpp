@@ -36,6 +36,7 @@ public:
   using Server = Server_t;
 
   Ex_srv(flow::log::Logger* logger_ptr, flow::log::Logger* ipc_logger_ptr);
+  ~Ex_srv();
 
   bool run();
 
@@ -169,6 +170,18 @@ CLASS::Ex_srv(flow::log::Logger* logger_ptr, flow::log::Logger* ipc_logger_ptr) 
   Base(logger_ptr, ipc_logger_ptr)
 {
   // Yeah.
+}
+
+TEMPLATE
+CLASS::~Ex_srv()
+{
+  /* A bit subtle but: Our base Ex_cli has the Single_thread_task_loop (thread W), where things are post()ed
+   * (directly or via async_wait() at least) to execute; those things will touch parts of *this.  *this is
+   * about to be destroyed; so there is a race wherein last-second stuff can try to touch parts that are
+   * being destroyed at the same time (data race, caught by TSAN, yay!), or even after they are destroyed
+   * (use-after-free, which ASAN would've caught).  At any rate this will synchronously stop thread W before
+   * such things can happen. */
+  Base::stop_worker();
 }
 
 TEMPLATE
