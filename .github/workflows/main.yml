@@ -481,6 +481,32 @@ jobs:
           yaml.dump(data, file)
         "
 
+    # Important info/somewhat important TODO: The C[XX]FLAGS and linker-flags are supplied via
+    # ${{ matrix.build-test-cfg.conan-profile-custom-conf }} and
+    # ${{ matrix.build-test-cfg.conan-profile-custom-buildenv }}.  These affect not just our objects/libs/executables;
+    # but also at least: 3rd party libs (jemalloc, capnp/kj, boost, gtest), 3rd party executables
+    # (capnp compiler binary; temp binaries created by auto-tools configure scripts to test features).
+    # In the case of the libs that's usually good; in particular things like
+    # -fsanitize=address (ASAN) (for build-type relwithdebinfo-asan) ideally are applied to all built code
+    # uniformly.  (There are other libs being built, one can see: at least openssl and zlib; they're not really
+    # involved in our actual product, at least not in a core way, so for those it arguably matters less either way.)
+    # In the case of the binaries it is usually bad; we want the fastest, most normal tools possible, not ones
+    # built weirdly with whatever settings we're trying to test with our own software.  For one it makes those
+    # tools slower -- perhaps not the hugest deal in practice here -- but it also generally increases entropy; and
+    # it has also resulted in various pain:
+    #   - Cannot use -fno-sanitize-recover with UBSAN (abort program on warning) if we wanted to: it causes some
+    #     hidden configure-script-generated binary abort => capnp binary build fails.
+    #   - capnp binary fails MSAN at startup; hence capnp-compilation of our .capnp schemas fails.
+    # We have worked around all these, so the thing altogether works.  It's just somewhat odd and entropy-ridden;
+    # and might cause maintanability problems over time, as it has already in the past.
+    # The TODO is to be more judicious about it
+    # and only apply these things to the libs/executables we want it applied.  It is probably not so simple;
+    # but worst-case it should be possible to use something like build-type-cflags-override to target our code;
+    # and per-recipe (Boost, jemalloc, gtest...) techniques to target others; and not use the aggressive
+    # conan-profile-custom-conf and conan-profile-custom-buildenv.  That said, there will be interesting subtleties
+    # like: libcapnp/kj are linked into capnp compiler binary; *and* to our code.  So we should instrument it with
+    # sanitizer (when applicable); now some of the capnp-compiler-binary is instrumented; some isn't.  Would that
+    # work, or would it be better to build capnp twice then (once for the binary, once for the linked libraries)?
     - name: Create Conan profile
       run: |
         cat <<'EOF' > conan_profile
