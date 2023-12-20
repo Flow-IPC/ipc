@@ -254,14 +254,6 @@ jobs:
             # throwing LTO into the mix seems like unnecessary entropy.
             # Plus inheriting from regular RelWithDebInfo anyway.
             no-lto: true
-            # This hack replaces the default CMake value (for RelWithDebInfo), which is -O2 -g -DNDEBUG.
-            # TSAN, at least, displays some crashing/hanging instability with things like
-            #   LLVM ERROR: Sections with relocations should have an address of 0
-            #   PLEASE submit a bug report to https://github.com/llvm/llvm-project/issues/ and include the crash backtrace.
-            # otherwise.  -O1 seems to avoid this fate.  TODO: This is a hack and not super-nice in terms of realism
-            # and other considerations; but given that the alternative is an unreliable catastrophe -- with TSAN
-            # being officially in beta in clang at least -- it is preferable.  Revisit (there's a ticket).
-            build-type-cflags-override: -O1 -g -DNDEBUG
           - id: relwithdebinfo-msan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release

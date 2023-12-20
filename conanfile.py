@@ -17,6 +17,9 @@ class IpcRecipe(ConanFile):
         # line.  Long story short, this is for the core flags, typically: -O<something> [-g] [-DNDEBUG].
         # So default for, e.g., RelWithDebInfo in Linux = -O2 -g -DNDEBUG; and one could set
         # this option to "-O3 -g -DNDEBUG" to increase the optimization level.
+        #
+        # This affects `ipc` CMake only; meaning flow, ipc_*, ipc objects will have this overridden; while
+        # Boost libs, jemalloc lib, capnp/kj libs will build how they would've built anyway.
         "build_type_cflags_override": "ANY",
         "doc": [True, False],
     }
