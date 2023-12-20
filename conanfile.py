@@ -9,12 +9,22 @@ class IpcRecipe(ConanFile):
     options = {
         "build": [True, False],
         "build_no_lto": [True, False],
+        # Replaces the core C/C++ compiler flags (not linker flags) for the chosen settings.build_type.
+        # Note that these appear *after* any C[XX]FLAGS and tools.build.c[xx]flags
+        # on the compiler command line, so it would not be
+        # sufficient to instead add the desired flags to tools.build* or *FLAGS, as if a setting in
+        # the core CMake-chosen flags conflicts with one of those, the core one wins due to being last on command
+        # line.  Long story short, this is for the core flags, typically: -O<something> [-g] [-DNDEBUG].
+        # So default for, e.g., RelWithDebInfo in Linux = -O2 -g -DNDEBUG; and one could set
+        # this option to "-O3 -g -DNDEBUG" to increase the optimization level.
+        "build_type_cflags_override": "ANY",
         "doc": [True, False],
     }
 
     default_options = {
         "build": True,
         "build_no_lto": False,
+        "build_type_cflags_override": "",
         "doc": False,
     }
 
@@ -26,6 +36,7 @@ class IpcRecipe(ConanFile):
     def generate(self):
         deps = CMakeDeps(self)
         if self.options.doc:
+            # TODO: This magic version number is repeated several times.  Code reuse.
             deps.build_context_activated = ["doxygen/1.9.4"]
         deps.generate()
 
@@ -38,6 +49,11 @@ class IpcRecipe(ConanFile):
         if self.options.doc:
             toolchain.variables["CFG_ENABLE_DOC_GEN"] = "ON"
             toolchain.variables["CFG_SKIP_CODE_GEN"] = "ON"
+        if self.options.build_type_cflags_override:
+            suffix = str(self.settings.build_type).upper()
+            toolchain.variables["CMAKE_CXX_FLAGS_" + suffix] = self.options.build_type_cflags_override
+            toolchain.variables["CMAKE_C_FLAGS_" + suffix] = self.options.build_type_cflags_override
+
         toolchain.generate()
 
     def build(self):
