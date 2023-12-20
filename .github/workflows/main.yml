@@ -750,8 +750,16 @@ jobs:
         SUPP_DIR_A=${{ github.workspace }}/flow/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
-        if [ "$3" == '-shm-j' ]; then # SHM-jemalloc mode => jemalloc is in fact exercised => suppress jemalloc stuff.
+        if [ "$3" == '-shm-j' ]; then
+          # SHM-jemalloc mode => jemalloc is in fact exercised => suppress jemalloc stuff.  (UBSAN)
           SUPP_DIR_B=${{ github.workspace }}/ipc_shm_arena_lend/src
+          { cat $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+              >> ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
+          # On the other hand no TSAN suppressions needed.  Cf. SHM-classic:
+        elif [ "$3" == '-shm-c' ]; then
+          # SHM-classic mode => TSAN gets confused by opposing process (e.g., client) allocating while current process
+          # (e.g., accordingly, server) deallocates => false-positives when accessing SHM-mapped areas.  (TSAN)
+          SUPP_DIR_B=${{ github.workspace }}/test/suite/transport_test/shm-c
           { cat $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
               >> ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         fi
@@ -789,8 +797,8 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
-      if: | # TODO: Skipping TSAN mode for this; currently unstable; working on it (ticket).
-        (!cancelled()) && (matrix.build-test-cfg.sanitizer-name != 'tsan')
+      if: |
+        !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
@@ -806,8 +814,8 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
-      if: | # TODO: Skipping TSAN mode for this; currently unstable; working on it (ticket).
-        (!cancelled()) && (matrix.build-test-cfg.sanitizer-name != 'tsan')
+      if: |
+        !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
