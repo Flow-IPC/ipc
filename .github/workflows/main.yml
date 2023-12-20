@@ -669,7 +669,7 @@ jobs:
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
         SUPP_DIR_A=${{ github.workspace }}/flow/src
-        # As of this writing there are certain harmless UBSAN triggers within jemalloc, and ipc_shm_arena_lend
+        # As of this writing there are certain harmless UBSAN, TSAN triggers within jemalloc, and ipc_shm_arena_lend
         # is the thing that depends on jemalloc, and of the `link_test`s this is the only one that links
         # ipc_shm_arena_lend (directly or otherwise).  Hence compared to the other `link_test`s this adds the
         # ipc_shm_arena_lend suppression context.
@@ -791,11 +791,10 @@ jobs:
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         if [ "$3" == '-shm-j' ]; then
-          # SHM-jemalloc mode => jemalloc is in fact exercised => suppress jemalloc stuff.  (UBSAN)
+          # SHM-jemalloc mode => jemalloc is in fact exercised => suppress jemalloc stuff.  (UBSAN, TSAN)
           SUPP_DIR_B=${{ github.workspace }}/ipc_shm_arena_lend/src
           { cat $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
               >> ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
-          # On the other hand no TSAN suppressions needed.  Cf. SHM-classic:
         elif [ "$3" == '-shm-c' ]; then
           # SHM-classic mode => TSAN gets confused by opposing process (e.g., client) allocating while current process
           # (e.g., accordingly, server) deallocates => false-positives when accessing SHM-mapped areas.  (TSAN)
