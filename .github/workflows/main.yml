@@ -150,15 +150,27 @@ jobs:
           - id: debug
             conan-profile-build-type: Debug
             conan-profile-jemalloc-build-type: Debug
+            # In any case Debug, at the CMake script (in meta-project ./, and in flow/, ipc_*/) level,
+            # means LTO will be ignored (only *Rel* build-types enable LTO, if so instructed).
+            # Still keeping this here to make that clear to the reader/maintainer.  Could remove it though.
+            no-lto: true
           - id: release
             conan-profile-build-type: Release
             conan-profile-jemalloc-build-type: Release
+            # Leaving no-lto at default (false); full-on-optimized-no-debug is the quentessential LTO use case.
           - id: relwithdebinfo
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
+            # As of this writing RelWithDebInfo (in CMake, and Conan in our case at least doesn't override it)
+            # defaults to -O2 (not -O3), which isn't a super-effective way of deploying LTO.  Plus
+            # we can use a test of non-LTO building.
+            # TODO: Perhaps this should be a separate matrix dimension (LTO on, LTO off).  Number of configs will
+            # jump up, but it is more methodical and nice.
+            no-lto: true
           - id: minsizerel
             conan-profile-build-type: MinSizeRel
             conan-profile-jemalloc-build-type: Release
+            # Leaving no-lto at default (false); -Os (size-optimizing) with LTO on is pretty realistic.
           - id: relwithdebinfo-asan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -178,7 +190,10 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             sanitizer-name: asan # Used as internal enum of sorts + name of sanitizer-related dirs.
-            no-lto: true # At least ASAN with clang + LTO => cryptic link error.  No need for LTO when *SAN.
+            # At least ASAN with clang + LTO => cryptic link error.
+            # Regardless regular RelWithDebInfo already has no-lto=true; so we would follow suit.  Just be aware
+            # that changing it to false for whatever reason => ASAN probably breaks.
+            no-lto: true
           - id: relwithdebinfo-ubsan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -197,7 +212,9 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             sanitizer-name: ubsan
-            no-lto: true # While UBSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
+            # While UBSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
+            # Plus inheriting from regular RelWithDebInfo anyway.
+            no-lto: true
           - id: relwithdebinfo-tsan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -215,7 +232,7 @@ jobs:
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-            unit-tests-params: | # As of this writing these trigger assert+bugs in TSAN runtime.  TODO: Revisit.
+            unit-tests-params: | # As of this writing these trigger TSAN assert+bug+hangs at run-time.  TODO: Revisit.
               --gtest_filter=-Shm_session_test.In_process_array:\
               Shm_session_test.In_process_vector_offset_ptr:\
               Shm_session_test.In_process_string_offset_ptr:\
@@ -230,9 +247,14 @@ jobs:
               Borrower_shm_pool_collection_test.Multiprocess:\
               Shm_pool_collection_test.Interface:\
               Shm_pool_collection_test.Multiprocess:\
-              Shm_session_data_test.Multithread_object_database
+              Shm_session_data_test.Multithread_object_database:\
+              Jemalloc_shm_pool_collection_DeathTest.Interface
             sanitizer-name: tsan
-            no-lto: false # See the other *SAN; but for now I heed jkontrik's words to keep consistent with non-*SAN.
+            # While TSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
+            # Also, for some clangs, there are TSAN WARNINGs at times about too-small symbolizer buffer or something;
+            # throwing LTO into the mix seems like unnecessary entropy.
+            # Plus inheriting from regular RelWithDebInfo anyway.
+            no-lto: true
           - id: relwithdebinfo-msan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -251,7 +273,9 @@ jobs:
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
             sanitizer-name: msan
-            no-lto: true # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
+            # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
+            # Plus inheriting from regular RelWithDebInfo anyway.
+            no-lto: true
 
         # We concentrate on clang sanitizers; they are newer/nicer; also MSAN is clang-only.  So gcc ones excluded.
         # Attention!  Excluding some sanitizer job(s) (with these reasons):
@@ -279,6 +303,16 @@ jobs:
         #     - TODO: Consider reducing to the newest clang.  Generally they just keep improving; the chances of
         #       something being uncaught (incorrectly) with a later version are slim.  Not impossible though.  Look
         #       into it.
+        #   - *SAN with clang-13 (but not 15+): As of this writing clang-13 produces some additional warnings,
+        #     at least in TSAN, which appear to be related to nearby non-race messages like
+        #     `==75454==WARNING: Symbolizer buffer too small`.  As a result, we either have to eliminate the
+        #     latter problem (TODO: look into it) or suppress false-positive race warnings that might only look
+        #     like added problems due to the incomplete stack traces.  In general scanning through clang-13-produced
+        #     TSAN output, there is a chaotic feel to it, when it comes to stack output.  Meanwhile so far
+        #     there has been zero evidence that a lower-version clang has actual added problems versus the other
+        #     compiler-versions, due to generating code differently.  Since we have at least 3 other compiler-versions
+        #     running all the *SAN, I (ygoldfel) decided to exclude clang-13 *SAN, until the chaotic *SAN messages can
+        #     be at least reduced.  In the meantime our *SAN coverage is still quite good.
         exclude:
           - build-test-cfg: { id: relwithdebinfo-msan }
           - compiler:  { id: gcc-9 }
@@ -289,6 +323,8 @@ jobs:
             build-test-cfg: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-13 }
             build-test-cfg: { id: relwithdebinfo-asan }
+          - compiler:  { id: clang-13 }
+            build-test-cfg: { id: relwithdebinfo-asan }
           - compiler:  { id: gcc-9 }
             build-test-cfg: { id: relwithdebinfo-ubsan }
           - compiler:  { id: gcc-10 }
@@ -297,6 +333,8 @@ jobs:
             build-test-cfg: { id: relwithdebinfo-ubsan }
           - compiler:  { id: gcc-13 }
             build-test-cfg: { id: relwithdebinfo-ubsan }
+          - compiler:  { id: clang-13 }
+            build-test-cfg: { id: relwithdebinfo-ubsan }
           - compiler:  { id: gcc-9 }
             build-test-cfg: { id: relwithdebinfo-tsan }
           - compiler:  { id: gcc-10 }
@@ -304,6 +342,8 @@ jobs:
           - compiler:  { id: gcc-11 }
             build-test-cfg: { id: relwithdebinfo-tsan }
           - compiler:  { id: gcc-13 }
+            build-test-cfg: { id: relwithdebinfo-tsan }
+          - compiler:  { id: clang-13 }
             build-test-cfg: { id: relwithdebinfo-tsan }
 
     # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
