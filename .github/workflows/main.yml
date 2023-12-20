@@ -794,24 +794,22 @@ jobs:
         # Script created by pipeline during job.
         echo "Log level: [$1]."
         echo "Exercise sub-mode: [$2]."
-        echo "Sub-mode snippet (none or 'shm-?'): [$3]."
+        echo "Sub-mode snippet (none or '-shm-?'): [$3]."
         OUT_DIR=${{ env.install-dir }}/bin/logs/transport_test/exercise/$2
         mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
-        { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
-            > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         if [ "$3" == '-shm-j' ]; then
-          # SHM-jemalloc mode => jemalloc is in fact exercised => suppress jemalloc stuff.  (UBSAN, TSAN)
+          # SHM-jemalloc mode => jemalloc is in fact exercised => suppress libjemalloc stuff.
+          # But, nicely, no transport_test-specific suppressions needed as of this writing.
           SUPP_DIR_B=${{ github.workspace }}/ipc_shm_arena_lend/src
-          { cat $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
-              >> ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         elif [ "$3" == '-shm-c' ]; then
-          # SHM-classic mode => TSAN gets confused by opposing process (e.g., client) allocating while current process
-          # (e.g., accordingly, server) deallocates => false-positives when accessing SHM-mapped areas.  (TSAN)
           SUPP_DIR_B=${{ github.workspace }}/test/suite/transport_test/shm-c
-          { cat $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
-              >> ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
+        else # if [ "$3" == '' ]; then
+          SUPP_DIR_B=${{ github.workspace }}/test/suite/transport_test/heap
         fi
+        { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+            > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/srv.log info $1 \
           > $OUT_DIR/srv.console.log 2>&1 &
