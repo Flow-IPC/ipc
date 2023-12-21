@@ -43,7 +43,6 @@ jobs:
 
     - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
       run: |
-        false # XXX
         sudo apt-get install -y graphviz
 
     - name: Install the latest version of Conan which is less than 2
@@ -451,6 +450,7 @@ jobs:
                                (${{ matrix.build-test-cfg.sanitizer-name }} == 'tsan'))))
       run: |
         echo 'Should not skip later.'
+        false # XXX
 
     - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
       uses: actions/checkout@v4
