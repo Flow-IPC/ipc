@@ -19,7 +19,7 @@ class IpcRecipe(ConanFile):
         # this option to "-O3 -g -DNDEBUG" to increase the optimization level.
         #
         # This affects `ipc` CMake only; meaning flow, ipc_*, ipc objects will have this overridden; while
-        # Boost libs, jemalloc lib, capnp/kj libs will build how they would've built anyway.
+        # Boost libs, jemalloc lib, capnp/kj, gtest libs will build how they would've built anyway.
         "build_type_cflags_override": "ANY",
         "doc": [True, False],
     }
