@@ -35,7 +35,7 @@
   ( \
     if (!(expr)) \
     { \
-      std::cerr << FLOW_UTIL_WHERE_AM_I() << "Condition failed; aborting.  The condition: [" << #expr << "].\n"; \
+      std::cerr << FLOW_UTIL_WHERE_AM_I() << ": Condition failed; aborting.  The condition: [" << #expr << "].\n"; \
       std::abort(); \
     } \
   )
