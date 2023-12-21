@@ -43,7 +43,7 @@ jobs:
 
     # XXX
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
-      id: transport_test_ex_shm_jxxx
+      id: transport_test_ex_shm_jxxx1
       if: |
         (!cancelled()) && (!((${{ matrix.compiler.id }} == 'clang-17')
                              &&
@@ -53,7 +53,7 @@ jobs:
 
     # XXX
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
-      id: transport_test_ex_shm_jxxx
+      id: transport_test_ex_shm_jxxx2
       if: |
         !((!cancelled()) && (!((${{ matrix.compiler.id }} == 'clang-17')
                                &&
