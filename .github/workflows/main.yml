@@ -440,7 +440,8 @@ jobs:
         (!cancelled()) && (!((${{ matrix.compiler.id }} == 'clang-17') &&
                              (${{ matrix.build-test-cfg.sanitizer-name }} == 'tsan')))
       run: |
-        echo 'Should skip later.'
+        echo 'Should skip later. [${{ matrix.compiler.id }}][${{ matrix.build-test-cfg.sanitizer-name }}]'
+        false # XXX
 
     # XXX
     - name: Run 2 XXX
@@ -449,7 +450,7 @@ jobs:
         !((!cancelled()) && (!((${{ matrix.compiler.id }} == 'clang-17') &&
                                (${{ matrix.build-test-cfg.sanitizer-name }} == 'tsan'))))
       run: |
-        echo 'Should not skip later.'
+        echo 'Should not skip later. [${{ matrix.compiler.id }}][${{ matrix.build-test-cfg.sanitizer-name }}]'
         false # XXX
 
     - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
