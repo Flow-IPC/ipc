@@ -438,8 +438,7 @@ jobs:
     - name: Run 1 XXX
       id: transport_test_ex_shm_jxxx1
       if: |
-        (!cancelled()) && ((${{ matrix.compiler.id }} != 'clang-17') ||
-                           (${{ matrix.build-test-cfg.sanitizer-name }} != 'tsan'))
+        (${{ matrix.compiler.id }} != 'clang-17') || (${{ matrix.build-test-cfg.sanitizer-name }} != 'tsan'))
       run: |
         echo 'Should skip later. [${{ matrix.compiler.id }}][${{ matrix.build-test-cfg.sanitizer-name }}]'
 
@@ -447,8 +446,7 @@ jobs:
     - name: Run 2 XXX
       id: transport_test_ex_shm_jxxx2
       if: |
-        !((!cancelled()) && ((${{ matrix.compiler.id }} != 'clang-17') ||
-                             (${{ matrix.build-test-cfg.sanitizer-name }} != 'tsan')))
+        (${{ matrix.compiler.id }} == 'clang-17') && (${{ matrix.build-test-cfg.sanitizer-name }} == 'tsan'))
       run: |
         echo 'Should not skip later. [${{ matrix.compiler.id }}][${{ matrix.build-test-cfg.sanitizer-name }}]'
 
