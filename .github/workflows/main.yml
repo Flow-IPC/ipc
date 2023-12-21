@@ -11,94 +11,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  doc:
-    strategy:
-      fail-fast: false
-      matrix:
-        compiler:
-          - id: clang-15
-            name: clang
-            version: 15
-            c-path: /usr/bin/clang-15
-            cpp-path: /usr/bin/clang++-15
-        build-cfg:
-          - id: release
-            conan-profile-build-type: Release
-            conan-preset: release
-
-    # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
-    runs-on: ubuntu-22.04
-
-    name: |
-      doc-${{ matrix.compiler.id }}-${{ matrix.build-cfg.id }}
-
-    steps:
-    - name: Update available software list for apt-get
-      run: sudo apt-get update
-
-    - name: Checkout `ipc` repository and submodules (like `flow`)
-      uses: actions/checkout@v4
-      with:
-        submodules: true
-
-    - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
-      run: |
-        sudo apt-get install -y graphviz
-
-    - name: Install the latest version of Conan which is less than 2
-      run: |
-        pip install "conan<2"
-
-    - name: Create Conan profile
-      run: |
-        cat <<'EOF' > conan_profile
-        [settings]
-        compiler = ${{ matrix.compiler.name }}
-        compiler.version = ${{ matrix.compiler.version }}
-        compiler.cppstd = 17
-        compiler.libcxx = libstdc++11
-        arch = x86_64
-        os = Linux
-        build_type = ${{ matrix.build-cfg.conan-profile-build-type }}
-
-        [conf]
-        tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
-
-        [buildenv]
-        CC = ${{ matrix.compiler.c-path }}
-        CXX = ${{ matrix.compiler.cpp-path }}
-
-        [options]
-        ipc:doc = True
-        ipc:build = False
-        EOF
-
-    - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
-      run: |
-        conan install \
-          . \
-          --profile:build conan_profile \
-          --profile:host conan_profile \
-          --build missing
-
-    - name: Generate code documentation using Conan and Doxygen
-      run: |
-        conan build .
-
-    - name: Create documentation tarball (full, API-only, landing page)
-      run: |
-        cd ${{ github.workspace }}/doc/ipc_doc
-        ${{ github.workspace }}/tools/doc/stage_generated_docs.sh ${{ github.workspace }}/build/${{ matrix.build-cfg.conan-profile-build-type }}
-        # Save runner space.
-        rm -rf generated
-
-    - name: Upload documentation tarball
-      uses: actions/upload-artifact@v3
-      with:
-        name: ipc-doc-${{ matrix.compiler.id }}-${{ matrix.build-cfg.id }}
-        path: |
-          ${{ github.workspace }}/doc/ipc_doc.tgz
-
   build:
     strategy:
       fail-fast: false
@@ -353,8 +265,8 @@ jobs:
     # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
     runs-on: ubuntu-22.04
 
-    name: |
-      build-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
+    name: ${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
+
     env:
       build-dir: ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-profile-build-type }}
       install-root-dir: ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}
@@ -439,37 +351,37 @@ jobs:
         submodules: true
 
     - name: Install clang compiler
-      if: |
-        matrix.compiler.install && (matrix.compiler.name == 'clang')
+      if: matrix.compiler.install && (matrix.compiler.name == 'clang')
       run: |
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh ${{ matrix.compiler.version }}
 
     - name: Install gcc compiler
-      if: |
-        matrix.compiler.install && (matrix.compiler.name == 'gcc')
+      if: matrix.compiler.install && (matrix.compiler.name == 'gcc')
       run: |
         sudo apt-get install -y software-properties-common
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
         sudo apt-get update
         sudo apt-get install -y gcc-${{ matrix.compiler.version }} g++-${{ matrix.compiler.version }}
 
+    # We get highest 1.x, instead of 2+, because there are certain dependency recipe issues (namely for jemalloc)
+    # with 2+.  TODO: 1, expound more clearly here or elsewhere what those issues are; 2, solve those issues and
+    # thus move to Conan 2+; Conan 1.x is officially on "deprecation path."  This will also help resolve some other
+    # to-dos more easily (targeting different build settings at built product source versus tools used to build it
+    # = prime example).
     - name: Install the latest version of Conan which is less than 2
       run: |
         pip install "conan<2"
 
     - name: Add custom settings for Conan packages
-      if: |
-        matrix.build-test-cfg.conan-custom-settings-defs
+      if: matrix.build-test-cfg.conan-custom-settings-defs
       run: |
         conan config init
-
         pip install PyYAML
-
         CONAN_SETTINGS_PATH=$(conan config home)/settings.yml
-
         python -c "
+
         import yaml
 
         with open('$CONAN_SETTINGS_PATH', 'r') as file:
@@ -514,6 +426,7 @@ jobs:
         compiler = ${{ matrix.compiler.name }}
         compiler.version = ${{ matrix.compiler.version }}
         compiler.cppstd = 17
+        # TODO: Consider testing with LLVM-libc++ also (with clang anyway).
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
@@ -561,8 +474,7 @@ jobs:
     # and lastly we can put the specific failures on the ignore-list for MSAN.  For now we do that; while
     # unpleasant it does get the job done.  TODO: Revisit/resolve tickets/improve (see above).
     - name: Prepare MSAN sanitizer compile-time config file(s)
-      if: |
-        (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'msan')
+      if: (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'msan')
       run: |
         cat <<'EOF' > $${ env.msan-ignore-list-cfg-file }}
         [memory]
@@ -589,17 +501,14 @@ jobs:
     - name: Install Flow-IPC dependencies with Conan using the profile
       run: |
         conan editable add flow flow/1.0
-        conan install \
-          . \
-          --profile:build conan_profile \
-          --profile:host conan_profile \
-          --build missing
+        conan install . \
+          --profile:build conan_profile --profile:host conan_profile --build missing
 
-    - name: Build targets (libraries, demos/tests) with Conan
+    - name: Build libraries and demos/tests with Conan
       run: |
         conan build .
 
-    - name: Install targets with Makefile
+    - name: Install built targets with Makefile
       run: |
         make install \
           --directory ${{ env.build-dir }} DESTDIR=${{ env.install-root-dir }}
@@ -644,8 +553,7 @@ jobs:
     # *any* suppression; otherwise we skip it for brevity.  `find . -name 'suppressions*.cfg` is pretty useful
     # to determine their presence in addition to whether the test itself has its specific suppressions of any kind.
     - name: Run link test [`ipc_core` - Flow-IPC Core]
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_core_link_test
@@ -656,8 +564,7 @@ jobs:
         ./ipc_core_link_test.exec > logs/ipc_core_link_test/console.log 2>&1
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_transport_structured_link_test
@@ -668,8 +575,7 @@ jobs:
         ./ipc_transport_structured_link_test.exec > logs/ipc_transport_structured_link_test/console.log 2>&1
 
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_session_link_test
@@ -682,8 +588,7 @@ jobs:
         ./ipc_session_link_test_cli.exec > logs/ipc_session_link_test/cli.console.log 2>&1
 
     - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_link_test
@@ -696,8 +601,7 @@ jobs:
         ./ipc_shm_link_test_cli.exec > logs/ipc_shm_link_test/cli.console.log 2>&1
 
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
@@ -716,8 +620,7 @@ jobs:
         ./ipc_shm_arena_lend_link_test_cli.exec > logs/ipc_shm_arena_lend_link_test/cli.console.log 2>&1
 
     - name: Run unit tests
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         # Some newline issues with the possible additional args; so need to make a wrapper script
@@ -750,8 +653,7 @@ jobs:
 
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_sc.sh
         echo "Log level: [$1]."
@@ -779,16 +681,14 @@ jobs:
 
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_sc.sh \
           info
 
     - name: Re-run with increased logging, on failure only
-      if: |
-        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
+      if: (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_sc.sh \
@@ -800,8 +700,7 @@ jobs:
     # the ipc::session safety model for estabshing IPC conversations (sessions).
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
         mkdir -p /tmp/var/run
@@ -810,8 +709,7 @@ jobs:
         cp -v ~/bin/ex_srv.exec ~/bin/ex_cli.exec
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
@@ -850,16 +748,14 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       id: transport_test_ex_heap
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
           info heap
 
     - name: Re-run with increased logging, on failure only
-      if: |
-        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
+      if: (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
@@ -867,16 +763,14 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
-      if: |
-        !cancelled()
+      if: !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
           info shm_classic -shm-c
 
     - name: Re-run with increased logging, on failure only
-      if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
+      if: (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
@@ -909,17 +803,14 @@ jobs:
     # reduce optimization to -O1, as well as with and without LTO; same result.
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
-      if: |
-        (!cancelled()) && ((matrix.compiler.id != 'clang-17') ||
-                           (matrix.build-test-cfg.sanitizer-name != 'tsan'))
+      if: (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
           info shm_jemalloc -shm-j
 
     - name: Re-run with increased logging, on failure only
-      if: |
-        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
+      if: (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
@@ -927,8 +818,7 @@ jobs:
 
     # See earlier comment block about why we saved all the logs including for console-output-only tests/demos.
     - name: Check test/demo logs for non-fatal sanitizer error(s)
-      if: |
-        (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'ubsan')
+      if: (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'ubsan')
       run: |
         cd ${{ env.install-dir }}/bin/logs
         # grep returns 0 if 1+ found, 1 if none found, 2+ on error.  So check results explicitly instead of -e.
@@ -947,19 +837,17 @@ jobs:
         echo 'No errors found in logs.'
 
     - name: Package test/demo logs tarball
-      if: |
-        always()
+      if: always()
       run: |
         cd ${{ env.install-dir }}/bin
         tar cvzf logs.tgz logs
         rm -rf logs # Save runner space.
 
     - name: Upload test/demo logs (please inspect if failure(s) seen above)
-      if: |
-        always()
+      if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: ipc-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
+        name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
         path: |
           ${{ env.install-dir }}/bin/logs.tgz
 
@@ -974,3 +862,87 @@ jobs:
 # there a core?  Do we need one?  Etc.
 #
 # Possibly this is all handled beautifully automatically; then this should be deleted.
+
+  doc:
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+          - id: clang-15
+            name: clang
+            version: 15
+            c-path: /usr/bin/clang-15
+            cpp-path: /usr/bin/clang++-15
+        build-cfg:
+          - id: release
+            conan-profile-build-type: Release
+            conan-preset: release
+
+    runs-on: ubuntu-22.04
+
+    name: doc
+
+    steps:
+    - name: Update available software list for apt-get
+      run: sudo apt-get update
+
+    - name: Checkout `ipc` repository and submodules (like `flow`)
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
+      run: |
+        sudo apt-get install -y graphviz
+
+    - name: Install the latest version of Conan which is less than 2
+      run: |
+        pip install "conan<2"
+
+    - name: Create Conan profile
+      run: |
+        cat <<'EOF' > conan_profile
+        [settings]
+        compiler = ${{ matrix.compiler.name }}
+        compiler.version = ${{ matrix.compiler.version }}
+        compiler.cppstd = 17
+        compiler.libcxx = libstdc++11
+        arch = x86_64
+        os = Linux
+        build_type = ${{ matrix.build-cfg.conan-profile-build-type }}
+
+        [conf]
+        tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
+
+        [buildenv]
+        CC = ${{ matrix.compiler.c-path }}
+        CXX = ${{ matrix.compiler.cpp-path }}
+
+        [options]
+        ipc:doc = True
+        ipc:build = False
+        EOF
+
+    - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
+      run: |
+        conan install . \
+          --profile:build conan_profile --profile:host conan_profile --build missing
+
+    - name: Generate code documentation using Conan and Doxygen
+      run: |
+        conan build .
+
+    - name: Create documentation tarball (full docs, API-only docs, landing page)
+      run: |
+        cd ${{ github.workspace }}/doc/ipc_doc
+        ${{ github.workspace }}/tools/doc/stage_generated_docs.sh \
+          ${{ github.workspace }}/build/${{ matrix.build-cfg.conan-profile-build-type }}
+        # Save runner space.
+        rm -rf generated
+
+    - name: Upload documentation tarball
+      uses: actions/upload-artifact@v3
+      with:
+        name: ipc-doc
+        path: |
+          ${{ github.workspace }}/doc/ipc_doc.tgz
