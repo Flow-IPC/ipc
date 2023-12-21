@@ -154,7 +154,7 @@ jobs:
             # In any case Debug, at the CMake script (in meta-project ./, and in flow/, ipc_*/) level,
             # means LTO will be ignored (only *Rel* build-types enable LTO, if so instructed).
             # Still keeping this here to make that clear to the reader/maintainer.  Could remove it though.
-            no-lto: true
+            no-lto: True
           - id: release
             conan-profile-build-type: Release
             conan-profile-jemalloc-build-type: Release
@@ -167,7 +167,7 @@ jobs:
             # we can use a test of non-LTO building.
             # TODO: Perhaps this should be a separate matrix dimension (LTO on, LTO off).  Number of configs will
             # jump up, but it is more methodical and nice.
-            no-lto: true
+            no-lto: True
           - id: minsizerel
             conan-profile-build-type: MinSizeRel
             conan-profile-jemalloc-build-type: Release
@@ -194,7 +194,7 @@ jobs:
             # At least ASAN with clang + LTO => cryptic link error.
             # Regardless regular RelWithDebInfo already has no-lto=true; so we would follow suit.  Just be aware
             # that changing it to false for whatever reason => ASAN probably breaks.
-            no-lto: true
+            no-lto: True
           - id: relwithdebinfo-ubsan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -215,7 +215,7 @@ jobs:
             sanitizer-name: ubsan
             # While UBSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Plus inheriting from regular RelWithDebInfo anyway.
-            no-lto: true
+            no-lto: True
           - id: relwithdebinfo-tsan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -254,7 +254,7 @@ jobs:
             # Also, for some clangs, there are TSAN WARNINGs at times about too-small symbolizer buffer or something;
             # throwing LTO into the mix seems like unnecessary entropy.
             # Plus inheriting from regular RelWithDebInfo anyway.
-            no-lto: true
+            no-lto: True
           - id: relwithdebinfo-msan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -275,7 +275,7 @@ jobs:
             sanitizer-name: msan
             # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Plus inheriting from regular RelWithDebInfo anyway.
-            no-lto: true
+            no-lto: True
 
         # We concentrate on clang sanitizers; they are newer/nicer; also MSAN is clang-only.  So gcc ones excluded.
         # Attention!  Excluding some sanitizer job(s) (with these reasons):
@@ -438,7 +438,8 @@ jobs:
     - name: Run 1 XXX
       id: transport_test_ex_shm_jxxx1
       if: |
-        (${{ matrix.compiler.id }} != 'clang-17') || (${{ matrix.build-test-cfg.sanitizer-name }} != 'tsan'))
+        (!cancelled()) && ((matrix.compiler.id != 'clang-17') ||
+                           (matrix.build-test-cfg.sanitizer-name != 'tsan'))
       run: |
         echo 'Should skip later. [${{ matrix.compiler.id }}][${{ matrix.build-test-cfg.sanitizer-name }}]'
 
@@ -446,7 +447,8 @@ jobs:
     - name: Run 2 XXX
       id: transport_test_ex_shm_jxxx2
       if: |
-        (${{ matrix.compiler.id }} == 'clang-17') && (${{ matrix.build-test-cfg.sanitizer-name }} == 'tsan'))
+        !((!cancelled()) && ((matrix.compiler.id != 'clang-17') ||
+                             (matrix.build-test-cfg.sanitizer-name != 'tsan')))
       run: |
         echo 'Should not skip later. [${{ matrix.compiler.id }}][${{ matrix.build-test-cfg.sanitizer-name }}]'
 
@@ -555,7 +557,7 @@ jobs:
         ipc:doc = False
         ipc:build = True
         EOF
-        if [ "${{ matrix.build-test-cfg.no-lto }}" != '' ] && [ "${{ matrix.build-test-cfg.no-lto }}" != 'false' ]; then
+        if [ "${{ matrix.build-test-cfg.no-lto }}" != '' ] && [ "${{ matrix.build-test-cfg.no-lto }}" != 'False' ]; then
           echo 'ipc:build_no_lto = True' >> conan_profile
         fi
         if [ "${{ matrix.build-test-cfg.build-type-cflags-override }}" != '' ]; then
