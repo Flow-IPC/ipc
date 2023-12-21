@@ -92,12 +92,13 @@ jobs:
               tools.build:cxxflags = ["-fsanitize=address", "-fno-omit-frame-pointer"]
               tools.build:sharedlinkflags = ["-fsanitize=address"]
               tools.build:exelinkflags = ["-fsanitize=address"]
-            conan-profile-custom-settings: |
-              compiler.sanitizer = address
+            # jemalloc recipe needs this as of this writing (even though it dupes the stuff just-above conceptually).
             conan-profile-custom-buildenv: |
               CXXFLAGS = -fsanitize=address -fno-omit-frame-pointer
               CFLAGS = -fsanitize=address -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=address
+            conan-profile-custom-settings: |
+              compiler.sanitizer = address
             conan-custom-settings-defs: | # Could we not copy/paste these 4x?
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
@@ -114,12 +115,12 @@ jobs:
               tools.build:cxxflags = ["-fsanitize=undefined", "-fno-omit-frame-pointer"]
               tools.build:sharedlinkflags = ["-fsanitize=undefined"]
               tools.build:exelinkflags = ["-fsanitize=undefined"]
-            conan-profile-custom-settings: |
-              compiler.sanitizer = undefined
             conan-profile-custom-buildenv: |
               CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=undefined
+            conan-profile-custom-settings: |
+              compiler.sanitizer = undefined
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
@@ -135,12 +136,12 @@ jobs:
               tools.build:cxxflags = ["-fsanitize=thread"]
               tools.build:sharedlinkflags = ["-fsanitize=thread"]
               tools.build:exelinkflags = ["-fsanitize=thread"]
-            conan-profile-custom-settings: |
-              compiler.sanitizer = thread
             conan-profile-custom-buildenv: |
               CXXFLAGS = -fsanitize=thread
               CFLAGS = -fsanitize=thread
               LDFLAGS = -fsanitize=thread
+            conan-profile-custom-settings: |
+              compiler.sanitizer = thread
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
@@ -174,12 +175,12 @@ jobs:
               tools.build:cxxflags = ["-fsanitize=memory", "-fno-omit-frame-pointer", "-fsanitize-ignorelist=/tmp/msan_ignore_list.cfg"]
               tools.build:sharedlinkflags = ["-fsanitize=memory"]
               tools.build:exelinkflags = ["-fsanitize=memory"]
-            conan-profile-custom-settings: |
-              compiler.sanitizer = memory
             conan-profile-custom-buildenv: |
               CXXFLAGS = -fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=/tmp/msan_ignore_list.cfg
               CFLAGS = -fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=/tmp/msan_ignore_list.cfg
               LDFLAGS = -fsanitize=memory
+            conan-profile-custom-settings: |
+              compiler.sanitizer = memory
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
@@ -867,6 +868,7 @@ jobs:
       fail-fast: false
       matrix:
         compiler:
+          # Pick a reasonably modern but pre-installed compiler for building Doxygen/etc.
           - id: clang-15
             name: clang
             version: 15
