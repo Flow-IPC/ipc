@@ -848,8 +848,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
-        path: |
-          ${{ env.install-dir }}/bin/logs.tgz
+        path: ${{ env.install-dir }}/bin/logs.tgz
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
 # Do we need to manually save it as an artifact?  For that matter we would then need the binary and
@@ -944,5 +943,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: ipc-doc
-        path: |
-          ${{ github.workspace }}/doc/ipc_doc.tgz
+        path: ${{ github.workspace }}/doc/ipc_doc.tgz
