@@ -153,7 +153,7 @@ jobs:
             # In any case Debug, at the CMake script (in meta-project ./, and in flow/, ipc_*/) level,
             # means LTO will be ignored (only *Rel* build-types enable LTO, if so instructed).
             # Still keeping this here to make that clear to the reader/maintainer.  Could remove it though.
-            no-lto: true
+            no-lto: True
           - id: release
             conan-profile-build-type: Release
             conan-profile-jemalloc-build-type: Release
@@ -166,7 +166,7 @@ jobs:
             # we can use a test of non-LTO building.
             # TODO: Perhaps this should be a separate matrix dimension (LTO on, LTO off).  Number of configs will
             # jump up, but it is more methodical and nice.
-            no-lto: true
+            no-lto: True
           - id: minsizerel
             conan-profile-build-type: MinSizeRel
             conan-profile-jemalloc-build-type: Release
@@ -193,7 +193,7 @@ jobs:
             # At least ASAN with clang + LTO => cryptic link error.
             # Regardless regular RelWithDebInfo already has no-lto=true; so we would follow suit.  Just be aware
             # that changing it to false for whatever reason => ASAN probably breaks.
-            no-lto: true
+            no-lto: True
           - id: relwithdebinfo-ubsan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -214,7 +214,7 @@ jobs:
             sanitizer-name: ubsan
             # While UBSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Plus inheriting from regular RelWithDebInfo anyway.
-            no-lto: true
+            no-lto: True
           - id: relwithdebinfo-tsan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -247,14 +247,13 @@ jobs:
               Borrower_shm_pool_collection_test.Multiprocess:\
               Shm_pool_collection_test.Interface:\
               Shm_pool_collection_test.Multiprocess:\
-              Shm_session_data_test.Multithread_object_database:\
-              Jemalloc_shm_pool_collection_DeathTest.Interface
+              Shm_session_data_test.Multithread_object_database
             sanitizer-name: tsan
             # While TSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Also, for some clangs, there are TSAN WARNINGs at times about too-small symbolizer buffer or something;
             # throwing LTO into the mix seems like unnecessary entropy.
             # Plus inheriting from regular RelWithDebInfo anyway.
-            no-lto: true
+            no-lto: True
           - id: relwithdebinfo-msan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
@@ -275,7 +274,7 @@ jobs:
             sanitizer-name: msan
             # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Plus inheriting from regular RelWithDebInfo anyway.
-            no-lto: true
+            no-lto: True
 
         # We concentrate on clang sanitizers; they are newer/nicer; also MSAN is clang-only.  So gcc ones excluded.
         # Attention!  Excluding some sanitizer job(s) (with these reasons):
@@ -300,9 +299,14 @@ jobs:
         #     So this status quo is pretty good.  TODO: Do the work/get MSAN functional/useful; un-exclude it then.
         #   - *SAN with gcc: We concentrate on clang sanitizers; they are newer/nicer; having to worry about differences
         #     between them is an excessive burden.  So excluding gcc ASAN/UBSAN/TSAN.
-        #     - TODO: Consider reducing to the newest clang.  Generally they just keep improving; the chances of
-        #       something being uncaught (incorrectly) with a later version are slim.  Not impossible though.  Look
-        #       into it.
+        #     - TODO: Consider reducing to the newest or most stable clang.  Generally they just keep improving; the
+        #       chances of something being uncaught (incorrectly) with a later version are slim.  Not impossible though.
+        #       Look into it.  Update: As of this writing transport_test exercise mode/SHM-jemalloc sub-mode is
+        #       disabled for TSAN clang-17 due to instability of TSAN itself.  So clearly when it comes to TSAN
+        #       (which is officially in beta as of clang-17), higher version does not mean everything is better.
+        #       Hence perhaps this to-do is more of a longer-term thing, when all the sanitizers stabilize, or when
+        #       we find a single very-stable config.  Just remember we aren't testing the sanitizer or our code's
+        #       ability to be sanitized; we just want to detect any problems in the code -- however we get there.
         #   - *SAN with clang-13 (but not 15+): As of this writing clang-13 produces some additional warnings,
         #     at least in TSAN, which appear to be related to nearby non-race messages like
         #     `==75454==WARNING: Symbolizer buffer too small`.  As a result, we either have to eliminate the
@@ -477,6 +481,32 @@ jobs:
           yaml.dump(data, file)
         "
 
+    # Important info/somewhat important TODO: The C[XX]FLAGS and linker-flags are supplied via
+    # ${{ matrix.build-test-cfg.conan-profile-custom-conf }} and
+    # ${{ matrix.build-test-cfg.conan-profile-custom-buildenv }}.  These affect not just our objects/libs/executables;
+    # but also at least: 3rd party libs (jemalloc, capnp/kj, boost, gtest), 3rd party executables
+    # (capnp compiler binary; temp binaries created by auto-tools configure scripts to test features).
+    # In the case of the libs that's usually good; in particular things like
+    # -fsanitize=address (ASAN) (for build-type relwithdebinfo-asan) ideally are applied to all built code
+    # uniformly.  (There are other libs being built, one can see: at least openssl and zlib; they're not really
+    # involved in our actual product, at least not in a core way, so for those it arguably matters less either way.)
+    # In the case of the binaries it is usually bad; we want the fastest, most normal tools possible, not ones
+    # built weirdly with whatever settings we're trying to test with our own software.  For one it makes those
+    # tools slower -- perhaps not the hugest deal in practice here -- but it also generally increases entropy; and
+    # it has also resulted in various pain:
+    #   - Cannot use -fno-sanitize-recover with UBSAN (abort program on warning) if we wanted to: it causes some
+    #     hidden configure-script-generated binary abort => capnp binary build fails.
+    #   - capnp binary fails MSAN at startup; hence capnp-compilation of our .capnp schemas fails.
+    # We have worked around all these, so the thing altogether works.  It's just somewhat odd and entropy-ridden;
+    # and might cause maintanability problems over time, as it has already in the past.
+    # The TODO is to be more judicious about it
+    # and only apply these things to the libs/executables we want it applied.  It is probably not so simple;
+    # but worst-case it should be possible to use something like build-type-cflags-override to target our code;
+    # and per-recipe (Boost, jemalloc, gtest...) techniques to target others; and not use the aggressive
+    # conan-profile-custom-conf and conan-profile-custom-buildenv.  That said, there will be interesting subtleties
+    # like: libcapnp/kj are linked into capnp compiler binary; *and* to our code.  So we should instrument it with
+    # sanitizer (when applicable); now some of the capnp-compiler-binary is instrumented; some isn't.  Would that
+    # work, or would it be better to build capnp twice then (once for the binary, once for the linked libraries)?
     - name: Create Conan profile
       run: |
         cat <<'EOF' > conan_profile
@@ -507,8 +537,11 @@ jobs:
         ipc:doc = False
         ipc:build = True
         EOF
-        if [ "${{ matrix.build-test-cfg.no-lto }}" != '' ]; then
+        if [ "${{ matrix.build-test-cfg.no-lto }}" != '' ] && [ "${{ matrix.build-test-cfg.no-lto }}" != 'False' ]; then
           echo 'ipc:build_no_lto = True' >> conan_profile
+        fi
+        if [ "${{ matrix.build-test-cfg.build-type-cflags-override }}" != '' ]; then
+          echo 'ipc:build_type_cflags_override = ${{ matrix.build-test-cfg.build-type-cflags-override }}' >> conan_profile
         fi
 
     # We need to prepare a sanitizer ignore-list in MSAN mode.  Background for this is subtle and annoying:
@@ -784,24 +817,22 @@ jobs:
         # Script created by pipeline during job.
         echo "Log level: [$1]."
         echo "Exercise sub-mode: [$2]."
-        echo "Sub-mode snippet (none or 'shm-?'): [$3]."
+        echo "Sub-mode snippet (none or '-shm-?'): [$3]."
         OUT_DIR=${{ env.install-dir }}/bin/logs/transport_test/exercise/$2
         mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
-        { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
-            > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         if [ "$3" == '-shm-j' ]; then
-          # SHM-jemalloc mode => jemalloc is in fact exercised => suppress jemalloc stuff.  (UBSAN, TSAN)
+          # SHM-jemalloc mode => jemalloc is in fact exercised => suppress libjemalloc stuff.
+          # But, nicely, no transport_test-specific suppressions needed as of this writing.
           SUPP_DIR_B=${{ github.workspace }}/ipc_shm_arena_lend/src
-          { cat $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
-              >> ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         elif [ "$3" == '-shm-c' ]; then
-          # SHM-classic mode => TSAN gets confused by opposing process (e.g., client) allocating while current process
-          # (e.g., accordingly, server) deallocates => false-positives when accessing SHM-mapped areas.  (TSAN)
           SUPP_DIR_B=${{ github.workspace }}/test/suite/transport_test/shm-c
-          { cat $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
-              >> ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
+        else # if [ "$3" == '' ]; then
+          SUPP_DIR_B=${{ github.workspace }}/test/suite/transport_test/heap
         fi
+        { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+            > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/srv.log info $1 \
           > $OUT_DIR/srv.console.log 2>&1 &
@@ -851,10 +882,36 @@ jobs:
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
           data shm_classic_log_level_data -shm-c
 
+    # Disabling this particular test run for the specific case of clang-17 in TSAN (thread sanitizer) config
+    # (in particular at least 2 other clangs+TSAN are exercised, so the TSAN coverage is still good).
+    # First the reason in detail: This run always fails at this point in the server binary:
+    #   2023-12-20 11:36:11.322479842 +0000 [info]: Tguy: ex_srv.hpp:send_req_b(1428): App_session [0x7b3800008180]:
+    #     Chan B[0]: Filling/send()ing payload (description = [reuse out-message + SHM-handle to modified (unless
+    #     SHM-jemalloc) existing STL data]; alt-payload? = [0]; reusing msg? = [1]; reusing SHM payload? = [1]).
+    #   LLVM ERROR: Sections with relocations should have an address of 0
+    #   PLEASE submit a bug report to https://github.com/llvm/llvm-project/issues/ and include the crash backtrace.
+    #   Stack dump:
+    #   0.  Program arguments: /usr/bin/llvm-symbolizer-17 --demangle --inlines --default-arch=x86_64
+    #   Stack dump without symbol names (ensure you have llvm-symbolizer in your PATH or set the environment var `LLVM_SYMBOLIZER_PATH` to point to it):
+    #   ...
+    #   ==77990==WARNING: Can't read from symbolizer at fd 599
+    #   2023-12-20 11:36:31.592293322 +0000 [info]: Tguy: ex_srv.hpp:send_req_b(1547): App_session [0x7b3800008180]: Chan B[0]: Filling done.  Now to send.
+    # Sometimes the exact point is different, depending on timing; but in any case it is always the above
+    # TSAN/LLVM error, at which point the thread gets stuck for a long time (10+ seconds); but eventually gets
+    # unstuck; however transport_test happens to be testing a feature in a certain way so that a giant blocking
+    # operation in this thread delays certain processing, causes an internal timeout, and the test exits/fails.
+    # Sure, we could make some changes to the test for that to not happen, but that's beside the point: TSAN
+    # at run-time is trying to do something and fails terribly; I have no wish to try to work around that situation;
+    # literally it says "PLEASE submit a bug report [to clang devs]."
+    #
+    # TODO: Revisit; figure out how to not trigger this; re-enable.  For the record, I (ygoldfel) cannot reproduce
+    # in a local clang-17, albeit with libc++ (LLVM STL) instead of libstdc++ (GNU STL).  I've also tried to
+    # reduce optimization to -O1, as well as with and without LTO; same result.
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        !cancelled()
+        (!cancelled()) && ((matrix.compiler.id != 'clang-17') ||
+                           (matrix.build-test-cfg.sanitizer-name != 'tsan'))
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
