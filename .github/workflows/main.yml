@@ -43,7 +43,6 @@ jobs:
 
     - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
       run: |
-        false # XXX
         sudo apt-get install -y graphviz
 
     - name: Install the latest version of Conan which is less than 2
@@ -434,24 +433,6 @@ jobs:
         lsb_release -a
         sudo apt-get update
 
-    # XXX
-    - name: Run 1 XXX
-      id: transport_test_ex_shm_jxxx1
-      if: |
-        (!cancelled()) && ((matrix.compiler.id != 'clang-17') ||
-                           (matrix.build-test-cfg.sanitizer-name != 'tsan'))
-      run: |
-        echo 'Should skip later. [${{ matrix.compiler.id }}][${{ matrix.build-test-cfg.sanitizer-name }}]'
-
-    # XXX
-    - name: Run 2 XXX
-      id: transport_test_ex_shm_jxxx2
-      if: |
-        !((!cancelled()) && ((matrix.compiler.id != 'clang-17') ||
-                             (matrix.build-test-cfg.sanitizer-name != 'tsan')))
-      run: |
-        echo 'Should not skip later. [${{ matrix.compiler.id }}][${{ matrix.build-test-cfg.sanitizer-name }}]'
-
     - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
       uses: actions/checkout@v4
       with:
@@ -461,7 +442,6 @@ jobs:
       if: |
         matrix.compiler.install && (matrix.compiler.name == 'clang')
       run: |
-        false # XXX
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh ${{ matrix.compiler.version }}
@@ -930,9 +910,8 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        (!cancelled()) && (!((${{ matrix.compiler.id }} == 'clang-17')
-                             &&
-                             (${{ matrix.build-test-cfg.sanitizer-name }} == 'tsan')))
+        (!cancelled()) && ((matrix.compiler.id != 'clang-17') ||
+                           (matrix.build-test-cfg.sanitizer-name != 'tsan'))
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
