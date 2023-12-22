@@ -46,7 +46,7 @@ class IpcRecipe(ConanFile):
         toolchain = CMakeToolchain(self)
         if self.options.build:
             toolchain.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
-            toolchain.variables["JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
+            # XXX toolchain.variables["JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
             if self.options.build_no_lto:
                 toolchain.variables["CFG_NO_LTO"] = "ON"
             if self.options.build_type_cflags_override:
