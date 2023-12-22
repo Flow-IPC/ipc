@@ -11,94 +11,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  doc:
-    strategy:
-      fail-fast: false
-      matrix:
-        compiler:
-          - id: clang-15
-            name: clang
-            version: 15
-            c-path: /usr/bin/clang-15
-            cpp-path: /usr/bin/clang++-15
-        build-cfg:
-          - id: release
-            conan-profile-build-type: Release
-            conan-preset: release
-
-    # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
-    runs-on: ubuntu-22.04
-
-    name: |
-      doc-${{ matrix.compiler.id }}-${{ matrix.build-cfg.id }}
-
-    steps:
-    - name: Update available software list for apt-get
-      run: sudo apt-get update
-
-    - name: Checkout `ipc` repository and submodules (like `flow`)
-      uses: actions/checkout@v4
-      with:
-        submodules: true
-
-    - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
-      run: |
-        sudo apt-get install -y graphviz
-
-    - name: Install the latest version of Conan which is less than 2
-      run: |
-        pip install "conan<2"
-
-    - name: Create Conan profile
-      run: |
-        cat <<'EOF' > conan_profile
-        [settings]
-        compiler = ${{ matrix.compiler.name }}
-        compiler.version = ${{ matrix.compiler.version }}
-        compiler.cppstd = 17
-        compiler.libcxx = libstdc++11
-        arch = x86_64
-        os = Linux
-        build_type = ${{ matrix.build-cfg.conan-profile-build-type }}
-
-        [conf]
-        tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
-
-        [buildenv]
-        CC = ${{ matrix.compiler.c-path }}
-        CXX = ${{ matrix.compiler.cpp-path }}
-
-        [options]
-        ipc:doc = True
-        ipc:build = False
-        EOF
-
-    - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
-      run: |
-        conan install \
-          . \
-          --profile:build conan_profile \
-          --profile:host conan_profile \
-          --build missing
-
-    - name: Generate code documentation using Conan and Doxygen
-      run: |
-        conan build .
-
-    - name: Create documentation tarball (full, API-only, landing page)
-      run: |
-        cd ${{ github.workspace }}/doc/ipc_doc
-        ${{ github.workspace }}/tools/doc/stage_generated_docs.sh ${{ github.workspace }}/build/${{ matrix.build-cfg.conan-profile-build-type }}
-        # Save runner space.
-        rm -rf generated
-
-    - name: Upload documentation tarball
-      uses: actions/upload-artifact@v3
-      with:
-        name: ipc-doc-${{ matrix.compiler.id }}-${{ matrix.build-cfg.id }}
-        path: |
-          ${{ github.workspace }}/doc/ipc_doc.tgz
-
   build:
     strategy:
       fail-fast: false
@@ -180,12 +92,13 @@ jobs:
               tools.build:cxxflags = ["-fsanitize=address", "-fno-omit-frame-pointer"]
               tools.build:sharedlinkflags = ["-fsanitize=address"]
               tools.build:exelinkflags = ["-fsanitize=address"]
-            conan-profile-custom-settings: |
-              compiler.sanitizer = address
+            # jemalloc recipe needs this as of this writing (even though it dupes the stuff just-above conceptually).
             conan-profile-custom-buildenv: |
               CXXFLAGS = -fsanitize=address -fno-omit-frame-pointer
               CFLAGS = -fsanitize=address -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=address
+            conan-profile-custom-settings: |
+              compiler.sanitizer = address
             conan-custom-settings-defs: | # Could we not copy/paste these 4x?
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
@@ -202,12 +115,12 @@ jobs:
               tools.build:cxxflags = ["-fsanitize=undefined", "-fno-omit-frame-pointer"]
               tools.build:sharedlinkflags = ["-fsanitize=undefined"]
               tools.build:exelinkflags = ["-fsanitize=undefined"]
-            conan-profile-custom-settings: |
-              compiler.sanitizer = undefined
             conan-profile-custom-buildenv: |
               CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=undefined
+            conan-profile-custom-settings: |
+              compiler.sanitizer = undefined
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
@@ -223,12 +136,12 @@ jobs:
               tools.build:cxxflags = ["-fsanitize=thread"]
               tools.build:sharedlinkflags = ["-fsanitize=thread"]
               tools.build:exelinkflags = ["-fsanitize=thread"]
-            conan-profile-custom-settings: |
-              compiler.sanitizer = thread
             conan-profile-custom-buildenv: |
               CXXFLAGS = -fsanitize=thread
               CFLAGS = -fsanitize=thread
               LDFLAGS = -fsanitize=thread
+            conan-profile-custom-settings: |
+              compiler.sanitizer = thread
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
@@ -262,12 +175,12 @@ jobs:
               tools.build:cxxflags = ["-fsanitize=memory", "-fno-omit-frame-pointer", "-fsanitize-ignorelist=/tmp/msan_ignore_list.cfg"]
               tools.build:sharedlinkflags = ["-fsanitize=memory"]
               tools.build:exelinkflags = ["-fsanitize=memory"]
-            conan-profile-custom-settings: |
-              compiler.sanitizer = memory
             conan-profile-custom-buildenv: |
               CXXFLAGS = -fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=/tmp/msan_ignore_list.cfg
               CFLAGS = -fsanitize=memory -fno-omit-frame-pointer -fsanitize-ignorelist=/tmp/msan_ignore_list.cfg
               LDFLAGS = -fsanitize=memory
+            conan-profile-custom-settings: |
+              compiler.sanitizer = memory
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
@@ -353,8 +266,8 @@ jobs:
     # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
     runs-on: ubuntu-22.04
 
-    name: |
-      build-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
+    name: ${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
+
     env:
       build-dir: ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-profile-build-type }}
       install-root-dir: ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}
@@ -455,6 +368,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y gcc-${{ matrix.compiler.version }} g++-${{ matrix.compiler.version }}
 
+    # We get highest 1.x, instead of 2+, because there are certain dependency recipe issues (namely for jemalloc)
+    # with 2+.  TODO: 1, expound more clearly here or elsewhere what those issues are; 2, solve those issues and
+    # thus move to Conan 2+; Conan 1.x is officially on "deprecation path."  This will also help resolve some other
+    # to-dos more easily (targeting different build settings at built product source versus tools used to build it
+    # = prime example).
     - name: Install the latest version of Conan which is less than 2
       run: |
         pip install "conan<2"
@@ -464,12 +382,10 @@ jobs:
         matrix.build-test-cfg.conan-custom-settings-defs
       run: |
         conan config init
-
         pip install PyYAML
-
         CONAN_SETTINGS_PATH=$(conan config home)/settings.yml
-
         python -c "
+
         import yaml
 
         with open('$CONAN_SETTINGS_PATH', 'r') as file:
@@ -514,6 +430,7 @@ jobs:
         compiler = ${{ matrix.compiler.name }}
         compiler.version = ${{ matrix.compiler.version }}
         compiler.cppstd = 17
+        # TODO: Consider testing with LLVM-libc++ also (with clang anyway).
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
@@ -589,17 +506,14 @@ jobs:
     - name: Install Flow-IPC dependencies with Conan using the profile
       run: |
         conan editable add flow flow/1.0
-        conan install \
-          . \
-          --profile:build conan_profile \
-          --profile:host conan_profile \
-          --build missing
+        conan install . \
+          --profile:build conan_profile --profile:host conan_profile --build missing
 
-    - name: Build targets (libraries, demos/tests) with Conan
+    - name: Build libraries and demos/tests with Conan
       run: |
         conan build .
 
-    - name: Install targets with Makefile
+    - name: Install built targets with Makefile
       run: |
         make install \
           --directory ${{ env.build-dir }} DESTDIR=${{ env.install-root-dir }}
@@ -910,8 +824,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        (!cancelled()) && ((matrix.compiler.id != 'clang-17') ||
-                           (matrix.build-test-cfg.sanitizer-name != 'tsan'))
+        (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
@@ -959,9 +872,8 @@ jobs:
         always()
       uses: actions/upload-artifact@v3
       with:
-        name: ipc-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
-        path: |
-          ${{ env.install-dir }}/bin/logs.tgz
+        name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
+        path: ${{ env.install-dir }}/bin/logs.tgz
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
 # Do we need to manually save it as an artifact?  For that matter we would then need the binary and
@@ -974,3 +886,87 @@ jobs:
 # there a core?  Do we need one?  Etc.
 #
 # Possibly this is all handled beautifully automatically; then this should be deleted.
+
+  doc:
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+          # Pick a reasonably modern but pre-installed compiler for building Doxygen/etc.
+          - id: clang-15
+            name: clang
+            version: 15
+            c-path: /usr/bin/clang-15
+            cpp-path: /usr/bin/clang++-15
+        build-cfg:
+          - id: release
+            conan-profile-build-type: Release
+            conan-preset: release
+
+    runs-on: ubuntu-22.04
+
+    name: doc-${{ matrix.compiler.id }}-${{ matrix.build-cfg.id }}
+
+    steps:
+    - name: Update available software list for apt-get
+      run: sudo apt-get update
+
+    - name: Checkout `ipc` repository and submodules (like `flow`)
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
+      run: |
+        sudo apt-get install -y graphviz
+
+    - name: Install the latest version of Conan which is less than 2
+      run: |
+        pip install "conan<2"
+
+    - name: Create Conan profile
+      run: |
+        cat <<'EOF' > conan_profile
+        [settings]
+        compiler = ${{ matrix.compiler.name }}
+        compiler.version = ${{ matrix.compiler.version }}
+        compiler.cppstd = 17
+        compiler.libcxx = libstdc++11
+        arch = x86_64
+        os = Linux
+        build_type = ${{ matrix.build-cfg.conan-profile-build-type }}
+
+        [conf]
+        tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
+
+        [buildenv]
+        CC = ${{ matrix.compiler.c-path }}
+        CXX = ${{ matrix.compiler.cpp-path }}
+
+        [options]
+        ipc:doc = True
+        ipc:build = False
+        EOF
+
+    - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
+      run: |
+        conan install . \
+          --profile:build conan_profile --profile:host conan_profile --build missing
+
+    - name: Generate code documentation using Conan and Doxygen
+      run: |
+        conan build .
+
+    - name: Create documentation tarball (full docs, API-only docs, landing page)
+      run: |
+        cd ${{ github.workspace }}/doc/ipc_doc
+        ${{ github.workspace }}/tools/doc/stage_generated_docs.sh \
+          ${{ github.workspace }}/build/${{ matrix.build-cfg.conan-profile-build-type }}
+        # Save runner space.
+        rm -rf generated
+
+    - name: Upload documentation tarball
+      uses: actions/upload-artifact@v3
+      with:
+        name: ipc-doc
+        path: ${{ github.workspace }}/doc/ipc_doc.tgz

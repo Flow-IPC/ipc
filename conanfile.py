@@ -19,7 +19,7 @@ class IpcRecipe(ConanFile):
         # this option to "-O3 -g -DNDEBUG" to increase the optimization level.
         #
         # This affects `ipc` CMake only; meaning flow, ipc_*, ipc objects will have this overridden; while
-        # Boost libs, jemalloc lib, capnp/kj libs will build how they would've built anyway.
+        # Boost libs, jemalloc lib, capnp/kj, gtest libs will build how they would've built anyway.
         "build_type_cflags_override": "ANY",
         "doc": [True, False],
     }
@@ -49,13 +49,14 @@ class IpcRecipe(ConanFile):
             toolchain.variables["JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
             if self.options.build_no_lto:
                 toolchain.variables["CFG_NO_LTO"] = "ON"
+            if self.options.build_type_cflags_override:
+                suffix = str(self.settings.build_type).upper()
+                toolchain.variables["CMAKE_CXX_FLAGS_" + suffix] = self.options.build_type_cflags_override
+                toolchain.variables["CMAKE_C_FLAGS_" + suffix] = self.options.build_type_cflags_override
+        else:
+            toolchain.variables["CFG_SKIP_CODE_GEN"] = "ON"
         if self.options.doc:
             toolchain.variables["CFG_ENABLE_DOC_GEN"] = "ON"
-            toolchain.variables["CFG_SKIP_CODE_GEN"] = "ON"
-        if self.options.build_type_cflags_override:
-            suffix = str(self.settings.build_type).upper()
-            toolchain.variables["CMAKE_CXX_FLAGS_" + suffix] = self.options.build_type_cflags_override
-            toolchain.variables["CMAKE_C_FLAGS_" + suffix] = self.options.build_type_cflags_override
 
         toolchain.generate()
 
