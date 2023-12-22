@@ -46,7 +46,23 @@ class IpcRecipe(ConanFile):
         toolchain = CMakeToolchain(self)
         if self.options.build:
             toolchain.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
+
+            # TODO: We're not doing anything wrong here; we tell jemalloc itself to be built with this
+            # API-name prefix via options.jemalloc.prefix, and then we tell Flow-IPC CMake script(s) what that was via
+            # JEMALLOC_PREFIX CMake variable (as if via `-DJEMALLOC_PREFIX=je_` to `cmake`).  That said
+            # Flow-IPC CMake script(s) can figure this out by itself; if JEMALLOC_PREFIX is not given, then it
+            # it finds jemalloc-config binary, which a normal jemalloc install would put into (install-prefix)/bin,
+            # and uses it to print the prefix.  However commenting out the next line does not work for some reason:
+            # an error results saying jemalloc-config cannot be found, and that we should either provide path
+            # to that binary via yet another CMake cache setting; or simply supply the prefix as JEMALLOC_PREFIX.
+            # So this approach is fine; just it would be nice if the Conan magic worked in a more understandable way;
+            # if Flow-IPC CMake script(s) can find libjemalloc.a and headers, why can't it
+            # find_program(jemalloc-config)?  This slightly suggests something is "off" possibly.
+            # Still, the bottom line is it works, so this fallback is fine too.  One could say it'd be nice to
+            # test Flow-IPC CMake script(s) smartness in the way that would be more likely used by the user;
+            # but one could say that is splitting hairs too.
             toolchain.variables["JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
+
             if self.options.build_no_lto:
                 toolchain.variables["CFG_NO_LTO"] = "ON"
             if self.options.build_type_cflags_override:
