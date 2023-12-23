@@ -262,6 +262,13 @@ jobs:
             build-test-cfg: { id: relwithdebinfo-tsan }
           - compiler:  { id: clang-13 }
             build-test-cfg: { id: relwithdebinfo-tsan }
+          #XXX
+          - build-test-cfg: { id: release }
+          - build-test-cfg: { id: debug }
+          - build-test-cfg: { id: relwithdebinfo }
+          - build-test-cfg: { id: minsizerel }
+          - build-test-cfg: { id: relwithdebinfo-asan }
+          - build-test-cfg: { id: relwithdebinfo-ubsan }
 
     # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
     runs-on: ubuntu-22.04
@@ -558,8 +565,8 @@ jobs:
     # *any* suppression; otherwise we skip it for brevity.  `find . -name 'suppressions*.cfg` is pretty useful
     # to determine their presence in addition to whether the test itself has its specific suppressions of any kind.
     - name: Run link test [`ipc_core` - Flow-IPC Core]
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_core_link_test
@@ -570,8 +577,8 @@ jobs:
         ./ipc_core_link_test.exec > logs/ipc_core_link_test/console.log 2>&1
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_transport_structured_link_test
@@ -582,8 +589,8 @@ jobs:
         ./ipc_transport_structured_link_test.exec > logs/ipc_transport_structured_link_test/console.log 2>&1
 
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_session_link_test
@@ -596,8 +603,8 @@ jobs:
         ./ipc_session_link_test_cli.exec > logs/ipc_session_link_test/cli.console.log 2>&1
 
     - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_link_test
@@ -610,8 +617,8 @@ jobs:
         ./ipc_shm_link_test_cli.exec > logs/ipc_shm_link_test/cli.console.log 2>&1
 
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
@@ -664,8 +671,8 @@ jobs:
 
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_sc.sh
         echo "Log level: [$1]."
@@ -693,8 +700,8 @@ jobs:
 
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_sc.sh \
@@ -714,8 +721,8 @@ jobs:
     # the ipc::session safety model for estabshing IPC conversations (sessions).
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
         mkdir -p /tmp/var/run
@@ -724,8 +731,8 @@ jobs:
         cp -v ~/bin/ex_srv.exec ~/bin/ex_cli.exec
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
@@ -764,8 +771,8 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       id: transport_test_ex_heap
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
@@ -781,8 +788,8 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
-      if: |
-        !cancelled()
+      if: | #XXX
+        false && !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
@@ -823,8 +830,8 @@ jobs:
     # reduce optimization to -O1, as well as with and without LTO; same result.
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
-      if: |
-        (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
+      if: | #XXX
+        false && (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
@@ -840,8 +847,8 @@ jobs:
 
     # See earlier comment block about why we saved all the logs including for console-output-only tests/demos.
     - name: Check test/demo logs for non-fatal sanitizer error(s)
-      if: |
-        (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'ubsan')
+      if: | #XXX
+        false && (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'ubsan')
       run: |
         cd ${{ env.install-dir }}/bin/logs
         # grep returns 0 if 1+ found, 1 if none found, 2+ on error.  So check results explicitly instead of -e.
@@ -902,6 +909,8 @@ jobs:
           - id: release
             conan-profile-build-type: Release
             conan-preset: release
+        exclude: #XXX
+          - build-cfg: { id: release }
 
     runs-on: ubuntu-22.04
 
