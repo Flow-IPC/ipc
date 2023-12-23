@@ -659,7 +659,7 @@ jobs:
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         /usr/bin/bash -e ${{ env.install-dir }}/bin/run_unit_test.sh \
-          > logs/libipc_unit_test/console.log 2>&1
+          > logs/$libipc_unit_test/console.log 2>&1 # XXX added $ to avoid dir in middle.
 
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
     # any failing step is repeated with logging hiked up.  Note that formally (and practically)
@@ -873,16 +873,19 @@ jobs:
         always()
       run: |
         cd ${{ env.install-dir }}/bin
-        tar cvzf logs.tgz logs
-        rm -rf logs # Save runner space.
+        mv logs logs${{ matrix.compiler.version }} #XXX
+        tar cvzf logs${{ matrix.compiler.version }}.tgz logs${{ matrix.compiler.version }} #XXX
+        rm -rf logs${{ matrix.compiler.version }} # Save runner space. #XXX
 
     - name: Upload test/demo logs (please inspect if failure(s) seen above)
       if: |
         always()
       uses: actions/upload-artifact@v3
       with:
-        name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
-        path: ${{ env.install-dir }}/bin/logs.tgz
+        #XXXname: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
+        #XXXpath: ${{ env.install-dir }}/bin/logs${{ matrix.compiler.version }}.tgz
+        name: ipc-test-logs-${{ matrix.compiler.version }}-${{ matrix.build-test-cfg.id }}
+        path: ${{ env.install-dir }}/bin/logs${{ matrix.compiler.version }}.tgz
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
 # Do we need to manually save it as an artifact?  For that matter we would then need the binary and
