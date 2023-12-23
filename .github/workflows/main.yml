@@ -909,8 +909,6 @@ jobs:
           - id: release
             conan-profile-build-type: Release
             conan-preset: release
-        exclude: #XXX
-          - build-cfg: { id: release }
 
     runs-on: ubuntu-22.04
 
@@ -918,22 +916,32 @@ jobs:
 
     steps:
     - name: Update available software list for apt-get
+      if: | # XXX
+        false
       run: sudo apt-get update
 
     - name: Checkout `ipc` repository and submodules (like `flow`)
+      if: | # XXX
+        false
       uses: actions/checkout@v4
       with:
         submodules: true
 
     - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
+      if: | # XXX
+        false
       run: |
         sudo apt-get install -y graphviz
 
     - name: Install the latest version of Conan which is less than 2
+      if: | # XXX
+        false
       run: |
         pip install "conan<2"
 
     - name: Create Conan profile
+      if: | # XXX
+        false
       run: |
         cat <<'EOF' > conan_profile
         [settings]
@@ -958,15 +966,21 @@ jobs:
         EOF
 
     - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
+      if: | # XXX
+        false
       run: |
         conan install . \
           --profile:build conan_profile --profile:host conan_profile --build missing
 
     - name: Generate code documentation using Conan and Doxygen
+      if: | # XXX
+        false
       run: |
         conan build .
 
     - name: Create documentation tarball (full docs, API-only docs, landing page)
+      if: | # XXX
+        false
       run: |
         cd ${{ github.workspace }}/doc/ipc_doc
         ${{ github.workspace }}/tools/doc/stage_generated_docs.sh \
@@ -975,6 +989,8 @@ jobs:
         rm -rf generated
 
     - name: Upload documentation tarball
+      if: | # XXX
+        false
       uses: actions/upload-artifact@v3
       with:
         name: ipc-doc
