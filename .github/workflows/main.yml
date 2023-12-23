@@ -648,7 +648,7 @@ jobs:
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_unit_test.sh
         ./libipc_unit_test.exec ${{ matrix.build-test-cfg.unit-tests-params }}
         EOF
-        mkdir -p logs/libipc_unit_test
+        #XXXmkdir -p logs/libipc_unit_test
         SUPP_DIR_A=${{ github.workspace }}/flow/src
         SUPP_DIR_B=${{ github.workspace }}/ipc_shm_arena_lend/src
         # As of this writing there are TSAN suppressions for this test specifically.  TODO: Revist them, and then this.
