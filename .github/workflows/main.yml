@@ -167,6 +167,8 @@ jobs:
             # throwing LTO into the mix seems like unnecessary entropy.
             # Plus inheriting from regular RelWithDebInfo anyway.
             no-lto: True
+            # XXX -O1 for build speed and possibly easier debugging.  It *might* affect TSAN results though.
+            build-type-cflags-override: -O1 -g -DNDEBUG
           - id: relwithdebinfo-msan
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
