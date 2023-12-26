@@ -597,7 +597,9 @@ jobs:
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_session_link_test
         SUPP_DIR_A=${{ github.workspace }}/flow/src
+        SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_session_link_test_srv.exec > logs/ipc_session_link_test/srv.console.log 2>&1 &
@@ -611,7 +613,9 @@ jobs:
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_link_test
         SUPP_DIR_A=${{ github.workspace }}/flow/src
+        SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_shm_link_test_srv.exec > logs/ipc_shm_link_test/srv.console.log 2>&1 &
@@ -625,13 +629,11 @@ jobs:
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
         SUPP_DIR_A=${{ github.workspace }}/flow/src
-        # As of this writing there are certain harmless UBSAN, TSAN triggers within jemalloc, and ipc_shm_arena_lend
-        # is the thing that depends on jemalloc, and of the `link_test`s this is the only one that links
-        # ipc_shm_arena_lend (directly or otherwise).  Hence compared to the other `link_test`s this adds the
-        # ipc_shm_arena_lend suppression context.
-        SUPP_DIR_B=${{ github.workspace }}/ipc_shm_arena_lend/src
+        SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
+        SUPP_DIR_C=${{ github.workspace }}/ipc_shm_arena_lend/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
               $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_shm_arena_lend_link_test_srv.exec > logs/ipc_shm_arena_lend_link_test/srv.console.log 2>&1 &
@@ -650,11 +652,13 @@ jobs:
         EOF
         mkdir -p logs #XXX/libipc_unit_test
         SUPP_DIR_A=${{ github.workspace }}/flow/src
-        SUPP_DIR_B=${{ github.workspace }}/ipc_shm_arena_lend/src
-        # As of this writing there are TSAN suppressions for this test specifically.  TODO: Revist them, and then this.
+        SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
+        SUPP_DIR_C=${{ github.workspace }}/ipc_shm_arena_lend/src
+        # As of this writing there are TSAN suppressions for this test specifically.  TODO: Revisit them; and then this.
         SUPP_DIR_OWN=${{ github.workspace }}/test/suite/unit_test
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
               $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
               $SUPP_DIR_OWN/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_OWN/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
@@ -683,6 +687,7 @@ jobs:
         OUT_DIR=../logs/transport_test/scripted/$OUT_DIR_NAME
         mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
+        # In scripted mode ipc_session, while linked, is not invoked in any way; so skip its suppressions.
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
@@ -753,8 +758,10 @@ jobs:
         else # if [ "$3" == '' ]; then
           SUPP_DIR_B=${{ github.workspace }}/test/suite/transport_test/heap
         fi
+        SUPP_DIR_C=${{ github.workspace }}/ipc_session/src # Session stuff invoked regardless of sub-mode.
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
               $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/srv.log info $1 \
