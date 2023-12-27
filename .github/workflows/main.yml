@@ -438,7 +438,9 @@ jobs:
         ipc:doc = False
         ipc:build = True
         EOF
-        if [ '${{ matrix.build-test-cfg.no-lto }}' != '' ] && [ '${{ matrix.build-test-cfg.no-lto }}' != 'False' ]; then
+        # (Oddly enough `no-lto: True` and `...: False` do still evaluate as `true` and `false` respectively.
+        # Hence why this compares against `false` and not `False`....)
+        if [ '${{ matrix.build-test-cfg.no-lto }}' != '' ] && [ '${{ matrix.build-test-cfg.no-lto }}' != 'false' ]; then
           echo 'ipc:build_no_lto = True' >> conan_profile
         fi
         if [ '${{ matrix.build-test-cfg.build-type-cflags-override }}' != '' ]; then
