@@ -322,15 +322,15 @@ jobs:
       # wrong sanitizer reading suppressions from another one => suppression parse error =>
       # none of the demos/tests get anywhere at all.  So set just the right one!
       setup-tests-env: |
-        if [ "${{ matrix.build-test-cfg.sanitizer-name }}" = asan ]; then
+        if [ '${{ matrix.build-test-cfg.sanitizer-name }}' = asan ]; then
           export ASAN_OPTIONS='disable_coredump=0'
           echo "ASAN_OPTIONS = [$ASAN_OPTIONS]."
-        elif [ "${{ matrix.build-test-cfg.sanitizer-name }}" = ubsan ]; then
+        elif [ '${{ matrix.build-test-cfg.sanitizer-name }}' = ubsan ]; then
           export SAN_SUPP=1
           export SAN_SUPP_CFG=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local/bin/san_suppressions.cfg
           export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=$SAN_SUPP_CFG"
           echo "UBSAN_OPTIONS = [$UBSAN_OPTIONS]."
-        elif [ "${{ matrix.build-test-cfg.sanitizer-name }}" = tsan ]; then
+        elif [ '${{ matrix.build-test-cfg.sanitizer-name }}' = tsan ]; then
           export SAN_SUPP=1
           export SAN_SUPP_CFG=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local/bin/san_suppressions.cfg
           export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=$SAN_SUPP_CFG"
@@ -461,10 +461,10 @@ jobs:
         ipc:doc = False
         ipc:build = True
         EOF
-        if [ "${{ matrix.build-test-cfg.no-lto }}" != '' ] && [ "${{ matrix.build-test-cfg.no-lto }}" != 'False' ]; then
+        if [ '${{ matrix.build-test-cfg.no-lto }}' != '' ] && [ '${{ matrix.build-test-cfg.no-lto }}' != 'False' ]; then
           echo 'ipc:build_no_lto = True' >> conan_profile
         fi
-        if [ "${{ matrix.build-test-cfg.build-type-cflags-override }}" != '' ]; then
+        if [ '${{ matrix.build-test-cfg.build-type-cflags-override }}' != '' ]; then
           echo 'ipc:build_type_cflags_override = ${{ matrix.build-test-cfg.build-type-cflags-override }}' >> conan_profile
         fi
 
@@ -507,7 +507,7 @@ jobs:
         # a-la env.setup-tests-env.
         cat ${{ github.workspace }}/flow/src/sanitize/msan/ignore_list_${{ matrix.compiler.name }}.cfg \
           >> $${ env.msan-ignore-list-cfg-file }}
-        echo "The combined MSAN ignore-list config file follows:"
+        echo 'The combined MSAN ignore-list config file follows:'
         cat $${ env.msan-ignore-list-cfg-file }}
 
     - name: Install Flow-IPC dependencies with Conan using the profile
