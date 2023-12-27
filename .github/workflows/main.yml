@@ -839,7 +839,7 @@ jobs:
 
     # Disabling this particular test run for the specific case of clang-17 in TSAN (thread sanitizer) config
     # (in particular at least 2 other clangs+TSAN are exercised, so the TSAN coverage is still good).
-    # First the reason in detail: This run always fails at this point in the server binary:
+    # First the reason in detail: This run semi-reliably (50%+) fails at this point in the server binary:
     #   2023-12-20 11:36:11.322479842 +0000 [info]: Tguy: ex_srv.hpp:send_req_b(1428): App_session [0x7b3800008180]:
     #     Chan B[0]: Filling/send()ing payload (description = [reuse out-message + SHM-handle to modified (unless
     #     SHM-jemalloc) existing STL data]; alt-payload? = [0]; reusing msg? = [1]; reusing SHM payload? = [1]).
@@ -861,17 +861,12 @@ jobs:
     #
     # TODO: Revisit; figure out how to not trigger this; re-enable.  For the record, I (ygoldfel) cannot reproduce
     # in a local clang-17, albeit with libc++ (LLVM STL) instead of libstdc++ (GNU STL).  I've also tried to
-    # reduce optimization to -O1, as well as with and without LTO; same result.
-    #
-    # UPDATE: Empirically speaking this appears to be gone, so for the time being removing the exception and letting
-    # this run always after all.  However such things have proved to be fickle in the past; so leaving the `if`
-    # clause here for now, in case we need to uncomment it:
-    #   if: |
-    #     (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
+    # reduce optimization to -O1, as well as with and without LTO, and with and without -fno-omit-frame-pointer;
+    # same result.
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        !cancelled()
+        (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
