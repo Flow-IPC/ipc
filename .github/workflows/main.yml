@@ -145,22 +145,6 @@ jobs:
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-            unit-tests-params: | # As of this writing these trigger TSAN assert+bug+hangs at run-time.  TODO: Revisit.
-              --gtest_filter=-Shm_session_test.In_process_array:\
-              Shm_session_test.In_process_vector_offset_ptr:\
-              Shm_session_test.In_process_string_offset_ptr:\
-              Shm_session_test.In_process_list_offset_ptr:\
-              Shm_session_test.Multisession_in_process:\
-              Shm_session_test.Allocation_performance_five:\
-              Jemalloc_shm_pool_collection_test.Interface:\
-              Jemalloc_shm_pool_collection_test.Multiprocess:\
-              Jemalloc_shm_pool_collection_test.Owner_shm_pool_removal:\
-              Jemalloc_shm_pool_collection_test.Multithread_load:\
-              Borrower_shm_pool_collection_test.Interface:\
-              Borrower_shm_pool_collection_test.Multiprocess:\
-              Shm_pool_collection_test.Interface:\
-              Shm_pool_collection_test.Multiprocess:\
-              Shm_session_data_test.Multithread_object_database
             sanitizer-name: tsan
             # While TSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Also, for some clangs, there are TSAN WARNINGs at times about too-small symbolizer buffer or something;
@@ -646,9 +630,11 @@ jobs:
         # Some newline issues with the possible additional args; so need to make a wrapper script
         # and then redirect, as desired, its output.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_unit_test.sh
-        ./libipc_unit_test.exec ${{ matrix.build-test-cfg.unit-tests-params }}
+        ./libipc_unit_test.exec "$@"
         EOF
-        mkdir -p logs #XXX/libipc_unit_test
+        RUN_IT='/usr/bin/bash -e ${{ env.install-dir }}/bin/run_unit_test.sh'
+        OUT_DIR=logs/libipc_unit_test
+        mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
         SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
         SUPP_DIR_C=${{ github.workspace }}/ipc_shm_arena_lend/src
@@ -660,8 +646,41 @@ jobs:
               $SUPP_DIR_OWN/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_OWN/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        /usr/bin/bash -e ${{ env.install-dir }}/bin/run_unit_test.sh \
-          > logs/$libipc_unit_test/console.log 2>&1 # XXX added $ to avoid dir in middle.
+        if [ '${{ matrix.build-test-cfg.sanitizer-name }}' != tsan ]; then
+          # This is what we want to do normally.
+          $RUN_IT > $OUT_DIR/console.log 2>&1
+        else # if sanitizer-name is tsan:
+          # With TSAN -- which is officially in beta as of even clang-18 (as of this writing we are on 17 at best) --
+          # our tests hit some kind of limitation (possibly bug).  What happens is the console prints a-la
+          #   ThreadSanitizer: CHECK failed: sanitizer_deadlock_detector.h:67
+          #     "((n_all_locks_)) < (((sizeof(all_locks_with_contexts_)/sizeof((all_locks_with_contexts_)[0]))))"
+          #     (0x40, 0x40) (tid=4111122)
+          # and the program hangs indefinitely.  This seems to be saying the # of locks reached 64, so TSAN gave up.
+          # A ticket has been filed to look into this; but in the meantime we work around it.  Namely, we have
+          # observed that:
+          #   - A particular test, even if run by itself, always triggers it.  So we are forced to skip that one.
+          #     As for the others:
+          #   - A particular small group of tests, if involved, triggers it.  However if run separately from the
+          #     the others -- even as a group -- then it is OK.  So we run all but that group; then just that
+          #     group.
+          LOCK_FATAL_TEST=Jemalloc_shm_pool_collection_test.Multiprocess
+          LOCK_HEAVY_TESTS='Shm_session_test.External_process_array:\
+                            Shm_session_test.External_process_vector_offset_ptr:\
+                            Shm_session_test.External_process_string_offset_ptr:\
+                            Shm_session_test.External_process_list_offset_ptr:\
+                            Shm_session_test.Multisession_external_process:\
+                            Shm_session_test.Disconnected_external_process:\
+                            Borrower_shm_pool_collection_test.Multiprocess:\
+                            Shm_pool_collection_test.Multiprocess'
+          # Get rid of newlines/backslashes....
+          LOCK_HEAVY_TESTS="$(echo "$LOCK_HEAVY_TESTS" | tr -d '[:space:]\\')"
+          if $RUN_IT --gtest_filter=-$LOCK_HEAVY_TESTS:$LOCK_FATAL_TEST > $OUT_DIR/console.minus-lock-heavy.log 2>&1; \
+            then EC_ALL=0; else EC_ALL=$?; fi
+          if $RUN_IT --gtest_filter=$LOCK_HEAVY_TESTS > $OUT_DIR/console.lock-heavy.log 2>&1; \
+            then EC_LH=0; else EC_LH=$?; fi
+          echo "Exit codes: all-minus-lock-heavy = $EC_ALL; lock-heavy = $EC_LH."
+          [ $EC_ALL -eq 0 ] && [ $EC_LH -eq 0 ]
+        fi
 
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
     # any failing step is repeated with logging hiked up.  Note that formally (and practically)
