@@ -542,7 +542,8 @@ jobs:
     # *any* suppression; otherwise we skip it for brevity.  `find . -name 'suppressions*.cfg` is pretty useful
     # to determine their presence in addition to whether the test itself has its specific suppressions of any kind.
     - name: Run link test [`ipc_core` - Flow-IPC Core]
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_core_link_test
@@ -553,7 +554,8 @@ jobs:
         ./ipc_core_link_test.exec > logs/ipc_core_link_test/console.log 2>&1
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_transport_structured_link_test
@@ -564,7 +566,8 @@ jobs:
         ./ipc_transport_structured_link_test.exec > logs/ipc_transport_structured_link_test/console.log 2>&1
 
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_session_link_test
@@ -579,7 +582,8 @@ jobs:
         ./ipc_session_link_test_cli.exec > logs/ipc_session_link_test/cli.console.log 2>&1
 
     - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_link_test
@@ -594,7 +598,8 @@ jobs:
         ./ipc_shm_link_test_cli.exec > logs/ipc_shm_link_test/cli.console.log 2>&1
 
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
@@ -682,7 +687,8 @@ jobs:
 
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_sc.sh
         echo "Log level: [$1]."
@@ -711,7 +717,8 @@ jobs:
 
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_sc.sh \
@@ -731,7 +738,8 @@ jobs:
     # the ipc::session safety model for estabshing IPC conversations (sessions).
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
         mkdir -p /tmp/var/run
@@ -740,7 +748,8 @@ jobs:
         cp -v ~/bin/ex_srv.exec ~/bin/ex_cli.exec
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
@@ -781,7 +790,8 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       id: transport_test_ex_heap
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
@@ -797,7 +807,8 @@ jobs:
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
-      if: !cancelled()
+      if: |
+        !cancelled()
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
