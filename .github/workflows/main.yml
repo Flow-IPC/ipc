@@ -132,9 +132,9 @@ jobs:
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
             conan-profile-custom-conf: |
-              # no-omit-frame-pointer recommended in (A|UB|M)SAN docs for nice stack traces; clang-TSAN docs do not
-              # mention it.  However, *very very* annoyingly, sometimes at least clang-17 in unit_test produces
-              # XXX
+              # no-omit-frame-pointer recommended in (A|UB|M)SAN docs for nice stack traces; TSAN docs do not
+              # mention it.  Given the various symbolizer problems mentioned elsewhere in comments in this file,
+              # it seemed prudent to keep this consistent with those other *SAN.
               tools.build:cflags = ["-fsanitize=thread", "-fno-omit-frame-pointer"]
               tools.build:cxxflags = ["-fsanitize=thread", "-fno-omit-frame-pointer"]
               tools.build:sharedlinkflags = ["-fsanitize=thread", "-fno-omit-frame-pointer"]
@@ -657,11 +657,21 @@ jobs:
           # A ticket has been filed to look into this; but in the meantime we work around it.  Namely, we have
           # observed that:
           #   - A particular test, even if run by itself, always triggers it.  So we are forced to skip that one.
-          #     As for the others:
-          #   - A particular small group of tests, if involved, triggers it.  However if run separately from the
+          #     - In clang-17 yet another test results in a different problem:
+          #         LLVM ERROR: Sections with relocations should have an address of 0
+          #         ...
+          #       That one is also observed for transport_test exercise mode SHM-jemalloc sub-mode, which as of this
+          #       writing is skipped for that compiler+TSAN for that reason.  We do something similar here in skipping
+          #       that particular test too in that situation.  TODO: It's a test that starts tons of threads.
+          #       Consider other approaches; maybe reduce number of threads or...?  Ticket filed in any case.
+          #     As for the other tests -- the vast majority -- outside of those 1-2:
+          #   - A particular small subset of tests, if involved, triggers it.  However if run separately from the
           #     the others -- even as a group -- then it is OK.  So we run all but that group; then just that
           #     group.
-          LOCK_FATAL_TEST=Jemalloc_shm_pool_collection_test.Multiprocess
+          LOCK_FATAL_TESTS=Jemalloc_shm_pool_collection_test.Multiprocess
+          if [ '${{ matrix.compiler.id }}' = 'clang-17' ]; then
+            LOCK_FATAL_TESTS=$LOCK_FATAL_TESTS:Jemalloc_shm_pool_collection_test.Multithread_load
+          fi
           LOCK_HEAVY_TESTS='Shm_session_test.External_process_array:\
                             Shm_session_test.External_process_vector_offset_ptr:\
                             Shm_session_test.External_process_string_offset_ptr:\
@@ -672,7 +682,7 @@ jobs:
                             Shm_pool_collection_test.Multiprocess'
           # Get rid of newlines/backslashes....
           LOCK_HEAVY_TESTS="$(echo "$LOCK_HEAVY_TESTS" | tr -d '[:space:]\\')"
-          if $RUN_IT --gtest_filter=-$LOCK_HEAVY_TESTS:$LOCK_FATAL_TEST > $OUT_DIR/console.minus-lock-heavy.log 2>&1; \
+          if $RUN_IT --gtest_filter=-$LOCK_HEAVY_TESTS:$LOCK_FATAL_TESTS > $OUT_DIR/console.minus-lock-heavy.log 2>&1; \
             then EC_ALL=0; else EC_ALL=$?; fi
           if $RUN_IT --gtest_filter=$LOCK_HEAVY_TESTS > $OUT_DIR/console.lock-heavy.log 2>&1; \
             then EC_LH=0; else EC_LH=$?; fi
@@ -855,7 +865,7 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsanXXX'))
+        (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
       run: |
         /usr/bin/bash -e \
           ${{ env.install-dir }}/bin/run_transport_test_ex.sh \
