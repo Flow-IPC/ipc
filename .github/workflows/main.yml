@@ -132,35 +132,22 @@ jobs:
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
             conan-profile-custom-conf: |
-              tools.build:cflags = ["-fsanitize=thread"]
-              tools.build:cxxflags = ["-fsanitize=thread"]
-              tools.build:sharedlinkflags = ["-fsanitize=thread"]
-              tools.build:exelinkflags = ["-fsanitize=thread"]
+              # no-omit-frame-pointer recommended in (A|UB|M)SAN docs for nice stack traces; TSAN docs do not
+              # mention it.  Given the various symbolizer problems mentioned elsewhere in comments in this file,
+              # it seemed prudent to keep this consistent with those other *SAN.
+              tools.build:cflags = ["-fsanitize=thread", "-fno-omit-frame-pointer"]
+              tools.build:cxxflags = ["-fsanitize=thread", "-fno-omit-frame-pointer"]
+              tools.build:sharedlinkflags = ["-fsanitize=thread", "-fno-omit-frame-pointer"]
+              tools.build:exelinkflags = ["-fsanitize=thread", "-fno-omit-frame-pointer"]
             conan-profile-custom-buildenv: |
-              CXXFLAGS = -fsanitize=thread
-              CFLAGS = -fsanitize=thread
-              LDFLAGS = -fsanitize=thread
+              CXXFLAGS = -fsanitize=thread -fno-omit-frame-pointer
+              CFLAGS = -fsanitize=thread -fno-omit-frame-pointer
+              LDFLAGS = -fsanitize=thread -fno-omit-frame-pointer
             conan-profile-custom-settings: |
               compiler.sanitizer = thread
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-            unit-tests-params: | # As of this writing these trigger TSAN assert+bug+hangs at run-time.  TODO: Revisit.
-              --gtest_filter=-Shm_session_test.In_process_array:\
-              Shm_session_test.In_process_vector_offset_ptr:\
-              Shm_session_test.In_process_string_offset_ptr:\
-              Shm_session_test.In_process_list_offset_ptr:\
-              Shm_session_test.Multisession_in_process:\
-              Shm_session_test.Allocation_performance_five:\
-              Jemalloc_shm_pool_collection_test.Interface:\
-              Jemalloc_shm_pool_collection_test.Multiprocess:\
-              Jemalloc_shm_pool_collection_test.Owner_shm_pool_removal:\
-              Jemalloc_shm_pool_collection_test.Multithread_load:\
-              Borrower_shm_pool_collection_test.Interface:\
-              Borrower_shm_pool_collection_test.Multiprocess:\
-              Shm_pool_collection_test.Interface:\
-              Shm_pool_collection_test.Multiprocess:\
-              Shm_session_data_test.Multithread_object_database
             sanitizer-name: tsan
             # While TSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Also, for some clangs, there are TSAN WARNINGs at times about too-small symbolizer buffer or something;
@@ -315,15 +302,15 @@ jobs:
       # wrong sanitizer reading suppressions from another one => suppression parse error =>
       # none of the demos/tests get anywhere at all.  So set just the right one!
       setup-tests-env: |
-        if [ "${{ matrix.build-test-cfg.sanitizer-name }}" = asan ]; then
+        if [ '${{ matrix.build-test-cfg.sanitizer-name }}' = asan ]; then
           export ASAN_OPTIONS='disable_coredump=0'
           echo "ASAN_OPTIONS = [$ASAN_OPTIONS]."
-        elif [ "${{ matrix.build-test-cfg.sanitizer-name }}" = ubsan ]; then
+        elif [ '${{ matrix.build-test-cfg.sanitizer-name }}' = ubsan ]; then
           export SAN_SUPP=1
           export SAN_SUPP_CFG=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local/bin/san_suppressions.cfg
           export UBSAN_OPTIONS="disable_coredump=0 print_stacktrace=1 suppressions=$SAN_SUPP_CFG"
           echo "UBSAN_OPTIONS = [$UBSAN_OPTIONS]."
-        elif [ "${{ matrix.build-test-cfg.sanitizer-name }}" = tsan ]; then
+        elif [ '${{ matrix.build-test-cfg.sanitizer-name }}' = tsan ]; then
           export SAN_SUPP=1
           export SAN_SUPP_CFG=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local/bin/san_suppressions.cfg
           export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=$SAN_SUPP_CFG"
@@ -454,10 +441,12 @@ jobs:
         ipc:doc = False
         ipc:build = True
         EOF
-        if [ "${{ matrix.build-test-cfg.no-lto }}" != '' ] && [ "${{ matrix.build-test-cfg.no-lto }}" != 'False' ]; then
+        # (Oddly enough `no-lto: True` and `...: False` do still evaluate as `true` and `false` respectively.
+        # Hence why this compares against `false` and not `False`....)
+        if [ '${{ matrix.build-test-cfg.no-lto }}' != '' ] && [ '${{ matrix.build-test-cfg.no-lto }}' != 'false' ]; then
           echo 'ipc:build_no_lto = True' >> conan_profile
         fi
-        if [ "${{ matrix.build-test-cfg.build-type-cflags-override }}" != '' ]; then
+        if [ '${{ matrix.build-test-cfg.build-type-cflags-override }}' != '' ]; then
           echo 'ipc:build_type_cflags_override = ${{ matrix.build-test-cfg.build-type-cflags-override }}' >> conan_profile
         fi
 
@@ -500,7 +489,7 @@ jobs:
         # a-la env.setup-tests-env.
         cat ${{ github.workspace }}/flow/src/sanitize/msan/ignore_list_${{ matrix.compiler.name }}.cfg \
           >> $${ env.msan-ignore-list-cfg-file }}
-        echo "The combined MSAN ignore-list config file follows:"
+        echo 'The combined MSAN ignore-list config file follows:'
         cat $${ env.msan-ignore-list-cfg-file }}
 
     - name: Install Flow-IPC dependencies with Conan using the profile
@@ -588,7 +577,9 @@ jobs:
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_session_link_test
         SUPP_DIR_A=${{ github.workspace }}/flow/src
+        SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_session_link_test_srv.exec > logs/ipc_session_link_test/srv.console.log 2>&1 &
@@ -602,7 +593,9 @@ jobs:
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_link_test
         SUPP_DIR_A=${{ github.workspace }}/flow/src
+        SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_shm_link_test_srv.exec > logs/ipc_shm_link_test/srv.console.log 2>&1 &
@@ -616,13 +609,11 @@ jobs:
         cd ${{ env.install-dir }}/bin
         mkdir -p logs/ipc_shm_arena_lend_link_test
         SUPP_DIR_A=${{ github.workspace }}/flow/src
-        # As of this writing there are certain harmless UBSAN, TSAN triggers within jemalloc, and ipc_shm_arena_lend
-        # is the thing that depends on jemalloc, and of the `link_test`s this is the only one that links
-        # ipc_shm_arena_lend (directly or otherwise).  Hence compared to the other `link_test`s this adds the
-        # ipc_shm_arena_lend suppression context.
-        SUPP_DIR_B=${{ github.workspace }}/ipc_shm_arena_lend/src
+        SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
+        SUPP_DIR_C=${{ github.workspace }}/ipc_shm_arena_lend/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
               $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_shm_arena_lend_link_test_srv.exec > logs/ipc_shm_arena_lend_link_test/srv.console.log 2>&1 &
@@ -637,20 +628,67 @@ jobs:
         # Some newline issues with the possible additional args; so need to make a wrapper script
         # and then redirect, as desired, its output.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_unit_test.sh
-        ./libipc_unit_test.exec ${{ matrix.build-test-cfg.unit-tests-params }}
+        ./libipc_unit_test.exec "$@"
         EOF
-        mkdir -p logs/libipc_unit_test
+        RUN_IT='/usr/bin/bash -e ${{ env.install-dir }}/bin/run_unit_test.sh'
+        OUT_DIR=logs/libipc_unit_test
+        mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
-        SUPP_DIR_B=${{ github.workspace }}/ipc_shm_arena_lend/src
-        # As of this writing there are TSAN suppressions for this test specifically.  TODO: Revist them, and then this.
+        SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
+        SUPP_DIR_C=${{ github.workspace }}/ipc_shm_arena_lend/src
+        # As of this writing there are TSAN suppressions for this test specifically.  TODO: Revisit them; and then this.
         SUPP_DIR_OWN=${{ github.workspace }}/test/suite/unit_test
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
               $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
               $SUPP_DIR_OWN/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_OWN/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        /usr/bin/bash -e ${{ env.install-dir }}/bin/run_unit_test.sh \
-          > logs/libipc_unit_test/console.log 2>&1
+        if [ '${{ matrix.build-test-cfg.sanitizer-name }}' != tsan ]; then
+          # This is what we want to do normally.
+          $RUN_IT > $OUT_DIR/console.log 2>&1
+        else # if sanitizer-name is tsan:
+          # With TSAN -- which is officially in beta as of even clang-18 (as of this writing we are on 17 at best) --
+          # our tests hit some kind of limitation (possibly bug).  What happens is the console prints a-la
+          #   ThreadSanitizer: CHECK failed: sanitizer_deadlock_detector.h:67
+          #     "((n_all_locks_)) < (((sizeof(all_locks_with_contexts_)/sizeof((all_locks_with_contexts_)[0]))))"
+          #     (0x40, 0x40) (tid=4111122)
+          # and the program hangs indefinitely.  This seems to be saying the # of locks reached 64, so TSAN gave up.
+          # A ticket has been filed to look into this; but in the meantime we work around it.  Namely, we have
+          # observed that:
+          #   - A particular test, even if run by itself, always triggers it.  So we are forced to skip that one.
+          #     - In clang-17 yet another test results in a different problem:
+          #         LLVM ERROR: Sections with relocations should have an address of 0
+          #         ...
+          #       That one is also observed for transport_test exercise mode SHM-jemalloc sub-mode, which as of this
+          #       writing is skipped for that compiler+TSAN for that reason.  We do something similar here in skipping
+          #       that particular test too in that situation.  TODO: It's a test that starts tons of threads.
+          #       Consider other approaches; maybe reduce number of threads or...?  Ticket filed in any case.
+          #     As for the other tests -- the vast majority -- outside of those 1-2:
+          #   - A particular small subset of tests, if involved, triggers it.  However if run separately from the
+          #     the others -- even as a group -- then it is OK.  So we run all but that group; then just that
+          #     group.
+          LOCK_FATAL_TESTS=Jemalloc_shm_pool_collection_test.Multiprocess
+          if [ '${{ matrix.compiler.id }}' = 'clang-17' ]; then
+            LOCK_FATAL_TESTS=$LOCK_FATAL_TESTS:Jemalloc_shm_pool_collection_test.Multithread_load
+          fi
+          LOCK_HEAVY_TESTS='Shm_session_test.External_process_array:\
+                            Shm_session_test.External_process_vector_offset_ptr:\
+                            Shm_session_test.External_process_string_offset_ptr:\
+                            Shm_session_test.External_process_list_offset_ptr:\
+                            Shm_session_test.Multisession_external_process:\
+                            Shm_session_test.Disconnected_external_process:\
+                            Borrower_shm_pool_collection_test.Multiprocess:\
+                            Shm_pool_collection_test.Multiprocess'
+          # Get rid of newlines/backslashes....
+          LOCK_HEAVY_TESTS="$(echo "$LOCK_HEAVY_TESTS" | tr -d '[:space:]\\')"
+          if $RUN_IT --gtest_filter=-$LOCK_HEAVY_TESTS:$LOCK_FATAL_TESTS > $OUT_DIR/console.minus-lock-heavy.log 2>&1; \
+            then EC_ALL=0; else EC_ALL=$?; fi
+          if $RUN_IT --gtest_filter=$LOCK_HEAVY_TESTS > $OUT_DIR/console.lock-heavy.log 2>&1; \
+            then EC_LH=0; else EC_LH=$?; fi
+          echo "Exit codes: all-minus-lock-heavy = $EC_ALL; lock-heavy = $EC_LH."
+          [ $EC_ALL -eq 0 ] && [ $EC_LH -eq 0 ]
+        fi
 
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
     # any failing step is repeated with logging hiked up.  Note that formally (and practically)
@@ -674,6 +712,7 @@ jobs:
         OUT_DIR=../logs/transport_test/scripted/$OUT_DIR_NAME
         mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
+        # In scripted mode ipc_session, while linked, is not invoked in any way; so skip its suppressions.
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
@@ -744,8 +783,10 @@ jobs:
         else # if [ "$3" == '' ]; then
           SUPP_DIR_B=${{ github.workspace }}/test/suite/transport_test/heap
         fi
+        SUPP_DIR_C=${{ github.workspace }}/ipc_session/src # Session stuff invoked regardless of sub-mode.
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
               $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/srv.log info $1 \
@@ -798,7 +839,7 @@ jobs:
 
     # Disabling this particular test run for the specific case of clang-17 in TSAN (thread sanitizer) config
     # (in particular at least 2 other clangs+TSAN are exercised, so the TSAN coverage is still good).
-    # First the reason in detail: This run always fails at this point in the server binary:
+    # First the reason in detail: This run semi-reliably (50%+) fails at this point in the server binary:
     #   2023-12-20 11:36:11.322479842 +0000 [info]: Tguy: ex_srv.hpp:send_req_b(1428): App_session [0x7b3800008180]:
     #     Chan B[0]: Filling/send()ing payload (description = [reuse out-message + SHM-handle to modified (unless
     #     SHM-jemalloc) existing STL data]; alt-payload? = [0]; reusing msg? = [1]; reusing SHM payload? = [1]).
@@ -820,7 +861,8 @@ jobs:
     #
     # TODO: Revisit; figure out how to not trigger this; re-enable.  For the record, I (ygoldfel) cannot reproduce
     # in a local clang-17, albeit with libc++ (LLVM STL) instead of libstdc++ (GNU STL).  I've also tried to
-    # reduce optimization to -O1, as well as with and without LTO; same result.
+    # reduce optimization to -O1, as well as with and without LTO, and with and without -fno-omit-frame-pointer;
+    # same result.
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
