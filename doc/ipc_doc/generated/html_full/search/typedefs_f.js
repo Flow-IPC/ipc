@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['task_0',['Task',['../namespaceipc_1_1util.html#a31e67d3a017477a04b313927e2f2c733',1,'ipc::util']]],
+  ['task_5fptr_1',['Task_ptr',['../namespaceipc_1_1util_1_1sync__io.html#ac6973c71fc70c6d867b0f2255c642532',1,'ipc::util::sync_io']]],
+  ['timer_5ffired_5fread_5fend_2',['Timer_fired_read_end',['../classipc_1_1util_1_1sync__io_1_1Timer__event__emitter.html#a1533a54927a64579fda02c61ec94b735',1,'ipc::util::sync_io::Timer_event_emitter']]],
+  ['type_3',['Type',['../structipc_1_1session_1_1shm_1_1Arena__to__shm__session_3_01ipc_1_1shm_1_1classic_1_1Pool__arena_01_4.html#a9873cf363a51db6851c0c06de69b15bb',1,'ipc::session::shm::Arena_to_shm_session&lt; ipc::shm::classic::Pool_arena &gt;::Type()'],['../structipc_1_1session_1_1shm_1_1Arena__to__shm__session.html#a9fde0573c86648333e41b2a7fc2878d6',1,'ipc::session::shm::Arena_to_shm_session::Type()'],['../structipc_1_1shm_1_1Arena__to__borrower__allocator__arena_3_01classic_1_1Pool__arena_01_4.html#a661e19eba706ba5eb9722586779d71db',1,'ipc::shm::Arena_to_borrower_allocator_arena&lt; classic::Pool_arena &gt;::Type()'],['../structipc_1_1shm_1_1Arena__to__borrower__allocator__arena.html#a07db04e58910f1ed18349b4006e6be1b',1,'ipc::shm::Arena_to_borrower_allocator_arena::Type()'],['../structipc_1_1session_1_1shm_1_1Arena__to__shm__session_3_01ipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena_01_4.html#a8ff5c582a86393dc8a481b30a82d67af',1,'ipc::session::shm::Arena_to_shm_session&lt; ipc::shm::arena_lend::jemalloc::Ipc_arena &gt;::Type()']]]
+];

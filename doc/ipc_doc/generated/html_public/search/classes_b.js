@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['serialize_5fvia_5fapp_5fshm_0',['Serialize_via_app_shm',['../structipc_1_1transport_1_1struc_1_1Channel__base_1_1Serialize__via__app__shm.html',1,'ipc::transport::struc::Channel_base']]],
+  ['serialize_5fvia_5fheap_1',['Serialize_via_heap',['../structipc_1_1transport_1_1struc_1_1Channel__base_1_1Serialize__via__heap.html',1,'ipc::transport::struc::Channel_base']]],
+  ['serialize_5fvia_5fsession_5fshm_2',['Serialize_via_session_shm',['../structipc_1_1transport_1_1struc_1_1Channel__base_1_1Serialize__via__session__shm.html',1,'ipc::transport::struc::Channel_base']]],
+  ['server_5fapp_3',['Server_app',['../structipc_1_1session_1_1Server__app.html',1,'ipc::session']]],
+  ['server_5fsession_4',['Server_session',['../classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html',1,'ipc::session::shm::arena_lend::jemalloc::Server_session&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;'],['../classipc_1_1session_1_1shm_1_1classic_1_1Server__session.html',1,'ipc::session::shm::classic::Server_session&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;']]],
+  ['server_5fsession_5fadapter_5',['Server_session_adapter',['../classipc_1_1session_1_1sync__io_1_1Server__session__adapter.html',1,'ipc::session::sync_io']]],
+  ['server_5fsession_5fmv_6',['Server_session_mv',['../classipc_1_1session_1_1Server__session__mv.html',1,'ipc::session']]],
+  ['server_5fsession_5fmv_3c_20server_5fsession_5fimpl_3c_20s_5fmq_5ftype_5for_5fnone_2c_20s_5ftransmit_5fnative_5fhandles_2c_20mdt_5fpayload_20_3e_20_3e_7',['Server_session_mv&lt; Server_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &gt;',['../classipc_1_1session_1_1Server__session__mv.html',1,'ipc::session']]],
+  ['session_8',['Session',['../classipc_1_1session_1_1Session.html',1,'ipc::session']]],
+  ['session_5fmv_9',['Session_mv',['../classipc_1_1session_1_1Session__mv.html',1,'ipc::session::Session_mv&lt; Session_impl_t &gt;'],['../classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html',1,'ipc::session::shm::arena_lend::jemalloc::Session_mv&lt; Session_t &gt;'],['../classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html',1,'ipc::session::shm::classic::Session_mv&lt; Session_t &gt;']]],
+  ['session_5fmv_3c_20client_5fsession_5fimpl_5ft_20_3e_10',['Session_mv&lt; Client_session_impl_t &gt;',['../classipc_1_1session_1_1Session__mv.html',1,'ipc::session']]],
+  ['session_5fmv_3c_20server_5fsession_5fimpl_3c_20s_5fmq_5ftype_5for_5fnone_2c_20s_5ftransmit_5fnative_5fhandles_2c_20mdt_5fpayload_20_3e_20_3e_11',['Session_mv&lt; Server_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &gt;',['../classipc_1_1session_1_1Session__mv.html',1,'ipc::session']]],
+  ['session_5fmv_3c_20server_5fsession_5fimpl_5ft_20_3e_12',['Session_mv&lt; Server_session_impl_t &gt;',['../classipc_1_1session_1_1Session__mv.html',1,'ipc::session']]],
+  ['session_5fmv_3c_20session_3a_3aserver_5fsession_5fmv_3c_20server_5fsession_5fimpl_3c_20s_5fmq_5ftype_5for_5fnone_2c_20s_5ftransmit_5fnative_5fhandles_2c_20mdt_5fpayload_20_3e_20_3e_20_3e_13',['Session_mv&lt; session::Server_session_mv&lt; Server_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &gt; &gt;',['../classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html',1,'ipc::session::shm::arena_lend::jemalloc']]],
+  ['session_5fserver_14',['Session_server',['../classipc_1_1session_1_1Session__server.html',1,'ipc::session::Session_server&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;'],['../classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html',1,'ipc::session::shm::arena_lend::jemalloc::Session_server&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;'],['../classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html',1,'ipc::session::shm::classic::Session_server&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;']]],
+  ['session_5fserver_5fadapter_15',['Session_server_adapter',['../classipc_1_1session_1_1sync__io_1_1Session__server__adapter.html',1,'ipc::session::sync_io']]],
+  ['shared_5fname_16',['Shared_name',['../classipc_1_1util_1_1Shared__name.html',1,'ipc::util']]],
+  ['socket_5fstream_5fchannel_17',['Socket_stream_channel',['../classipc_1_1transport_1_1Socket__stream__channel.html',1,'ipc::transport']]],
+  ['socket_5fstream_5fchannel_5fof_5fblobs_18',['Socket_stream_channel_of_blobs',['../classipc_1_1transport_1_1Socket__stream__channel__of__blobs.html',1,'ipc::transport']]],
+  ['stateless_5fallocator_19',['Stateless_allocator',['../classipc_1_1shm_1_1stl_1_1Stateless__allocator.html',1,'ipc::shm::stl']]],
+  ['struct_5fbuilder_20',['Struct_builder',['../classipc_1_1transport_1_1struc_1_1Struct__builder.html',1,'ipc::transport::struc']]],
+  ['struct_5freader_21',['Struct_reader',['../classipc_1_1transport_1_1struc_1_1Struct__reader.html',1,'ipc::transport::struc']]]
+];

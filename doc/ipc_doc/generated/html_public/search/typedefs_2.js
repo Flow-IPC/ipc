@@ -1,0 +1,11 @@
+var searchData=
+[
+  ['capnp_5fmsg_5fbuilder_5finterface_0',['Capnp_msg_builder_interface',['../namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc',1,'ipc::transport::struc']]],
+  ['channel_1',['Channel',['../namespaceipc_1_1transport_1_1struc_1_1shm_1_1classic.html#ac543b500a85f556564e592cbbefb6185',1,'ipc::transport::struc::shm::classic::Channel()'],['../namespaceipc_1_1transport_1_1struc_1_1shm_1_1arena__lend_1_1jemalloc.html#ab68a69ad42d97d754f4e77c8cadd3a5e',1,'ipc::transport::struc::shm::arena_lend::jemalloc::Channel()']]],
+  ['channel_5fobj_2',['Channel_obj',['../classipc_1_1session_1_1Session.html#a2f770785552536f3b929f293c44834d2',1,'ipc::session::Session::Channel_obj()'],['../classipc_1_1session_1_1Session__mv.html#ab92df09d894e6e1aaf3c2733da594fd2',1,'ipc::session::Session_mv::Channel_obj()']]],
+  ['channel_5fvia_5fheap_3',['Channel_via_heap',['../namespaceipc_1_1transport_1_1struc.html#aca041b0efd4a9ae18e10088b2ee3c052',1,'ipc::transport::struc']]],
+  ['channels_4',['Channels',['../classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f',1,'ipc::session::Session_mv::Channels()'],['../classipc_1_1session_1_1Session__server.html#a6dea741c32a771532a884ffbc0826bb3',1,'ipc::session::Session_server::Channels()'],['../classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html#ab8f638542f33b5028e1db7ce7572fef3',1,'ipc::session::shm::classic::Session_server::Channels()'],['../classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a95e9d47a5bd9c32b3d3970ed3af0db01',1,'ipc::session::shm::arena_lend::jemalloc::Session_server::Channels()']]],
+  ['client_5fapp_5fset_5',['Client_app_set',['../structipc_1_1session_1_1Server__app.html#a268ca127637100ab10a4ac296aff4fad',1,'ipc::session::Server_app']]],
+  ['client_5fsession_6',['Client_session',['../namespaceipc_1_1session.html#a77d8fda00e1e17f595a6a5d4c44375e7',1,'ipc::session::Client_session()'],['../namespaceipc_1_1session_1_1shm_1_1classic.html#ac6c443a72e0f22710c83bb1e8c229618',1,'ipc::session::shm::classic::Client_session()'],['../namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a837b4566cb2a734eb0ba58f285d084fe',1,'ipc::session::shm::arena_lend::jemalloc::Client_session()']]],
+  ['create_5fonly_7',['Create_only',['../namespaceipc_1_1util.html#a9d84c2bab504e6de32b20c77ca9723a2',1,'ipc::util']]]
+];
