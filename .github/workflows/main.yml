@@ -1078,3 +1078,13 @@ jobs:
         git add generated
         git commit -m '${{ needs.set-vars.outputs.doc-commit-message }}'
         git push origin main
+
+    - name: Signal Pages if we have updated the generated documentation in source control (then web site should update)
+      if: success() && (steps.doc_check_in.outcome != 'skipped')
+      run: |
+        # Signal Pages that we have updated the generated documentation in source control (web site should update).
+        curl -X POST \
+         -H 'Accept: application/vnd.github.v3+json' \
+         -H 'Authorization: token ${{ secrets.GIT_BOT_PAT }}' \
+         'https://api.github.com/repos/Flow-IPC/flow-ipc.github.io/dispatches' \
+         -d '{"event_type": "flow-ipc-sync-doc-event"}'
