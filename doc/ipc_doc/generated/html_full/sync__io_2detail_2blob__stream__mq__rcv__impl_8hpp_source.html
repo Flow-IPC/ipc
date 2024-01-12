@@ -568,7 +568,7 @@ $(function() {
 <div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>      <a class="code hl_variable" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#af742578435fde1d0c536196698ddbc75">m_mq_ready_reader</a>.emplace(*<a class="code hl_variable" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#a9f1120b92ea20944b2de416d870644ce">m_nb_task_engine</a>); <span class="comment">// No handle inside but will be set-up soon below.</span></div>
 <div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span>      <a class="code hl_variable" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#ac181b33a0b5cdb0e89753b62d86af50f">m_mq_ready_writer</a>.emplace(*<a class="code hl_variable" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#a9f1120b92ea20944b2de416d870644ce">m_nb_task_engine</a>); <span class="comment">// Ditto.</span></div>
 <div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span> </div>
-<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>      <span class="comment">// Start thread W, for when we (and if) we need to use it to async-wait for transmissibility.</span></div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>      <span class="comment">// Start thread W, for when (and if) we need to use it to async-wait for transmissibility.</span></div>
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>      <a class="code hl_variable" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#ad233c7b57cbb817fb243bec5d338ec2e">m_blocking_worker</a>.emplace(get_logger(),</div>
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>                                ostream_op_string(<span class="stringliteral">&quot;mq_rcv-&quot;</span>, <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#adaf3579ec3abf0b5d85258965d264660">nickname</a>())); <span class="comment">// Thread W started just below.</span></div>
 <div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>      <a class="code hl_variable" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#ad233c7b57cbb817fb243bec5d338ec2e">m_blocking_worker</a>-&gt;start();</div>
@@ -1314,7 +1314,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 11 2024 02:15:49 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Fri Jan 12 2024 23:31:10 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

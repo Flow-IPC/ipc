@@ -71,8 +71,13 @@ $(function() {
 <img src="sessions_and_transport_high_v2.png" alt=""/>
 </div>
 <ul>
-<li>On the left &ndash; Flow-IPC's mission: applications speaking to each other performantly, in organized fashion.</li>
-<li>On the right &ndash; zooming into a single communication channel; and how it transmits data of various kinds without copying (therefore at high speed).</li>
+<li>On the left &ndash; Flow-IPC's mission: applications speaking to each other performantly, in organized fashion. The infrastructure inside the dotted-line boxes is provided by Flow-IPC. Perhaps most centrally this offers communication <em>channels</em> over which one can transmit <em>messages</em> with a few lines of code.</li>
+<li>On the right &ndash; zooming into a single <em>channel</em>; and how it transmits data of various kinds, especially without copying (therefore at high speed).<ul>
+<li>"capnp" stands for <a href="https://capnproto.org/language.html">Cap'n Proto</a>.</li>
+<li>Some readers have said this diagram is too "busy." If that's your impression: Please do not worry about the details. It is a <em>survey</em> of what and how one <em>could</em> transmit via Flow-IPC; different details might appeal to different users.</li>
+<li>Ultimately, if you've got a message or data structure to share between processes, Flow-IPC will let you do it with a few lines of code.</li>
+</ul>
+</li>
 </ul>
 <p >We hope a picture is worth a thousand words, but please do scroll down to read a few words anyway.</p>
 <h2>Executive summary: Why does Flow-IPC exist? </h2>
@@ -102,7 +107,7 @@ $(function() {
 <li>The <code>sync_io</code> <b>API</b> supplies lighter-weight objects allowing you full control over each application's thread structure, hooking into reactor-style (<code>poll()</code>, <code>epoll_wait()</code>, etc.) or proactor (boost.asio) event loops. As a result context switching is minimized.</li>
 </ul>
 <p >Lastly Flow-IPC supplies <b>lower-level utilities</b> facilitating work with POSIX and SHM-based <b>message queues (MQs)</b> and <b>local (Unix domain) stream sockets</b>.</p>
-<hr  />
+<h2>Delving deeper </h2>
 <p >The high-level diagram <a class="el" href="about.html#fig0">above</a> is a pretty good synopsis of the highest-impact features. The following diagram delves deeper, roughly introducing the <em>core</em> layer of <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>. Then we begin a textual exploration in <a class="el" href="api_overview.html">API Overview</a>.</p>
 <div class="image">
 <img src="1x1.png" alt=""/>
@@ -111,12 +116,21 @@ Figure 1. IPC channels (core layer); SHM arenas; and your code.</div></div>
  <div class="image">
 <img src="transport_core_v1.png" alt=""/>
 </div>
+<h2>Future directions of work </h2>
+<p >We feel this is a comprehensive work, but there is always more to achieve. Beyond maintenance and incremental features, here are some future-work ideas of a more strategic nature.</p><ul>
+<li><b>Networked IPC</b>: At the moment all IPC supported by Flow-IPC is between processes within a given machine (node). A session can only be established that way for now. Extending this to establish IPC sessions via network would be easy. Unix-domain-socket-based low-level transports would easily be extended to work via TCP sockets (at least). This is a very natural next step for Flow-IPC development: a low-hanging fruit.</li>
+<li><b>Networked "shared memory" (RDMA)</b>: While the preceding bullet point would have clear utility, naturally the zero-copy aspect of the existing Flow-IPC cannot directly translate across a networked session: It is internally achieved using SHM, but there is no shared memory between two separate machines. There <em>is</em>, however, <a href="https://en.wikipedia.org/wiki/Remote_direct_memory_access">Remote Direct Memory Access (RDMA)</a>: direct memory access from the memory of one computer into that of another without involving either one's OS. While assuredly non-trivial, leveraging RDMA in Flow-IPC might allow for a major improvement over the feature in the preceding bullet point, analogously to how SHM-based zero-copy hugely improves upon basic IPC.</li>
+<li><b>Beyond C++</b>: This is a C++ project at this time, but languages including Rust and Go have gained well-deserved popularity as well. In a similar way that (for example) Cap'n Proto's original core is in C++, but there are implementations for other languages, it would make sense for the same to happen for Flow-IPC. There are no technical stumbling blocks for this; it is only a question of time and effort.</li>
+</ul>
+<p >We welcome feedback, ideas, and (of course) pull requests of all kinds!</p>
+<hr  />
+<p >Onward!</p>
 <hr  />
 <center><b>MANUAL NAVIGATION:</b> <a class="el" href="api_overview.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 11 2024 02:15:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Fri Jan 12 2024 23:31:08 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
