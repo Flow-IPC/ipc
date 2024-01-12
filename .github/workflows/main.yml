@@ -1058,6 +1058,7 @@ jobs:
         path: ${{ github.workspace }}/doc/ipc_doc.tgz
 
     - name: (`main` branch only) Check-in generated documentation directly into source control
+      id: doc_check_in
       if: success() && (github.ref == 'refs/heads/main')
       run: |
         # (`main` branch only) Check-in generated documentation directly into source control.
