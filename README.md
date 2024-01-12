@@ -1,5 +1,13 @@
 # Flow-IPC  -- Modern C++ toolkit for high-speed inter-process communication (IPC); plus general-purpose toolkit, Flow
 
+What's this, you ask?  We immediately point you to this
+[introductory page + the surrounding full documentation](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html) for the project.
+The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
+the aforementioned link and is also bundled as part of the repository/tarball containing the present README.
+
+Having sampled those docs... interested in using or even developing Flow-IPC?  Then please read on.  To restate
+Flow-IPC's mission from the above About docs page:
+
 Multi-process microservice systems need to communicate between processes efficiently.  Existing microservice
 communication frameworks are elegant at a high level but add unacceptable latency out of the box.  Low-level
 interprocess communication (*IPC*) solutions, typically custom-written on-demand to address this problem,
@@ -32,7 +40,7 @@ yourself; more on this below under Organization).
 
 The directory containing the present `README.md` is the root of the Flow-IPC meta-project.  It is most
 typically bundled as one thing, with all necessary (`ipc_*` and `flow`) sub-projects included as
-subdirectories.  The build/installation and doc generation procedure will take care of everything for you
+subdirectories.  The build/installation procedure will take care of everything for you
 (not including the handful of third-party prerequisites like Boost which will need to be installed
 separately; instructions below).
 
@@ -44,10 +52,11 @@ situations *except if your aim is to make changes that would be checked-in to th
 a while; then switch-over to the Git setup described in the following paragraphs, once you're ready to
 contribute to the public project.)
 
-If you do not aim to immediately contribute to the public project, we encourage you to skip to the next section.
+If you do not aim to immediately contribute to the public project, we encourage you to skip right to the
+next section -- and you can later skip Contributing section(s).
 
-If you *do* aim to immediately contribute to the public project, please see Contributing in the present
-document.
+If you *do* aim to immediately contribute to the public project, please at least glance at Contributing in the present
+document first.
 
 ## Installation
 
@@ -56,8 +65,9 @@ include-root; and a libraries such as `libflow.a` and `lipipc_*.a` (as of this w
 Certain items are also exported for people who use CMake to build their own
 projects; we make it particularly easy to use Flow and Flow-IPC proper in that case
 (`find_package(Flow)`, `find_package(IpcCore)`, `find_package(IpcTransportStructured)`, `find_package(IpcSession)`,
-`find_package(IpcShm)`, and `find_package(IpcShmArenaLend)`).  Lastly documentation
-can be optionally generated (for Flow and the totality of Flow-IPC proper, separately; so 2 sets of docs).
+`find_package(IpcShm)`, and `find_package(IpcShmArenaLend)`).  Lastly documentation is included in the
+source tree for local perusal (for Flow and the totality of Flow-IPC proper, separately; so 2 sets of docs);
+and can be optionally re-generated from local source (more on that below).
 
 The basic prerequisites for *building* the above:
 
@@ -67,6 +77,7 @@ The basic prerequisites for *building* the above:
   - CMake;
   - Cap'n Proto (a/k/a capnp);
   - jemalloc;
+  - (optional, only if running unit tests) GoogleTest;
   - (optional, only if generating docs) Doxygen and Graphviz.
 
 **Note regarding capnp and jemalloc:** At this time, capnp and jemalloc are indeed required to build
@@ -127,8 +138,9 @@ To build Flow-IPC (including Flow):
      - Flow-IPC will automatically build in the way compatible with the way you've built jemalloc.
        (Our CMake script(s) will, internally, use `jemalloc_config` program to determine the chosen API-name
        prefix.)
-  5. (Optional, only if generating docs) Have Doxygen and Graphviz installs available.
-  6. Use CMake `cmake` (command-line tool) or `ccmake` (interactive text-UI tool) to configure and generate
+  5. (Optional, only if running unit tests) Have GoogleTest install available.
+  6. (Optional, only if generating docs) Have Doxygen and Graphviz installs available.
+  7. Use CMake `cmake` (command-line tool) or `ccmake` (interactive text-UI tool) to configure and generate
      a build system (namely a GNU-make `Makefile` and friends).  Details on using CMake are outside our scope here;
      but the basics are as follows.  CMake is very flexible and powerful; we've tried not to mess with that principle
      in our build script(s).
@@ -158,8 +170,6 @@ To build Flow-IPC (including Flow):
      4. Build using the build system generated in the preceding step:  In `$BUILD` run `make`.  
         - (To generate documentation run `make ipc_doc_public ipc_doc_full flow_doc_public flow_doc_full`.)
      5. Install (export):  In `$BUILD` run `make install`.  
-        - (To "install" the regenerated documentation in its proper location please follow the simple steps in
-          Documentation below.)
 
 To use Flow-IPC/Flow:
 
@@ -183,7 +193,7 @@ To use Flow-IPC/Flow:
         `libipc_core.a`, and `libflow.a`.
       - Link against Boost libraries mentioned in a `CMakeLists.txt` line (search `$SRC` for it):
         `set(BOOST_LIBS ...)`.
-      - Link against the system pthreads library, `librt`, and (for `ipc_shm_arena_lend`), `libdl`.
+      - Link against the system pthreads library, `librt`, and (for `ipc_shm_arena_lend`) `libdl`.
   - Read the documentation to learn how to use Flow-IPC's (and/or Flow's) various features.
     (See Documentation below.)
 
@@ -192,8 +202,8 @@ To use Flow-IPC/Flow:
 The documentation consists of:
   - (minor) this README (and less interesting sub-project `*/README.md`s, except arguably `flow/README.md` may be of
     interest possibly);
-  - (minor) comments, about the build, in `CMakeLists.txt` (in various directories including this one, the top-level
-    build script);
+  - (minor) comments, about the build, in `CMakeLists.txt`, `*.cmake`, `conanfile.py` (in various directories
+    including this one where the top-level `CMakeLists.txt` lives);
   - (major/main) documentation directly in the comments throughout the source code; these have been,
     and can be again, conviently generated using certain tools (namely Doxygen and friends), via the
     above-shown `make ipc_doc_public ipc_doc_full flow_doc_public flow_doc_full` command.
@@ -204,36 +214,18 @@ The documentation consists of:
     - Browsing the clickable generated documentation is probably quite a bit nicer.
 
 To read the latter -- the guided Manual + References -- consider the following.
-  - The latest generated docs from the source code in `*/src/*` has been included nearby;
-    unpack them via:
-    - Flow-IPC proper: `cp doc/ipc_doc.tgz <some-place> && cd <some-place> && tar xzf ipc_doc.tgz`; use a browser to
-      open `<some-place>/ipc_doc/index.html`.
-    - Flow: `cp flow/doc/flow_doc.tgz <some-place> && cd <some-place> && tar xzf flow_doc.tgz`; use a browser to
-      open `<some-place>/flow_doc/index.html`.
-  - If you're perusing docs only, that's all.  If you have changed the source code (for Flow-IPC proper, Flow, or
-    both):
-  - Upon changing the source code, the documentation can and should be regenerated and saved nearby again (by you).
-    First, follow the aforementioned `cd $BUILD && make ipc_doc_public ipc_doc_full flow_doc_public flow_doc_full`
-    procedure in Installation.  You may encounter Doxygen warnings; you should fix your code accordingly.
-    Next:
-    - Flow-IPC proper: `cd $SRC/doc/ipc_doc` (`$SRC` being the directory with this README) and lastly:
-      `$SRC/tools/doc/stage_generated_docs.sh $BUILD/ipc`.  This will place the `make`-generated Flow-IPC
-      docs under `$SRC/doc/ipc_doc` in the proper relative location; plus a nearby tarball with everything
-      packaged up.
-    - Flow: `cd $SRC/flow/doc/flow_doc` (`$SRC` being the directory with this README) and lastly:
-      `$SRC/flow/tools/doc/stage_generated_docs.sh $BUILD/flow`.  This will place the `make`-generated Flow
-      docs under `$SRC/flow/doc/flow_doc` in the proper relative location; plus a nearby tarball with everything
-      packaged up.
-  - It would now be prudent to open the result in the browser (open `$SRC/flow/doc/flow_doc/index.html` and/or
-    `$SRC/doc/ipc_doc/index.html`) to ensure things you've changed look good; rinse/repeat if not.  (Don't forget
-    to `make` to ensure no compile errors have accidentally appeared as a result of tinkering with comments.
-    It happens.)
-  - If you now `git add`, you can commit both the source and refreshed docs (in the form of a single .tgz for Flow,
-    and/or a single .tgz for Flow-IPC proper) to source control.  (2 `.gitignore`s will ensure the individual
-    generated files are ignored; only the 2 `.tgz`s will be tracked by Git.)
+  - The latest generated docs from the source code in `*/src/*` has been included nearby:
+    - Flow-IPC proper: Use a browser to open `doc/ipc_doc/index.html`.
+    - Flow: Use a browser to open `flow/doc/flow_doc/index.html`.
+  - Or see the online documentation at the [project web site](https://flow-ipc.github.io).  This will just mirror what
+    the above from the corresponding source code: the tip of the master branch; and for each released version of
+    the project.
+  - If you're perusing docs only, that's all.  You're done!
 
-Or see the online documentation at the GitHub repository (details TBD).  This will just mirror what someone did
-in the above steps.
+In contrast, if you have changed the source code (for Flow-IPC proper, Flow, or both): See Contributing below.
+It includes instructions on how docs are generated and updated.  Spoiler alert: Most things are automatic;
+the only manual part is that you should peruse any changed docs for your visual satisfaction before
+submitting your code.
 
 ## What if I have a separate source-tree for Flow alone?
 
@@ -258,7 +250,7 @@ depending on the sub-project in question.
 That said it will only work if it is indeed a bona-fide open-source tree with a root `CMakeLists.txt`
 and so on.
 
-## Contributing
+## Contributing: Basics
 
 As mentioned in Organization, you may wish to contribute to the project.  Of course, in your own setting, it
 may be perfectly reasonable to simply get a packaged tarball (.tgz), make the changes in this monolithic,
@@ -268,7 +260,9 @@ Git-SCS-mirrored project.  This section is about that.  It assumes basic familia
 As noted in Organization, Flow-IPC is conveniently packaged in a monolithic meta-project.  "Normally"
 working with Git in a given repo is straightforward: You clone with a command, you create branch and switch to
 it, you make changes/commits, and lastly you issue a pull request (PR) to merge this into the master
-development branch.  If this is accepted and merged, you're done!
+development branch.  If this is accepted and merged, you're done!  (Acceptance, as of this writing, means that
+code reviewer(s) formally accept(s) your PR.  In addition an automated CI/CD pipeline shall execute for your
+PR, initially and after any update; it this fails, then acceptance is unlikely.)
 
 However, as also noted in Organization, Flow-IPC is a meta-project composed of -- primarily -- a handful
 of sub-projects: `flow` and `ipc_*`.  (In fact, as of this writing, the dependency tree between them is
@@ -297,5 +291,104 @@ A further tutorial regarding how to work with submodules is beyond our scope her
 Git documentation).  However, ultimately, it will still come down to pull requests (PR) to update (most
 importantly) the individual sub-projects' master branches; and at times the meta-project's master branch.
 The only real added complexity will come from the way the submodule system tracks the most current commit
-of each submodule in the parent repo.  That said, for now at least, we'll leave it to the official Git
-documentation.
+of each submodule in the parent repo.  The basic idea is, essentially, simple: The `ipc` repo stores not just
+the actual files but also a "pointer" to the state of each submodule (`flow`, `ipc_*`) that would be cloned
+if one were to invoke the `git clone --recurse-submodules` command above.  Our rule is that in the master
+branch of `ipc`, the "pointer" for each submodule is to some commit to that submodule repo's master branch.
+Thus the basic procedure is: merge all the relevant PRs into the submodule repos' (if applicable) master
+branches; then lastly issue a PR in `ipc` which (possibly among other changes) updates the submodule
+pointer(s) to the latest commit in each guy's master branch.
+
+That said, for now at least, we'll leave it to the official Git documentation.
+
+## Contributing: Some details
+
+This section is not meant as a detailed/formal manual.  This project follows established conventions
+and tools of open-source development, Git+GitHub specifically; so the exact steps to follow should come naturally.
+We assume either familiarity with such processes or the willingness to learn them.
+
+So in this section we will point out a few specifics that should help and may or may not otherwise be obvious.
+
+The Flow-IPC product (including Flow dependency) lives in the [Flow-IPC organization](https://github.com/Flow-IPC)
+at GitHub.  This is open-source.  There is also a [web site hosted using GitHub pages](https://flow-ipc.github.io)]
+which hosts, at least, online copies of generated documentation.
+
+The master branch in each repo is called `main`.  Thus any contribution will involve:
+  - A change to the code in 0 or more of the submodule repos (`flow`, `ipc_*`).  (So that's 0 or more pull
+    requests (PRs) to each relevant `main` branch.)
+  - Possibly a change to the code in the `ipc` repo (usually tests).
+  - Possibly a change to the submodule pointer(s) in `ipc` repo: 1 for each submodule repo changed above.
+    (So that's potentially 1 PR total -- for the last 2 bullet points -- to the `ipc` repo main branch.)
+
+We have some automated CI/CD pipelines.  Namely `flow`, being special as a self-contained project, has the
+pipeline steps in `flow/.github/workflows/main.yml` -- this is Flow's dedicated CI/CD pipeline; and `ipc`,
+covering Flow-IPC as an overall monolithic project, similarly has Flow-IPC's CI/CD pipeline steps in
+`.github/worksflows/main.yml`.  Therefore:
+  - Certain automated build/test/doc-generation runs occur when:
+    - creating a PR against `flow` repo;
+    - updating that PR;
+    - finally merging that PR.
+  - Certain automated build/test/doc-generation runs occur when:
+    - creating a PR against `ipc` repo;
+    - updating that PR;
+    - finally merging that PR.
+  - There are no individual CI/CD pipelines for the `ipc_*` repos; Flow (a special case) aside we treat Flow-IPC as
+    a monolithic whole in that sense.
+
+To contribute a change to the project, first of course you'll need to build it per various instructions above
+and test the changes locally.  However before these changes will be officially accepted, certain automated
+tests will need to pass in the GitHub project, and the changes will need to pass code review.  Here's roughly
+how that works.
+  1. You create a PR against a repo.
+  2. If that repo is `flow` or `ipc`: automated pipeline runs.
+     - It builds and tests the code in many configurations, such as Release, Debug, size-minimizing Release,
+       Release with debug info, run-time sanitizers ASAN, UBSAN, TSAN.  The matrix includes all those configurations
+       across several versions of clang compiler/linker and several versions of gcc compiler/linker.  All in all
+       the build/test job runs across ~40 configuration as of this writing.
+     - It generates documentation and makes it available as a downloadable artiface (a tarball download and peruse).
+     - If any of that fails, most likely you'll need to update the PR which will re-run the pipeline.  
+       If it fails, then the pipeline output should make clear what went wrong.
+       Could be a build error; could be a test failure; could be Doxygen doc-generation problem.
+       Eventually it needs to pass (usually).  
+  3. A code reviewer will look over your PR.  You know the drill.  Once it is marked approved by at least 1, then
+     it becomes mergeable.
+  4. You click Merge Pull Request which should now be no longer grayed out.
+  5. If that repo is `flow` or `ipc`: automated pipeline runs again, this time off the code in `main`.
+     - The generated documentation is checked back into `main`.
+     - The web site host (GitHup Pages) is pinged, so that the generated documentation is reflected on
+       the [project web site](https://flow-ipc.github.io).
+
+That's the basic idea.  One aspect we haven't covered which bears more detailed explanation is doc generation.
+After all, if you've changed the source, then the resulting generated documentation might change.  On that note:
+  1. Before making a PR you may wish to locally generate, and visually check, the documentation -- which may
+     have changed due to your source code changes.
+     This may or may not be necessary, but for now let's assume it is.  Then:
+  2. First, follow the aforementioned `cd $BUILD && make ipc_doc_public ipc_doc_full flow_doc_public flow_doc_full`
+     procedure in Installation.  You may encounter Doxygen warnings; you should fix your code accordingly.
+     Next:
+  3. Open the result in a browser: `$BUILD/html_ipc_doc_public/index.html`
+     and `$BUILD/html_ipc_doc_full/index.html` (the public and full doc sets respectively, for Flow-IPC); and/or
+     `$BUILD/flow/html_flow_doc_public/index.html` and `$BUILD/flow/html_flow_doc_full/index.html` (same thing for Flow).
+     Ensure things you've changed look good; rinse/repeat if not.
+     - If you have changed something under 1 or more `ipc_*/`, then you'll want to check the Flow-IPC documentation.
+       Otherwise you can skip that.  
+     - If you have changed something under `flow/`, then you'll want to check the Flow documentation.  Otherwise
+       you can skip that.
+
+You *need not* and *should not* check-in the resulting documentation.  When source code changes are checked-in to
+`main` of `flow`, the Flow documentation will be generated and checked-in using our CI/CD
+pipeline under `flow/`.  Identically, if one checks-in to `main` of 1 or more of `ipc_*`, and then "seals the deal"
+by checking-in the updated submodule pointer(s) to `main` of `ipc`, the Flow-IPC documentation will be generated
+and checked-in using the `ipc/` pipeline.  (Search for `git push` in the two `main.yml` files to see what we mean.)
+We have already mentioned this above.
+
+The above steps for *locally* generating the documentation are provided only so you can locally test soure code changes' effects on the resulting docs.  Locally generating and verifying docs, after changing source code, is a good idea.
+However it's also possible (and for some people/situations preferable) to skip it.
+The CI/CD pipeline will mandatorily generate the docs, when a PR is created or updated, as we explained above.
+If you did not locally verify the new docs by generating and perusing them, then you must peruse the
+doc tarball artifact (mentioned earlier).  If you *did* verify it locally, then you can skip that step.
+
+You can watch all these pipeline runs under Actions tab in GitHub:
+  - `flow` repo will have "Flow pipeline" under Actions tab.  (You can view the workflow `main.yml` file which
+    is the source code that controls each given pipeline run.)
+  - `ipc` repo will have "Flow-IPC pipeline" under Actions tab.  (Ditto regarding `main.yml` viewing.)
