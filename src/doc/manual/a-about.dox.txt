@@ -54,8 +54,32 @@ The documentation is divided into two parts:
 @anchor fig0
 @image html sessions_and_transport_high_v2.png
 
-- On the left -- Flow-IPC's mission: applications speaking to each other performantly, in organized fashion.
-- On the right -- zooming into a single communication channel; and how it transmits data of various kinds without copying (therefore at high speed).
+- On the left -- Flow-IPC's mission: applications speaking to each other performantly, in organized fashion.  The infrastructure inside the dotted-line boxes is provided by Flow-IPC.  Perhaps most centrally this offers communication *channels* over which one can transmit *messages* with a few lines of code.
+- On the right -- zooming into a single *channel*; and how it transmits data of various kinds, especially without copying (therefore at high speed).
+  - Some readers have indicated that this diagram is "busy," parts of it being difficult to understand depending on one's level of familiarity with the topics touched.  If that's your feeling, we urge you not to worry.  The picture is a *survey* of the kinds of things one *could* transmit, and how.  Different details might appeal to different users.  Ultimately, if you've got a structured message and/or binary blob and/or native handle and/or native data structure to share between processes, Flow-IPC channels will let you do it with a few lines of code.
+  - "capnp" stands for [Cap'n Proto](https://capnproto.org/language.html).
+
+We hope a picture is worth a thousand words, but please do scroll down to read a few words anyway.
+
+---
+
+@par Kernel-persistent resource cleanup
+"Kernel-persistent resources" are areas in RAM that are not necessarily given back to the OS for general use when a process accessing them dies; instead they're only guaranteed to be made available on next boot.  (As of this writing Flow-IPC potentially acquires the following types of these resources: SHM pools (a/k/a segments); POSIX MQs.)  Naturally it is important that these be returned to the OS at the proper time; otherwise it's no less than a RAM leak that could persist beyond any process that was using the RAM.  How is this topic (which we call **cleanup**) handled in Flow-IPC's context?  Answer:
+
+@par
+Short version: It's handled.  You need not worry about it.  (That is one of the features of the library that's not so easy to guarantee manually and in fact much harder than it would seem, until one has to actually design/code.)
+
+@par
+Longer version, for your general curiosity only (as these are internal impl items): You can observe the various cleanup steps in INFO-level log messages.  These show the following:
+
+@par
+In case all processes involved shut down gracefully (usually via `exit()`), resources are freed as soon as no sessions needing them are up (nor, for certain cross-session resources, can start in the future) but no earlier.  In particular the major points where this is achieved are: `Session` destructor (any per-session resources for that session); `Session_server` destructor (any cross-session resources).  In most cases both resource acquisition and resource cleanup is performed (internally) in session-server code as opposed to session-client.  (As of this writing the exception to this is SHM-jemalloc which does things in a more equitable/symmetrical fashion, since internally each side creates/controls its own SHM arena, a/k/a SHM pool collection, from which the other side "borrows" individual allocated objects.)
+
+@par
+In case of ungraceful shutdown, usually via `abort()`: The RAM may leak temporarily; but it will be cleaned-up zealously once a process of the same applications Ab/Bp next starts.  In most cases left-behind-due-to-abort items are cleaned once the `Session_server` in application Ap (the session-server-assigned `App`) is created, synchronously in its constructor.  This is safe, since only one session-server for given app Ap is to be active at a time.  (As of this writing, again, SHM-jemalloc is the exception to this.  In its case any process of application Ap or Bp shall regularly clean-up any SHM arenas/pools created by those processes of its own application Ap or Bp, respectively, that are reported by the OS to be no longer running.  The mechanism for checking this, in Linux, is to "send" fake signal 0 to the given process-ID and observe the result of the syscall.)
+
+---
+
 
 We hope a picture is worth a thousand words, but please do scroll down to read a few words anyway.
 
@@ -75,7 +99,7 @@ Flow-IPC’s API allows developers to easily adapt existing code to a multi-proc
 Welcome to the guided Manual.  It explains how to use Flow-IPC with a gentle learning curve in mind.  It is arranged in top-down order.  (You may also be interested in the @link ::ipc Reference@endlink.)
 
 Feature overview: What is Flow-IPC?
--------------------------------------
+-----------------------------------
 Flow-IPC:
   - is a **modern C++** library with a concept-based API in the spirit of STL/Boost;
   - enables near-zero-latency **zero-copy** messaging between processes (via behind-the-scenes use of the below SHM solution);
@@ -92,6 +116,15 @@ Flow-IPC provides 2 ways to integrate with your applications' event loops.  Thes
   - The `sync_io` **API** supplies lighter-weight objects allowing you full control over each application's thread structure, hooking into reactor-style (`poll()`, `epoll_wait()`, etc.) or proactor (boost.asio) event loops.  As a result context switching is minimized.
 
 Lastly Flow-IPC supplies **lower-level utilities** facilitating work with POSIX and SHM-based **message queues (MQs)** and **local (Unix domain) stream sockets**.
+
+Future directions of work
+-------------------------
+We feel this is a comprehensive work, but there is always more to achieve.  Beyond maintenance and incremental features, here are some future-work ideas of a more strategic nature.
+  - **Networked IPC**: At the moment all IPC supported by Flow-IPC is between processes within a given machine (node).  A session can only be established that way for now.  Extending this to establish IPC sessions via network would be easy.  Unix-domain-socket-based low-level transports would easily be extended to work via TCP sockets (at least).  This is a very natural next step for Flow-IPC development: a low-hanging fruit.
+  - **Networked "shared memory" (RDMA)**: While the preceding bullet point would have clear utility, naturally the zero-copy aspect of the existing Flow-IPC cannot directly translate across a networked session: It is internally achieved using SHM, but there is no shared memory between two separate machines.  There *is*, however, [Remote Direct Memory Access (RDMA)](https://en.wikipedia.org/wiki/Remote_direct_memory_access): direct memory access from the memory of one computer into that of another without involving either one's OS.  While assuredly non-trivial, leveraging RDMA in Flow-IPC might allow for a major improvement over the feature in the preceding bullet point, analogously to how SHM-based zero-copy hugely improves upon basic IPC.
+  - **Beyond C++**: This is a C++ project at this time, but languages including Rust and Go have gained well-deserved popularity as well.  In a similar way that (for example) Cap'n Proto's original core is in C++, but there are implementations for other languages, it would make sense for the same to happen for Flow-IPC.  There are no technical stumbling blocks for this; it is only a question of time and effort.
+
+We welcome feedback, ideas, and (of course) pull requests of all kinds!
 
 ---
 
