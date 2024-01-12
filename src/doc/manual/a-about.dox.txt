@@ -56,30 +56,9 @@ The documentation is divided into two parts:
 
 - On the left -- Flow-IPC's mission: applications speaking to each other performantly, in organized fashion.  The infrastructure inside the dotted-line boxes is provided by Flow-IPC.  Perhaps most centrally this offers communication *channels* over which one can transmit *messages* with a few lines of code.
 - On the right -- zooming into a single *channel*; and how it transmits data of various kinds, especially without copying (therefore at high speed).
-  - Some readers have indicated that this diagram is "busy," parts of it being difficult to understand depending on one's level of familiarity with the topics touched.  If that's your feeling, we urge you not to worry.  The picture is a *survey* of the kinds of things one *could* transmit, and how.  Different details might appeal to different users.  Ultimately, if you've got a structured message and/or binary blob and/or native handle and/or native data structure to share between processes, Flow-IPC channels will let you do it with a few lines of code.
   - "capnp" stands for [Cap'n Proto](https://capnproto.org/language.html).
-
-We hope a picture is worth a thousand words, but please do scroll down to read a few words anyway.
-
----
-
-@par Kernel-persistent resource cleanup
-"Kernel-persistent resources" are areas in RAM that are not necessarily given back to the OS for general use when a process accessing them dies; instead they're only guaranteed to be made available on next boot.  (As of this writing Flow-IPC potentially acquires the following types of these resources: SHM pools (a/k/a segments); POSIX MQs.)  Naturally it is important that these be returned to the OS at the proper time; otherwise it's no less than a RAM leak that could persist beyond any process that was using the RAM.  How is this topic (which we call **cleanup**) handled in Flow-IPC's context?  Answer:
-
-@par
-Short version: It's handled.  You need not worry about it.  (That is one of the features of the library that's not so easy to guarantee manually and in fact much harder than it would seem, until one has to actually design/code.)
-
-@par
-Longer version, for your general curiosity only (as these are internal impl items): You can observe the various cleanup steps in INFO-level log messages.  These show the following:
-
-@par
-In case all processes involved shut down gracefully (usually via `exit()`), resources are freed as soon as no sessions needing them are up (nor, for certain cross-session resources, can start in the future) but no earlier.  In particular the major points where this is achieved are: `Session` destructor (any per-session resources for that session); `Session_server` destructor (any cross-session resources).  In most cases both resource acquisition and resource cleanup is performed (internally) in session-server code as opposed to session-client.  (As of this writing the exception to this is SHM-jemalloc which does things in a more equitable/symmetrical fashion, since internally each side creates/controls its own SHM arena, a/k/a SHM pool collection, from which the other side "borrows" individual allocated objects.)
-
-@par
-In case of ungraceful shutdown, usually via `abort()`: The RAM may leak temporarily; but it will be cleaned-up zealously once a process of the same applications Ab/Bp next starts.  In most cases left-behind-due-to-abort items are cleaned once the `Session_server` in application Ap (the session-server-assigned `App`) is created, synchronously in its constructor.  This is safe, since only one session-server for given app Ap is to be active at a time.  (As of this writing, again, SHM-jemalloc is the exception to this.  In its case any process of application Ap or Bp shall regularly clean-up any SHM arenas/pools created by those processes of its own application Ap or Bp, respectively, that are reported by the OS to be no longer running.  The mechanism for checking this, in Linux, is to "send" fake signal 0 to the given process-ID and observe the result of the syscall.)
-
----
-
+  - Some readers have said this diagram is too "busy."  If that's your impression: Please do not worry about the details.  It is a *survey* of what and how one *could* transmit via Flow-IPC; different details might appeal to different users.
+  - Ultimately, if you've got a message or data structure to share between processes, Flow-IPC will let you do it with a few lines of code.
 
 We hope a picture is worth a thousand words, but please do scroll down to read a few words anyway.
 
