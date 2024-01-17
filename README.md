@@ -2,9 +2,9 @@
 
 What's this, you ask?
 - We immediately point you to this
-[introductory page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
-in the project's main documentation.   Full documentation for the tip of the master branch is reachable from there also.
-- The [project web site](https://flow-ipc.github.io) will help navigate various released versions and their
+[introductory docs page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
+in the project's main documentation for the master branch.
+- The [project web site](https://flow-ipc.github.io) provides access to various released versions and their
 corresponding sets of such documentation.
 
 The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
