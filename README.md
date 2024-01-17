@@ -1,12 +1,17 @@
 # Flow-IPC  -- Modern C++ toolkit for high-speed inter-process communication (IPC); plus general-purpose toolkit, Flow
 
-What's this, you ask?  We immediately point you to this
-[introductory page + the surrounding full documentation](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html) for the project.
-The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
-the aforementioned link and is also bundled as part of the repository/tarball containing the present README.
+What's this, you ask?
+- We immediately point you to this
+[introductory page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
+in the project's main documentation.   Full documentation for the tip of the master branch is reachable from there also.
+- The [project web site](https://flow-ipc.github.io) will help navigate various released versions and their
+corresponding sets of such documentation.
 
-Having sampled those docs... interested in using or even developing Flow-IPC?  Then please read on.  To restate
-Flow-IPC's mission from the above About docs page:
+The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
+the aforementioned link(s) and is also bundled as part of the repository/tarball containing the present README.
+
+Having sampled those docs... are you interested in using or even developing Flow-IPC?  Then please read on.  To restate
+Flow-IPC's mission from the above [introductory docs page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html):
 
 Multi-process microservice systems need to communicate between processes efficiently.  Existing microservice
 communication frameworks are elegant at a high level but add unacceptable latency out of the box.  Low-level
