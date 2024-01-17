@@ -1,36 +1,41 @@
 # Flow-IPC  -- Modern C++ toolkit for high-speed inter-process communication (IPC); plus general-purpose toolkit, Flow
 
-What's this, you ask?  We immediately point you to this
-[introductory page + the surrounding full documentation](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html) for the project.
+What's this, you ask?
+- We immediately point you to this
+[introductory page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
+in the project's main documentation.   Full documentation for the tip of the master branch is reachable from there also.
+- The [project web site](https://flow-ipc.github.io) will help navigate various released versions and their
+corresponding sets of such documentation.
+
 The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
-the aforementioned link and is also bundled as part of the repository/tarball containing the present README.
+the aforementioned link(s) and is also bundled as part of the repository/tarball containing the present README.
 
-Having sampled those docs... interested in using or even developing Flow-IPC?  Then please read on.  To restate
-Flow-IPC's mission from the above About docs page:
+Having sampled those docs... are you interested in using or even developing Flow-IPC?  Then please read on.  To restate
+Flow-IPC's mission from the above [introductory docs page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html):
 
-Multi-process microservice systems need to communicate between processes efficiently.  Existing microservice
+> Multi-process microservice systems need to communicate between processes efficiently.  Existing microservice
 communication frameworks are elegant at a high level but add unacceptable latency out of the box.  Low-level
 interprocess communication (*IPC*) solutions, typically custom-written on-demand to address this problem,
 struggle to do so comprehensively and in reusable fashion.  Teams repeatedly spend resources on challenges
 like structured data and session cleanup.  These issues make it difficult to break monolithic systems into
 more resilient multi-process systems that are also performant.
-
-Flow-IPC is a modern C++ library that solves these problems.  It adds virtually zero latency.  Structured
+> 
+> Flow-IPC is a modern C++ library that solves these problems.  It adds virtually zero latency.  Structured
 data are represented using the high-speed Cap’n Proto (*capnp*) serialization library, which is integrated
 directly into our shared memory (SHM) system.  The Flow-IPC SHM system extends a commercial-grade memory
 manager (*jemalloc*, as used by FreeBSD and Meta).  Overall, this approach eliminates all memory copying
 (end-to-end *zero copy*).
-
-Flow-IPC features a session-based channel management model.  A *session* is a conversation between two
+> 
+> Flow-IPC features a session-based channel management model.  A *session* is a conversation between two
 programs; to start talking one only needs the name of the other program.  Resource cleanup, in case of exit or
 failure of either program, is automatic.  Flow-IPC’s sessions are also safety-minded as to the identities
 and permissions at both ends of the conversation.
-
-Flow-IPC’s API allows developers to easily adapt existing code to a multi-process model.  Instead of each
+> 
+> Flow-IPC’s API allows developers to easily adapt existing code to a multi-process model.  Instead of each
 dev team writing their own IPC implementation piecemeal, Flow-IPC provides a highly efficient standard that
 can be used across many projects.
-
-Also included is the general-purpose C++ toolkit named Flow.  While it is bundled for convenience simply
+> 
+> Also included is the general-purpose C++ toolkit named Flow.  While it is bundled for convenience simply
 because (1) it is needed and (2) shares the same original authorship and DNA as Flow-IPC proper, it may
 nevertheless prove useful in its own right.  For more information please see a similar-purpose `README.md`
 in the `flow/` sub-directory (or, if you so choose, another location where you've decided to place Flow
