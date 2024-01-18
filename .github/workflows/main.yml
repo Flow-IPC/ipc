@@ -1079,7 +1079,7 @@ jobs:
 
     - name: (On release creation only) Attach full source package (tarball) to Release 1
       if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v1.0.2
       #XXXGITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GIT_BOT_PAT }}
@@ -1093,7 +1093,7 @@ jobs:
 
     - name: (On release creation only) Attach full source package (tarball) to Release 2
       if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -1106,7 +1106,7 @@ jobs:
 
     - name: (On release creation only) Attach full source package (tarball) to Release 1a
       if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GIT_BOT_PAT }}
       with:
@@ -1119,7 +1119,7 @@ jobs:
 
     - name: (On release creation only) Attach full source package (tarball) to Release 2a
       if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
