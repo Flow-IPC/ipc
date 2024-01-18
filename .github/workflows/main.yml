@@ -1014,10 +1014,7 @@ jobs:
         submodules: true
 
     - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
-      run: |
-        # Install Flow-IPC dependencies (like Graphviz) with apt-get.
-        sudo apt-get install -y jq # JSON tool (we use it in this script itself).
-        sudo apt-get install -y graphviz
+      run: sudo apt-get install -y graphviz
 
     - name: Install the latest version of Conan which is less than 2
       run: pip install 'conan<2'
