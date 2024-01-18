@@ -1025,7 +1025,7 @@ jobs:
       # XXX && (!cancelled()) && startsWith(github.ref, 'refs/tags/v')
       run: |
         # Prepare full source package(s) to attach to Release.
-        cd ${{ github.workspace }}/..
+        #cd ${{ github.workspace }}/..
         REPO=ipc
         # XXX VERSION=`echo ${{ github.ref }} | cut -c 12-` # E.g., refs/tags/v1.2.3-rc1 => 1.2.3-rc1.
         VERSION=1.0.0-rc5
@@ -1036,10 +1036,12 @@ jobs:
         #   - .git directories and files.  (.gitignore and .gitmodules, among others, must stay.)
         #     (tar --exclude-vcs sounds delightful, but it'll exclude .gitignore and .gitmodules at least.)
         #   - Any tarball created earlier upon doc generation.
-        rm -f $REPO/doc/$REPO_doc.tgz
+        #rm -f $REPO/doc/$REPO_doc.tgz
         # XXX tar cvzf $TGZ_NAME --exclude=.git $REPO
-        touch xxx
-        tar cvzf $TGZ_NAME --exclude=.git xxx
+        #cd $REPO
+        mkdir xxx
+        touch xxx/yyy.txt
+        tar cvzf xxx.tar.gz xxx
         # XXX zip -r $ZIP_NAME $REPO --exclude '*/.git/*' '*/.git'
         # Soon we will need the upload URL, but unfortunately github.event.release.upload_url is only auto-populated
         # on `release` trigger; whereas we want to be triggerable manually on `push` to tag v* (so a superset
@@ -1055,7 +1057,7 @@ jobs:
         echo "zip-name=$ZIP_NAME" >> $GITHUB_OUTPUT
         echo 'description=Source code (full)' >> $GITHUB_OUTPUT
 
-    - name: (On release creation only) Attach full source package (tarball) to Release
+    - name: (On release creation only) Attach full source package (tarball) to Release 1
       if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
       uses: actions/upload-release-asset@v1
       #XXXGITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -1063,13 +1065,50 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GIT_BOT_PAT }}
       with:
         upload_url: ${{ steps.prep_release_pkgsXXX.outputs.upload-url }}
-        asset_path: ${{ github.workspace }}/../${{ steps.prep_release_pkgsXXX.outputs.tgz-name }}
+        asset_path: xxx.tar.gz
         # XXX asset_name: ${{ steps.prep_release_pkgsXXX.outputs.description }}
         # XXX asset_name: ${{ steps.prep_release_pkgsXXX.outputs.tgz-name }}
-        asset_name: coolness.tar.gz
+        asset_name: xxx.tar.gz
         asset_content_type: application/gzip
 
+    - name: (On release creation only) Attach full source package (tarball) to Release 2
+      if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.prep_release_pkgsXXX.outputs.upload-url }}
+        asset_path: xxx.tar.gz
+        # XXX asset_name: ${{ steps.prep_release_pkgsXXX.outputs.description }}
+        # XXX asset_name: ${{ steps.prep_release_pkgsXXX.outputs.tgz-name }}
+        asset_name: xxx.tar.gz
+        asset_content_type: application/gzip
 
+    - name: (On release creation only) Attach full source package (tarball) to Release 1a
+      if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GIT_BOT_PAT }}
+      with:
+        upload_url: ${{ steps.prep_release_pkgsXXX.outputs.upload-url }}
+        asset_path: xxx-nope.tar.gz
+        # XXX asset_name: ${{ steps.prep_release_pkgsXXX.outputs.description }}
+        # XXX asset_name: ${{ steps.prep_release_pkgsXXX.outputs.tgz-name }}
+        asset_name: xxx-nope.tar.gz
+        asset_content_type: application/gzip
+
+    - name: (On release creation only) Attach full source package (tarball) to Release 2a
+      if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.prep_release_pkgsXXX.outputs.upload-url }}
+        asset_path: xxx-nope.tar.gz
+        # XXX asset_name: ${{ steps.prep_release_pkgsXXX.outputs.description }}
+        # XXX asset_name: ${{ steps.prep_release_pkgsXXX.outputs.tgz-name }}
+        asset_name: xxx-nope.tar.gz
+        asset_content_type: application/gzip
 
 
 
