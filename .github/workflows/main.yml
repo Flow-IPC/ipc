@@ -1058,13 +1058,15 @@ jobs:
     - name: (On release creation only) Attach full source package (tarball) to Release
       if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
       uses: actions/upload-release-asset@v1
+      #XXXGITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GIT_BOT_PAT }}
       with:
         upload_url: ${{ steps.prep_release_pkgsXXX.outputs.upload-url }}
         asset_path: ${{ github.workspace }}/../${{ steps.prep_release_pkgsXXX.outputs.tgz-name }}
         # XXX asset_name: ${{ steps.prep_release_pkgsXXX.outputs.description }}
-        asset_name: ${{ steps.prep_release_pkgsXXX.outputs.tgz-name }}
+        # XXX asset_name: ${{ steps.prep_release_pkgsXXX.outputs.tgz-name }}
+        asset_name: coolness.tar.gz
         asset_content_type: application/gzip
 
 
@@ -1136,7 +1138,7 @@ jobs:
         git config user.email github-actions@github.com
         # We are forced to use a Personal Access Token attached to a special bot user such that in repo Settings
         # we've configured that "guy" as allowed to bypass the requirement to merge via PR.  As of this writing
-        # there's no way to configure the default token to being able to do this.
+        # there's no way to configure the default token to be able to do this.
         # TODO: Keep an eye on that in case they provide for a better way:
         #   https://github.com/orgs/community/discussions/25305
         git config --local http.https://github.com/.extraheader \
