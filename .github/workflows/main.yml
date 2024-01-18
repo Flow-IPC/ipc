@@ -39,7 +39,7 @@ jobs:
     needs: set-vars
     runs-on: ubuntu-latest
     steps:
-      - id: compute-proceed-else-not
+      - id: compute_proceed_else_not
         name: Compute whether for main jobs to proceed or not
         # For checking whether github.event.head_commit.message starts with needs.set-vars.outputs.doc-commit-message
         # it is tempting to just use:
@@ -65,7 +65,7 @@ jobs:
             echo 'That is not a source change and requires no actual pipeline to execute.'
           fi
     outputs:
-      proceed-else-not: ${{ steps.compute-proceed-else-not.outputs.proceed-else-not }}
+      proceed-else-not: ${{ steps.compute_proceed_else_not.outputs.proceed-else-not }}
 
   build:
     needs: [setup, set-vars]
@@ -1066,7 +1066,7 @@ jobs:
 
     - name: (`main` branch only) Check-in generated documentation directly into source control
       id: doc_check_in
-      if: success() && (github.ref == 'refs/heads/main')
+      if: success() && (!cancelled()) && (github.ref == 'refs/heads/main')
       run: |
         # (`main` branch only) Check-in generated documentation directly into source control.
         echo 'generated/ docs have been added or replaced locally; mirroring this into checked-in tree.'
