@@ -1111,8 +1111,8 @@ jobs:
         cd ${{ github.workspace }}/..
         REPO=ipc
         VERSION=`echo ${{ github.ref }} | cut -c 12-` # E.g., refs/tags/v1.2.3-rc1 => 1.2.3-rc1.
-        TGZ_NAME=$REPO-$VERSION_full.tar.gz
-        ZIP_NAME=$REPO-$VERSION_full.zip
+        TGZ_NAME=$REPO-${VERSION}_full.tar.gz
+        ZIP_NAME=$REPO-${VERSION}_full.zip
         # When making archives: get rid of or exclude (I do not want to `rm` .git... feels dangerous
         # against GitHub Actions):
         #   - .git directories and files.  (.gitignore and .gitmodules, among others, must stay.)
