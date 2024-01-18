@@ -1065,7 +1065,7 @@ jobs:
              -H "Content-Type: application/gzip" \
              -H "Content-Length: $(wc -c < xxx.tar.gz)" \
              --data-binary @xxx.tar.gz \
-             "${{ steps.prep_release_pkgs.outputs.upload-url }}?name=xxx.tar.gz"
+             "${{ steps.prep_release_pkgsXXX.outputs.upload-url }}?name=xxx.tar.gz"
 
     - name: Manually upload asset using curl 2
       if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
@@ -1075,7 +1075,7 @@ jobs:
              -H "Content-Type: application/gzip" \
              -H "Content-Length: $(wc -c < xxx.tar.gz)" \
              --data-binary @xxx.tar.gz \
-             "${{ steps.prep_release_pkgs.outputs.upload-url }}?name=xxx.tar.gz"
+             "${{ steps.prep_release_pkgsXXX.outputs.upload-url }}?name=xxx.tar.gz"
 
     - name: (On release creation only) Attach full source package (tarball) to Release 1
       if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
