@@ -1142,7 +1142,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.prep_release_pkgs.outputs.upload-url }}
-        asset_path: ../${{ steps.prep_release_pkgs.outputs.tgz-name }}
+        asset_path: ${{ github.workspace }}/../${{ steps.prep_release_pkgs.outputs.tgz-name }}
         asset_name: ${{ steps.prep_release_pkgs.outputs.description }}
         asset_content_type: application/gzip
 
@@ -1153,7 +1153,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.prep_release_pkgs.outputs.upload-url }}
-        asset_path: ../${{ steps.prep_release_pkgs.outputs.zip-name }}
+        asset_path: ${{ github.workspace }}/../${{ steps.prep_release_pkgs.outputs.zip-name }}
         asset_name: ${{ steps.prep_release_pkgs.outputs.description }}
         asset_content_type: application/zip
 
