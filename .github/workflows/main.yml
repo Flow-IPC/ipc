@@ -1028,7 +1028,7 @@ jobs:
         #cd ${{ github.workspace }}/..
         REPO=ipc
         # XXX VERSION=`echo ${{ github.ref }} | cut -c 12-` # E.g., refs/tags/v1.2.3-rc1 => 1.2.3-rc1.
-        VERSION=1.0.0-rc5
+        VERSION=1.0.0-rc4
         TGZ_NAME=$REPO-${VERSION}_full.tar.gz
         ZIP_NAME=$REPO-${VERSION}_full.zip
         # When making archives: get rid of or exclude (I do not want to `rm` .git... feels dangerous
@@ -1056,6 +1056,26 @@ jobs:
         echo "tgz-name=$TGZ_NAME" >> $GITHUB_OUTPUT
         echo "zip-name=$ZIP_NAME" >> $GITHUB_OUTPUT
         echo 'description=Source code (full)' >> $GITHUB_OUTPUT
+
+    - name: Manually upload asset using curl 1
+      if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
+      run: |
+        curl -X POST \
+             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+             -H "Content-Type: application/gzip" \
+             -H "Content-Length: $(wc -c < xxx.tar.gz)" \
+             --data-binary @xxx.tar.gz \
+             "${{ steps.prep_release_pkgs.outputs.upload-url }}?name=xxx.tar.gz"
+
+    - name: Manually upload asset using curl 2
+      if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
+      run: |
+        curl -X POST \
+             -H "Authorization: token ${{ secrets.GIT_BOT_PAT }}" \
+             -H "Content-Type: application/gzip" \
+             -H "Content-Length: $(wc -c < xxx.tar.gz)" \
+             --data-binary @xxx.tar.gz \
+             "${{ steps.prep_release_pkgs.outputs.upload-url }}?name=xxx.tar.gz"
 
     - name: (On release creation only) Attach full source package (tarball) to Release 1
       if: (!cancelled()) && (steps.prep_release_pkgsXXX.outcome == 'success')
