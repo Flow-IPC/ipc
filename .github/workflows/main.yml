@@ -1128,7 +1128,7 @@ jobs:
                            -H 'Accept: application/vnd.github.v3+json' \
                            https://api.github.com/repos/Flow-IPC/$REPO/releases/tags/v$VERSION`
         echo "For release [v$VERSION]: release-data API request yielded: [$RELEASE_DATA]."
-        UPLOAD_URL=`echo $RELEASE_DATA | jq -r .upload_url`
+        UPLOAD_URL=`echo $RELEASE_DATA | jq -r .upload_url | sed 's/{.*}$//'`
         echo "For release [v$VERSION]: upload-URL was computed to be: [$UPLOAD_URL]."
         echo "upload-url=$UPLOAD_URL" >> $GITHUB_OUTPUT
         echo "tgz-name=$TGZ_NAME" >> $GITHUB_OUTPUT
