@@ -39,7 +39,7 @@ jobs:
     needs: set-vars
     runs-on: ubuntu-latest
     steps:
-      - id: compute-proceed-else-not
+      - id: compute_proceed_else_not
         name: Compute whether for main jobs to proceed or not
         # For checking whether github.event.head_commit.message starts with needs.set-vars.outputs.doc-commit-message
         # it is tempting to just use:
@@ -65,7 +65,7 @@ jobs:
             echo 'That is not a source change and requires no actual pipeline to execute.'
           fi
     outputs:
-      proceed-else-not: ${{ steps.compute-proceed-else-not.outputs.proceed-else-not }}
+      proceed-else-not: ${{ steps.compute_proceed_else_not.outputs.proceed-else-not }}
 
   build:
     needs: [setup, set-vars]
@@ -1014,7 +1014,10 @@ jobs:
         submodules: true
 
     - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
-      run: sudo apt-get install -y graphviz
+      run: |
+        # Install Flow-IPC dependencies (like Graphviz) with apt-get.
+        sudo apt-get install -y jq # JSON tool (we use it in this script itself).
+        sudo apt-get install -y graphviz
 
     - name: Install the latest version of Conan which is less than 2
       run: pip install 'conan<2'
@@ -1066,7 +1069,7 @@ jobs:
 
     - name: (`main` branch only) Check-in generated documentation directly into source control
       id: doc_check_in
-      if: success() && (github.ref == 'refs/heads/main')
+      if: success() && (!cancelled()) && (github.ref == 'refs/heads/main')
       run: |
         # (`main` branch only) Check-in generated documentation directly into source control.
         echo 'generated/ docs have been added or replaced locally; mirroring this into checked-in tree.'
@@ -1087,21 +1090,82 @@ jobs:
         git commit -m '${{ needs.set-vars.outputs.doc-commit-message }}'
         git push origin main
 
-    - name: Signal Pages if we have updated the generated documentation in source control (then web site should update)
-      if: success() && (steps.doc_check_in.outcome != 'skipped')
+    - name: (`main` branch only) Signal Pages that we have updated the generated docs (web site should update)
+      if: success() && (!cancelled()) && (steps.doc_check_in.outcome != 'skipped')
       run: |
-        # Signal Pages that we have updated the generated documentation in source control (web site should update).
-        curl -X POST \
+        # Signal Pages that we have updated the generated docs (web site should update).
+        curl --fail-with-body -X POST \
          -H 'Accept: application/vnd.github.v3+json' \
          -H 'Authorization: token ${{ secrets.GIT_BOT_PAT }}' \
          'https://api.github.com/repos/Flow-IPC/flow-ipc.github.io/dispatches' \
          -d '{"event_type": "flow-ipc-sync-doc-event"}'
 
-    - name: Signal Pages if this is running due to release creation (then web site should update)
-      if: success() && startsWith(github.ref, 'refs/tags/v')
+    # In our process (and this is typical, though it is also possible to create tag without release) we
+    # hit Publish on a new Release in GitHub; and this creates both the Release and tag, by convention both named
+    # v<something>, at ~the same time (certainly within seconds of each other, empirically speaking).
+    # We want a source tarball and/or zip to be attached to the Release.  Delightfully, GitHub does this
+    # automatically.  Less delightfully, we have submodules -- where most of the code is in fact -- which GitHub
+    # will not include (they'll just be empty dirs instead).  So we upload those manually.
+    - name: (On release creation only) Prepare full source package(s) to attach to Release page
+      id: prep_release_pkgs
+      if: success() && (!cancelled()) && startsWith(github.ref, 'refs/tags/v')
       run: |
-        # Signal Pages if this is running due to release creation (then web site should update).
-        curl -X POST \
+        # Prepare full source package(s) to attach to Release page.
+        cd ${{ github.workspace }}/..
+        REPO=ipc
+        VERSION=`echo ${{ github.ref }} | cut -c 12-` # E.g., refs/tags/v1.2.3-rc1 => 1.2.3-rc1.
+        TGZ_NAME=$REPO-$VERSION_full.tar.gz
+        ZIP_NAME=$REPO-$VERSION_full.zip
+        # When making archives: get rid of or exclude (I do not want to `rm` .git... feels dangerous
+        # against GitHub Actions):
+        #   - .git directories and files.  (.gitignore and .gitmodules, among others, must stay.)
+        #     (tar --exclude-vcs sounds delightful, but it'll exclude .gitignore and .gitmodules at least.)
+        #   - Any tarball created earlier upon doc generation.
+        rm -f $REPO/doc/$REPO_doc.tgz
+        tar cvzf $TGZ_NAME --exclude=.git $REPO
+        zip -r $ZIP_NAME $REPO --exclude '*/.git/*' '*/.git'
+        # Soon we will need the upload URL, but unfortunately github.event.release.upload_url is only auto-populated
+        # on `release` trigger; whereas we want to be triggerable manually on `push` to tag v* (so a superset
+        # of `release` trigger).  So we must figure it out via API call.
+        RELEASE_DATA=`curl -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+                           -H 'Accept: application/vnd.github.v3+json' \
+                           https://api.github.com/repos/Flow-IPC/$REPO/releases/tags/v$VERSION`
+        echo "For release [v$VERSION]: release-data API request yielded: [$RELEASE_DATA]."
+        UPLOAD_URL=`echo $RELEASE_DATA | jq -r .upload_url`
+        echo "For release [v$VERSION]: upload-URL was computed to be: [$UPLOAD_URL]."
+        echo "upload-url=$UPLOAD_URL" >> $GITHUB_OUTPUT
+        echo "tgz-name=$TGZ_NAME" >> $GITHUB_OUTPUT
+        echo "zip-name=$ZIP_NAME" >> $GITHUB_OUTPUT
+        echo 'description=Source code (full)' >> $GITHUB_OUTPUT
+
+    - name: (On release creation only) Attach full source package (tarball) to Release page
+      if: (!cancelled()) && (steps.prep_release_pkgs.outcome == 'success')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.prep_release_pkgs.outputs.upload-url }}
+        asset_path: ../${{ steps.prep_release_pkgs.outputs.tgz-name }}
+        asset_name: ${{ steps.prep_release_pkgs.outputs.description }}
+        asset_content_type: application/gzip
+
+    - name: (On release creation only) Attach full source package (zip) to Release page
+      if: (!cancelled()) && (steps.prep_release_pkgs.outcome == 'success')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.prep_release_pkgs.outputs.upload-url }}
+        asset_path: ../${{ steps.prep_release_pkgs.outputs.zip-name }}
+        asset_name: ${{ steps.prep_release_pkgs.outputs.description }}
+        asset_content_type: application/zip
+
+    - name: (On release creation only) Signal Pages about release (web site should update)
+      if: success() && (!cancelled()) && startsWith(github.ref, 'refs/tags/v')
+      # This is pretty similar (not identical) to the main-branch signaling step above.  TODO: Code reuse?
+      run: |
+        # Signal Pages about release (web site should update).
+        curl --fail-with-body -X POST \
          -H 'Accept: application/vnd.github.v3+json' \
          -H 'Authorization: token ${{ secrets.GIT_BOT_PAT }}' \
          'https://api.github.com/repos/Flow-IPC/flow-ipc.github.io/dispatches' \
