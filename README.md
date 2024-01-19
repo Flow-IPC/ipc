@@ -8,7 +8,7 @@ in the project's main documentation for the master branch.
 corresponding sets of such documentation.
 
 The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
-the aforementioned link(s) and is also bundled as part of the repository/tarball containing the present README.
+the aforementioned link(s) and is also bundled as part of the repository/archive containing the present README.
 
 Having sampled those docs... are you interested in using or even developing Flow-IPC?  Then please read on.  To restate
 Flow-IPC's mission from the above [introductory docs page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html):
@@ -49,7 +49,8 @@ subdirectories.  The build/installation procedure will take care of everything f
 (not including the handful of third-party prerequisites like Boost which will need to be installed
 separately; instructions below).
 
-If you've obtained this project as a pre-packaged source tarball (.tgz), then you have everything you need
+If you've obtained this project as a pre-packaged source archive (named `*_full.tar.gz` or `*_full.zip`),
+then you have everything you need
 (other than potentially third-party prerequisites like Boost), located where it needs to be (namely,
 the subdirectories `ipc_*` and `flow`).  This is great and easy.  We recommend working this way in all
 situations *except if your aim is to make changes that would be checked-in to the public open-source project*.
@@ -240,7 +241,8 @@ pretty easy to have this Flow-IPC meta-project work with such a source tree.  Th
   - You can place a symbolic link (`ln -s`) named `./flow`, pointing to the compatible open-source Flow
     directory (typically also named `flow` but technically not necessarily so) outside `.`.
     - This one is really easy; but naturally you can't have a `./flow` already there; so if you've got it from
-      an Flow-IPC meta-tarball, you can rename or delete the existing `./flow` before setting the symlink.
+      a Flow-IPC `*_full.tar.gz` or `*_full.zip` archive,
+      you can rename or delete the existing `./flow` before setting the symlink.
   - You can specify a different Flow project root entirely; use the CMake knob (cache setting) named
     `IPC_META_ROOT_flow` to specify the path to this directory.  So `cmake -DIPC_META_ROOT_flow=...`
     (or `ccmake ...same...`).
@@ -258,8 +260,8 @@ and so on.
 ## Contributing: Basics
 
 As mentioned in Organization, you may wish to contribute to the project.  Of course, in your own setting, it
-may be perfectly reasonable to simply get a packaged tarball (.tgz), make the changes in this monolithic,
-non-SCS-mirrored copy; test them locally.  Eventually, though, you'll want to work with the central
+may be perfectly reasonable to simply get a packaged `*_full.tar.gz` or `*_full.zip` archive, make the changes in this
+monolithic, non-SCS-mirrored copy; test them locally.  Eventually, though, you'll want to work with the central
 Git-SCS-mirrored project.  This section is about that.  It assumes basic familiarity with Git.
 
 As noted in Organization, Flow-IPC is conveniently packaged in a monolithic meta-project.  "Normally"
@@ -350,7 +352,7 @@ how that works.
        Release with debug info, run-time sanitizers ASAN, UBSAN, TSAN.  The matrix includes all those configurations
        across several versions of clang compiler/linker and several versions of gcc compiler/linker.  All in all
        the build/test job runs across ~40 configuration as of this writing.
-     - It generates documentation and makes it available as a downloadable artiface (a tarball download and peruse).
+     - It generates documentation and makes it available as a downloadable artifact (a tarball to download and peruse).
      - If any of that fails, most likely you'll need to update the PR which will re-run the pipeline.  
        If it fails, then the pipeline output should make clear what went wrong.
        Could be a build error; could be a test failure; could be Doxygen doc-generation problem.
