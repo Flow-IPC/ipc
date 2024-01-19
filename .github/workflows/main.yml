@@ -1132,8 +1132,9 @@ jobs:
         # Attach full source package(s) to Release.
         REPO=ipc
         VERSION=`echo ${{ github.ref }} | cut -c 12-` # E.g., refs/tags/v1.2.3-rc1 => 1.2.3-rc1.
-        TGZ_NAME=$REPO-${VERSION}_full.tar.gz
-        ZIP_NAME=$REPO-${VERSION}_full.zip
+        ARCHIVE_NAME=$REPO-${VERSION}_full
+        TGZ_NAME=$ARCHIVE_NAME.tar.gz
+        ZIP_NAME=$ARCHIVE_NAME.zip
         # When making archives: get rid of or exclude the following:
         #   - .git directories and files.  (.gitignore and .gitmodules, among others, must stay.)
         #     (I do not want to `rm -rf` .git... feels dangerous-ish, as GitHub Actions cleans up checkouts
@@ -1144,11 +1145,15 @@ jobs:
         #   - Any doc tarball created earlier upon doc generation.
         # We want just the original source.  TODO: Maybe re-checkout instead?  Then only .git to worry about left.
         echo 'Deleting handful of above-generated files from [${{ github.workspace }}] before packaging it.'
+        pwd
         rm -fv doc/${REPO}_doc.tgz \
                conan_profile conaninfo.txt conan.lock graph_info.json CMakeUserPresets.json conanbuildinfo.txt
         cd ..
-        tar cvzf $TGZ_NAME --exclude=.git $REPO
-        zip -r $ZIP_NAME $REPO --exclude '*/.git/*' '*/.git'
+        pwd
+        mv -v $REPO $ARCHIVE_NAME
+        tar cvzf $TGZ_NAME --exclude=.git $ARCHIVE_NAME
+        zip -r $ARCHIVE_NAME $ARCHIVE_NAME --exclude '*/.git/*' '*/.git'
+        mv -v $ARCHIVE_NAME $REPO
         # Soon we will need the upload URL, but unfortunately github.event.release.upload_url is only auto-populated
         # on `release` trigger; whereas we want to be triggerable manually on `push` to tag v* (so a superset
         # of `release` trigger).  So we must figure it out via API call.  Also, if workflow is invoked a 2nd (etc.)
@@ -1174,6 +1179,8 @@ jobs:
                -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
                -H 'Content-Type: application/gzip' -H "Content-Length: $(wc -c < $TGZ_NAME)" \
                --data-binary @$TGZ_NAME "$UPLOAD_URL?name=$TGZ_NAME"
+          echo
+          echo "Uploaded [$TGZ_NAME] to Release."
         fi
         if echo "$ASSET_NAMES" | grep -q "^\Q$ZIP_NAME\E$"; then
           echo "Asset named [$ZIP_NAME] is already attached to Release; upload would fail; skipping."
@@ -1182,6 +1189,8 @@ jobs:
                -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
                -H 'Content-Type: application/zip' -H "Content-Length: $(wc -c < $ZIP_NAME)" \
                --data-binary @$ZIP_NAME "$UPLOAD_URL?name=$ZIP_NAME"
+          echo
+          echo "Uploaded [$ZIP_NAME] to Release."
         fi
 
     - name: (On release creation only) Signal Pages about release (web site should update)
