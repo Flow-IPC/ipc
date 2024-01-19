@@ -1,20 +1,85 @@
 name: Flow-IPC pipeline
 
+# Discussion on the philosophy behind the workflow (pipeline) below.  The steps themselves should be easy enough to
+# follow, but what's the bigger picture?  Answer: The pipeline below is an algorithm, as coded below, invoked
+# by GitHub on many runners (machines); and the inputs to this algorithm are:
+#   - a branch (`main`, or a feature/PR branch) or tag (usually release tag v<version>);
+#     - hence the current contents of that branch/tag;
+#   - some trigger event that causes the workflow (pipeline) to run in the first place:
+#     push to the branch/tag; pull request (PR) creation; or manual click by human (as of this writing usually
+#     for testing or debugging only).
+# So given those inputs, what are the outputs or side effects?  To answer, consider what jobs are actually run
+# (as parallel as possible).  There's `setup` and `set-vars` as of this writing, but these are
+# purely tactical prerequisites and not worth discussing here; once they complete then the "real" jobs will run:
+# build-and-test and doc-and-release.  Here are their goals, meaning outputs/side effects given the above
+# inputs:
+#   - build-and-test:
+#     - Summary: Test building and running the product; and bullet-proof it further via run-time sanitizers.
+#     - Build the code, including demo/test code, at the given branch/tag in wide variety of compiler/build-type
+#       combinations.  The ability to build (including linking into test binaries) successfully is, of course,
+#       a test in and of itself.
+#     - Test that code by running the available unit test and integration test/demo binaries built in previous bullet.
+#       If something fails, help (within reason) make it clear what failed and why.
+#       - Output: Make any logs available, whether on success or failure.  If console output is sufficient,
+#         great: it'll be visible via GitHub Actions UI.  If not, save the non-console log output in a log tarball
+#         available as workflow artifact for download via GitHub Actions UI.
+#     - All of the above but with certain run-time sanitizers (as of this writing ASAN/LSAN, UBSAN, TSAN,
+#       and possibly clang-MSAN) enabled at build time as well.  (RelWithDebInfo is a sufficient base build type
+#       for a sanitizer-enabled build; a subset of compilers -- as opposed to all of them -- is also sufficient
+#       for pragamtic reasons.)
+#  - doc-and-release:
+#    - Summary: 1, generate documentation from the source code (using Doxygen et al) and make it conveniently
+#      available.  2, update GitHub Release and GitHub Pages web site with automatically with any relevant info, namely
+#      with the generated docs and source code tarball/zip.
+#    - Generate the documentation using Doxygen et al.  The goal here is the *canonical generated documentation*, not
+#      *testing the ability to generate it*.  It's a subtle difference, but it's important to note it, because
+#      if we wanted to test the ins and outs of doc generation in various environments then we could have a much more
+#      complex and longer pipeline -- and perhaps we should... but that's not the goal *here*.
+#      - Output: Make it available as workflow artfiact for download via GitHub Actions UI.
+#        Hence human can simply download it, whether it's for the `main` tip or a specific release version.
+#      - Side effect: (On pushes/merges to `main` branch *only*) Check-in the *generated docs* back into `main`
+#        itself, so that (1) they're available for local perusal by any person cloning/pulling `main` and (2) ditto
+#        for any downstream releases (which are mere tags of `main`).
+#        - Side effect: Having done so, signal GitHub Pages web site for the org, so that the new `main` docs
+#          are reflected at this web site.  (It'll automatically clone `main`, copy the generated docs to web site
+#          replacing the existing `main` docs if any, and stage this to the web.)
+#    - (If the branch/tag input is, in fact, tag v* -- a release tag) The mere fact that a push to a release tag X
+#      is being observed means we want:
+#      - Side effect: Ensure that the GitHub Release X has the full source code available for human download
+#        as a package (tarball/zip).  I.e., upload it there as needed.
+#      - Side effect: Ensure that the GitHub Pages web site actually lists this Release and its associated
+#        generated documentation.  I.e., signal Pages that there's a Release X now: it'll then do the right
+#        thing (namely checkout the docs at the tag and copy them over; and add a link to the release and docs
+#        in the appropriate web page).
+#
+# So, roughly speaking,
+#   - build-and-test is about building and testing the product, including bullet-proofing it with sanitizers.
+#   - doc-and-release is about official documentation-based-on-source being available in various customary ways;
+#     with a side of official releases being accessible and comprehensively presented in customary ways.
+#     - TODO: It *could* be argued that those 2 goals are related but separate, and perhaps they should be 2 separate
+#       jobs.  However, at least as of this writing, there's definite overlap between them, and combining the 2
+#       makes pragamtic sense.  It's worth revisiting periodically perhaps.
+
 on:
-  # Want to merge to development tip?  Should probably pass these builds/tests/doc generation first.
+  # Want to merge to development tip?  Should probably pass these builds/tests and doc generation first (the latter
+  # in case the source change adds a Doxygen error or bad-looking docs).  Note this rans on PR creation *and* update.
   pull_request:
     branches:
       - main
   push:
-    # Was able to merge to development tip?  Should ensure these builds/tests/doc generation pass after the fact;
-    # plus auto-check-in generated docs into development tip branch as well (and signal web site to update accordingly).
+    # Was able to merge PR to `main` tip?  Should ensure these builds/tests/doc generation still pass after the fact
+    # (post-merge `main` does not always equal the PR-branch state); plus:
+    # auto-check-in generated docs into `main` branch tip (and signal web site to update accordingly).
     branches:
       - main
-    # Created release tag?  Just in case, should ensure these builds/tests/doc generation pass after the fact still;
-    # plus signal web site to update accordingly (new release/docs for it).
+    # Created release tag?  Just in case, should ensure these builds/tests pass (just in case, but it's redundant
+    # against the branch=main trigger above); generate docs and make them available as artifact (nice: docs for
+    # a particular product version available online); plus:
+    # signal web sites to update accordingly (there's probably a new release to present, with full source code attached;
+    # and there are docs for; nice: docs a particular product version available online).
     tags:
       - v*
-  # To create the button that runs a workflow manually (has to be in `main` at least):
+  # To create the button that runs a workflow manually: testing, debugging, demoing.
   workflow_dispatch:
 
 jobs:
@@ -57,17 +122,17 @@ jobs:
           FLOW_IPC_PIPELINE_HEAD_CMD_MSG_EOF
           if [ '${{ github.ref }}' != 'refs/heads/main' ] || \
              [ '${{ github.event_name }}' != 'push' ] || \
-             ! { head --lines=1 $TMP_MSG | grep -Fxq '${{ needs.set-vars.outputs.doc-commit-message }}'; }; then
+             ! { head --lines=1 $TMP_MSG | fgrep -xq '${{ needs.set-vars.outputs.doc-commit-message }}'; }; then
             echo 'proceed-else-not=true' >> $GITHUB_OUTPUT
           else
             echo 'proceed-else-not=false' >> $GITHUB_OUTPUT
-            echo 'The real jobs will not run: earlier `doc` job checked-in generated docs to `main`.'
+            echo 'The real jobs will not run: earlier `doc-and-release` job checked-in generated docs to `main`.'
             echo 'That is not a source change and requires no actual pipeline to execute.'
           fi
     outputs:
       proceed-else-not: ${{ steps.compute_proceed_else_not.outputs.proceed-else-not }}
 
-  build:
+  build-and-test:
     needs: [setup, set-vars]
     if: |
       needs.setup.outputs.proceed-else-not == 'true'
@@ -980,7 +1045,7 @@ jobs:
 #
 # Possibly this is all handled beautifully automatically; then this should be deleted.
 
-  doc:
+  doc-and-release:
     needs: [setup, set-vars]
     if: |
       needs.setup.outputs.proceed-else-not == 'true'
