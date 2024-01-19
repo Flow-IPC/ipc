@@ -1082,8 +1082,8 @@ jobs:
                      | jq -r '.[].name'`
         echo XXX
         echo "$ASSET_NAMES" # XXX
-        echo "$ASSET_NAMES" | grep "^\Q$TGZ_NAME\E$" || true # XXX
-        if echo "$ASSET_NAMES" | grep -q "^\Q$TGZ_NAME\E$"; then
+        echo "$ASSET_NAMES" | fgrep -x $TGZ_NAME || true # XXX
+        if echo "$ASSET_NAMES" | fgrep -xq $TGZ_NAME; then
           echo "Asset named [$TGZ_NAME] is already attached to Release; upload would fail; skipping."
         else
           curl --fail-with-body -X POST \
@@ -1093,7 +1093,7 @@ jobs:
           echo
           echo "Uploaded [$TGZ_NAME] to Release."
         fi
-        if echo "$ASSET_NAMES" | grep -q "^\Q$ZIP_NAME\E$"; then
+        if echo "$ASSET_NAMES" | fgrep -xq $ZIP_NAME; then
           echo "Asset named [$ZIP_NAME] is already attached to Release; upload would fail; skipping."
         else
           curl --fail-with-body -X POST \
