@@ -394,11 +394,6 @@ jobs:
         lsb_release -a
         sudo apt-get update
 
-    - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
-      uses: actions/checkout@v4
-      with:
-        submodules: true
-
     - name: Install clang compiler
       if: |
         matrix.compiler.install && (matrix.compiler.name == 'clang')
@@ -425,6 +420,11 @@ jobs:
     # = prime example).
     - name: Install the latest version of Conan which is less than 2
       run: pip install 'conan<2'
+
+    - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
+      uses: actions/checkout@v4
+      with:
+        submodules: true
 
     - name: Add custom settings for Conan packages
       if: |
@@ -1008,6 +1008,12 @@ jobs:
     - name: Update available software list for apt-get
       run: sudo apt-get update
 
+    - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
+      run: sudo apt-get install -y graphviz
+
+    - name: Install the latest version of Conan which is less than 2
+      run: pip install 'conan<2'
+
     - name: Checkout `ipc` repository and submodules (like `flow`)
       uses: actions/checkout@v4
       with:
@@ -1099,11 +1105,16 @@ jobs:
           echo "Uploaded [$ZIP_NAME] to Release."
         fi
 
-    - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
-      run: sudo apt-get install -y graphviz
-
-    - name: Install the latest version of Conan which is less than 2
-      run: pip install 'conan<2'
+    - name: (On release creation only) Signal Pages about release (web site should update)
+      if: success() && (!cancelled()) && startsWith(github.ref, 'refs/tags/v')
+      # This is pretty similar (not identical) to the main-branch signaling step below.  TODO: Code reuse?
+      run: |
+        # Signal Pages about release (web site should update).
+        curl --fail-with-body -X POST \
+         -H 'Accept: application/vnd.github.v3+json' \
+         -H 'Authorization: token ${{ secrets.GIT_BOT_PAT }}' \
+         'https://api.github.com/repos/Flow-IPC/flow-ipc.github.io/dispatches' \
+         -d '{"event_type": "flow-ipc-sync-doc-event", "client_payload": {"version": "${{ github.ref_name }}"}}'
 
     - name: Create Conan profile
       run: |
@@ -1182,14 +1193,3 @@ jobs:
          -H 'Authorization: token ${{ secrets.GIT_BOT_PAT }}' \
          'https://api.github.com/repos/Flow-IPC/flow-ipc.github.io/dispatches' \
          -d '{"event_type": "flow-ipc-sync-doc-event"}'
-
-    - name: (On release creation only) Signal Pages about release (web site should update)
-      if: success() && (!cancelled()) && startsWith(github.ref, 'refs/tags/v')
-      # This is pretty similar (not identical) to the main-branch signaling step above.  TODO: Code reuse?
-      run: |
-        # Signal Pages about release (web site should update).
-        curl --fail-with-body -X POST \
-         -H 'Accept: application/vnd.github.v3+json' \
-         -H 'Authorization: token ${{ secrets.GIT_BOT_PAT }}' \
-         'https://api.github.com/repos/Flow-IPC/flow-ipc.github.io/dispatches' \
-         -d '{"event_type": "flow-ipc-sync-doc-event", "client_payload": {"version": "${{ github.ref_name }}"}}'
