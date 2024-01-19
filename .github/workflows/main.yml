@@ -1068,7 +1068,7 @@ jobs:
       id: doc_check_in
       if: success() && (!cancelled()) && (github.ref == 'refs/heads/main')
       run: |
-        # (`main` branch only) Check-in generated documentation directly into source control.
+        # Check-in generated documentation directly into source control.
         echo 'generated/ docs have been added or replaced locally; mirroring this into checked-in tree.'
         # These values informally recommended in:
         #   https://github.com/actions/checkout#push-a-commit-using-the-built-in-token
