@@ -1068,7 +1068,7 @@ jobs:
       id: doc_check_in
       if: success() && (!cancelled()) && (github.ref == 'refs/heads/main')
       run: |
-        # (`main` branch only) Check-in generated documentation directly into source control.
+        # Check-in generated documentation directly into source control.
         echo 'generated/ docs have been added or replaced locally; mirroring this into checked-in tree.'
         # These values informally recommended in:
         #   https://github.com/actions/checkout#push-a-commit-using-the-built-in-token
@@ -1151,21 +1151,38 @@ jobs:
         zip -r $ZIP_NAME $REPO --exclude '*/.git/*' '*/.git'
         # Soon we will need the upload URL, but unfortunately github.event.release.upload_url is only auto-populated
         # on `release` trigger; whereas we want to be triggerable manually on `push` to tag v* (so a superset
-        # of `release` trigger).  So we must figure it out via API call.
+        # of `release` trigger).  So we must figure it out via API call.  Also, if workflow is invoked a 2nd (etc.)
+        # time after succeeding once, then asset might already be attached to Release; then that upload will fail.
+        # There is still utility in invoking us manually to, say, signal the web site to re-update; so we do not
+        # want to overall-fail in that case.  So detect that situation with another API call.
         RELEASE_DATA=`curl -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
                            -H 'Accept: application/vnd.github.v3+json' \
                            https://api.github.com/repos/Flow-IPC/$REPO/releases/tags/v$VERSION`
         echo "For release [v$VERSION]: release-data API request yielded: [$RELEASE_DATA]."
         UPLOAD_URL=`echo $RELEASE_DATA | jq -r .upload_url | sed 's/{.*}$//'`
         echo "For release [v$VERSION]: upload-URL was computed to be: [$UPLOAD_URL]."
-        curl --fail-with-body -X POST \
-             -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
-             -H 'Content-Type: application/gzip' -H "Content-Length: $(wc -c < $TGZ_NAME)" \
-             --data-binary @$TGZ_NAME "$UPLOAD_URL?name=$TGZ_NAME"
-        curl --fail-with-body -X POST \
-             -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
-             -H 'Content-Type: application/zip' -H "Content-Length: $(wc -c < $ZIP_NAME)" \
-             --data-binary @$ZIP_NAME "$UPLOAD_URL?name=$ZIP_NAME"
+        ASSETS_URL=`echo $RELEASE_DATA | jq -r .assets_url'`
+        echo "For release [v$VERSION]: assets-URL was computed to be: [$ASSETS_URL]."
+        ASSET_NAMES=`curl -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+                          -H 'Accept: application/vnd.github.v3+json' \
+                          $ASSETS_URL \
+                     | jq -r '.[].name'`
+        if echo "$ASSET_NAMES" | grep -q "^\Q$TGZ_NAME\E$"; then
+          echo "Asset named [$TGZ_NAME] is already attached to Release; upload would fail; skipping."
+        else
+          curl --fail-with-body -X POST \
+               -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+               -H 'Content-Type: application/gzip' -H "Content-Length: $(wc -c < $TGZ_NAME)" \
+               --data-binary @$TGZ_NAME "$UPLOAD_URL?name=$TGZ_NAME"
+        fi
+        if echo "$ASSET_NAMES" | grep -q "^\Q$ZIP_NAME\E$"; then
+          echo "Asset named [$ZIP_NAME] is already attached to Release; upload would fail; skipping."
+        else
+          curl --fail-with-body -X POST \
+               -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+               -H 'Content-Type: application/zip' -H "Content-Length: $(wc -c < $ZIP_NAME)" \
+               --data-binary @$ZIP_NAME "$UPLOAD_URL?name=$ZIP_NAME"
+        fi
 
     - name: (On release creation only) Signal Pages about release (web site should update)
       if: success() && (!cancelled()) && startsWith(github.ref, 'refs/tags/v')
