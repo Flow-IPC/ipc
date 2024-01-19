@@ -1161,7 +1161,7 @@ jobs:
         echo "For release [v$VERSION]: release-data API request yielded: [$RELEASE_DATA]."
         UPLOAD_URL=`echo $RELEASE_DATA | jq -r .upload_url | sed 's/{.*}$//'`
         echo "For release [v$VERSION]: upload-URL was computed to be: [$UPLOAD_URL]."
-        ASSETS_URL=`echo $RELEASE_DATA | jq -r .assets_url'`
+        ASSETS_URL=`echo $RELEASE_DATA | jq -r .assets_url`
         echo "For release [v$VERSION]: assets-URL was computed to be: [$ASSETS_URL]."
         ASSET_NAMES=`curl -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
                           -H 'Accept: application/vnd.github.v3+json' \
