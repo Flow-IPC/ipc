@@ -216,157 +216,157 @@ $(function() {
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">   */</span></div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Server__session__mv.html#ac873543383b7a6da94d4353231f34ec2">  145</a></span>  <span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1session_1_1Client__app.html">Client_app</a>* <a class="code hl_function" href="classipc_1_1session_1_1Server__session__mv.html#ac873543383b7a6da94d4353231f34ec2">client_app</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment"></span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">     * To be invoked by public user upon first obtaining `*this`: memorizes the given on-error and on-passive-open</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">     * handlers thus moving this Server_session_mv to PEER state wherein it is a formal Session concept impl.</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">     * Using this overload indicates passive-opens are enabled on this side.</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment">     * Suggestion: use client_app() to determine the opposing Client_app, particularly if this Server_app is designed</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment">     * to accept sessions from 2+ `Client_app`s.  (To be clear: Multiple *instances* (processes) of a *given* Client_app</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment">     * are always supported.  However a given Server_app -- specified at Session_server construction time --</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">     * may well specify only one allowed opposing Client_app.)  It is likely that a different on-passive-open handler</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">     * would be useful depending on Client_app; possibly also different on-error handler.</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">     * @tparam Task_err</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment">     *         See Session concept doc header for semantics.</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">     * @tparam On_passive_open_channel_handler</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">     *         See Session concept doc header for semantics.</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">     * @param on_err_func_arg</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">     *        On-error handler per semantics in Session concept doc header.</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment">     * @param on_passive_open_channel_func_arg</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment">     *        On-passive-open handler per semantics in Session concept doc header.</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment">     * @return `true` normally; `false` if invoked after already having called an init_handlers() or as-if default-cted.</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Task_err, <span class="keyword">typename</span> On_passive_open_channel_handler&gt;</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Server__session__mv.html#a99097e5aa6883877c74f8a93ebc9f3e1">  170</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classipc_1_1session_1_1Server__session__mv.html#a99097e5aa6883877c74f8a93ebc9f3e1">init_handlers</a>(Task_err&amp;&amp; on_err_func_arg, On_passive_open_channel_handler&amp;&amp; on_passive_open_channel_func_arg);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">   * To be invoked by public user upon first obtaining `*this`: memorizes the given on-error and on-passive-open</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">   * handlers thus moving this Server_session_mv to PEER state wherein it is a formal Session concept impl.</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">   * Using this overload indicates passive-opens are enabled on this side.</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment">   * Suggestion: use client_app() to determine the opposing Client_app, particularly if this Server_app is designed</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment">   * to accept sessions from 2+ `Client_app`s.  (To be clear: Multiple *instances* (processes) of a *given* Client_app</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment">   * are always supported.  However a given Server_app -- specified at Session_server construction time --</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">   * may well specify only one allowed opposing Client_app.)  It is likely that a different on-passive-open handler</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">   * would be useful depending on Client_app; possibly also different on-error handler.</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">   * @tparam Task_err</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment">   *         See Session concept doc header for semantics.</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">   * @tparam On_passive_open_channel_handler</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">   *         See Session concept doc header for semantics.</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">   * @param on_err_func_arg</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">   *        On-error handler per semantics in Session concept doc header.</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment">   * @param on_passive_open_channel_func_arg</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment">   *        On-passive-open handler per semantics in Session concept doc header.</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment">   * @return `true` normally; `false` if invoked after already having called an init_handlers() or as-if default-cted.</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Task_err, <span class="keyword">typename</span> On_passive_open_channel_handler&gt;</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Server__session__mv.html#a99097e5aa6883877c74f8a93ebc9f3e1">  170</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classipc_1_1session_1_1Server__session__mv.html#a99097e5aa6883877c74f8a93ebc9f3e1">init_handlers</a>(Task_err&amp;&amp; on_err_func_arg, On_passive_open_channel_handler&amp;&amp; on_passive_open_channel_func_arg);</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment"></span> </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment">     * Alternative to the other init_handlers().  Using this overload indicates passive-opens are disabled on this side.</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment">     * Otherwise identical to the other init_handlers() overload.</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment">     * @tparam Task_err</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="comment">     *         See other init_handlers().</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="comment">     * @param on_err_func_arg</span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment">     *        See other init_handlers().</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment">     * @return `true` normally; `false` if invoked after already having called an init_handlers() or as-if default-cted.</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Task_err&gt;</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Server__session__mv.html#ac1ea393b9d0d7de60f7433cbc7dad0d4">  183</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classipc_1_1session_1_1Server__session__mv.html#ac1ea393b9d0d7de60f7433cbc7dad0d4">init_handlers</a>(Task_err&amp;&amp; on_err_func_arg);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment">   * Alternative to the other init_handlers().  Using this overload indicates passive-opens are disabled on this side.</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment">   * Otherwise identical to the other init_handlers() overload.</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment">   * @tparam Task_err</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="comment">   *         See other init_handlers().</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="comment">   * @param on_err_func_arg</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment">   *        See other init_handlers().</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment">   * @return `true` normally; `false` if invoked after already having called an init_handlers() or as-if default-cted.</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Task_err&gt;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Server__session__mv.html#ac1ea393b9d0d7de60f7433cbc7dad0d4">  183</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classipc_1_1session_1_1Server__session__mv.html#ac1ea393b9d0d7de60f7433cbc7dad0d4">init_handlers</a>(Task_err&amp;&amp; on_err_func_arg);</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="comment">// Constructors.</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment"></span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment">   * For use by internal user Session_server_impl: constructor.  Invoke async_accept_log_in() to move forward</span></div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment">   * toward PEER state.</span></div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment">   * @param logger_ptr</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">   *        Logger to use for logging subsequently.</span></div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">   * @param srv_app_ref</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">   *        Properties of this server application.  The address is copied; the object is not copied.</span></div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">   * @param master_channel_sock_stm</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">   *        The PEER-state transport::sync_io::Native_socket_stream that just connected to an opposing</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">   *        Client_session_impl.  It is moved-to `*this` (and hence becomes `.null()`).</span></div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Server__session__mv.html#ae190ff87b86aab1a68374789791553e1">  200</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classipc_1_1session_1_1Server__session__mv.html#ae190ff87b86aab1a68374789791553e1">Server_session_mv</a>(flow::log::Logger* logger_ptr, <span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1session_1_1Server__app.html">Server_app</a>&amp; srv_app_ref,</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>                             <a class="code hl_class" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html">transport::sync_io::Native_socket_stream</a>&amp;&amp; master_channel_sock_stm);</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <span class="comment">// Methods.</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment"></span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">   * For use by internal user Session_server: called no more than once, ideally immediately following ctor,</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">   * this attempts to get `*this` asynchronously to almost-PEER state by undergoing the log-in request/response</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">   * (plus, if needed, init-channel-opening) procedure (the other side of which is done by</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">   * Client_session_impl::async_connect()).  On success, `on_done_func(Error_code())` is invoked from unspecified</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">   * thread that is not the user&#39;s calling thread.  On failure, it does similarly but with a non-success code.</span></div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">   * If the op does not complete before dtor, then</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="comment">   * `on_done_func(error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER)` is invoked at that point.</span></div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="comment">   * In the success-case firing, `*this` is ready to be given to the public user.  However it is in almost-PEER state.</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="comment">   * To achieve PEER state they shall first call init_handlers().</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">   * #Error_code generated and passed to `on_done_func()`:</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">   * session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER (see above),</span></div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">   * those returned by transport::Native_socket_stream::remote_peer_process_credentials(),</span></div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">   * those emitted by transport::struc::Channel::send(),</span></div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment">   * those emitted by transport::struc::Channel via on-error handler (most likely</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">   * transport::error::Code::S_RECEIVES_FINISHED_CANNOT_RECEIVE indicating graceful shutdown of opposing process</span></div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment">   * coincidentally during log-in procedure, prematurely ending session while it was starting),</span></div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="comment">   * error::Code::S_SERVER_MASTER_LOG_IN_REQUEST_CLIENT_APP_DISALLOWED_OR_UNKNOWN,</span></div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">   * error::Code::S_SERVER_MASTER_LOG_IN_REQUEST_CLIENT_APP_INCONSISTENT_CREDS,</span></div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">   * those emitted by `pre_rsp_setup_func()` (in-arg).</span></div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">   * @note If the above list substantially changes, please update Session_server::async_accept()</span></div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment">   *       doc header accordingly for user convenience.</span></div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="comment">   * @tparam Session_server_impl_t</span></div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="comment">   *         See `srv`.</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="comment">   * @tparam Task_err</span></div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment">   *         Handler type matching signature of `flow::async::Task_asio_err`.</span></div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="comment">   * @tparam Cli_app_lookup_func</span></div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="comment">   *         Function type that takes a supposed Client_app::m_name and returns the `const Client_app*` with that</span></div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment">   *         matching name; or null if it is not a validly registered name according to the data given to the</span></div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="comment">   *         internal user.</span></div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="comment">   * @tparam Cli_namespace_func</span></div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="comment">   *         Function type that returns a sufficiently-distinct value for Session_base::cli_namespace(),</span></div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="comment">   *         as Session_base::set_cli_namespace() is required before #Server_session can be in PEER state and available</span></div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="comment">   *         to the public user.</span></div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span><span class="comment">   * @tparam Pre_rsp_setup_func</span></div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="comment">   *         Function type with signature `Error_code F()`.</span></div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="comment">   * @tparam N_init_channels_by_srv_req_func</span></div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="comment">   *         See Session_server::async_accept().  Type and arg value forwarded from there.</span></div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="comment">   * @tparam Mdt_load_func</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="comment">   *         See Session_server::async_accept().  Type and arg value forwarded from there.</span></div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="comment">   * @param srv</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="comment">   *        The Session_server_impl whose Session_server_impl::async_accept() is invoking the present method.</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment">   *        `*srv` must exist at least while `*this` does, or behavior is undefined.</span></div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="comment">   *        This allows for interaction/cooperation with the &quot;parent&quot; `Session_server` if necessary, such as</span></div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment">   *        for shared cross-session resources.</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment">   *        Note: you may use `srv-&gt;this_session_srv()` to obtain a pointer to the `Session_server`-like object</span></div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="comment">   *        on which the user invoked `async_accept()`.  E.g.: Server_session_impl::async_accept_log_in()</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="comment">   *        would get a `Session_server*`; shm::classic::Server_session_impl::async_accept_log_in() would get</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment">   *        a `shm::classic::Session_server*`.</span></div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="comment">   * @param init_channels_by_srv_req</span></div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="comment">   *        See Session_server::async_accept().  Arg value forwarded from there.</span></div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment">   * @param mdt_from_cli_or_null</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="comment">   *        See Session_server::async_accept().  Arg value forwarded from there.</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="comment">   * @param init_channels_by_cli_req</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="comment">// The LOG_*() macros don&#39;t see Log_context::get_log*() from base otherwise....</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="keyword">using </span><a class="code hl_function" href="classipc_1_1session_1_1Session__mv.html#a142df6d6db09962a1dc0f536bf4977f0">Base::get_logger</a>;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="keyword">using </span><a class="code hl_function" href="classipc_1_1session_1_1Session__mv.html#a23b43187319871c4974755175973008e">Base::get_log_component</a>;</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <span class="comment">// Constructors.</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment"></span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">   * For use by internal user Session_server_impl: constructor.  Invoke async_accept_log_in() to move forward</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">   * toward PEER state.</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">   * @param logger_ptr</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">   *        Logger to use for logging subsequently.</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">   * @param srv_app_ref</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">   *        Properties of this server application.  The address is copied; the object is not copied.</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">   * @param master_channel_sock_stm</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">   *        The PEER-state transport::sync_io::Native_socket_stream that just connected to an opposing</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">   *        Client_session_impl.  It is moved-to `*this` (and hence becomes `.null()`).</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Server__session__mv.html#ae190ff87b86aab1a68374789791553e1">  204</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classipc_1_1session_1_1Server__session__mv.html#ae190ff87b86aab1a68374789791553e1">Server_session_mv</a>(flow::log::Logger* logger_ptr, <span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1session_1_1Server__app.html">Server_app</a>&amp; srv_app_ref,</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                             <a class="code hl_class" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html">transport::sync_io::Native_socket_stream</a>&amp;&amp; master_channel_sock_stm);</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <span class="comment">// Methods.</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment"></span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">   * For use by internal user Session_server: called no more than once, ideally immediately following ctor,</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">   * this attempts to get `*this` asynchronously to almost-PEER state by undergoing the log-in request/response</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="comment">   * (plus, if needed, init-channel-opening) procedure (the other side of which is done by</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="comment">   * Client_session_impl::async_connect()).  On success, `on_done_func(Error_code())` is invoked from unspecified</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="comment">   * thread that is not the user&#39;s calling thread.  On failure, it does similarly but with a non-success code.</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="comment">   * If the op does not complete before dtor, then</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="comment">   * `on_done_func(error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER)` is invoked at that point.</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">   * In the success-case firing, `*this` is ready to be given to the public user.  However it is in almost-PEER state.</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">   * To achieve PEER state they shall first call init_handlers().</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment">   * #Error_code generated and passed to `on_done_func()`:</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">   * session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER (see above),</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment">   * those returned by transport::Native_socket_stream::remote_peer_process_credentials(),</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="comment">   * those emitted by transport::struc::Channel::send(),</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">   * those emitted by transport::struc::Channel via on-error handler (most likely</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">   * transport::error::Code::S_RECEIVES_FINISHED_CANNOT_RECEIVE indicating graceful shutdown of opposing process</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">   * coincidentally during log-in procedure, prematurely ending session while it was starting),</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">   * error::Code::S_SERVER_MASTER_LOG_IN_REQUEST_CLIENT_APP_DISALLOWED_OR_UNKNOWN,</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment">   * error::Code::S_SERVER_MASTER_LOG_IN_REQUEST_CLIENT_APP_INCONSISTENT_CREDS,</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="comment">   * those emitted by `pre_rsp_setup_func()` (in-arg).</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="comment">   * @note If the above list substantially changes, please update Session_server::async_accept()</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="comment">   *       doc header accordingly for user convenience.</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="comment">   * @tparam Session_server_impl_t</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="comment">   *         See `srv`.</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment">   * @tparam Task_err</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="comment">   *         Handler type matching signature of `flow::async::Task_asio_err`.</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="comment">   * @tparam Cli_app_lookup_func</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="comment">   *         Function type that takes a supposed Client_app::m_name and returns the `const Client_app*` with that</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="comment">   *         matching name; or null if it is not a validly registered name according to the data given to the</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="comment">   *         internal user.</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span><span class="comment">   * @tparam Cli_namespace_func</span></div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="comment">   *         Function type that returns a sufficiently-distinct value for Session_base::cli_namespace(),</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="comment">   *         as Session_base::set_cli_namespace() is required before #Server_session can be in PEER state and available</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="comment">   *         to the public user.</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="comment">   * @tparam Pre_rsp_setup_func</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="comment">   *         Function type with signature `Error_code F()`.</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="comment">   * @tparam N_init_channels_by_srv_req_func</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="comment">   *         See Session_server::async_accept().  Type and arg value forwarded from there.</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment">   * @tparam Mdt_load_func</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="comment">   *         See Session_server::async_accept().  Type and arg value forwarded from there.</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment">   * @param srv</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment">   *        The Session_server_impl whose Session_server_impl::async_accept() is invoking the present method.</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="comment">   *        `*srv` must exist at least while `*this` does, or behavior is undefined.</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="comment">   *        This allows for interaction/cooperation with the &quot;parent&quot; `Session_server` if necessary, such as</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment">   *        for shared cross-session resources.</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="comment">   *        Note: you may use `srv-&gt;this_session_srv()` to obtain a pointer to the `Session_server`-like object</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="comment">   *        on which the user invoked `async_accept()`.  E.g.: Server_session_impl::async_accept_log_in()</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment">   *        would get a `Session_server*`; shm::classic::Server_session_impl::async_accept_log_in() would get</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="comment">   *        a `shm::classic::Session_server*`.</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="comment">   * @param init_channels_by_srv_req</span></div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="comment">   *        See Session_server::async_accept().  Arg value forwarded from there.</span></div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="comment">   * @param cli_app_lookup_func</span></div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="comment">   *        See `Cli_app_lookup_func`.</span></div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="comment">   * @param cli_namespace_func</span></div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="comment">   *        See `Cli_namespace_func`.</span></div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="comment">   * @param pre_rsp_setup_func</span></div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment">   *        Invoked just before sending successful log-in response to opposing client, which completes the log-in.</span></div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment">   *        It takes no arguments -- but all `*this` accessors up to/including `cli_app_ptr()` shall return</span></div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment">   *        real values -- and shall return falsy on success; or the reason for failure as #Error_code.</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment">   *        In the latter case this method shall emit that code as the reason for overall failure.</span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment">   *        This can be used for setting up resources, such as SHM arena(s), that the client shall count</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment">   *        on being available (perhaps at known #Shared_name based on `*this` accessor values).</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment">   * @param n_init_channels_by_srv_req_func</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment">   *        See `N_init_channels_by_srv_req_func`.</span></div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment">   * @param mdt_load_func</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment">   *        See `Mdt_load_func`.</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment">   * @param on_done_func</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment">   *        See above.</span></div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Session_server_impl_t,</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>           <span class="keyword">typename</span> Task_err, <span class="keyword">typename</span> Cli_app_lookup_func, <span class="keyword">typename</span> Cli_namespace_func, <span class="keyword">typename</span> Pre_rsp_setup_func,</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>           <span class="keyword">typename</span> N_init_channels_by_srv_req_func, <span class="keyword">typename</span> Mdt_load_func&gt;</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Server__session__mv.html#a74d647e2f555465c28065dc11cd092cb">  285</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classipc_1_1session_1_1Server__session__mv.html#a74d647e2f555465c28065dc11cd092cb">async_accept_log_in</a>(Session_server_impl_t* srv,</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                           <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f">Base::Channels</a>* init_channels_by_srv_req,</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                           <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#a2b1215fb0c9738b9fcfbb337d23c43df">Base::Mdt_reader_ptr</a>* mdt_from_cli_or_null,</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                           <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f">Base::Channels</a>* init_channels_by_cli_req,</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>                           Cli_app_lookup_func&amp;&amp; cli_app_lookup_func, Cli_namespace_func&amp;&amp; cli_namespace_func,</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>                           Pre_rsp_setup_func&amp;&amp; pre_rsp_setup_func,</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>                           N_init_channels_by_srv_req_func&amp;&amp; n_init_channels_by_srv_req_func,</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>                           Mdt_load_func&amp;&amp; mdt_load_func,</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>                           Task_err&amp;&amp; on_done_func);</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="comment">// The LOG_*() macros don&#39;t see Log_context::get_log*() from base otherwise....</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <span class="keyword">using </span><a class="code hl_function" href="classipc_1_1session_1_1Session__mv.html#a142df6d6db09962a1dc0f536bf4977f0">Base::get_logger</a>;</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  <span class="keyword">using </span><a class="code hl_function" href="classipc_1_1session_1_1Session__mv.html#a23b43187319871c4974755175973008e">Base::get_log_component</a>;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="comment">   * @param mdt_from_cli_or_null</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="comment">   *        See Session_server::async_accept().  Arg value forwarded from there.</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="comment">   * @param init_channels_by_cli_req</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="comment">   *        See Session_server::async_accept().  Arg value forwarded from there.</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="comment">   * @param cli_app_lookup_func</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment">   *        See `Cli_app_lookup_func`.</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment">   * @param cli_namespace_func</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment">   *        See `Cli_namespace_func`.</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment">   * @param pre_rsp_setup_func</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment">   *        Invoked just before sending successful log-in response to opposing client, which completes the log-in.</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment">   *        It takes no arguments -- but all `*this` accessors up to/including `cli_app_ptr()` shall return</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment">   *        real values -- and shall return falsy on success; or the reason for failure as #Error_code.</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment">   *        In the latter case this method shall emit that code as the reason for overall failure.</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment">   *        This can be used for setting up resources, such as SHM arena(s), that the client shall count</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment">   *        on being available (perhaps at known #Shared_name based on `*this` accessor values).</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment">   * @param n_init_channels_by_srv_req_func</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment">   *        See `N_init_channels_by_srv_req_func`.</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment">   * @param mdt_load_func</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment">   *        See `Mdt_load_func`.</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment">   * @param on_done_func</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment">   *        See above.</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Session_server_impl_t,</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>           <span class="keyword">typename</span> Task_err, <span class="keyword">typename</span> Cli_app_lookup_func, <span class="keyword">typename</span> Cli_namespace_func, <span class="keyword">typename</span> Pre_rsp_setup_func,</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>           <span class="keyword">typename</span> N_init_channels_by_srv_req_func, <span class="keyword">typename</span> Mdt_load_func&gt;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Server__session__mv.html#a74d647e2f555465c28065dc11cd092cb">  289</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classipc_1_1session_1_1Server__session__mv.html#a74d647e2f555465c28065dc11cd092cb">async_accept_log_in</a>(Session_server_impl_t* srv,</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>                           <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f">Base::Channels</a>* init_channels_by_srv_req,</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>                           <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#a2b1215fb0c9738b9fcfbb337d23c43df">Base::Mdt_reader_ptr</a>* mdt_from_cli_or_null,</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>                           <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f">Base::Channels</a>* init_channels_by_cli_req,</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>                           Cli_app_lookup_func&amp;&amp; cli_app_lookup_func, Cli_namespace_func&amp;&amp; cli_namespace_func,</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>                           Pre_rsp_setup_func&amp;&amp; pre_rsp_setup_func,</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>                           N_init_channels_by_srv_req_func&amp;&amp; n_init_channels_by_srv_req_func,</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>                           Mdt_load_func&amp;&amp; mdt_load_func,</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>                           Task_err&amp;&amp; on_done_func);</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>}; <span class="comment">// class Server_session_mv</span></div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="comment">// Free functions: in *_fwd.hpp.</span></div>
@@ -475,7 +475,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 19 2024 23:56:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Jan 20 2024 04:26:35 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
