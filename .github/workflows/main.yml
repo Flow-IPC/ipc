@@ -1207,8 +1207,7 @@ jobs:
         EOF
 
     - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
-      run: |
-        conan install . --profile:build conan_profile --profile:host conan_profile --build missing
+      run: conan install . --profile:build conan_profile --profile:host conan_profile --build missing
 
     - name: Generate code documentation using Conan and Doxygen
       run: conan build .
