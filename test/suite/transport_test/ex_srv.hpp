@@ -175,7 +175,7 @@ CLASS::Ex_srv(flow::log::Logger* logger_ptr, flow::log::Logger* ipc_logger_ptr) 
 TEMPLATE
 CLASS::~Ex_srv()
 {
-  /* A bit subtle but: Our base Ex_cli has the Single_thread_task_loop (thread W), where things are post()ed
+  /* A bit subtle but: Our base Ex_guy has the Single_thread_task_loop (thread W), where things are post()ed
    * (directly or via async_wait() at least) to execute; those things will touch parts of *this.  *this is
    * about to be destroyed; so there is a race wherein last-second stuff can try to touch parts that are
    * being destroyed at the same time (data race, caught by TSAN, yay!), or even after they are destroyed
