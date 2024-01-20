@@ -1208,6 +1208,7 @@ jobs:
 
     - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
       run: |
+        conan remove '*' -f # XXX temporary
         conan install . --profile:build conan_profile --profile:host conan_profile --build missing
 
     - name: Generate code documentation using Conan and Doxygen
