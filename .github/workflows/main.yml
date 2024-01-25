@@ -1028,7 +1028,7 @@ jobs:
     - name: Upload test/demo logs (please inspect if failure(s) seen above)
       if: |
         always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
         path: ${{ env.install-dir }}/bin/logs.tgz
@@ -1220,7 +1220,7 @@ jobs:
           ${{ github.workspace }}/build/${{ matrix.build-cfg.conan-profile-build-type }}
 
     - name: Upload documentation tarball
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ipc-doc
         path: ${{ github.workspace }}/doc/ipc_doc.tgz
