@@ -127,7 +127,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
         // Sessions are mostly a way to establish channels after all, and we've got ours!
       }
     });
-    // Server side: Example: Expect <cmd line arg> server-requested channels; N client-requested channels.
+    // Server side: Example: Expect *commmand-line-arg* server-requested channels; N client-requested channels.
     Session::Channels my_init_channels(lexical_cast<size_t>(argv[2]));
     Session::Channels their_init_channels;
     session_srv.async_accept(&session, ..., &my_init_channels, ..., &their_init_channels, ..., ...,
