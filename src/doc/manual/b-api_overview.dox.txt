@@ -38,131 +38,131 @@ Having obtained a `Session`, the application can open transport channels (and, i
 @anchor api_overview_sessions_synopsis
 @par Synopsis: Sessions
 
-Describe the universe of communicating apps via simple `struct`s:
+  Describe the universe of communicating apps via simple `struct`s:
 
-  ~~~
-  using namespace ipc::session;
+    ~~~
+    using namespace ipc::session;
 
-  // Describe the universe of communicating apps via simple `struct`s.
+    // Describe the universe of communicating apps via simple `struct`s.
 
-  // Example: 2 applications.
-  const App APP_A{ "a", // Unique name for identification in the system.
-                   // Basic properties for safety, authentication.
-                   "/bin/app_a.exec", USER_ID_A, GROUP_ID };
-  const App APP_B{ "b", "/bin/app_a.exec", USER_ID_B, GROUP_ID };
-  // Which app(s) will connect sessions (client) versus accept sessions (server)?
-  const Client_app APP_B_AS_CLI{ APP_B };
-  const Server_app APP_A_AS_SRV
-                     { APP_A,
-                       { APP_B.m_name }, // We are A; we allow only B to open sessions with us.                       
-                       "", // Keep run-time files in /var/run by default.
-                       // Safety/auth preset.  No need for `0644` and so forth.
-                       ipc::util::Permissions_level::S_GROUP_ACCESS }
-  ~~~
+    // Example: 2 applications.
+    const App APP_A{ "a", // Unique name for identification in the system.
+                     // Basic properties for safety, authentication.
+                     "/bin/app_a.exec", USER_ID_A, GROUP_ID };
+    const App APP_B{ "b", "/bin/app_a.exec", USER_ID_B, GROUP_ID };
+    // Which app(s) will connect sessions (client) versus accept sessions (server)?
+    const Client_app APP_B_AS_CLI{ APP_B };
+    const Server_app APP_A_AS_SRV
+                       { APP_A,
+                         { APP_B.m_name }, // We are A; we allow only B to open sessions with us.                       
+                         "", // Keep run-time files in /var/run by default.
+                         // Safety/auth preset.  No need for `0644` and so forth.
+                         ipc::util::Permissions_level::S_GROUP_ACCESS }
+    ~~~
 
-Compile-time-configure your sessions:
+  Compile-time-configure your sessions:
 
-  ~~~
-  // Specify zero-copy and SHared Memory (SHM) abilities if any.
+    ~~~
+    // Specify zero-copy and SHared Memory (SHM) abilities if any.
 
-  namespace ssn = shm::classic;
-  // Use [ipc::]session - For non-SHM-enabled communication.
-  //     [ipc::session::]shm::* - For SHM-enabled comms (zero-copy structured messaging; explicit SHM access if desired).
-  //     [ipc::session::]shm::classic - Classic one-segment variant with simple allocation strategy by Boost.
-  //                     shm::arena_lend::jemalloc - Adaptive multi-segment variant with allocation by jemalloc.
-  // Subsequent API remains ~the same.  Only your convenience alias above changes.
+    namespace ssn = shm::classic;
+    // Use [ipc::]session - For non-SHM-enabled communication.
+    //     [ipc::session::]shm::* - For SHM-enabled comms (zero-copy structured messaging; explicit SHM access if desired).
+    //     [ipc::session::]shm::classic - Classic one-segment variant with simple allocation strategy by Boost.
+    //                     shm::arena_lend::jemalloc - Adaptive multi-segment variant with allocation by jemalloc.
+    // Subsequent API remains ~the same.  Only your convenience alias above changes.
 
-  // Specify the low-level transports used underneath in your future IPC channels.
+    // Specify the low-level transports used underneath in your future IPC channels.
 
-  // Example: Your future channels will use POSIX MQs when possible for high perf; Unix domain sockets when you
-  //   transmit an FD (network socket, file handle, etc.).
-  constexpr auto MQ_TYPE = schema::MqType::POSIX;
-  constexpr bool TRANSMIT_FDS = true;
+    // Example: Your future channels will use POSIX MQs when possible for high perf; Unix domain sockets when you
+    //   transmit an FD (network socket, file handle, etc.).
+    constexpr auto MQ_TYPE = schema::MqType::POSIX;
+    constexpr bool TRANSMIT_FDS = true;
 
-  // Client side:
-  using Session = ssn::Client_session<MQ_TYPE, TRANSMIT_FDS>;
-  // Server side:
-  using Session_server = ssn::Session_server<MQ_TYPE, TRANSMIT_FDS>;
-  using Session = Session_server::Server_session_obj;
-  ~~~
+    // Client side:
+    using Session = ssn::Client_session<MQ_TYPE, TRANSMIT_FDS>;
+    // Server side:
+    using Session_server = ssn::Session_server<MQ_TYPE, TRANSMIT_FDS>;
+    using Session = Session_server::Server_session_obj;
+    ~~~
 
-Open session(s):
+  Open session(s):
 
-  ~~~
-  // Client side:
-  Session session(nullptr, APP_B_AS_CLI, // This is us (connector).
-                  APP_A_AS_SRV, // The opposing application (acceptor).
-                  ...);
-  session.async_connect([...](const auto& err_code) { if (!err_code) { ...`session` is ready.... } });
-  // ^-- asio-style API.  Non-blocking/synchronous API also available (integrate directly with poll(), epoll_...(), etc.).
+    ~~~
+    // Client side:
+    Session session(nullptr, APP_B_AS_CLI, // This is us (connector).
+                    APP_A_AS_SRV, // The opposing application (acceptor).
+                    ...);
+    session.async_connect([...](const auto& err_code) { if (!err_code) { ...`session` is ready.... } });
+    // ^-- asio-style API.  Non-blocking/synchronous API also available (integrate directly with poll(), epoll_...(), etc.).
 
-  // Server side:
-  Session_server session_srv(nullptr, APP_A_AS_SRV, // This is us (acceptor).
-                             { { APP_B_AS_CLI.m_name, APP_B_AS_CLI } }); // These are potential opposing apps.
-  Session session;
-  session_srv.async_accept(&session,
-                           [...](const auto& err_code) { if (!err_code) { ...`session` is ~ready.... } });
+    // Server side:
+    Session_server session_srv(nullptr, APP_A_AS_SRV, // This is us (acceptor).
+                               { { APP_B_AS_CLI.m_name, APP_B_AS_CLI } }); // These are potential opposing apps.
+    Session session;
+    session_srv.async_accept(&session,
+                             [...](const auto& err_code) { if (!err_code) { ...`session` is ~ready.... } });
 
-  // NOTE: Upon opening session, capabilities of `session` on either side are **exactly the same**.
-  // Client/server status matters only when establishing the IPC conversation;
-  // the conversation itself once established is arbitrariy and up to you fully.
-  ~~~
+    // NOTE: Upon opening session, capabilities of `session` on either side are **exactly the same**.
+    // Client/server status matters only when establishing the IPC conversation;
+    // the conversation itself once established is arbitrariy and up to you fully.
+    ~~~
 
-Open channel(s) in a session:
+  Open channel(s) in a session:
 
-  - Easiest: Have them be pre-opened, so that they're ready from the session start:
+    - Easiest: Have them be pre-opened, so that they're ready from the session start:
 
-  ~~~
-  // Client side: Example: Expect 1 client-requested channel; N server-requested channels.
-  Session::Channels my_init_channels(1);
-  Session::Channels their_init_channels;
-  session.async_connect(..., &my_init_channels, ..., &their_init_channels,
-                        [...](const auto& err_code)
-  {
-    if (!err_code)
+    ~~~
+    // Client side: Example: Expect 1 client-requested channel; N server-requested channels.
+    Session::Channels my_init_channels(1);
+    Session::Channels their_init_channels;
+    session.async_connect(..., &my_init_channels, ..., &their_init_channels,
+                          [...](const auto& err_code)
     {
-      // `session` is ready, but we might not even care that much because:
-      //   my_init_channels[0] = The 1 pre-opened Session::Channel_obj we requested.
-      //   their_init_channels = vector<Session::Channel_obj> = The N pre-opened channels opposing side requested.
-      // Sessions are mostly a way to establish channels after all, and we've got ours!
-    }
-  });
-  // Server side: Example: Expect <cmd line arg> server-requested channels; N client-requested channels.
-  Session::Channels my_init_channels(lexical_cast<size_t>(argv[2]));
-  Session::Channels their_init_channels;
-  session_srv.async_accept(&session, ..., &my_init_channels, ..., &their_init_channels, ..., ...,
-                           [...](const auto& err_code)
-  {
-    if (!err_code)
+      if (!err_code)
+      {
+        // `session` is ready, but we might not even care that much because:
+        //   my_init_channels[0] = The 1 pre-opened Session::Channel_obj we requested.
+        //   their_init_channels = vector<Session::Channel_obj> = The N pre-opened channels opposing side requested.
+        // Sessions are mostly a way to establish channels after all, and we've got ours!
+      }
+    });
+    // Server side: Example: Expect <cmd line arg> server-requested channels; N client-requested channels.
+    Session::Channels my_init_channels(lexical_cast<size_t>(argv[2]));
+    Session::Channels their_init_channels;
+    session_srv.async_accept(&session, ..., &my_init_channels, ..., &their_init_channels, ..., ...,
+                             [...](const auto& err_code)
     {
-      // session = Opened session.
-      // my_init_channels = The 3 pre-opened `Session::Channel_obj`s we requested.
-      // their_init_channels = The N pre-opened channels opposing side requested.  (N=1 in this example; see above.)
-    }
-  });
-  ~~~
+      if (!err_code)
+      {
+        // session = Opened session.
+        // my_init_channels = The 3 pre-opened `Session::Channel_obj`s we requested.
+        // their_init_channels = The N pre-opened channels opposing side requested.  (N=1 in this example; see above.)
+      }
+    });
+    ~~~
 
-  - Max flexibility: Open them at any time.  Either side can be initiator or acceptor of channel opening at any time.
+    - Max flexibility: Open them at any time.  Either side can be initiator or acceptor of channel opening at any time.
 
-  ~~~
-  // session.open_channel() is non-blocking, synchronous.
+    ~~~
+    // session.open_channel() is non-blocking, synchronous.
 
-  // Active opener (side 1):
-  Session::Channel_obj channel;
-  session.open_channel(&channel); // Non-blocking, synchronous.
-  // Active opener advanced form (allows to pass 1 structured message along with the channel-open action):
-  auto mdt = session.mdt_builder();
-  mdt->setCoolParameterFromMyCapnpSchema(42.42);
-  session.open_channel(&channel, std::move(mdt));
+    // Active opener (side 1):
+    Session::Channel_obj channel;
+    session.open_channel(&channel); // Non-blocking, synchronous.
+    // Active opener advanced form (allows to pass 1 structured message along with the channel-open action):
+    auto mdt = session.mdt_builder();
+    mdt->setCoolParameterFromMyCapnpSchema(42.42);
+    session.open_channel(&channel, std::move(mdt));
 
-  // Passive opener (side 2):
-  session.init_handlers(..., [...](Session::Channel_obj&& channel, auto&& mdt)
-  {
-    // `channel` is ready.  Also the structured message (if desired) is immediately available:
-    const float val = mdt->getCoolParameterFromMyCapnpSchema();
-    std::cout << "Along with the channel-open request, other guy sent us this number: [" << val << "].");
-  });
-  ~~~
+    // Passive opener (side 2):
+    session.init_handlers(..., [...](Session::Channel_obj&& channel, auto&& mdt)
+    {
+      // `channel` is ready.  Also the structured message (if desired) is immediately available:
+      const float val = mdt->getCoolParameterFromMyCapnpSchema();
+      std::cout << "Along with the channel-open request, other guy sent us this number: [" << val << "].");
+    });
+    ~~~
 
 ---
 
