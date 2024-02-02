@@ -240,7 +240,7 @@ In summary then:
 
   Session session_being_opened; // Empty session object.
 
-  session_srv.async_accept(&session_being_opened, ([...](const Error_code& err_code)
+  session_srv.async_accept(&session_being_opened, [...](const Error_code& err_code)
   {
     if (err_code == ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER)
     {
@@ -248,7 +248,7 @@ In summary then:
     }
 
     post([..., err_code])() { on_new_session(err_code]); });
-  }
+  });
 
   void on_new_session(const Error_code& err_code)
   {

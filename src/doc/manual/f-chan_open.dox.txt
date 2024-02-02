@@ -148,7 +148,7 @@ We are now ready to make the more-complex `async_connect()` call.  This is a dif
     Session::Channels init_channels(boost::lexical_cast<size_t>(argv[1])); // <-- ATTN: runtime config.
 
     session.async_connect(mdt, // Client-to-server metadata.
-                          &init_channel, // Out-arg for cli->srv init-channels as well as in-arg for how many we want.
+                          &init_channels, // Out-arg for cli->srv init-channels as well as in-arg for how many we want.
                           nullptr, nullptr, // In our example we expect no srv->cli metadata nor srv->cli init-channels.
                           [...](const Error_code& err_code)
     {

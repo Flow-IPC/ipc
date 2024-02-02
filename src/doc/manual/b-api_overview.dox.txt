@@ -25,17 +25,170 @@
 
 Here we show how Flow-IPC fulfills its aims; let's take a high-level tour through the available API.  (The preceding page @ref about summarizes the aims of Flow-IPC.)
 
+We provide a minimal synopsis in each section below, to give a sense of what your code using that feature would look like.  It's both a survey and a cheat sheet, but it is *not comprehensive* the way the individual subsequent pages, or the Reference, are.
+
 Sessions
 --------
 No matter the particular IPC transport (local stream socket, MQ, SHM pool), an ever-present need is to establish a naming scheme and coordinate it between the participant processes.  To connect one Unix domain socket, one needs to name a server socket, and the connecting process needs to know that name.  An MQ requires a name, as does a SHM pool.  Developing and maintaining a convention is, normally, both necessary and annoying.  Instead:
 
 There is a simple scheme that designates one side of a conversation as the **session server**, the other a **client**; the latter connects to the former.  (A session server process can carry on multiple sessions with different client processes.)  The user need only specify the basic facts of the IPC-participating applications (like executable names and owners, and which ones are servers, and which clients they'll accept as the opposing side).  This is done via the straightforward `struct` ipc::session::App + its children.  The rest of ipc::session establishes internal naming conventions based off that information.  Having specified those `App` basics the user, opens (on each side) an equally capable ipc::session::Session that is the context for all subsequent IPC between those 2 processes.
 
-Having obtained a `Session`, the application can open transport channels (and, if desired, SHM arenas) without any naming decisions to make.  At that point it's off to the races... namely:
+Having obtained a `Session`, the application can open transport channels (and, if desired, SHM arenas) without any naming decisions to make.
+
+---
+@anchor api_overview_sessions_synopsis
+@par Synopsis: Describe the universe of communicating apps via simple `struct`s
+
+  ~~~
+  using namespace ipc::session;
+
+  // Describe the universe of communicating apps via simple `struct`s.
+
+  // Example: 2 applications.
+  const App APP_A{ "a", // m_name: Unique name for convenient identification.
+                   "/bin/app_a.exec", USER_ID, GROUP_ID }; // Basic properties for safety/authentication.
+  const App APP_B{ "b", ... };
+  // Which app(s) will connect (a/k/a client(s)) versus accept sessions (a/k/a servers(s))?
+  const Client_app APP_B_AS_CLI{ APP_B };
+  const Server_app APP_A_AS_SRV
+                     { APP_A, // Super-class App: Copy the App info.
+                       { APP_B.m_name }, // We are A; we allow only B to open sessions with us.
+                       "", ipc::util::Permissions_level::S_GROUP_ACCESS } // A safety/auth preset.
+  ~~~
+
+@par Synopsis: Compile-time-configure your sessions
+
+  ~~~
+  // Specify zero-copy and SHared Memory (SHM) abilities if any.
+
+  namespace ssn = shm::classic; // => Your channels will be automatically zero-copy!  And you can access SHM arenas.
+  // Use [ipc::]session - For non-SHM-enabled communication.
+  //     [ipc::session::]shm::* - For SHM-enabled comms (zero-copy structured messaging; explicit SHM access if desired).
+  //     [ipc::session::]shm::classic - Classic one-segment variant with simple allocation strategy by Boost.
+  //                     shm::arena_lend::jemalloc - Adaptive multi-segment variant with allocation by jemalloc.
+  // Subsequent API remains ~the same.  Only your convenience alias above changes.
+
+  // Specify the low-level transports used underneath in your future IPC channels.
+
+  // Example: Your future channels will use POSIX MQs when possible for high perf; Unix domain sockets when you
+  //   transmit an FD (network socket, file handle, etc.).
+  constexpr auto MQ_TYPE = schema::MqType::POSIX;
+  constexpr bool TRANSMIT_FDS = true;
+
+  // Client side:
+  using Session = ssn::Client_session<MQ_TYPE, TRANSMIT_FDS>;
+  // Server side:
+  using Session_server = ssn::Session_server<MQ_TYPE, TRANSMIT_FDS>;
+  using Session = Session_server::Server_session_obj;
+  ~~~
+
+@par Synopsis: Open session(s)
+
+  ~~~
+  // Client side:
+  Session session(nullptr, APP_B_AS_CLI, // This is us (connector).
+                  APP_A_AS_SRV, // The opposing application (acceptor).
+                  ...);
+  session.async_connect([...](const auto& err_code) { if (!err_code) { ...`session` is ready.... } });
+  // ^-- asio-style API.  Non-blocking/synchronous API also available (integrate directly with poll(), epoll_...(), etc.).
+
+  // Server side:
+  Session_server session_srv(nullptr, APP_A_AS_SRV, // This is us (acceptor).
+                             { { APP_B_AS_CLI.m_name, APP_B_AS_CLI } }); // These are potential opposing apps.
+  Session session;
+  session_srv.async_accept(&session,
+                           [...](const auto& err_code) { if (!err_code) { ...`session` is ~ready.... } });
+
+  // NOTE: Upon opening session, capabilities of `session` on either side are **exactly the same**.
+  // Client/server status matters only when establishing the IPC conversation;
+  // the conversation itself once established is arbitrariy and up to you fully.
+
+@par Synopsis: Open channel(s) in a session
+
+@par
+Easiest: Have them be pre-opened, so that they're ready from the session start:
+
+  ~~~
+  // Client side: Example: Expect 1 client-requested channel; N server-requested channels.
+  Session::Channels my_init_channels(1);
+  Session::Channels their_init_channels;
+  session.async_connect(..., &my_init_channels, ..., &their_init_channels,
+                        [...](const auto& err_code)
+  {
+    if (!err_code)
+    {
+      // `session` is ready, but we might not even care that much because:
+      //   my_init_channels[0] = The 1 pre-opened Session::Channel_obj we requested.
+      //   their_init_channels = vector<Session::Channel_obj> = The N pre-opened channels opposing side requested.
+      // Sessions are mostly a way to establish channels after all, and we've got ours!
+    }
+  });
+  // Server side: Example: Expect <cmd line arg> server-requested channels; N client-requested channels.
+  Session::Channels my_init_channels(lexical_cast<size_t>(argv[2]));
+  Session::Channels their_init_channels;
+  session_srv.async_accept(&session, ..., &my_init_channels, ..., &their_init_channels, ..., ...,
+                           [...](const auto& err_code)
+  {
+    if (!err_code)
+    {
+      // session = Opened session.
+      // my_init_channels = The 3 pre-opened `Session::Channel_obj`s we requested.
+      // their_init_channels = The N pre-opened channels opposing side requested.  (N=1 in this example; see above.)
+    }
+  });
+  ~~~
+
+@par
+Max flexibility: Open them at any time.  Either side can be initiator or acceptor of channel opening at any time.
+
+  ~~~
+  // session.open_channel() is non-blocking, synchronous.
+
+  // Active opener (side 1):
+  Session::Channel_obj channel;
+  session.open_channel(&channel); // Non-blocking, synchronous.
+  // Active opener advanced form (allows to pass 1 structured message along with the channel-open action):
+  auto mdt = session.mdt_builder();
+  mdt->setCoolParameterFromMyCapnpSchema(42.42);
+  session.open_channel(&channel, std::move(mdt));
+
+  // Passive opener (side 2):
+  session.init_handlers(..., [...](Session::Channel_obj&& channel, auto&& mdt)
+  {
+    // `channel` is ready.  Also the structured message (if desired) is immediately available:
+    const float val = mdt->getCoolParameterFromMyCapnpSchema();
+    std::cout << "Along with the channel-open request, other guy sent us this number: [" << val << "].");
+  });
+  ~~~
+
+---
+
+Once you've got your session and/or channels, it's off to the races... namely:
 
 Transport (unstructured)
 ------------------------
-A **channel** is a bundling of the resources required for, essentially, a bidirectional pipe capable of transmitting binary messages (**blobs**) and, optionally, native handles.  A particular ipc::transport::Channel (as specified at compile-time via its template parameters) may, for example, consist of an outgoing [POSIX MQ (message queue)](https://man7.org/linux/man-pages/man7/mq_overview.7.html) handle and a similar incoming-MQ handle; or conceptually similar SHM-backed MQs (boost.ipc MQs).  Alternatively it can consist of a Unix domain socket endpoint (which is bidirectional).  (Other combinations are generically possible.)  If one uses the ipc::session API, one need not worry about any detail of opening these various handles and feeding them to the particular `Channel`.  Alternatively a simple application or prototype may want to manually set them up without ipc::session.
+A **channel** is a bundling of the resources required for, essentially, a bidirectional pipe capable of transmitting binary messages (**blobs**) and, optionally, native handles.  A particular ipc::transport::Channel (as specified at compile-time via its template parameters) may, for example, consist of an outgoing [POSIX MQ (message queue)](https://man7.org/linux/man-pages/man7/mq_overview.7.html) handle and a similar incoming-MQ handle; or conceptually similar SHM-backed MQs (boost.ipc MQs).  Alternatively it can consist of a Unix domain socket endpoint (which is bidirectional).  (Other combinations are generically possible.)
+
+If one uses the ipc::session API, one need not worry about any detail of opening these various handles and feeding them to the particular `Channel`.  This is shown in the @ref api_overview_sessions_synopsis "Sessions synopsis above".  The type of channel openable via a given session is compile-time-configured when declaring your convenience `Session` alias.  The @ref api_overview_sessions_synopsis "Sessions synopsis above" makes one example selection.  You can make other choices as follows.  Note that you just make these selections -- the details are handled underneath.  E.g., you need no knowledge of POSIX MQ API (from `man mq_overview`) to take advantage of its performance characteristics.
+
+---
+@par Synopsis: Pick channel low-level transport
+
+  ~~~
+  constexpr auto MQ_TYPE = schema::MqType::POSIX // Use POSIX MQs (as from `man mq_overview`) when possible.
+                         = schema::MqType::BIPC // Use `boost.interprocess:message_queue`s when possible.
+                         = schema::MqType::NONE // Do not use MQs; always use Unix domain sockets.
+  constexpr bool TRANSMIT_FDS = true // You need ability to send native handles (FDs).  Use Unix domain sockets when needed.
+                              = false // You don't need this ability.  So Unix domain socket used only if MQ_TYPE=NONE.
+  // Client:
+  using Session = ssn::Client_session<MQ_TYPE, TRANSMIT_FDS>;
+  // Server:
+  using Session_server = ssn::Session_server<MQ_TYPE, TRANSMIT_FDS>;
+  using Session = Session_server::Session_obj;
+  ~~~
+---
+
+Alternatively a simple application or prototype may want to manually set them up without ipc::session.  Though, in our humble opinions, using ipc::session is what's *simple*, as manual setup of a channel involves major annoyances including naming and transport-specific considerations (Unix domain sockets versus POSIX MQs versus... etc.).  Perhaps the better term would have been "conventional" rather than "simple."
 
 All transport APIs at this layer, as well the structured layer (see below), have an API that is as-synchronous-as-possible.  In particular all send operations are non-blocking and synchronous and never return "would-block" -- while guaranteeing good performance in practice.  Receive APIs are asynchronous by their nature.  A proactor-style API (a-la boost.asio) is provided for this and other async ops (such as connect and accept of various types)
 
