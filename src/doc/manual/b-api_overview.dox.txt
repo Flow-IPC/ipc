@@ -173,20 +173,22 @@ A **channel** is a bundling of the resources required for, essentially, a bidire
 If one uses the ipc::session API, one need not worry about any detail of opening these various handles and feeding them to the particular `Channel`.  This is shown in the @ref api_overview_sessions_synopsis "Sessions synopsis above".  The type of channel openable via a given session is compile-time-configured when declaring your convenience `Session` alias.  The @ref api_overview_sessions_synopsis "Sessions synopsis above" makes one example selection.  You can make other choices as follows.  Note that you just make these selections -- the details are handled underneath.  E.g., you need no knowledge of POSIX MQ API (from `man mq_overview`) to take advantage of its performance characteristics.
 
 ---
-**Synopsis: Pick channel low-level transport**
+
+@par Synopsis: Pick channel low-level transport
 
   ~~~
   constexpr auto MQ_TYPE = schema::MqType::POSIX; // Use POSIX MQs (as from `man mq_overview`) when possible.
                          = schema::MqType::BIPC; // Use `boost.interprocess:message_queue`s when possible.
                          = schema::MqType::NONE; // Do not use MQs; always use Unix domain sockets.
-  constexpr bool TRANSMIT_FDS = true // You need ability to send native handles (FDs).  Use Unix domain sockets when needed.
-                              = false // You don't need this ability.  So Unix domain socket used only if MQ_TYPE=NONE.
+  constexpr bool TRANSMIT_FDS = true; // You need ability to send native handles (FDs).  Use Unix domain sockets when needed.
+                              = false; // You don't need this ability.  So Unix domain socket used only if MQ_TYPE=NONE.
   // Client:
   using Session = ssn::Client_session<MQ_TYPE, TRANSMIT_FDS>;
   // Server:
   using Session_server = ssn::Session_server<MQ_TYPE, TRANSMIT_FDS>;
   using Session = Session_server::Session_obj;
   ~~~
+
 ---
 
 Alternatively a simple application or prototype may want to manually set them up without ipc::session.  Though, in our humble opinions, using ipc::session is what's *simple*, as manual setup of a channel involves major annoyances including naming and transport-specific considerations (Unix domain sockets versus POSIX MQs versus... etc.).  Perhaps the better term would have been "conventional" rather than "simple."
