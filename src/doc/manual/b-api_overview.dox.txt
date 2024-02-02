@@ -170,6 +170,8 @@ If one uses the ipc::session API, one need not worry about any detail of opening
 
 @par Synopsis: Pick channel low-level transport
 
+> There are two knobs to twiddle.  If unsure about the first knob, `POSIX` is fine.
+>
 > ~~~
 > constexpr auto MQ_TYPE = schema::MqType::POSIX; // Use POSIX MQs (as from `man mq_overview`) when possible.
 >                        = schema::MqType::BIPC; // Use `boost.interprocess:message_queue`s when possible.
