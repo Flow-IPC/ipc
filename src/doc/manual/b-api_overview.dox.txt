@@ -40,7 +40,6 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > @par Synopsis: Sessions
 >
 > Describe the universe of communicating apps via simple `struct`s:
->
 > ~~~
 > using namespace ipc::session;
 > 
@@ -62,7 +61,6 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > ~~~
 
 > Compile-time-configure your sessions:
-> 
 > ~~~
 > // Specify zero-copy and SHared Memory (SHM) abilities if any.
 > 
@@ -88,7 +86,6 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > ~~~
 
 > Open session(s):
-
 > ~~~
 > // Client side:
 > Session session(nullptr, APP_B_AS_CLI, // This is us (connector).
@@ -110,7 +107,6 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > ~~~
 
 > Open channel(s) in a session:
-
 > - Easiest: Have them be pre-opened, so that they're ready from the session start:
 > 
 > ~~~
