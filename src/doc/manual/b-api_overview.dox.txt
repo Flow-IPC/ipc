@@ -35,9 +35,9 @@ There is a simple scheme that designates one side of a conversation as the **ses
 
 Having obtained a `Session`, the application can open transport channels (and, if desired, SHM arenas) without any naming decisions to make.
 
-> @par Synopsis: Sessions
-> @anchor api_overview_sessions_synopsis
->
+@anchor api_overview_sessions_synopsis
+@par Synopsis: Sessions
+
 > Describe the universe of communicating apps via simple `struct`s:
 > ~~~
 > using namespace ipc::session;
@@ -168,7 +168,7 @@ A **channel** is a bundling of the resources required for, essentially, a bidire
 
 If one uses the ipc::session API, one need not worry about any detail of opening these various handles and feeding them to the particular `Channel`.  This is shown in the @ref api_overview_sessions_synopsis "Sessions synopsis above".  The type of channel openable via a given session is compile-time-configured when declaring your convenience `Session` alias.  The @ref api_overview_sessions_synopsis "Sessions synopsis above" makes one example selection.  You can make other choices as follows.  Note that you just make these selections -- the details are handled underneath.  E.g., you need no knowledge of POSIX MQ API (from `man mq_overview`) to take advantage of its performance characteristics.
 
-> @par Synopsis: Pick channel low-level transport
+@par Synopsis: Pick channel low-level transport
 
 > ~~~
 > constexpr auto MQ_TYPE = schema::MqType::POSIX; // Use POSIX MQs (as from `man mq_overview`) when possible.
