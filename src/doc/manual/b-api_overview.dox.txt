@@ -58,7 +58,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
 >                      // Safety/auth preset.  No need for `0644` and so forth.
 >                      ipc::util::Permissions_level::S_GROUP_ACCESS }
 > ~~~
-
+>
 > Compile-time-configure your sessions:
 > ~~~
 > // Specify zero-copy and SHared Memory (SHM) abilities if any.
@@ -83,7 +83,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > using Session_server = ssn::Session_server<MQ_TYPE, TRANSMIT_FDS>;
 > using Session = Session_server::Server_session_obj;
 > ~~~
-
+>
 > Open session(s):
 > ~~~
 > // Client side:
@@ -104,7 +104,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > // Client/server status matters only when establishing the IPC conversation;
 > // the conversation itself once established is arbitrariy and up to you fully.
 > ~~~
-
+>
 > Open channel(s) in a session:
 > - Easiest: Have them be pre-opened, so that they're ready from the session start:
 > 
@@ -137,7 +137,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
 >   }
 > });
 > ~~~
-
+>
 > - Max flexibility: Open them at any time.  Either side can be initiator or acceptor of channel opening at any time.
 > 
 > ~~~
