@@ -37,7 +37,8 @@ Having obtained a `Session`, the application can open transport channels (and, i
 
 ---
 @anchor api_overview_sessions_synopsis
-@par Synopsis: Describe the universe of communicating apps via simple `struct`s
+@par Synopsis: Sessions
+Describe the universe of communicating apps via simple `struct`s:
 
   ~~~
   using namespace ipc::session;
@@ -45,23 +46,26 @@ Having obtained a `Session`, the application can open transport channels (and, i
   // Describe the universe of communicating apps via simple `struct`s.
 
   // Example: 2 applications.
-  const App APP_A{ "a", // m_name: Unique name for convenient identification.
-                   "/bin/app_a.exec", USER_ID, GROUP_ID }; // Basic properties for safety/authentication.
-  const App APP_B{ "b", ... };
-  // Which app(s) will connect (a/k/a client(s)) versus accept sessions (a/k/a servers(s))?
+  const App APP_A{ "a", // Unique name for identification in the system.
+                   // Basic properties for safety, authentication.
+                   "/bin/app_a.exec", USER_ID_A, GROUP_ID };
+  const App APP_B{ "b", "/bin/app_a.exec", USER_ID_B, GROUP_ID };
+  // Which app(s) will connect sessions (client) versus accept sessions (server)?
   const Client_app APP_B_AS_CLI{ APP_B };
   const Server_app APP_A_AS_SRV
-                     { APP_A, // Super-class App: Copy the App info.
-                       { APP_B.m_name }, // We are A; we allow only B to open sessions with us.
-                       "", ipc::util::Permissions_level::S_GROUP_ACCESS } // A safety/auth preset.
+                     { APP_A,
+                       { APP_B.m_name }, // We are A; we allow only B to open sessions with us.                       
+                       "", // Keep run-time files in /var/run by default.
+                       // Safety/auth preset.  No need for `0644` and so forth.
+                       ipc::util::Permissions_level::S_GROUP_ACCESS }
   ~~~
 
-@par Synopsis: Compile-time-configure your sessions
+Compile-time-configure your sessions:
 
   ~~~
   // Specify zero-copy and SHared Memory (SHM) abilities if any.
 
-  namespace ssn = shm::classic; // => Your channels will be automatically zero-copy!  And you can access SHM arenas.
+  namespace ssn = shm::classic;
   // Use [ipc::]session - For non-SHM-enabled communication.
   //     [ipc::session::]shm::* - For SHM-enabled comms (zero-copy structured messaging; explicit SHM access if desired).
   //     [ipc::session::]shm::classic - Classic one-segment variant with simple allocation strategy by Boost.
@@ -82,7 +86,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
   using Session = Session_server::Server_session_obj;
   ~~~
 
-@par Synopsis: Open session(s)
+Open session(s):
 
   ~~~
   // Client side:
@@ -104,10 +108,9 @@ Having obtained a `Session`, the application can open transport channels (and, i
   // the conversation itself once established is arbitrariy and up to you fully.
   ~~~
 
-@par Synopsis: Open channel(s) in a session
+Open channel(s) in a session:
 
-@par
-Easiest: Have them be pre-opened, so that they're ready from the session start:
+  - Easiest: Have them be pre-opened, so that they're ready from the session start:
 
   ~~~
   // Client side: Example: Expect 1 client-requested channel; N server-requested channels.
@@ -139,8 +142,7 @@ Easiest: Have them be pre-opened, so that they're ready from the session start:
   });
   ~~~
 
-@par
-Max flexibility: Open them at any time.  Either side can be initiator or acceptor of channel opening at any time.
+  - Max flexibility: Open them at any time.  Either side can be initiator or acceptor of channel opening at any time.
 
   ~~~
   // session.open_channel() is non-blocking, synchronous.
