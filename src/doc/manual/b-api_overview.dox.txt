@@ -267,6 +267,7 @@ All transport APIs at this layer, as well the structured layer (see below), have
 > srv.async_accept(&sock, [...](const auto& err_code) { ... });
 >
 > // Native_socket_stream adds some safety/informational features.  ipc::session uses this internally.
+>
 > const util::Process_credentials creds = sock.remote_peer_process_credentials();
 > std::cout << creds // Prints .process_id(), .user_id(), .group_id()
 >           << ' ' << creds.process_invoked_as() << '\n'; // Prints the command-line argv[0] through which remote process was invoked.
@@ -323,6 +324,80 @@ To deal with structured data instead of mere blobs (though a schema-based struct
     - When I send a message M', I can optionally specify that I expect either up-to-1, or an arbitrary number of, **responses** to it.  I ask that when such a response M is received, `struc::Channel` please invoke a particular handler `F(M)`.
 
 @link ipc::transport::struc::Msg_out struc::Msg_out@endlink is a container-like data structure representing an out-message M'.  @link ipc::transport::struc::Msg_in struc::Msg_in@endlink is a receiver's read-only view into such a message M upon its receipt.
+
+@anchor api_overview_transport_struc_synopsis
+@par Synopsis: Transport (structured)
+
+> Refresher on Cap'n Proto schemas (pale imitation of [https://capnproto.org/language.html](this page)):
+> ~~~{.capnp}
+> # A schema file defines your potential structures.
+> # ...
+> $Cxx.namespace("my_meta_app::capnp"); # capnp-generated metadata struct matching the below will go into this C++ namespace.
+> 
+> struct CoolMsg
+> {
+>   # You can use absolutely any schema you would as a general capnp user... except:  We add *exactly one* requirement:
+>   # Your root `struct` must contain an anonymous union (we will use this to mux/demux in-messages to C++ callbacks).
+> 
+>   description @1 :Text;
+>   # You can, if desired, have arbitrary fields outside the union, to be present in any message.
+> 
+>   union
+>   {
+>     sumRequest @2 :SumRequest;
+>     sumResponse @3 :SumResponse;
+>   }
+> }
+> struct SumRequest
+> {
+>   # Asks that receiver add up termsToAdd, multiply sum by constantFactor, and return result in
+>   # SumResponse.
+>   termsToAdd @0 :List(Int64);
+>   constantFactor @1 :Int64;
+> }
+> struct SumResponse
+> {
+>   result @0 :Int64;
+> }
+> ~~~
+>
+> Take a content-agnostic ipc::transport::Channel `raw_chan`, perhaps @ref api_overview_sessions_synopsis "obtained via" ipc::session.  Do some structured-data transmission.
+> ~~~
+> using namespace ipc::transport::struc;
+> namespace ssn = ipc::session; // In this example, use non-zero-copy (internally, heap-based) transmission.
+> using Session = ssn::...;
+>
+> // ...session+channel opening...
+> // raw_chan = opened channel from session.
+>
+> // Upgrade it to a struc::Channel.  Specify capnp-generated schema as template parameter.
+> Session::Structured_channel<my_meta_app::capnp::CoolMsg>
+>   chan(nullptr, std::move(raw_chan), // Eat it!  `raw_chan` becomes empty.
+>        Channel_base::S_SERIALIZE_VIA_HEAP, session.session_token());
+>
+> // Create a message -- no need to worry about capnp MessageBuilder work!  In our case it allocates in heap.
+> auto msg = cool_channel.create_msg();
+> const auto body_root = msg.body_root();
+> From here... back to vanilla capnp land!  To wit:
+> auto root = body_root->initSumRequest();
+> auto list = root.initTermsToAdd(3);
+> list.set(0, 11);
+> list.set(1, -22);
+> list.set(2, 33);
+> root.setConstantFactor(-2);
+> body_root->setDescription("(11 - 22 + 33) x -2 = -44");
+>
+> // .sync_request(): send request; synchronously await reply.
+> auto rsp = cool_channel.sync_request(msg);
+> 
+> // The other side had best know how to add stuff and multiply at the end!  Check the in-message.
+> assert(rsp->body_root().getSumResponse().getResult() == int64_t(-44));
+> ~~~
+>
+> Expect request.  Send reply.
+> ~~~
+> // ...
+> ~~~
 
 Transport (structured): Zero-copy
 ---------------------------------
