@@ -198,33 +198,30 @@ All transport APIs at this layer, as well the structured layer (see below), have
 @anchor api_overview_transport_synopsis
 @par Synopsis: Transport (unstructured)
 
-> At the lowest level, we support these **transports**: [POSIX message queues](https://man7.org/linux/man-pages/man7/mq_overview.7.html), [boost.interprocess MQs, internally SHM-based](https://www.boost.org/doc/libs/1_82_0/doc/html/interprocess/synchronization_mechanisms.html#interprocess.synchronization_mechanisms.message_queue), and of course Unix domain sockets.
+> Lowest layer: MQs accessible via unified ipc::transport::Persistent_mq_handle *concept*.  (This API are mutually uniform, more pleasant, and at times more powerful than the underlying APIs.)  boost.asio is leveraged for Unix domain stream sockets.
+>   - @link ipc::transport::Posix_mq_handle Posix_mq_handle@endlink for [POSIX message queues](https://man7.org/linux/man-pages/man7/mq_overview.7.html).
+>   - @link ipc::transport::Bipc_mq_handle Bipc_mq_handle@endlink for [boost.interprocess MQs -- internally SHM-based](https://www.boost.org/doc/libs/1_82_0/doc/html/interprocess/synchronization_mechanisms.html#interprocess.synchronization_mechanisms.message_queue).
+>   - We leverage [boost::asio::local::stream_protocol::socket](https://www.boost.org/doc/libs/1_84_0/doc/html/boost_asio/reference/local__stream_protocol/socket.html), aliased from ipc::transport::asio_local_stream_socket::Peer_socket.  Namespace @link asio_local_stream_socket ipc::transport::asio_local_stream_socket@endlink contains advanced utilities, should you need to work at this low level, as we do internally.
 >
-> The former two (the MQs) are, at the lowest-level, accessible via the ipc::transport::Persistent_mq_handle *concept*.  Accordingly we provide:
->   - @link ipc::transport::Posix_mq_handle Posix_mq_handle@endlink for POSIX MQ lowest-level access.
->   - @link ipc::transport::Bipc_mq_handle Bipc_mq_handle@endlink for bipc MQ lowest-level access.
->
-> In addition to providing a uniform interface, as needed for the rest of Flow-IPC to work, you'll likely find them to be somewhat more pleasant and (in some ways) powerful than working directly with the `man mq_overview` and `boost::interprocess::message_queue` APIs.
->
-> The next-higher layer (including the ever-important Unix domain socket stream API) strongly depends on key *concepts*:
->   - ipc::transport::Blob_sender Blob_sender:
->     - Method @link ipc::transport::Blob_sender::send_blob() send_blob()@endlink to *synchronously, never-would-blockingly* send a buffer *with message boundaries respected*.
+> Next layer: Sender/receiver *concepts* and their implementations. The key concepts:
+>   - ipc::transport::Blob_sender:
+>     - Method @link ipc::transport::Blob_sender::send_blob() send_blob()@endlink to *synchronously, never-would-blockingly* send a binary buffer *with message boundaries respected*.
 >     - Methods `*end_sending()` to send an end-of-stream graceful-close marker.
 >     - Method `auto_ping()` to enable periodic auto-pinging of opposing receiver with internal messages that are ignored except that they reset any idle timer as enabled via opposing `Blob_receiver::idle_timer_run()`.
 >   - ipc::transport::Blob_receiver:
 >     - Method @link ipc::transport::Blob_receiver::async_receive_blob() async_receive_blob()@endlink to receive, with message boundaries respected, one message the opposing side sent via `send_blob()`, into a large-enough buffer supplied by caller.  Receipt, or error, is indicated asynchronously via **completion handler** function supplied by user.
 >     - Method `idle_timer_run()` to enable an idle timer that would emit a connection-ending error, if no message (whether from a user blob or an `auto_ping()`) arrives within a specific time period from the last such message or connection start.
 >   - ipc::transport::Native_handle_sender: Just like `Blob_sender`, except `send_blob()` is replaced by:
->     - Method @link ipc::transport::Native_handle_sender::send_native_handle() send_native_handle()@endlink which sends: a message (blob); or a socket handle (FD); or both.  Use specifies the blob as with `send_blob()` and/or @link ipc::util::Native_handle a native handle (FD)@endlink (an `int`).
->   - ipc::transport::Native_handle_receiver: What `Blob_receiver` is to `Blob_sender`, this guy is `Native_handle_sender`.  Replaces `async_receive_blob()` with `async_receive_native_handle()` which can receive a message, an FD, or both.  (Message boundaries apply to both: if blob+FD were sent together, they'll be received together.)
->   - An ipc::transport::sync_io contains a `sync_io`-pattern counterpart to the async-I/O items described just above.  E.g.: ipc::transport::sync_io::Blob_receiver allows for integration of blob-receiving functionality above into an `epoll`-based event loop, with only non-blocking calls and no internal background threads involved.
+>     - Method @link ipc::transport::Native_handle_sender::send_native_handle() send_native_handle()@endlink which sends: a message (blob); or a socket handle (FD); or both.  User provides socket handle (if any) as @link ipc::util::Native_handle essentially an `int`@endlink.
+>   - ipc::transport::Native_handle_receiver: What `Blob_receiver` is to `Blob_sender`, this guy is `Native_handle_sender`.  Method `async_receive_native_handle()` can receive a message, an FD, or both.
+>   - For each `ipc::transport::X` concept above, `ipc::transport::sync_io::X` is the `sync_io`-pattern counterpart.  E.g.: ipc::transport::sync_io::Blob_receiver allows for integration of blob-receiving functionality above into an `epoll`-based event loop, with only non-blocking calls and no internal background threads involved.
 >
-> These are concepts, not real classes, but they are documented as-if they were real classes.  The following actual classes or class templates implement the concepts:
->   - Unix domain sockets are the only transport with native-handle native handle (FD) transmission ability:
+> These classes or class templates implement the above concepts:
+>   - Unix domain (stream) sockets have exclusive FD-transmission ability; are great for blobs too.
 >     - ipc::transport::Native_socket_stream implements all 4 concepts: `Blob_sender`, `Blob_receiver`, `Native_handle_sender`, `Native_handle_receiver`.
->   - MQs can efficiently transmit binary messages of limited size.  A single kernel-persistent MQ object, maintained by your OS, is required for a unidirectional pipe.  For bidirectional work, use 2 MQs arranged in mutually-facing fashion.  For each one, user a sender object on one end and receiver on another.  These will work (compile, run) with any `Persistent_mq_handle` MQ type, including the 2 available: `Posix_mq_handle`, `Bipc_mq_handle`.  
->     - ipc::transport::Blob_stream_mq_sender<Persistent_mq_handle> implements Blob_sender.
->     - ipc::transport::Blob_stream_mq_receiver<Persistent_mq_handle> implements Blob_receiver.
+>   - MQs efficiently transmit blobs of limited size.  One kernel-persistent MQ object, maintained by OS, is required for a unidirectional pipe.  For bidirectional pipe, use 2 MQs arranged in mutually-facing fashion.  For each one, user a sender object on one end and receiver on another.
+>     - @link ipc::transport::Blob_stream_mq_sender<Persistent_mq_handle> ipc::transport::Blob_stream_mq_sender@endlink implements Blob_sender.
+>     - @link ipc::transport::Blob_stream_mq_receiver<Persistent_mq_handle> ipc::transport::Blob_stream_mq_receiver@endlink implements Blob_receiver.
 
 @anchor api_overview_transport_struc
 Transport (structured)
