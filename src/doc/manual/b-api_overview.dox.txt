@@ -223,7 +223,9 @@ All transport APIs at this layer, as well the structured layer (see below), have
 >     - @link ipc::transport::Blob_stream_mq_sender<Persistent_mq_handle> ipc::transport::Blob_stream_mq_sender@endlink implements Blob_sender.
 >     - @link ipc::transport::Blob_stream_mq_receiver<Persistent_mq_handle> ipc::transport::Blob_stream_mq_receiver@endlink implements Blob_receiver.
 >
-> The concept APIs above act the same regardless of concrete class and apply to each object once in opened (PEER) state.  Each class also has non-concept aspects which depend on its specific characteristics.  Most of these concern opening a connection (getting *to* PEER state).  A survey:
+> The concept APIs above act the same regardless of concrete class and apply to each object once in opened (PEER) state.  Each class also has non-concept aspects which depend on its specific characteristics.  Most of these concern opening a connection (getting *to* PEER state).
+>
+> A survey: 
 >
 > ~~~
 > using namespace ipc::transport;
@@ -264,7 +266,12 @@ All transport APIs at this layer, as well the structured layer (see below), have
 > Native_socket_stream_acceptor srv(nullptr, SRV_ADDR, &err_code); // Error_code* to catch, e.g., name conflicts.
 > srv.async_accept(&sock, [...](const auto& err_code) { ... });
 >
-> // Can bundle these into `ipc::transport::Channel`s.
+> // Native_socket_stream adds some safety/informational features.  ipc::session uses this internally.
+> const util::Process_credentials creds = sock.remote_peer_process_credentials();
+> std::cout << creds // Prints .process_id(), .user_id(), .group_id()
+>           << ' ' << creds.process_invoked_as() << '\n'; // Prints the command-line argv[0] through which remote process was invoked.
+>
+> // Can bundle Blob_senders, Blob_receivers, etc., into `ipc::transport::Channel`s.
 > // Convenience aliases and data-free subclasses exist to make it easier versus using an actual Channel<...>.
 >
 > // In this case we create a Channel with 2 bidirectional pipes, from 2 `Posix_mq_handle`s like out_q above; and
