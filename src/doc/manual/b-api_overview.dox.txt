@@ -187,7 +187,7 @@ If one uses the ipc::session API, one need not worry about any detail of opening
 
 Alternatively a simple application or prototype may want to manually set them up without ipc::session.  Though, in our humble opinions, using ipc::session is what's *simple*, as manual setup of a channel involves major annoyances including naming and transport-specific considerations (Unix domain sockets versus POSIX MQs versus... etc.).  Perhaps the better term would have been "conventional" rather than "simple."  We will briefly discuss how to manually open various channels without ipc::session a few paragraphs below.
 
-@note Note well! Once you've obtained an open `transport::Channel`, whether via ipc::session or manually, in many (probably most) cases you will not need or want to understand the information in the rest of this section and instead skip straight to @ref api_overview_transport_struc "Transport (structured)", below.  That is, typically you'll want to transmit structured data -- various fields, structures, lists thereof, etc. (+ possibly FDs) -- as opposed to mere binary blobs (+ possibly FDs).  To do so, one takes a freshly-opened `Channel` and **upgrades** it to a **structured channel** (`struc::Channel`).  A good portion of the power of Flow-IPC is how it integrates with/leverages [https://capnproto.org](Cap'n Proto) via ipc::transport::struc::Channel.  However, for simpler or specialized use cases it is completely reasonable to want to operate at the lower, unstructured layer that is ipc::transport::Channel, or even the components it comprises (MQs, stream sockets at least).  In that case, and/or to see how to manually open these, read on in this section.
+@note Note well! Once you've obtained an open `transport::Channel`, whether via ipc::session or manually, in many (probably most) cases you will not need or want to understand the information in the rest of this section and instead skip straight to @ref api_overview_transport_struc "Transport (structured)", below.  That is, typically you'll want to transmit structured data -- various fields, structures, lists thereof, etc. (+ possibly FDs) -- as opposed to mere binary blobs (+ possibly FDs).  To do so, one takes a freshly-opened `Channel` and **upgrades** it to a **structured channel** (`struc::Channel`).  A good portion of the power of Flow-IPC is how it integrates with/leverages [Cap'n Proto](https://capnproto.org) via ipc::transport::struc::Channel.  However, for simpler or specialized use cases it is completely reasonable to want to operate at the lower, unstructured layer that is ipc::transport::Channel, or even the components it comprises (MQs, stream sockets at least).  In that case, and/or to see how to manually open these, read on in this section.
 
 All transport APIs at this layer, as well the structured layer (see below), have an API that is as-synchronous-as-possible.  In particular all send operations are non-blocking and synchronous and never return "would-block" -- while guaranteeing good performance in practice.  Receive APIs are asynchronous by their nature.  A proactor-style API (a-la boost.asio) is provided for this and other async ops (such as connect and accept of various types).
 
@@ -328,7 +328,7 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 @anchor api_overview_transport_struc_synopsis
 @par Synopsis: Transport (structured)
 
-> Refresher on Cap'n Proto schemas (pale imitation of [https://capnproto.org/language.html](this page)):
+> Refresher on Cap'n Proto schemas (pale imitation of a part of [this page](https://capnproto.org/language.html)):
 > ~~~{.capnp}
 > # A schema file defines your potential structures.
 > # ...
@@ -374,6 +374,7 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 > Session::Structured_channel<my_meta_app::capnp::CoolMsg>
 >   chan(nullptr, std::move(raw_chan), // Eat it!  `raw_chan` becomes empty.
 >        Channel_base::S_SERIALIZE_VIA_HEAP, session.session_token());
+> chan.start(...); // Error handler: topic omitted here.
 >
 > // Create a message -- no need to worry about capnp MessageBuilder work!  In our case it allocates in heap.
 > auto msg = cool_channel.create_msg();
@@ -396,8 +397,58 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 >
 > Expect request.  Send reply.
 > ~~~
-> // ...
+> // Same deal as on the other side.
+> Session::Structured_channel<my_meta_app::capnp::CoolMsg>
+>   chan(nullptr, std::move(raw_chan), Channel_base::S_SERIALIZE_VIA_HEAP, session.session_token());
+> chan.start(...);
+>
+> chan.expect_msgs(my_meta_app::capnp::CoolMsg::Which::SUM_REQUEST, // Demux to handler on receipt of SumRequest union-choice.
+>                  [...](auto&& req) // Type is shared_ptr<M>, where M is: struc::Channel<...>::Msg_in, a/k/a struc::Msg_in<...>.
+> {
+>   // ...event loop brief detail omitted...
+> 
+>   const auto body_root = req->body_root();
+> 
+>   // Vanilla capnp work:
+> 
+>   auto root = body_root.getSumRequest();
+>   auto list = root.getTermsToAdd();
+>   int64_t sum = 0;
+>   const auto sum_func = [&](int64_t val) { sum += val; };
+>   std::for_each(list.begin(), list.end(), sum_func);
+>   sum *= root.getConstantFactor();
+> 
+>   std::cout << "Got request [" << *req << "] including description "
+>                "[" << body_root.getDescription() << "]; responding with result [" << sum << "].");
+> 
+>   // Respond.
+> 
+>   auto msg = chan.create_msg();
+>   msg.body_root()->initSumResponse().setResult(sum);
+>   msg.body_root()->setDescription("the sum you ordered, sir");
+> 
+>   msg.send(msg, req.get()); // <-- originating_msg_or_null.  We are responding.
+> 
+>   // ...event loop brief detail omitted...
+> };
 > ~~~
+
+Beyond that, any kind of code-snippet synopsis would be too wordy for this page; see @ref chan_struct for in-depth coverage.  We'll summarize the capabilities here:
+  - Each out-message is either **unsolicited** (not responding to any particular in-message) or a **response** (responds to one specific in-message).  Every send-method of ipc::transport::struc::Channel (and `struc::sync_io::Channel`) takes an "originating message" pointer: simply supply `nullptr` for unsolicited messages or a `Msg_in` for responses.
+    - This applies to: `.send()`, `.async_request()`, `.sync_request()`.
+  - Each in-message is therefore either unsolicited or a response, naturally.
+    - If you expect a response, this is indicated by issuing a **request**: use `.async_request()` (response arrives asynchronously) or `.sync_request()` (as in the above example).
+      - `.async_request()` can be **one-off** or **indefinite-lifetime**, depending on a certain argument.  In the latter case 0+ responses can arrive, and you can explicitly unregister the expectation for more responses using `.undo_expect_responses()`.
+      - `.sync_request()` is by definition one-off: It waits for 1 response exactly.
+        - You can optionally set a timeout.  In many cases it is not necessary, as you can count on a lightning-quick (non-blocking) call: this is Flow-IPC.  Just ensure you have a handler set-up on the opposing side, before you begin issuing these, to avoid blocking.
+    - If you expect an unsolicited message, call `.expect_msg()` or `.expect_msgs()`; you'll need to supply the union-selector enumeration value (`SUM_REQUEST` in the above example) to demux to that message type's specific handler.
+      - Use `.expect_msgs()` (as in the above example) if you expect an arbitrary number of such unsolicited messages.  Use `.undo_expect_msgs()` if desired later.
+      - Use `.expect_msg()` if you expect exactly one such unsolicited message.
+      - An unsolicited message that does not currently have a registered handler (outstanding `.expect_msg*()` call) *is not dropped*.  It is cached.  If a matching `.expect_msg*()` is subsequently called, its handler is immediately fed with any applicable cached message(s).
+        - There is no caching for unexpected responses (response without request).  `.set_unexpected_response_handler()` and `.set_remote_unexpected_response_handler()` can detect such events, but you can also design your code/protocol to not need them.  In general response-without-request is dropped: it is not a channel-hosing condition.
+  - Each out-message is either a **notification** (expects no response) or a **request**.
+    - `.send()` is for notifications.  For example the `SumResponse` sent in the example is a notification.
+    - `.*sync_request()` is for requests.
 
 Transport (structured): Zero-copy
 ---------------------------------
@@ -414,7 +465,7 @@ At no point do you have to worry about naming a SHM pool, removing it from the f
 
 It is also possible to set this up without ipc::session.
 
-Orthogonally, for advanced needs likely driven by tight performance needs, it is possible to develop your own backing-allocation scheme: Implement the ipc::transport::struc::Struct_builder and @link ipc::transport::struc::Struct_reader Struct_reader@endlink concepts.  For example, especially if sending small messages from one thread and not requiring end-to-end zero-copy, one could allocate out-messages from a single pre-heap-allocated buffer to reduce the cycles spent in the heap allocator to (amortized) zero.
+Orthogonally, for advanced techniques likely driven by tight performance needs, it is possible to develop your own backing-allocation scheme: Implement the ipc::transport::struc::Struct_builder and @link ipc::transport::struc::Struct_reader Struct_reader@endlink concepts.  For example, especially if sending small messages from one thread and not requiring end-to-end zero-copy, one could allocate out-messages from a single pre-heap-allocated buffer to reduce the cycles spent in the heap allocator to (amortized) zero.
 
 Direct storage in SHared Memory (SHM)
 -------------------------------------

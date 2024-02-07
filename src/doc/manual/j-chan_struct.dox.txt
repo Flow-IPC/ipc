@@ -474,7 +474,7 @@ One-off example first:
     {
       // We are back in: Your async-I/O loop's main thread W.
 
-      int64_t sum;
+      int64_t sum = 0;
       const auto sum_func = [&](int64_t val) { sum += val; };
       auto root = req->body_root().getSumRequest();
       auto list = root.getTermsToAdd();
@@ -652,7 +652,7 @@ The channel might get hosed *at any time*.  Consider this code:
 
       // --> DISCUSSION POINT A. <--
 
-      int64_t sum;
+      int64_t sum = 0;
       const auto sum_func = [&](int64_t val) { sum += val; };
       auto root = req->body_root().getSumRequest();
       auto list = root.getTermsToAdd();
