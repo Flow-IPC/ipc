@@ -222,6 +222,86 @@ All transport APIs at this layer, as well the structured layer (see below), have
 >   - MQs efficiently transmit blobs of limited size.  One kernel-persistent MQ object, maintained by OS, is required for a unidirectional pipe.  For bidirectional pipe, use 2 MQs arranged in mutually-facing fashion.  For each one, user a sender object on one end and receiver on another.
 >     - @link ipc::transport::Blob_stream_mq_sender<Persistent_mq_handle> ipc::transport::Blob_stream_mq_sender@endlink implements Blob_sender.
 >     - @link ipc::transport::Blob_stream_mq_receiver<Persistent_mq_handle> ipc::transport::Blob_stream_mq_receiver@endlink implements Blob_receiver.
+>
+> The concept APIs above act the same regardless of concrete class and apply to each object once in opened (PEER) state.  Each class also has non-concept aspects which depend on its specific characteristics.  Most of these concern opening a connection (getting *to* PEER state).  A survey:
+>
+> ~~~
+> using namespace ipc::transport;
+> namespace util = ipc::util;
+> namespace asio_local = ipc::transport::asio_local_stream_socket::local_ns;
+>
+> // With MQs, you must open an MQ handle first, which is necessary can create the kernel-persistent OS MQ object.
+>
+> // ipc::session would figure all this out by itself; when working manually you have to do so yourself.
+> Posix_mq_handle out_q(nullptr, util::Shared_name::ct("sharedMqNameA2B"), // Shared name known by other side
+>                       util::OPEN_OR_CREATE, // Atomically create if needed, open if exists in system already.
+>                       10, 1000, // Max # of unread messages, max size of message,
+>                       0600, &err_code); // Permissions, if creation is needed; Error_code* in case of error.
+> Bipc_mq_handle in_q(nullptr, util::Shared_name::ct("sharedMqNameB2A"), OPEN_ONLY, &err_code);
+>
+> // Then to make yourself a Blob_sender/receiver, feed them into constructor.
+> Blob_stream_mq_sender<Posix_mq_handle> out(nullptr, "cool_reader_nickname", std::move(out_q));
+> Blob_stream_mq_receiver<Bipc_mq_handle> in(nullptr, "cool_writer_nickname", std::move(in_q));
+>
+> // With socket streams, you can either use two pre-opened FDs; or use client/server setup.
+>
+> // Pre-opened FDs:
+> asio_local::Peer_socket a_raw_sock, b_raw_sock;
+> asio_local::connect_pair(a_raw_sock, b_raw_sock); // Can also use native ::socketpair().
+> // (b_raw_sock could be spread to another process via fork() or another Native_socket_stream and other techniques.)
+> Native_socket_stream a_sock(nullptr, "cool_a_nickname", util::Native_handle(a_raw_sock));
+> Native_socket_stream b_sock(nullptr, "cool_b_nickname", util::Native_handle(b_raw_sock));
+>
+> // Client/server: client.
+> const auto SRV_ADDR = util::Shared_name::ct("sharedSockNameSrv");
+> // ^-- Client and server need to agree on this, and it must not conflict.  ipc::session would take care of this.
+> Native_socket_stream sock(nullptr, "cool_a_nickname");
+> sock.async_connect(SRV_ADDR, [...](const auto& err_code) { ... });
+>
+> // Client/server: server.  A dedicated server-acceptor class exists for this.
+>
+> Native_socket_stream sock(nullptr, "cool_b_nickname");
+> Native_socket_stream_acceptor srv(nullptr, SRV_ADDR, &err_code); // Error_code* to catch, e.g., name conflicts.
+> srv.async_accept(&sock, [...](const auto& err_code) { ... });
+>
+> // Can bundle these into `ipc::transport::Channel`s.
+> // Convenience aliases and data-free subclasses exist to make it easier versus using an actual Channel<...>.
+>
+> // In this case we create a Channel with 2 bidirectional pipes, from 2 `Posix_mq_handle`s like out_q above; and
+> // an already-opened Native_socket_stream.
+> Mqs_socket_stream_channel<false, Posix_mq_handle> // false => async-I/O API; true => sync_io-pattern API.
+>   chan(nullptr, "two_pipe_chan_nickname", std::move(out_q), std::move(in_q), std::move(sock));
+> // Use the blobs pipe to send:
+> chan.send_blob(util::Blob_const(some_byte_vector.data(), some_byte_vector.size()));
+> // Use the blobs-and-FDs pipe to receive:
+> util::Native_handle fd;
+> chan.async_receive_native_handle(&fd, util::Blob_mutable(some_target_vector.data(), some_target_vector.capacity()),
+>                                  [&](const auto& err_code, size_t n_rcvd)
+> {
+>   if (!err_code)
+>   {
+>     some_target_vector.resize(n_rcvd);
+>     // some_target_vector.begin()..end() = received blob.
+>     // fd.m_native_handle = `int` file descriptor/raw handle.
+> });
+>
+> // In this case we create a Channel with 1 bidirectional pipe, a Unix domain socket stream, for both FDs and blobs.
+> Socket_stream_channel<false> chan(..., std::move(sock));
+> // Can access the Native_handle_sender through the accessor:
+> chan.hndl_snd()->send_native_handle(util::Native_handle(a_raw_int_fd), util::Blob_const(...));
+> // Or through the Channel forwarding API:
+> chan.send_native_handle({}, util::Blob_const(...)); // Send a blob but no FD this time.
+>
+> // Or create some `Channel`s with a blobs-only pipe each:
+> Socket_stream_channel_of_blobs<false> chan(..., std::move(sock)); // <-- A Unix domain socket pipe only.
+> chan.send_native_handle(...); // Compile error: Socket_stream_channel_of_blobs cannot transmit FDs.
+> chan.send_blob(...); // No problem.
+> Mqs_channel<false, Bipc_mq_handle> chan(..., std::move(out_q), std::move(in_q)); // <-- A boost.interprocess-MQ pipe only.
+> chan.send_native_handle(...); // Compile error: MQs can certainly not transmit FDs.
+> chan.send_blob(...); // No problem.
+> ~~~
+
+All those subleties about different types of pipes in a `Channel` bundle completely disappear when one deals with structured-data `struc::Channel`s.  They are a higher-layer abstraction and will leverage whatever `transport::Channel` it adapts.  In addition to handling capnp-encoded structured data and SHM-backed zero-copy, it also provides basics like request/response, request-method multiplexing, and a bit more.  So let's get into that.
 
 @anchor api_overview_transport_struc
 Transport (structured)
