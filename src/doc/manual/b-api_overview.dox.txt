@@ -198,10 +198,10 @@ All transport APIs at this layer, as well the structured layer (see below), have
 @anchor api_overview_transport_synopsis
 @par Synopsis: Transport (unstructured)
 
-> Lowest layer: MQs accessible via unified ipc::transport::Persistent_mq_handle *concept*.  (This API are mutually uniform, more pleasant, and at times more powerful than the underlying APIs.)  boost.asio is leveraged for Unix domain stream sockets.
+> Lowest layer: MQs accessible via unified ipc::transport::Persistent_mq_handle *concept*.  (This API are mutually uniform, more pleasant, and at times more powerful than the underlying APIs.)  boost.asio is leveraged for Unix domain stream sockets.  We use these *internally*, but we expose them publicly too, should you choose to work at that low level.
 >   - @link ipc::transport::Posix_mq_handle Posix_mq_handle@endlink for [POSIX message queues](https://man7.org/linux/man-pages/man7/mq_overview.7.html).
 >   - @link ipc::transport::Bipc_mq_handle Bipc_mq_handle@endlink for [boost.interprocess MQs -- internally SHM-based](https://www.boost.org/doc/libs/1_82_0/doc/html/interprocess/synchronization_mechanisms.html#interprocess.synchronization_mechanisms.message_queue).
->   - We leverage [boost::asio::local::stream_protocol::socket](https://www.boost.org/doc/libs/1_84_0/doc/html/boost_asio/reference/local__stream_protocol/socket.html), aliased from ipc::transport::asio_local_stream_socket::Peer_socket.  Namespace @link asio_local_stream_socket ipc::transport::asio_local_stream_socket@endlink contains advanced utilities, should you need to work at this low level, as we do internally.
+>   - We leverage [boost::asio::local::stream_protocol::socket](https://www.boost.org/doc/libs/1_84_0/doc/html/boost_asio/reference/local__stream_protocol/socket.html), aliased from ipc::transport::asio_local_stream_socket::Peer_socket.  Namespace @link ipc::transport::asio_local_stream_socket asio_local_stream_socket@endlink has advanced utilities (as free functions and type aliases).
 >
 > Next layer: Sender/receiver *concepts* and their implementations. The key concepts:
 >   - ipc::transport::Blob_sender:
