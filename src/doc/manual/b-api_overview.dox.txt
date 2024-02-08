@@ -339,13 +339,13 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 >   # You can use absolutely any schema you would as a general capnp user... except:  We add *exactly one* requirement:
 >   # Your root `struct` must contain an anonymous union (we will use this to mux/demux in-messages to C++ callbacks).
 > 
->   description @1 :Text;
+>   description @0 :Text;
 >   # You can, if desired, have arbitrary fields outside the union, to be present in any message.
 > 
 >   union
 >   {
->     sumRequest @2 :SumRequest;
->     sumResponse @3 :SumResponse;
+>     sumRequest @1 :SumRequest;
+>     sumResponse @2 :SumResponse;
 >   }
 > }
 > struct SumRequest
@@ -454,14 +454,72 @@ Transport (structured): Zero-copy
 ---------------------------------
 Say I prepare a message M': I construct it (`struc::Msg_out`), I mutate it via its capnp-generated mutators (as the required backing memory is gradually allocated behind the scenes), and then I @link ipc::transport::struc::Channel::send() struc::Channel::send()@endlink it.  The receiver receives it as `struc::Msg_in` M subsequently and accesses its various parts via capnp-generated accessors.  *Zero-copy* means that the backing memory allocated for M' is never copied into any low-level transport.  Instead only some tiny, constant-sized handle is (internally) copied into and out of the transport -- and the accessors of M are directly reading the memory in M'.
 
-The obvious benefit of this is performance.  Notably, also, it is possible to subsequently modify M' and send it (and receive it) again.  The backing memory is freed once M' and all in-messsage views like M have been destroyed.  (The Ms are made available exclusively via `shared_ptr`.)
+The obvious benefit of this is performance.  Notably, also, it is possible to subsequently modify M' and send it (and receive it) again.  The backing memory is freed once M' and all in-message views like M have been destroyed *across all processes*.  (The Ms are made available exclusively via `shared_ptr`.)
 
 While zero-copy is optional, in general we recommend using it.  Fortunately it is quite easy to enable.  *Internally* it is accomplished by using SHM; but in terms of the public API, all you have to do is -- when writing the code for opening your ipc::session::Session -- simply choose a SHM-backed session type.  That is:
   - Zero-copy (a/k/a SHM-backed): Use `"ipc::session::shm::...::Client_session"` and `"ipc::session::shm::...::Session_server"`.
   - Non-zero-copy: Use ipc::session::Client_session and ipc::session::Session_server.
+
 Whichever you choose, their APIs are identical.  In particular, suppose you chose `Session` type `S`; then `S::Structured_channel<Your_capnp_schema>` is the alias for the proper SHM-backed-or-not `struc::Channel` type.
 
 At no point do you have to worry about naming a SHM pool, removing it from the file-system on cleanup (including following a crash), and so on.  All is handled internally.  Simply choose a SHM-backed `Session` type on each side at compile-time.
+
+@par Synopsis: Transport (structured): Enabling zero-copy end-to-end
+
+> Consider @ref api_overview_transport_struc_synopsis "the structured-transmission example just above".  It lacks zero-copy performance end-to-end.  Here is **all you have to do to make it zero-copy end-to-end**.  Notice the tiny change and zero mentions of *any* SHM details.
+> ~~~
+> // ...everything same...
+>
+> using Session = ssn::...;
+> // --- CHANGE TO --v
+> using Session = ssn::shm::classic::...;
+> 
+> // ...everything same...
+>
+> Session::Structured_channel<my_meta_app::capnp::CoolMsg>
+>   chan(nullptr, std::move(raw_chan),
+>        Channel_base::S_SERIALIZE_VIA_HEAP, session.session_token()); // <-- CHANGED LINE.
+> // --- CHANGE TO --v
+> Session::Structured_channel<my_meta_app::capnp::CoolMsg>
+>   chan(nullptr, std::move(raw_chan),
+>        Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session); // <-- CHANGED LINE.
+>
+> // ...everything same...
+> ~~~
+>
+> Variation: switch SHM-providers:
+> ~~~
+> // As written above, when allocation is necessary internally, SHM-classic provider will use a classic one-segment SHM setup,
+> // with a simple allocation algorithm provided by boost.interprocess.
+> using Session = ssn::shm::classic::...;
+> // --- CHANGE TO --v
+> using Session = ssn::shm::arena_lend::jemalloc::...;
+> // Now SHM-jemalloc provider is used instead; it will internally use multiple SHM segments as needed, driven by
+> // commercial-grade `jemalloc` allocation algorithm.  Otherwise example code remains unchanged.
+> ~~~
+>
+> Variation: change max lifetime of messages created via `struc::Channel::create_msg()`:
+> ~~~
+> // As written above, the maximum lifetime of a `Msg_out` = as long as the session remains open.
+> // This is often clean and sufficient.
+> Session::Structured_channel<...> chan(...,
+>                                       Channel_base::S_SERIALIZE_VIA_SESSION_SHM, ...); // <-- CHANGED LINE.
+> // --- CHANGE TO --v
+> // Now the the message can live *past* the session: until the Session_server is destroyed, meaning
+> // your process accepting incoming sessions exits.  For example, suppose your session-server accepts
+> // (sessions) from many session-client processes of one application over its lifetime; session-client A sends
+> // a PutCache message containing a large file's contents to session-server which memorizes it (to serve later);
+> // then session-client A closes session and exits; the message continues to exist, and the memory-cached file
+> // can be served to session-clients B, C, ....
+> Session::Structured_channel<...> chan(...,
+>                                       Channel_base::S_SERIALIZE_VIA_APP_SHM, ...); // <-- CHANGED LINE.
+>
+> // Note, also: A message is in no way limited to the channel that `.create_msg()`d it.  .create_msg()
+> // is only a convenient way to construct one.  One can construct a message without any channel in existence at all.
+> 
+
+This is 
+
 
 It is also possible to set this up without ipc::session.
 
