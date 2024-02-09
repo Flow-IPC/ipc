@@ -41,9 +41,9 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > Describe the universe of communicating apps via simple `struct`s:
 > ~~~
 > using namespace ipc::session;
-> 
+>
 > // Describe the universe of communicating apps via simple `struct`s.
-> 
+>
 > // Example: 2 applications.
 > const App APP_A{ "a", // Unique name for identification in the system.
 >                  // Basic properties for safety, authentication.
@@ -53,7 +53,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > const Client_app APP_B_AS_CLI{ APP_B };
 > const Server_app APP_A_AS_SRV
 >                    { APP_A,
->                      { APP_B.m_name }, // We are A; we allow only B to open sessions with us.                       
+>                      { APP_B.m_name }, // We are A; we allow only B to open sessions with us.
 >                      "", // Keep run-time files in /var/run by default.
 >                      // Safety/auth preset.  No need for `0644` and so forth.
 >                      ipc::util::Permissions_level::S_GROUP_ACCESS }
@@ -62,21 +62,21 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > Compile-time-configure your sessions:
 > ~~~
 > // Specify zero-copy and SHared Memory (SHM) abilities if any.
-> 
+>
 > namespace ssn = shm::classic;
 > // Use [ipc::]session - For non-SHM-enabled communication.
 > //     [ipc::session::]shm::* - For SHM-enabled comms (zero-copy structured messaging; explicit SHM access if desired).
 > //     [ipc::session::]shm::classic - Classic one-segment variant with simple allocation strategy by Boost.
 > //                     shm::arena_lend::jemalloc - Adaptive multi-segment variant with allocation by jemalloc.
 > // Subsequent API remains ~the same.  Only your convenience alias above changes.
-> 
+>
 > // Specify the low-level transports used underneath in your future IPC channels.
-> 
+>
 > // Example: Your future channels will use POSIX MQs when possible for high perf; Unix domain sockets when you
 > //   transmit an FD (network socket, file handle, etc.).
 > constexpr auto MQ_TYPE = schema::MqType::POSIX;
 > constexpr bool TRANSMIT_FDS = true;
-> 
+>
 > // Client side:
 > using Session = ssn::Client_session<MQ_TYPE, TRANSMIT_FDS>;
 > // Server side:
@@ -92,14 +92,14 @@ Having obtained a `Session`, the application can open transport channels (and, i
 >                 ...);
 > session.async_connect([...](const auto& err_code) { if (!err_code) { ...`session` is ready.... } });
 > // ^-- asio-style API.  Non-blocking/synchronous API also available (integrate directly with poll(), epoll_...(), etc.).
-> 
+>
 > // Server side:
 > Session_server session_srv(nullptr, APP_A_AS_SRV, // This is us (acceptor).
 >                            { { APP_B_AS_CLI.m_name, APP_B_AS_CLI } }); // These are potential opposing apps.
 > Session session;
 > session_srv.async_accept(&session,
 >                          [...](const auto& err_code) { if (!err_code) { ...`session` is ~ready.... } });
-> 
+>
 > // NOTE: Upon opening session, capabilities of `session` on either side are **exactly the same**.
 > // Client/server status matters only when establishing the IPC conversation;
 > // the conversation itself once established is arbitrariy and up to you fully.
@@ -107,7 +107,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
 >
 > Open channel(s) in a session:
 > - Easiest: Have them be pre-opened, so that they're ready from the session start:
-> 
+>
 > ~~~
 > // Client side: Example: Expect 1 client-requested channel; N server-requested channels.
 > Session::Channels my_init_channels(1);
@@ -139,10 +139,10 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > ~~~
 >
 > - Max flexibility: Open them at any time.  Either side can be initiator or acceptor of channel opening at any time.
-> 
+>
 > ~~~
 > // session.open_channel() is non-blocking, synchronous.
-> 
+>
 > // Active opener (side 1):
 > Session::Channel_obj channel;
 > session.open_channel(&channel); // Non-blocking, synchronous.
@@ -150,7 +150,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > auto mdt = session.mdt_builder();
 > mdt->setCoolParameterFromMyCapnpSchema(42.42);
 > session.open_channel(&channel, std::move(mdt));
-> 
+>
 > // Passive opener (side 2):
 > session.init_handlers(..., [...](Session::Channel_obj&& channel, auto&& mdt)
 > {
@@ -225,7 +225,7 @@ All transport APIs at this layer, as well the structured layer (see below), have
 >
 > The concept APIs above act the same regardless of concrete class and apply to each object once in opened (PEER) state.  Each class also has non-concept aspects which depend on its specific characteristics.  Most of these concern opening a connection (getting *to* PEER state).
 >
-> A survey: 
+> A survey:
 >
 > ~~~
 > using namespace ipc::transport;
@@ -333,15 +333,15 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 > # A schema file defines your potential structures.
 > # ...
 > $Cxx.namespace("my_meta_app::capnp"); # Resulting generated classes will be in this C++ `namespace`.
-> 
+>
 > struct CoolMsg
 > {
 >   # You can use absolutely any schema you would as a general capnp user... except:  We add *exactly one* requirement:
 >   # Your root `struct` must contain an anonymous union (we will use this to mux/demux in-messages to C++ callbacks).
-> 
+>
 >   description @0 :Text;
 >   # You can, if desired, have arbitrary fields (like this one) outside the union, to be present in any message.
-> 
+>
 >   union
 >   {
 >     # The union contains your possible messages (each of which can be of any type but usually a `struct`).
@@ -396,7 +396,7 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 >
 > // .sync_request(): send request; synchronously await response.
 > auto rsp = cool_channel.sync_request(msg);
-> 
+>
 > // The other side had best know how to add stuff and multiply at the end!  Check the in-message.
 > assert(rsp->body_root().getSumResponse().getResult() == int64_t(-44));
 > ~~~
@@ -412,29 +412,29 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 >                  [...](auto&& req) // Type is shared_ptr<M>, where M is: struc::Channel<...>::Msg_in, a/k/a struc::Msg_in<...>.
 > {
 >   // ...event loop brief detail omitted...
-> 
+>
 >   const auto body_root = req->body_root();
-> 
+>
 >   // Vanilla capnp work:
-> 
+>
 >   auto root = body_root.getSumRequest();
 >   auto list = root.getTermsToAdd();
 >   int64_t sum = 0;
 >   const auto sum_func = [&](int64_t val) { sum += val; };
 >   std::for_each(list.begin(), list.end(), sum_func);
 >   sum *= root.getConstantFactor();
-> 
+>
 >   std::cout << "Got request [" << *req << "] including description "
 >                "[" << body_root.getDescription() << "]; responding with result [" << sum << "].");
-> 
+>
 >   // Respond.
-> 
+>
 >   auto msg = chan.create_msg();
 >   msg.body_root()->initSumResponse().setResult(sum);
 >   msg.body_root()->setDescription("the sum you ordered, sir");
-> 
+>
 >   msg.send(msg, req.get()); // <-- originating_msg_or_null.  We are responding.
-> 
+>
 >   // ...event loop brief detail omitted...
 > };
 > ~~~
@@ -483,7 +483,7 @@ At no point do you have to worry about naming a SHM pool, removing it from the f
 > using Session = ssn::...;
 > // --- CHANGE TO --v
 > using Session = ssn::shm::classic::...;
-> 
+>
 > // ...everything same...
 >
 > Session::Structured_channel<my_meta_app::capnp::CoolMsg>
@@ -551,6 +551,56 @@ You can also directly store pointers in `T`, as long as you use `Stateless_alloc
 Further capabilities are outside our scope here; but the main point is: At a minimum:
   - if you simply used a SHM-backed session type when setting up IPC, immediately available to you are arenas in which to allocate objects and share them between the processes involved; and
   - the object type can be an arbitrarily complex combo of C++ plain-old data-types (PODs) and STL-compliant container types, as long as you use the Flow-IPC-supplied allocator for the latter.
+
+@par Synopsis: Native STL-compliant data structures directly in SHared Memory: construct, transmit, access
+
+> A SHM-compatible structure being declared and an instance constructed and modified:
+> ~~~
+> // Define an allocator alias for convenience.
+> // (For plain-old-datatypes (e.g., an `int` or `bool` or `struct` thereof or combinations thereof)
+> // there is no need to use this.)
+> template<typename T>
+> using Shm_allocator = Session::Allocator<T>;
+>
+> // Example complex structure.
+> struct Widget
+> {
+>   struct Node
+>   {
+>     int m_int;
+>     // Normally would be just vector<float> m_float_vec`.
+>     boost::container::vector<float, Shm_allocator<float>> m_float_vec;
+>   };
+>   // Normally would be just `string`.
+>   using String = boost::container::basic_string<char, std::char_traits<char>, Shm_allocator<char>>;
+> 
+>   bool m_flag;
+>   String m_str;
+>   // Normally would be just unordered_map<string, Node> m_str_to_node_map.
+>   boost::unordered_map<String, Node, std::hash<String>, std::equal_to<String>,
+>                        Shm_allocator<std::pair<const String, Node>>
+>     m_str_to_node_map;
+> };
+> 
+> // Construct it directly in SHM.  (Default ctor used here; you can use any ctor.)
+> auto x = session.session_shm()->construct<Widget>();
+> 
+> // Modifications not involving more allocation are done as-normal.
+> x->m_flag = true;
+> x->m_str[0] = 'X'; // Assumes, of course, that by this point: x->m_str.size() > 0.
+> 
+> // If allocation is required, apply a thread-local Activator.  Can frame all modification code in such a block.
+> using Activator = ipc::shm::stl::Arena_activator<Session::Arena>;
+> 
+> auto y = session.app_shm()->construct<Widget>();
+> {
+>   Activator ctx(session.session_shm());
+> 
+>   y->m_flag = true; // `ctx` is active but has zero effect on this (harmless and zero perf impact).
+>   y->m_str.resize(128); // `ctx` is active and will cause proper arena to be used for allocation.
+>   y->m_str[0] = 'X'; // `ctx` again has no effect and carries no perf penalty for this.
+> }
+> ~~~
 
 Low level, utilities
 --------------------
