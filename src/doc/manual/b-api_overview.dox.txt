@@ -328,11 +328,11 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 @anchor api_overview_transport_struc_synopsis
 @par Synopsis: Transport (structured)
 
-> Refresher on Cap'n Proto schemas (pale imitation of a part of [this page](https://capnproto.org/language.html)):
+> Like any Cap'n Proto user, to define your messages you will write a schema file which capnp will compile into C++ code with getters and setters.  A refresher (or intro):
 > ~~~{.capnp}
 > # A schema file defines your potential structures.
 > # ...
-> $Cxx.namespace("my_meta_app::capnp"); # capnp-generated metadata struct matching the below will go into this C++ namespace.
+> $Cxx.namespace("my_meta_app::capnp"); # Resulting generated classes will be in this C++ `namespace`.
 > 
 > struct CoolMsg
 > {
@@ -340,10 +340,11 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 >   # Your root `struct` must contain an anonymous union (we will use this to mux/demux in-messages to C++ callbacks).
 > 
 >   description @0 :Text;
->   # You can, if desired, have arbitrary fields outside the union, to be present in any message.
+>   # You can, if desired, have arbitrary fields (like this one) outside the union, to be present in any message.
 > 
 >   union
 >   {
+>     # The union contains your possible messages (each of which can be of any type but usually a `struct`).
 >     sumRequest @1 :SumRequest;
 >     sumResponse @2 :SumResponse;
 >   }
@@ -361,7 +362,12 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 > }
 > ~~~
 >
-> Take a content-agnostic ipc::transport::Channel `raw_chan`, perhaps @ref api_overview_sessions_synopsis "obtained via" ipc::session.  Do some structured-data transmission.
+> You have already created an opened *unstructured* channel (`transport::Channel raw_chan`), most likely @ref api_overview_sessions_synopsis "from a `Session`".  An example of transmitting *structured* data follows.  The basic procedure:
+>   -# **Upgrade** it to a *structured channel* (`transport::struc::Channel`).
+>   -# Create a message.  (`struc::Channel::create_msg()` is typically easiest.  You can also construct explicitly for advanced needs.)
+>   -# Use ipc::transport::struc::Channel APIs to issue and expect messages of various types.  Request/response and other paradigms are supported.
+>
+> Example: On one side, send a **request**.
 > ~~~
 > using namespace ipc::transport::struc;
 > namespace ssn = ipc::session; // In this example, use non-zero-copy (internally, heap-based) transmission.
@@ -370,11 +376,11 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 > // ...session+channel opening...
 > // raw_chan = opened channel from session.
 >
-> // Upgrade it to a struc::Channel.  Specify capnp-generated schema as template parameter.
-> Session::Structured_channel<my_meta_app::capnp::CoolMsg>
+> // Upgrade it to a struc::Channel.  Specify your capnp-generated schema as template parameter.
+> Session::Structured_channel<my_meta_app::capnp::CoolMsg> // <-- Attention.
 >   chan(nullptr, std::move(raw_chan), // Eat it!  `raw_chan` becomes empty.
 >        Channel_base::S_SERIALIZE_VIA_HEAP, session.session_token());
-> chan.start(...); // Error handler: topic omitted here.
+> chan.start(...); // Error handler (omitted).
 >
 > // Create a message -- no need to worry about capnp MessageBuilder work!  In our case it allocates in heap.
 > auto msg = cool_channel.create_msg();
@@ -388,14 +394,14 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 > root.setConstantFactor(-2);
 > body_root->setDescription("(11 - 22 + 33) x -2 = -44");
 >
-> // .sync_request(): send request; synchronously await reply.
+> // .sync_request(): send request; synchronously await response.
 > auto rsp = cool_channel.sync_request(msg);
 > 
 > // The other side had best know how to add stuff and multiply at the end!  Check the in-message.
 > assert(rsp->body_root().getSumResponse().getResult() == int64_t(-44));
 > ~~~
 >
-> Expect request.  Send reply.
+> On the other side: Expect **request**.  Send **response**.
 > ~~~
 > // Same deal as on the other side.
 > Session::Structured_channel<my_meta_app::capnp::CoolMsg>
@@ -450,13 +456,17 @@ Beyond that, any kind of code-snippet synopsis would be too wordy for this page;
     - `.send()` is for notifications.  For example the `SumResponse` sent in the example is a notification.
     - `.*sync_request()` is for requests.
 
+For advanced needs, you can replace some of the default machinery in `.create_msg()`.  For example you can obtain backing memory for out- and in-messages from a mem-pool, or (if performing non-concurrent work) reuse a single block of memory.  (See @link ipc::transport::struc::Struct_builder Struct_builder@endlink and @link ipc::transport::struc::Struct_reader Struct_reader@endlink concepts.)
+
 Transport (structured): Zero-copy
 ---------------------------------
-Say I prepare a message M': I construct it (`struc::Msg_out`), I mutate it via its capnp-generated mutators (as the required backing memory is gradually allocated behind the scenes), and then I @link ipc::transport::struc::Channel::send() struc::Channel::send()@endlink it.  The receiver receives it as `struc::Msg_in` M subsequently and accesses its various parts via capnp-generated accessors.  *Zero-copy* means that the backing memory allocated for M' is never copied into any low-level transport.  Instead only some tiny, constant-sized handle is (internally) copied into and out of the transport -- and the accessors of M are directly reading the memory in M'.
+In the example just above, the request out-message is *copied* into the IPC transport (e.g., Unix domain socket) internally on one side; and *copied* again out of the transport on the receiver side.  The in-message's backing memory is (internally) allocated in heap; as is the original out-message's.  It would be faster if no copying occurred.  This is easily done in Flow-IPC.
+
+Say I prepare a message M': I construct it (`struc::Msg_out`), I mutate it via its capnp-generated mutators (as the required backing memory is gradually allocated behind the scenes), and then I @link ipc::transport::struc::Channel::send() struc::Channel::send()@endlink it.  The receiver receives it as `struc::Msg_in` M subsequently and accesses its various parts via capnp-generated accessors.  **End-to-end zero-copy** means that the backing memory allocated for M' is never copied into any low-level transport.  Instead only some tiny, constant-sized handle is (internally) copied into and out of the transport -- and the accessors of M are directly reading the memory in M'.
 
 The obvious benefit of this is performance.  Notably, also, it is possible to subsequently modify M' and send it (and receive it) again.  The backing memory is freed once M' and all in-message views like M have been destroyed *across all processes*.  (The Ms are made available exclusively via `shared_ptr`.)
 
-While zero-copy is optional, in general we recommend using it.  Fortunately it is quite easy to enable.  *Internally* it is accomplished by using SHM; but in terms of the public API, all you have to do is -- when writing the code for opening your ipc::session::Session -- simply choose a SHM-backed session type.  That is:
+While zero-copy is optional, in general we recommend using it.  Fortunately it is quite easy to enable.  *Internally* it is accomplished by using SHM; but in terms of the public API, ~all you have to do is -- when writing the code for opening your ipc::session::Session -- simply choose a SHM-backed session type.  That is:
   - Zero-copy (a/k/a SHM-backed): Use `"ipc::session::shm::...::Client_session"` and `"ipc::session::shm::...::Session_server"`.
   - Non-zero-copy: Use ipc::session::Client_session and ipc::session::Session_server.
 
@@ -513,17 +523,12 @@ At no point do you have to worry about naming a SHM pool, removing it from the f
 > // can be served to session-clients B, C, ....
 > Session::Structured_channel<...> chan(...,
 >                                       Channel_base::S_SERIALIZE_VIA_APP_SHM, ...); // <-- CHANGED LINE.
->
-> // Note, also: A message is in no way limited to the channel that `.create_msg()`d it.  .create_msg()
-> // is only a convenient way to construct one.  One can construct a message without any channel in existence at all.
-> 
 
-This is 
+In *our example in particular*, there is simply no difference between using heap-backed allocation and SHM-backed allocation.  Just change a couple lines, and you get better performance.  The messages being exchanged can be utterly huge, with zero perf penalty.
 
+That said, for more complex use-cases, there are natural differences in what one can do when comparing heap-backed versus SHM-backed allocation.  For example, the out-message can be modified after sending it, and this change will be reflected for any process(es) holding the resulting in-message(s).  (Of course you'll need to arrange some kind of synchronization of access in that case.)
 
-It is also possible to set this up without ipc::session.
-
-Orthogonally, for advanced techniques likely driven by tight performance needs, it is possible to develop your own backing-allocation scheme: Implement the ipc::transport::struc::Struct_builder and @link ipc::transport::struc::Struct_reader Struct_reader@endlink concepts.  For example, especially if sending small messages from one thread and not requiring end-to-end zero-copy, one could allocate out-messages from a single pre-heap-allocated buffer to reduce the cycles spent in the heap allocator to (amortized) zero.
+In any case -- whether heap-backed or SHM-backed -- an out-message can be sent or re-sent over any channel and even in multiple sessions, depending on the details of its backing memory allocation.
 
 Direct storage in SHared Memory (SHM)
 -------------------------------------

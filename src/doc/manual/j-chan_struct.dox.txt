@@ -72,7 +72,7 @@ A *very* central decision is the choice of `Message_body`.  This is the **schema
   using Cxx = import "/capnp/c++.capnp";
   using Common = import "/ipc/transport/struc/schema/common.capnp"; # Flow-IPC supplies this.
 
-  $Cxx.namespace("my_meta_app::capnp"); # capnp-generated metadata struct matching the below will go into this C++ namespace.
+  $Cxx.namespace("my_meta_app::capnp"); # capnp-generated structs matching the below will go into this C++ namespace.
 
   struct CoolMsg
   {
