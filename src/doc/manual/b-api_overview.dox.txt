@@ -456,6 +456,10 @@ Beyond that, any kind of code-snippet synopsis would be too wordy for this page;
     - `.send()` is for notifications.  For example the `SumResponse` sent in the example is a notification.
     - `.*sync_request()` is for requests.
 
+For Cap'n Proto enthusiasts, ipc::transport::struc::Msg_out provides a couple ways of structuring your message-filling in addition to the vanilla way shown in the example above.
+  - `Msg_out::orphanage()` lets one operate a capnp *orphanage*.  You can build things there in bottom-up fashion and then `...adopt....()` them into the root message.
+  - Construct `Msg_out` explicitly, by giving it an existing `capnp::MessageBuilder`.  This allows for completely arbitrary Cap'n Proto mutation work, without having to use any orphanage.
+
 For advanced needs, you can replace some of the default machinery in `.create_msg()`.  For example you can obtain backing memory for out- and in-messages from a mem-pool, or (if performing non-concurrent work) reuse a single block of memory.  (See @link ipc::transport::struc::Struct_builder Struct_builder@endlink and @link ipc::transport::struc::Struct_reader Struct_reader@endlink concepts.)
 
 Transport (structured): Zero-copy
