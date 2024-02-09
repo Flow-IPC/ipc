@@ -424,9 +424,9 @@ And counterpart borrower code:
 
   ~~~
   flow::util::Blob_sans_log_context lend_blob;
-  ipc::transport::struc::capnp_get_shm_handle_to_borrow(msg->body_root().getSomeMsg().getWidgetHandle(), &lend_blob);
+  ipc::transport::struc::shm::capnp_get_shm_handle_to_borrow(msg->body_root().getSomeMsg().getWidgetHandle(), &lend_blob);
 
-  auto x_borrowed = = session.borrow_object<Widget_brw>(lend_blob);
+  auto x_borrowed = session.borrow_object<Widget_brw>(lend_blob);
   FLOW_LOG_INFO("Hey, let's read inside SHM after receiving SHM-handle: [" << x_borrowed->m_flag << "].");
   ~~~
 

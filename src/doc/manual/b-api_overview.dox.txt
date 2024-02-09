@@ -25,7 +25,7 @@
 
 Here we show how Flow-IPC fulfills its aims; let's take a high-level tour through the available API.  (The preceding page @ref about summarizes the aims of Flow-IPC.)
 
-We provide a minimal synopsis in each section below, to give a sense of what your code using that feature would look like.  It's both a survey and a cheat sheet, but it is *not comprehensive* the way the individual subsequent pages, or the Reference, are.
+We provide a synopsis in ~each section below, to give a sense of what your code using that feature would look like.  It's both a survey and a cheat sheet, but it is *not comprehensive* the way the individual subsequent pages, or the Reference, are.  Please jump to a particular page to drill down on any topic of interest ([Table of Contents](./pages.html)).
 
 Sessions
 --------
@@ -56,7 +56,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
 >                      { APP_B.m_name }, // We are A; we allow only B to open sessions with us.
 >                      "", // Keep run-time files in /var/run by default.
 >                      // Safety/auth preset.  No need for `0644` and so forth.
->                      ipc::util::Permissions_level::S_GROUP_ACCESS }
+>                      ipc::util::Permissions_level::S_GROUP_ACCESS };
 > ~~~
 >
 > Compile-time-configure your sessions:
@@ -574,7 +574,7 @@ Further capabilities are outside our scope here; but the main point is: At a min
 >   };
 >   // Normally would be just `string`.
 >   using String = boost::container::basic_string<char, std::char_traits<char>, Shm_allocator<char>>;
-> 
+>
 >   bool m_flag;
 >   String m_str;
 >   // Normally would be just unordered_map<string, Node> m_str_to_node_map.
@@ -582,36 +582,93 @@ Further capabilities are outside our scope here; but the main point is: At a min
 >                        Shm_allocator<std::pair<const String, Node>>
 >     m_str_to_node_map;
 > };
-> 
+>
 > // Construct it directly in SHM.  (Default ctor used here; you can use any ctor.)
 > auto x = session.session_shm()->construct<Widget>();
-> 
+>
 > // Modifications not involving more allocation are done as-normal.
 > x->m_flag = true;
 > x->m_str[0] = 'X'; // Assumes, of course, that by this point: x->m_str.size() > 0.
-> 
+>
 > // If allocation is required, apply a thread-local Activator.  Can frame all modification code in such a block.
 > using Activator = ipc::shm::stl::Arena_activator<Session::Arena>;
-> 
+>
 > auto y = session.app_shm()->construct<Widget>();
 > {
 >   Activator ctx(session.session_shm());
-> 
+>
 >   y->m_flag = true; // `ctx` is active but has zero effect on this (harmless and zero perf impact).
 >   y->m_str.resize(128); // `ctx` is active and will cause proper arena to be used for allocation.
 >   y->m_str[0] = 'X'; // `ctx` again has no effect and carries no perf penalty for this.
 > }
 > ~~~
+>
+> Example of trasmitting a SHM-backed native data structure to another process follows.  We transmit a handle through a capnp structured message here, but it can be done using any IPC mechanism whatsoever; even (e.g.) a file.
+>
+> Schema which includes a native-object-in-SHM field:
+> ~~~{.capnp}
+> # ...
+> using Common = import "/ipc/transport/struc/shm/schema/common.capnp";
+> using ShmHandle = Common.ShmHandle; # It's just a blob holder really.
+> # ...
+> struct SomeMsg
+> {
+>   # ...
+>   widgetHandle @7 :ShmHandle;
+> }
+> ~~~
+> 
+> **Owner/lender** process transmitting such a message:
+> ~~~
+> auto x = session.session_shm()->construct<Widget>();
+> // ...Fill out *x as above....
+> 
+> auto msg = cool_channel.create_msg();
+> // Ready the storage inside the out-message.
+> auto widget_handle_root = msg.body_root()->initSomeMsg().initWidgetHandle(); // Note `widgetHandle: ShmHandle` in schema.
+> // Perform the lend_object() step and load the result (a little blob) into the out-message.
+> shm::capnp_set_lent_shm_handle(&widget_handle_root, session.lend_object(x));
+> // IPC-transmit it via struc::Channel.
+> cool_channel.send(msg);
+> ~~~
+> 
+> **Borrower** process receiving such a message and accessing the native data structure `Widget`:
+> ~~~
+> flow::util::Blob_sans_log_context lend_blob;
+> shm::capnp_get_shm_handle_to_borrow(msg->body_root().getSomeMsg().getWidgetHandle(), &lend_blob);
+> 
+> auto x = session.borrow_object<Widget>(lend_blob);
+> FLOW_LOG_INFO("Hey, let's read inside SHM after receiving SHM-handle: [" << x_borrowed->m_flag << "].");
+> // We can write to it too, in most cases.
+> x->m_str[0] = 'Y';
+> // (Can modify with allocations too, as long as you use an Activator context again, same is owner process above.)
+> ~~~
 
-Low level, utilities
---------------------
-It is possible to eschew the higher-level abstractions such as `Channel`, `struc::Channel`, and `Session`; and work more directly on the low level of IPC transports including Unix domain sockets, POSIX MQs, SHM-backed (boost.interprocess) MQs.  Even in that case Flow-IPC may have useful APIs for you.
+When one gets into this relatively advanced area, there are differences and trade-offs between the available SHM-providers.  If your alias at the very top is `using ssn = ipc::session::shm::classic`, then you get total read/write abilities and maximized object lifetime.  That is the SHM-classic provider.  Instead, if you choose SHM-jemalloc (`using ssn = ipc::session::shm::arena_lend::jemalloc`), then the borrower (receiver) process can only read, and there are some subtle differences in max object lifetime.  (The latter applies only if you need objects to live beyond a given `Session`.)  However, you get in return: superior safety characteristics; and the commercial-grade jemalloc allocation algorithm (thread-caching, fragmentation avoidance, and more).
 
-Of these, on the higher-level end are ipc::transport::Native_socket_stream (blob/handle transmission over local stream socket) and @link ipc::transport::Native_socket_stream_acceptor Native_socket_stream_acceptor@endlink (listening for incoming connections of that type) and @link ipc::transport::Blob_stream_mq_sender Blob_stream_mq_sender@endlink and @link ipc::transport::Blob_stream_mq_receiver Blob_stream_mq_receiver@endlink (blob transmission over MQ, with MQ type specified as template parameter).
+Safety
+------
+Flow-IPC focuses on IPC *safety*.  @ref safety_perms page gets into the topic in detail.  Here we'll point out merely one specific mechanism which might be of immediate interest.  It shows that -- while at various lower layers permissions can be specified in fine-grained fashion -- at the top layer, ipc::session, we let you decide one of 3 simple safety approaches matching your setup, and Flow-IPC will take care of the details accordingly.  To wit:
 
-Below that are the specific MQ APIs (ipc::transport::Posix_mq_handle and @link ipc::transport::Bipc_mq_handle Bipc_mq_handle@endlink) and the stream-socket-focused boost.asio extensions in sub-namespace ipc::transport::asio_local_stream_socket.
+Refer to the very top of @ref api_overview_sessions_synopsis "Synopsis: Sessions" above.  When defining our simple `Server_app` structure that describes the application responsible for accepting sessions (IPC conversations/contexts), we chose:
 
-ipc::util stores further miscellaneous low-level utility APIs such as ipc::util::Process_credentials and permissions abstraction @link ipc::util::Permissions_level Permissions_level@endlink.
+~~~
+const App APP_A{ "a", "/bin/app_a.exec", USER_ID_A, GROUP_ID };
+const Server_app APP_A_AS_SRV
+                   { APP_A,
+                     // ...
+                     ipc::util::Permissions_level::S_GROUP_ACCESS }; // <-- Attention.
+~~~
+
+Notice the `GROUP_ACCESS` choice made there.  In fact we could have chosen any one of these:
+  - `S_UNRESTRICTED`:
+    - This will ensure that the relevant resources will never fail to be accessed by the relevant processes due to a permissions error.  (Internally, producer-consumer items like PID files shall be 0644; while symmetrically accessed items like SHM pools and MQs shall be 0666.)
+  - `S_USER_ACCESS`:
+    - This means access to a resource may fail if the accessing application is running as a different **user** than the writing application, even if they are in the same **group**.  (Internally items shall have permissions mode 0600.)
+  - `S_GROUP_ACCESS`:
+    - This means access to a resource may fail if the accessing application is running as a different **group** than the writing application, but it will work if they're in the same group but are running as different users.  (Internally, producer-consumer items like PID files shall be 0640; while symmetrically accessed items like SHM pools and MQs shall be 0660.)
+
+So: `GROUP_ACCESS` means your various apps should run as different users but in the same group.  `USER_ACCESS` means the apps should run all as one user.  `UNRESTRICTED` means it does not matter.
 
 Next let's get to the nitty-gritty of actually using this library: @ref setup.
 
