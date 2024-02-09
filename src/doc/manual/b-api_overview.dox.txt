@@ -523,6 +523,7 @@ At no point do you have to worry about naming a SHM pool, removing it from the f
 > // can be served to session-clients B, C, ....
 > Session::Structured_channel<...> chan(...,
 >                                       Channel_base::S_SERIALIZE_VIA_APP_SHM, ...); // <-- CHANGED LINE.
+> ~~~
 
 In *our example in particular*, there is simply no difference between using heap-backed allocation and SHM-backed allocation.  Just change a couple lines, and you get better performance.  The messages being exchanged can be utterly huge, with zero perf penalty.
 
