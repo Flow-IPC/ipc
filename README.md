@@ -31,7 +31,7 @@ corresponding sets of such documentation.
   - By implementing or accessing some of the handful of key concepts, you can customize behaviors at all layers,
     including serialization-memory backing, additional SHM providers, and native data structures that use raw pointers
     instead of/in addition to STL-compliant containers.
-- In general, we feel it is comprehensive and flexible, as well as performance-oriented with an eye to safety.  [The API tour page of the Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html) will show you around.  [The rest of the guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/pages.html) and the @link ::ipc Reference@endlink go deeper.
+- In general, we feel it is comprehensive and flexible, as well as performance-oriented with an eye to safety.  [The API tour page of the Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html) will show you around.  The rest of the [guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/pages.html) and the [Reference](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/namespaceipc.html) go deeper.
 
 The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
 the aforementioned link(s) and is also bundled as part of the repository/archive containing the present README.
