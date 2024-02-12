@@ -8,30 +8,40 @@ What's this, you ask?
 in the project's main documentation.
 - The [project web site](https://flow-ipc.github.io) provides access to various released versions and their
 corresponding sets of such documentation.
-- If you'd prefer to jump into some code right away:
-  - We estimate the median topic of highest interest to be transmission of structured-data messages, as described
+
+If you'd prefer to jump into some code right away:
+  - We estimate the median topic of interest to be transmission of structured-data messages, as described
     by a schema language, Cap'n Proto a/k/a [capnp](https://capnproto.org).  capnp by itself provides best-in-class
-    *serialization* but only rudimentary APIs for *transmission* of serialized data.  Therefore:
-  - Take a look at [the synopsis/example of transmitting structured Cap'n Proto-described
+    *serialization* but only rudimentary APIs for *transmission* of serialized data.  Without Flow-IPC you're on
+    your own.  With it, however:
+  - See the [synopsis/example of transmitting structured Cap'n Proto-described
     messages](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_synopsis)
-    between processes.  This shows convenience -- more so than with capnp alone.
-  - Yet it still involves (behind the scenes) having to *copy the content of the data* into an IPC transport (e.g., Unix
-    domain socket) and then, *again*, out of that transport into the user memory on the receiving side.  We'd like,
-    instead, **end-to-end zero-copy performance**  and semantics.  Normally this requires shared memory (SHM) work which
-    is difficult coding even in specialized scenarios.  Flow-IPC, however, makes it very easy...
+    between processes.
+  - Yet it still involves (behind the scenes) having to *copy the content of the data twice*: sender user memory =>
+    IPC transport (e.g., Unix domain socket) => receiver user memory.
+  - Ideally, instead, you want **end-to-end zero-copy performance** and semantics.  I.e., receiver user memory *is*
+    sender user memory: "Sender" simply writes; "receiver" simply reads.
+    - Normally this requires shared memory (SHM) work which is difficult coding even in specialized scenarios.
+    - Flow-IPC, however, makes it very easy...
   - ...as shown in this
     [explanation](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_zero)
     and [code example](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_zero_synopsis).
-    This shows it takes *two changed lines of code*, when setting up.  The "meat" of your code remains
-    unchanged.
-- That said, Flow-IPC provides entry points at every layer of operation, both higher and lower than the
+    Note the *2 changed lines of code* when setting up.
+    - The "meat" of the earlier-linked example code remains unchanged; and is just typical coding familiar to
+      vanilla-Cap'n Proto users.
+- We guess that's the likeliest topic of highest interest.  That said, Flow-IPC provides entry points at every layer of
+  operation, both higher and lower than the
   above topic/example.  Flow-IPC is *not* designed as merely a "black box" of capabilities.  E.g.:
   - Various lower-level APIs, such as low-level transports (Unix domain sockets, MQs) and SHM operations can be
     accessed directly.  You can also plug-in your own.
   - By implementing or accessing some of the handful of key concepts, you can customize behaviors at all layers,
     including serialization-memory backing, additional SHM providers, and native data structures that use raw pointers
     instead of/in addition to STL-compliant containers.
-- In general, we feel it is comprehensive and flexible, as well as performance-oriented with an eye to safety.  [The API tour page of the Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html) will show you around.  The rest of the [guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/pages.html) and the [Reference](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/namespaceipc.html) go deeper.
+- In general, we feel it is comprehensive and flexible, as well as performance-oriented with an eye to safety.
+  The [API tour page of the Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html)
+  will show you around.  The rest of the [guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/pages.html)
+  and the [Reference](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/namespaceipc.html)
+  go deeper.
 
 The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
 the aforementioned link(s) and is also bundled as part of the repository/archive containing the present README.
