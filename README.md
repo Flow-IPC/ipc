@@ -10,28 +10,26 @@ in the project's main documentation.
 corresponding sets of such documentation.
 - If you'd prefer to jump into some code right away:
   - We estimate the median topic of highest interest to be transmission of structured-data messages, as described
-    by a [simple schema language, Cap'n Proto](https://capnproto.org).  Therefore:
-  - Take a look at this [synopsis example of transmitting structured Cap'n Proto-described
+    by a schema language, Cap'n Proto a/k/a [capnp](https://capnproto.org).  capnp by itself provides best-in-class
+    *serialization* but only rudimentary APIs for *transmission* of serialized data.  Therefore:
+  - Take a look at [the synopsis/example of transmitting structured Cap'n Proto-described
     messages](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_synopsis)
-    between processes.  (Cap'n Proto -- a/k/a capnp -- by itself provides best-in-class serialization but only
-    rudimentary transmission of the serialized data.)  That's convenient -- more so than capnp alone -- but it
-    still involves (internally) needing to copy the content of the data into an IPC transport (Unix domain socket,
-    etc.) and then, again, out of that transport on the receiving side.  So, instead of 2 potentially quite
-    expensive copies:
-  - We'd like, instead, **end-to-end zero-copy performance and semantics** -- without *any* copying of the data
-    (which can be huge) at any stage.  Setting this up requires shared memory work and is difficult even in
-    specialized fashion.  Flow-IPC, however, makes it extremely easy:
-  - The above synopsis/example is immediately followed by this
+    between processes.  This shows convenience -- more so than with capnp alone.
+  - Yet it still involves (behind the scenes) having to *copy the content of the data* into an IPC transport (e.g., Unix
+    domain socket) and then, *again*, out of that transport into the user memory on the receiving side.  We'd like,
+    instead, **end-to-end zero-copy performance**  and semantics.  Normally this requires shared memory (SHM) work which
+    is difficult coding even in specialized scenarios.  Flow-IPC, however, makes it very easy...
+  - ...as shown in this
     [explanation](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_zero)
     and [code example](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_zero_synopsis).
-    This shows it takes *two changed lines of code*, when setting up your IPC.  The rest of the code remains
-    the same.
+    This shows it takes *two changed lines of code*, when setting up.  The "meat" of your code remains
+    unchanged.
 - That said, Flow-IPC provides entry points at every layer of operation, both higher and lower than the
-  above topic/example.  It is *not* designed as merely a "black box" of capabilities.  E.g.:
+  above topic/example.  Flow-IPC is *not* designed as merely a "black box" of capabilities.  E.g.:
   - Various lower-level APIs, such as low-level transports (Unix domain sockets, MQs) and SHM operations can be
-    accessed directly.
+    accessed directly.  You can also plug-in your own.
   - By implementing or accessing some of the handful of key concepts, you can customize behaviors at all layers,
-    including serialization memory backing, additional SHM providers, and native data structures that use raw pointers
+    including serialization-memory backing, additional SHM providers, and native data structures that use raw pointers
     instead of/in addition to STL-compliant containers.
 - In general, we feel it is comprehensive and flexible, as well as performance-oriented with an eye to safety.  [The API tour page of the Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html) will show you around.  [The rest of the guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/pages.html) and the @link ::ipc Reference@endlink go deeper.
 
