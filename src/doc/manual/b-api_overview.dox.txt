@@ -19,7 +19,7 @@
 
 @page api_overview API Overview
 
-<center>**MANUAL NAVIGATION:** @ref about "Preceding Page" - @ref setup "Next Page" - [**Table of Contents**](./pages.html)</center>
+<center>**MANUAL NAVIGATION:** @ref about "Preceding Page" - @ref setup "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 ---
 
@@ -462,6 +462,7 @@ For Cap'n Proto enthusiasts, ipc::transport::struc::Msg_out provides a couple wa
 
 For advanced needs, you can replace some of the default machinery in `.create_msg()`.  For example you can obtain backing memory for out- and in-messages from a mem-pool, or (if performing non-concurrent work) reuse a single block of memory.  (See @link ipc::transport::struc::Struct_builder Struct_builder@endlink and @link ipc::transport::struc::Struct_reader Struct_reader@endlink concepts.)
 
+@anchor api_overview_transport_struc_zero
 Transport (structured): Zero-copy
 ---------------------------------
 In the example just above, the request out-message is *copied* into the IPC transport (e.g., Unix domain socket) internally on one side; and *copied* again out of the transport on the receiver side.  The in-message's backing memory is (internally) allocated in heap; as is the original out-message's.  It would be faster if no copying occurred.  This is easily done in Flow-IPC.
@@ -478,6 +479,7 @@ Whichever you choose, their APIs are identical.  In particular, suppose you chos
 
 At no point do you have to worry about naming a SHM pool, removing it from the file-system on cleanup (including following a crash), and so on.  All is handled internally.  Simply choose a SHM-backed `Session` type on each side at compile-time.
 
+@anchor api_overview_transport_struc_zero_synopsis
 @par Synopsis: Transport (structured): Enabling zero-copy end-to-end
 
 > Consider @ref api_overview_transport_struc_synopsis "the structured-transmission example just above".  It lacks zero-copy performance end-to-end.  Here is **all you have to do to make it zero-copy end-to-end**.  Notice the tiny change and zero mentions of *any* SHM details.
@@ -678,6 +680,6 @@ Next let's get to the nitty-gritty of actually using this library: @ref setup.
 
 ---
 
-<center>**MANUAL NAVIGATION:** @ref about "Preceding Page" - @ref setup "Next Page" - [**Table of Contents**](./pages.html)</center>
+<center>**MANUAL NAVIGATION:** @ref about "Preceding Page" - @ref setup "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 */
