@@ -1,45 +1,67 @@
-# Flow-IPC  -- Modern C++ toolkit for high-speed inter-process communication (IPC); plus general-purpose toolkit, Flow
+# Flow-IPC  -- Modern C++ toolkit for high-speed inter-process communication (IPC)
+
+## (Plus, general-purpose toolkit, Flow)
 
 What's this, you ask?
 - We immediately point you to this
-[introductory docs page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
-in the project's main documentation for the master branch.
+[introductory page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
+in the project's main documentation.
 - The [project web site](https://flow-ipc.github.io) provides access to various released versions and their
 corresponding sets of such documentation.
+- If you'd prefer to jump into some code right away:
+  - We estimate the median topic of highest interest to be transmission of structured-data messages, as described
+    by a [simple schema language, Cap'n Proto](https://capnproto.org).  Therefore:
+  - Take a look at this [synopsis example of transmitting structured Cap'n Proto-described
+    messages](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_synopsis)
+    between processes.  (Cap'n Proto -- a/k/a capnp -- by itself provides best-in-class serialization but only
+    rudimentary transmission of the serialized data.)  That's convenient -- more so than capnp alone -- but it
+    still involves (internally) needing to copy the content of the data into an IPC transport (Unix domain socket,
+    etc.) and then, again, out of that transport on the receiving side.  So, instead of 2 potentially quite
+    expensive copies:
+  - We'd like, instead, **end-to-end zero-copy performance and semantics** -- without *any* copying of the data
+    (which can be huge) at any stage.  Setting this up requires shared memory work and is difficult even in
+    specialized fashion.  Flow-IPC, however, makes it extremely easy:
+  - The above synopsis/example is immediately followed by this
+    [explanation](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_zero)
+    and [code example](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_zero_synopsis).
+    This shows it takes *two changed lines of code*, when setting up your IPC.  The rest of the code remains
+    the same.
+- That said, Flow-IPC provides entry points at every layer of operation, both higher and lower than the
+  above topic/example.  It is *not* designed as merely a "black box" of capabilities.  E.g.:
+  - Various lower-level APIs, such as low-level transports (Unix domain sockets, MQs) and SHM operations can be
+    accessed directly.
+  - By implementing or accessing some of the handful of key concepts, you can customize behaviors at all layers,
+    including serialization memory backing, additional SHM providers, and native data structures that use raw pointers
+    instead of/in addition to STL-compliant containers.
+- In general, we feel it is comprehensive and flexible, as well as performance-oriented with an eye to safety.  [The API tour page of the Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html) will show you around.  [The rest of the guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/pages.html) and the @link ::ipc Reference@endlink go deeper.
 
 The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
 the aforementioned link(s) and is also bundled as part of the repository/archive containing the present README.
 
 Having sampled those docs... are you interested in using or even developing Flow-IPC?  Then please read on.  To restate
-Flow-IPC's mission from the above [introductory docs page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html):
+Flow-IPC's mission from the above
+[introductory docs page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html):
 
-> Multi-process microservice systems need to communicate between processes efficiently.  Existing microservice
-communication frameworks are elegant at a high level but add unacceptable latency out of the box.  Low-level
-interprocess communication (*IPC*) solutions, typically custom-written on-demand to address this problem,
-struggle to do so comprehensively and in reusable fashion.  Teams repeatedly spend resources on challenges
-like structured data and session cleanup.  These issues make it difficult to break monolithic systems into
-more resilient multi-process systems that are also performant.
+> Flow-IPC:
+>   - is a **modern C++** library with a concept-based API in the spirit of STL/Boost;
+>   - enables near-zero-latency **zero-copy** messaging between processes (via behind-the-scenes use of the below SHM solution);
+>   - transmits messages containing binary data, native handles, and/or **structured data** (defined via [Cap'n Proto](https://capnproto.org/language.html));
+>   - provides a **shared memory (SHM)** solution
+>     - with out-of-the-box ability to transmit arbitrarily complex combinations of scalars, `struct`s, and **STL-compliant containers** thereof;
+>     - that integrates with **commercial-grade memory managers** (a/k/a `malloc()` providers).
+>       - In particular we integrate with [jemalloc](https://jemalloc.net), a thread-caching memory manager at the core of FreeBSD, Meta, and others.
 > 
-> Flow-IPC is a modern C++ library that solves these problems.  It adds virtually zero latency.  Structured
-data are represented using the high-speed Cap’n Proto (*capnp*) serialization library, which is integrated
-directly into our shared memory (SHM) system.  The Flow-IPC SHM system extends a commercial-grade memory
-manager (*jemalloc*, as used by FreeBSD and Meta).  Overall, this approach eliminates all memory copying
-(end-to-end *zero copy*).
+> A key feature of Flow-IPC is pain-free setup of process-to-process conversations (**sessions**), so that users need not worry about coordinating individual shared-resource naming between processes, not to mention kernel-persistent resource cleanup.
 > 
-> Flow-IPC features a session-based channel management model.  A *session* is a conversation between two
-programs; to start talking one only needs the name of the other program.  Resource cleanup, in case of exit or
-failure of either program, is automatic.  Flow-IPC’s sessions are also safety-minded as to the identities
-and permissions at both ends of the conversation.
+> Flow-IPC provides 2 ways to integrate with your applications' event loops.  These can be intermixed.
+>   - The **async-I/O API** automatically starts threads as needed to offload work onto multi-processor cores.
+>   - The `sync_io` **API** supplies lighter-weight objects allowing you full control over each application's thread structure, hooking into reactor-style (`poll()`, `epoll_wait()`, etc.) or proactor (boost.asio) event loops.  As a result context switching is minimized.
 > 
-> Flow-IPC’s API allows developers to easily adapt existing code to a multi-process model.  Instead of each
-dev team writing their own IPC implementation piecemeal, Flow-IPC provides a highly efficient standard that
-can be used across many projects.
-> 
-> Also included is the general-purpose C++ toolkit named Flow.  While it is bundled for convenience simply
-because (1) it is needed and (2) shares the same original authorship and DNA as Flow-IPC proper, it may
-nevertheless prove useful in its own right.  For more information please see a similar-purpose `README.md`
-in the `flow/` sub-directory (or, if you so choose, another location where you've decided to place Flow
-yourself; more on this below under Organization).
+> Lastly Flow-IPC supplies **lower-level utilities** facilitating work with POSIX and SHM-based **message queues (MQs)** and **local (Unix domain) stream sockets**.
+
+Also included is the general-purpose C++ toolkit named Flow.  While it is bundled for convenience simply because (1)
+it is needed and (2) shares the same original authorship and DNA as Flow-IPC proper, it may nevertheless prove
+useful in its own right.  For more information please see a similar-purpose `README.md` in the `flow/` sub-directory.
 
 ## Organization
 
