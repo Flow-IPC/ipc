@@ -19,6 +19,7 @@
 #include "ipc/transport/asio_local_stream_socket_fwd.hpp"
 #include "ipc/util/util_fwd.hpp"
 #include "ipc/transport/error.hpp"
+#include <boost/array.hpp>
 
 namespace ipc::transport::test
 {
