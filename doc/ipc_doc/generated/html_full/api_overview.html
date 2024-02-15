@@ -66,19 +66,297 @@ $(function() {
   <div class="headertitle"><div class="title">API Overview </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="about.html">Preceding Page</a> - <a class="el" href="setup.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center><hr  />
+<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="about.html">Preceding Page</a> - <a class="el" href="setup.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center><hr  />
 <p >Here we show how Flow-IPC fulfills its aims; let's take a high-level tour through the available API. (The preceding page <a class="el" href="about.html">(Manual Start) Flow-IPC: Bird's-eye View</a> summarizes the aims of Flow-IPC.)</p>
+<p >We provide a synopsis in ~each section below, to give a sense of what your code using that feature would look like. It's both a survey and a cheat sheet, but it is <em>not comprehensive</em> the way the individual subsequent pages, or the Reference, are. Please jump to a particular page to drill down on any topic of interest (<a href="./pages.html">Table of Contents</a>).</p>
 <h2>Sessions </h2>
 <p >No matter the particular IPC transport (local stream socket, MQ, SHM pool), an ever-present need is to establish a naming scheme and coordinate it between the participant processes. To connect one Unix domain socket, one needs to name a server socket, and the connecting process needs to know that name. An MQ requires a name, as does a SHM pool. Developing and maintaining a convention is, normally, both necessary and annoying. Instead:</p>
 <p >There is a simple scheme that designates one side of a conversation as the <b>session server</b>, the other a <b>client</b>; the latter connects to the former. (A session server process can carry on multiple sessions with different client processes.) The user need only specify the basic facts of the IPC-participating applications (like executable names and owners, and which ones are servers, and which clients they'll accept as the opposing side). This is done via the straightforward <code>struct</code> <a class="el" href="structipc_1_1session_1_1App.html" title="A description of an application in this ipc::session inter-process communication universe.">ipc::session::App</a> + its children. The rest of <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> establishes internal naming conventions based off that information. Having specified those <code>App</code> basics the user, opens (on each side) an equally capable <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">ipc::session::Session</a> that is the context for all subsequent IPC between those 2 processes.</p>
-<p >Having obtained a <code>Session</code>, the application can open transport channels (and, if desired, SHM arenas) without any naming decisions to make. At that point it's off to the races... namely:</p>
+<p >Having obtained a <code>Session</code>, the application can open transport channels (and, if desired, SHM arenas) without any naming decisions to make.</p>
+<p ><a class="anchor" id="api_overview_sessions_synopsis"></a></p><dl class="section user"><dt>Synopsis: Sessions</dt><dd></dd></dl>
+<blockquote class="doxtable">
+<p >&zwj;Describe the universe of communicating apps via simple <code>struct</code>s: </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceipc_1_1session.html">ipc::session</a>;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Describe the universe of communicating apps via simple `struct`s.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Example: 2 applications.</span></div>
+<div class="line"><span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1session_1_1App.html">App</a> APP_A{ <span class="stringliteral">&quot;a&quot;</span>, <span class="comment">// Unique name for identification in the system.</span></div>
+<div class="line">                 <span class="comment">// Basic properties for safety, authentication.</span></div>
+<div class="line">                 <span class="stringliteral">&quot;/bin/app_a.exec&quot;</span>, USER_ID_A, GROUP_ID };</div>
+<div class="line"><span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1session_1_1App.html">App</a> APP_B{ <span class="stringliteral">&quot;b&quot;</span>, <span class="stringliteral">&quot;/bin/app_a.exec&quot;</span>, USER_ID_B, GROUP_ID };</div>
+<div class="line"><span class="comment">// Which app(s) will connect sessions (client) versus accept sessions (server)?</span></div>
+<div class="line"><span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1session_1_1Client__app.html">Client_app</a> APP_B_AS_CLI{ APP_B };</div>
+<div class="line"><span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1session_1_1Server__app.html">Server_app</a> APP_A_AS_SRV</div>
+<div class="line">                   { APP_A,</div>
+<div class="line">                     { APP_B.<a class="code hl_variable" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd">m_name</a> }, <span class="comment">// We are A; we allow only B to open sessions with us.</span></div>
+<div class="line">                     <span class="stringliteral">&quot;&quot;</span>, <span class="comment">// Keep run-time files in /var/run by default.</span></div>
+<div class="line">                     <span class="comment">// Safety/auth preset.  No need for `0644` and so forth.</span></div>
+<div class="line">                     <a class="code hl_enumvalue" href="namespaceipc_1_1util.html#a2ec0bfdddb41a1ef0403e4bb8967705daa5508fa6037b9c0926cf7eb20af97a6d">ipc::util::Permissions_level::S_GROUP_ACCESS</a> };</div>
+<div class="ttc" id="anamespaceipc_1_1session_html"><div class="ttname"><a href="namespaceipc_1_1session.html">ipc::session</a></div><div class="ttdoc">Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...</div><div class="ttdef"><b>Definition:</b> <a href="app_8cpp_source.html#l00026">app.cpp:27</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html_a2ec0bfdddb41a1ef0403e4bb8967705daa5508fa6037b9c0926cf7eb20af97a6d"><div class="ttname"><a href="namespaceipc_1_1util.html#a2ec0bfdddb41a1ef0403e4bb8967705daa5508fa6037b9c0926cf7eb20af97a6d">ipc::util::Permissions_level::S_GROUP_ACCESS</a></div><div class="ttdeci">@ S_GROUP_ACCESS</div><div class="ttdoc">Allows access by resource-owning user's containing group(s) (in POSIX/Unix identified by GID) and no ...</div></div>
+<div class="ttc" id="astructipc_1_1session_1_1App_html"><div class="ttname"><a href="structipc_1_1session_1_1App.html">ipc::session::App</a></div><div class="ttdoc">A description of an application in this ipc::session inter-process communication universe.</div><div class="ttdef"><b>Definition:</b> <a href="app_8hpp_source.html#l00077">app.hpp:78</a></div></div>
+<div class="ttc" id="astructipc_1_1session_1_1App_html_a8e67b57829fe43a122a23c699b5de8fd"><div class="ttname"><a href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd">ipc::session::App::m_name</a></div><div class="ttdeci">std::string m_name</div><div class="ttdoc">Brief application name, readable to humans and unique across all other applications' names; used both...</div><div class="ttdef"><b>Definition:</b> <a href="app_8hpp_source.html#l00144">app.hpp:144</a></div></div>
+<div class="ttc" id="astructipc_1_1session_1_1Client__app_html"><div class="ttname"><a href="structipc_1_1session_1_1Client__app.html">ipc::session::Client_app</a></div><div class="ttdoc">An App that is used as a client in at least one client-server IPC split.</div><div class="ttdef"><b>Definition:</b> <a href="app_8hpp_source.html#l00184">app.hpp:185</a></div></div>
+<div class="ttc" id="astructipc_1_1session_1_1Server__app_html"><div class="ttname"><a href="structipc_1_1session_1_1Server__app.html">ipc::session::Server_app</a></div><div class="ttdoc">An App that is used as a server in at least one client-server IPC split.</div><div class="ttdef"><b>Definition:</b> <a href="app_8hpp_source.html#l00205">app.hpp:206</a></div></div>
+</div><!-- fragment --><p >Compile-time-configure your sessions: </p><div class="fragment"><div class="line"><span class="comment">// Specify zero-copy and SHared Memory (SHM) abilities if any.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">namespace </span>ssn = shm::classic;</div>
+<div class="line"><span class="comment">// Use [ipc::]session - For non-SHM-enabled communication.</span></div>
+<div class="line"><span class="comment">//     [ipc::session::]shm::* - For SHM-enabled comms (zero-copy structured messaging; explicit SHM access if desired).</span></div>
+<div class="line"><span class="comment">//     [ipc::session::]shm::classic - Classic one-segment variant with simple allocation strategy by Boost.</span></div>
+<div class="line"><span class="comment">//                     shm::arena_lend::jemalloc - Adaptive multi-segment variant with allocation by jemalloc.</span></div>
+<div class="line"><span class="comment">// Subsequent API remains ~the same.  Only your convenience alias above changes.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Specify the low-level transports used underneath in your future IPC channels.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Example: Your future channels will use POSIX MQs when possible for high perf; Unix domain sockets when you</span></div>
+<div class="line"><span class="comment">//   transmit an FD (network socket, file handle, etc.).</span></div>
+<div class="line"><span class="keyword">constexpr</span> <span class="keyword">auto</span> MQ_TYPE = schema::MqType::POSIX;</div>
+<div class="line"><span class="keyword">constexpr</span> <span class="keywordtype">bool</span> TRANSMIT_FDS = <span class="keyword">true</span>;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Client side:</span></div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> = ssn::Client_session&lt;MQ_TYPE, TRANSMIT_FDS&gt;;</div>
+<div class="line"><span class="comment">// Server side:</span></div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session__server.html">Session_server</a> = ssn::Session_server&lt;MQ_TYPE, TRANSMIT_FDS&gt;;</div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> = <a class="code hl_class" href="classipc_1_1session_1_1Server__session__mv.html">Session_server::Server_session_obj</a>;</div>
+<div class="ttc" id="aclassipc_1_1session_1_1Server__session__mv_html"><div class="ttname"><a href="classipc_1_1session_1_1Server__session__mv.html">ipc::session::Server_session_mv&lt; Server_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &gt;</a></div></div>
+<div class="ttc" id="aclassipc_1_1session_1_1Session__server_html"><div class="ttname"><a href="classipc_1_1session_1_1Session__server.html">ipc::session::Session_server</a></div><div class="ttdoc">To be instantiated typically once in a given process, an object of this type asynchronously listens f...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__session_2src_2ipc_2session_2session__server_8hpp_source.html#l00193">session_server.hpp:197</a></div></div>
+<div class="ttc" id="aclassipc_1_1session_1_1Session_html"><div class="ttname"><a href="classipc_1_1session_1_1Session.html">ipc::session::Session</a></div><div class="ttdoc">A documentation-only concept defining the local side of an IPC conversation (session) with another en...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__session_2src_2ipc_2session_2session_8hpp_source.html#l00215">session.hpp:216</a></div></div>
+</div><!-- fragment --><p >Open session(s): </p><div class="fragment"><div class="line"><span class="comment">// Client side:</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> session(<span class="keyword">nullptr</span>, APP_B_AS_CLI, <span class="comment">// This is us (connector).</span></div>
+<div class="line">                APP_A_AS_SRV, <span class="comment">// The opposing application (acceptor).</span></div>
+<div class="line">                ...);</div>
+<div class="line">session.async_connect([...](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code) { <span class="keywordflow">if</span> (!err_code) { ...`session` is ready.... } });</div>
+<div class="line"><span class="comment">// ^-- asio-style API.  Non-blocking/synchronous API also available (integrate directly with poll(), epoll_...(), etc.).</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Server side:</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1session_1_1Session__server.html">Session_server</a> session_srv(<span class="keyword">nullptr</span>, APP_A_AS_SRV, <span class="comment">// This is us (acceptor).</span></div>
+<div class="line">                           { { APP_B_AS_CLI.m_name, APP_B_AS_CLI } }); <span class="comment">// These are potential opposing apps.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> session;</div>
+<div class="line">session_srv.async_accept(&amp;session,</div>
+<div class="line">                         [...](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code) { <span class="keywordflow">if</span> (!err_code) { ...`session` is ~ready.... } });</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// NOTE: Upon opening session, capabilities of `session` on either side are **exactly the same**.</span></div>
+<div class="line"><span class="comment">// Client/server status matters only when establishing the IPC conversation;</span></div>
+<div class="line"><span class="comment">// the conversation itself once established is arbitrariy and up to you fully.</span></div>
+</div><!-- fragment --><p >Open channel(s) in a session:</p><ul>
+<li>Easiest: Have them be pre-opened, so that they're ready from the session start:</li>
+</ul>
+<div class="fragment"><div class="line"><span class="comment">// Client side: Example: Expect 1 client-requested channel; N server-requested channels.</span></div>
+<div class="line">Session::Channels my_init_channels(1);</div>
+<div class="line">Session::Channels their_init_channels;</div>
+<div class="line">session.async_connect(..., &amp;my_init_channels, ..., &amp;their_init_channels,</div>
+<div class="line">                      [...](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">if</span> (!err_code)</div>
+<div class="line">  {</div>
+<div class="line">    <span class="comment">// `session` is ready, but we might not even care that much because:</span></div>
+<div class="line">    <span class="comment">//   my_init_channels[0] = The 1 pre-opened Session::Channel_obj we requested.</span></div>
+<div class="line">    <span class="comment">//   their_init_channels = vector&lt;Session::Channel_obj&gt; = The N pre-opened channels opposing side requested.</span></div>
+<div class="line">    <span class="comment">// Sessions are mostly a way to establish channels after all, and we&#39;ve got ours!</span></div>
+<div class="line">  }</div>
+<div class="line">});</div>
+<div class="line"><span class="comment">// Server side: Example: Expect &lt;cmd line arg&gt; server-requested channels; N client-requested channels.</span></div>
+<div class="line">Session::Channels my_init_channels(lexical_cast&lt;size_t&gt;(argv[2]));</div>
+<div class="line">Session::Channels their_init_channels;</div>
+<div class="line">session_srv.async_accept(&amp;session, ..., &amp;my_init_channels, ..., &amp;their_init_channels, ..., ...,</div>
+<div class="line">                         [...](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">if</span> (!err_code)</div>
+<div class="line">  {</div>
+<div class="line">    <span class="comment">// session = Opened session.</span></div>
+<div class="line">    <span class="comment">// my_init_channels = The 3 pre-opened `Session::Channel_obj`s we requested.</span></div>
+<div class="line">    <span class="comment">// their_init_channels = The N pre-opened channels opposing side requested.  (N=1 in this example; see above.)</span></div>
+<div class="line">  }</div>
+<div class="line">});</div>
+</div><!-- fragment --><ul>
+<li>Max flexibility: Open them at any time. Either side can be initiator or acceptor of channel opening at any time.</li>
+</ul>
+<div class="fragment"><div class="line"><span class="comment">// session.open_channel() is non-blocking, synchronous.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Active opener (side 1):</span></div>
+<div class="line"><a class="code hl_typedef" href="classipc_1_1session_1_1Session.html#a2f770785552536f3b929f293c44834d2">Session::Channel_obj</a> channel;</div>
+<div class="line">session.open_channel(&amp;channel); <span class="comment">// Non-blocking, synchronous.</span></div>
+<div class="line"><span class="comment">// Active opener advanced form (allows to pass 1 structured message along with the channel-open action):</span></div>
+<div class="line"><span class="keyword">auto</span> mdt = session.mdt_builder();</div>
+<div class="line">mdt-&gt;setCoolParameterFromMyCapnpSchema(42.42);</div>
+<div class="line">session.open_channel(&amp;channel, std::move(mdt));</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Passive opener (side 2):</span></div>
+<div class="line">session.init_handlers(..., [...](<a class="code hl_typedef" href="classipc_1_1session_1_1Session.html#a2f770785552536f3b929f293c44834d2">Session::Channel_obj</a>&amp;&amp; channel, <span class="keyword">auto</span>&amp;&amp; mdt)</div>
+<div class="line">{</div>
+<div class="line">  <span class="comment">// `channel` is ready.  Also the structured message (if desired) is immediately available:</span></div>
+<div class="line">  <span class="keyword">const</span> <span class="keywordtype">float</span> val = mdt-&gt;getCoolParameterFromMyCapnpSchema();</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Along with the channel-open request, other guy sent us this number: [&quot;</span> &lt;&lt; val &lt;&lt; <span class="stringliteral">&quot;].&quot;</span>);</div>
+<div class="line">});</div>
+<div class="ttc" id="aclassipc_1_1session_1_1Session_html_a2f770785552536f3b929f293c44834d2"><div class="ttname"><a href="classipc_1_1session_1_1Session.html#a2f770785552536f3b929f293c44834d2">ipc::session::Session::Channel_obj</a></div><div class="ttdeci">unspecified Channel_obj</div><div class="ttdoc">Each successful open_channel() and on-passive-open handler firing shall yield a concrete transport::C...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__session_2src_2ipc_2session_2session_8hpp_source.html#l00235">session.hpp:235</a></div></div>
+</div><!-- fragment --> </blockquote>
+<p>Once you've got your session and/or channels, it's off to the races... namely:</p>
 <h2>Transport (unstructured) </h2>
-<p >A <b>channel</b> is a bundling of the resources required for, essentially, a bidirectional pipe capable of transmitting binary messages (<b>blobs</b>) and, optionally, native handles. A particular <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">ipc::transport::Channel</a> (as specified at compile-time via its template parameters) may, for example, consist of an outgoing <a href="https://man7.org/linux/man-pages/man7/mq_overview.7.html">POSIX MQ (message queue)</a> handle and a similar incoming-MQ handle; or conceptually similar SHM-backed MQs (boost.ipc MQs). Alternatively it can consist of a Unix domain socket endpoint (which is bidirectional). (Other combinations are generically possible.) If one uses the <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> API, one need not worry about any detail of opening these various handles and feeding them to the particular <code>Channel</code>. Alternatively a simple application or prototype may want to manually set them up without <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a>.</p>
-<p >All transport APIs at this layer, as well the structured layer (see below), have an API that is as-synchronous-as-possible. In particular all send operations are non-blocking and synchronous and never return "would-block" &ndash; while guaranteeing good performance in practice. Receive APIs are asynchronous by their nature. A proactor-style API (a-la boost.asio) is provided for this and other async ops (such as connect and accept of various types)</p>
+<p >A <b>channel</b> is a bundling of the resources required for, essentially, a bidirectional pipe capable of transmitting binary messages (<b>blobs</b>) and, optionally, native handles. A particular <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">ipc::transport::Channel</a> (as specified at compile-time via its template parameters) may, for example, consist of an outgoing <a href="https://man7.org/linux/man-pages/man7/mq_overview.7.html">POSIX MQ (message queue)</a> handle and a similar incoming-MQ handle; or conceptually similar SHM-backed MQs (boost.ipc MQs). Alternatively it can consist of a Unix domain socket endpoint (which is bidirectional). (Other combinations are generically possible.)</p>
+<p >If one uses the <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> API, one need not worry about any detail of opening these various handles and feeding them to the particular <code>Channel</code>. This is shown in the <a class="el" href="api_overview.html#api_overview_sessions_synopsis">Sessions synopsis above</a>. The type of channel openable via a given session is compile-time-configured when declaring your convenience <code>Session</code> alias. The <a class="el" href="api_overview.html#api_overview_sessions_synopsis">Sessions synopsis above</a> makes one example selection. You can make other choices as follows. Note that you just make these selections &ndash; the details are handled underneath. E.g., you need no knowledge of POSIX MQ API (from <code>man mq_overview</code>) to take advantage of its performance characteristics.</p>
+<dl class="section user"><dt>Synopsis: Pick channel low-level transport</dt><dd></dd></dl>
+<blockquote class="doxtable">
+<p >&zwj;There are two knobs to twiddle. If unsure about the first knob, <code>POSIX</code> is fine.</p>
+<div class="fragment"><div class="line"><span class="keyword">constexpr</span> <span class="keyword">auto</span> MQ_TYPE = schema::MqType::POSIX; <span class="comment">// Use POSIX MQs (as from `man mq_overview`) when possible.</span></div>
+<div class="line">                       = schema::MqType::BIPC; <span class="comment">// Use `boost.interprocess:message_queue`s when possible.</span></div>
+<div class="line">                       = schema::MqType::NONE; <span class="comment">// Do not use MQs; always use Unix domain sockets.</span></div>
+<div class="line"><span class="keyword">constexpr</span> <span class="keywordtype">bool</span> TRANSMIT_FDS = <span class="keyword">true</span>; <span class="comment">// You need ability to send native handles (FDs).  Use Unix domain sockets when needed.</span></div>
+<div class="line">                            = <span class="keyword">false</span>; <span class="comment">// You don&#39;t need this ability.  So Unix domain socket used only if MQ_TYPE=NONE.</span></div>
+<div class="line"><span class="comment">// Client:</span></div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> = ssn::Client_session&lt;MQ_TYPE, TRANSMIT_FDS&gt;;</div>
+<div class="line"><span class="comment">// Server:</span></div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session__server.html">Session_server</a> = ssn::Session_server&lt;MQ_TYPE, TRANSMIT_FDS&gt;;</div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> = Session_server::Session_obj;</div>
+</div><!-- fragment --> </blockquote>
+<p>Alternatively a simple application or prototype may want to manually set them up without <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a>. Though, in our humble opinions, using <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> is what's <em>simple</em>, as manual setup of a channel involves major annoyances including naming and transport-specific considerations (Unix domain sockets versus POSIX MQs versus... etc.). Perhaps the better term would have been "conventional" rather than "simple." We will briefly discuss how to manually open various channels without <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> a few paragraphs below.</p>
+<dl class="section note"><dt>Note</dt><dd>Note well! Once you've obtained an open <code>transport::Channel</code>, whether via <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> or manually, in many (probably most) cases you will not need or want to understand the information in the rest of this section and instead skip straight to <a class="el" href="api_overview.html#api_overview_transport_struc">Transport (structured)</a>, below. That is, typically you'll want to transmit structured data &ndash; various fields, structures, lists thereof, etc. (+ possibly FDs) &ndash; as opposed to mere binary blobs (+ possibly FDs). To do so, one takes a freshly-opened <code>Channel</code> and <b>upgrades</b> it to a <b>structured channel</b> (<code>struc::Channel</code>). A good portion of the power of Flow-IPC is how it integrates with/leverages <a href="https://capnproto.org">Cap'n Proto</a> via <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">ipc::transport::struc::Channel</a>. However, for simpler or specialized use cases it is completely reasonable to want to operate at the lower, unstructured layer that is <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">ipc::transport::Channel</a>, or even the components it comprises (MQs, stream sockets at least). In that case, and/or to see how to manually open these, read on in this section.</dd></dl>
+<p>All transport APIs at this layer, as well the structured layer (see below), have an API that is as-synchronous-as-possible. In particular all send operations are non-blocking and synchronous and never return "would-block" &ndash; while guaranteeing good performance in practice. Receive APIs are asynchronous by their nature. A proactor-style API (a-la boost.asio) is provided for this and other async ops (such as connect and accept of various types).</p>
 <dl class="section note"><dt>Note</dt><dd>An alternative API is available for all objects with any async operations (generally: any subset of send, receive, connect, accept). This is called the <code>sync_io</code> <b>pattern</b>, contrasting with the above <b>async-I/O pattern</b>. The <code>sync_io</code>-pattern alternative for each given I/O object is similar in spirit to reactor-style (non-blocking) APIs a-la OpenSSL's. It may help you integrate with a reactor-style event loop such as one built on <code>epoll()</code> or <code>poll()</code>. It is also the way to strictly control the background threads in your application arising for Flow-IPC's operation: if desired you can have it operate entirely within your own threads and event loop(s). See <a class="el" href="async_loop.html">Asynchronicity and Integrating with Your Event Loop</a> for more discussion of this somewhat-hairy topic.</dd>
 <dd>
 This async-I/O-versus-<code>sync_io</code> choice is available for all other parts of Flow-IPC, including: <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> structured layer (<code>struc::sync_io::Channel</code> versus just <code>struc::Channel</code> for async-I/O alternative) and <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a>.</dd></dl>
-<h2>Transport (structured) </h2>
+<p><a class="anchor" id="api_overview_transport_synopsis"></a></p><dl class="section user"><dt>Synopsis: Transport (unstructured)</dt><dd></dd></dl>
+<blockquote class="doxtable">
+<p >&zwj;Lowest layer: MQs accessible via unified <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">ipc::transport::Persistent_mq_handle</a> <em>concept</em>. (This API are mutually uniform, more pleasant, and at times more powerful than the underlying APIs.) boost.asio is leveraged for Unix domain stream sockets. We use these <em>internally</em>, but we expose them publicly too, should you choose to work at that low level.</p><ul>
+<li><a class="el" href="classipc_1_1transport_1_1Posix__mq__handle.html">Posix_mq_handle</a> for <a href="https://man7.org/linux/man-pages/man7/mq_overview.7.html">POSIX message queues</a>.</li>
+<li><a class="el" href="classipc_1_1transport_1_1Bipc__mq__handle.html">Bipc_mq_handle</a> for <a href="https://www.boost.org/doc/libs/1_82_0/doc/html/interprocess/synchronization_mechanisms.html#interprocess.synchronization_mechanisms.message_queue">boost.interprocess MQs &ndash; internally SHM-based</a>.</li>
+<li>We leverage <a href="https://www.boost.org/doc/libs/1_84_0/doc/html/boost_asio/reference/local__stream_protocol/socket.html">boost::asio::local::stream_protocol::socket</a>, aliased from <a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a1788f9dbd896bb71b3693f9ae25b40ae" title="Short-hand for boost.asio Unix domain peer stream-socket (usually-connected-or-empty guy).">ipc::transport::asio_local_stream_socket::Peer_socket</a>. Namespace <a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html">asio_local_stream_socket</a> has advanced utilities (as free functions and type aliases).</li>
+</ul>
+<p >Next layer: Sender/receiver <em>concepts</em> and their implementations. The key concepts:</p><ul>
+<li><a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">ipc::transport::Blob_sender</a>:<ul>
+<li>Method <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a776b55ae93e65592b90c3943ca99e948">send_blob()</a> to <em>synchronously, never-would-blockingly</em> send a binary buffer <em>with message boundaries respected</em>.</li>
+<li>Methods <code>*end_sending()</code> to send an end-of-stream graceful-close marker.</li>
+<li>Method <code>auto_ping()</code> to enable periodic auto-pinging of opposing receiver with internal messages that are ignored except that they reset any idle timer as enabled via opposing <code>Blob_receiver::idle_timer_run()</code>.</li>
+</ul>
+</li>
+<li><a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">ipc::transport::Blob_receiver</a>:<ul>
+<li>Method <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a8bc6642dbf4b5e3fdee9f3442f2bbe84">async_receive_blob()</a> to receive, with message boundaries respected, one message the opposing side sent via <code>send_blob()</code>, into a large-enough buffer supplied by caller. Receipt, or error, is indicated asynchronously via <b>completion handler</b> function supplied by user.</li>
+<li>Method <code>idle_timer_run()</code> to enable an idle timer that would emit a connection-ending error, if no message (whether from a user blob or an <code>auto_ping()</code>) arrives within a specific time period from the last such message or connection start.</li>
+</ul>
+</li>
+<li><a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">ipc::transport::Native_handle_sender</a>: Just like <code>Blob_sender</code>, except <code>send_blob()</code> is replaced by:<ul>
+<li>Method <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html#ac96b0aa01c286d525f9dcfa6dacc4220">send_native_handle()</a> which sends: a message (blob); or a socket handle (FD); or both. User provides socket handle (if any) as <a class="el" href="structipc_1_1util_1_1Native__handle.html">essentially an <code>int</code></a>.</li>
+</ul>
+</li>
+<li><a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">ipc::transport::Native_handle_receiver</a>: What <code>Blob_receiver</code> is to <code>Blob_sender</code>, this guy is <code>Native_handle_sender</code>. Method <code>async_receive_native_handle()</code> can receive a message, an FD, or both.</li>
+<li>For each <code>ipc::transport::X</code> concept above, <code>ipc::transport::sync_io::X</code> is the <code>sync_io</code>-pattern counterpart. E.g.: <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">ipc::transport::sync_io::Blob_receiver</a> allows for integration of blob-receiving functionality above into an <code>epoll</code>-based event loop, with only non-blocking calls and no internal background threads involved.</li>
+</ul>
+<p >These classes or class templates implement the above concepts:</p><ul>
+<li>Unix domain (stream) sockets have exclusive FD-transmission ability; are great for blobs too.<ul>
+<li><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">ipc::transport::Native_socket_stream</a> implements all 4 concepts: <code>Blob_sender</code>, <code>Blob_receiver</code>, <code>Native_handle_sender</code>, <code>Native_handle_receiver</code>.</li>
+</ul>
+</li>
+<li>MQs efficiently transmit blobs of limited size. One kernel-persistent MQ object, maintained by OS, is required for a unidirectional pipe. For bidirectional pipe, use 2 MQs arranged in mutually-facing fashion. For each one, user a sender object on one end and receiver on another.<ul>
+<li><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html">ipc::transport::Blob_stream_mq_sender</a> implements Blob_sender.</li>
+<li><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html">ipc::transport::Blob_stream_mq_receiver</a> implements Blob_receiver.</li>
+</ul>
+</li>
+</ul>
+<p >The concept APIs above act the same regardless of concrete class and apply to each object once in opened (PEER) state. Each class also has non-concept aspects which depend on its specific characteristics. Most of these concern opening a connection (getting <em>to</em> PEER state).</p>
+<p >A survey:</p>
+<div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceipc_1_1transport.html">ipc::transport</a>;</div>
+<div class="line"><span class="keyword">namespace </span>util = <a class="code hl_namespace" href="namespaceipc_1_1util.html">ipc::util</a>;</div>
+<div class="line"><span class="keyword">namespace </span>asio_local = <a class="code hl_namespace" href="namespaceipc_1_1transport_1_1asio__local__stream__socket_1_1local__ns.html">ipc::transport::asio_local_stream_socket::local_ns</a>;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// With MQs, you must open an MQ handle first, which is necessary can create the kernel-persistent OS MQ object.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ipc::session would figure all this out by itself; when working manually you have to do so yourself.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Posix__mq__handle.html">Posix_mq_handle</a> out_q(<span class="keyword">nullptr</span>, util::Shared_name::ct(<span class="stringliteral">&quot;sharedMqNameA2B&quot;</span>), <span class="comment">// Shared name known by other side</span></div>
+<div class="line">                      <a class="code hl_variable" href="namespaceipc_1_1util.html#a5664539b3d75d6d10cdfebf6eac5382d">util::OPEN_OR_CREATE</a>, <span class="comment">// Atomically create if needed, open if exists in system already.</span></div>
+<div class="line">                      10, 1000, <span class="comment">// Max # of unread messages, max size of message,</span></div>
+<div class="line">                      0600, &amp;err_code); <span class="comment">// Permissions, if creation is needed; Error_code* in case of error.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Bipc__mq__handle.html">Bipc_mq_handle</a> in_q(<span class="keyword">nullptr</span>, util::Shared_name::ct(<span class="stringliteral">&quot;sharedMqNameB2A&quot;</span>), <a class="code hl_variable" href="namespaceipc_1_1util.html#a6a3a6ec85242d073df96978c63464078">OPEN_ONLY</a>, &amp;err_code);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Then to make yourself a Blob_sender/receiver, feed them into constructor.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html">Blob_stream_mq_sender&lt;Posix_mq_handle&gt;</a> out(<span class="keyword">nullptr</span>, <span class="stringliteral">&quot;cool_reader_nickname&quot;</span>, std::move(out_q));</div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html">Blob_stream_mq_receiver&lt;Bipc_mq_handle&gt;</a> in(<span class="keyword">nullptr</span>, <span class="stringliteral">&quot;cool_writer_nickname&quot;</span>, std::move(in_q));</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// With socket streams, you can either use two pre-opened FDs; or use client/server setup.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Pre-opened FDs:</span></div>
+<div class="line"><a class="code hl_typedef" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a1788f9dbd896bb71b3693f9ae25b40ae">asio_local::Peer_socket</a> a_raw_sock, b_raw_sock;</div>
+<div class="line">asio_local::connect_pair(a_raw_sock, b_raw_sock); <span class="comment">// Can also use native ::socketpair().</span></div>
+<div class="line"><span class="comment">// (b_raw_sock could be spread to another process via fork() or another Native_socket_stream and other techniques.)</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Native__socket__stream.html">Native_socket_stream</a> a_sock(<span class="keyword">nullptr</span>, <span class="stringliteral">&quot;cool_a_nickname&quot;</span>, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">util::Native_handle</a>(a_raw_sock));</div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Native__socket__stream.html">Native_socket_stream</a> b_sock(<span class="keyword">nullptr</span>, <span class="stringliteral">&quot;cool_b_nickname&quot;</span>, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">util::Native_handle</a>(b_raw_sock));</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Client/server: client.</span></div>
+<div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> SRV_ADDR = util::Shared_name::ct(<span class="stringliteral">&quot;sharedSockNameSrv&quot;</span>);</div>
+<div class="line"><span class="comment">// ^-- Client and server need to agree on this, and it must not conflict.  ipc::session would take care of this.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Native__socket__stream.html">Native_socket_stream</a> sock(<span class="keyword">nullptr</span>, <span class="stringliteral">&quot;cool_a_nickname&quot;</span>);</div>
+<div class="line">sock.async_connect(SRV_ADDR, [...](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code) { ... });</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Client/server: server.  A dedicated server-acceptor class exists for this.</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Native__socket__stream.html">Native_socket_stream</a> sock(<span class="keyword">nullptr</span>, <span class="stringliteral">&quot;cool_b_nickname&quot;</span>);</div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html">Native_socket_stream_acceptor</a> srv(<span class="keyword">nullptr</span>, SRV_ADDR, &amp;err_code); <span class="comment">// Error_code* to catch, e.g., name conflicts.</span></div>
+<div class="line">srv.async_accept(&amp;sock, [...](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code) { ... });</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Native_socket_stream adds some safety/informational features.  ipc::session uses this internally.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a> creds = sock.remote_peer_process_credentials();</div>
+<div class="line">std::cout &lt;&lt; creds <span class="comment">// Prints .process_id(), .user_id(), .group_id()</span></div>
+<div class="line">          &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; creds.<a class="code hl_function" href="classipc_1_1util_1_1Process__credentials.html#ae4f156cfdfe0c8c5702890e5c1a37cdf">process_invoked_as</a>() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>; <span class="comment">// Prints the command-line argv[0] through which remote process was invoked.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Can bundle Blob_senders, Blob_receivers, etc., into `ipc::transport::Channel`s.</span></div>
+<div class="line"><span class="comment">// Convenience aliases and data-free subclasses exist to make it easier versus using an actual Channel&lt;...&gt;.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// In this case we create a Channel with 2 bidirectional pipes, from 2 `Posix_mq_handle`s like out_q above; and</span></div>
+<div class="line"><span class="comment">// an already-opened Native_socket_stream.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Mqs__socket__stream__channel.html">Mqs_socket_stream_channel&lt;false, Posix_mq_handle&gt;</a> <span class="comment">// false =&gt; async-I/O API; true =&gt; sync_io-pattern API.</span></div>
+<div class="line">  chan(<span class="keyword">nullptr</span>, <span class="stringliteral">&quot;two_pipe_chan_nickname&quot;</span>, std::move(out_q), std::move(in_q), std::move(sock));</div>
+<div class="line"><span class="comment">// Use the blobs pipe to send:</span></div>
+<div class="line">chan.send_blob(<a class="code hl_typedef" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a>(some_byte_vector.data(), some_byte_vector.size()));</div>
+<div class="line"><span class="comment">// Use the blobs-and-FDs pipe to receive:</span></div>
+<div class="line"><a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">util::Native_handle</a> fd;</div>
+<div class="line">chan.async_receive_native_handle(&amp;fd, <a class="code hl_typedef" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a>(some_target_vector.data(), some_target_vector.capacity()),</div>
+<div class="line">                                 [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code, <span class="keywordtype">size_t</span> n_rcvd)</div>
+<div class="line">{</div>
+<div class="line">  if (!err_code)</div>
+<div class="line">  {</div>
+<div class="line">    some_target_vector.resize(n_rcvd);</div>
+<div class="line">    <span class="comment">// some_target_vector.begin()..end() = received blob.</span></div>
+<div class="line">    <span class="comment">// fd.m_native_handle = `int` file descriptor/raw handle.</span></div>
+<div class="line">});</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// In this case we create a Channel with 1 bidirectional pipe, a Unix domain socket stream, for both FDs and blobs.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Socket__stream__channel.html">Socket_stream_channel&lt;false&gt;</a> chan(..., std::move(sock));</div>
+<div class="line"><span class="comment">// Can access the Native_handle_sender through the accessor:</span></div>
+<div class="line">chan.hndl_snd()-&gt;send_native_handle(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">util::Native_handle</a>(a_raw_int_fd), <a class="code hl_typedef" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a>(...));</div>
+<div class="line"><span class="comment">// Or through the Channel forwarding API:</span></div>
+<div class="line">chan.send_native_handle({}, <a class="code hl_typedef" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a>(...)); <span class="comment">// Send a blob but no FD this time.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Or create some `Channel`s with a blobs-only pipe each:</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Socket__stream__channel__of__blobs.html">Socket_stream_channel_of_blobs&lt;false&gt;</a> chan(..., std::move(sock)); <span class="comment">// &lt;-- A Unix domain socket pipe only.</span></div>
+<div class="line">chan.send_native_handle(...); <span class="comment">// Compile error: Socket_stream_channel_of_blobs cannot transmit FDs.</span></div>
+<div class="line">chan.send_blob(...); <span class="comment">// No problem.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Mqs__channel.html">Mqs_channel&lt;false, Bipc_mq_handle&gt;</a> chan(..., std::move(out_q), std::move(in_q)); <span class="comment">// &lt;-- A boost.interprocess-MQ pipe only.</span></div>
+<div class="line">chan.send_native_handle(...); <span class="comment">// Compile error: MQs can certainly not transmit FDs.</span></div>
+<div class="line">chan.send_blob(...); <span class="comment">// No problem.</span></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Bipc__mq__handle_html"><div class="ttname"><a href="classipc_1_1transport_1_1Bipc__mq__handle.html">ipc::transport::Bipc_mq_handle</a></div><div class="ttdoc">Implements the Persistent_mq_handle concept by thinly wrapping bipc::message_queue,...</div><div class="ttdef"><b>Definition:</b> <a href="bipc__mq__handle_8hpp_source.html#l00050">bipc_mq_handle.hpp:52</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Blob__stream__mq__receiver_html"><div class="ttname"><a href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html">ipc::transport::Blob_stream_mq_receiver</a></div><div class="ttdoc">Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...</div><div class="ttdef"><b>Definition:</b> <a href="blob__stream__mq__rcv_8hpp_source.html#l00069">blob_stream_mq_rcv.hpp:70</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Blob__stream__mq__sender_html"><div class="ttname"><a href="classipc_1_1transport_1_1Blob__stream__mq__sender.html">ipc::transport::Blob_stream_mq_sender</a></div><div class="ttdoc">Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...</div><div class="ttdef"><b>Definition:</b> <a href="blob__stream__mq__snd_8hpp_source.html#l00164">blob_stream_mq_snd.hpp:165</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Mqs__channel_html"><div class="ttname"><a href="classipc_1_1transport_1_1Mqs__channel.html">ipc::transport::Mqs_channel</a></div><div class="ttdoc">A Channel with at least a blobs pipe consisting of two MQs of type Persistent_mq_handle (template arg...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01174">channel.hpp:1180</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Mqs__socket__stream__channel_html"><div class="ttname"><a href="classipc_1_1transport_1_1Mqs__socket__stream__channel.html">ipc::transport::Mqs_socket_stream_channel</a></div><div class="ttdoc">A Channel with a blobs pipe consisting of 2 MQs of type Persistent_mq_handle (template arg); and a ha...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01273">channel.hpp:1278</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Native__socket__stream__acceptor_html"><div class="ttname"><a href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html">ipc::transport::Native_socket_stream_acceptor</a></div><div class="ttdoc">A server object that binds to a Shared_name and listens for incoming Native_socket_stream::*_connect(...</div><div class="ttdef"><b>Definition:</b> <a href="native__socket__stream__acceptor_8hpp_source.html#l00102">native_socket_stream_acceptor.hpp:105</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Native__socket__stream_html"><div class="ttname"><a href="classipc_1_1transport_1_1Native__socket__stream.html">ipc::transport::Native_socket_stream</a></div><div class="ttdoc">Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...</div><div class="ttdef"><b>Definition:</b> <a href="native__socket__stream_8hpp_source.html#l00277">native_socket_stream.hpp:278</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Posix__mq__handle_html"><div class="ttname"><a href="classipc_1_1transport_1_1Posix__mq__handle.html">ipc::transport::Posix_mq_handle</a></div><div class="ttdoc">Implements the Persistent_mq_handle concept by wrapping the POSIX message queue API (see man mq_overv...</div><div class="ttdef"><b>Definition:</b> <a href="posix__mq__handle_8hpp_source.html#l00060">posix_mq_handle.hpp:62</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Socket__stream__channel__of__blobs_html"><div class="ttname"><a href="classipc_1_1transport_1_1Socket__stream__channel__of__blobs.html">ipc::transport::Socket_stream_channel_of_blobs</a></div><div class="ttdoc">A Channel with a blobs pipe only (no handles pipe) that uses a Unix domain socket connection as the u...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01093">channel.hpp:1097</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Socket__stream__channel_html"><div class="ttname"><a href="classipc_1_1transport_1_1Socket__stream__channel.html">ipc::transport::Socket_stream_channel</a></div><div class="ttdoc">A Channel with a handles pipe only (no blobs pipe) that uses a Unix domain socket connection as the u...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01025">channel.hpp:1029</a></div></div>
+<div class="ttc" id="aclassipc_1_1util_1_1Process__credentials_html"><div class="ttname"><a href="classipc_1_1util_1_1Process__credentials.html">ipc::util::Process_credentials</a></div><div class="ttdoc">A process's credentials (PID, UID, GID as of this writing).</div><div class="ttdef"><b>Definition:</b> <a href="process__credentials_8hpp_source.html#l00038">process_credentials.hpp:39</a></div></div>
+<div class="ttc" id="aclassipc_1_1util_1_1Process__credentials_html_ae4f156cfdfe0c8c5702890e5c1a37cdf"><div class="ttname"><a href="classipc_1_1util_1_1Process__credentials.html#ae4f156cfdfe0c8c5702890e5c1a37cdf">ipc::util::Process_credentials::process_invoked_as</a></div><div class="ttdeci">std::string process_invoked_as(Error_code *err_code=0) const</div><div class="ttdoc">Obtains, from the OS, information as to the binary name via which process process_id() was started,...</div><div class="ttdef"><b>Definition:</b> <a href="process__credentials_8cpp_source.html#l00062">process_credentials.cpp:62</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1transport_1_1asio__local__stream__socket_1_1local__ns_html"><div class="ttname"><a href="namespaceipc_1_1transport_1_1asio__local__stream__socket_1_1local__ns.html">ipc::transport::asio_local_stream_socket::local_ns</a></div><div class="ttdoc">Short-hand for boost.asio Unix domain socket namespace.</div></div>
+<div class="ttc" id="anamespaceipc_1_1transport_1_1asio__local__stream__socket_html_a1788f9dbd896bb71b3693f9ae25b40ae"><div class="ttname"><a href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a1788f9dbd896bb71b3693f9ae25b40ae">ipc::transport::asio_local_stream_socket::Peer_socket</a></div><div class="ttdeci">Protocol::socket Peer_socket</div><div class="ttdoc">Short-hand for boost.asio Unix domain peer stream-socket (usually-connected-or-empty guy).</div><div class="ttdef"><b>Definition:</b> <a href="asio__local__stream__socket__fwd_8hpp_source.html#l00114">asio_local_stream_socket_fwd.hpp:114</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1transport_html"><div class="ttname"><a href="namespaceipc_1_1transport.html">ipc::transport</a></div><div class="ttdoc">Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...</div><div class="ttdef"><b>Definition:</b> <a href="asio__local__stream__socket_8cpp_source.html#l00030">asio_local_stream_socket.cpp:31</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html"><div class="ttname"><a href="namespaceipc_1_1util.html">ipc::util</a></div><div class="ttdoc">Flow-IPC module containing miscellaneous general-use facilities that ubiquitously used by ~all Flow-I...</div><div class="ttdef"><b>Definition:</b> <a href="default__init__allocator_8hpp_source.html#l00023">default_init_allocator.hpp:24</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html_a5664539b3d75d6d10cdfebf6eac5382d"><div class="ttname"><a href="namespaceipc_1_1util.html#a5664539b3d75d6d10cdfebf6eac5382d">ipc::util::OPEN_OR_CREATE</a></div><div class="ttdeci">const Open_or_create OPEN_OR_CREATE</div><div class="ttdoc">Tag value indicating an open-if-exists-else-create operation.</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00030">util.cpp:30</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html_a6a3a6ec85242d073df96978c63464078"><div class="ttname"><a href="namespaceipc_1_1util.html#a6a3a6ec85242d073df96978c63464078">ipc::util::OPEN_ONLY</a></div><div class="ttdeci">const Open_only OPEN_ONLY</div><div class="ttdoc">Tag value indicating an atomic open-if-exists-else-fail operation.</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00031">util.cpp:31</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html_a6cb62ae434900f3a8915b33ec5d61a96"><div class="ttname"><a href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">ipc::util::Blob_mutable</a></div><div class="ttdeci">boost::asio::mutable_buffer Blob_mutable</div><div class="ttdoc">Short-hand for an mutable blob somewhere in memory, stored as exactly a void* and a size_t.</div><div class="ttdef"><b>Definition:</b> <a href="util__fwd_8hpp_source.html#l00134">util_fwd.hpp:134</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html_ae0be7edba7e30ffa3f8b742af621f2ab"><div class="ttname"><a href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">ipc::util::Blob_const</a></div><div class="ttdeci">boost::asio::const_buffer Blob_const</div><div class="ttdoc">Short-hand for an immutable blob somewhere in memory, stored as exactly a void const * and a size_t.</div><div class="ttdef"><b>Definition:</b> <a href="util__fwd_8hpp_source.html#l00128">util_fwd.hpp:128</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html">ipc::util::Native_handle</a></div><div class="ttdoc">A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00061">native_handle.hpp:62</a></div></div>
+</div><!-- fragment --> </blockquote>
+<p>All those subleties about different types of pipes in a <code>Channel</code> bundle completely disappear when one deals with structured-data <code>struc::Channel</code>s. They are a higher-layer abstraction and will leverage whatever <code>transport::Channel</code> it adapts. In addition to handling capnp-encoded structured data and SHM-backed zero-copy, it also provides basics like request/response, request-method multiplexing, and a bit more. So let's get into that.</p>
+<p ><a class="anchor" id="api_overview_transport_struc"></a></p><h2>Transport (structured) </h2>
 <p >While a <code>Channel</code> transports blobs and/or native handles, it is likely the Flow-IPC user will want to be able to transmit schema-based structured data, gaining the benefits of that approach including arbitrary data-structuree complexity and forward/backward-compatibility. <a href="https://capnproto.org">capnp (Cap'n Proto)</a> is the best-in-class third-party framework for schema-based structured data; <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>'s structured layer works by integrating with capnp.</p>
 <p >To deal with structured data instead of mere blobs (though a schema-based structure can, of course, itself store blobs such as images), one simply constructs an <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">ipc::transport::struc::Channel</a>, feeding it an <code>std::move()</code>d already-opened <a class="el" href="classipc_1_1transport_1_1Channel.html">Channel</a>. This is called <b>upgrading</b> an unstructured <code>Channel</code> to a <code>struc::Channel</code>. A key template parameter to <code>struc::Channel</code> is a capnp-generated root schema class of the user's choice. This declares, at compile-time, what data structures (messages) one can transmit via that <code>struc::Channel</code> (and an identically-typed counterpart <code>struc::Channel</code> in the opposing process).</p>
 <p ><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">struc::Channel</a> provides fundamental niceties for a structured-channel protocol:</p><ul>
@@ -87,16 +365,200 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 <li>When I send a message M', I can optionally specify that I expect either up-to-1, or an arbitrary number of, <b>responses</b> to it. I ask that when such a response M is received, <code>struc::Channel</code> please invoke a particular handler <code>F(M)</code>.</li>
 </ul>
 <p ><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html">struc::Msg_out</a> is a container-like data structure representing an out-message M'. <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html">struc::Msg_in</a> is a receiver's read-only view into such a message M upon its receipt.</p>
-<h2>Transport (structured): Zero-copy </h2>
-<p >Say I prepare a message M': I construct it (<code>struc::Msg_out</code>), I mutate it via its capnp-generated mutators (as the required backing memory is gradually allocated behind the scenes), and then I <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448">struc::Channel::send()</a> it. The receiver receives it as <code>struc::Msg_in</code> M subsequently and accesses its various parts via capnp-generated accessors. <em>Zero-copy</em> means that the backing memory allocated for M' is never copied into any low-level transport. Instead only some tiny, constant-sized handle is (internally) copied into and out of the transport &ndash; and the accessors of M are directly reading the memory in M'.</p>
-<p >The obvious benefit of this is performance. Notably, also, it is possible to subsequently modify M' and send it (and receive it) again. The backing memory is freed once M' and all in-messsage views like M have been destroyed. (The Ms are made available exclusively via <code>shared_ptr</code>.)</p>
-<p >While zero-copy is optional, in general we recommend using it. Fortunately it is quite easy to enable. <em>Internally</em> it is accomplished by using SHM; but in terms of the public API, all you have to do is &ndash; when writing the code for opening your <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">ipc::session::Session</a> &ndash; simply choose a SHM-backed session type. That is:</p><ul>
-<li>Zero-copy (a/k/a SHM-backed): Use <code>"ipc::session::shm::...::Client_session"</code> and <code>"ipc::session::shm::...::Session_server"</code>.</li>
-<li>Non-zero-copy: Use <a class="el" href="namespaceipc_1_1session.html#a77d8fda00e1e17f595a6a5d4c44375e7" title="A vanilla Client_session with no optional capabilities.">ipc::session::Client_session</a> and <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">ipc::session::Session_server</a>. Whichever you choose, their APIs are identical. In particular, suppose you chose <code>Session</code> type <code>S</code>; then <code>S::Structured_channel&lt;Your_capnp_schema&gt;</code> is the alias for the proper SHM-backed-or-not <code>struc::Channel</code> type.</li>
+<p ><a class="anchor" id="api_overview_transport_struc_synopsis"></a></p><dl class="section user"><dt>Synopsis: Transport (structured)</dt><dd></dd></dl>
+<blockquote class="doxtable">
+<p >&zwj;Like any Cap'n Proto user, to define your messages you will write a schema file which capnp will compile into C++ code with getters and setters. A refresher (or intro): </p><div class="fragment"><div class="line"># A schema file defines your potential structures.</div>
+<div class="line"># ...</div>
+<div class="line">$Cxx.namespace(&quot;my_meta_app::capnp&quot;); # Resulting generated classes will be in this C++ `namespace`.</div>
+<div class="line"> </div>
+<div class="line">struct CoolMsg</div>
+<div class="line">{</div>
+<div class="line">  # You can use absolutely any schema you would as a general capnp user... except:  We add *exactly one* requirement:</div>
+<div class="line">  # Your root `struct` must contain an anonymous union (we will use this to mux/demux in-messages to C++ callbacks).</div>
+<div class="line"> </div>
+<div class="line">  description @0 :Text;</div>
+<div class="line">  # You can, if desired, have arbitrary fields (like this one) outside the union, to be present in any message.</div>
+<div class="line"> </div>
+<div class="line">  union</div>
+<div class="line">  {</div>
+<div class="line">    # The union contains your possible messages (each of which can be of any type but usually a `struct`).</div>
+<div class="line">    sumRequest @1 :SumRequest;</div>
+<div class="line">    sumResponse @2 :SumResponse;</div>
+<div class="line">  }</div>
+<div class="line">}</div>
+<div class="line">struct SumRequest</div>
+<div class="line">{</div>
+<div class="line">  # Asks that receiver add up termsToAdd, multiply sum by constantFactor, and return result in</div>
+<div class="line">  # SumResponse.</div>
+<div class="line">  termsToAdd @0 :List(Int64);</div>
+<div class="line">  constantFactor @1 :Int64;</div>
+<div class="line">}</div>
+<div class="line">struct SumResponse</div>
+<div class="line">{</div>
+<div class="line">  result @0 :Int64;</div>
+<div class="line">}</div>
+</div><!-- fragment --><p >You have already created an opened <em>unstructured</em> channel (<code>transport::Channel raw_chan</code>), most likely <a class="el" href="api_overview.html#api_overview_sessions_synopsis">from a session</a>. An example of transmitting <em>structured</em> data follows. The basic procedure:</p><ol type="1">
+<li><b>Upgrade</b> it to a <em>structured channel</em> (<code>transport::struc::Channel</code>).</li>
+<li>Create a message. (<code>struc::Channel::create_msg()</code> is typically easiest. You can also construct explicitly for advanced needs.)</li>
+<li>Use <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">ipc::transport::struc::Channel</a> APIs to issue and expect messages of various types. Request/response and other paradigms are supported.</li>
+</ol>
+<p >Example: On one side, send a <b>request</b>. </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceipc_1_1transport_1_1struc.html">ipc::transport::struc</a>;</div>
+<div class="line"><span class="keyword">namespace </span>ssn = <a class="code hl_namespace" href="namespaceipc_1_1session.html">ipc::session</a>; <span class="comment">// In this example, use non-zero-copy (internally, heap-based) transmission.</span></div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> = ssn::...;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ...session+channel opening...</span></div>
+<div class="line"><span class="comment">// raw_chan = opened channel from session.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Upgrade it to a struc::Channel.  Specify your capnp-generated schema as template parameter.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1struc_1_1Channel.html">Session::Structured_channel&lt;my_meta_app::capnp::CoolMsg&gt;</a> <span class="comment">// &lt;-- Attention.</span></div>
+<div class="line">  chan(<span class="keyword">nullptr</span>, std::move(raw_chan), <span class="comment">// Eat it!  `raw_chan` becomes empty.</span></div>
+<div class="line">       Channel_base::S_SERIALIZE_VIA_HEAP, session.session_token());</div>
+<div class="line">chan.start(...); <span class="comment">// Error handler (omitted).</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Create a message -- no need to worry about capnp MessageBuilder work!  In our case it allocates in heap.</span></div>
+<div class="line"><span class="keyword">auto</span> msg = cool_channel.create_msg();</div>
+<div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> body_root = msg.body_root();</div>
+<div class="line">From here... back to vanilla <a class="code hl_namespace" href="namespacecapnp.html">capnp</a> land!  To wit:</div>
+<div class="line"><span class="keyword">auto</span> root = body_root-&gt;initSumRequest();</div>
+<div class="line"><span class="keyword">auto</span> list = root.initTermsToAdd(3);</div>
+<div class="line">list.set(0, 11);</div>
+<div class="line">list.set(1, -22);</div>
+<div class="line">list.set(2, 33);</div>
+<div class="line">root.setConstantFactor(-2);</div>
+<div class="line">body_root-&gt;setDescription(<span class="stringliteral">&quot;(11 - 22 + 33) x -2 = -44&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// .sync_request(): send request; synchronously await response.</span></div>
+<div class="line"><span class="keyword">auto</span> rsp = cool_channel.sync_request(msg);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// The other side had best know how to add stuff and multiply at the end!  Check the in-message.</span></div>
+<div class="line">assert(rsp-&gt;body_root().getSumResponse().getResult() == int64_t(-44));</div>
+<div class="ttc" id="aclassipc_1_1transport_1_1struc_1_1Channel_html"><div class="ttname"><a href="classipc_1_1transport_1_1struc_1_1Channel.html">ipc::transport::struc::Channel</a></div><div class="ttdoc">Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00585">channel.hpp:588</a></div></div>
+<div class="ttc" id="anamespacecapnp_html"><div class="ttname"><a href="namespacecapnp.html">capnp</a></div><div class="ttdoc">Small group of miscellaneous utilities to ease work with capnp (Cap'n Proto), joining its capnp names...</div><div class="ttdef"><b>Definition:</b> <a href="heap__serializer_8cpp_source.html#l00187">heap_serializer.cpp:188</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1transport_1_1struc_html"><div class="ttname"><a href="namespaceipc_1_1transport_1_1struc.html">ipc::transport::struc</a></div><div class="ttdoc">Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8cpp_source.html#l00030">channel.cpp:31</a></div></div>
+</div><!-- fragment --><p >On the other side: Expect <b>request</b>. Send <b>response</b>. </p><div class="fragment"><div class="line"><span class="comment">// Same deal as on the other side.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1struc_1_1Channel.html">Session::Structured_channel&lt;my_meta_app::capnp::CoolMsg&gt;</a></div>
+<div class="line">  chan(<span class="keyword">nullptr</span>, std::move(raw_chan), Channel_base::S_SERIALIZE_VIA_HEAP, session.session_token());</div>
+<div class="line">chan.start(...);</div>
+<div class="line"> </div>
+<div class="line">chan.expect_msgs(my_meta_app::capnp::CoolMsg::Which::SUM_REQUEST, <span class="comment">// Demux to handler on receipt of SumRequest union-choice.</span></div>
+<div class="line">                 [...](<span class="keyword">auto</span>&amp;&amp; req) <span class="comment">// Type is shared_ptr&lt;M&gt;, where M is: struc::Channel&lt;...&gt;::Msg_in, a/k/a struc::Msg_in&lt;...&gt;.</span></div>
+<div class="line">{</div>
+<div class="line">  <span class="comment">// ...event loop brief detail omitted...</span></div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> body_root = req-&gt;body_root();</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Vanilla capnp work:</span></div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">auto</span> root = body_root.getSumRequest();</div>
+<div class="line">  <span class="keyword">auto</span> list = root.getTermsToAdd();</div>
+<div class="line">  int64_t sum = 0;</div>
+<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> sum_func = [&amp;](int64_t val) { sum += val; };</div>
+<div class="line">  std::for_each(list.begin(), list.end(), sum_func);</div>
+<div class="line">  sum *= root.getConstantFactor();</div>
+<div class="line"> </div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Got request [&quot;</span> &lt;&lt; *req &lt;&lt; <span class="stringliteral">&quot;] including description &quot;</span></div>
+<div class="line">               <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; body_root.getDescription() &lt;&lt; <span class="stringliteral">&quot;]; responding with result [&quot;</span> &lt;&lt; sum &lt;&lt; <span class="stringliteral">&quot;].&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Respond.</span></div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">auto</span> msg = chan.create_msg();</div>
+<div class="line">  msg.body_root()-&gt;initSumResponse().setResult(sum);</div>
+<div class="line">  msg.body_root()-&gt;setDescription(<span class="stringliteral">&quot;the sum you ordered, sir&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line">  msg.send(msg, req.get()); <span class="comment">// &lt;-- originating_msg_or_null.  We are responding.</span></div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// ...event loop brief detail omitted...</span></div>
+<div class="line">};</div>
+</div><!-- fragment --> </blockquote>
+<p>Beyond that, any kind of code-snippet synopsis would be too wordy for this page; see <a class="el" href="chan_struct.html">Structured Message Transport</a> for in-depth coverage. We'll summarize the capabilities here:</p><ul>
+<li>Each out-message is either <b>unsolicited</b> (not responding to any particular in-message) or a <b>response</b> (responds to one specific in-message). Every send-method of <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">ipc::transport::struc::Channel</a> (and <code>struc::sync_io::Channel</code>) takes an "originating message" pointer: simply supply <code>nullptr</code> for unsolicited messages or a <code>Msg_in</code> for responses.<ul>
+<li>This applies to: <code>.send()</code>, <code>.async_request()</code>, <code>.sync_request()</code>.</li>
 </ul>
+</li>
+<li>Each in-message is therefore either unsolicited or a response, naturally.<ul>
+<li>If you expect a response, this is indicated by issuing a <b>request</b>: use <code>.async_request()</code> (response arrives asynchronously) or <code>.sync_request()</code> (as in the above example).<ul>
+<li><code>.async_request()</code> can be <b>one-off</b> or <b>indefinite-lifetime</b>, depending on a certain argument. In the latter case 0+ responses can arrive, and you can explicitly unregister the expectation for more responses using <code>.undo_expect_responses()</code>.</li>
+<li><code>.sync_request()</code> is by definition one-off: It waits for 1 response exactly.<ul>
+<li>You can optionally set a timeout. In many cases it is not necessary, as you can count on a lightning-quick (non-blocking) call: this is Flow-IPC. Just ensure you have a handler set-up on the opposing side, before you begin issuing these, to avoid blocking.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>If you expect an unsolicited message, call <code>.expect_msg()</code> or <code>.expect_msgs()</code>; you'll need to supply the union-selector enumeration value (<code>SUM_REQUEST</code> in the above example) to demux to that message type's specific handler.<ul>
+<li>Use <code>.expect_msgs()</code> (as in the above example) if you expect an arbitrary number of such unsolicited messages. Use <code>.undo_expect_msgs()</code> if desired later.</li>
+<li>Use <code>.expect_msg()</code> if you expect exactly one such unsolicited message.</li>
+<li>An unsolicited message that does not currently have a registered handler (outstanding <code>.expect_msg*()</code> call) <em>is not dropped</em>. It is cached. If a matching <code>.expect_msg*()</code> is subsequently called, its handler is immediately fed with any applicable cached message(s).<ul>
+<li>There is no caching for unexpected responses (response without request). <code>.set_unexpected_response_handler()</code> and <code>.set_remote_unexpected_response_handler()</code> can detect such events, but you can also design your code/protocol to not need them. In general response-without-request is dropped: it is not a channel-hosing condition.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Each out-message is either a <b>notification</b> (expects no response) or a <b>request</b>.<ul>
+<li><code>.send()</code> is for notifications. For example the <code>SumResponse</code> sent in the example is a notification.</li>
+<li><code>.*sync_request()</code> is for requests.</li>
+</ul>
+</li>
+</ul>
+<p >For Cap'n Proto enthusiasts, <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send().">ipc::transport::struc::Msg_out</a> provides a couple ways of structuring your message-filling in addition to the vanilla way shown in the example above.</p><ul>
+<li><code>Msg_out::orphanage()</code> lets one operate a capnp <em>orphanage</em>. You can build things there in bottom-up fashion and then <code>...adopt....()</code> them into the root message.</li>
+<li>Construct <code>Msg_out</code> explicitly, by giving it an existing <code>capnp::MessageBuilder</code>. This allows for completely arbitrary Cap'n Proto mutation work, without having to use any orphanage.</li>
+</ul>
+<p >For advanced needs, you can replace some of the default machinery in <code>.create_msg()</code>. For example you can obtain backing memory for out- and in-messages from a mem-pool, or (if performing non-concurrent work) reuse a single block of memory. (See <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html">Struct_builder</a> and <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html">Struct_reader</a> concepts.)</p>
+<p ><a class="anchor" id="api_overview_transport_struc_zero"></a></p><h2>Transport (structured): Zero-copy </h2>
+<p >In the example just above, the request out-message is <em>copied</em> into the IPC transport (e.g., Unix domain socket) internally on one side; and <em>copied</em> again out of the transport on the receiver side. The in-message's backing memory is (internally) allocated in heap; as is the original out-message's. It would be faster if no copying occurred. This is easily done in Flow-IPC.</p>
+<p >Say I prepare a message M': I construct it (<code>struc::Msg_out</code>), I mutate it via its capnp-generated mutators (as the required backing memory is gradually allocated behind the scenes), and then I <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448">struc::Channel::send()</a> it. The receiver receives it as <code>struc::Msg_in</code> M subsequently and accesses its various parts via capnp-generated accessors. <b>End-to-end zero-copy</b> means that the backing memory allocated for M' is never copied into any low-level transport. Instead only some tiny, constant-sized handle is (internally) copied into and out of the transport &ndash; and the accessors of M are directly reading the memory in M'.</p>
+<p >The obvious benefit of this is performance. Notably, also, it is possible to subsequently modify M' and send it (and receive it) again. The backing memory is freed once M' and all in-message views like M have been destroyed <em>across all processes</em>. (The Ms are made available exclusively via <code>shared_ptr</code>.)</p>
+<p >While zero-copy is optional, in general we recommend using it. Fortunately it is quite easy to enable. <em>Internally</em> it is accomplished by using SHM; but in terms of the public API, ~all you have to do is &ndash; when writing the code for opening your <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">ipc::session::Session</a> &ndash; simply choose a SHM-backed session type. That is:</p><ul>
+<li>Zero-copy (a/k/a SHM-backed): Use <code>"ipc::session::shm::...::Client_session"</code> and <code>"ipc::session::shm::...::Session_server"</code>.</li>
+<li>Non-zero-copy: Use <a class="el" href="namespaceipc_1_1session.html#a77d8fda00e1e17f595a6a5d4c44375e7" title="A vanilla Client_session with no optional capabilities.">ipc::session::Client_session</a> and <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">ipc::session::Session_server</a>.</li>
+</ul>
+<p >Whichever you choose, their APIs are identical. In particular, suppose you chose <code>Session</code> type <code>S</code>; then <code>S::Structured_channel&lt;Your_capnp_schema&gt;</code> is the alias for the proper SHM-backed-or-not <code>struc::Channel</code> type.</p>
 <p >At no point do you have to worry about naming a SHM pool, removing it from the file-system on cleanup (including following a crash), and so on. All is handled internally. Simply choose a SHM-backed <code>Session</code> type on each side at compile-time.</p>
-<p >It is also possible to set this up without <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a>.</p>
-<p >Orthogonally, for advanced needs likely driven by tight performance needs, it is possible to develop your own backing-allocation scheme: Implement the <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">ipc::transport::struc::Struct_builder</a> and <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html">Struct_reader</a> concepts. For example, especially if sending small messages from one thread and not requiring end-to-end zero-copy, one could allocate out-messages from a single pre-heap-allocated buffer to reduce the cycles spent in the heap allocator to (amortized) zero.</p>
+<p ><a class="anchor" id="api_overview_transport_struc_zero_synopsis"></a></p><dl class="section user"><dt>Synopsis: Transport (structured): Enabling zero-copy end-to-end</dt><dd></dd></dl>
+<blockquote class="doxtable">
+<p >&zwj;Consider <a class="el" href="api_overview.html#api_overview_transport_struc_synopsis">the structured-transmission example just above</a>. It lacks zero-copy performance end-to-end. Here is <b>all you have to do to make it zero-copy end-to-end</b>. Notice the tiny change and zero mentions of <em>any</em> SHM details. </p><div class="fragment"><div class="line"><span class="comment">// ...everything same...</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> = ssn::...;</div>
+<div class="line"><span class="comment">// --- CHANGE TO --v</span></div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> = ssn::shm::classic::...;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ...everything same...</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1struc_1_1Channel.html">Session::Structured_channel&lt;my_meta_app::capnp::CoolMsg&gt;</a></div>
+<div class="line">  chan(<span class="keyword">nullptr</span>, std::move(raw_chan),</div>
+<div class="line">       Channel_base::S_SERIALIZE_VIA_HEAP, session.session_token()); <span class="comment">// &lt;-- CHANGED LINE.</span></div>
+<div class="line"><span class="comment">// --- CHANGE TO --v</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1struc_1_1Channel.html">Session::Structured_channel&lt;my_meta_app::capnp::CoolMsg&gt;</a></div>
+<div class="line">  chan(<span class="keyword">nullptr</span>, std::move(raw_chan),</div>
+<div class="line">       Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &amp;session); <span class="comment">// &lt;-- CHANGED LINE.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ...everything same...</span></div>
+</div><!-- fragment --><p >Variation: switch SHM-providers: </p><div class="fragment"><div class="line"><span class="comment">// As written above, when allocation is necessary internally, SHM-classic provider will use a classic one-segment SHM setup,</span></div>
+<div class="line"><span class="comment">// with a simple allocation algorithm provided by boost.interprocess.</span></div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> = ssn::shm::classic::...;</div>
+<div class="line"><span class="comment">// --- CHANGE TO --v</span></div>
+<div class="line"><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> = ssn::shm::arena_lend::jemalloc::...;</div>
+<div class="line"><span class="comment">// Now SHM-jemalloc provider is used instead; it will internally use multiple SHM segments as needed, driven by</span></div>
+<div class="line"><span class="comment">// commercial-grade `jemalloc` allocation algorithm.  Otherwise example code remains unchanged.</span></div>
+</div><!-- fragment --><p >Variation: change max lifetime of messages created via <code>struc::Channel::create_msg()</code>: </p><div class="fragment"><div class="line"><span class="comment">// As written above, the maximum lifetime of a `Msg_out` = as long as the session remains open.</span></div>
+<div class="line"><span class="comment">// This is often clean and sufficient.</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1struc_1_1Channel.html">Session::Structured_channel</a>&lt;...&gt; chan(...,</div>
+<div class="line">                                      Channel_base::S_SERIALIZE_VIA_SESSION_SHM, ...); <span class="comment">// &lt;-- CHANGED LINE.</span></div>
+<div class="line"><span class="comment">// --- CHANGE TO --v</span></div>
+<div class="line"><span class="comment">// Now the the message can live *past* the session: until the Session_server is destroyed, meaning</span></div>
+<div class="line"><span class="comment">// your process accepting incoming sessions exits.  For example, suppose your session-server accepts</span></div>
+<div class="line"><span class="comment">// (sessions) from many session-client processes of one application over its lifetime; session-client A sends</span></div>
+<div class="line"><span class="comment">// a PutCache message containing a large file&#39;s contents to session-server which memorizes it (to serve later);</span></div>
+<div class="line"><span class="comment">// then session-client A closes session and exits; the message continues to exist, and the memory-cached file</span></div>
+<div class="line"><span class="comment">// can be served to session-clients B, C, ....</span></div>
+<div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1struc_1_1Channel.html">Session::Structured_channel</a>&lt;...&gt; chan(...,</div>
+<div class="line">                                      Channel_base::S_SERIALIZE_VIA_APP_SHM, ...); <span class="comment">// &lt;-- CHANGED LINE.</span></div>
+</div><!-- fragment --> </blockquote>
+<p>In <em>our example in particular</em>, there is simply no difference between using heap-backed allocation and SHM-backed allocation. Just change a couple lines, and you get better performance. The messages being exchanged can be utterly huge, with zero perf penalty.</p>
+<p >That said, for more complex use-cases, there are natural differences in what one can do when comparing heap-backed versus SHM-backed allocation. For example, the out-message can be modified after sending it, and this change will be reflected for any process(es) holding the resulting in-message(s). (Of course you'll need to arrange some kind of synchronization of access in that case.)</p>
+<p >In any case &ndash; whether heap-backed or SHM-backed &ndash; an out-message can be sent or re-sent over any channel and even in multiple sessions, depending on the details of its backing memory allocation.</p>
 <h2>Direct storage in SHared Memory (SHM) </h2>
 <p >This topic is optional: One can reap zero-copy performance by exclusively keeping IPC-communicated data structures in your <code>struc::Channel</code>-transmitted message schema of choice. Internally, we use our own SHM capabilities to accomplish this, invisibly to the API user. We reasonably claim that if you can keep your shared data structures in a capnp-schema-backed object, then it is best to do so. That said:</p>
 <p >Some applications may prefer to have the two (or more) conversant processes cooperate by reading/writing directly to a non-capnp-backed data structure but rather a straight C++ <code>struct</code>. Flow-IPC provides this ability out-of-the-box. This means the user need not figure out a number of <em>very</em> hairy topics such as how to develop and use a SHM-friendly allocator. We summarize this here.</p>
@@ -105,25 +567,122 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 <li><a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html#ac6a4f1fbafb583f37d7586c6a199430f">Session::app_shm()</a> is an arena pertaining to multiple sessions; so it continues to persist across all sessions, until the big-daddy <code>Session_server</code> is destroyed (and thus no further session are possible to open).</li>
 </ul>
 <p >Each of these returns an <code>Arena</code>.</p>
-<p ><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36">Arena::construct&lt;T&gt;(...)</a> returns <code>shared_ptr&lt;T&gt;</code> which points to a newly constructed-in-SHM-arena object of type <code>T</code>. The sender prepares object <code>*x</code> of type <code>T</code>, then calls <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html#a794f83a8111428b3b1feec7216f692dd">Session::lend_object(x)</a> which returns a tiny payload to transmit over IPC (typically, but not necessarily, via a <code>struc::Channel</code> as part of a capnp-encoded message). The receiver then invokes <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html#a4223fc944735adb6946a9d1938d06a20"><code>auto x = Arena::borrow_object()</code></a>, passing in that aforementioned tiny payload. This recovers <code>*x</code> of type <code>T</code> in the receiver where it can be read like any C/C++ structure &ndash; because it <em>is</em> one. The backing RAM is auto-returned to the arena once all these handles (in this example <code>x</code> on each side) (and other derived <code>shared_ptr</code>s in their respective shared-groups &ndash; e.g., obtained via <code>auto x2 = x</code>) are destroyed. In a sense <code>x</code> is part of a <em>cross-process</em> <code>shared_ptr</code> group.</p>
+<p ><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36">Arena::construct&lt;T&gt;(...)</a> returns <code>shared_ptr&lt;T&gt;</code> which points to a newly constructed-in-SHM-arena object of type <code>T</code>. The sender prepares object <code>*x</code> of type <code>T</code>, then calls <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html#a794f83a8111428b3b1feec7216f692dd">Session::lend_object(x)</a> which returns a tiny payload to transmit over IPC (typically, but not necessarily, via a <code>struc::Channel</code> as part of a capnp-encoded message). The receiver then invokes <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html#a4223fc944735adb6946a9d1938d06a20">auto x = Arena::borrow_object()</a>, passing in that aforementioned tiny payload. This recovers <code>*x</code> of type <code>T</code> in the receiver where it can be read like any C/C++ structure &ndash; because it <em>is</em> one. The backing RAM is auto-returned to the arena once all these handles (in this example <code>x</code> on each side) (and other derived <code>shared_ptr</code>s in their respective shared-groups &ndash; e.g., obtained via <code>auto x2 = x</code>) are destroyed. In a sense <code>x</code> is part of a <em>cross-process</em> <code>shared_ptr</code> group.</p>
 <p >The real power comes from the possibilities for what type <code>T</code> can be. <code>T</code> can be any combination (recursively speaking) of: the basic scalars (<code>int</code>, <code>float</code>, etc.); <code>struct</code>s; and STL-compliant containers. So it can be, say, a <code>vector</code> of <code>unordered_map</code>s mapping from <code>basic_string</code> to <code>struct S { ... }</code>, where <code>...</code> itself stores anything equally arbitrarily complex. The STL-compliant container types must merely specify the allocator <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">ipc::shm::stl::Stateless_allocator</a>&lt;Arena&gt;</code>. We've provided the allocator implementation, so you need not worry about that stuff &ndash; just use it.</p>
 <p >You can also directly store pointers in <code>T</code>, as long as you use <code>Stateless_allocator&lt;Arena&gt;::Pointer&lt;P&gt;</code> (not raw <code>P*</code>); though we'd informally recommend against it for the maintainability of your own algorithms. That is what the allocator concept in STL is for after all. (This advice is independent of Flow-IPC; just a general opinion.)</p>
 <p >Further capabilities are outside our scope here; but the main point is: At a minimum:</p><ul>
 <li>if you simply used a SHM-backed session type when setting up IPC, immediately available to you are arenas in which to allocate objects and share them between the processes involved; and</li>
 <li>the object type can be an arbitrarily complex combo of C++ plain-old data-types (PODs) and STL-compliant container types, as long as you use the Flow-IPC-supplied allocator for the latter.</li>
 </ul>
-<h2>Low level, utilities </h2>
-<p >It is possible to eschew the higher-level abstractions such as <code>Channel</code>, <code>struc::Channel</code>, and <code>Session</code>; and work more directly on the low level of IPC transports including Unix domain sockets, POSIX MQs, SHM-backed (boost.interprocess) MQs. Even in that case Flow-IPC may have useful APIs for you.</p>
-<p >Of these, on the higher-level end are <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">ipc::transport::Native_socket_stream</a> (blob/handle transmission over local stream socket) and <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html">Native_socket_stream_acceptor</a> (listening for incoming connections of that type) and <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html">Blob_stream_mq_sender</a> and <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html">Blob_stream_mq_receiver</a> (blob transmission over MQ, with MQ type specified as template parameter).</p>
-<p >Below that are the specific MQ APIs (<a class="el" href="classipc_1_1transport_1_1Posix__mq__handle.html" title="Implements the Persistent_mq_handle concept by wrapping the POSIX message queue API (see man mq_overv...">ipc::transport::Posix_mq_handle</a> and <a class="el" href="classipc_1_1transport_1_1Bipc__mq__handle.html">Bipc_mq_handle</a>) and the stream-socket-focused boost.asio extensions in sub-namespace <a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html" title="Additional (versus boost.asio) APIs for advanced work with local stream (Unix domain) sockets includi...">ipc::transport::asio_local_stream_socket</a>.</p>
-<p ><a class="el" href="namespaceipc_1_1util.html" title="Flow-IPC module containing miscellaneous general-use facilities that ubiquitously used by ~all Flow-I...">ipc::util</a> stores further miscellaneous low-level utility APIs such as <a class="el" href="classipc_1_1util_1_1Process__credentials.html" title="A process&#39;s credentials (PID, UID, GID as of this writing).">ipc::util::Process_credentials</a> and permissions abstraction <a class="el" href="namespaceipc_1_1util.html#a2ec0bfdddb41a1ef0403e4bb8967705d">Permissions_level</a>.</p>
+<dl class="section user"><dt>Synopsis: Native STL-compliant data structures directly in SHared Memory: construct, transmit, access</dt><dd></dd></dl>
+<blockquote class="doxtable">
+<p >&zwj;A SHM-compatible structure being declared and an instance constructed and modified: </p><div class="fragment"><div class="line"><span class="comment">// Define an allocator alias for convenience.</span></div>
+<div class="line"><span class="comment">// (For plain-old-datatypes (e.g., an `int` or `bool` or `struct` thereof or combinations thereof)</span></div>
+<div class="line"><span class="comment">// there is no need to use this.)</span></div>
+<div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><span class="keyword">using </span>Shm_allocator = Session::Allocator&lt;T&gt;;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Example complex structure.</span></div>
+<div class="line"><span class="keyword">struct </span>Widget</div>
+<div class="line">{</div>
+<div class="line">  <span class="keyword">struct </span>Node</div>
+<div class="line">  {</div>
+<div class="line">    <span class="keywordtype">int</span> m_int;</div>
+<div class="line">    <span class="comment">// Normally would be just vector&lt;float&gt; m_float_vec`.</span></div>
+<div class="line">    boost::container::vector&lt;float, Shm_allocator&lt;float&gt;&gt; m_float_vec;</div>
+<div class="line">  };</div>
+<div class="line">  <span class="comment">// Normally would be just `string`.</span></div>
+<div class="line">  <span class="keyword">using </span>String = boost::container::basic_string&lt;char, std::char_traits&lt;char&gt;, Shm_allocator&lt;char&gt;&gt;;</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordtype">bool</span> m_flag;</div>
+<div class="line">  String m_str;</div>
+<div class="line">  <span class="comment">// Normally would be just unordered_map&lt;string, Node&gt; m_str_to_node_map.</span></div>
+<div class="line">  boost::unordered_map&lt;String, Node, std::hash&lt;String&gt;, std::equal_to&lt;String&gt;,</div>
+<div class="line">                       Shm_allocator&lt;std::pair&lt;const String, Node&gt;&gt;</div>
+<div class="line">    m_str_to_node_map;</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Construct it directly in SHM.  (Default ctor used here; you can use any ctor.)</span></div>
+<div class="line"><span class="keyword">auto</span> x = session.session_shm()-&gt;construct&lt;Widget&gt;();</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Modifications not involving more allocation are done as-normal.</span></div>
+<div class="line">x-&gt;m_flag = <span class="keyword">true</span>;</div>
+<div class="line">x-&gt;m_str[0] = <span class="charliteral">&#39;X&#39;</span>; <span class="comment">// Assumes, of course, that by this point: x-&gt;m_str.size() &gt; 0.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// If allocation is required, apply a thread-local Activator.  Can frame all modification code in such a block.</span></div>
+<div class="line"><span class="keyword">using </span>Activator = <a class="code hl_class" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html">ipc::shm::stl::Arena_activator&lt;Session::Arena&gt;</a>;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">auto</span> y = session.app_shm()-&gt;construct&lt;Widget&gt;();</div>
+<div class="line">{</div>
+<div class="line">  Activator ctx(session.session_shm());</div>
+<div class="line"> </div>
+<div class="line">  y-&gt;m_flag = <span class="keyword">true</span>; <span class="comment">// `ctx` is active but has zero effect on this (harmless and zero perf impact).</span></div>
+<div class="line">  y-&gt;m_str.resize(128); <span class="comment">// `ctx` is active and will cause proper arena to be used for allocation.</span></div>
+<div class="line">  y-&gt;m_str[0] = <span class="charliteral">&#39;X&#39;</span>; <span class="comment">// `ctx` again has no effect and carries no perf penalty for this.</span></div>
+<div class="line">}</div>
+<div class="ttc" id="aclassipc_1_1shm_1_1stl_1_1Arena__activator_html"><div class="ttname"><a href="classipc_1_1shm_1_1stl_1_1Arena__activator.html">ipc::shm::stl::Arena_activator</a></div><div class="ttdoc">RAII-style class operating a stack-like notion of a the given thread's currently active SHM-aware Are...</div><div class="ttdef"><b>Definition:</b> <a href="arena__activator_8hpp_source.html#l00040">arena_activator.hpp:41</a></div></div>
+</div><!-- fragment --><p >Example of trasmitting a SHM-backed native data structure to another process follows. We transmit a handle through a capnp structured message here, but it can be done using any IPC mechanism whatsoever; even (e.g.) a file.</p>
+<p >Schema which includes a native-object-in-SHM field: </p><div class="fragment"><div class="line"># ...</div>
+<div class="line">using Common = import &quot;/ipc/transport/struc/shm/schema/common.capnp&quot;;</div>
+<div class="line">using ShmHandle = Common.ShmHandle; # It&#39;s just a blob holder really.</div>
+<div class="line"># ...</div>
+<div class="line">struct SomeMsg</div>
+<div class="line">{</div>
+<div class="line">  # ...</div>
+<div class="line">  widgetHandle @7 :ShmHandle;</div>
+<div class="line">}</div>
+</div><!-- fragment --><p ><b>Owner/lender</b> process transmitting such a message: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> x = session.session_shm()-&gt;construct&lt;Widget&gt;();</div>
+<div class="line"><span class="comment">// ...Fill out *x as above....</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">auto</span> msg = cool_channel.create_msg();</div>
+<div class="line"><span class="comment">// Ready the storage inside the out-message.</span></div>
+<div class="line"><span class="keyword">auto</span> widget_handle_root = msg.body_root()-&gt;initSomeMsg().initWidgetHandle(); <span class="comment">// Note `widgetHandle: ShmHandle` in schema.</span></div>
+<div class="line"><span class="comment">// Perform the lend_object() step and load the result (a little blob) into the out-message.</span></div>
+<div class="line"><a class="code hl_function" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ab592ce6eddbe24c57dc71f34018fb042">shm::capnp_set_lent_shm_handle</a>(&amp;widget_handle_root, session.lend_object(x));</div>
+<div class="line"><span class="comment">// IPC-transmit it via struc::Channel.</span></div>
+<div class="line">cool_channel.send(msg);</div>
+<div class="ttc" id="anamespaceipc_1_1transport_1_1struc_1_1shm_html_ab592ce6eddbe24c57dc71f34018fb042"><div class="ttname"><a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ab592ce6eddbe24c57dc71f34018fb042">ipc::transport::struc::shm::capnp_set_lent_shm_handle</a></div><div class="ttdeci">void capnp_set_lent_shm_handle(schema::ShmHandle::Builder *shm_handle_root, const flow::util::Blob_sans_log_context &amp;lend_result)</div><div class="ttdoc">Utility that saves the result of a Shm_session1::lend_object&lt;T&gt;(const shared_ptr&lt;T&gt;&amp;) result into the...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8cpp_source.html#l00028">util.cpp:28</a></div></div>
+</div><!-- fragment --><p ><b>Borrower</b> process receiving such a message and accessing the native data structure <code>Widget</code>: </p><div class="fragment"><div class="line">flow::util::Blob_sans_log_context lend_blob;</div>
+<div class="line"><a class="code hl_function" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">shm::capnp_get_shm_handle_to_borrow</a>(msg-&gt;body_root().getSomeMsg().getWidgetHandle(), &amp;lend_blob);</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">auto</span> x = session.borrow_object&lt;Widget&gt;(lend_blob);</div>
+<div class="line">FLOW_LOG_INFO(<span class="stringliteral">&quot;Hey, let&#39;s read inside SHM after receiving SHM-handle: [&quot;</span> &lt;&lt; x_borrowed-&gt;m_flag &lt;&lt; <span class="stringliteral">&quot;].&quot;</span>);</div>
+<div class="line"><span class="comment">// We can write to it too, in most cases.</span></div>
+<div class="line">x-&gt;m_str[0] = <span class="charliteral">&#39;Y&#39;</span>;</div>
+<div class="line"><span class="comment">// (Can modify with allocations too, as long as you use an Activator context again, same is owner process above.)</span></div>
+<div class="ttc" id="anamespaceipc_1_1transport_1_1struc_1_1shm_html_adb38fe88cfd5e758ef52c482d2902669"><div class="ttname"><a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">ipc::transport::struc::shm::capnp_get_shm_handle_to_borrow</a></div><div class="ttdeci">void capnp_get_shm_handle_to_borrow(const schema::ShmHandle::Reader &amp;shm_handle_root, flow::util::Blob_sans_log_context *arg_to_borrow)</div><div class="ttdoc">Utility that's the reverse of capnp_set_lent_shm_handle() to be invoked on the deserializing side.</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8cpp_source.html#l00050">util.cpp:50</a></div></div>
+</div><!-- fragment --> </blockquote>
+<p>When one gets into this relatively advanced area, there are differences and trade-offs between the available SHM-providers. If your alias at the very top is <code>using ssn = <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic.html" title="Support for SHM-backed ipc::session sessions and session-servers with the SHM-classic (ipc::shm::clas...">ipc::session::shm::classic</a></code>, then you get total read/write abilities and maximized object lifetime. That is the SHM-classic provider. Instead, if you choose SHM-jemalloc (<code>using ssn = <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html" title="Support for SHM-backed ipc::session sessions and session-servers with the SHM-jemalloc (ipc::shm::are...">ipc::session::shm::arena_lend::jemalloc</a></code>), then the borrower (receiver) process can only read, and there are some subtle differences in max object lifetime. (The latter applies only if you need objects to live beyond a given <code>Session</code>.) However, you get in return: superior safety characteristics; and the commercial-grade jemalloc allocation algorithm (thread-caching, fragmentation avoidance, and more).</p>
+<h2>Safety </h2>
+<p >Flow-IPC focuses on IPC <em>safety</em>. <a class="el" href="safety_perms.html">Safety and Permissions</a> page gets into the topic in detail. Here we'll point out merely one specific mechanism which might be of immediate interest. It shows that &ndash; while at various lower layers permissions can be specified in fine-grained fashion &ndash; at the top layer, <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a>, we let you decide one of 3 simple safety approaches matching your setup, and Flow-IPC will take care of the details accordingly. To wit:</p>
+<p >Refer to the very top of <a class="el" href="api_overview.html#api_overview_sessions_synopsis">Synopsis: Sessions</a> above. When defining our simple <code>Server_app</code> structure that describes the application responsible for accepting sessions (IPC conversations/contexts), we chose:</p>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1session_1_1App.html">App</a> APP_A{ <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;/bin/app_a.exec&quot;</span>, USER_ID_A, GROUP_ID };</div>
+<div class="line"><span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1session_1_1Server__app.html">Server_app</a> APP_A_AS_SRV</div>
+<div class="line">                   { APP_A,</div>
+<div class="line">                     <span class="comment">// ...</span></div>
+<div class="line">                     <a class="code hl_enumvalue" href="namespaceipc_1_1util.html#a2ec0bfdddb41a1ef0403e4bb8967705daa5508fa6037b9c0926cf7eb20af97a6d">ipc::util::Permissions_level::S_GROUP_ACCESS</a> }; <span class="comment">// &lt;-- Attention.</span></div>
+</div><!-- fragment --><p >Notice the <code>GROUP_ACCESS</code> choice made there. In fact we could have chosen any one of these:</p><ul>
+<li><code>S_UNRESTRICTED</code>:<ul>
+<li>This will ensure that the relevant resources will never fail to be accessed by the relevant processes due to a permissions error. (Internally, producer-consumer items like PID files shall be 0644; while symmetrically accessed items like SHM pools and MQs shall be 0666.)</li>
+</ul>
+</li>
+<li><code>S_USER_ACCESS</code>:<ul>
+<li>This means access to a resource may fail if the accessing application is running as a different <b>user</b> than the writing application, even if they are in the same <b>group</b>. (Internally items shall have permissions mode 0600.)</li>
+</ul>
+</li>
+<li><code>S_GROUP_ACCESS</code>:<ul>
+<li>This means access to a resource may fail if the accessing application is running as a different <b>group</b> than the writing application, but it will work if they're in the same group but are running as different users. (Internally, producer-consumer items like PID files shall be 0640; while symmetrically accessed items like SHM pools and MQs shall be 0660.)</li>
+</ul>
+</li>
+</ul>
+<p >So: <code>GROUP_ACCESS</code> means your various apps should run as different users but in the same group. <code>USER_ACCESS</code> means the apps should run all as one user. <code>UNRESTRICTED</code> means it does not matter.</p>
 <p >Next let's get to the nitty-gritty of actually using this library: <a class="el" href="setup.html">Prerequisites and Setup</a>.</p>
 <hr  />
-<center><b>MANUAL NAVIGATION:</b> <a class="el" href="about.html">Preceding Page</a> - <a class="el" href="setup.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center> </div></div><!-- contents -->
+<center><b>MANUAL NAVIGATION:</b> <a class="el" href="about.html">Preceding Page</a> - <a class="el" href="setup.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:26 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:49 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -66,7 +66,7 @@ $(function() {
   <div class="headertitle"><div class="title">Asynchronicity and Integrating with Your Event Loop </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="setup.html">Preceding Page</a> - <a class="el" href="session_setup.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center><hr  />
+<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="setup.html">Preceding Page</a> - <a class="el" href="session_setup.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center><hr  />
 <p >Before using the most useful aspects of Flow-IPC, we must know how to integrate with an application's event loop. (Or go back to preceding page: <a class="el" href="setup.html">Prerequisites and Setup</a>.)</p>
 <p >At its core Flow-IPC is meant to send messages to a process and receive them in that other process. As a rule, a given basic <em>send</em> API in Flow-IPC is synchronous, non-blocking, and can never return a "would-block" error. That is:</p><ul>
 <li>It will return quickly.</li>
@@ -161,7 +161,7 @@ $(function() {
 <div class="line">  }</div>
 <div class="line">};</div>
 <div class="ttc" id="anamespaceipc_1_1transport_1_1error_html_adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed"><div class="ttname"><a href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">ipc::transport::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a></div><div class="ttdeci">@ S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</div><div class="ttdoc">Async completion handler is being called prematurely, because underlying object is shutting down,...</div></div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for boost.interprocess namespace.</div><div class="ttdef"><b>Definition:</b> common.hpp:289</div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> common.hpp:296</div></div>
 </div><!-- fragment --><p >The key points:</p><ul>
 <li>When operating according to this pattern, the user handler is always invoked from (formally) "unspecified thread that is not thread U." In reality it is thread W in our case, but that should not matter.</li>
 <li>In the proactor pattern &ndash; when there's only one thread U as opposed to concurrent workers U1, U2, ... &ndash; user tasks can safely assume they're never invoked concurrently with each other. Therefore, usually, the completion handler supplied to this Flow-IPC API (<code>Blob_receiver::async_receive_blob()</code> in this case) should perform the bulk of its work in thread U and thus must invoke <code>post()</code>, capturing any required args in the lambda first.<ul>
@@ -301,11 +301,11 @@ $(function() {
 <p >We do this (1) for simplicity of exposition; and (2) because, in the absence of compelling objections, we feel it is the best approach to use. However such objections may, indeed, sometimes apply; namely in the presence of (1) a legacy reactor loop; and/or (2) very stringent perf restrictions sensitive even to context switching. In that case, whether merging Flow-IPC worker thread(s) into your own or integrating with a <code>*poll()</code>-y loop, use the alternate <code>sync_io</code> <b>pattern</b>, per: <a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">ipc::util::sync_io</a> doc header.</p>
 <p >We're now ready to make Flow-IPC actually do something. Let's move on to <a class="el" href="session_setup.html">Sessions: Setting Up an IPC Context</a>.</p>
 <hr  />
-<center><b>MANUAL NAVIGATION:</b> <a class="el" href="setup.html">Preceding Page</a> - <a class="el" href="session_setup.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center> </div></div><!-- contents -->
+<center><b>MANUAL NAVIGATION:</b> <a class="el" href="setup.html">Preceding Page</a> - <a class="el" href="session_setup.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

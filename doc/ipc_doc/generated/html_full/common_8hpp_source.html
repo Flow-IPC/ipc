@@ -337,86 +337,93 @@ $(function() {
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>{</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment">// Types.  They&#39;re outside of `namespace ::ipc::util` for brevity due to their frequent use.</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment"></span> </div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment">/// Short-hand for boost.interprocess namespace.</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment"></span><span class="keyword">namespace </span>bipc = boost::interprocess;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment">/* (The @namespace and @brief thingies shouldn&#39;t be needed, but some Doxygen bug necessitated them.</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment"> * See flow::util::bind_ns for explanation... same thing here.) */</span></div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment"></span> </div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment"> * Short-hand for `filesystem` namespace.</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment"> * ### Rationale for aliasing to `boost::filesystem` instead of `std::filesystem` ###</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment"> * `boost::filesystem` is rock-solid and the model/original impl; which is not to say that always is enough</span></div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment"> * to take it over the `std::` counterpart.  However, some experiences with gcc-7&#39;s `std::filesystem` were</span></div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment"> * negative; it did not exist, and `std::experimental::filesystem` lacked basic chunks from the standard.</span></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment"> * This left a bad taste in the mouth; whereas in the author&#39;s (ygoldfel) experience Boost&#39;s has been great.</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment"> * It is very mature.</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="keyword">namespace </span>fs = boost::filesystem;</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment"></span> </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment">/// Short-hand for `flow::Error_code` which is very common.</span></div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno"><a class="line" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">  289</a></span><span class="comment"></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> = <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">flow::Error_code</a>;</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="comment"></span> </div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="comment">/// Short-hand for polymorphic functor holder which is very common.  This is essentially `std::function`.</span></div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Signature&gt;</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno"><a class="line" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">  293</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">Function</a> = flow::Function&lt;Signature&gt;;</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="preprocessor">#ifdef IPC_DOXYGEN_ONLY </span><span class="comment">// Actual compilation will ignore the below; but Doxygen will scan it and generate docs.</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="comment"></span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="comment"> * The `flow::log::Component` payload enumeration containing various log components used by Flow-IPC internal logging.</span></div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment"> * Internal Flow-IPC code specifies members thereof when indicating the log component for each particular piece of</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="comment"> * logging code.  Flow-IPC user specifies it, albeit very rarely, when configuring their program&#39;s logging</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="comment"> * such as via `flow::log::Config::init_component_to_union_idx_mapping()` and</span></div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="comment"> * `flow::log::Config::init_component_names()`.</span></div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment"> * If you are reading this in Doxygen-generated output (likely a web page), be aware that the individual</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="comment"> * `enum` values are not documented right here, because `flow::log` auto-generates those via certain macro</span></div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="comment"> * magic, and Doxygen cannot understand what is happening.  However, you will find the same information</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="comment"> * directly in the source file `log_component_enum_declare.macros.hpp` (if the latter is clickable, click to see</span></div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="comment"> * the source).</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="comment"> * ### Details regarding overall log system init in user program ###</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span><span class="comment"> * See comment in similar place in `flow/common.hpp`.</span></div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno"><a class="line" href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7">  313</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7">Log_component</a></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>{<span class="comment"></span></div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="comment">   * CAUTION -- see ipc::Log_component doc header for directions to find actual members of this</span></div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="comment">   * `enum class`.  This entry is a placeholder for Doxygen purposes only, because of the macro magic involved</span></div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="comment">   * in generating the actual `enum class`.</span></div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <a class="code hl_enumvalue" href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7a6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a></div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>};</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="comment">// Constants.</span></div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="comment"></span> </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment"> * The map generated by `flow::log` macro magic that maps each enumerated value in ipc::Log_component to its</span></div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="comment"> * string representation as used in log output and verbosity config.  Flow-IPC user specifies, albeit very rarely,</span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="comment"> * when configuring their program&#39;s logging via `flow::log::Config::init_component_names()`.</span></div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="comment"> * As an Flow-IPC user, you can informally assume that if the component `enum` member is called `S_SOME_NAME`, then</span></div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="comment"> * its string counterpart in this map will be auto-computed to be `&quot;SOME_NAME&quot;` (optionally prepended with a</span></div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="comment"> * prefix as supplied to `flow::log::Config::init_component_names()`).  This is achieved via `flow::log` macro magic.</span></div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="comment"> * @see ipc::Log_component first.</span></div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="keyword">extern</span> <span class="keyword">const</span> boost::unordered_multimap&lt;Log_component, std::string&gt; <a class="code hl_variable" href="namespaceipc.html#a94386c9b549c1ea6be7e65e55c802d54">S_IPC_LOG_COMPONENT_NAME_MAP</a>;</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><span class="preprocessor">#endif </span><span class="comment">// IPC_DOXYGEN_ONLY</span></div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>} <span class="comment">// namespace ipc</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno"><a class="line" href="namespaceipc_1_1bipc.html">  277</a></span><span class="comment"> * @namespace ipc::bipc</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment"> * @brief Short-hand for boost.interprocess namespace.</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="keyword">namespace </span>bipc = boost::interprocess;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment"></span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno"><a class="line" href="namespaceipc_1_1fs.html">  283</a></span><span class="comment"> * @namespace ipc::fs</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment"> * @brief Short-hand for `filesystem` namespace.</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="comment"> * ### Rationale for aliasing to `boost::filesystem` instead of `std::filesystem` ###</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment"> * `boost::filesystem` is rock-solid and the model/original impl; which is not to say that always is enough</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment"> * to take it over the `std::` counterpart.  However, some experiences with gcc-7&#39;s `std::filesystem` were</span></div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="comment"> * negative; it did not exist, and `std::experimental::filesystem` lacked basic chunks from the standard.</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="comment"> * This left a bad taste in the mouth; whereas in the author&#39;s (ygoldfel) experience Boost&#39;s has been great.</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="comment"> * It is very mature.</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="keyword">namespace </span>fs = boost::filesystem;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="comment"></span> </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="comment">/// Short-hand for `flow::Error_code` which is very common.</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno"><a class="line" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">  296</a></span><span class="comment"></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> = <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">flow::Error_code</a>;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="comment"></span> </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="comment">/// Short-hand for polymorphic functor holder which is very common.  This is essentially `std::function`.</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Signature&gt;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">  300</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">Function</a> = flow::Function&lt;Signature&gt;;</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="preprocessor">#ifdef IPC_DOXYGEN_ONLY </span><span class="comment">// Actual compilation will ignore the below; but Doxygen will scan it and generate docs.</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="comment"></span> </div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="comment"> * The `flow::log::Component` payload enumeration containing various log components used by Flow-IPC internal logging.</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="comment"> * Internal Flow-IPC code specifies members thereof when indicating the log component for each particular piece of</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="comment"> * logging code.  Flow-IPC user specifies it, albeit very rarely, when configuring their program&#39;s logging</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="comment"> * such as via `flow::log::Config::init_component_to_union_idx_mapping()` and</span></div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="comment"> * `flow::log::Config::init_component_names()`.</span></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span><span class="comment"> * If you are reading this in Doxygen-generated output (likely a web page), be aware that the individual</span></div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span><span class="comment"> * `enum` values are not documented right here, because `flow::log` auto-generates those via certain macro</span></div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span><span class="comment"> * magic, and Doxygen cannot understand what is happening.  However, you will find the same information</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span><span class="comment"> * directly in the source file `log_component_enum_declare.macros.hpp` (if the latter is clickable, click to see</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="comment"> * the source).</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="comment"> * ### Details regarding overall log system init in user program ###</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="comment"> * See comment in similar place in `flow/common.hpp`.</span></div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno"><a class="line" href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7">  320</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7">Log_component</a></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>{<span class="comment"></span></div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="comment">   * CAUTION -- see ipc::Log_component doc header for directions to find actual members of this</span></div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="comment">   * `enum class`.  This entry is a placeholder for Doxygen purposes only, because of the macro magic involved</span></div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="comment">   * in generating the actual `enum class`.</span></div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <a class="code hl_enumvalue" href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7a6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>};</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="comment">// Constants.</span></div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="comment"></span> </div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="comment"> * The map generated by `flow::log` macro magic that maps each enumerated value in ipc::Log_component to its</span></div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="comment"> * string representation as used in log output and verbosity config.  Flow-IPC user specifies, albeit very rarely,</span></div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="comment"> * when configuring their program&#39;s logging via `flow::log::Config::init_component_names()`.</span></div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="comment"> * As an Flow-IPC user, you can informally assume that if the component `enum` member is called `S_SOME_NAME`, then</span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><span class="comment"> * its string counterpart in this map will be auto-computed to be `&quot;SOME_NAME&quot;` (optionally prepended with a</span></div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span><span class="comment"> * prefix as supplied to `flow::log::Config::init_component_names()`).  This is achieved via `flow::log` macro magic.</span></div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="comment"> * @see ipc::Log_component first.</span></div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><span class="keyword">extern</span> <span class="keyword">const</span> boost::unordered_multimap&lt;Log_component, std::string&gt; <a class="code hl_variable" href="namespaceipc.html#a94386c9b549c1ea6be7e65e55c802d54">S_IPC_LOG_COMPONENT_NAME_MAP</a>;</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span> </div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span><span class="preprocessor">#endif </span><span class="comment">// IPC_DOXYGEN_ONLY</span></div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>} <span class="comment">// namespace ipc</span></div>
 <div class="ttc" id="adetail_2common_8hpp_html"><div class="ttname"><a href="detail_2common_8hpp.html">common.hpp</a></div></div>
 <div class="ttc" id="anamespaceipc_html"><div class="ttname"><a href="namespaceipc.html">ipc</a></div><div class="ttdoc">Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...</div><div class="ttdef"><b>Definition:</b> <a href="common_8cpp_source.html#l00021">common.cpp:22</a></div></div>
-<div class="ttc" id="anamespaceipc_html_a4ccdeed058222c635745a4dc830e99f7"><div class="ttname"><a href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7">ipc::Log_component</a></div><div class="ttdeci">Log_component</div><div class="ttdoc">The flow::log::Component payload enumeration containing various log components used by Flow-IPC inter...</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00313">common.hpp:314</a></div></div>
+<div class="ttc" id="anamespaceipc_html_a4ccdeed058222c635745a4dc830e99f7"><div class="ttname"><a href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7">ipc::Log_component</a></div><div class="ttdeci">Log_component</div><div class="ttdoc">The flow::log::Component payload enumeration containing various log components used by Flow-IPC inter...</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00320">common.hpp:321</a></div></div>
 <div class="ttc" id="anamespaceipc_html_a4ccdeed058222c635745a4dc830e99f7a6fba12db09e5bebfaa04f6372c41c2cf"><div class="ttname"><a href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7a6fba12db09e5bebfaa04f6372c41c2cf">ipc::Log_component::S_END_SENTINEL</a></div><div class="ttdeci">@ S_END_SENTINEL</div><div class="ttdoc">CAUTION – see ipc::Log_component doc header for directions to find actual members of this enum class.</div></div>
 <div class="ttc" id="anamespaceipc_html_a94386c9b549c1ea6be7e65e55c802d54"><div class="ttname"><a href="namespaceipc.html#a94386c9b549c1ea6be7e65e55c802d54">ipc::S_IPC_LOG_COMPONENT_NAME_MAP</a></div><div class="ttdeci">const boost::unordered_multimap&lt; Log_component, std::string &gt; S_IPC_LOG_COMPONENT_NAME_MAP</div><div class="ttdoc">The map generated by flow::log macro magic that maps each enumerated value in ipc::Log_component to i...</div></div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for boost.interprocess namespace.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00289">common.hpp:289</a></div></div>
-<div class="ttc" id="anamespaceipc_html_aa455c7f045059736578ca275fc1a851f"><div class="ttname"><a href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">ipc::Function</a></div><div class="ttdeci">flow::Function&lt; Signature &gt; Function</div><div class="ttdoc">Short-hand for polymorphic functor holder which is very common. This is essentially std::function.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00293">common.hpp:293</a></div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00296">common.hpp:296</a></div></div>
+<div class="ttc" id="anamespaceipc_html_aa455c7f045059736578ca275fc1a851f"><div class="ttname"><a href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">ipc::Function</a></div><div class="ttdeci">flow::Function&lt; Signature &gt; Function</div><div class="ttdoc">Short-hand for polymorphic functor holder which is very common. This is essentially std::function.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00300">common.hpp:300</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:26 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:48 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

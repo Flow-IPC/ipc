@@ -77,6 +77,12 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
+<tr class="memitem:namespaceipc_1_1bipc"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1bipc.html">bipc</a></td></tr>
+<tr class="memdesc:namespaceipc_1_1bipc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for boost.interprocess namespace. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceipc_1_1fs"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1fs.html">fs</a></td></tr>
+<tr class="memdesc:namespaceipc_1_1fs"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <code>filesystem</code> namespace. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1session"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html">session</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1session"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module providing the broad lifecycle and shared-resource organization &ndash; via the <em>session</em> concept &ndash; in such a way as to make it possible for a given pair of processes A and B to set up <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> structured- or unstructured-message channels for general IPC, as well as to share data in SHared Memory (SHM). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -93,7 +99,7 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:aa3192e586cc45d3e7c22463bf2760f89"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> = flow::Error_code</td></tr>
-<tr class="memdesc:aa3192e586cc45d3e7c22463bf2760f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for boost.interprocess namespace.  <a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">More...</a><br /></td></tr>
+<tr class="memdesc:aa3192e586cc45d3e7c22463bf2760f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <code>flow::Error_code</code> which is very common.  <a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">More...</a><br /></td></tr>
 <tr class="separator:aa3192e586cc45d3e7c22463bf2760f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa455c7f045059736578ca275fc1a851f"><td class="memTemplParams" colspan="2">template&lt;typename Signature &gt; </td></tr>
 <tr class="memitem:aa455c7f045059736578ca275fc1a851f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">Function</a> = flow::Function&lt; Signature &gt;</td></tr>
@@ -118,7 +124,7 @@ Variables</h2></td></tr>
 <p >It includes schema-based structured message definition and zero-copy transport between processes. It also includes a SHared Memory (SHM) module for direct allocation and related needs; and particular support for passing references to such <em>bulk</em> objects through the aforementioned messaging transport system.</p>
 <dl class="section note"><dt>Note</dt><dd>Nomenclature: The project is called Flow-IPC.</dd></dl>
 <p>From the user's perspective, one should view this namespace as the "root," meaning it consists of two parts:</p><ul>
-<li>Symbols directly in Flow-IPC: The absolute most basic, commonly used symbols (such as the alias <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">ipc::Error_code</a>). There should be only a handful of these, and they are likely to be small.<ul>
+<li>Symbols directly in Flow-IPC: The absolute most basic, commonly used symbols (such as the alias <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">ipc::Error_code</a>). There should be only a handful of these, and they are likely to be small.<ul>
 <li>In particular this includes <code>enum class</code> <a class="el" href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7" title="The flow::log::Component payload enumeration containing various log components used by Flow-IPC inter...">ipc::Log_component</a> which defines the set of possible <code>flow::log::Component</code> values logged from within all modules of Flow-IPC. See end of common.hpp.</li>
 </ul>
 </li>
@@ -243,12 +249,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Short-hand for boost.interprocess namespace. </p>
-<p >Short-hand for <code>filesystem</code> namespace.</p>
-<h3>Rationale for aliasing to <code>boost::filesystem</code> instead of <code>std::filesystem</code></h3>
-<p ><code>boost::filesystem</code> is rock-solid and the model/original impl; which is not to say that always is enough to take it over the <code>std::</code> counterpart. However, some experiences with gcc-7's <code>std::filesystem</code> were negative; it did not exist, and <code>std::experimental::filesystem</code> lacked basic chunks from the standard. This left a bad taste in the mouth; whereas in the author's (ygoldfel) experience Boost's has been great. It is very mature. Short-hand for <code>flow::Error_code</code> which is very common. </p>
+<p>Short-hand for <code>flow::Error_code</code> which is very common. </p>
 
-<p class="definition">Definition at line <a class="el" href="common_8hpp_source.html#l00289">289</a> of file <a class="el" href="common_8hpp_source.html">common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="common_8hpp_source.html#l00296">296</a> of file <a class="el" href="common_8hpp_source.html">common.hpp</a>.</p>
 
 </div>
 </div>
@@ -268,7 +271,7 @@ template&lt;typename Signature &gt; </div>
 
 <p>Short-hand for polymorphic functor holder which is very common. This is essentially <code>std::function</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="common_8hpp_source.html#l00293">293</a> of file <a class="el" href="common_8hpp_source.html">common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="common_8hpp_source.html#l00300">300</a> of file <a class="el" href="common_8hpp_source.html">common.hpp</a>.</p>
 
 </div>
 </div>
@@ -304,7 +307,7 @@ template&lt;typename Signature &gt; </div>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="common_8hpp_source.html#l00313">313</a> of file <a class="el" href="common_8hpp_source.html">common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="common_8hpp_source.html#l00320">320</a> of file <a class="el" href="common_8hpp_source.html">common.hpp</a>.</p>
 
 </div>
 </div>
@@ -339,7 +342,7 @@ template&lt;typename Signature &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:26 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:49 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

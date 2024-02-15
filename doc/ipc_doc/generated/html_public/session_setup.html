@@ -66,7 +66,7 @@ $(function() {
   <div class="headertitle"><div class="title">Sessions: Setting Up an IPC Context </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="async_loop.html">Preceding Page</a> - <a class="el" href="chan_open.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center><hr  />
+<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="async_loop.html">Preceding Page</a> - <a class="el" href="chan_open.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center><hr  />
 <p >Let's learn how to set up your first process-to-process session, from which it is easy to create communication channels. (Or go back to preceding page: <a class="el" href="async_loop.html">Asynchronicity and Integrating with Your Event Loop</a>.)</p>
 <p >The structure of this page and the next few pages of the Manual is a top-down exploration of what is involved in using Flow-IPC in a typical way. It is, in a way, a tutorial. It will skip topics in aid of exposition and make certain explicit assumptions for the same reason. (We will cover the skipped topics and challenge those assumptions later in the Manual. The Reference of any given API, especially classes and class templates, is also comprehensive.)</p>
 <h2>What's a session? Is it necessary? </h2>
@@ -107,7 +107,7 @@ $(function() {
 <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1session_1_1Server__app.html">ipc::session::Server_app</a> APP_A_AS_SRV{ APP_A, <span class="comment">// Super-class App: Copy the App info.</span></div>
 <div class="line">                                             { APP_B.<a class="code hl_variable" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd">m_name</a> }, <span class="comment">// m_allowed_client_apps: The apps that can open sessions with us.  Note the use of App::m_name: it&#39;s a key.</span></div>
 <div class="line">                                             <span class="stringliteral">&quot;&quot;</span>, <span class="comment">// m_kernel_persistent_run_dir_override: Leave default so the customary /var/run is used to store PID files and the like.</span></div>
-<div class="line">                                             <a class="code hl_enumvalue" href="namespaceipc_1_1util.html#a2ec0bfdddb41a1ef0403e4bb8967705daa3e1d310128f18fe2f903bf3cba8849a">ipc::util::Permissions_level::S_USER_ACCESS</a> } <span class="comment">// m_permissions_level_for_client_apps: See below.</span></div>
+<div class="line">                                             <a class="code hl_enumvalue" href="namespaceipc_1_1util.html#a2ec0bfdddb41a1ef0403e4bb8967705daa3e1d310128f18fe2f903bf3cba8849a">ipc::util::Permissions_level::S_USER_ACCESS</a> }; <span class="comment">// m_permissions_level_for_client_apps: See below.</span></div>
 <div class="ttc" id="anamespaceipc_1_1util_html_a2ec0bfdddb41a1ef0403e4bb8967705daa3e1d310128f18fe2f903bf3cba8849a"><div class="ttname"><a href="namespaceipc_1_1util.html#a2ec0bfdddb41a1ef0403e4bb8967705daa3e1d310128f18fe2f903bf3cba8849a">ipc::util::Permissions_level::S_USER_ACCESS</a></div><div class="ttdeci">@ S_USER_ACCESS</div><div class="ttdoc">Allows access by resource-owning user (in POSIX/Unix identified by UID) and no one else.</div></div>
 <div class="ttc" id="astructipc_1_1session_1_1App_html_a8e67b57829fe43a122a23c699b5de8fd"><div class="ttname"><a href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd">ipc::session::App::m_name</a></div><div class="ttdeci">std::string m_name</div><div class="ttdoc">Brief application name, readable to humans and unique across all other applications' names; used both...</div><div class="ttdef"><b>Definition:</b> app.hpp:144</div></div>
 <div class="ttc" id="astructipc_1_1session_1_1Server__app_html"><div class="ttname"><a href="structipc_1_1session_1_1Server__app.html">ipc::session::Server_app</a></div><div class="ttdoc">An App that is used as a server in at least one client-server IPC split.</div><div class="ttdef"><b>Definition:</b> app.hpp:206</div></div>
@@ -168,7 +168,7 @@ $(function() {
 <div class="line"><span class="comment">// By the way... for all future mentions of Error_code:</span></div>
 <div class="line"><span class="keyword">using </span><a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> = <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a>;</div>
 <div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Session__mv_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">ipc::session::shm::classic::Session_mv</a></div><div class="ttdoc">Implements the SHM-related API common to shm::classic::Server_session and shm::classic::Client_sessio...</div><div class="ttdef"><b>Definition:</b> session.hpp:44</div></div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for boost.interprocess namespace.</div><div class="ttdef"><b>Definition:</b> common.hpp:289</div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> common.hpp:296</div></div>
 </div><!-- fragment --><p >Next let's decide on the values for those 3 template parameters. The first two determine the concrete type of <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">ipc::transport::Channel</a> that shall be opened in this session. The last template parameter is used for certain advanced purposes around channel-opening. We'll talk about all of those topics in <a class="el" href="chan_open.html">Sessions: Opening Channels</a>. For now we'll forego the advanced-metadata stuff (leave that arg at default), and we'll choose a sufficiently powerful and performant setting for the former 2 params. Thus, again, we strongly recommend to define the concrete type in an alias, so that the details need not be repeated subsequently.</p>
 <div class="fragment"><div class="line"><span class="comment">// Each channel shall contain (only) a (bidirectional) Unix domain stream socket, capable of transmitting data and native handles.</span></div>
 <div class="line"><span class="comment">// This is sufficient for all purposes in terms of what it can transmit; and can only be potentially improved upon -- likely marginally</span></div>
@@ -238,7 +238,7 @@ We discuss the <code>Client_session</code> ctor + <code>Server_session::init_han
 <div class="line"> </div>
 <div class="line">Session session_being_opened; <span class="comment">// Empty session object.</span></div>
 <div class="line"> </div>
-<div class="line">session_srv.async_accept(&amp;session_being_opened, ([...](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
+<div class="line">session_srv.async_accept(&amp;session_being_opened, [...](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
 <div class="line">{</div>
 <div class="line">  <span class="keywordflow">if</span> (err_code == <a class="code hl_enumvalue" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed">ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>)</div>
 <div class="line">  {</div>
@@ -246,7 +246,7 @@ We discuss the <code>Client_session</code> ctor + <code>Server_session::init_han
 <div class="line">  }</div>
 <div class="line"> </div>
 <div class="line">  post([..., err_code])() { on_new_session(err_code]); });</div>
-<div class="line">}</div>
+<div class="line">});</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> on_new_session(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
 <div class="line">{</div>
@@ -285,11 +285,11 @@ We discuss the <code>Client_session</code> ctor + <code>Server_session::init_han
 </div><!-- fragment --><p >In our example code on each side, <code>go_do_ipc_yay()</code> now has an equally-capable <code>Session</code> object which represents a shared IPC context through which to, broadly, open channels and (optionally) directly access SHM arena(s). Via the open channels, in turn, one can send messages (covered later in the Manual when we discuss <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>). Via the SHM arena(s) one can allocate objects (which can be shared however one wants but most easily via <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> channels as well).</p>
 <p >Next let's discuss <a class="el" href="chan_open.html">Sessions: Opening Channels</a>.</p>
 <hr  />
-<center><b>MANUAL NAVIGATION:</b> <a class="el" href="async_loop.html">Preceding Page</a> - <a class="el" href="chan_open.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center> </div></div><!-- contents -->
+<center><b>MANUAL NAVIGATION:</b> <a class="el" href="async_loop.html">Preceding Page</a> - <a class="el" href="chan_open.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -327,7 +327,7 @@ template&lt;typename Task_err_sz &gt; </div>
 <p ><code>*target_hndl</code> and the area described by <code>target_meta_blob</code> must both remain valid until <code>on_done_func()</code> executes. The method itself shall be non-blocking.</p>
 <p >The implementation shall, informally, strive to <em>not</em> copy the received blob (if any) into <code>target_meta_blob.data()...</code> except from the low-level transport mechanism. That is: it shall strive to not store the blob data in some internal buffer before ending up in <code>target_meta_blob.data()...</code>.</p>
 <h3>Error semantics</h3>
-<p >An <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> is generated and passed as the 1st arg to <code>on_done_func()</code>. A falsy one indicates success. A truthy one indicates failure; but in particular:</p><ul>
+<p >An <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> is generated and passed as the 1st arg to <code>on_done_func()</code>. A falsy one indicates success. A truthy one indicates failure; but in particular:</p><ul>
 <li><a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed" title="Async completion handler is being called prematurely, because underlying object is shutting down,...">error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a> (destructor called, canceling all pending ops; spiritually identical to <code>boost::asio::error::operation_aborted</code>);</li>
 <li>only if <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html#a46b36a6fd79af85829de46b34d3c6849" title="If false then meta_blob.size() &gt; receive_meta_blob_max_size() in PEER-state async_receive_native_hand...">S_META_BLOB_UNDERFLOW_ALLOWED</a> is <code>true</code>:<ul>
 <li><a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297adde24987f30a92b953297207ce935210" title="User protocol-code mismatch: local user-provided storage cannot fit entire message received from oppo...">error::Code::S_MESSAGE_SIZE_EXCEEDS_USER_STORAGE</a> (opposing peer has sent a message with a meta-blob exceeding <code>target_meta_blob.size()</code> in length; in particular one can give an empty buffer if no meta-blob expected);</li>
@@ -522,7 +522,7 @@ template&lt;typename Task_err_sz &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:49 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

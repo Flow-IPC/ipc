@@ -176,7 +176,7 @@ class ipc::session::Session&lt; Mdt_payload &gt;</div><p >A documentation-only <
 <li>Alternatively, if at entry to PEER state the user has chosen to <em>not</em> supply a passive-open handler, then the partner <a class="el" href="classipc_1_1session_1_1Session.html#aab01aefa0243abf84c7cc36d3ab2d852" title="Synchronously active-opens a new channel which, on success, is moved-to *target_channel.">Session::open_channel()</a> shall yield failure. In this mode of operation, the user has chosen this side of the session to not act as a passive-opener. (If both <code><a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a></code>s do so, the session is essentially useless. Formally this is supported, simply because there is no need to enforce otherwise.)</li>
 </ul>
 </li>
-<li>Async error reporting: At entry to PEER state (the mechanism of accomplishing which, as noted below, is not specified by the concept) the user must have provided an on-error handler via which asynchronously-occurring session-hosing <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> are reported. See details below.</li>
+<li>Async error reporting: At entry to PEER state (the mechanism of accomplishing which, as noted below, is not specified by the concept) the user must have provided an on-error handler via which asynchronously-occurring session-hosing <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> are reported. See details below.</li>
 <li>The (outgoing) transmission-of-messages methods, including transmission of graceful-close message. See their doc headers.</li>
 <li>Behavior when the destructor is invoked. See <a class="el" href="classipc_1_1session_1_1Session.html#a8cb20f446c2a4327a3a8143af137dbca" title="In NULL state, no-op; in PEER state: Ends the session while informing (if possible) the opposing peer...">~Session()</a> doc header.</li>
 <li>Default ctor (which creates a NULL-state object that can be moved-to and to which "as-if" state any moved-from object is changed).</li>
@@ -515,7 +515,7 @@ template&lt;typename Mdt_payload  = ::capnp::Void&gt; </div>
   <table class="params">
     <tr><td class="paramname">target_channel</td><td>On success <code>*target_channel</code> is moved-to from a (new) <a class="el" href="classipc_1_1session_1_1Session.html#a2f770785552536f3b929f293c44834d2" title="Each successful open_channel() and on-passive-open handler firing shall yield a concrete transport::C...">Channel_obj</a> in PEER state. </td></tr>
     <tr><td class="paramname">mdt</td><td>See <a class="el" href="classipc_1_1session_1_1Session.html#a420df732069ded1feef423adf7a30915" title="Returns a new metadata holder to be subsequently mutated by the user and then passed to open_channel(...">mdt_builder()</a>. If <code>mdt</code> is null, <a class="el" href="classipc_1_1session_1_1Session.html#aab01aefa0243abf84c7cc36d3ab2d852" title="Synchronously active-opens a new channel which, on success, is moved-to *target_channel.">open_channel()</a> returns <code>false</code>. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa2c8c27c65ff6234220a84f96de8a1870" title="Session channel opening: User code chose to reject all passive-open requests.">error::Code::S_SESSION_OPEN_CHANNEL_REMOTE_PEER_REJECTED_PASSIVE_OPEN</a>, other possible unspecified errors according to impl's discretion. See above discussion. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa2c8c27c65ff6234220a84f96de8a1870" title="Session channel opening: User code chose to reject all passive-open requests.">error::Code::S_SESSION_OPEN_CHANNEL_REMOTE_PEER_REJECTED_PASSIVE_OPEN</a>, other possible unspecified errors according to impl's discretion. See above discussion. </td></tr>
   </table>
   </dd>
 </dl>
@@ -681,7 +681,7 @@ template&lt;typename Mdt_payload  = ::capnp::Void&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

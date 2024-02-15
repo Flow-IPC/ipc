@@ -66,7 +66,7 @@ $(function() {
   <div class="headertitle"><div class="title">Sessions: Opening Channels </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="session_setup.html">Preceding Page</a> - <a class="el" href="session_app_org.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center><hr  />
+<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="session_setup.html">Preceding Page</a> - <a class="el" href="session_app_org.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center><hr  />
 <p >Let's discuss opening channels from within an IPC context (<code>Session</code>). learn how to set up your first process-to-process session, from which it is easy to create communication channels. (Or go back to preceding page: <a class="el" href="session_setup.html">Sessions: Setting Up an IPC Context</a>. These two pages are interconnected, as in this context, no pun intended, one uses a <code>Session</code> as a source of channel(s).)</p>
 <h2>What's a channel? What channel types are supported by <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a>? </h2>
 <p >A <b>channel</b> is a <em>bundling</em> of the peer resources required for, essentially, a bidirectional pipe capable of transmitting binary messages (<b>blobs</b>) and, optionally, native handles. A particular <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">ipc::transport::Channel</a> (as specified at compile-time via its template parameters) may, for example, consist of an outgoing POSIX MQ handle and a similar incoming-MQ handle; or conceptually similar SHM-backed MQs (boost.ipc MQs). A peer <a class="el" href="classipc_1_1transport_1_1Channel.html">Channel</a> can be <b>upgraded</b> to an <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">ipc::transport::struc::Channel</a> in order to represent a structured, arbitrarily-sized datum per message as opposed to a mere (limited-size) blob.</p>
@@ -179,7 +179,7 @@ $(function() {
 <div class="line">  Session::Channels init_channels(boost::lexical_cast&lt;size_t&gt;(argv[1])); <span class="comment">// &lt;-- ATTN: runtime config.</span></div>
 <div class="line"> </div>
 <div class="line">  session.async_connect(mdt, <span class="comment">// Client-to-server metadata.</span></div>
-<div class="line">                        &amp;init_channel, <span class="comment">// Out-arg for cli-&gt;srv init-channels as well as in-arg for how many we want.</span></div>
+<div class="line">                        &amp;init_channels, <span class="comment">// Out-arg for cli-&gt;srv init-channels as well as in-arg for how many we want.</span></div>
 <div class="line">                        <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>, <span class="comment">// In our example we expect no srv-&gt;cli metadata nor srv-&gt;cli init-channels.</span></div>
 <div class="line">                        [...](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
 <div class="line">  {</div>
@@ -206,7 +206,7 @@ $(function() {
 <div class="line">  });</div>
 <div class="line">} <span class="comment">// namespace my_meta_app</span></div>
 <div class="ttc" id="anamespaceipc_1_1session_1_1error_html_a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed"><div class="ttname"><a href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed">ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a></div><div class="ttdeci">@ S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</div><div class="ttdoc">Async completion handler is being called prematurely, because underlying object is shutting down,...</div></div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for boost.interprocess namespace.</div><div class="ttdef"><b>Definition:</b> common.hpp:289</div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> common.hpp:296</div></div>
 </div><!-- fragment --><p >On the server end, accordingly:</p>
 <div class="fragment"><div class="line"><span class="comment">// ...</span></div>
 <div class="line"><span class="keyword">using </span>Session_server = Session_server_t&lt;...knob1..., ...knob2...,</div>
@@ -404,11 +404,11 @@ $(function() {
 <div class="line">}</div>
 </div><!-- fragment --><p >Opening channels is the main point of sessions, so we are close to done, as far as mainstream <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> topics go. One basic thing we did skip over is error handling; which is related to the topic of the best way to organize the IPC-relevant parts of an application. Let's <a class="el" href="session_app_org.html">discuss that next</a>.</p>
 <hr  />
-<center><b>MANUAL NAVIGATION:</b> <a class="el" href="session_setup.html">Preceding Page</a> - <a class="el" href="session_app_org.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center> </div></div><!-- contents -->
+<center><b>MANUAL NAVIGATION:</b> <a class="el" href="session_setup.html">Preceding Page</a> - <a class="el" href="session_app_org.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

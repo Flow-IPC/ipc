@@ -66,7 +66,7 @@ $(function() {
   <div class="headertitle"><div class="title">Sessions: Teardown; Organizing Your Code </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_open.html">Preceding Page</a> - <a class="el" href="safety_perms.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center><hr  />
+<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_open.html">Preceding Page</a> - <a class="el" href="safety_perms.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center><hr  />
 <p >Here we discuss the important task of handling session-ending events (errors); and recommended an approach to structuring your subject-to-IPC objects within your application code. (Or go back to preceding page: <a class="el" href="chan_open.html">Sessions: Opening Channels</a>. The penultimate-to-us <a class="el" href="session_setup.html">page</a> may be even more directly relevant however.)</p>
 <h2>Page summary </h2>
 <p >First, a reminder: A session is a conversation between process A, of application Ap, and process B of Bp. Once open, the two processes are equal in their capabilities (in the context of IPC).</p>
@@ -262,7 +262,7 @@ $(function() {
 <div class="line">}; <span class="comment">// class Process</span></div>
 <div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Session__server_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">ipc::session::shm::classic::Session_server</a></div><div class="ttdoc">This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...</div><div class="ttdef"><b>Definition:</b> session_server.hpp:74</div></div>
 <div class="ttc" id="anamespaceipc_1_1session_1_1error_html_a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed"><div class="ttname"><a href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed">ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a></div><div class="ttdeci">@ S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</div><div class="ttdoc">Async completion handler is being called prematurely, because underlying object is shutting down,...</div></div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for boost.interprocess namespace.</div><div class="ttdef"><b>Definition:</b> common.hpp:289</div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> common.hpp:296</div></div>
 </div><!-- fragment --><p >To summarize: There are concurrent algorithms in play here, executing in interleaved async fashion via thread U (<code>m_worker</code>):</p><ul>
 <li>First, initialize IPC universe description; and start <code>Session_server m_session_srv</code>. Then begin loop:</li>
 <li>Algorithm 1 (one running throughout): Ask <code>m_session_srv</code> to accept the next session in the background. Once ready, give it to algorithm 2; and repeat.<ul>
@@ -538,11 +538,11 @@ $(function() {
 <p >And that's that. If you want to use <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> &ndash; and unless you enjoy avoidable pain, you probably should &ndash; then the preceding pages provide more than enough information to proceed. What's left now are some odds and ends that can be quite important in production but are arguably not going to be a mainstream worry during the bulk of development and design. The next couple (or so) pages deal with such <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> topics.</p>
 <p >The next page is: <a class="el" href="safety_perms.html">Safety and Permissions</a>.</p>
 <hr  />
-<center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_open.html">Preceding Page</a> - <a class="el" href="safety_perms.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center> </div></div><!-- contents -->
+<center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_open.html">Preceding Page</a> - <a class="el" href="safety_perms.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

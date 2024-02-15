@@ -66,7 +66,7 @@ $(function() {
   <div class="headertitle"><div class="title">Shared Memory: Direct Allocation, Transport </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_struct_advanced.html">Preceding Page</a> - <a class="el" href="transport_core.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center><hr  />
+<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_struct_advanced.html">Preceding Page</a> - <a class="el" href="transport_core.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center><hr  />
 <p >Here we discuss the direct use of SHM arenas for allocation of C++ data structures; and how to share such structures between processes via <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>. (Or go back to the prerequisite preceding page: <a class="el" href="chan_struct_advanced.html">Structured Message Transport: Messages As Long-lived Data Structures / Advanced Topics</a>.)</p>
 <h2>How shared memory (SHM) fits into Flow-IPC </h2>
 <p >If you've been reading this Manual sequentially to this point, you've seen <b>shared memory (SHM)</b> mentioned many times already. Nevertheless our philosophy on how much the user &ndash; you &ndash; should have to think about SHM is as follows.</p>
@@ -373,9 +373,9 @@ Raw pointers are not allowed in a POD in this context (nor are they, generally, 
 <div class="ttc" id="anamespaceipc_1_1transport_1_1struc_1_1shm_html_ab592ce6eddbe24c57dc71f34018fb042"><div class="ttname"><a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ab592ce6eddbe24c57dc71f34018fb042">ipc::transport::struc::shm::capnp_set_lent_shm_handle</a></div><div class="ttdeci">void capnp_set_lent_shm_handle(schema::ShmHandle::Builder *shm_handle_root, const flow::util::Blob_sans_log_context &amp;lend_result)</div><div class="ttdoc">Utility that saves the result of a Shm_session1::lend_object&lt;T&gt;(const shared_ptr&lt;T&gt;&amp;) result into the...</div><div class="ttdef"><b>Definition:</b> util.cpp:28</div></div>
 </div><!-- fragment --><p >And counterpart borrower code:</p>
 <div class="fragment"><div class="line">flow::util::Blob_sans_log_context lend_blob;</div>
-<div class="line"><a class="code hl_function" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">ipc::transport::struc::capnp_get_shm_handle_to_borrow</a>(msg-&gt;body_root().getSomeMsg().getWidgetHandle(), &amp;lend_blob);</div>
+<div class="line"><a class="code hl_function" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">ipc::transport::struc::shm::capnp_get_shm_handle_to_borrow</a>(msg-&gt;body_root().getSomeMsg().getWidgetHandle(), &amp;lend_blob);</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">auto</span> x_borrowed = = session.borrow_object&lt;Widget_brw&gt;(lend_blob);</div>
+<div class="line"><span class="keyword">auto</span> x_borrowed = session.borrow_object&lt;Widget_brw&gt;(lend_blob);</div>
 <div class="line">FLOW_LOG_INFO(<span class="stringliteral">&quot;Hey, let&#39;s read inside SHM after receiving SHM-handle: [&quot;</span> &lt;&lt; x_borrowed-&gt;m_flag &lt;&lt; <span class="stringliteral">&quot;].&quot;</span>);</div>
 <div class="ttc" id="anamespaceipc_1_1transport_1_1struc_1_1shm_html_adb38fe88cfd5e758ef52c482d2902669"><div class="ttname"><a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">ipc::transport::struc::shm::capnp_get_shm_handle_to_borrow</a></div><div class="ttdeci">void capnp_get_shm_handle_to_borrow(const schema::ShmHandle::Reader &amp;shm_handle_root, flow::util::Blob_sans_log_context *arg_to_borrow)</div><div class="ttdoc">Utility that's the reverse of capnp_set_lent_shm_handle() to be invoked on the deserializing side.</div><div class="ttdef"><b>Definition:</b> util.cpp:50</div></div>
 </div><!-- fragment --><p >Simple! That said we opportunistically note: The borrower-side is using <code>Widget_brw</code>, a type we have not explicitly provided the code for in the actual example. Per the side-bar above, with SHM-classic it could just be <code>Widget</code> (same as in owner); but with SHM-jemalloc and generically you'd need to define a mirror of <code>Widget</code> called <code>Widget_brw</code> which would use <code>Session::Borrower_allocator</code> instead of <code>Session::Allocator</code> all-over. We'll leave that as an exercise to the reader. Tip: You do <em>not</em> need to copy paste the same type twice. Use template trickery &ndash; perhaps <code>std::conditional_t</code> &ndash; to conveniently pick between the two <code>*llocator</code> templates depending on a compile-time <code>bool S_OWN_ELSE_BRW</code> template parameter perhaps.</p>
@@ -394,11 +394,11 @@ So... even if you can (which you <em>can</em> with SHM-classic): Should you (1) 
 <p >Again: You're not giving away those abilities of SHM-classic by choosing SHM-jemalloc <em>for free</em>. You get goodies in return: safety goodies and allocation-perf goodies. See <a class="el" href="transport_shm.html#shm_choice">back here</a>.</p>
 <p >The next page is: <a class="el" href="transport_core.html">Transport Core Layer: Transmitting Unstructured Data</a>.</p>
 <hr  />
-<center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_struct_advanced.html">Preceding Page</a> - <a class="el" href="transport_core.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center> </div></div><!-- contents -->
+<center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_struct_advanced.html">Preceding Page</a> - <a class="el" href="transport_core.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

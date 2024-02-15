@@ -224,7 +224,7 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a09f47c6b083179259b7a21b1a6f3c6d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9948742d87298d5842d298de9c946c7c"><td class="memTemplParams" colspan="2">template&lt;typename Func &gt; </td></tr>
 <tr class="memitem:a9948742d87298d5842d298de9c946c7c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Bipc__mq__handle.html#a9948742d87298d5842d298de9c946c7c">op_with_possible_bipc_mq_exception</a> (<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code, <a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> context, const Func &amp;func)</td></tr>
-<tr class="memdesc:a9948742d87298d5842d298de9c946c7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error helper: Run <code>func()</code> which will perform a <code>bipc::message_queue</code> API that might throw; if it does emit an error in the way our Flow-style APIs must (set <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> if not null, else throw... etc.).  <a href="classipc_1_1transport_1_1Bipc__mq__handle.html#a9948742d87298d5842d298de9c946c7c">More...</a><br /></td></tr>
+<tr class="memdesc:a9948742d87298d5842d298de9c946c7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error helper: Run <code>func()</code> which will perform a <code>bipc::message_queue</code> API that might throw; if it does emit an error in the way our Flow-style APIs must (set <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> if not null, else throw... etc.).  <a href="classipc_1_1transport_1_1Bipc__mq__handle.html#a9948742d87298d5842d298de9c946c7c">More...</a><br /></td></tr>
 <tr class="separator:a9948742d87298d5842d298de9c946c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac52aa9402e0f5d50babff7b06e5eaab3"><td class="memTemplParams" colspan="2">template&lt;bool SND_ELSE_RCV, bool ON_ELSE_OFF&gt; </td></tr>
 <tr class="memitem:ac52aa9402e0f5d50babff7b06e5eaab3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Bipc__mq__handle.html#ac52aa9402e0f5d50babff7b06e5eaab3">interrupt_allow_impl</a> ()</td></tr>
@@ -1092,7 +1092,7 @@ template&lt;typename Func &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Error helper: Run <code>func()</code> which will perform a <code>bipc::message_queue</code> API that might throw; if it does emit an error in the way our Flow-style APIs must (set <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> if not null, else throw... etc.). </p>
+<p>Error helper: Run <code>func()</code> which will perform a <code>bipc::message_queue</code> API that might throw; if it does emit an error in the way our Flow-style APIs must (set <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> if not null, else throw... etc.). </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Func</td><td>Functor that takes no args and returns nothing. </td></tr>
@@ -1102,7 +1102,7 @@ template&lt;typename Func &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">func</td><td><code>func()</code> shall be executed synchronously. </td></tr>
-    <tr><td class="paramname">err_code</td><td><code>err_code</code> as-if passed to our API. <code>*err_code</code> shall be set if not null depending on success/failure; if null and no problem, won't throw; if null and problem will throw <code>Runtime_error</code> containing a truthy <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a>. That's the usual Flow-style error emission semantics. </td></tr>
+    <tr><td class="paramname">err_code</td><td><code>err_code</code> as-if passed to our API. <code>*err_code</code> shall be set if not null depending on success/failure; if null and no problem, won't throw; if null and problem will throw <code>Runtime_error</code> containing a truthy <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a>. That's the usual Flow-style error emission semantics. </td></tr>
     <tr><td class="paramname">context</td><td>Description for logging of the op being attempted, in case there is an error. Compile-time-known strings are best, as this is not protected by a filtering macro and hence will be evaluated no matter what. </td></tr>
   </table>
   </dd>
@@ -2184,7 +2184,7 @@ Here is the call graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:49 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

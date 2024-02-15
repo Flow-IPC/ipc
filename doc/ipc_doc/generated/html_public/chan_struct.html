@@ -66,7 +66,7 @@ $(function() {
   <div class="headertitle"><div class="title">Structured Message Transport </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="universes.html">Preceding Page</a> - <a class="el" href="chan_struct_advanced.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center><hr  />
+<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="universes.html">Preceding Page</a> - <a class="el" href="chan_struct_advanced.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center><hr  />
 <p >This page explains how to send and receive structured messages, including requests, over a channel &ndash; for many users the essential purpose of the library. (Or go back to preceding page: <a class="el" href="universes.html">Multi-split Universes</a>. <a class="el" href="chan_open.html">Sessions: Opening Channels</a> would also be a natural immediate pre-requisite for the current page.)</p>
 <h2>Context: Channels </h2>
 <p >To restate from <a class="el" href="chan_open.html">Sessions: Opening Channels</a> &ndash; a <b>channel</b> is a <em>bundling</em> of the peer resources required for, essentially, a bidirectional pipe capable of transmitting binary messages (<b>blobs</b>) and, optionally, native handles. A particular <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">ipc::transport::Channel</a> (as specified at compile-time via its template parameters) may, for example, consist of an outgoing POSIX MQ handle and a similar incoming-MQ handle; or conceptually similar SHM-backed MQs (boost.ipc MQs). A peer <a class="el" href="classipc_1_1transport_1_1Channel.html">Channel</a> can be <b>upgraded</b> to an <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">ipc::transport::struc::Channel</a> (or <code>sync_io</code>-pattern counterpart, <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">ipc::transport::struc::sync_io::Channel</a>) in order to represent a structured, arbitrarily-sized datum per message as opposed to a mere (limited-size) blob.</p>
@@ -105,7 +105,7 @@ $(function() {
 <div class="line">using Cxx = import &quot;/capnp/c++.capnp&quot;;</div>
 <div class="line">using Common = import &quot;/ipc/transport/struc/schema/common.capnp&quot;; # Flow-IPC supplies this.</div>
 <div class="line"> </div>
-<div class="line">$Cxx.namespace(&quot;my_meta_app::capnp&quot;); # capnp-generated metadata struct matching the below will go into this C++ namespace.</div>
+<div class="line">$Cxx.namespace(&quot;my_meta_app::capnp&quot;); # capnp-generated structs matching the below will go into this C++ namespace.</div>
 <div class="line"> </div>
 <div class="line">struct CoolMsg</div>
 <div class="line">{</div>
@@ -407,7 +407,7 @@ $(function() {
 <div class="line">  {</div>
 <div class="line">    <span class="comment">// We are back in: Your async-I/O loop&#39;s main thread W.</span></div>
 <div class="line"> </div>
-<div class="line">    int64_t sum;</div>
+<div class="line">    int64_t sum = 0;</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> sum_func = [&amp;](int64_t val) { sum += val; };</div>
 <div class="line">    <span class="keyword">auto</span> root = req-&gt;body_root().getSumRequest();</div>
 <div class="line">    <span class="keyword">auto</span> list = root.getTermsToAdd();</div>
@@ -542,7 +542,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">    <span class="comment">// --&gt; DISCUSSION POINT A. &lt;--</span></div>
 <div class="line"> </div>
-<div class="line">    int64_t sum;</div>
+<div class="line">    int64_t sum = 0;</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> sum_func = [&amp;](int64_t val) { sum += val; };</div>
 <div class="line">    <span class="keyword">auto</span> root = req-&gt;body_root().getSumRequest();</div>
 <div class="line">    <span class="keyword">auto</span> list = root.getTermsToAdd();</div>
@@ -579,7 +579,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">  <span class="comment">// ...Destroy channel.  See next section of Manual....</span></div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for boost.interprocess namespace.</div><div class="ttdef"><b>Definition:</b> common.hpp:289</div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> common.hpp:296</div></div>
 </div><!-- fragment --><p >Chronologically:</p><ol type="1">
 <li>Point X: We've called <code>.expect_msg()</code>. Say it returned <code>true</code> which means the channel is <em>not</em> hosed at that exact point in time. It, itself, lacks an <code>err_code</code> arg in its signature, so it cannot itself emit a new error.</li>
 <li>Point A: Apparently a message has arrived. So at that exact point the channel is <em>not</em> hosed either. Even if it is, <code>.create_msg()</code> has nothing to do with transmitting anything, and certainyl all the message-reading and -filling logic is orthogonal to the channel itself. No problem.</li>
@@ -613,11 +613,11 @@ What if you don't do this and just destroy the <code>struc::Channel</code>? The 
 Last thing (applies to async-I/O pattern only, not <code>sync_io</code>): <code>.async_end_sending()</code> is a <code>Channel</code>-level operation (as opposed to the higher <code>struc::Channel</code> layer). Its completion handler <em>will</em> execute, even if you don't wait for that to occur and destroy <code>struc::Channel</code> first. In that case the destructor will invoke it with an operation-aborted code. If you follow the above recipe, then that won't happen, but defensively-written code should nevertheless do something close to the following in <code>F()</code>: <code>if (err_code == <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed" title="Async completion handler is being called prematurely, because underlying object is shutting down,...">ipc::transport::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>) { return; }</code>.</dd></dl>
 <p>The next page is: <a class="el" href="chan_struct_advanced.html">Structured Message Transport: Messages As Long-lived Data Structures / Advanced Topics</a>.</p>
 <hr  />
-<center><b>MANUAL NAVIGATION:</b> <a class="el" href="universes.html">Preceding Page</a> - <a class="el" href="chan_struct_advanced.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center> </div></div><!-- contents -->
+<center><b>MANUAL NAVIGATION:</b> <a class="el" href="universes.html">Preceding Page</a> - <a class="el" href="chan_struct_advanced.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

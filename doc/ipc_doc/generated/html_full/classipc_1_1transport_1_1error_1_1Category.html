@@ -95,7 +95,7 @@ Collaboration diagram for ipc::transport::error::Category:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8588414535051329b98f0193aa65c894"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1error_1_1Category.html#a8588414535051329b98f0193aa65c894">name</a> () const noexcept override</td></tr>
-<tr class="memdesc:a8588414535051329b98f0193aa65c894"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements super-class API: returns a <code>static</code> string representing this <code>error_category</code> (which, for example, shows up in the <code>ostream</code> representation of any Category-belonging <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a>).  <a href="classipc_1_1transport_1_1error_1_1Category.html#a8588414535051329b98f0193aa65c894">More...</a><br /></td></tr>
+<tr class="memdesc:a8588414535051329b98f0193aa65c894"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements super-class API: returns a <code>static</code> string representing this <code>error_category</code> (which, for example, shows up in the <code>ostream</code> representation of any Category-belonging <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a>).  <a href="classipc_1_1transport_1_1error_1_1Category.html#a8588414535051329b98f0193aa65c894">More...</a><br /></td></tr>
 <tr class="separator:a8588414535051329b98f0193aa65c894"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4c76e006ab30fd9b061a7c8606cce73"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1error_1_1Category.html#ad4c76e006ab30fd9b061a7c8606cce73">message</a> (int val) const override</td></tr>
 <tr class="memdesc:ad4c76e006ab30fd9b061a7c8606cce73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements super-class API: given the integer error code of an error in this category, returns a description of that error (similarly in spirit to <code>std::strerror()</code>).  <a href="classipc_1_1transport_1_1error_1_1Category.html#ad4c76e006ab30fd9b061a7c8606cce73">More...</a><br /></td></tr>
@@ -199,7 +199,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Implements super-class API: given the integer error code of an error in this category, returns a description of that error (similarly in spirit to <code>std::strerror()</code>). </p>
-<p >This is the "engine" that allows <code>ec.message()</code> to work, where <code>ec</code> is an <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> with an <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297" title="All possible errors returned (via Error_code arguments) by ipc::transport functions/methods outside o...">error::Code</a> value.</p>
+<p >This is the "engine" that allows <code>ec.message()</code> to work, where <code>ec</code> is an <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> with an <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297" title="All possible errors returned (via Error_code arguments) by ipc::transport functions/methods outside o...">error::Code</a> value.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">val</td><td>Error code of an <a class="el" href="classipc_1_1transport_1_1error_1_1Category.html" title="The boost.system category for errors returned by the ipc::transport module.">Category</a> error (realistically, a <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297" title="All possible errors returned (via Error_code arguments) by ipc::transport functions/methods outside o...">Code</a> <code>enum</code> value cast to <code>int</code>). </td></tr>
@@ -237,7 +237,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Implements super-class API: returns a <code>static</code> string representing this <code>error_category</code> (which, for example, shows up in the <code>ostream</code> representation of any Category-belonging <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a>). </p>
+<p>Implements super-class API: returns a <code>static</code> string representing this <code>error_category</code> (which, for example, shows up in the <code>ostream</code> representation of any Category-belonging <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a>). </p>
 <dl class="section return"><dt>Returns</dt><dd>A <code>static</code> string that's a brief description of this error category. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html#l00100">100</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html">error.cpp</a>.</p>
@@ -279,7 +279,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

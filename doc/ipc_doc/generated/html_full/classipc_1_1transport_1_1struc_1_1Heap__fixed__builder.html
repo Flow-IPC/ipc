@@ -404,7 +404,7 @@ Related Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">target_blobs</td><td>See above. Also recall (see ctor) that for each returned <code>blob</code>: individual segment sizes shall never exceed <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b" title="See struct doc header.">Config::m_segment_sz</a><code>(for the [</code>begin()<code>,</code>end()<code>) area), with</code>start() == m_frame_prefix_sz<code>, and with</code>capacity() - start() - size() &gt;= m_frame_postfix_sz`. </td></tr>
     <tr><td class="paramname">session</td><td>See above. In this case the proper value is <code>NULL_SESSION</code>. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See above. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da3deddc950bfa6d35ae03c9494eec15a6" title="Structured message serialization (e.g., when sending over channel): A user-mutated datum (e....">error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG</a> (a previous mutation introduced a leaf whose serialization would necessitate allocating a segment exceeding <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b" title="See struct doc header.">Config::m_segment_sz</a> &ndash; see ctor &ndash; in size).</td></tr>
+    <tr><td class="paramname">err_code</td><td>See above. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da3deddc950bfa6d35ae03c9494eec15a6" title="Structured message serialization (e.g., when sending over channel): A user-mutated datum (e....">error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG</a> (a previous mutation introduced a leaf whose serialization would necessitate allocating a segment exceeding <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b" title="See struct doc header.">Config::m_segment_sz</a> &ndash; see ctor &ndash; in size).</td></tr>
   </table>
   </dd>
 </dl>
@@ -634,7 +634,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

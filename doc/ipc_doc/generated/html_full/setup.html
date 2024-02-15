@@ -66,7 +66,7 @@ $(function() {
   <div class="headertitle"><div class="title">Prerequisites and Setup </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="api_overview.html">Preceding Page</a> - <a class="el" href="async_loop.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center><hr  />
+<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="api_overview.html">Preceding Page</a> - <a class="el" href="async_loop.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center><hr  />
 <p >Here we discuss the environmental requirements for using Flow-IPC as well as quality-of-life setup basics including logging. (Or go back to preceding page: <a class="el" href="api_overview.html">API Overview</a>.)</p>
 <h2>OS and build environment </h2>
 <dl class="section note"><dt>Note</dt><dd>In the short term (as of October 2023) this may become an open-source library with potentially wide distribution. Some of the below items may change in that case; for example it may become a header-only library or have that mode, and it may support additional OS rather than Linux. We would also include specific information on building it from source as befits a wide-release project. Until then we leave out specific instructions on building the library itself as outside the scope of the present document; while listing the environmental requirements/recommendations as follows. It is vaguely informational; until this is a wide-release library we stay away from rigorous build instructions here. Even once it becomes a wide-release product, possibly such instructions shall live outside this manual. Looking outside the src/ directory you'll certainly find the relevant build scripts which cover all that.</dd></dl>
@@ -81,7 +81,7 @@ $(function() {
 <p >All in all, if you've got a reasonably modern Linux build and runtime environment, and your application is built in at least C++17 mode, then there's nothing too exotic going on that would prevent the use of Flow-IPC (or Flow). Boost, capnp, and jemalloc do not introduce any array of exotic dependencies.</p>
 <h2>Error reporting </h2>
 <p >The standards and mechanics w/r/t error reporting are entirely inherited from Flow. Therefore, see the <code>namespace flow</code> doc header's "Error reporting" section. It applies verbatim (within reason) here. To summarize for your convenience, though: The error reporting is based on <a class="el" href="namespaceboost_1_1system.html" title="Small group of miscellaneous utilities to ease work with boost.system, joining its boost::system name...">boost.system</a> semantics which themselves are now adopted in standard C++ ("STL").</p><ul>
-<li>If a function/method synchronously reports errors, it will take a (usually optional, defaulting to null) <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">ipc::Error_code</a> (a/k/a <code>boost::system::error_code</code>) <em>pointer</em> argument.<ul>
+<li>If a function/method synchronously reports errors, it will take a (usually optional, defaulting to null) <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">ipc::Error_code</a> (a/k/a <code>boost::system::error_code</code>) <em>pointer</em> argument.<ul>
 <li>If it is null: Any error is reported via thrown exception object; through this one can obtain the triggering <code>Error_code E</code>; and both <code>E</code> itself and <code>E.message()</code> are reasonable to print/log/analyze in that event. There is a wide range of Flow-IPC error codes indicating what went wrong; system (<code>errno</code>-based) and Boost codes may be generated too. Reference documentation announces which codes are possible for which APIs.</li>
 <li>If it is not null: On success, the <code>Error_code</code> pointee is cleared (made falsy). On error it is filled with a truthy code <code>E</code>. See preceding paragraph regarding how to treat it.</li>
 </ul>
@@ -118,11 +118,11 @@ $(function() {
 </ul>
 <p >With this setup stuff out of the way we're almost ready to start using Flow-IPC. Just one more bit of prerequisite knowledge necessary: <a class="el" href="async_loop.html">Asynchronicity and Integrating with Your Event Loop</a>.</p>
 <hr  />
-<center><b>MANUAL NAVIGATION:</b> <a class="el" href="api_overview.html">Preceding Page</a> - <a class="el" href="async_loop.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center> </div></div><!-- contents -->
+<center><b>MANUAL NAVIGATION:</b> <a class="el" href="api_overview.html">Preceding Page</a> - <a class="el" href="async_loop.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:26 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:49 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

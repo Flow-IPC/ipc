@@ -1005,7 +1005,7 @@ template&lt;typename Func &gt; </div>
 <p>Internal (to <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a>) utility that invokes the given function that invokes a boost.interprocess operation that is documented to throw <code>bipc::interprocess_exception</code> on failure; if indeed it throws the utility emits an error in the Flow error-reporting style. </p>
 <p >On error it logs WARNING with all available details.</p>
 <h3>Background</h3>
-<p >boost.interprocess has a number of operations that are documented to throw the aforementioned exception on error &ndash; without any alternate way of reporting an error such as through an out-arg. Moreover the exception itself is not any standard runtime-exception type but rather a custom thing. This is somewhat annoying; and various parts of <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a> want to emit errors in a consistent way. That does <em>not</em> mean we must only emit some <code><a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297" title="All possible errors returned (via Error_code arguments) by ipc::transport functions/methods outside o...">transport::error::Code</a>::*</code> or whatever, but we should emit a native-based <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> if applicable, either as an out-arg or as a <code>flow::error::Runtime_error</code> wrapping it, or indeed one of our own codes otherwise (or if it is more applicable).</p>
+<p >boost.interprocess has a number of operations that are documented to throw the aforementioned exception on error &ndash; without any alternate way of reporting an error such as through an out-arg. Moreover the exception itself is not any standard runtime-exception type but rather a custom thing. This is somewhat annoying; and various parts of <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a> want to emit errors in a consistent way. That does <em>not</em> mean we must only emit some <code><a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297" title="All possible errors returned (via Error_code arguments) by ipc::transport functions/methods outside o...">transport::error::Code</a>::*</code> or whatever, but we should emit a native-based <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> if applicable, either as an out-arg or as a <code>flow::error::Runtime_error</code> wrapping it, or indeed one of our own codes otherwise (or if it is more applicable).</p>
 <p >So this helper standardizes that stuff.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -1016,7 +1016,7 @@ template&lt;typename Func &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>Logger to use for logging subsequently. </td></tr>
-    <tr><td class="paramname">err_code</td><td><code>err_code</code> as-if passed to our API. <code>*err_code</code> shall be set if not null depending on success/failure; if null and no problem, won't throw; if null and problem will throw <code>Runtime_error</code> containing a truthy <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a>. That's the usual Flow-style error emission semantics. </td></tr>
+    <tr><td class="paramname">err_code</td><td><code>err_code</code> as-if passed to our API. <code>*err_code</code> shall be set if not null depending on success/failure; if null and no problem, won't throw; if null and problem will throw <code>Runtime_error</code> containing a truthy <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a>. That's the usual Flow-style error emission semantics. </td></tr>
     <tr><td class="paramname">misc_bipc_lib_error</td><td>If <code>func</code> throws, and we are unable to suss out the system error that caused it, then emit this value. E.g.: transport::Code::S_MQ_BIPC_MISC_LIBRARY_ERROR makes sense if creating a <code>bipc::message_queue</code>; or a similar one for SHM-related parts of <code>bipc</code>; etc. </td></tr>
     <tr><td class="paramname">context</td><td>Description for logging of the op being attempted, in case there is an error. Compile-time-known strings are best, as this is not protected by a filtering macro and hence will be evaluated no matter what. </td></tr>
     <tr><td class="paramname">func</td><td><code>func()</code> shall be executed synchronously. </td></tr>
@@ -2568,7 +2568,7 @@ Here is the caller graph for this function:</div>
     <tr><td class="paramname">logger_ptr</td><td>Logger to use for logging (WARNING, on error only). Caller can themselves log further info if desired. </td></tr>
     <tr><td class="paramname">path</td><td>Path to resource. Symlinks are followed, and the target is the resource in question (not the symlink). </td></tr>
     <tr><td class="paramname">perms</td><td>See other overload. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> generated: see other overload; note that in addition file-not-found and the like are possible errors (in fact arguably the likeliest). </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: see other overload; note that in addition file-not-found and the like are possible errors (in fact arguably the likeliest). </td></tr>
   </table>
   </dd>
 </dl>
@@ -2637,7 +2637,7 @@ Here is the caller graph for this function:</div>
     <tr><td class="paramname">logger_ptr</td><td>See other overload. </td></tr>
     <tr><td class="paramname">handle</td><td>See above. <code>handle.null() == true</code> causes undefined behavior (assertion may trip). Closed/invalid/etc. handle will yield civilized Error_code emission. </td></tr>
     <tr><td class="paramname">perms</td><td>See other overload. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> generated: system error codes if permissions cannot be set (invalid descriptor, un-opened descriptor, etc.). </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: system error codes if permissions cannot be set (invalid descriptor, un-opened descriptor, etc.). </td></tr>
   </table>
   </dd>
 </dl>
@@ -2907,7 +2907,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

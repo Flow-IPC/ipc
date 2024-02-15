@@ -66,7 +66,7 @@ $(function() {
   <div class="headertitle"><div class="title">Structured Message Transport: Messages As Long-lived Data Structures / Advanced Topics </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_struct.html">Preceding Page</a> - <a class="el" href="transport_shm.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center><hr  />
+<div class="textblock"><center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_struct.html">Preceding Page</a> - <a class="el" href="transport_shm.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center><hr  />
 <p >We previously discussed how to transmit structured messages; in this page we get into advanced techniques that treat messages as long-lived data structures to re-share multiple times and potentially modify throughout. (Or go back to the prerequisite preceding page: <a class="el" href="chan_struct.html">Structured Message Transport</a>.)</p>
 <h2><code>struc::Channel</code> and serialization </h2>
 <p >In <a class="el" href="chan_struct.html">Structured Message Transport</a> we kept things simple: Create <code>struc::Channel</code>. Create a message <code>struc::Msg_out</code> using its <code>.create_msg()</code>. Mutate it via capnp-generated setters. Send it via <code>.send()</code> or <code>.*_request()</code>. Receive it on the other side as a <code>Msg_in</code> (<code>struc::Msg_in</code>) and access it via capnp-generated getters. This may well be perfectly sufficient for many use cases: Messaging is a common IPC paradigm, and in the described capacity <code>struc::Channel</code> provides, on top of the basics: structured data via capnp schemas; and basic request-response/multiplex-demultiplex APIs.</p>
@@ -161,11 +161,11 @@ $(function() {
 <p >App-scope <code>Msg_out</code>s on the session-server side can be transmitted over any channel from <em>any</em> session from the same <code>Session_server</code> &ndash; of which, again, there shall be exactly 1 per process &ndash; as long as the <code>Session_server</code> object has not been destroyed.</p>
 <p >The next page is: <a class="el" href="transport_shm.html">Shared Memory: Direct Allocation, Transport</a>.</p>
 <hr  />
-<center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_struct.html">Preceding Page</a> - <a class="el" href="transport_shm.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a></center> </div></div><!-- contents -->
+<center><b>MANUAL NAVIGATION:</b> <a class="el" href="chan_struct.html">Preceding Page</a> - <a class="el" href="transport_shm.html">Next Page</a> - <a href="./pages.html"><b>Table of Contents</b></a> - <a class="el" href="namespaceipc.html"><b>Reference</b></a></center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -360,7 +360,7 @@ template&lt;typename Message_body , typename Struct_reader_config &gt; </div>
 <p >This must be called strictly before any calls to <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html#a56fa38feb9c907ae3f0f1a6ff16dd32f" title="Methods.">body_root()</a>.</p>
 <p >If called before a post-deserialize_mdt() <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html#a3a1a75d7d7b108d46efa1892dd2571b7" title="Prior to deserialization_*() obtains a memory area max_sz bytes long into which the user may write-to...">add_serialization_segment()</a>, behavior is undefined (assertion may trip).</p>
 <p >If called more than once, behavior is undefined (assertion may trip).</p>
-<p >If it fails (emits truthy <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a>), it is pointless to use <code>*this</code>. Recommend destruction.</p>
+<p >If it fails (emits truthy <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a>), it is pointless to use <code>*this</code>. Recommend destruction.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">err_code</td><td>See <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html#acd387ce27214601a70a0e1c6025075f1" title="To be invoked after exactly one successful add_serialization_segment() call (and that Blob being fill...">deserialize_mdt()</a>. </td></tr>
@@ -414,11 +414,11 @@ template&lt;typename Message_body , typename Struct_reader_config &gt; </div>
 </ul>
 <p >If called before <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html#a3a1a75d7d7b108d46efa1892dd2571b7" title="Prior to deserialization_*() obtains a memory area max_sz bytes long into which the user may write-to...">add_serialization_segment()</a>, behavior is undefined (assertion may trip).</p>
 <p >If called more than once, behavior is undefined (assertion may trip).</p>
-<p >If it fails (emits truthy <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a>), it is pointless to use <code>*this</code>. Recommend destruction.</p>
+<p >If it fails (emits truthy <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a>), it is pointless to use <code>*this</code>. Recommend destruction.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>Logger to use for logging within this method. </td></tr>
-    <tr><td class="paramname">err_code</td><td>Caution: Unlike user-facing methods, this does not throw (except capnp-generated exceptions); and <code>err_code</code> may not be null. Other than that: <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for boost.interprocess namespace.">Error_code</a> generated: falsy on success, else: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da26ab25e100104aeb567d90f794313e3b" title="Structured channel: received structured message with invalid internally-set/used fields.">error::Code::S_STRUCT_CHANNEL_INTERNAL_PROTOCOL_MISUSED_SCHEMA</a> (opposing <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send().">Msg_out</a> code filled out the fields in an unexpected way), anything emitted by <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html#a95576f8cd8ad45a720276bd074cea4f2" title="After all serialization segments have been acquired in RAM via add_serialization_segment() and finali...">Struct_reader::deserialization()</a>. </td></tr>
+    <tr><td class="paramname">err_code</td><td>Caution: Unlike user-facing methods, this does not throw (except capnp-generated exceptions); and <code>err_code</code> may not be null. Other than that: <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: falsy on success, else: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da26ab25e100104aeb567d90f794313e3b" title="Structured channel: received structured message with invalid internally-set/used fields.">error::Code::S_STRUCT_CHANNEL_INTERNAL_PROTOCOL_MISUSED_SCHEMA</a> (opposing <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send().">Msg_out</a> code filled out the fields in an unexpected way), anything emitted by <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html#a95576f8cd8ad45a720276bd074cea4f2" title="After all serialization segments have been acquired in RAM via add_serialization_segment() and finali...">Struct_reader::deserialization()</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -710,7 +710,7 @@ template&lt;typename Message_body , typename Struct_reader_config &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 00:23:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:11:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
