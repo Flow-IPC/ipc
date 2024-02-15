@@ -24,6 +24,7 @@
 #include "ipc/transport/struc/channel.hpp"
 #include "ipc/session/sync_io/session_server_adapter.hpp"
 
+#include <boost/array.hpp>
 #include <algorithm>
 
 namespace ipc::transport::test

@@ -28,6 +28,7 @@
 
 #include <boost/interprocess/containers/list.hpp>
 #include <boost/interprocess/containers/string.hpp>
+#include <boost/move/make_unique.hpp>
 
 // @todo This is lame.  Use gtest or something civilized like that.
 #define ASSERT(expr) \
