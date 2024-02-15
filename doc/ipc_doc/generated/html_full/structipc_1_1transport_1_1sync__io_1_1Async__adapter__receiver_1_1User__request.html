@@ -107,7 +107,7 @@ Public Attributes</h2></td></tr>
 struct ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::User_request</div><p >Data store representing a deficit user async-receive request: either one being currently handled by <code>m_sync_io</code> &ndash; which can handle one <code>m_sync_io.async_receive_*()</code> at a time, no more &ndash; or one queued up behind it, if <code>async_receive_*()</code> was called before the current one could complete. </p>
 <p >Essentially this stores args to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a> (or degenerate version, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See Blob_receiver counterpart.">async_receive_blob()</a>) which is an async-operating method. We store them in queue via <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html#ad716a5458992596636d5e3e4f9d83e9b" title="Short-hand for unique_ptr to this.">Ptr</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00172">172</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00173">173</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ad716a5458992596636d5e3e4f9d83e9b" name="ad716a5458992596636d5e3e4f9d83e9b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad716a5458992596636d5e3e4f9d83e9b">&#9670;&nbsp;</a></span>Ptr</h2>
@@ -125,7 +125,7 @@ template&lt;typename Core_t &gt; </div>
 
 <p>Short-hand for <code>unique_ptr</code> to this. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00177">177</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00178">178</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -146,7 +146,7 @@ template&lt;typename Core_t &gt; </div>
 
 <p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See Blob_receiver counterpart.">async_receive_blob()</a> <code>on_done_func</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00188">188</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00189">189</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -166,7 +166,7 @@ template&lt;typename Core_t &gt; </div>
 
 <p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a> <code>target_hndl</code>. Null for <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See Blob_receiver counterpart.">async_receive_blob()</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00182">182</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00183">183</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -186,7 +186,7 @@ template&lt;typename Core_t &gt; </div>
 
 <p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a> <code>target_meta_blob</code>. Or see <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See Blob_receiver counterpart.">async_receive_blob()</a> <code>target_blob</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00185">185</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00186">186</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -196,7 +196,7 @@ template&lt;typename Core_t &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 8 2024 21:52:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 00:23:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

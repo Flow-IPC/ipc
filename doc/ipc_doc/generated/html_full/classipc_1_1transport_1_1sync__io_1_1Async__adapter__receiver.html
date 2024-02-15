@@ -179,7 +179,7 @@ class ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;</div><p >I
 </ul>
 <p >If the destructor is invoked before <code>m_user_request</code> can get serviced, then in the dtor we execute <code>on_done_func(E)</code>, where E is operation-aborted. Once that's done the dtor can finish. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00083">83</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00084">84</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aeb37be595e9cfce9e0185acee7eeac80" name="aeb37be595e9cfce9e0185acee7eeac80"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb37be595e9cfce9e0185acee7eeac80">&#9670;&nbsp;</a></span>Core</h2>
@@ -197,7 +197,7 @@ template&lt;typename Core_t &gt; </div>
 
 <p>The <code>sync_io::X</code> type being adapted into async-I/O-pattern <code>X</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00091">91</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00092">92</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -253,9 +253,9 @@ template&lt;typename Core_t &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00302">302</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00303">303</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="async__adapter__rcv_8hpp_source.html#l00249">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_log_pfx</a>, <a class="el" href="async__adapter__rcv_8hpp_source.html#l00281">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_mutex</a>, and <a class="el" href="async__adapter__rcv_8hpp_source.html#l00296">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_sync_io</a>.</p>
+<p class="reference">References <a class="el" href="async__adapter__rcv_8hpp_source.html#l00250">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_log_pfx</a>, <a class="el" href="async__adapter__rcv_8hpp_source.html#l00282">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_mutex</a>, and <a class="el" href="async__adapter__rcv_8hpp_source.html#l00297">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_sync_io</a>.</p>
 
 </div>
 </div>
@@ -276,7 +276,7 @@ template&lt;typename Core_t &gt; </div>
 <p>To be invoked after <code>-&gt;stop()</code>ping <code>*worker</code> (from ctor), as well as flushing any still-queued tasks in its <code>Task_engine</code> (via <code>.restart()</code> and <code>.poll()</code>), this satisfies the customer adapter dtor's contract which is to invoke any not-yet-fired completion handlers with special operation-aborted error code. </p>
 <p >In our case that is either nothing or 1 <code>async_end_sending()</code> completion handler. If applicable the dtor returns once that handler has completed in an unspecified thread that is not the calling thread. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00375">375</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00376">376</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">ipc::transport::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>.</p>
 
@@ -321,7 +321,7 @@ template&lt;typename Core_t &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00427">427</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00428">428</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -370,7 +370,7 @@ template&lt;typename Core_t &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00413">413</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00414">414</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -426,7 +426,7 @@ template&lt;typename Core_t &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00434">434</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00435">435</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
 
@@ -459,7 +459,7 @@ template&lt;typename Core_t &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> counterpart. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00757">757</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00758">758</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -512,7 +512,7 @@ template&lt;typename Core_t &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00671">671</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00672">672</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
 
@@ -564,7 +564,7 @@ template&lt;typename Core_t &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00560">560</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00561">561</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
 
@@ -595,9 +595,9 @@ template&lt;typename Core_t &gt; </div>
 
 <p>See <code>log_pfx</code> arg of ctor. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00249">249</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00250">250</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00302">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00303">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
 
 </div>
 </div>
@@ -625,9 +625,9 @@ template&lt;typename Core_t &gt; </div>
 
 <p>Protects <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>, and receive-ops data of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00281">281</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00282">282</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00302">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00303">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
 
 </div>
 </div>
@@ -659,7 +659,7 @@ template&lt;typename Core_t &gt; </div>
 <h3>Rationale for not subsuming <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> directly into this queue</h3>
 <p >It's the same amount of stuff; so the reason is stylistic in a subjective way. Basically a low-level async read-op will target the meta-blob <em>directly</em> inside the head <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">User_request</a> in the "overall" queue but never any of the subsequently queued requests; in my (ygoldfel) view it is clearer to express it as always targeting <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> rather than <code>*(m_pending_user_requests_q.front())</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00278">278</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00279">279</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -689,9 +689,9 @@ template&lt;typename Core_t &gt; </div>
 <p >See our class doc header for overview of how we use it (the aforementioned <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> doc header talks about the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> pattern generally).</p>
 <p >Thus, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> is the synchronous engine that we use to perform our work in our asynchronous boost.asio loop running in thread W (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a0df3c0d0291cb4d3ea7fbd8214a12cb8" title="Single-thread worker pool for all internal async work. Referred to as thread W in comments.">m_worker</a>) while collaborating with user thread(s) a/k/a thread U. (Recall that the user may choose to set up their own event loop/thread(s) &ndash; boost.asio-based or otherwise &ndash; and use their own equivalent of an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> instead.) </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00296">296</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00297">297</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00302">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00303">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
 
 </div>
 </div>
@@ -722,7 +722,7 @@ template&lt;typename Core_t &gt; </div>
 <p >Protected by <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a113a43c175209f7e3293f75ab4bcd794" title="Protects m_user_request, m_pending_user_requests_q, and receive-ops data of m_sync_io.">m_mutex</a>.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00262">262</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00263">263</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -750,7 +750,7 @@ template&lt;typename Core_t &gt; </div>
 
 <p>Single-thread worker pool for all internal async work. Referred to as thread W in comments. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00284">284</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00285">285</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -761,7 +761,7 @@ template&lt;typename Core_t &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 8 2024 21:52:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 00:23:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

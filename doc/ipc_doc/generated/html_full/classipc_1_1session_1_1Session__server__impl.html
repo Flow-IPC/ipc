@@ -255,7 +255,7 @@ class ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00142">142</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00143">143</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a9ad5c6cbb1c9378d42ec5cd909389dc2" name="a9ad5c6cbb1c9378d42ec5cd909389dc2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ad5c6cbb1c9378d42ec5cd909389dc2">&#9670;&nbsp;</a></span>Channels</h2>
@@ -273,7 +273,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>Short-hand for <a class="el" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f" title="Container (vector&lt;&gt;) of Channel_obj.">Session_mv::Channels</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00159">159</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00160">160</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -304,7 +304,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <p >It is <code>shared_ptr</code>, not <code>unique_ptr</code>, for two reasons. Primarily, it is so that it can be captured via <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae66f28a17f3cdd72d97212126483650a" title="weak_ptr observer of an Incomplete_session.">Incomplete_session_observer</a> to avoid a leak that would result from capturing <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> in a lambda passed-to an async op on an <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> <em>itself</em>. <code>unique_ptr</code> cannot be observed via <code>weak_ptr</code>; <code>shared_ptr</code> can.</p>
 <p >Secondarily, a <code>unique_ptr</code> cannot be captured in a lambda in the first place. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00334">334</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00335">335</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -333,7 +333,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <p><code>weak_ptr</code> observer of an <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a>. </p>
 <p >Capturing this, instead of <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> itself, allows for the underlying <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> to be destroyed while the lambda still exists. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00340">340</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00341">341</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -361,7 +361,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>Short-hand for set of <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a>, with fast insertion and removal by key <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> itself. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00343">343</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00344">344</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -389,7 +389,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>Short-hand for <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae7f35b32be309d354044662f0e17a891" title="Short-hand for State::m_mutex type.">Mutex</a> lock. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00349">349</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00350">350</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -409,7 +409,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>Short-hand for <a class="el" href="classipc_1_1session_1_1Session__mv.html#a2b1215fb0c9738b9fcfbb337d23c43df" title="Implements Session API per contract.">Session_mv::Mdt_reader_ptr</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00156">156</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00157">157</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -437,7 +437,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>Short-hand for <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#a96b5d124c1a31532a38a0f0cd095ec05" title="Protects m_incomplete_sessions. See class doc header impl section for discussion of thread design.">State::m_mutex</a> type. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00346">346</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00347">347</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -466,7 +466,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <p>Short-hand for concrete <a class="el" href="classipc_1_1session_1_1Server__session__dtl.html" title="This is the data-less sub-class of Server_session or any more-advanced (e.g., SHM-capable) variant th...">Server_session_dtl</a> type, which each <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> creates internally, completes the log-in process upon, and then up-casts to <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a> to emit to user via move-assignment. </p>
 <p ><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc" title="Short-hand for concrete Server_session_dtl type, which each async_accept() creates internally,...">Server_session_dtl_obj</a> is equal to <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a> &ndash; it adds no data &ndash; but exposes certain internally invoked APIs that the user shall not access. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00320">320</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00321">321</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -486,7 +486,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>Useful short-hand for the concrete <code>Server_session</code> type emitted by <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00153">153</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00154">154</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -506,7 +506,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">this_session_srv()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00150">150</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00151">151</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -596,9 +596,9 @@ template&lt;typename Per_app_setup_func &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00436">436</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00437">437</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="server__session__dtl_8hpp_source.html#l00151">ipc::session::Server_session_dtl&lt; Server_session_t &gt;::base()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2session__shared__name_8cpp_source.html#l00093">ipc::session::build_conventional_shared_name_prefix()</a>, <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>, <a class="el" href="app_8cpp_source.html#l00031">ipc::session::ensure_resource_owner_is_app()</a>, <a class="el" href="app_8hpp_source.html#l00171">ipc::session::App::m_group_id</a>, <a class="el" href="app_8hpp_source.html#l00144">ipc::session::App::m_name</a>, <a class="el" href="app_8hpp_source.html#l00288">ipc::session::Server_app::m_permissions_level_for_client_apps</a>, <a class="el" href="session__server__impl_8hpp_source.html#l00284">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::m_srv_app_ref</a>, <a class="el" href="session__server__impl_8hpp_source.html#l00417">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::m_state</a>, <a class="el" href="app_8hpp_source.html#l00168">ipc::session::App::m_user_id</a>, <a class="el" href="util_8hpp_source.html#l00034">ipc::util::op_with_possible_bipc_exception()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00030">ipc::util::OPEN_OR_CREATE</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00041">ipc::util::PRODUCER_CONSUMER_RESOURCE_PERMISSIONS_LVL_MAP</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa7300721595cc25baa9a9e43bd76296aa">ipc::session::error::S_MUTEX_BIPC_MISC_LIBRARY_ERROR</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa5c437fa266aea0c8e2b348ee84dd61fa">ipc::session::error::S_RESOURCE_OWNER_UNEXPECTED</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00046">ipc::util::set_resource_permissions()</a>, and <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00037">ipc::util::shared_resource_permissions()</a>.</p>
+<p class="reference">References <a class="el" href="server__session__dtl_8hpp_source.html#l00151">ipc::session::Server_session_dtl&lt; Server_session_t &gt;::base()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2session__shared__name_8cpp_source.html#l00093">ipc::session::build_conventional_shared_name_prefix()</a>, <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>, <a class="el" href="app_8cpp_source.html#l00031">ipc::session::ensure_resource_owner_is_app()</a>, <a class="el" href="app_8hpp_source.html#l00171">ipc::session::App::m_group_id</a>, <a class="el" href="app_8hpp_source.html#l00144">ipc::session::App::m_name</a>, <a class="el" href="app_8hpp_source.html#l00288">ipc::session::Server_app::m_permissions_level_for_client_apps</a>, <a class="el" href="session__server__impl_8hpp_source.html#l00285">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::m_srv_app_ref</a>, <a class="el" href="session__server__impl_8hpp_source.html#l00418">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::m_state</a>, <a class="el" href="app_8hpp_source.html#l00168">ipc::session::App::m_user_id</a>, <a class="el" href="util_8hpp_source.html#l00034">ipc::util::op_with_possible_bipc_exception()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00030">ipc::util::OPEN_OR_CREATE</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00042">ipc::util::PRODUCER_CONSUMER_RESOURCE_PERMISSIONS_LVL_MAP</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa7300721595cc25baa9a9e43bd76296aa">ipc::session::error::S_MUTEX_BIPC_MISC_LIBRARY_ERROR</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa5c437fa266aea0c8e2b348ee84dd61fa">ipc::session::error::S_RESOURCE_OWNER_UNEXPECTED</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00046">ipc::util::set_resource_permissions()</a>, and <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00037">ipc::util::shared_resource_permissions()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -624,7 +624,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> dtor. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00714">714</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00715">715</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -712,7 +712,7 @@ template&lt;typename Task_err , typename N_init_channels_by_srv_req_func , typen
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00745">745</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00746">746</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">ipc::transport::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>, and <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed">ipc::session::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>.</p>
 <div class="dynheader">
@@ -770,7 +770,7 @@ template&lt;typename Task &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00986">986</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00987">987</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -796,7 +796,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000036">Todo:</a></b></dt><dd>Reconsider the details of how classes in the non-<code>virtual</code> hierarchies <code><a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a></code>, <code>Server_session</code>, <code><a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a></code>, <code><a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a></code> cooperate internally, as there is some funky stuff going on, particularly <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">Session_server_impl::this_session_srv()</a>.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00979">979</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00980">980</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -826,7 +826,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00973">973</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00974">974</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -877,7 +877,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00992">992</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00993">993</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -906,7 +906,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See ctor. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00411">411</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00412">412</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -934,7 +934,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a40fca0b878f9150f5f7db55768da45ad" title="Utility for sub-classes: ensures that task() is invoked near the end of *this dtor&#39;s execution,...">sub_class_set_deinit_func()</a>. <code>.empty()</code> unless that was called at least once. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00420">420</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00421">421</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -962,7 +962,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See ctor. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00414">414</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00415">415</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -982,9 +982,9 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> public data member. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00284">284</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00285">285</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="session__server__impl_8hpp_source.html#l00437">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::Session_server_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="session__server__impl_8hpp_source.html#l00438">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::Session_server_impl()</a>.</p>
 
 </div>
 </div>
@@ -1012,9 +1012,9 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html" title="All internal mutable state of Session_server_impl.">State</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00417">417</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00418">418</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="session__server__impl_8hpp_source.html#l00437">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::Session_server_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="session__server__impl_8hpp_source.html#l00438">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::Session_server_impl()</a>.</p>
 
 </div>
 </div>
@@ -1042,7 +1042,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">this_session_srv()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00408">408</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00409">409</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1053,7 +1053,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 8 2024 21:52:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 00:23:26 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

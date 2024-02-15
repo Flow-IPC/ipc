@@ -102,7 +102,7 @@ struct ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_han
 <p >Note this does <em>not</em> represent an original user message given to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e1474a87ee8f5ec18bf6cc8d6cfe7b2" title="Implements Blob_sender API per contract.">Native_socket_stream::send_blob()</a> but rather an actual single low-level message to send over <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__sender__impl.html#a32a49dff090ce4b658707e7d9b9036c9" title="The MQ handle adopted by the ctor, through which nb-sends and blocking-waits are executed.">m_mq</a>. (Spoiler alert: most low-level payloads are indeed simply user messages; but each of graceful-close and auto-ping is represented by an "escape" payload &ndash; empty since empty user messages are disallowed &ndash; followed by an enumeration-storing payload specifying which "control" message it is. Each of these is termed a CONTROL message.)</p>
 <p >We store them in queue via <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__sender__impl_1_1Snd__low__lvl__payload.html#ad30cb6fc47d87a52a665e748b48e47ed" title="Short-hand for unique_ptr to this.">Ptr</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00224">224</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html">blob_stream_mq_snd_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00225">225</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html">blob_stream_mq_snd_impl.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ad30cb6fc47d87a52a665e748b48e47ed" name="ad30cb6fc47d87a52a665e748b48e47ed"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad30cb6fc47d87a52a665e748b48e47ed">&#9670;&nbsp;</a></span>Ptr</h2>
@@ -120,7 +120,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 
 <p>Short-hand for <code>unique_ptr</code> to this. </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00229">229</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html">blob_stream_mq_snd_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00230">230</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html">blob_stream_mq_snd_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -143,7 +143,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 <p >Note that this is the actual buffer and not a mere location/size of an existing blob somewhere. </p><h3>Rationale</h3>
 <p >Why not just have <code>using <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__sender__impl_1_1Snd__low__lvl__payload.html" title="Data store representing a payload corresponding to exactly one attempted async write-op,...">Snd_low_lvl_payload</a> = unique_ptr&lt;Blob&gt;</code>? Answer: No huge reason. Just consistency with <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of sync_io::Native_socket_stream class.">sync_io::Native_socket_stream::Impl</a> which has a quite similar outgoing-direction algorithm and therefore type but with a more complex payload (they've got <code>Native_handle</code>s to worry about). </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00241">241</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html">blob_stream_mq_snd_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00242">242</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html">blob_stream_mq_snd_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -153,7 +153,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 8 2024 21:52:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 00:23:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -114,7 +114,7 @@ struct ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Config</div><p >I
 <p ><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">Builder</a> ctor configured by <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html" title="Implements Struct_builder::Config sub-concept.">Config</a> creates builder that shall SHM-allocate segments of internally determined sizes subsequently. The SHM provider is to be supplied to this ctor via <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#aca2f1b980653da86d533243f174107f3" title="See struct doc header.">m_arena</a> arg; see class doc header for requirements and background. (The simplest available setup would let <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a9bc898884381eebdb03f0dd9f74895de" title="Short-hand for Shm_arena template param.">Arena</a> = <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">ipc::shm::classic::Pool_arena</a>; with <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#aca2f1b980653da86d533243f174107f3" title="See struct doc header.">m_arena</a> = some pre-opened <code>Pool_arena</code>.)</p>
 <p >This builder, like all builders in this context, produces a non-zero copy <em>top serialization</em>, in this case storing just a small handful of bits encoding the SHM handle to the true serialization which is SHM-stored. <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">Builder::emit_serialization()</a> will emit to you a top serialization to transmit to the recipient process over pipe-like IPC. This top serialization shall consist of 1 segment, and that segment shall be quite small &ndash; small enough to fit into any reasonable <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a> message. <em>If</em> framing is required &ndash; in the exact same sense as <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#aeb6fcd8308642adbcb6edcd564375c88" title="See struct doc header.">Heap_fixed_builder::Config::m_frame_prefix_sz</a> and <code>m_frame_postfix_sz</code> &ndash; you may set either or both of those members to the appropriate non-zero values. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00143">143</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00144">144</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ac660f2e20310d2804f3dbcf8e9d1244d" name="ac660f2e20310d2804f3dbcf8e9d1244d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac660f2e20310d2804f3dbcf8e9d1244d">&#9670;&nbsp;</a></span>Builder</h2>
@@ -132,7 +132,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>Implements concept API. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00148">148</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00149">149</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -153,7 +153,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>See <code>struct</code> doc header. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00166">166</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00167">167</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -173,7 +173,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>Logger to use for logging subsequently. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00157">157</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00158">158</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -193,9 +193,9 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>See <code>struct</code> doc header. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00163">163</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00164">164</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00514">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Builder()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00515">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Builder()</a>.</p>
 
 </div>
 </div>
@@ -215,9 +215,9 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>See <code>struct</code> doc header. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00160">160</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00161">161</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00514">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Builder()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00515">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Builder()</a>.</p>
 
 </div>
 </div>
@@ -227,7 +227,7 @@ template&lt;typename Shm_arena &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 8 2024 21:52:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 00:23:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

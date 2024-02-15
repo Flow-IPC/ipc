@@ -281,7 +281,7 @@ We discuss the <code>Client_session</code> ctor + <code>Server_session::init_han
 <div class="line"> </div>
 <div class="line">  <span class="comment">// [...If multiple concurrent sessions allowed: Launch another session_srv.async_accept() here as noted above.]</span></div>
 <div class="line">});</div>
-<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Session__server_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">ipc::session::shm::classic::Session_server</a></div><div class="ttdoc">This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...</div><div class="ttdef"><b>Definition:</b> session_server.hpp:73</div></div>
+<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Session__server_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">ipc::session::shm::classic::Session_server</a></div><div class="ttdoc">This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...</div><div class="ttdef"><b>Definition:</b> session_server.hpp:74</div></div>
 </div><!-- fragment --><p >In our example code on each side, <code>go_do_ipc_yay()</code> now has an equally-capable <code>Session</code> object which represents a shared IPC context through which to, broadly, open channels and (optionally) directly access SHM arena(s). Via the open channels, in turn, one can send messages (covered later in the Manual when we discuss <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>). Via the SHM arena(s) one can allocate objects (which can be shared however one wants but most easily via <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> channels as well).</p>
 <p >Next let's discuss <a class="el" href="chan_open.html">Sessions: Opening Channels</a>.</p>
 <hr  />
@@ -289,7 +289,7 @@ We discuss the <code>Client_session</code> ctor + <code>Server_session::init_han
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 8 2024 21:52:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 00:23:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

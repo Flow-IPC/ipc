@@ -381,9 +381,9 @@ Depending on your context you may also bundle <code>sync_x</code> into <a class=
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00036">36</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00037">37</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="detail_2asio__local__stream__socket_8cpp_source.html#l00028">ipc::transport::asio_local_stream_socket::endpoint_at_shared_name()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00335">m_absolute_name</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00369">m_acceptor</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00388">m_next_peer_socket</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00363">m_worker</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00180">on_next_peer_socket_or_error()</a>.</p>
+<p class="reference">References <a class="el" href="detail_2asio__local__stream__socket_8cpp_source.html#l00028">ipc::transport::asio_local_stream_socket::endpoint_at_shared_name()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00335">m_absolute_name</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00369">m_acceptor</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00388">m_next_peer_socket</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00363">m_worker</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00181">on_next_peer_socket_or_error()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -414,7 +414,7 @@ Here is the call graph for this function:</div>
 <p >We informally but very strongly recommend that your completion handler immediately return if the <code>Error_code</code> passed to it is <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed" title="Async completion handler is being called prematurely, because underlying object is shutting down,...">error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>. This is similar to what one should do when using boost.asio and receiving the conceptually identical <code>operation_aborted</code> error code to an <code>async_...()</code> completion handler. In both cases, this condition means, "we have decided to shut this thing down,
 so the completion handlers are simply being informed of this." </p>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00130">130</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00131">131</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00346">m_pending_user_requests_q</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00363">m_worker</a>, and <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">ipc::transport::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>.</p>
 
@@ -439,11 +439,11 @@ so the completion handlers are simply being informed of this." </p>
 <p>Returns the full name/address to which the constructor bound, or attempted to bind, the listening socket. </p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00463">463</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00464">464</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00335">m_absolute_name</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sync__io_2native__socket__stream__acceptor_8cpp_source.html#l00076">ipc::transport::sync_io::Native_socket_stream_acceptor::absolute_name()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00468">operator&lt;&lt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sync__io_2native__socket__stream__acceptor_8cpp_source.html#l00076">ipc::transport::sync_io::Native_socket_stream_acceptor::absolute_name()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00469">operator&lt;&lt;()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -505,7 +505,7 @@ template&lt;typename Task_err &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00396">396</a> of file <a class="el" href="native__socket__stream__acceptor_8hpp_source.html">native_socket_stream_acceptor.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00308">async_accept_impl()</a>.</p>
+<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00309">async_accept_impl()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="sync__io_2native__socket__stream__acceptor_8hpp_source.html#l00249">ipc::transport::sync_io::Native_socket_stream_acceptor::async_accept()</a>.</p>
 <div class="dynheader">
@@ -566,9 +566,9 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00308">308</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00309">309</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00433">feed_error_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00450">feed_success_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00355">m_pending_results_q</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00346">m_pending_user_requests_q</a>, and <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00363">m_worker</a>.</p>
+<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00434">feed_error_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00451">feed_success_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00355">m_pending_results_q</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00346">m_pending_user_requests_q</a>, and <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00363">m_worker</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00396">async_accept()</a>.</p>
 <div class="dynheader">
@@ -619,11 +619,11 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00433">433</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00434">434</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00346">m_pending_user_requests_q</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00308">async_accept_impl()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00376">finalize_q_surplus_on_error()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00309">async_accept_impl()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00377">finalize_q_surplus_on_error()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -665,11 +665,11 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00450">450</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00451">451</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00346">m_pending_user_requests_q</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00308">async_accept_impl()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00404">finalize_q_surplus_on_success()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00309">async_accept_impl()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00405">finalize_q_surplus_on_success()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -706,11 +706,11 @@ Here is the caller graph for this function:</div>
 <p >In particular, <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#a5d2e731d023d9c6465e01fa84a6e5138" title="Queue storing deficit async-accept requests queued up due to lacking pending ready peer socket handle...">m_pending_user_requests_q</a> becomes empty if it was not, while <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#ac04049d9b4c38f2a46d7f26192b17b69" title="Queue storing surplus finalized async-accept results queued up due to lacking async_accept() requests...">m_pending_results_q</a> is not changed; in particular the just-pushed <code>Error_code</code> remains saved to be emitted to any future async-accept user requests.</p>
 <p >It is essential to understand the pre-condition that the state machine must be in steady state, followed by exactly one modification to it: namely <code>Error_code</code> being pushed onto <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#ac04049d9b4c38f2a46d7f26192b17b69" title="Queue storing surplus finalized async-accept results queued up due to lacking async_accept() requests...">m_pending_results_q</a>. For example it is a bug for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#a5d2e731d023d9c6465e01fa84a6e5138" title="Queue storing deficit async-accept requests queued up due to lacking pending ready peer socket handle...">m_pending_user_requests_q</a> to be non-empty, if the pre-push <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#ac04049d9b4c38f2a46d7f26192b17b69" title="Queue storing surplus finalized async-accept results queued up due to lacking async_accept() requests...">m_pending_results_q</a> is non-empty also; that isn't steady state since both a deficit and a surplus were in effect before the <code>Error_code</code> was pushed. In other words: this method takes an inductive step only; it doesn't "flush" the state machine. </p>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00376">376</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00377">377</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00433">feed_error_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00355">m_pending_results_q</a>, and <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00346">m_pending_user_requests_q</a>.</p>
+<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00434">feed_error_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00355">m_pending_results_q</a>, and <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00346">m_pending_user_requests_q</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00180">on_next_peer_socket_or_error()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00181">on_next_peer_socket_or_error()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -753,11 +753,11 @@ Here is the caller graph for this function:</div>
 <p >The result, if not emitted, is enqueued to <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#ac04049d9b4c38f2a46d7f26192b17b69" title="Queue storing surplus finalized async-accept results queued up due to lacking async_accept() requests...">m_pending_results_q</a> for emission to the next request if any.</p>
 <p >Pre-condition: Incoming-direction state machine is in steady state; we are in thread W; <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#a7928656e82682f101af9a2fd6d4019cc" title="Unix domain peer socket, always empty/unconnected while a background m_acceptor.async_accept() is pro...">m_next_peer_socket</a> is finalized and not empty. </p>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00404">404</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00405">405</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00450">feed_success_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00355">m_pending_results_q</a>, and <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00346">m_pending_user_requests_q</a>.</p>
+<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00451">feed_success_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00355">m_pending_results_q</a>, and <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00346">m_pending_user_requests_q</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00180">on_next_peer_socket_or_error()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00181">on_next_peer_socket_or_error()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -805,11 +805,11 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00180">180</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00181">181</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00376">finalize_q_surplus_on_error()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00404">finalize_q_surplus_on_success()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00335">m_absolute_name</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00369">m_acceptor</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00388">m_next_peer_socket</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00355">m_pending_results_q</a>, <a class="el" href="native__handle_8cpp_source.html#l00060">ipc::util::Native_handle::null()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00180">on_next_peer_socket_or_error()</a>, and <a class="el" href="shared__name_8cpp_source.html#l00140">ipc::util::Shared_name::str()</a>.</p>
+<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00377">finalize_q_surplus_on_error()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00405">finalize_q_surplus_on_success()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00335">m_absolute_name</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00369">m_acceptor</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00388">m_next_peer_socket</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00355">m_pending_results_q</a>, <a class="el" href="native__handle_8cpp_source.html#l00060">ipc::util::Native_handle::null()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00181">on_next_peer_socket_or_error()</a>, and <a class="el" href="shared__name_8cpp_source.html#l00140">ipc::util::Shared_name::str()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00036">Native_socket_stream_acceptor()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00180">on_next_peer_socket_or_error()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00037">Native_socket_stream_acceptor()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00181">on_next_peer_socket_or_error()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -870,9 +870,9 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00468">468</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00469">469</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00463">absolute_name()</a>.</p>
+<p class="reference">References <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00464">absolute_name()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -907,7 +907,7 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00335">335</a> of file <a class="el" href="native__socket__stream__acceptor_8hpp_source.html">native_socket_stream_acceptor.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00463">absolute_name()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00036">Native_socket_stream_acceptor()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00180">on_next_peer_socket_or_error()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00464">absolute_name()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00037">Native_socket_stream_acceptor()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00181">on_next_peer_socket_or_error()</a>.</p>
 
 </div>
 </div>
@@ -936,7 +936,7 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00369">369</a> of file <a class="el" href="native__socket__stream__acceptor_8hpp_source.html">native_socket_stream_acceptor.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00036">Native_socket_stream_acceptor()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00180">on_next_peer_socket_or_error()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00037">Native_socket_stream_acceptor()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00181">on_next_peer_socket_or_error()</a>.</p>
 
 </div>
 </div>
@@ -969,7 +969,7 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00388">388</a> of file <a class="el" href="native__socket__stream__acceptor_8hpp_source.html">native_socket_stream_acceptor.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00036">Native_socket_stream_acceptor()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00180">on_next_peer_socket_or_error()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00037">Native_socket_stream_acceptor()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00181">on_next_peer_socket_or_error()</a>.</p>
 
 </div>
 </div>
@@ -999,7 +999,7 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00355">355</a> of file <a class="el" href="native__socket__stream__acceptor_8hpp_source.html">native_socket_stream_acceptor.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00308">async_accept_impl()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00376">finalize_q_surplus_on_error()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00404">finalize_q_surplus_on_success()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00180">on_next_peer_socket_or_error()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00309">async_accept_impl()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00377">finalize_q_surplus_on_error()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00405">finalize_q_surplus_on_success()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00181">on_next_peer_socket_or_error()</a>.</p>
 
 </div>
 </div>
@@ -1029,7 +1029,7 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00346">346</a> of file <a class="el" href="native__socket__stream__acceptor_8hpp_source.html">native_socket_stream_acceptor.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00308">async_accept_impl()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00433">feed_error_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00450">feed_success_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00376">finalize_q_surplus_on_error()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00404">finalize_q_surplus_on_success()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00130">~Native_socket_stream_acceptor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00309">async_accept_impl()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00434">feed_error_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00451">feed_success_result_to_deficit()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00377">finalize_q_surplus_on_error()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00405">finalize_q_surplus_on_success()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00131">~Native_socket_stream_acceptor()</a>.</p>
 
 </div>
 </div>
@@ -1059,7 +1059,7 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00363">363</a> of file <a class="el" href="native__socket__stream__acceptor_8hpp_source.html">native_socket_stream_acceptor.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00308">async_accept_impl()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00036">Native_socket_stream_acceptor()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00130">~Native_socket_stream_acceptor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00309">async_accept_impl()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00037">Native_socket_stream_acceptor()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00131">~Native_socket_stream_acceptor()</a>.</p>
 
 </div>
 </div>
@@ -1099,7 +1099,7 @@ Here is the call graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 8 2024 21:52:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 00:23:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

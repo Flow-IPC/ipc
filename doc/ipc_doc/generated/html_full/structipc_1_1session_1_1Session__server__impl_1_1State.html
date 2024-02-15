@@ -106,7 +106,7 @@ Public Attributes</h2></td></tr>
 struct ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::State</div><p >All internal mutable state of <a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a>. </p>
 <p >It's grouped into this inner <code>struct</code>, so that we can destroy it in the destructor via an <code>optional::reset()</code>, letting items be destroyed automatically in the opposite order in which they were constructed &ndash; and <em>then</em> perform certain final steps when that state (including various threads running) is no longer a factor. See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a> dtor and <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a40fca0b878f9150f5f7db55768da45ad" title="Utility for sub-classes: ensures that task() is invoked near the end of *this dtor&#39;s execution,...">sub_class_set_deinit_func()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00358">358</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00359">359</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="afea14f96bce70093ebf65d0f9b612b29" name="afea14f96bce70093ebf65d0f9b612b29"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afea14f96bce70093ebf65d0f9b612b29">&#9670;&nbsp;</a></span>m_incomplete_session_graveyard</h2>
@@ -124,7 +124,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>Mostly-idle thread that solely destroys objects removed from <code>m_incomplete_sessions</code> in the case where a <a class="el" href="classipc_1_1session_1_1Server__session__dtl.html#a31a6cd6a9ed4f836f0844ddb4069080f" title="See protected counterpart.">Server_session_dtl::async_accept_log_in()</a> failed as opposed to succeeded (in which case it is emitted to user). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00402">402</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00403">403</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -150,7 +150,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <p >As of this writing, since the dtor auto-destroys the various members as opposed to any manual ordering thereof: This must be declared before <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#a7d717bece2122ff619496717b5da7b68" title="transport::Native_socket_stream acceptor avail throughout *this to accept init please-open-session re...">m_master_sock_acceptor</a>. Then when dtor runs, first the latter's thread Wa shall be joined as it is destroyed first. Then <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#ab6097ff11f1f8cca396ece86482861f4" title="The set of all Incomplete_session objects such that each one comes from a distinct async_accept() req...">m_incomplete_sessions</a> shall be destroyed next. Thus there is zero danger of concurrent access to <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#ab6097ff11f1f8cca396ece86482861f4" title="The set of all Incomplete_session objects such that each one comes from a distinct async_accept() req...">m_incomplete_sessions</a>. Obviously the dtor's auto-destruction of <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#ab6097ff11f1f8cca396ece86482861f4" title="The set of all Incomplete_session objects such that each one comes from a distinct async_accept() req...">m_incomplete_sessions</a> is not protected by any lock.</p>
 <p >We could instead manually destroy stuff in the proper order. I (ygoldfel) do like to just rely on auto-destruction (in order opposite to declaration/initialization) to keep things clean. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00390">390</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00391">391</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -170,7 +170,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>The ID used in generating the last Server_session::cli_namespace(); so the next one = this plus 1. 0 initially. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00361">361</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00362">362</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -190,7 +190,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> acceptor avail throughout <code>*this</code> to accept init please-open-session requests. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00393">393</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00394">394</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -218,7 +218,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>Protects <code>m_incomplete_sessions</code>. See class doc header impl section for discussion of thread design. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00396">396</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00397">397</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -228,7 +228,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 8 2024 21:52:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 00:23:26 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
