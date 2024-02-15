@@ -11,15 +11,15 @@ corresponding sets of such documentation.
 
 If you'd prefer to jump into some code right away:
   - We estimate the median topic of interest to be transmission of structured-data messages, as described
-    by a schema language, [*Cap'n Proto a/k/a capnp*](https://capnproto.org).  capnp by itself provides best-in-class
-    *serialization* but only rudimentary APIs for *transmission* of serialized data.  If you'd like to transmit your
-    serialized capnp-encoded message, you're on your own.  With Flow-IPC, however, it becomes easy:
-  - See the [synopsis/example of transmitting structured Cap'n Proto-described
-    messages](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_synopsis)
-    between processes.
-  - Yet it still involves (behind the scenes) having to *copy the content of the data twice*: sender user memory =>
-    IPC transport (e.g., Unix domain socket) => receiver user memory.  Messages can be very large including things,
-    e.g., like entire images or music files.
+    by a [schema language](https://capnproto.org/language.html), namely Cap'n Proto a/k/a *capnp*.
+    capnp by itself provides best-in-class *serialization*.  However: If you'd like to *transmit* your
+    serialized capnp-encoded message between processes, you're on your own: capnp provides only rudimentary
+    capabilities.  With Flow-IPC, however, it becomes easy:
+  - See the [synopsis/example](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_synopsis)
+    of transmitting structured Cap'n Proto-described messages between processes.
+  - Yet that still involves (behind the scenes) having to *copy the content of the data twice*: sender user memory =>
+    IPC transport (e.g., Unix domain socket) => receiver user memory.  Messages can be very large including,
+    e.g., entire images or videos in a web cache server.
   - Ideally, instead, one wants **end-to-end zero-copy performance** and semantics.  I.e., receiver user memory *is*
     sender user memory: "Sender" simply writes the data; "receiver" (having been informed in some way) simply reads
     those same data, in-place.
