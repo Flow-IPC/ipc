@@ -385,7 +385,7 @@ To deal with structured data instead of mere blobs (though a schema-based struct
 > // Create a message -- no need to worry about capnp MessageBuilder work!  In our case it allocates in heap.
 > auto msg = cool_channel.create_msg();
 > const auto body_root = msg.body_root();
-> From here... back to vanilla capnp land!  To wit:
+> // From here... back to vanilla capnp land!  To wit:
 > auto root = body_root->initSumRequest();
 > auto list = root.initTermsToAdd(3);
 > list.set(0, 11);
