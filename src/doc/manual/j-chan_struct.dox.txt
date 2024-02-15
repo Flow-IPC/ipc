@@ -19,7 +19,7 @@
 
 @page chan_struct Structured Message Transport
 
-<center>**MANUAL NAVIGATION:** @ref universes "Preceding Page" - @ref chan_struct_advanced "Next Page" - [**Table of Contents**](./pages.html)</center>
+<center>**MANUAL NAVIGATION:** @ref universes "Preceding Page" - @ref chan_struct_advanced "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 ---
 
@@ -72,7 +72,7 @@ A *very* central decision is the choice of `Message_body`.  This is the **schema
   using Cxx = import "/capnp/c++.capnp";
   using Common = import "/ipc/transport/struc/schema/common.capnp"; # Flow-IPC supplies this.
 
-  $Cxx.namespace("my_meta_app::capnp"); # capnp-generated metadata struct matching the below will go into this C++ namespace.
+  $Cxx.namespace("my_meta_app::capnp"); # capnp-generated structs matching the below will go into this C++ namespace.
 
   struct CoolMsg
   {
@@ -474,7 +474,7 @@ One-off example first:
     {
       // We are back in: Your async-I/O loop's main thread W.
 
-      int64_t sum;
+      int64_t sum = 0;
       const auto sum_func = [&](int64_t val) { sum += val; };
       auto root = req->body_root().getSumRequest();
       auto list = root.getTermsToAdd();
@@ -652,7 +652,7 @@ The channel might get hosed *at any time*.  Consider this code:
 
       // --> DISCUSSION POINT A. <--
 
-      int64_t sum;
+      int64_t sum = 0;
       const auto sum_func = [&](int64_t val) { sum += val; };
       auto root = req->body_root().getSumRequest();
       auto list = root.getTermsToAdd();
@@ -729,6 +729,6 @@ The next page is: @ref chan_struct_advanced.
 
 ---
 
-<center>**MANUAL NAVIGATION:** @ref universes "Preceding Page" - @ref chan_struct_advanced "Next Page" - [**Table of Contents**](./pages.html)</center>
+<center>**MANUAL NAVIGATION:** @ref universes "Preceding Page" - @ref chan_struct_advanced "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 */

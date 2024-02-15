@@ -47,7 +47,7 @@ The documentation is divided into two parts:
 
 @page about (Manual Start) Flow-IPC: Bird's-eye View
 
-<center>**MANUAL NAVIGATION:** @ref api_overview "Next Page" - [**Table of Contents**](./pages.html)</center>
+<center>**MANUAL NAVIGATION:** @ref api_overview "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 ---
 
@@ -62,14 +62,16 @@ The documentation is divided into two parts:
 
 We hope a picture is worth a thousand words, but please do scroll down to read a few words anyway.
 
+If you'd prefer a synopsis with code snippets, right away, try @ref api_overview.
+
 Executive summary: Why does Flow-IPC exist?
 ---------------------------------------------
 
-Multi-process microservice systems need to communicate between processes efficiently.  Existing microservice communication frameworks are elegant at a high level but add unacceptable latency out of the box. Low-level interprocess communication (*IPC*) solutions, typically custom-written on-demand to address this problem, struggle to do so comprehensively and in reusable fashion. Teams repeatedly spend resources on challenges like structured data and session cleanup. These issues make it difficult to break monolithic systems into more resilient multi-process systems that are also performant.
+Multi-process microservice systems need to communicate between processes efficiently.  Existing microservice communication frameworks are elegant at a high level but can add unacceptable latency out of the box.  (This is true of even lower-level tools including the popular and powerful [gRPC](https://grpc.io/), usually written around [Protocol Buffers](https://protobuf.dev/) serialization.)  Low-level interprocess communication (*IPC*) solutions, typically custom-written on-demand to address this problem, struggle to do so comprehensively and in reusable fashion.  Teams repeatedly spend resources on challenges like structured data and session cleanup.  These issues make it difficult to break monolithic systems into more resilient multi-process systems that are also maximally performant.
 
-Flow-IPC is a modern C++ library that solves these problems. It adds virtually zero latency.  Structured data are represented using the high-speed Cap’n Proto (*capnp*) serialization library, which is integrated directly into our shared memory (SHM) system. The Flow-IPC SHM system extends a commercial-grade memory manager (*jemalloc*, as used by FreeBSD and Meta). Overall, this approach eliminates all memory copying (end-to-end *zero copy*).
+Flow-IPC is a modern C++ library that solves these problems.  It adds virtually zero latency.  Structured data are represented using the high-speed Cap’n Proto (*capnp*) serialization library, which is integrated directly into our shared memory (SHM) system. The Flow-IPC SHM system extends a commercial-grade memory manager (*jemalloc*, as used by FreeBSD and Meta).  Overall, this approach eliminates all memory copying (end-to-end *zero copy*).
 
-Flow-IPC features a session-based channel management model. A *session* is a conversation between two programs; to start talking one only needs the name of the other program. Resource cleanup, in case of exit or failure of either program, is automatic. Flow-IPC’s sessions are also safety-minded as to the identities and permissions at both ends of the conversation.
+Flow-IPC features a session-based channel management model. A *session* is a conversation between two programs; to start talking one only needs the name of the other program.  Resource cleanup, in case of exit or failure of either program, is automatic.  Flow-IPC’s sessions are also safety-minded as to the identities and permissions at both ends of the conversation.
 
 Flow-IPC’s API allows developers to easily adapt existing code to a multi-process model.  Instead of each dev team writing their own IPC implementation piecemeal, Flow-IPC provides a highly efficient standard that can be used across many projects.
 
@@ -119,6 +121,6 @@ Onward!
 
 ---
 
-<center>**MANUAL NAVIGATION:** @ref api_overview "Next Page" - [**Table of Contents**](./pages.html)</center>
+<center>**MANUAL NAVIGATION:** @ref api_overview "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 */

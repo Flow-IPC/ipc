@@ -19,7 +19,7 @@
 
 @page transport_shm Shared Memory: Direct Allocation, Transport
 
-<center>**MANUAL NAVIGATION:** @ref chan_struct_advanced "Preceding Page" - @ref transport_core "Next Page" - [**Table of Contents**](./pages.html)</center>
+<center>**MANUAL NAVIGATION:** @ref chan_struct_advanced "Preceding Page" - @ref transport_core "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 ---
 
@@ -424,9 +424,9 @@ And counterpart borrower code:
 
   ~~~
   flow::util::Blob_sans_log_context lend_blob;
-  ipc::transport::struc::capnp_get_shm_handle_to_borrow(msg->body_root().getSomeMsg().getWidgetHandle(), &lend_blob);
+  ipc::transport::struc::shm::capnp_get_shm_handle_to_borrow(msg->body_root().getSomeMsg().getWidgetHandle(), &lend_blob);
 
-  auto x_borrowed = = session.borrow_object<Widget_brw>(lend_blob);
+  auto x_borrowed = session.borrow_object<Widget_brw>(lend_blob);
   FLOW_LOG_INFO("Hey, let's read inside SHM after receiving SHM-handle: [" << x_borrowed->m_flag << "].");
   ~~~
 
@@ -455,7 +455,7 @@ The next page is: @ref transport_core.
 
 ---
 
-<center>**MANUAL NAVIGATION:** @ref chan_struct_advanced "Preceding Page" - @ref transport_core "Next Page" - [**Table of Contents**](./pages.html)</center>
+<center>**MANUAL NAVIGATION:** @ref chan_struct_advanced "Preceding Page" - @ref transport_core "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 */
 
@@ -463,14 +463,16 @@ The next page is: @ref transport_core.
 
 @page transport_core Transport Core Layer: Transmitting Unstructured Data
 
-<center>**MANUAL NAVIGATION:** @ref transport_shm "Preceding Page" - [**Table of Contents**](./pages.html)</center>
+<center>**MANUAL NAVIGATION:** @ref transport_shm "Preceding Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 ---
 
-This page is under construction; it is referred-to but not yet written.
+This page is under construction; it is referred-to but not yet written.  However:
+  - The @ref api_overview_transport_synopsis "synopsis in API Overview" page of this Manual helps.
+  - The @link ::ipc::transport relevant Reference section@endlink documents each individual thing in detail.
 
 ---
 
-<center>**MANUAL NAVIGATION:** @ref transport_shm "Preceding Page" - [**Table of Contents**](./pages.html)</center>
+<center>**MANUAL NAVIGATION:** @ref transport_shm "Preceding Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 */

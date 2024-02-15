@@ -1,45 +1,76 @@
-# Flow-IPC  -- Modern C++ toolkit for high-speed inter-process communication (IPC); plus general-purpose toolkit, Flow
+# Flow-IPC  -- Modern C++ toolkit for high-speed inter-process communication (IPC)
+
+## (Plus, general-purpose toolkit, Flow)
 
 What's this, you ask?
 - We immediately point you to this
-[introductory docs page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
-in the project's main documentation for the master branch.
+[introductory page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
+in the project's main documentation.
 - The [project web site](https://flow-ipc.github.io) provides access to various released versions and their
 corresponding sets of such documentation.
+
+If you'd prefer to jump into some code right away:
+  - We estimate the median topic of interest to be transmission of structured-data messages, as described
+    by a [schema language](https://capnproto.org/language.html), namely Cap'n Proto a/k/a *capnp*.
+    capnp by itself provides best-in-class *serialization*.  However: If you'd like to *transmit* your
+    serialized capnp-encoded message between processes, you're on your own: capnp provides only rudimentary
+    capabilities.  With Flow-IPC, however, it becomes easy:
+  - See the [synopsis/example](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_synopsis)
+    of transmitting structured Cap'n Proto-described messages between processes.
+  - Yet that still involves (behind the scenes) having to *copy the content of the data twice*: sender user memory =>
+    IPC transport (e.g., Unix domain socket) => receiver user memory.  Messages can be very large including,
+    e.g., entire images or videos in a web cache server.
+  - Ideally, instead, one wants **end-to-end zero-copy performance** and semantics.  I.e., receiver user memory *is*
+    sender user memory: "Sender" simply writes the data; "receiver" (having been informed in some way) simply reads
+    those same data, in-place.
+    - Normally this requires shared memory (SHM) work which is difficult coding even in specialized scenarios.
+    - Flow-IPC, however, makes it very easy...
+  - ...as shown in this
+    [explanation](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_zero)
+    and [code example](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_zero_synopsis).
+    Note the *2 changed lines of code* when setting up.
+    - The "meat" of the earlier-linked example code remains unchanged; just regular capnp accessor/mutator calls
+      familiar to vanilla-Cap'n Proto users.  (Users of Protocol Buffers and similar should also feel right at home.)
+- We guess that's the likeliest topic of highest interest.  That said, Flow-IPC provides entry points at every layer of
+  operation, both higher and lower than the
+  above topic/example.  Flow-IPC is *not* designed as merely a "black box" of capabilities.  E.g., for advanced users:
+  - Various lower-level APIs, such as low-level transports (Unix domain sockets, MQs) and SHM operations can be
+    accessed directly.  You can also plug-in your own.
+  - By implementing or accessing some of the handful of key concepts, you can customize behaviors at all layers,
+    including serialization-memory backing, additional SHM providers, and C-style native data structures that use raw
+    pointers.
+- In general, we feel Flow-IPC is comprehensive and flexible, as well as performance-oriented with an eye to safety.
+  The [API tour page of the Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html)
+  will show you around.  The rest of the [guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/pages.html)
+  and the [Reference](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/namespaceipc.html)
+  go deeper.
 
 The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
 the aforementioned link(s) and is also bundled as part of the repository/archive containing the present README.
 
 Having sampled those docs... are you interested in using or even developing Flow-IPC?  Then please read on.  To restate
-Flow-IPC's mission from the above [introductory docs page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html):
+Flow-IPC's mission from the above-linked introductory docs page:
 
-> Multi-process microservice systems need to communicate between processes efficiently.  Existing microservice
-communication frameworks are elegant at a high level but add unacceptable latency out of the box.  Low-level
-interprocess communication (*IPC*) solutions, typically custom-written on-demand to address this problem,
-struggle to do so comprehensively and in reusable fashion.  Teams repeatedly spend resources on challenges
-like structured data and session cleanup.  These issues make it difficult to break monolithic systems into
-more resilient multi-process systems that are also performant.
+> Flow-IPC:
+>   - is a **modern C++** library with a concept-based API in the spirit of STL/Boost;
+>   - enables near-zero-latency **zero-copy** messaging between processes (via behind-the-scenes use of the below SHM solution);
+>   - transmits messages containing binary data, native handles, and/or **structured data** (defined via [Cap'n Proto](https://capnproto.org/language.html));
+>   - provides a **shared memory (SHM)** solution
+>     - with out-of-the-box ability to transmit arbitrarily complex combinations of scalars, `struct`s, and **STL-compliant containers** thereof;
+>     - that integrates with **commercial-grade memory managers** (a/k/a `malloc()` providers).
+>       - In particular we integrate with [jemalloc](https://jemalloc.net), a thread-caching memory manager at the core of FreeBSD, Meta, and others.
 > 
-> Flow-IPC is a modern C++ library that solves these problems.  It adds virtually zero latency.  Structured
-data are represented using the high-speed Cap’n Proto (*capnp*) serialization library, which is integrated
-directly into our shared memory (SHM) system.  The Flow-IPC SHM system extends a commercial-grade memory
-manager (*jemalloc*, as used by FreeBSD and Meta).  Overall, this approach eliminates all memory copying
-(end-to-end *zero copy*).
+> A key feature of Flow-IPC is pain-free setup of process-to-process conversations (**sessions**), so that users need not worry about coordinating individual shared-resource naming between processes, not to mention kernel-persistent resource cleanup.
 > 
-> Flow-IPC features a session-based channel management model.  A *session* is a conversation between two
-programs; to start talking one only needs the name of the other program.  Resource cleanup, in case of exit or
-failure of either program, is automatic.  Flow-IPC’s sessions are also safety-minded as to the identities
-and permissions at both ends of the conversation.
+> Flow-IPC provides 2 ways to integrate with your applications' event loops.  These can be intermixed.
+>   - The **async-I/O API** automatically starts threads as needed to offload work onto multi-processor cores.
+>   - The `sync_io` **API** supplies lighter-weight objects allowing you full control over each application's thread structure, hooking into reactor-style (`poll()`, `epoll_wait()`, etc.) or proactor (boost.asio) event loops.  As a result context switching is minimized.
 > 
-> Flow-IPC’s API allows developers to easily adapt existing code to a multi-process model.  Instead of each
-dev team writing their own IPC implementation piecemeal, Flow-IPC provides a highly efficient standard that
-can be used across many projects.
-> 
-> Also included is the general-purpose C++ toolkit named Flow.  While it is bundled for convenience simply
-because (1) it is needed and (2) shares the same original authorship and DNA as Flow-IPC proper, it may
-nevertheless prove useful in its own right.  For more information please see a similar-purpose `README.md`
-in the `flow/` sub-directory (or, if you so choose, another location where you've decided to place Flow
-yourself; more on this below under Organization).
+> Lastly Flow-IPC supplies **lower-level utilities** facilitating work with POSIX and SHM-based **message queues (MQs)** and **local (Unix domain) stream sockets**.
+
+Also included is the general-purpose C++ toolkit named Flow.  While it is bundled for convenience simply because (1)
+it is needed and (2) shares the same original authorship and DNA as Flow-IPC proper, it may nevertheless prove
+useful in its own right.  For more information please see a similar-purpose `README.md` in the `flow/` sub-directory.
 
 ## Organization
 
@@ -80,6 +111,7 @@ The basic prerequisites for *building* the above:
   - Linux;
   - a C++ compiler with C++ 17 support;
   - Boost headers (plus certain libraries) install;
+  - {fmt} install;
   - CMake;
   - Cap'n Proto (a/k/a capnp);
   - jemalloc;
@@ -105,7 +137,7 @@ either.  This is a *to-do*: watch this space.  **End of note**
 
 The basic prerequisites for *using* the above:
 
-  - Linux, C++ compiler, Boost, capnp, jemalloc (but CMake is not required); plus:
+  - Linux, C++ compiler, Boost, {fmt}, capnp, jemalloc (but CMake is not required); plus:
   - your source code `#include`ing any exported `flow/` and/or `ipc/` headers must be itself built in C++ 17 mode;
   - any executable using the `flow` and/or `ipc_*` libraries must be linked with certain Boost and ubiquitous
     system libraries.
@@ -119,9 +151,10 @@ To build Flow-IPC (including Flow):
      [boost.org](https://boost.org).  If you do have one, try using that one (our build will complain if insufficient).
      (From this point on, that's the recommended tactic to use when deciding on the version number for any given
      prerequisite.  E.g., same deal with CMake in step 2.)
-  2. Ensure a CMake install is available (available at [CMake web site](https://cmake.org/download/) if needed).
-  3. Ensure a capnp install is available (available at [Cap'n Proto web site](https://capnproto.org/) if needed).
-  4. Ensure a jemalloc install is available (available at [jemalloc web site](https://jemalloc.net/) if needed).
+  2. Ensure a {fmt} install is available (available at [{fmt} web site](https://fmt.dev/) if needed).
+  3. Ensure a CMake install is available (available at [CMake web site](https://cmake.org/download/) if needed).
+  4. Ensure a capnp install is available (available at [Cap'n Proto web site](https://capnproto.org/) if needed).
+  5. Ensure a jemalloc install is available (available at [jemalloc web site](https://jemalloc.net/) if needed).
      - If you are already using jemalloc in your under-development executable(s), great.  We will work
        whether you're using it to replace default `malloc()`/`free()` and (orthogonally) `new`/`delete`; or
        not.
@@ -144,9 +177,9 @@ To build Flow-IPC (including Flow):
      - Flow-IPC will automatically build in the way compatible with the way you've built jemalloc.
        (Our CMake script(s) will, internally, use `jemalloc_config` program to determine the chosen API-name
        prefix.)
-  5. (Optional, only if running unit tests) Have GoogleTest install available.
-  6. (Optional, only if generating docs) Have Doxygen and Graphviz installs available.
-  7. Use CMake `cmake` (command-line tool) or `ccmake` (interactive text-UI tool) to configure and generate
+  6. (Optional, only if running unit tests) Have GoogleTest install available.
+  7. (Optional, only if generating docs) Have Doxygen and Graphviz installs available.
+  8. Use CMake `cmake` (command-line tool) or `ccmake` (interactive text-UI tool) to configure and generate
      a build system (namely a GNU-make `Makefile` and friends).  Details on using CMake are outside our scope here;
      but the basics are as follows.  CMake is very flexible and powerful; we've tried not to mess with that principle
      in our build script(s).
@@ -199,6 +232,7 @@ To use Flow-IPC/Flow:
         `libipc_core.a`, and `libflow.a`.
       - Link against Boost libraries mentioned in a `CMakeLists.txt` line (search `$SRC` for it):
         `set(BOOST_LIBS ...)`.
+      - Link against the {fmt} library, `libfmt`.
       - Link against the system pthreads library, `librt`, and (for `ipc_shm_arena_lend`) `libdl`.
   - Read the documentation to learn how to use Flow-IPC's (and/or Flow's) various features.
     (See Documentation below.)
