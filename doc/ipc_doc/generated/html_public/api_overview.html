@@ -418,7 +418,7 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 <div class="line"><span class="comment">// Create a message -- no need to worry about capnp MessageBuilder work!  In our case it allocates in heap.</span></div>
 <div class="line"><span class="keyword">auto</span> msg = cool_channel.create_msg();</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> body_root = msg.body_root();</div>
-<div class="line">From here... back to vanilla <a class="code hl_namespace" href="namespacecapnp.html">capnp</a> land!  To wit:</div>
+<div class="line"><span class="comment">// From here... back to vanilla capnp land!  To wit:</span></div>
 <div class="line"><span class="keyword">auto</span> root = body_root-&gt;initSumRequest();</div>
 <div class="line"><span class="keyword">auto</span> list = root.initTermsToAdd(3);</div>
 <div class="line">list.set(0, 11);</div>
@@ -433,7 +433,6 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 <div class="line"><span class="comment">// The other side had best know how to add stuff and multiply at the end!  Check the in-message.</span></div>
 <div class="line">assert(rsp-&gt;body_root().getSumResponse().getResult() == int64_t(-44));</div>
 <div class="ttc" id="aclassipc_1_1transport_1_1struc_1_1Channel_html"><div class="ttname"><a href="classipc_1_1transport_1_1struc_1_1Channel.html">ipc::transport::struc::Channel</a></div><div class="ttdoc">Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...</div><div class="ttdef"><b>Definition:</b> channel.hpp:588</div></div>
-<div class="ttc" id="anamespacecapnp_html"><div class="ttname"><a href="namespacecapnp.html">capnp</a></div><div class="ttdoc">Small group of miscellaneous utilities to ease work with capnp (Cap'n Proto), joining its capnp names...</div><div class="ttdef"><b>Definition:</b> heap_serializer.cpp:188</div></div>
 <div class="ttc" id="anamespaceipc_1_1transport_1_1struc_html"><div class="ttname"><a href="namespaceipc_1_1transport_1_1struc.html">ipc::transport::struc</a></div><div class="ttdoc">Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...</div><div class="ttdef"><b>Definition:</b> channel.cpp:31</div></div>
 </div><!-- fragment --><p >On the other side: Expect <b>request</b>. Send <b>response</b>. </p><div class="fragment"><div class="line"><span class="comment">// Same deal as on the other side.</span></div>
 <div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1struc_1_1Channel.html">Session::Structured_channel&lt;my_meta_app::capnp::CoolMsg&gt;</a></div>
@@ -682,7 +681,7 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 15 2024 03:11:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 15 2024 03:43:04 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
