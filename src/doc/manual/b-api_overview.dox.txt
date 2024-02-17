@@ -51,12 +51,11 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > const App APP_B{ "b", "/bin/app_a.exec", USER_ID_B, GROUP_ID };
 > // Which app(s) will connect sessions (client) versus accept sessions (server)?
 > const Client_app APP_B_AS_CLI{ APP_B };
-> const Server_app APP_A_AS_SRV
->                    { APP_A,
->                      { APP_B.m_name }, // We are A; we allow only B to open sessions with us.
->                      "", // Keep run-time files in /var/run by default.
->                      // Safety/auth preset.  No need for `0644` and so forth.
->                      ipc::util::Permissions_level::S_GROUP_ACCESS };
+> const Server_app APP_A_AS_SRV{ APP_A,
+>                                { APP_B.m_name }, // We are A; we allow only B to open sessions with us.
+>                                "", // Keep run-time files in /var/run by default.
+>                                // Safety/auth preset.  No need for `0644` and so forth.
+>                                ipc::util::Permissions_level::S_GROUP_ACCESS };
 > ~~~
 >
 > Compile-time-configure your sessions:
@@ -660,10 +659,9 @@ Refer to the very top of @ref api_overview_sessions_synopsis "Synopsis: Sessions
 
 ~~~
 const App APP_A{ "a", "/bin/app_a.exec", USER_ID_A, GROUP_ID };
-const Server_app APP_A_AS_SRV
-                   { APP_A,
-                     // ...
-                     ipc::util::Permissions_level::S_GROUP_ACCESS }; // <-- Attention.
+const Server_app APP_A_AS_SRV{ APP_A,
+                               // ...
+                               ipc::util::Permissions_level::S_GROUP_ACCESS }; // <-- Attention.
 ~~~
 
 Notice the `GROUP_ACCESS` choice made there.  In fact we could have chosen any one of these:
