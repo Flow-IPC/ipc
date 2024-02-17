@@ -36,7 +36,7 @@ If you'd prefer to jump into some code right away:
     feat either and tends to be written and rewritten by each project that wants to do IPC, again and again.
     With Flow-IPC, it is easy: see the
     [synopsis about sessions](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_sessions_synopsis).
-  - You can also check out a [simple complete example](https://github.com/Flow-IPC/ipc_shm_arena_lend/tree/main/test/basic/link_test),
+  - You can also check out a [simple complete example](https://github.com/Flow-IPC/ipc_shm/tree/main/test/basic/link_test),
     namely one of our functional tests, in which one program
     connects to another, establishes a session and channel, then exchanges capnp-encoded messages, with
     end-to-end zero copy.
