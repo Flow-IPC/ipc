@@ -33,7 +33,7 @@ No matter the particular IPC transport (local stream socket, MQ, SHM pool), an e
 
 There is a simple scheme that designates one side of a conversation as the **session server**, the other a **client**; the latter connects to the former.  (A session server process can carry on multiple sessions with different client processes.)  The user need only specify the basic facts of the IPC-participating applications (like executable names and owners, and which ones are servers, and which clients they'll accept as the opposing side).  This is done via the straightforward `struct` ipc::session::App + its children.  The rest of ipc::session establishes internal naming conventions based off that information.  Having specified those `App` basics the user, opens (on each side) an equally capable ipc::session::Session that is the context for all subsequent IPC between those 2 processes.
 
-Having obtained a `Session`, the application can open transport channels (and, if desired, SHM arenas) without any naming decisions to make.
+Having obtained a `Session`, the application can open transport channels (and, if desired, SHM arenas) without any naming decisions to make.  In fact, in most situations, one can open the session and any desired channels at the same time (i.e., a certain number of channels are ready to use on each side, once the `Session` is opened).
 
 @anchor api_overview_sessions_synopsis
 @par Synopsis: Sessions
