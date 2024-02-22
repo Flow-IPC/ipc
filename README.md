@@ -1,13 +1,43 @@
 # Flow-IPC  -- Modern C++ toolkit for fast inter-process communication (IPC)
 
-## (Plus, general-purpose toolkit, Flow)
+## What's this? ##
+What's this, you ask?  To quote the [introductory page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html) in the project's main documentation:
 
-What's this, you ask?
-- We immediately point you to this
-[introductory page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
+> Flow-IPC:
+>   - is a **modern C++** library with a concept-based API in the spirit of STL/Boost;
+>   - enables near-zero-latency **zero-copy** messaging between processes (via behind-the-scenes use of the below SHM solution);
+>   - transmits messages containing binary data, native handles, and/or **structured data** (defined via [Cap'n Proto](https://capnproto.org/language.html));
+>   - provides a **shared memory (SHM)** solution
+>     - with out-of-the-box ability to transmit arbitrarily complex combinations of scalars, `struct`s, and **STL-compliant containers** thereof;
+>     - that integrates with **commercial-grade memory managers** (a/k/a `malloc()` providers).
+>       - In particular we integrate with [jemalloc](https://jemalloc.net), a thread-caching memory manager at the core of FreeBSD, Meta, and others.
+> 
+> A key feature of Flow-IPC is pain-free setup of process-to-process conversations (**sessions**), so that users need not worry about coordinating individual shared-resource naming between processes, not to mention kernel-persistent resource cleanup.
+> 
+> Flow-IPC provides 2 ways to integrate with your applications' event loops.  These can be intermixed.
+>   - The **async-I/O API** automatically starts threads as needed to offload work onto multi-processor cores.
+>   - The `sync_io` **API** supplies lighter-weight objects allowing you full control over each application's thread structure, hooking into reactor-style (`poll()`, `epoll_wait()`, etc.) or proactor (boost.asio) event loops.  As a result context switching is minimized.
+> 
+> Lastly Flow-IPC supplies **lower-level utilities** facilitating work with POSIX and SHM-based **message queues (MQs)** and **local (Unix domain) stream sockets**.
+
+Please see [Documentation / Tour](#documentation-tour) below for a more concrete introduction to Flow-IPC.
+
+[ Also included is the general-purpose C++ toolkit named Flow.  It is bundled for convenience simply because (1)
+Flow-IPC needs it, and (2) it shares the same original authorship and DNA as Flow-IPC proper.  Nevertheless it may
+prove useful in its own right.  For more information please see a similar-purpose `README.md` in the `flow` repo. ]
+
+## How do I get the source code?
+
+- To download the source code as a tarball/zip: The [project web site](https://flow-ipc.github.io) provides access to
+various released versions and their corresponding sets of documentation.
+- To clone the source code from Git from a \*nix command line: `git clone --recurse-submodules git@github.com:Flow-IPC/ipc.git`
+  - Don't forget `--recurse-submodules`, as the bulk of the code is in `ipc_*` (and `flow`) repositories.
+  - If you did forget, you can fix it with: `cd ipc && git submodule update --init --recursive`.
+
+## Documentation / Tour
+
+We immediately point you to this [introductory page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
 in the project's main documentation.
-- The [project web site](https://flow-ipc.github.io) provides access to various released versions and their
-corresponding sets of such documentation.
 
 If you'd prefer to jump into some code right away:
   - We estimate the median topic of interest to be transmission of structured-data messages, as described
@@ -56,32 +86,8 @@ will show you around.  The rest of the [guided Manual](https://flow-ipc.github.i
 and the [Reference](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/namespaceipc.html)
 go deeper.
 
-The text just below covers some of the same ground -- just in case -- but the true documentation is hosted online at
-the aforementioned link(s) and is also bundled as part of the repository/archive containing the present README.
-
 Having sampled those docs... are you interested in using or even developing Flow-IPC?  Then please read on.  To restate
 Flow-IPC's mission from the above-linked introductory docs page:
-
-> Flow-IPC:
->   - is a **modern C++** library with a concept-based API in the spirit of STL/Boost;
->   - enables near-zero-latency **zero-copy** messaging between processes (via behind-the-scenes use of the below SHM solution);
->   - transmits messages containing binary data, native handles, and/or **structured data** (defined via [Cap'n Proto](https://capnproto.org/language.html));
->   - provides a **shared memory (SHM)** solution
->     - with out-of-the-box ability to transmit arbitrarily complex combinations of scalars, `struct`s, and **STL-compliant containers** thereof;
->     - that integrates with **commercial-grade memory managers** (a/k/a `malloc()` providers).
->       - In particular we integrate with [jemalloc](https://jemalloc.net), a thread-caching memory manager at the core of FreeBSD, Meta, and others.
-> 
-> A key feature of Flow-IPC is pain-free setup of process-to-process conversations (**sessions**), so that users need not worry about coordinating individual shared-resource naming between processes, not to mention kernel-persistent resource cleanup.
-> 
-> Flow-IPC provides 2 ways to integrate with your applications' event loops.  These can be intermixed.
->   - The **async-I/O API** automatically starts threads as needed to offload work onto multi-processor cores.
->   - The `sync_io` **API** supplies lighter-weight objects allowing you full control over each application's thread structure, hooking into reactor-style (`poll()`, `epoll_wait()`, etc.) or proactor (boost.asio) event loops.  As a result context switching is minimized.
-> 
-> Lastly Flow-IPC supplies **lower-level utilities** facilitating work with POSIX and SHM-based **message queues (MQs)** and **local (Unix domain) stream sockets**.
-
-Also included is the general-purpose C++ toolkit named Flow.  While it is bundled for convenience simply because (1)
-it is needed and (2) shares the same original authorship and DNA as Flow-IPC proper, it may nevertheless prove
-useful in its own right.  For more information please see a similar-purpose `README.md` in the `flow/` sub-directory.
 
 ## Organization
 
@@ -101,10 +107,10 @@ a while; then switch-over to the Git setup described in the following paragraphs
 contribute to the public project.)
 
 If you do not aim to immediately contribute to the public project, we encourage you to skip right to the
-next section -- and you can later skip Contributing section(s).
+[next section](#installation) -- and you can later skip over Contributing section(s).
 
-If you *do* aim to immediately contribute to the public project, please at least glance at Contributing in the present
-document first.
+If you *do* aim to immediately contribute to the public project, please at least glance at
+[Contributing](#contributing) in the present document first.
 
 ## Installation
 
@@ -273,8 +279,8 @@ To read the latter -- the guided Manual + References -- consider the following.
     the project.
   - If you're perusing docs only, that's all.  You're done!
 
-In contrast, if you have changed the source code (for Flow-IPC proper, Flow, or both): See Contributing below.
-It includes instructions on how docs are generated and updated.  Spoiler alert: Most things are automatic;
+In contrast, if you have changed the source code (for Flow-IPC proper, Flow, or both): See [Contributing](#contributing)
+below.  It includes instructions on how docs are generated and updated.  Spoiler alert: Most things are automatic;
 the only manual part is that you should peruse any changed docs for your visual satisfaction before
 submitting your code.
 
@@ -302,7 +308,9 @@ depending on the sub-project in question.
 That said it will only work if it is indeed a bona-fide open-source tree with a root `CMakeLists.txt`
 and so on.
 
-## Contributing: Basics
+## Contributing
+
+### Basics
 
 As mentioned in Organization, you may wish to contribute to the project.  Of course, in your own setting, it
 may be perfectly reasonable to simply get a packaged `*_full.tar.gz` or `*_full.zip` archive, make the changes in this
@@ -353,7 +361,7 @@ pointer(s) to the latest commit in each guy's master branch.
 
 That said, for now at least, we'll leave it to the official Git documentation.
 
-## Contributing: Some details
+### Some details
 
 This section is not meant as a detailed/formal manual.  This project follows established conventions
 and tools of open-source development, Git+GitHub specifically; so the exact steps to follow should come naturally.
