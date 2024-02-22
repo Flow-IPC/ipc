@@ -1,6 +1,6 @@
 # Flow-IPC: Modern C++ toolkit for fast inter-process communication (IPC)
 
-## What's this? ##
+## What's this?
 What's this, you ask?  To quote the [introductory page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html) in the project's main documentation:
 
 > Flow-IPC:
