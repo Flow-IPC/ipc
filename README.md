@@ -28,9 +28,9 @@ prove useful in its own right.  For more information please see a similar-purpos
 
 ## How do I get the source code?
 
-- To download the source code as a tarball/zip: The [project web site](https://flow-ipc.github.io) provides access to
-various released versions and their corresponding sets of documentation.
-- To clone the source code from Git from a command line: `git clone --recurse-submodules git@github.com:Flow-IPC/ipc.git`
+- As a tarball/zip: The [project web site](https://flow-ipc.github.io) links to individual releases with notes, docs,
+  download links.
+- For Git access: `git clone --recurse-submodules git@github.com:Flow-IPC/ipc.git`
   - Don't forget `--recurse-submodules`, as the bulk of the code is in `ipc_*` (and `flow`) repositories.
   - If you did forget, you can fix it with: `cd ipc && git submodule update --init --recursive`.
 
