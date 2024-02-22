@@ -101,7 +101,7 @@ struct ipc::session::Server_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIV
 <p >Together with that is stored a <code>Builder</code> into its metadata sub-field as well as the already-prepared <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a8f120f690c9ebfd596781623f4fcaf82" title="See Server_session_mv counterpart.">Channel_obj</a>, the local <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> peer object in PEER state, since on the server side it is our responsibility acquire the shared resources for both sides.</p>
 <p >The design here is identical to Client_session_impl::Open_channel_req; so see its doc header. The only difference is the addition of <a class="el" href="structipc_1_1session_1_1Server__session__impl_1_1Open__channel__req.html#a154f979658a6872906699738691abba5" title="The transport::Channel, including the needed shared resources acquired, from Server_session_impl::mdt...">m_opened_channel</a>; see its doc header just below. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html#l00442">442</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html">server_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html#l00443">443</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html">server_session_impl.hpp</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a6b7f8355a4ae11d025fdbed60759b06f" name="a6b7f8355a4ae11d025fdbed60759b06f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6b7f8355a4ae11d025fdbed60759b06f">&#9670;&nbsp;</a></span>m_mdt_builder</h2>
@@ -119,7 +119,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="structipc_1_1session_1_1Client__session__impl_1_1Master__channel__req.html#aea58b5dbfa73097537dbcebbdaef1e40" title="The Builder m_req_msg-&gt;body_root()-&gt;getMetadata().">Client_session_impl::Master_channel_req::m_mdt_builder</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html#l00445">445</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html">server_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html#l00446">446</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html">server_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -140,7 +140,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p>The <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a>, including the needed shared resources acquired, from <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a2e76a7808eb096c87fe186f245ccaa66" title="See Server_session_mv counterpart.">Server_session_impl::mdt_builder()</a>; or a default-cted such object if that method failed to acquire the needed resources (e.g., MQs). </p>
 <p >To test for that failure simply check <a class="el" href="classipc_1_1transport_1_1Channel.html#a43c79955b3ad0eab347550b4263523ec" title="Returns true if and only if the required init_blob_pipe() and init_native_handle_pipe() calls have be...">transport::Channel::initialized()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html#l00455">455</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html">server_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html#l00456">456</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html">server_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -160,7 +160,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="structipc_1_1session_1_1Client__session__impl_1_1Master__channel__req.html#a2efbffcde4a54093aeaee550462e66ba" title="The open-channel-request-to-server out-message for the session master channel (in subsequent open_cha...">Client_session_impl::Master_channel_req::m_req_msg</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html#l00447">447</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html">server_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html#l00448">448</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html">server_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -170,7 +170,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 17 2024 01:32:15 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 22 2024 02:18:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

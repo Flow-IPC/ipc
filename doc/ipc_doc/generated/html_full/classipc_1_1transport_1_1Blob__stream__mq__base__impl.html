@@ -112,12 +112,12 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
 Protected Types</h2></td></tr>
-<tr class="memitem:a1db566962dd5eaaa492e458cd107af06"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a1db566962dd5eaaa492e458cd107af06">Control_cmd</a> : uint64_t { <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a1db566962dd5eaaa492e458cd107af06ad584ea5a5dbf02d7e925adb912f3051a">S_END_SENDING</a>
-, <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a1db566962dd5eaaa492e458cd107af06ad79c2ad1486703a583c7516555a907e9">S_PING</a>
-, <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a1db566962dd5eaaa492e458cd107af06a6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a>
+<tr class="memitem:a2e46672d40fbf38cf6054edfad69e705"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a2e46672d40fbf38cf6054edfad69e705">Control_cmd</a> : int64_t { <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a2e46672d40fbf38cf6054edfad69e705ad584ea5a5dbf02d7e925adb912f3051a">S_END_SENDING</a>
+, <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a2e46672d40fbf38cf6054edfad69e705ad79c2ad1486703a583c7516555a907e9">S_PING</a>
+, <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a2e46672d40fbf38cf6054edfad69e705a6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a>
  }</td></tr>
-<tr class="memdesc:a1db566962dd5eaaa492e458cd107af06"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_sender class template.">Blob_stream_mq_sender_impl</a> sends an empty message, in NORMAL state <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> enters CONTROL state and expects one of these values in the next message, to react as documented per <code>enum</code> value (upon re-entering NORMAL state).  <a href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a1db566962dd5eaaa492e458cd107af06">More...</a><br /></td></tr>
-<tr class="separator:a1db566962dd5eaaa492e458cd107af06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a2e46672d40fbf38cf6054edfad69e705"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_sender class template.">Blob_stream_mq_sender_impl</a> sends an empty message, in NORMAL state <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> enters CONTROL state and expects one of these values in the next message, to react as documented per <code>enum</code> value (upon re-entering NORMAL state).  <a href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a2e46672d40fbf38cf6054edfad69e705">More...</a><br /></td></tr>
+<tr class="separator:a2e46672d40fbf38cf6054edfad69e705"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
@@ -179,8 +179,8 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </div>
 </div>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a1db566962dd5eaaa492e458cd107af06" name="a1db566962dd5eaaa492e458cd107af06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1db566962dd5eaaa492e458cd107af06">&#9670;&nbsp;</a></span>Control_cmd</h2>
+<a id="a2e46672d40fbf38cf6054edfad69e705" name="a2e46672d40fbf38cf6054edfad69e705"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e46672d40fbf38cf6054edfad69e705">&#9670;&nbsp;</a></span>Control_cmd</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -191,7 +191,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a1db566962dd5eaaa492e458cd107af06">ipc::transport::Blob_stream_mq_base_impl::Control_cmd</a> : uint64_t</td>
+          <td class="memname">enum class <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a2e46672d40fbf38cf6054edfad69e705">ipc::transport::Blob_stream_mq_base_impl::Control_cmd</a> : int64_t</td>
         </tr>
       </table>
   </td>
@@ -202,17 +202,21 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </div><div class="memdoc">
 
 <p>If <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_sender class template.">Blob_stream_mq_sender_impl</a> sends an empty message, in NORMAL state <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> enters CONTROL state and expects one of these values in the next message, to react as documented per <code>enum</code> value (upon re-entering NORMAL state). </p>
+<h3>Rationale: Why is the underlying type signed?</h3>
+<p >There is a special type of CONTROL command used only at the beginning of the conversation: protocol negotiation; each side sends to the other the highest protocol version it can speak. In that case instead of using one of the <code>enum</code> encodings it sends the encoding of the inverse of the version number which is always positive (so -1 means version 1, -2 means 2, etc.). Using a signed type makes working with that eventuality a little easier and more expressive. (No, we don't really expect the <code>enum</code> variants to anywhere close to all these bits anyway.)</p>
+<h3>Rationale: Why 64 bits?</h3>
+<p >No huge reason. It felt prudent to leave a bit of reserved space, maybe for forward compatibility. CONTROL messages are rare, so it should not affect perf. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1db566962dd5eaaa492e458cd107af06ad584ea5a5dbf02d7e925adb912f3051a" name="a1db566962dd5eaaa492e458cd107af06ad584ea5a5dbf02d7e925adb912f3051a"></a>S_END_SENDING&#160;</td><td class="fielddoc"><p >Indicates sender user invoked <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a2a14c51a9d8b03008b567917589ab813" title="Equivalent to async_end_sending(F) wherein F() does nothing.">Blob_sender::end_sending()</a> (graceful close). Emit/queue graceful-close to user. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2e46672d40fbf38cf6054edfad69e705ad584ea5a5dbf02d7e925adb912f3051a" name="a2e46672d40fbf38cf6054edfad69e705ad584ea5a5dbf02d7e925adb912f3051a"></a>S_END_SENDING&#160;</td><td class="fielddoc"><p >Indicates sender user invoked <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a2a14c51a9d8b03008b567917589ab813" title="Equivalent to async_end_sending(F) wherein F() does nothing.">Blob_sender::end_sending()</a> (graceful close). Emit/queue graceful-close to user. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a1db566962dd5eaaa492e458cd107af06ad79c2ad1486703a583c7516555a907e9" name="a1db566962dd5eaaa492e458cd107af06ad79c2ad1486703a583c7516555a907e9"></a>S_PING&#160;</td><td class="fielddoc"><p >Indicates sender user invoked auto_ping() earlier, and this is an incoming periodic ping. </p>
+<tr><td class="fieldname"><a id="a2e46672d40fbf38cf6054edfad69e705ad79c2ad1486703a583c7516555a907e9" name="a2e46672d40fbf38cf6054edfad69e705ad79c2ad1486703a583c7516555a907e9"></a>S_PING&#160;</td><td class="fielddoc"><p >Indicates sender user invoked auto_ping() earlier, and this is an incoming periodic ping. </p>
 <p >If receiver user invoked idle_timer_run() earlier, reset countdown to death due to lacking in-pings. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a1db566962dd5eaaa492e458cd107af06a6fba12db09e5bebfaa04f6372c41c2cf" name="a1db566962dd5eaaa492e458cd107af06a6fba12db09e5bebfaa04f6372c41c2cf"></a>S_END_SENTINEL&#160;</td><td class="fielddoc"><p >Sentinel: not a valid value. May be used to, e.g., ensure validity of incoming value of allegedly this type. </p>
+<tr><td class="fieldname"><a id="a2e46672d40fbf38cf6054edfad69e705a6fba12db09e5bebfaa04f6372c41c2cf" name="a2e46672d40fbf38cf6054edfad69e705a6fba12db09e5bebfaa04f6372c41c2cf"></a>S_END_SENTINEL&#160;</td><td class="fielddoc"><p >Sentinel: not a valid value. May be used to, e.g., ensure validity of incoming value of allegedly this type. </p>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00119">119</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00131">131</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -282,11 +286,11 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>null or pointer to new <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> moved-from <code>mq</code>, and with deinit deleter. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00207">207</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00219">219</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#a5ef74ca74a9d985710af974fd6518940">ipc::transport::Persistent_mq_handle::absolute_name()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00032">ipc::util::CREATE_ONLY</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00119">ipc::util::remove_persistent_shm_pool()</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297af6ee4717280d29cc272ef2a356ad3982">ipc::transport::error::S_BLOB_STREAM_MQ_RECEIVER_EXISTS</a>, and <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a5026917d99ad25df8bc708cc6628f28c">ipc::transport::error::S_BLOB_STREAM_MQ_SENDER_EXISTS</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00450">ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_receiver_impl()</a>, and <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00559">ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_sender_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00477">ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_receiver_impl()</a>, and <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00639">ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_sender_impl()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -344,7 +348,7 @@ template&lt;typename Handle_name_func &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00186">186</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00198">198</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="blob__stream__mq_8hpp_source.html#l00101">ipc::transport::Blob_stream_mq_base&lt; Persistent_mq_handle &gt;::for_each_persistent()</a>.</p>
 <div class="dynheader">
@@ -402,7 +406,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Absolute name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00332">332</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00344">344</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="shared__name_8cpp_source.html#l00165">ipc::util::Shared_name::absolute()</a>, <a class="el" href="shared__name_8cpp_source.html#l00337">ipc::util::build_conventional_non_session_based_shared_name()</a>, and <a class="el" href="shared__name_8hpp_source.html#l00312">ipc::util::Shared_name::S_RESOURCE_TYPE_ID_SHM</a>.</p>
 <div class="dynheader">
@@ -466,7 +470,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00152">152</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00164">164</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00119">ipc::util::remove_persistent_shm_pool()</a>.</p>
 
@@ -492,7 +496,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 17 2024 01:32:15 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 22 2024 02:18:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

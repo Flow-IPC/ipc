@@ -402,13 +402,13 @@ Related Functions</h2></td></tr>
 <p >As discussed in class doc header, you should be on guard for the particular error <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da3deddc950bfa6d35ae03c9494eec15a6" title="Structured message serialization (e.g., when sending over channel): A user-mutated datum (e....">error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG</a>. See class doc header for discussion on how to avoid it. As of this writing no other failure modes exist.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target_blobs</td><td>See above. Also recall (see ctor) that for each returned <code>blob</code>: individual segment sizes shall never exceed <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b" title="See struct doc header.">Config::m_segment_sz</a><code>(for the [</code>begin()<code>,</code>end()<code>) area), with</code>start() == m_frame_prefix_sz<code>, and with</code>capacity() - start() - size() &gt;= m_frame_postfix_sz`. </td></tr>
+    <tr><td class="paramname">target_blobs</td><td>See above. Also recall (see ctor) that for each returned <code>blob</code>: individual segment sizes shall never exceed <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b" title="See struct doc header.">Config::m_segment_sz</a> (for the [<code>begin()</code>, <code>end()</code>) area), with <code>start() == m_frame_prefix_sz</code>, and with <code>capacity() - start() - size() &gt;= m_frame_postfix_sz</code>. </td></tr>
     <tr><td class="paramname">session</td><td>See above. In this case the proper value is <code>NULL_SESSION</code>. </td></tr>
     <tr><td class="paramname">err_code</td><td>See above. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da3deddc950bfa6d35ae03c9494eec15a6" title="Structured message serialization (e.g., when sending over channel): A user-mutated datum (e....">error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG</a> (a previous mutation introduced a leaf whose serialization would necessitate allocating a segment exceeding <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b" title="See struct doc header.">Config::m_segment_sz</a> &ndash; see ctor &ndash; in size).</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a89874da2fb8c9f112a1152b0b38d2281" title="Returns the serialization in the form of a sequence of 1+ pointers to Blobs which are guaranteed to r...">Struct_builder::emit_serialization()</a>: implemented concept. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#af5085934123f075c6d0701e9e45e4bcc" title="Returns the serialization in the form of a sequence of 1+ pointers to Blobs which are guaranteed to r...">Struct_builder::emit_serialization()</a>: implemented concept. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="heap__serializer_8cpp_source.html#l00072">72</a> of file <a class="el" href="heap__serializer_8cpp_source.html">heap_serializer.cpp</a>.</p>
 
@@ -513,6 +513,14 @@ Here is the caller graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="heap__serializer_8cpp_source.html#l00065">65</a> of file <a class="el" href="heap__serializer_8cpp_source.html">heap_serializer.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="heap__serializer_8hpp_source.html#l00300">m_engine</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04573">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::send_proto_neg()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder_a0c054e351753ce326620aa1dec12d923_icgraph.svg" width="363" height="59"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
@@ -634,7 +642,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 17 2024 01:32:15 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 22 2024 02:18:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

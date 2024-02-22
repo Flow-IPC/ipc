@@ -122,7 +122,7 @@ $(function() {
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  FLOW_LOG_SET_CONTEXT(logger_ptr, Log_component::S_SESSION);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">/* We can either reuse the handle-based overload, or we can do stat() instead of fstat().  The former seems nicer;</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">   * though we&#39;ll have to open a handle temporarily.  I&#39;ve seen Boost.interprocess do it fairly casually for</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">   * though we&#39;ll have to open a handle temporarily.  I&#39;ve seen boost.interprocess do it fairly casually for</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">   * similar purposes, so why not.  The O_PATH flag (which opens the resource just for this purpose -- not for</span></div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">   * I/O) is perfect for it, particularly since the resource might not be a file but a SHM pool, etc. */</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
@@ -217,7 +217,7 @@ $(function() {
 <div class="ttc" id="anamespaceipc_1_1session_html"><div class="ttname"><a href="namespaceipc_1_1session.html">ipc::session</a></div><div class="ttdoc">Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...</div><div class="ttdef"><b>Definition:</b> <a href="app_8cpp_source.html#l00026">app.cpp:27</a></div></div>
 <div class="ttc" id="anamespaceipc_1_1session_html_a0eac87b284d50832334d819a8877cbaa"><div class="ttname"><a href="namespaceipc_1_1session.html#a0eac87b284d50832334d819a8877cbaa">ipc::session::ensure_resource_owner_is_app</a></div><div class="ttdeci">void ensure_resource_owner_is_app(flow::log::Logger *logger_ptr, const fs::path &amp;path, const App &amp;app, Error_code *err_code)</div><div class="ttdoc">Utility, used internally but exposed in public API in case it is of general use, that checks that the...</div><div class="ttdef"><b>Definition:</b> <a href="app_8cpp_source.html#l00031">app.cpp:31</a></div></div>
 <div class="ttc" id="anamespaceipc_1_1session_html_a6b2f9a90ac9cc5098d9b90e7f547c97e"><div class="ttname"><a href="namespaceipc_1_1session.html#a6b2f9a90ac9cc5098d9b90e7f547c97e">ipc::session::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const App &amp;val)</div><div class="ttdoc">Prints string representation of the given App to the given ostream.</div><div class="ttdef"><b>Definition:</b> <a href="app_8cpp_source.html#l00124">app.cpp:124</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1transport_html_a7ee4551983d9df16ec16a3139bac50e8"><div class="ttname"><a href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">ipc::transport::Native_handle</a></div><div class="ttdeci">util::Native_handle Native_handle</div><div class="ttdoc">Convenience alias for the commonly used type util::Native_handle.</div><div class="ttdef"><b>Definition:</b> <a href="transport__fwd_8hpp_source.html#l00090">transport_fwd.hpp:90</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1transport_html_a7ee4551983d9df16ec16a3139bac50e8"><div class="ttname"><a href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">ipc::transport::Native_handle</a></div><div class="ttdeci">util::Native_handle Native_handle</div><div class="ttdoc">Convenience alias for the commonly used type util::Native_handle.</div><div class="ttdef"><b>Definition:</b> <a href="transport__fwd_8hpp_source.html#l00081">transport_fwd.hpp:81</a></div></div>
 <div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00296">common.hpp:296</a></div></div>
 <div class="ttc" id="anative__handle_8hpp_html"><div class="ttname"><a href="native__handle_8hpp.html">native_handle.hpp</a></div></div>
 <div class="ttc" id="asession__fwd_8hpp_html"><div class="ttname"><a href="session__fwd_8hpp.html">session_fwd.hpp</a></div></div>
@@ -235,7 +235,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 17 2024 01:32:14 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 22 2024 02:18:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

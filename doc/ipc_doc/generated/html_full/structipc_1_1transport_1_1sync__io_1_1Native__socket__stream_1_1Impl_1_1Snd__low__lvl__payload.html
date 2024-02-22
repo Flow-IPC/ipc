@@ -103,7 +103,7 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p >Data store representing a payload corresponding to exactly one attempted async write-op, albeit used if and only if we encounter would-block in <code>send_*()</code> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl.html#a4b31da3a7ff63f307bd08e288c391556" title="Handler for the async-wait, via util::sync_io::Timer_event_emitter, of the auto-ping timer firing; if...">snd_on_ev_auto_ping_now_timer_fired()</a> or <code>*end_sending()</code> and have to queue (and therefore one-time-copy) data in <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl.html#a1af9eb83b9afee25ba153a2ca066858d" title="Queue storing (at head) the currently in-progress async write-op of a Snd_low_lvl_payload; followed b...">m_snd_pending_payloads_q</a>. </p>
 <p >Note this does <em>not</em> represent an original user message given to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9805f7625a1272af64295555f9a1a61b" title="Implements Native_handle_sender API per contract.">Native_socket_stream::send_native_handle()</a> but rather a low-level payload per the protocol described in the impl section of class doc header (payload 1, payload 2 if applicable). We store them in queue via <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl_1_1Snd__low__lvl__payload.html#a2d3a01b00a000c3f40b3d580cd3b1c35" title="Short-hand for unique_ptr to this.">Ptr</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html#l00545">545</a> of file <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html">native_socket_stream_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html#l00563">563</a> of file <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html">native_socket_stream_impl.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a2d3a01b00a000c3f40b3d580cd3b1c35" name="a2d3a01b00a000c3f40b3d580cd3b1c35"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d3a01b00a000c3f40b3d580cd3b1c35">&#9670;&nbsp;</a></span>Ptr</h2>
@@ -119,7 +119,7 @@ Public Attributes</h2></td></tr>
 
 <p>Short-hand for <code>unique_ptr</code> to this. </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html#l00550">550</a> of file <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html">native_socket_stream_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html#l00568">568</a> of file <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html">native_socket_stream_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -139,7 +139,7 @@ Public Attributes</h2></td></tr>
 <p>The buffer to transmit in the payload; <code>!m_blob.empty() == true</code>, period. </p>
 <p >Note that this is the actual buffer and not a mere location/size of an existing blob somewhere. </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html#l00561">561</a> of file <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html">native_socket_stream_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html#l00579">579</a> of file <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html">native_socket_stream_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -157,7 +157,7 @@ Public Attributes</h2></td></tr>
 
 <p>The native handle to transmit in the payload; <code>.null() == true</code> to transmit no such thing. </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html#l00555">555</a> of file <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html">native_socket_stream_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html#l00573">573</a> of file <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html">native_socket_stream_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -167,7 +167,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 17 2024 01:32:15 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 22 2024 02:18:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

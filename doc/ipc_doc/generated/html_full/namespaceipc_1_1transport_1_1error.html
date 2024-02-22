@@ -99,18 +99,21 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ae3753569086cc66c6165480bd8d2f937">S_BLOB_RECEIVER_GOT_NON_BLOB</a>
 , <br />
 &#160;&#160;<a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aba920b52e9801e4927dd346ad83ce815">S_RECEIVER_IDLE_TIMEOUT</a>
+, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a41cb789a6a5da26e1f72139206cb9adf">S_PROTOCOL_NEGOTIATION_OPPOSING_VER_INVALID</a>
+, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a594bf33052a89403c734f24428007c80">S_PROTOCOL_NEGOTIATION_OPPOSING_VER_TOO_OLD</a>
 , <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ac416e988563e44bf15fc6a81743eef53">S_INVALID_ARGUMENT</a>
-, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297abcfca4c2347f9d377dd2ac41c41dc027">S_TIMEOUT</a>
+, <br />
+&#160;&#160;<a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297abcfca4c2347f9d377dd2ac41c41dc027">S_TIMEOUT</a>
 , <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a291f8a813c292ccdb475c345181653ac">S_INTERRUPTED</a>
-, <br />
-&#160;&#160;<a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>
+, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>
 , <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a9ee20939f859e44681c24f6d153cc36b">S_MQ_MESSAGE_SIZE_OVER_OR_UNDERFLOW</a>
-, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a515698d19c829006a0803477fb605ae3">S_MQ_BIPC_MISC_LIBRARY_ERROR</a>
-, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a5026917d99ad25df8bc708cc6628f28c">S_BLOB_STREAM_MQ_SENDER_EXISTS</a>
 , <br />
-&#160;&#160;<a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297af6ee4717280d29cc272ef2a356ad3982">S_BLOB_STREAM_MQ_RECEIVER_EXISTS</a>
+&#160;&#160;<a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a515698d19c829006a0803477fb605ae3">S_MQ_BIPC_MISC_LIBRARY_ERROR</a>
+, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a5026917d99ad25df8bc708cc6628f28c">S_BLOB_STREAM_MQ_SENDER_EXISTS</a>
+, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297af6ee4717280d29cc272ef2a356ad3982">S_BLOB_STREAM_MQ_RECEIVER_EXISTS</a>
 , <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a0ba1798bc135b43eebd7ce2481151348">S_BLOB_STREAM_MQ_RECEIVER_BAD_CTL_CMD</a>
-, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">S_SYNC_IO_WOULD_BLOCK</a>
+, <br />
+&#160;&#160;<a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">S_SYNC_IO_WOULD_BLOCK</a>
 , <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a>
 <br />
  }</td></tr>
@@ -187,6 +190,10 @@ Variables</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297aba920b52e9801e4927dd346ad83ce815" name="adfef15ef4e76cc55d652fbd9c2797297aba920b52e9801e4927dd346ad83ce815"></a>S_RECEIVER_IDLE_TIMEOUT&#160;</td><td class="fielddoc"><p >No messages (optional auto-pings or otherwise) have been received; optionally configured timeout exceeded. </p>
 <p >If a <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">session::Session</a> emitted this error, the session is now hosed due to master channel idle timeout indicating poor health of the opposing side or the system. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297a41cb789a6a5da26e1f72139206cb9adf" name="adfef15ef4e76cc55d652fbd9c2797297a41cb789a6a5da26e1f72139206cb9adf"></a>S_PROTOCOL_NEGOTIATION_OPPOSING_VER_INVALID&#160;</td><td class="fielddoc"><p >In protocol negotiation, opposing side sent invalid version value (not positive, not a number, etc.); the comm pathway must close. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297a594bf33052a89403c734f24428007c80" name="adfef15ef4e76cc55d652fbd9c2797297a594bf33052a89403c734f24428007c80"></a>S_PROTOCOL_NEGOTIATION_OPPOSING_VER_TOO_OLD&#160;</td><td class="fielddoc"><p >In protocol negotiation, opposing side reported its newest protocol version is even older than the most backwards-compatible (oldest, smallest) version we speak; the comm pathway must close. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297ac416e988563e44bf15fc6a81743eef53" name="adfef15ef4e76cc55d652fbd9c2797297ac416e988563e44bf15fc6a81743eef53"></a>S_INVALID_ARGUMENT&#160;</td><td class="fielddoc"><p >User called an API with 1 or more arguments against the API spec. </p>
 </td></tr>
@@ -289,9 +296,9 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html#l00231">231</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html">error.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html#l00241">241</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html">error.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html#l00179">ipc::transport::error::Category::code_symbol()</a>.</p>
+<p class="reference">References <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html#l00185">ipc::transport::error::Category::code_symbol()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -341,7 +348,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>is</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html#l00237">237</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html">error.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html#l00247">247</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html">error.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8hpp_source.html#l00056">S_CODE_LOWEST_INT_VALUE</a>, and <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a>.</p>
 
@@ -372,14 +379,14 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8hpp_source.html#l00056">56</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8hpp_source.html">error.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html#l00237">operator&gt;&gt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__core_2src_2ipc_2transport_2error_8cpp_source.html#l00247">operator&gt;&gt;()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 17 2024 01:32:15 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 22 2024 02:18:46 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -12,5 +12,6 @@ var searchData=
   ['process_5fid_9',['process_id',['../classipc_1_1util_1_1Process__credentials.html#a181288d97adcadedf187d08c71045854',1,'ipc::util::Process_credentials']]],
   ['process_5finvoked_5fas_10',['process_invoked_as',['../classipc_1_1util_1_1Process__credentials.html#ae4f156cfdfe0c8c5702890e5c1a37cdf',1,'ipc::util::Process_credentials']]],
   ['process_5fmsg_5for_5ferror_11',['process_msg_or_error',['../classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#afa5b0ab6ad54e0d3c93550226bfe2b33',1,'ipc::transport::sync_io::Async_adapter_receiver']]],
-  ['process_5frunning_12',['process_running',['../namespaceipc_1_1util.html#a924cd56daf7eeaa0b07edb352367f9ec',1,'ipc::util']]]
+  ['process_5frunning_12',['process_running',['../namespaceipc_1_1util.html#a924cd56daf7eeaa0b07edb352367f9ec',1,'ipc::util']]],
+  ['protocol_5fnegotiator_13',['Protocol_negotiator',['../classipc_1_1transport_1_1Protocol__negotiator.html#a427c54f57df581027a330eb0f7146904',1,'ipc::transport::Protocol_negotiator']]]
 ];

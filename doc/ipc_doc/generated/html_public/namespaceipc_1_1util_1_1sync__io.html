@@ -364,7 +364,7 @@ then do it now" &ndash; but you're doing it by using a separate API.</p>
 <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html" title="Useful if using the sync_io pattern within a user event loop built on boost.asio (optionally with flo...">ipc::util::sync_io::Asio_waitable_native_handle</a> &ndash; take a look particularly if your event loop is built on boost.asio. </dd>
 <dd>
 <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">ipc::transport::Native_socket_stream</a> internal source code: This exemplifies a fairly advanced "eat-our-own-dog-food" usage of a <code><a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">sync_io</a></code>-pattern-implementing API (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">ipc::transport::sync_io::Native_socket_stream</a> in this case) in a multi-threaded setting (user's thread U and internal worker thread W in this case). In this case the event loop is a boost.asio one.</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Write an example of <code><a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">sync_io</a></code>-pattern use with an old-school reactor-pattern event loop, using <code>poll()</code> and/or <code>epoll_*()</code>.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Write an example of <code><a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">sync_io</a></code>-pattern use with an old-school reactor-pattern event loop, using <code>poll()</code> and/or <code>epoll_*()</code>.</dd></dl>
 </div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="aa0b9a3cc6bdc7dedbef4f9e06851aa24" name="aa0b9a3cc6bdc7dedbef4f9e06851aa24"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa0b9a3cc6bdc7dedbef4f9e06851aa24">&#9670;&nbsp;</a></span>Event_wait_func</h2>
@@ -499,7 +499,7 @@ You might notice <code>hndl</code> is a pointer to <a class="el" href="classipc_
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 17 2024 01:32:12 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 22 2024 02:18:42 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

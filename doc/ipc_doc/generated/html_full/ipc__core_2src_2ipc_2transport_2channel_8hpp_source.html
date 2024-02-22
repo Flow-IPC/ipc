@@ -317,7 +317,7 @@ $(function() {
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="comment"> * if programming generically (meaning without awareness of what type that particular Channel is):</span></div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="comment"> * If a pipe-hosing error is detected through *any* Channel API, prefer to subsequently treat the other pipes</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="comment"> * as hosed (even if it/they may still be capable of operating).  Stop using the Channel; consider</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1Channel.html#a8eff22e594b6fe82f94f13d6a172537f">  248</a></span><span class="comment"> * as hosed (even if it/they may still be capable of operating).  Stop using the Channel; consider</span></div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="comment"> * invoking `async_end_sending(F)` (or `sync_io`-pattern form `async_end_sending(E, F)`); and once `F()` is</span></div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="comment"> * executed (or `sync_io` equivalent; or `*end_sending()` returns `false`) then perhaps</span></div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment"> * destroy `*this`.  Do not try to keep using any remaining 1- or 2-directional pipe(s).</span></div>
@@ -326,7 +326,7 @@ $(function() {
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="comment"> * A potential exception to this rule of thumb *could* be error::Code::S_RECEIVES_FINISHED_CANNOT_RECEIVE, as it</span></div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="comment"> * indicates the graceful closing of an in-pipe, while the out-pipe could be fine... but not really;</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1Channel.html#a8eff22e594b6fe82f94f13d6a172537f">  257</a></span><span class="comment"> * because what about the other bidirectional pipe (if applicable)?  That one is fine all-around, both directions;</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment"> * because what about the other bidirectional pipe (if applicable)?  That one is fine all-around, both directions;</span></div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="comment"> * so now what?</span></div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment"> * Therefore in our opinion it is really best, typically, to look for any 1-direction-pipe-hosing error, and once</span></div>
@@ -2521,7 +2521,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 17 2024 01:32:14 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 22 2024 02:18:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

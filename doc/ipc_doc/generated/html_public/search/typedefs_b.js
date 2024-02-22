@@ -12,5 +12,6 @@ var searchData=
   ['posix_5fmqs_5fchannel_5fof_5fblobs_9',['Posix_mqs_channel_of_blobs',['../namespaceipc_1_1transport.html#a9408a46c8565a42c537a02c9c11d5b1b',1,'ipc::transport::Posix_mqs_channel_of_blobs()'],['../namespaceipc_1_1transport_1_1sync__io.html#add71694105c85fca3fabb84845485c68',1,'ipc::transport::sync_io::Posix_mqs_channel_of_blobs()']]],
   ['posix_5fmqs_5fsocket_5fstream_5fchannel_10',['Posix_mqs_socket_stream_channel',['../namespaceipc_1_1transport.html#a8259bc93cc6a52fe192cf56196f32417',1,'ipc::transport::Posix_mqs_socket_stream_channel()'],['../namespaceipc_1_1transport_1_1sync__io.html#ae3271e118e027ead7f3d82f5ee7a8c36',1,'ipc::transport::sync_io::Posix_mqs_socket_stream_channel()']]],
   ['process_5fid_5ft_11',['process_id_t',['../namespaceipc_1_1util.html#a0c44028a45451ebf21f6af8e806b2682',1,'ipc::util']]],
-  ['protocol_12',['Protocol',['../namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a0ad6afc0bbf995a5b84528f96315f4a2',1,'ipc::transport::asio_local_stream_socket']]]
+  ['proto_5fver_5ft_12',['proto_ver_t',['../classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592',1,'ipc::transport::Protocol_negotiator']]],
+  ['protocol_13',['Protocol',['../namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a0ad6afc0bbf995a5b84528f96315f4a2',1,'ipc::transport::asio_local_stream_socket']]]
 ];

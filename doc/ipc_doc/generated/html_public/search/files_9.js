@@ -7,5 +7,7 @@ var searchData=
   ['posix_5fmq_5fhandle_2ehpp_4',['posix_mq_handle.hpp',['../posix__mq__handle_8hpp.html',1,'']]],
   ['process_5fcredentials_2ecpp_5',['process_credentials.cpp',['../process__credentials_8cpp.html',1,'']]],
   ['process_5fcredentials_2ehpp_6',['process_credentials.hpp',['../process__credentials_8hpp.html',1,'']]],
-  ['process_5fcredentials_5ffwd_2ehpp_7',['process_credentials_fwd.hpp',['../process__credentials__fwd_8hpp.html',1,'']]]
+  ['process_5fcredentials_5ffwd_2ehpp_7',['process_credentials_fwd.hpp',['../process__credentials__fwd_8hpp.html',1,'']]],
+  ['protocol_5fnegotiator_2ecpp_8',['protocol_negotiator.cpp',['../protocol__negotiator_8cpp.html',1,'']]],
+  ['protocol_5fnegotiator_2ehpp_9',['protocol_negotiator.hpp',['../protocol__negotiator_8hpp.html',1,'']]]
 ];

@@ -8,5 +8,6 @@ var searchData=
   ['process_5fcredentials_5',['Process_credentials',['../classipc_1_1util_1_1Process__credentials.html#a3840b767894abdd17cf9a7b5b2dfbf3c',1,'ipc::util::Process_credentials::Process_credentials()'],['../classipc_1_1util_1_1Process__credentials.html#a7794dc1a6d963cdd10928fb69008df14',1,'ipc::util::Process_credentials::Process_credentials(process_id_t process_id_init, user_id_t user_id_init, group_id_t group_id_init)'],['../classipc_1_1util_1_1Process__credentials.html#a3c7e32527927afdf2d7b46e2aa9a82b6',1,'ipc::util::Process_credentials::Process_credentials(const Process_credentials &amp;src)']]],
   ['process_5fid_6',['process_id',['../classipc_1_1util_1_1Process__credentials.html#a181288d97adcadedf187d08c71045854',1,'ipc::util::Process_credentials']]],
   ['process_5finvoked_5fas_7',['process_invoked_as',['../classipc_1_1util_1_1Process__credentials.html#ae4f156cfdfe0c8c5702890e5c1a37cdf',1,'ipc::util::Process_credentials']]],
-  ['process_5frunning_8',['process_running',['../namespaceipc_1_1util.html#a924cd56daf7eeaa0b07edb352367f9ec',1,'ipc::util']]]
+  ['process_5frunning_8',['process_running',['../namespaceipc_1_1util.html#a924cd56daf7eeaa0b07edb352367f9ec',1,'ipc::util']]],
+  ['protocol_5fnegotiator_9',['Protocol_negotiator',['../classipc_1_1transport_1_1Protocol__negotiator.html#a427c54f57df581027a330eb0f7146904',1,'ipc::transport::Protocol_negotiator']]]
 ];
