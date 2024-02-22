@@ -40,7 +40,7 @@ We immediately point you to this [introductory page](https://flow-ipc.github.io/
 in the project's documentation (from the development tip).  The [project web site](https://flow-ipc.github.io) contains
 links to the same for each individual release as well.
 
-If you'd prefer to jump into some code right away:
+*If* you'd prefer to jump into some code right away:
   - We estimate the median topic of interest to be transmission of structured-data messages, as described
     by a [schema language](https://capnproto.org/language.html), namely Cap'n Proto a/k/a *capnp*.
     capnp by itself provides best-in-class *serialization*.  However: If you'd like to *transmit* your
