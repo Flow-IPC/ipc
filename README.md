@@ -30,14 +30,15 @@ prove useful in its own right.  For more information please see a similar-purpos
 
 - To download the source code as a tarball/zip: The [project web site](https://flow-ipc.github.io) provides access to
 various released versions and their corresponding sets of documentation.
-- To clone the source code from Git from a \*nix command line: `git clone --recurse-submodules git@github.com:Flow-IPC/ipc.git`
+- To clone the source code from Git from a command line: `git clone --recurse-submodules git@github.com:Flow-IPC/ipc.git`
   - Don't forget `--recurse-submodules`, as the bulk of the code is in `ipc_*` (and `flow`) repositories.
   - If you did forget, you can fix it with: `cd ipc && git submodule update --init --recursive`.
 
 ## Documentation / Tour
 
 We immediately point you to this [introductory page](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
-in the project's main documentation.
+in the project's documentation (from the development tip).  The [project web site](https://flow-ipc.github.io) contains
+links to the same for each individual release as well.
 
 If you'd prefer to jump into some code right away:
   - We estimate the median topic of interest to be transmission of structured-data messages, as described
@@ -68,10 +69,10 @@ If you'd prefer to jump into some code right away:
     [synopsis about sessions](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_sessions_synopsis).
   - You can also check out a [simple complete example](https://github.com/Flow-IPC/ipc_shm/tree/main/test/basic/link_test),
     namely one of our functional tests, in which one program
-    connects to another, establishes a session and channel, then exchanges capnp-encoded messages, with
+    connects to another, establishes a session and channel, then transmits exchanges a capnp-encoded hello-world, with
     end-to-end zero copy.
 
-We guess those are the likeliest topics of highest interest.  That said, Flow-IPC provides entry points at every layer
+We guess those are the likely topics of highest interest.  That said, Flow-IPC provides entry points at every layer
 of operation, both higher and lower than the above.  Flow-IPC is *not* designed as merely a "black box" of capabilities.
 E.g., for advanced users:
   - Various lower-level APIs, such as low-level transports (Unix domain sockets, MQs) and SHM operations can be
