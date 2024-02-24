@@ -34,7 +34,6 @@ set(PROJ_HUMAN "Flow-IPC")
 # (Whereas otherwise each kid is on its own and assumes the all its dependencies have had `make` and `make install`
 # done, and the exported stuff is somewhere the `make` will know to search.)
 set(FLOW_LIKE_META_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-include("${FLOW_LIKE_META_ROOT_flow}/tools/cmake/FlowLikeProject.cmake")
 
 # The following might be a little tough to realize if looking through multiple layers of CMake scripts, so
 # for your convenience let's summarize how we do the whole thing.
@@ -113,6 +112,8 @@ foreach(ipc_meta_project ${IPC_META_PROJECTS})
     message(CHECK_PASS "(Path = [${FLOW_LIKE_META_ROOT_${ipc_meta_project}}]; it exists.)")
   endblock()
 endforeach()
+
+include("${FLOW_LIKE_META_ROOT_flow}/tools/cmake/FlowLikeProject.cmake")
 
 # Got through that; now actually do the add_subdirectory()s.  Output/error handling is crisper this way than doing
 # add_subdirectory() within the above loop.
