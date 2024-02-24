@@ -28,8 +28,8 @@ set(NAME_ROOT transport_test)
 set(NAME "${NAME_ROOT}.exec")
 
 # Please see explanation in ipc_session's src/CMakeLists.txt for why we do the following.
-set(CAPNPC_IMPORT_DIRS ${IPC_META_ROOT_ipc_transport_structured}/src
-                       ${IPC_META_ROOT_ipc_shm}/src)
+set(CAPNPC_IMPORT_DIRS ${FLOW_LIKE_META_ROOT_ipc_transport_structured}/src
+                       ${FLOW_LIKE_META_ROOT_ipc_shm}/src)
 
 capnp_generate_cpp(capnp_generated_srcs capnp_generated_hdrs_ignored "ex.capnp")
 

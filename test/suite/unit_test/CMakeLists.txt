@@ -101,10 +101,10 @@ function(handle_binary name) # Load SRCS and CAPNP_SCHEMAS before calling.
   # each other (namely the support files are).  For that to work add the source dir(s) into the include-path.
   target_include_directories(${name} PRIVATE
                              ${GTEST_INCLUDE_DIR}
-                             ${IPC_META_ROOT_ipc_core}/src
-                             ${IPC_META_ROOT_ipc_transport_structured}/src
-                             ${IPC_META_ROOT_ipc_session}/src
-                             ${IPC_META_ROOT_ipc_shm}/src
+                             ${FLOW_LIKE_META_ROOT_ipc_core}/src
+                             ${FLOW_LIKE_META_ROOT_ipc_transport_structured}/src
+                             ${FLOW_LIKE_META_ROOT_ipc_session}/src
+                             ${FLOW_LIKE_META_ROOT_ipc_shm}/src
                              ${isal_root}
                              # So that generated-above .capnp.h are found by SRCS' .cpps' `#include`s.:
                              ${CMAKE_CURRENT_BINARY_DIR})
@@ -120,12 +120,12 @@ function(handle_binary name) # Load SRCS and CAPNP_SCHEMAS before calling.
           RUNTIME DESTINATION bin)
 endfunction()
 
-set(isal_root ${IPC_META_ROOT_ipc_shm_arena_lend}/src)
+set(isal_root ${FLOW_LIKE_META_ROOT_ipc_shm_arena_lend}/src)
 
 set(SRCS
-    ${IPC_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
-    ${IPC_META_ROOT_ipc_core}/src/ipc/test/test_config.cpp
-    ${IPC_META_ROOT_ipc_core}/src/ipc/test/test_file_util.cpp
+    ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
+    ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_config.cpp
+    ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_file_util.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/shm_session_test.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server_executor.cpp
@@ -163,16 +163,16 @@ set(CAPNP_SCHEMAS
 handle_binary(libipc_unit_test.exec)
 
 set(SRCS
-    ${IPC_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
-    ${IPC_META_ROOT_ipc_core}/src/ipc/test/test_config.cpp
+    ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
+    ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_config.cpp
     ${isal_root}/ipc/shm/arena_lend/test/test_borrower.cpp
     test_borrower_main.cpp)
 unset(CAPNP_SCHEMAS)
 handle_binary(libipc_test_borrower.exec)
 
 set(SRCS
-    ${IPC_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
-    ${IPC_META_ROOT_ipc_core}/src/ipc/test/test_file_util.cpp
+    ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
+    ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_file_util.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server_executor.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server.cpp
     ${isal_root}/ipc/shm/arena_lend/test/test_shm_object.cpp
