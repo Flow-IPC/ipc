@@ -682,12 +682,13 @@ jobs:
       run: |
         # Run link test [`ipc_core` - Flow-IPC Core].
         cd ${{ env.install-dir }}/bin
-        mkdir -p logs/ipc_core_link_test
+        OUT_DIR=logs/ipc_core_link_test
+        mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./ipc_core_link_test.exec > logs/ipc_core_link_test/console.log 2>&1
+        ./ipc_core_link_test.exec $OUT_DIR/log.log > $OUT_DIR/console.log 2>&1
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
       if: |
@@ -695,12 +696,13 @@ jobs:
       run: |
         # Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport].
         cd ${{ env.install-dir }}/bin
-        mkdir -p logs/ipc_transport_structured_link_test
+        OUT_DIR=logs/ipc_transport_structured_link_test
+        mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./ipc_transport_structured_link_test.exec > logs/ipc_transport_structured_link_test/console.log 2>&1
+        ./ipc_transport_structured_link_test.exec $OUT_DIR/log.log > $OUT_DIR/console.log 2>&1
 
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
       if: |
@@ -708,16 +710,17 @@ jobs:
       run: |
         # Run link test [`ipc_session` - Flow-IPC Sessions].
         cd ${{ env.install-dir }}/bin
-        mkdir -p logs/ipc_session_link_test
+        OUT_DIR=logs/ipc_session_link_test
+        mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
         SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
               $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./ipc_session_link_test_srv.exec > logs/ipc_session_link_test/srv.console.log 2>&1 &
+        ./ipc_session_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         sleep 1
-        ./ipc_session_link_test_cli.exec > logs/ipc_session_link_test/cli.console.log 2>&1
+        ./ipc_session_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
 
     - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
       if: |
@@ -725,16 +728,17 @@ jobs:
       run: |
         # Run link test [`ipc_shm` - Flow-IPC Shared Memory].
         cd ${{ env.install-dir }}/bin
-        mkdir -p logs/ipc_shm_link_test
+        OUT_DIR=logs/ipc_shm_link_test
+        mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
         SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
               $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./ipc_shm_link_test_srv.exec > logs/ipc_shm_link_test/srv.console.log 2>&1 &
+        ./ipc_shm_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         sleep 1
-        ./ipc_shm_link_test_cli.exec > logs/ipc_shm_link_test/cli.console.log 2>&1
+        ./ipc_shm_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
 
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
       if: |
@@ -742,7 +746,8 @@ jobs:
       run: |
         # Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc].
         cd ${{ env.install-dir }}/bin
-        mkdir -p logs/ipc_shm_arena_lend_link_test
+        OUT_DIR=logs/ipc_shm_arena_lend_link_test
+        mkdir -p $OUT_DIR
         SUPP_DIR_A=${{ github.workspace }}/flow/src
         SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
         SUPP_DIR_C=${{ github.workspace }}/ipc_shm_arena_lend/src
@@ -751,9 +756,9 @@ jobs:
               $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./ipc_shm_arena_lend_link_test_srv.exec > logs/ipc_shm_arena_lend_link_test/srv.console.log 2>&1 &
+        ./ipc_shm_arena_lend_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         sleep 1
-        ./ipc_shm_arena_lend_link_test_cli.exec > logs/ipc_shm_arena_lend_link_test/cli.console.log 2>&1
+        ./ipc_shm_arena_lend_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
 
     - name: Run unit tests
       if: |
