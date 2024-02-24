@@ -28,8 +28,6 @@ set(PROJ_CAMEL "Ipc")
 set(PROJ_VERSION "1.0.0")
 set(PROJ_HUMAN "Flow-IPC")
 
-project(${PROJ_CAMEL} VERSION ${PROJ_VERSION} LANGUAGES CXX)
-
 # The children below rely on this being set and its value to detect they're part of the meta-project,
 # as opposed to being loaded separately, and then to load needed things off this place.
 # So in *nix setting this indicates to each kid below that they're a part of one big `make`.
@@ -129,6 +127,7 @@ endforeach()
 # that would also get built just as for each of the IPC_META_PROJECTs.  We'd still just need the following line;
 # no changes.)
 
+project(${PROJ_CAMEL} VERSION ${PROJ_VERSION} LANGUAGES CXX)
 include("${IPC_META_ROOT_flow}/tools/cmake/FlowLikeCodeGenerate.cmake")
 
 # As noted in the summary FlowLikeCodeGenerate.cmake does not do doc generation.
