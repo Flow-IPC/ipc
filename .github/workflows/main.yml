@@ -182,8 +182,7 @@ jobs:
           if [ '${{ github.ref }}' != 'refs/heads/main' ] || \
              [ '${{ github.event_name }}' != 'push' ] || \
              ! { head --lines=1 $TMP_MSG | fgrep -xq '${{ needs.set-vars.outputs.doc-commit-message }}'; }; then
-            # XXX no!  true!
-            echo 'proceed-else-not=false' >> $GITHUB_OUTPUT
+            echo 'proceed-else-not=true' >> $GITHUB_OUTPUT
           else
             echo 'proceed-else-not=false' >> $GITHUB_OUTPUT
             echo 'The real jobs will not run: earlier `doc-and-release` job checked-in generated docs to `main`.'
