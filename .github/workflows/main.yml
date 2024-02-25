@@ -139,7 +139,7 @@ jobs:
           # Could be a separate step or just execute here if the above succeeded so far.  Requires API fetch, so it's
           # a few lines.
       - name: (Except on release creation) Check repository version against already-existing release tag names
-        if: success() && (!cancelled()) && startsWith(github.ref, 'refs/tags/v')
+        if: success() && (!cancelled()) && (!startsWith(github.ref, 'refs/tags/v'))
         run: |
           # Check repo version against release tag name.
           # Do not fail on account of VERSION in this path however... just warn or gently inform.
