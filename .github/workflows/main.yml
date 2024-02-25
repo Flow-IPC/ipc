@@ -150,10 +150,12 @@ jobs:
           "follow semantic versioning conventions, especially regarding when to bump major/minor/patch components.  "\
           "When ready to do this consult [https://semver.org/] as needed."
           elif git tag | grep -q "^v$VERSION-"; then
-              echo "::warning file=VERSION::A pre-release tag [v$VERSION-*] already exists.  The repo/VERSION file "\
-          "will require a bump, before the next release.  However this should be done *just* ahead of release "\
-          "creation and must follow semantic versioning conventions, especially regarding when to bump "\
-          "major/minor/patch components.  When ready to do this consult [https://semver.org/] as needed."
+              echo "::notice file=VERSION::Since pre-release tag(s) [v$VERSION-*] already exist(s), but no tag "\
+          "[v$VERSION] exists, this repo state is likely intended for a later pre-release or official release.  "\
+          "Cool!  However, reminder: "\
+          "The repo/VERSION version should be decided/finalized *just* ahead of release creation and must "\
+          "follow semantic versioning conventions, especially regarding when to bump major/minor/patch components.  "\
+          "When ready to do this consult [https://semver.org/] as needed."
           else
               echo "::notice file=VERSION::Since no tag [v$VERSION] or [v$VERSION-*] exists, this repo state "\
           "is likely intended for a future release.  Cool!  However, reminder: "\
