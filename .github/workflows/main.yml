@@ -107,15 +107,60 @@ jobs:
       - name: Checkout VERSION file and tag history
         uses: actions/checkout@v4
         with:
-          path: 'version_work'
           sparse-checkout: VERSION
-          fetch-depth: 0 # Get all history regarding tags.
-      - name: Checkout VERSION file and tag history XXX
-        uses: actions/checkout@v4
-        with:
-          path: 'version_work2'
-          sparse-checkout: VERSIONXXX
-          fetch-depth: 0 # Get all history regarding tags.
+          fetch-depth: 0 # Get all history regarding tags.  We'll need that for VERSION checking below.
+      - name: Grab version in `VERSION` file in repository
+        id: repo_version
+        run: |
+          # Grab version in `VERSION` file in repository
+          if [ ! -e VERSION ]; then
+            echo '::error ::No VERSION file in repository root.  One must exist.'
+            exit 1
+          fi
+          VERSION=`cat VERSION`
+          echo "Determined version: [$VERSION]."
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      - name: (On release creation only) Check repository version against release tag name
+        if: success() && (!cancelled()) && startsWith(github.ref, 'refs/tags/v')
+        run: |
+          # Check repository version against release tag name.
+          VERSION=${{ steps.repo_version.outputs.version }}
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          if [ "$VERSION" = "$TAG_VERSION" ]; then
+            echo ":notice file=VERSION::Tag name and repo version are an exact match.  Looks good."
+          elif [[ "$TAG_VERSION" == "$VERSION-"* ]]; then
+            echo "::notice file=VERSION::Tag name [v$TAG_VERSION] starts with repo version (pre-release).  Allowed."
+          else
+            echo "::error file=VERSION::VERSION file version v[$VERSION] must = release tag name [v$TAG_VERSION]."
+            echo "::error ::Suggest deleting release and tag, fixing VERSION if needed, and re-creating release/tag."
+            exit 1
+          fi
+          # TODO: Would be nice to also grab release name and ensure it equals tag name v<...>.
+          # Could be a separate step or just execute here if the above succeeded so far.  Requires API fetch, so it's
+          # a few lines.
+      - name: (Except on release creation) Check repository version against already-existing release tag names
+        if: success() && (!cancelled()) && startsWith(github.ref, 'refs/tags/v')
+        run: |
+          # Check repo version against release tag name.
+          # Do not fail on account of VERSION in this path however... just warn or gently inform.
+          VERSION=${{ steps.repo_version.outputs.version }}
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+              echo "::warning file=VERSION::Tag [v$VERSION] already exists.  The repo/VERSION file will require "\
+          "a bump, before the next release.  However this should be done *just* ahead of release creation and must "\
+          "follow semantic versioning conventions, especially regarding when to bump major/minor/patch components.  "\
+          "When ready to do this consult [https://semver.org/] as needed."
+          elif git tag | grep -q "^v$VERSION-"; then
+              echo "::warning file=VERSION::A pre-release tag [v$VERSION-*] already exists.  The repo/VERSION file "
+          "will require a bump, before the next release.  However this should be done *just* ahead of release "
+          "creation and must follow semantic versioning conventions, especially regarding when to bump "
+          "major/minor/patch components.  When ready to do this consult [https://semver.org/] as needed."
+          else
+              echo "::notice file=VERSION::Since no tag [v$VERSION] or [v$VERSION-*] exists, this repo state "\
+          "is likely intended for a future release.  Cool!  However, reminder: "
+          "The repo/VERSION version should be decided/finalized *just* ahead of release creation and must "\
+          "follow semantic versioning conventions, especially regarding when to bump major/minor/patch components.  "\
+          "When ready to do this consult [https://semver.org/] as needed."
+          fi
       - id: compute_proceed_else_not
         name: Compute whether for main jobs to proceed or not
         # For checking whether github.event.head_commit.message starts with needs.set-vars.outputs.doc-commit-message
