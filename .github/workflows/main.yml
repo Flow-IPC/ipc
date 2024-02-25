@@ -127,11 +127,11 @@ jobs:
           VERSION=${{ steps.repo_version.outputs.version }}
           TAG_VERSION=${GITHUB_REF#refs/tags/v}
           if [ "$VERSION" = "$TAG_VERSION" ]; then
-            echo ":notice file=VERSION::Tag name and repo version are an exact match.  Looks good."
+            echo ":notice ::Tag name and repo version are an exact match.  Looks good."
           elif [[ "$TAG_VERSION" == "$VERSION-"* ]]; then
-            echo "::notice file=VERSION::Tag name [v$TAG_VERSION] starts with repo version (pre-release).  Allowed."
+            echo "::notice ::Tag name [v$TAG_VERSION] starts with repo version (pre-release).  Allowed."
           else
-            echo "::error file=VERSION::VERSION file version v[$VERSION] must = release tag name [v$TAG_VERSION]."
+            echo "::error ::VERSION file version v[$VERSION] must = release tag name [v$TAG_VERSION]."
             echo "::error ::Suggest deleting release and tag, fixing VERSION if needed, and re-creating release/tag."
             exit 1
           fi
@@ -145,19 +145,19 @@ jobs:
           # Do not fail on account of VERSION in this path however... just warn or gently inform.
           VERSION=${{ steps.repo_version.outputs.version }}
           if git rev-parse "v$VERSION" >/dev/null 2>&1; then
-              echo "::warning file=VERSION::Tag [v$VERSION] already exists.  The repo/VERSION file will require "\
+              echo "::warning ::Tag [v$VERSION] already exists.  The repo/VERSION file will require "\
           "a bump, before the next release.  However this should be done *just* ahead of release creation and must "\
           "follow semantic versioning conventions, especially regarding when to bump major/minor/patch components.  "\
           "When ready to do this consult [https://semver.org/] as needed."
           elif git tag | grep -q "^v$VERSION-"; then
-              echo "::notice file=VERSION::Since pre-release tag(s) [v$VERSION-*] already exist(s), but no tag "\
+              echo "::notice ::Since pre-release tag(s) [v$VERSION-*] already exist(s), but no tag "\
           "[v$VERSION] exists, this repo state is likely intended for a later pre-release or official release.  "\
           "Cool!  However, reminder: "\
           "The repo/VERSION version should be decided/finalized *just* ahead of release creation and must "\
           "follow semantic versioning conventions, especially regarding when to bump major/minor/patch components.  "\
           "When ready to do this consult [https://semver.org/] as needed."
           else
-              echo "::notice file=VERSION::Since no tag [v$VERSION] or [v$VERSION-*] exists, this repo state "\
+              echo "::notice ::Since no tag [v$VERSION] or [v$VERSION-*] exists, this repo state "\
           "is likely intended for a future release.  Cool!  However, reminder: "\
           "The repo/VERSION version should be decided/finalized *just* ahead of release creation and must "\
           "follow semantic versioning conventions, especially regarding when to bump major/minor/patch components.  "\
