@@ -104,6 +104,18 @@ jobs:
     needs: set-vars
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout VERSION file and tag history
+        uses: actions/checkout@v4
+        with:
+          path: 'version_work'
+          sparse-checkout: VERSION
+          fetch-depth: 0 # Get all history regarding tags.
+      - name: Checkout VERSION file and tag history XXX
+        uses: actions/checkout@v4
+        with:
+          path: 'version_work2'
+          sparse-checkout: VERSIONXXX
+          fetch-depth: 0 # Get all history regarding tags.
       - id: compute_proceed_else_not
         name: Compute whether for main jobs to proceed or not
         # For checking whether github.event.head_commit.message starts with needs.set-vars.outputs.doc-commit-message
@@ -123,7 +135,8 @@ jobs:
           if [ '${{ github.ref }}' != 'refs/heads/main' ] || \
              [ '${{ github.event_name }}' != 'push' ] || \
              ! { head --lines=1 $TMP_MSG | fgrep -xq '${{ needs.set-vars.outputs.doc-commit-message }}'; }; then
-            echo 'proceed-else-not=true' >> $GITHUB_OUTPUT
+            # XXX no!  true!
+            echo 'proceed-else-not=false' >> $GITHUB_OUTPUT
           else
             echo 'proceed-else-not=false' >> $GITHUB_OUTPUT
             echo 'The real jobs will not run: earlier `doc-and-release` job checked-in generated docs to `main`.'
