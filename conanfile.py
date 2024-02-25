@@ -1,10 +1,19 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, cmake_layout, CMakeDeps, CMakeToolchain
 
+def load_version_from_file(): # TODO: Code-reuse from flow/conanfile.py?
+    version_path = './VERSION'
+    with open(version_path, 'r') as version_file:
+        # Read the entire file content and strip whitespace (matches what FlowLikeProject.cmake does).
+        version = version_file.read().strip()
+    return version
+
 class IpcRecipe(ConanFile):
     name = "ipc"
-    version = "1.0"
+    version = load_version_from_file()
     settings = "os", "compiler", "build_type", "arch"
+
+    DOXYGEN_VERSION = "1.9.4"
 
     options = {
         "build": [True, False],
@@ -39,8 +48,7 @@ class IpcRecipe(ConanFile):
     def generate(self):
         deps = CMakeDeps(self)
         if self.options.doc:
-            # TODO: This magic version number is repeated several times.  Code reuse.
-            deps.build_context_activated = ["doxygen/1.9.4"]
+            deps.build_context_activated = ["doxygen/{self.DOXYGEN_VERSION}"]
         deps.generate()
 
         toolchain = CMakeToolchain(self)
@@ -98,7 +106,7 @@ class IpcRecipe(ConanFile):
     def build_requirements(self):
         self.tool_requires("cmake/3.26.3")
         if self.options.doc:
-            self.tool_requires("doxygen/1.9.4")
+            self.tool_requires("doxygen/{self.DOXYGEN_VERSION}")
 
     def package(self):
         cmake = CMake(self)
