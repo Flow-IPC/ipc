@@ -48,7 +48,7 @@ class IpcRecipe(ConanFile):
     def generate(self):
         deps = CMakeDeps(self)
         if self.options.doc:
-            deps.build_context_activated = ["doxygen/{self.DOXYGEN_VERSION}"]
+            deps.build_context_activated = [f"doxygen/{self.DOXYGEN_VERSION}"]
         deps.generate()
 
         toolchain = CMakeToolchain(self)
@@ -106,7 +106,7 @@ class IpcRecipe(ConanFile):
     def build_requirements(self):
         self.tool_requires("cmake/3.26.3")
         if self.options.doc:
-            self.tool_requires("doxygen/{self.DOXYGEN_VERSION}")
+            self.tool_requires(f"doxygen/{self.DOXYGEN_VERSION}")
 
     def package(self):
         cmake = CMake(self)
