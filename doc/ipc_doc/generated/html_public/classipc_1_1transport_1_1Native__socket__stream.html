@@ -959,7 +959,6 @@ template&lt;typename Task_err_sz &gt; </div>
 <p >This can be useful if one desires a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> core &ndash; e.g., to bundle into a <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> to then feed to a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> ctor &ndash; after a successful async-I/O-style <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a3614a9677c1a203090b97ac935093390" title="To be invoked in NULL state only, it asynchronously attempts to connect to an opposing Native_socket_...">async_connect()</a> advanced <code>*this</code> from NULL to CONNECTING to PEER state.</p>
 <p >In a sense it's the reverse of <code>*this</code> <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-core-adopting ctor.</p>
 <p >Behavior is undefined if <code>*this</code> is not in PEER state, or if it is, but you've invoked <code>async_receive_*()</code>, <code>send_*()</code>, <code>*end_sending()</code>, <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#aa5e699d5eead4220bf8b5604f629a970" title="Implements Native_handle_sender, Blob_sender API per contract.">auto_ping()</a>, or <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a1b4ce3ddee39f21e752ec9114ac17bbd" title="Implements Native_handle_receiver, Blob_receiver API per contract.">idle_timer_run()</a> in the past. Please be careful.</p>
-<p >Corner case (unlikely but possible): If, upon entry to PEER state, <code>*this</code> failed in attempting to immediately send internal protocol-negotiation data, then the returned object shall be in NULL state, not PEER state. As of this writing one can check for this via <code>returned_guy.send_blob_max_size() == 0</code>.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
@@ -1232,7 +1231,7 @@ template&lt;typename Task_err_sz &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 23 2024 04:22:07 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Mon Feb 26 2024 02:12:51 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

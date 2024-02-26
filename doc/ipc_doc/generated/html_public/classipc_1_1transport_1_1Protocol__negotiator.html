@@ -95,6 +95,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a427c54f57df581027a330eb0f7146904"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a427c54f57df581027a330eb0f7146904">Protocol_negotiator</a> (flow::log::Logger *logger_ptr, <a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> nickname, <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592">proto_ver_t</a> local_max_proto_ver, <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592">proto_ver_t</a> local_min_proto_ver)</td></tr>
 <tr class="memdesc:a427c54f57df581027a330eb0f7146904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a comm pathway's negotiator object in initial state wherein: (1) <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc" title="Returns S_VER_UNKNOWN before compute_negotiated_proto_ver(); then either the positive version of the ...">negotiated_proto_ver()</a> returns <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#aa7e47f4f6a700aeaa9600a5426a17292" title="A proto_ver_t value, namely a negative one, which is a reserved value indicating &quot;unknown version&quot;; i...">S_VER_UNKNOWN</a> (not yet negotiated with opposing <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html" title="A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state ma...">Protocol_negotiator</a>); and (2) we've not yet sent <code>local_max_proto_ver</code> to opposing side via first being queried using <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a54480f0849ddb5635302b42ed87c43af" title="To be called at most once, this returns local_max_proto_ver from ctor the first time and S_VER_UNKNOW...">local_max_proto_ver_for_sending()</a>.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#a427c54f57df581027a330eb0f7146904">More...</a><br /></td></tr>
 <tr class="separator:a427c54f57df581027a330eb0f7146904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4a1edcf2f1a0ae3e86b2ab93b71da0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#ae4a1edcf2f1a0ae3e86b2ab93b71da0f">Protocol_negotiator</a> (const <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;src)</td></tr>
+<tr class="memdesc:ae4a1edcf2f1a0ae3e86b2ab93b71da0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy-constructs <code>*this</code> to be equal to <code>src</code> object.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#ae4a1edcf2f1a0ae3e86b2ab93b71da0f">More...</a><br /></td></tr>
+<tr class="separator:ae4a1edcf2f1a0ae3e86b2ab93b71da0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb1b9e12cdfaa702c8a81b7ff81f1801"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#aeb1b9e12cdfaa702c8a81b7ff81f1801">Protocol_negotiator</a> (<a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&amp;src)</td></tr>
+<tr class="memdesc:aeb1b9e12cdfaa702c8a81b7ff81f1801"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move-constructs <code>*this</code> to be equal to <code>src</code>, while <code>src</code> becomes as-if defaulted-cted.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#aeb1b9e12cdfaa702c8a81b7ff81f1801">More...</a><br /></td></tr>
+<tr class="separator:aeb1b9e12cdfaa702c8a81b7ff81f1801"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae24b3bd8550a2f9ab0d728cb1832d4f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#ae24b3bd8550a2f9ab0d728cb1832d4f5">operator=</a> (const <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;src)</td></tr>
+<tr class="memdesc:ae24b3bd8550a2f9ab0d728cb1832d4f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy-assigns <code>*this</code> to be equal to <code>src</code>.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#ae24b3bd8550a2f9ab0d728cb1832d4f5">More...</a><br /></td></tr>
+<tr class="separator:ae24b3bd8550a2f9ab0d728cb1832d4f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d141a0758b4d0fb51f43cefb76234a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a3d141a0758b4d0fb51f43cefb76234a6">operator=</a> (<a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&amp;src)</td></tr>
+<tr class="memdesc:a3d141a0758b4d0fb51f43cefb76234a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move-assigns <code>*this</code> to be equal to <code>src</code>, while <code>src</code> becomes as-if just constructed; or no-op if <code>&amp;src == this</code>.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#a3d141a0758b4d0fb51f43cefb76234a6">More...</a><br /></td></tr>
+<tr class="separator:a3d141a0758b4d0fb51f43cefb76234a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9596a28f6379b209ec1e7efcc58b8adc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592">proto_ver_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc">negotiated_proto_ver</a> () const</td></tr>
 <tr class="memdesc:a9596a28f6379b209ec1e7efcc58b8adc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>S_VER_UNKNOWN</code> before <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a6e55a4ee1033bf98123cedd10e5726cb" title="Based on the presumably-just-received-from-opposing-side value of their local_max_proto_ver,...">compute_negotiated_proto_ver()</a>; then either the positive version of the protocol we shall speak subsequently, or <code>S_VER_UNSUPPORTED</code> if the two sides are incompatible.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc">More...</a><br /></td></tr>
 <tr class="separator:a9596a28f6379b209ec1e7efcc58b8adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,7 +132,7 @@ Static Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state machine, helps negotiate the protocol version to speak over that pathway, given each side being capable of speaking a range of protocol versions and reporting the highest such version to the other side. </p>
 <p >By <em>comm pathway</em> we mean a bidirectional communication channel of some sort with two mutually-opposing endpoints (it need not be full-duplex).</p>
-<p >It is trivially copyable and movable, so that containing object can be copyable and movable too.</p>
+<p >It is copyable and movable, so that the containing object can be copyable and movable too. A moved-from <code>*this</code> becomes as-if it was just constructed.</p>
 <p >The algorithm followed is quite straightforward and is exposed completely in the contract of this simple API: The impetus behind this class is not for it to be able to perform some complex <code>private</code> operations but rather to provide a reusable component that both internal and (optionally) user code can reliably count on to apply the same consistent rules. So while it does some minimal work, its main value is in presenting a common algorithm that (1) achieves protocol negotiation and (2) doesn't shoot ourselves in the foot in the face of future protocol changes.</p>
 <h3>The algorithm</h3>
 <p >A <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html" title="A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state ma...">Protocol_negotiator</a> <code>*this</code> assumes it is used by a single open comm pathway's local endpoint, and that a logically-equivalent <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html" title="A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state ma...">Protocol_negotiator</a> (or equivalent sofwatre) is used in symmetrical fashion by the opposide side's endpoint. (For example, a <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a> in PEER state uses a <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html" title="A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state ma...">Protocol_negotiator</a> internally, and it therefore assumes the opposing <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a> does the same.)</p>
@@ -216,7 +228,7 @@ Static Public Attributes</h2></td></tr>
 <p >For the same <code>*this</code>, the standard default assumptions apply (mutating access disallowed concurrently with any other access) with the following potentially important exception: <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a54480f0849ddb5635302b42ed87c43af" title="To be called at most once, this returns local_max_proto_ver from ctor the first time and S_VER_UNKNOW...">local_max_proto_ver_for_sending()</a> can be executed concurrently with any other API except itself. In other words, the outgoing-direction (<a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a54480f0849ddb5635302b42ed87c43af" title="To be called at most once, this returns local_max_proto_ver from ctor the first time and S_VER_UNKNOW...">local_max_proto_ver_for_sending()</a>) and incoming-direction work (<a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a6e55a4ee1033bf98123cedd10e5726cb" title="Based on the presumably-just-received-from-opposing-side value of their local_max_proto_ver,...">compute_negotiated_proto_ver()</a>, <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc" title="Returns S_VER_UNKNOWN before compute_negotiated_proto_ver(); then either the positive version of the ...">negotiated_proto_ver()</a>) can be safely performed independently/concurrently w/r/t each other. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a427c54f57df581027a330eb0f7146904" name="a427c54f57df581027a330eb0f7146904"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a427c54f57df581027a330eb0f7146904">&#9670;&nbsp;</a></span>Protocol_negotiator()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a427c54f57df581027a330eb0f7146904">&#9670;&nbsp;</a></span>Protocol_negotiator() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -268,6 +280,66 @@ Static Public Attributes</h2></td></tr>
     <tr><td class="paramname">nickname</td><td>String to use subsequently in logging to identify <code>*this</code>. </td></tr>
     <tr><td class="paramname">local_max_proto_ver</td><td>The highest version of the protocol the comm pathway can speak; a/k/a the preferred version. Positive or undefined behavior (assertion may trip). </td></tr>
     <tr><td class="paramname">local_min_proto_ver</td><td>The lowest version of the protocol the comm pathway can speak; so either <code>local_max_proto_ver</code> (if our side has no backwards compatibility) or the oldest version with which we are backwards-compatible. Positive and at most <code>local_max_proto_ver</code> or undefined behavior (assertion may trip). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae4a1edcf2f1a0ae3e86b2ab93b71da0f" name="ae4a1edcf2f1a0ae3e86b2ab93b71da0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4a1edcf2f1a0ae3e86b2ab93b71da0f">&#9670;&nbsp;</a></span>Protocol_negotiator() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ipc::transport::Protocol_negotiator::Protocol_negotiator </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy-constructs <code>*this</code> to be equal to <code>src</code> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Source object. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aeb1b9e12cdfaa702c8a81b7ff81f1801" name="aeb1b9e12cdfaa702c8a81b7ff81f1801"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb1b9e12cdfaa702c8a81b7ff81f1801">&#9670;&nbsp;</a></span>Protocol_negotiator() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ipc::transport::Protocol_negotiator::Protocol_negotiator </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Move-constructs <code>*this</code> to be equal to <code>src</code>, while <code>src</code> becomes as-if defaulted-cted. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Moved-from object that becomes as-if default-cted. </td></tr>
   </table>
   </dd>
 </dl>
@@ -365,6 +437,68 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ae24b3bd8550a2f9ab0d728cb1832d4f5" name="ae24b3bd8550a2f9ab0d728cb1832d4f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae24b3bd8550a2f9ab0d728cb1832d4f5">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp; ipc::transport::Protocol_negotiator::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy-assigns <code>*this</code> to be equal to <code>src</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Source object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>*this</code>. </dd></dl>
+
+</div>
+</div>
+<a id="a3d141a0758b4d0fb51f43cefb76234a6" name="a3d141a0758b4d0fb51f43cefb76234a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d141a0758b4d0fb51f43cefb76234a6">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp; ipc::transport::Protocol_negotiator::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Move-assigns <code>*this</code> to be equal to <code>src</code>, while <code>src</code> becomes as-if just constructed; or no-op if <code>&amp;src == this</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Moved-from object that becomes as-if just-cted, unless it is <code>*this</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>*this</code>. </dd></dl>
+
+</div>
+</div>
 <a id="a2b3448c9655fd1a83b8229957da1c4e2" name="a2b3448c9655fd1a83b8229957da1c4e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b3448c9655fd1a83b8229957da1c4e2">&#9670;&nbsp;</a></span>reset()</h2>
 
@@ -443,7 +577,7 @@ Static Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 23 2024 04:22:07 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Mon Feb 26 2024 02:12:51 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

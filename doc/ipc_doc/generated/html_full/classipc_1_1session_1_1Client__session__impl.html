@@ -1258,7 +1258,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p>Utility for sub-classes: provides ability to schedule or post tasks onto thread W. </p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02427">2427</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02415">2415</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1311,7 +1311,7 @@ template&lt;typename Task_err &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02380">2380</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02368">2368</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1340,7 +1340,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p>Utility for sub-classes: executed from <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#af03a9fca2006fba2cc522efa1178e83e" title="See Client_session_mv counterpart.">async_connect()</a>'s <code>on_done_func(Error_code())</code> (i.e., directly from handler invoked on success) &ndash; hence from thread W &ndash; this instead goes back to NULL state, essentially indicating "never mind -- this successful async_connect() actually failed.". </p>
 <p >This... um... highly specific utility is intended for overriding <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#af03a9fca2006fba2cc522efa1178e83e" title="See Client_session_mv counterpart.">async_connect()</a> impl that performs <em>synchronous</em> post-processing in its own <code>on_done_func()</code> wrapper from sub-class's <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#af03a9fca2006fba2cc522efa1178e83e" title="See Client_session_mv counterpart.">async_connect()</a> that calls this class's <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#af03a9fca2006fba2cc522efa1178e83e" title="See Client_session_mv counterpart.">async_connect()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02361">2361</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02349">2349</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1381,7 +1381,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02399">2399</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02387">2387</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1467,7 +1467,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01229">1229</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="process__credentials_8cpp_source.html#l00136">ipc::util::Process_credentials::own_group_id()</a>, <a class="el" href="process__credentials_8cpp_source.html#l00126">ipc::util::Process_credentials::own_process_id()</a>, <a class="el" href="process__credentials_8cpp_source.html#l00131">ipc::util::Process_credentials::own_user_id()</a>, <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l02211">ipc::transport::Socket_stream_channel&lt; SIO &gt;::remote_peer_process_credentials()</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a41cb789a6a5da26e1f72139206cb9adf">ipc::transport::error::S_PROTOCOL_NEGOTIATION_OPPOSING_VER_INVALID</a>, and <a class="el" href="channel__base_8hpp_source.html#l00157">ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_HEAP</a>.</p>
+<p class="reference">References <a class="el" href="process__credentials_8cpp_source.html#l00136">ipc::util::Process_credentials::own_group_id()</a>, <a class="el" href="process__credentials_8cpp_source.html#l00126">ipc::util::Process_credentials::own_process_id()</a>, <a class="el" href="process__credentials_8cpp_source.html#l00131">ipc::util::Process_credentials::own_user_id()</a>, <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l02211">ipc::transport::Socket_stream_channel&lt; SIO &gt;::remote_peer_process_credentials()</a>, and <a class="el" href="channel__base_8hpp_source.html#l00157">ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_HEAP</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1550,9 +1550,9 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000034">Todo:</a></b></dt><dd>As of this writing the eventuality where <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#a224dd90df35537680e649f74e427d47d" title="In thread W, based on resources acquired on server side, creates local Channel_obj to emit to the use...">Client_session_impl::create_channel_obj()</a> yields an error is treated as assertion-trip-worthy by its caller; hence consider just tripping assertion inside instead and no out-arg. For now it is left this way in case we'd want the (internal) caller to do something more graceful in the future, and in the meantime it's a decently reusable chunk of code to use in that alleged contingency. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000033">Todo:</a></b></dt><dd>As of this writing the eventuality where <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#a224dd90df35537680e649f74e427d47d" title="In thread W, based on resources acquired on server side, creates local Channel_obj to emit to the use...">Client_session_impl::create_channel_obj()</a> yields an error is treated as assertion-trip-worthy by its caller; hence consider just tripping assertion inside instead and no out-arg. For now it is left this way in case we'd want the (internal) caller to do something more graceful in the future, and in the meantime it's a decently reusable chunk of code to use in that alleged contingency. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02247">2247</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02235">2235</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="shared__name_8cpp_source.html#l00155">ipc::util::Shared_name::empty()</a>, and <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00031">ipc::util::OPEN_ONLY</a>.</p>
 <div class="dynheader">
@@ -1634,7 +1634,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01786">1786</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01774">1774</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1665,7 +1665,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p ><code>protected</code> but <code>const</code> access does not much bother me (ygoldfel) stylistically.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02433">2433</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02421">2421</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1687,7 +1687,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p >Reminder: it can be used not only in PEER state (for <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#a4229549db1093aaa1e7e84c6e6467e80" title="See Client_session_mv counterpart.">open_channel()</a>) but also NULL state (for <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#af03a9fca2006fba2cc522efa1178e83e" title="See Client_session_mv counterpart.">async_connect()</a>).</p>
 <dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1session_1_1Client__session__mv.html" title="Implements Session concept on the Client_app end: a Session_mv that first achieves PEER state by conn...">Client_session_mv</a> counterpart. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01902">1902</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01890">1890</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="sync__io_2native__socket__stream_8hpp_source.html#l00238">ipc::transport::sync_io::Native_socket_stream::S_MAX_META_BLOB_LENGTH</a>.</p>
 
@@ -1739,7 +1739,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01801">1801</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01789">1789</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1837,7 +1837,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01636">1636</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01624">1624</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>.</p>
 <div class="dynheader">
@@ -1915,7 +1915,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01422">1422</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01408">1408</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa866090a4d042120126722b4daf1ecc33">ipc::session::error::S_CLIENT_MASTER_LOG_IN_RESPONSE_BAD</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fac416e988563e44bf15fc6a81743eef53">ipc::session::error::S_INVALID_ARGUMENT</a>, and <a class="el" href="shared__name_8hpp_source.html#l00280">ipc::util::Shared_name::S_SENTINEL</a>.</p>
 <div class="dynheader">
@@ -1962,7 +1962,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02128">2128</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02116">2116</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>.</p>
 <div class="dynheader">
@@ -2019,11 +2019,11 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1session_1_1Client__session__mv.html" title="Implements Session concept on the Client_app end: a Session_mv that first achieves PEER state by conn...">Client_session_mv</a> counterpart. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01955">1955</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01943">1943</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01955">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE &gt;::open_channel()</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa7d85b87223a9b277b8875c1f7971d6ad">ipc::session::error::S_SESSION_OPEN_CHANNEL_ACTIVE_TIMEOUT</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa2c8c27c65ff6234220a84f96de8a1870">ipc::session::error::S_SESSION_OPEN_CHANNEL_REMOTE_PEER_REJECTED_PASSIVE_OPEN</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa10d32cf1382fb003f09a6df2da408574">ipc::session::error::S_SESSION_OPEN_CHANNEL_SERVER_CANNOT_PROCEED_RESOURCE_UNAVAILABLE</a>, and <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297abcfca4c2347f9d377dd2ac41c41dc027">ipc::transport::error::S_TIMEOUT</a>.</p>
+<p class="reference">References <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01943">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE &gt;::open_channel()</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa7d85b87223a9b277b8875c1f7971d6ad">ipc::session::error::S_SESSION_OPEN_CHANNEL_ACTIVE_TIMEOUT</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa2c8c27c65ff6234220a84f96de8a1870">ipc::session::error::S_SESSION_OPEN_CHANNEL_REMOTE_PEER_REJECTED_PASSIVE_OPEN</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa10d32cf1382fb003f09a6df2da408574">ipc::session::error::S_SESSION_OPEN_CHANNEL_SERVER_CANNOT_PROCEED_RESOURCE_UNAVAILABLE</a>, and <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297abcfca4c2347f9d377dd2ac41c41dc027">ipc::transport::error::S_TIMEOUT</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01955">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE &gt;::open_channel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01943">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE &gt;::open_channel()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2077,7 +2077,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1session_1_1Client__session__mv.html" title="Implements Session concept on the Client_app end: a Session_mv that first achieves PEER state by conn...">Client_session_mv</a> counterpart. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02121">2121</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02109">2109</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -2098,7 +2098,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p>See <a class="el" href="classipc_1_1session_1_1Client__session__mv.html" title="Implements Session concept on the Client_app end: a Session_mv that first achieves PEER state by conn...">Client_session_mv</a> counterpart. </p>
 <dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1session_1_1Client__session__mv.html" title="Implements Session concept on the Client_app end: a Session_mv that first achieves PEER state by conn...">Client_session_mv</a> counterpart. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01864">1864</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01852">1852</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8cpp_source.html#l00035">ipc::transport::struc::NULL_SESSION_TOKEN</a>.</p>
 
@@ -2151,7 +2151,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02439">2439</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02427">2427</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -2525,7 +2525,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 23 2024 04:22:10 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Mon Feb 26 2024 02:12:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

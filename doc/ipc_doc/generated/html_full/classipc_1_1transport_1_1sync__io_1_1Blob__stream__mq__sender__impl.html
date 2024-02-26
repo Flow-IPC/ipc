@@ -930,7 +930,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 
 <p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00822">822</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html">blob_stream_mq_snd_impl.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="protocol__negotiator_8hpp_source.html#l00214">ipc::transport::Protocol_negotiator::S_VER_UNKNOWN</a>.</p>
+<p class="reference">References <a class="el" href="protocol__negotiator_8hpp_source.html#l00215">ipc::transport::Protocol_negotiator::S_VER_UNKNOWN</a>.</p>
 
 </div>
 </div>
@@ -1594,7 +1594,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 <p >It is necessary to construct those pipe-end objects, but we never use that guy's <code>-&gt;async_*()</code> APIs &ndash; only non-blocking operations, essentially leveraging boost.asio's portable transmission APIs but not its actual, um, async-I/O abilities in this case. Accordingly we never load any tasks onto <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__sender__impl.html#a0614000879d4595c84f803ecadae708a" title="The Task_engine for m_mq_ready_*.">m_nb_task_engine</a> and certainly never <code>.run()</code> (or <code>.poll()</code> or ...) it.</p>
 <p >In the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> pattern the user's outside event loop is responsible for awaiting readability/writability of a guy like <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__sender__impl.html#a63f5f55ad38aecc5195a93bccaf23014" title="Read-end of IPC-pipe used by thread U to detect that a thread-W transmissibility-wait has completed,...">m_mq_ready_reader</a> via our exporting of its <code>.native_handle()</code>.</p>
 <p >Never touched if <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#ac2c0b560893c6a8b71aac0e748770076" title="true if and only if native_handle() method exists, and the returned value may be waited-on by poll()/...">Persistent_mq_handle::S_HAS_NATIVE_HANDLE</a>.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>Consider using specialization instead of or in addition <code>if constexpr()</code> w/r/t <code>Mq::S_HAS_NATIVE_HANDLE</code>-based compile-time branching: it could save some RAM by eliminating <code>optional</code>s such as the one near this to-do; though code would likely become wordier. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Consider using specialization instead of or in addition <code>if constexpr()</code> w/r/t <code>Mq::S_HAS_NATIVE_HANDLE</code>-based compile-time branching: it could save some RAM by eliminating <code>optional</code>s such as the one near this to-do; though code would likely become wordier. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00456">456</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html">blob_stream_mq_snd_impl.hpp</a>.</p>
 
@@ -1798,7 +1798,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 23 2024 04:22:11 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Mon Feb 26 2024 02:12:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

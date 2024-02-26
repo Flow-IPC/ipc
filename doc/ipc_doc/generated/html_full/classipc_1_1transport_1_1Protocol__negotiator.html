@@ -105,6 +105,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a427c54f57df581027a330eb0f7146904"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a427c54f57df581027a330eb0f7146904">Protocol_negotiator</a> (flow::log::Logger *logger_ptr, <a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> nickname, <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592">proto_ver_t</a> local_max_proto_ver, <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592">proto_ver_t</a> local_min_proto_ver)</td></tr>
 <tr class="memdesc:a427c54f57df581027a330eb0f7146904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a comm pathway's negotiator object in initial state wherein: (1) <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc" title="Returns S_VER_UNKNOWN before compute_negotiated_proto_ver(); then either the positive version of the ...">negotiated_proto_ver()</a> returns <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#aa7e47f4f6a700aeaa9600a5426a17292" title="A proto_ver_t value, namely a negative one, which is a reserved value indicating &quot;unknown version&quot;; i...">S_VER_UNKNOWN</a> (not yet negotiated with opposing <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html" title="A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state ma...">Protocol_negotiator</a>); and (2) we've not yet sent <code>local_max_proto_ver</code> to opposing side via first being queried using <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a54480f0849ddb5635302b42ed87c43af" title="To be called at most once, this returns local_max_proto_ver from ctor the first time and S_VER_UNKNOW...">local_max_proto_ver_for_sending()</a>.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#a427c54f57df581027a330eb0f7146904">More...</a><br /></td></tr>
 <tr class="separator:a427c54f57df581027a330eb0f7146904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4a1edcf2f1a0ae3e86b2ab93b71da0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#ae4a1edcf2f1a0ae3e86b2ab93b71da0f">Protocol_negotiator</a> (const <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;src)</td></tr>
+<tr class="memdesc:ae4a1edcf2f1a0ae3e86b2ab93b71da0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy-constructs <code>*this</code> to be equal to <code>src</code> object.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#ae4a1edcf2f1a0ae3e86b2ab93b71da0f">More...</a><br /></td></tr>
+<tr class="separator:ae4a1edcf2f1a0ae3e86b2ab93b71da0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb1b9e12cdfaa702c8a81b7ff81f1801"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#aeb1b9e12cdfaa702c8a81b7ff81f1801">Protocol_negotiator</a> (<a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&amp;src)</td></tr>
+<tr class="memdesc:aeb1b9e12cdfaa702c8a81b7ff81f1801"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move-constructs <code>*this</code> to be equal to <code>src</code>, while <code>src</code> becomes as-if defaulted-cted.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#aeb1b9e12cdfaa702c8a81b7ff81f1801">More...</a><br /></td></tr>
+<tr class="separator:aeb1b9e12cdfaa702c8a81b7ff81f1801"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae24b3bd8550a2f9ab0d728cb1832d4f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#ae24b3bd8550a2f9ab0d728cb1832d4f5">operator=</a> (const <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;src)</td></tr>
+<tr class="memdesc:ae24b3bd8550a2f9ab0d728cb1832d4f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy-assigns <code>*this</code> to be equal to <code>src</code>.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#ae24b3bd8550a2f9ab0d728cb1832d4f5">More...</a><br /></td></tr>
+<tr class="separator:ae24b3bd8550a2f9ab0d728cb1832d4f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d141a0758b4d0fb51f43cefb76234a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a3d141a0758b4d0fb51f43cefb76234a6">operator=</a> (<a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&amp;src)</td></tr>
+<tr class="memdesc:a3d141a0758b4d0fb51f43cefb76234a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move-assigns <code>*this</code> to be equal to <code>src</code>, while <code>src</code> becomes as-if just constructed; or no-op if <code>&amp;src == this</code>.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#a3d141a0758b4d0fb51f43cefb76234a6">More...</a><br /></td></tr>
+<tr class="separator:a3d141a0758b4d0fb51f43cefb76234a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9596a28f6379b209ec1e7efcc58b8adc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592">proto_ver_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc">negotiated_proto_ver</a> () const</td></tr>
 <tr class="memdesc:a9596a28f6379b209ec1e7efcc58b8adc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>S_VER_UNKNOWN</code> before <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a6e55a4ee1033bf98123cedd10e5726cb" title="Based on the presumably-just-received-from-opposing-side value of their local_max_proto_ver,...">compute_negotiated_proto_ver()</a>; then either the positive version of the protocol we shall speak subsequently, or <code>S_VER_UNSUPPORTED</code> if the two sides are incompatible.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc">More...</a><br /></td></tr>
 <tr class="separator:a9596a28f6379b209ec1e7efcc58b8adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,7 +160,7 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state machine, helps negotiate the protocol version to speak over that pathway, given each side being capable of speaking a range of protocol versions and reporting the highest such version to the other side. </p>
 <p >By <em>comm pathway</em> we mean a bidirectional communication channel of some sort with two mutually-opposing endpoints (it need not be full-duplex).</p>
-<p >It is trivially copyable and movable, so that containing object can be copyable and movable too.</p>
+<p >It is copyable and movable, so that the containing object can be copyable and movable too. A moved-from <code>*this</code> becomes as-if it was just constructed.</p>
 <p >The algorithm followed is quite straightforward and is exposed completely in the contract of this simple API: The impetus behind this class is not for it to be able to perform some complex <code>private</code> operations but rather to provide a reusable component that both internal and (optionally) user code can reliably count on to apply the same consistent rules. So while it does some minimal work, its main value is in presenting a common algorithm that (1) achieves protocol negotiation and (2) doesn't shoot ourselves in the foot in the face of future protocol changes.</p>
 <h3>The algorithm</h3>
 <p >A <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html" title="A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state ma...">Protocol_negotiator</a> <code>*this</code> assumes it is used by a single open comm pathway's local endpoint, and that a logically-equivalent <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html" title="A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state ma...">Protocol_negotiator</a> (or equivalent sofwatre) is used in symmetrical fashion by the opposide side's endpoint. (For example, a <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a> in PEER state uses a <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html" title="A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state ma...">Protocol_negotiator</a> internally, and it therefore assumes the opposing <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a> does the same.)</p>
@@ -243,7 +255,7 @@ Private Attributes</h2></td></tr>
 <h3>Thread safety</h3>
 <p >For the same <code>*this</code>, the standard default assumptions apply (mutating access disallowed concurrently with any other access) with the following potentially important exception: <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a54480f0849ddb5635302b42ed87c43af" title="To be called at most once, this returns local_max_proto_ver from ctor the first time and S_VER_UNKNOW...">local_max_proto_ver_for_sending()</a> can be executed concurrently with any other API except itself. In other words, the outgoing-direction (<a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a54480f0849ddb5635302b42ed87c43af" title="To be called at most once, this returns local_max_proto_ver from ctor the first time and S_VER_UNKNOW...">local_max_proto_ver_for_sending()</a>) and incoming-direction work (<a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a6e55a4ee1033bf98123cedd10e5726cb" title="Based on the presumably-just-received-from-opposing-side value of their local_max_proto_ver,...">compute_negotiated_proto_ver()</a>, <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc" title="Returns S_VER_UNKNOWN before compute_negotiated_proto_ver(); then either the positive version of the ...">negotiated_proto_ver()</a>) can be safely performed independently/concurrently w/r/t each other. </p>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00188">188</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00189">189</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a35fb3885d39f11d0c1f7860e64194592" name="a35fb3885d39f11d0c1f7860e64194592"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a35fb3885d39f11d0c1f7860e64194592">&#9670;&nbsp;</a></span>proto_ver_t</h2>
@@ -259,13 +271,13 @@ Private Attributes</h2></td></tr>
 
 <p>Type sufficient to store a protocol version; positive values identify newer versions of a protocol; while non-positive values S_VER_UNKNOWN and S_VER_UNSUPPORTED are special values. </p>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00198">198</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00199">199</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a427c54f57df581027a330eb0f7146904" name="a427c54f57df581027a330eb0f7146904"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a427c54f57df581027a330eb0f7146904">&#9670;&nbsp;</a></span>Protocol_negotiator()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a427c54f57df581027a330eb0f7146904">&#9670;&nbsp;</a></span>Protocol_negotiator() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -323,7 +335,77 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00027">27</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="protocol__negotiator_8hpp_source.html#l00313">m_local_max_proto_ver</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00316">m_local_min_proto_ver</a>, and <a class="el" href="protocol__negotiator_8hpp_source.html#l00310">m_nickname</a>.</p>
+<p class="reference">References <a class="el" href="protocol__negotiator_8hpp_source.html#l00349">m_local_max_proto_ver</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00352">m_local_min_proto_ver</a>, and <a class="el" href="protocol__negotiator_8hpp_source.html#l00346">m_nickname</a>.</p>
+
+</div>
+</div>
+<a id="ae4a1edcf2f1a0ae3e86b2ab93b71da0f" name="ae4a1edcf2f1a0ae3e86b2ab93b71da0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4a1edcf2f1a0ae3e86b2ab93b71da0f">&#9670;&nbsp;</a></span>Protocol_negotiator() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ipc::transport::Protocol_negotiator::Protocol_negotiator </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy-constructs <code>*this</code> to be equal to <code>src</code> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Source object. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aeb1b9e12cdfaa702c8a81b7ff81f1801" name="aeb1b9e12cdfaa702c8a81b7ff81f1801"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb1b9e12cdfaa702c8a81b7ff81f1801">&#9670;&nbsp;</a></span>Protocol_negotiator() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ipc::transport::Protocol_negotiator::Protocol_negotiator </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Move-constructs <code>*this</code> to be equal to <code>src</code>, while <code>src</code> becomes as-if defaulted-cted. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Moved-from object that becomes as-if default-cted. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00046">46</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#ae24b3bd8550a2f9ab0d728cb1832d4f5">operator=()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1Protocol__negotiator_aeb1b9e12cdfaa702c8a81b7ff81f1801_cgraph.svg" width="406" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
@@ -375,11 +457,11 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>false</code> if pre-condition was <code><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc" title="Returns S_VER_UNKNOWN before compute_negotiated_proto_ver(); then either the positive version of the ...">negotiated_proto_ver()</a> != S_VER_UNKNOWN</code>, so we no-oped; <code>true</code> otherwise (unless exception thrown, only if <code>err_code == nullptr</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00054">54</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00073">73</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="protocol__negotiator_8cpp_source.html#l00054">compute_negotiated_proto_ver()</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00313">m_local_max_proto_ver</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00316">m_local_min_proto_ver</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00322">m_negotiated_proto_ver</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00310">m_nickname</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00049">negotiated_proto_ver()</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a41cb789a6a5da26e1f72139206cb9adf">ipc::transport::error::S_PROTOCOL_NEGOTIATION_OPPOSING_VER_INVALID</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a594bf33052a89403c734f24428007c80">ipc::transport::error::S_PROTOCOL_NEGOTIATION_OPPOSING_VER_TOO_OLD</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00214">S_VER_UNKNOWN</a>, and <a class="el" href="protocol__negotiator_8hpp_source.html#l00207">S_VER_UNSUPPORTED</a>.</p>
+<p class="reference">References <a class="el" href="protocol__negotiator_8cpp_source.html#l00073">compute_negotiated_proto_ver()</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00349">m_local_max_proto_ver</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00352">m_local_min_proto_ver</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00358">m_negotiated_proto_ver</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00346">m_nickname</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00068">negotiated_proto_ver()</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a41cb789a6a5da26e1f72139206cb9adf">ipc::transport::error::S_PROTOCOL_NEGOTIATION_OPPOSING_VER_INVALID</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a594bf33052a89403c734f24428007c80">ipc::transport::error::S_PROTOCOL_NEGOTIATION_OPPOSING_VER_TOO_OLD</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00215">S_VER_UNKNOWN</a>, and <a class="el" href="protocol__negotiator_8hpp_source.html#l00208">S_VER_UNSUPPORTED</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00054">compute_negotiated_proto_ver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00073">compute_negotiated_proto_ver()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -414,9 +496,9 @@ Here is the caller graph for this function:</div>
 <p >Tip: It's a reasonable tactic to call this when about to send any out-message; if it returns <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#aa7e47f4f6a700aeaa9600a5426a17292" title="A proto_ver_t value, namely a negative one, which is a reserved value indicating &quot;unknown version&quot;; i...">S_VER_UNKNOWN</a>, then you've already sent it and don't need to do so now; otherwise encode this value before/with the out-message and send it.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. Either a positive version number or <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#aa7e47f4f6a700aeaa9600a5426a17292" title="A proto_ver_t value, namely a negative one, which is a reserved value indicating &quot;unknown version&quot;; i...">S_VER_UNKNOWN</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00112">112</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00131">131</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="protocol__negotiator_8hpp_source.html#l00313">m_local_max_proto_ver</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00319">m_local_max_proto_ver_sent</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00310">m_nickname</a>, and <a class="el" href="protocol__negotiator_8hpp_source.html#l00214">S_VER_UNKNOWN</a>.</p>
+<p class="reference">References <a class="el" href="protocol__negotiator_8hpp_source.html#l00349">m_local_max_proto_ver</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00355">m_local_max_proto_ver_sent</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00346">m_nickname</a>, and <a class="el" href="protocol__negotiator_8hpp_source.html#l00215">S_VER_UNKNOWN</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00028">ipc::transport::sync_io::Native_socket_stream::Impl::start_send_native_handle_ops()</a>.</p>
 <div class="dynheader">
@@ -446,15 +528,95 @@ Here is the caller graph for this function:</div>
 <p>Returns <code>S_VER_UNKNOWN</code> before <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a6e55a4ee1033bf98123cedd10e5726cb" title="Based on the presumably-just-received-from-opposing-side value of their local_max_proto_ver,...">compute_negotiated_proto_ver()</a>; then either the positive version of the protocol we shall speak subsequently, or <code>S_VER_UNSUPPORTED</code> if the two sides are incompatible. </p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00049">49</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00068">68</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="protocol__negotiator_8hpp_source.html#l00322">m_negotiated_proto_ver</a>.</p>
+<p class="reference">References <a class="el" href="protocol__negotiator_8hpp_source.html#l00358">m_negotiated_proto_ver</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00054">compute_negotiated_proto_ver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00073">compute_negotiated_proto_ver()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1Protocol__negotiator_a9596a28f6379b209ec1e7efcc58b8adc_icgraph.svg" width="416" height="83"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="ae24b3bd8550a2f9ab0d728cb1832d4f5" name="ae24b3bd8550a2f9ab0d728cb1832d4f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae24b3bd8550a2f9ab0d728cb1832d4f5">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp; ipc::transport::Protocol_negotiator::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy-assigns <code>*this</code> to be equal to <code>src</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Source object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>*this</code>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00051">operator=()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00046">Protocol_negotiator()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1Protocol__negotiator_ae24b3bd8550a2f9ab0d728cb1832d4f5_icgraph.svg" width="406" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a3d141a0758b4d0fb51f43cefb76234a6" name="a3d141a0758b4d0fb51f43cefb76234a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d141a0758b4d0fb51f43cefb76234a6">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp; ipc::transport::Protocol_negotiator::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Move-assigns <code>*this</code> to be equal to <code>src</code>, while <code>src</code> becomes as-if just constructed; or no-op if <code>&amp;src == this</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Moved-from object that becomes as-if just-cted, unless it is <code>*this</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>*this</code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00051">51</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#ae24b3bd8550a2f9ab0d728cb1832d4f5">operator=()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1Protocol__negotiator_a3d141a0758b4d0fb51f43cefb76234a6_cgraph.svg" width="355" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -478,9 +640,9 @@ Here is the caller graph for this function:</div>
 <p>Resets the negotiation state, meaning back to the state as-if just after ctor invoked. </p>
 <p >Hence: <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc" title="Returns S_VER_UNKNOWN before compute_negotiated_proto_ver(); then either the positive version of the ...">negotiated_proto_ver()</a> yields <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#aa7e47f4f6a700aeaa9600a5426a17292" title="A proto_ver_t value, namely a negative one, which is a reserved value indicating &quot;unknown version&quot;; i...">S_VER_UNKNOWN</a>, while <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a54480f0849ddb5635302b42ed87c43af" title="To be called at most once, this returns local_max_proto_ver from ctor the first time and S_VER_UNKNOW...">local_max_proto_ver_for_sending()</a> would yield not-<code>S_VER_UNKNOWN</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00043">43</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8cpp_source.html#l00062">62</a> of file <a class="el" href="protocol__negotiator_8cpp_source.html">protocol_negotiator.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="protocol__negotiator_8hpp_source.html#l00319">m_local_max_proto_ver_sent</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00322">m_negotiated_proto_ver</a>, and <a class="el" href="protocol__negotiator_8hpp_source.html#l00214">S_VER_UNKNOWN</a>.</p>
+<p class="reference">References <a class="el" href="protocol__negotiator_8hpp_source.html#l00355">m_local_max_proto_ver_sent</a>, <a class="el" href="protocol__negotiator_8hpp_source.html#l00358">m_negotiated_proto_ver</a>, and <a class="el" href="protocol__negotiator_8hpp_source.html#l00215">S_VER_UNKNOWN</a>.</p>
 
 </div>
 </div>
@@ -507,9 +669,9 @@ Here is the caller graph for this function:</div>
 
 <p><code>local_max_proto_ver</code> from ctor. Not <code>const</code> so as to support copyability. </p>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00313">313</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00349">349</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00054">compute_negotiated_proto_ver()</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00112">local_max_proto_ver_for_sending()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00027">Protocol_negotiator()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00073">compute_negotiated_proto_ver()</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00131">local_max_proto_ver_for_sending()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00027">Protocol_negotiator()</a>.</p>
 
 </div>
 </div>
@@ -535,9 +697,9 @@ Here is the caller graph for this function:</div>
 
 <p>Init value <code>false</code> indicating has <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a54480f0849ddb5635302b42ed87c43af" title="To be called at most once, this returns local_max_proto_ver from ctor the first time and S_VER_UNKNOW...">local_max_proto_ver_for_sending()</a> has not been called; subsequently <code>true</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00319">319</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00355">355</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00112">local_max_proto_ver_for_sending()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00043">reset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00131">local_max_proto_ver_for_sending()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00062">reset()</a>.</p>
 
 </div>
 </div>
@@ -563,9 +725,9 @@ Here is the caller graph for this function:</div>
 
 <p><code>local_min_proto_ver</code> from ctor. Not <code>const</code> so as to support copyability. </p>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00316">316</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00352">352</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00054">compute_negotiated_proto_ver()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00027">Protocol_negotiator()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00073">compute_negotiated_proto_ver()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00027">Protocol_negotiator()</a>.</p>
 
 </div>
 </div>
@@ -591,9 +753,9 @@ Here is the caller graph for this function:</div>
 
 <p>See <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a9596a28f6379b209ec1e7efcc58b8adc" title="Returns S_VER_UNKNOWN before compute_negotiated_proto_ver(); then either the positive version of the ...">negotiated_proto_ver()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00322">322</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00358">358</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00054">compute_negotiated_proto_ver()</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00049">negotiated_proto_ver()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00043">reset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00073">compute_negotiated_proto_ver()</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00068">negotiated_proto_ver()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00062">reset()</a>.</p>
 
 </div>
 </div>
@@ -619,9 +781,9 @@ Here is the caller graph for this function:</div>
 
 <p>The <code>nickname</code> from ctor. Not <code>const</code> so as to support copyability. </p>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00310">310</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00346">346</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00054">compute_negotiated_proto_ver()</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00112">local_max_proto_ver_for_sending()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00027">Protocol_negotiator()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00073">compute_negotiated_proto_ver()</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00131">local_max_proto_ver_for_sending()</a>, and <a class="el" href="protocol__negotiator_8cpp_source.html#l00027">Protocol_negotiator()</a>.</p>
 
 </div>
 </div>
@@ -648,9 +810,9 @@ Here is the caller graph for this function:</div>
 <p>A <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592" title="Type sufficient to store a protocol version; positive values identify newer versions of a protocol; w...">proto_ver_t</a> value, namely a negative one, which is a reserved value indicating "unknown version"; it is not a valid version number identifying a protocol that can actually be spoken by relevant software. </p>
 <p >Its specific meaning is identified specifically where it might be returned or taken by the API. </p>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00214">214</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00215">215</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00054">compute_negotiated_proto_ver()</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00112">local_max_proto_ver_for_sending()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03236">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_on_async_read_proto_neg_msg()</a>, <a class="el" href="native__socket__stream__impl__rcv_8cpp_source.html#l00348">ipc::transport::sync_io::Native_socket_stream::Impl::rcv_on_handle_finalized()</a>, <a class="el" href="native__socket__stream__impl__rcv_8cpp_source.html#l00440">ipc::transport::sync_io::Native_socket_stream::Impl::rcv_on_head_payload()</a>, <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00902">ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::read_msg()</a>, <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8cpp_source.html#l00112">ipc::transport::sync_io::Native_socket_stream::Impl::release()</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00043">reset()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04573">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::send_proto_neg()</a>, <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00823">ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_handle &gt;::start_send_blob_ops()</a>, and <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00028">ipc::transport::sync_io::Native_socket_stream::Impl::start_send_native_handle_ops()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00073">compute_negotiated_proto_ver()</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00131">local_max_proto_ver_for_sending()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03236">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_on_async_read_proto_neg_msg()</a>, <a class="el" href="native__socket__stream__impl__rcv_8cpp_source.html#l00348">ipc::transport::sync_io::Native_socket_stream::Impl::rcv_on_handle_finalized()</a>, <a class="el" href="native__socket__stream__impl__rcv_8cpp_source.html#l00440">ipc::transport::sync_io::Native_socket_stream::Impl::rcv_on_head_payload()</a>, <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00902">ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::read_msg()</a>, <a class="el" href="protocol__negotiator_8cpp_source.html#l00062">reset()</a>, <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8cpp_source.html#l00112">ipc::transport::sync_io::Native_socket_stream::Impl::reset_sync_io_setup()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04573">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::send_proto_neg()</a>, <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00823">ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_handle &gt;::start_send_blob_ops()</a>, and <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00028">ipc::transport::sync_io::Native_socket_stream::Impl::start_send_native_handle_ops()</a>.</p>
 
 </div>
 </div>
@@ -677,9 +839,9 @@ Here is the caller graph for this function:</div>
 <p>A <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592" title="Type sufficient to store a protocol version; positive values identify newer versions of a protocol; w...">proto_ver_t</a> value, namely zero, which is a reserved value indicating "unsupported version"; it is not a valid version number identifying a protocol that can actually be spoken by relevant software. </p>
 <p >Its specific meaning is identified specifically where it might be returned or taken by the API. </p>
 
-<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00207">207</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="protocol__negotiator_8hpp_source.html#l00208">208</a> of file <a class="el" href="protocol__negotiator_8hpp_source.html">protocol_negotiator.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00054">compute_negotiated_proto_ver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="protocol__negotiator_8cpp_source.html#l00073">compute_negotiated_proto_ver()</a>.</p>
 
 </div>
 </div>
@@ -690,7 +852,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 23 2024 04:22:11 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Mon Feb 26 2024 02:12:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

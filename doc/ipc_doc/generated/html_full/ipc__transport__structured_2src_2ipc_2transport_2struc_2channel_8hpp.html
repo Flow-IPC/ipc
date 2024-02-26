@@ -150,7 +150,7 @@ Macros</h2></td></tr>
 <p >Convenience macro for <em>this</em> file only: non-inline class template methods are hideous to read (+ write), when there are so many template parameters. These are <code>undef</code>-ed at the end of the file.</p>
 <h3>Doxygen notes</h3>
 <p >Ideally these would not output Doxygen documentation, but then Doxygen produces a warning which we cannot accept. <code>cond</code> + <code>endcond</code> Doxygen directives can easily make Doxygen ignore them; but then another problem pops up: It sees the method bodies and gets confused by what it sees as non-existent class name <code>CLASS_...</code> and warns about <em>that</em>. The Doxyfile <code>MACRO_EXPANSION = YES</code> tag setting eliminates that problem &ndash; but then <code>cond</code> + <code>endcond</code> around this makes it also ignore the <code>"#define"</code> which brings back the latter warning. Hence, as far as we can tell with Doxygen 1.9.3, no choice but to Doxygen-document these.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000026">Todo:</a></b></dt><dd>Look over the rest of the code base &ndash; possibly in Flow too &ndash; and apply the <code>define TEMPLATE_</code><ul>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000025">Todo:</a></b></dt><dd>Look over the rest of the code base &ndash; possibly in Flow too &ndash; and apply the <code>define TEMPLATE_</code><ul>
 <li><code>define CLASS_</code> technique where it'd be subjectively beneficial. </li>
 </ul>
 </dd></dl>
@@ -162,7 +162,7 @@ Macros</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 23 2024 04:22:10 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Mon Feb 26 2024 02:12:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

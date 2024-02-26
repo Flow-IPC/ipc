@@ -262,7 +262,7 @@ $(function() {
 <div class="line">}; <span class="comment">// class Process</span></div>
 <div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Session__server_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">ipc::session::shm::classic::Session_server</a></div><div class="ttdoc">This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...</div><div class="ttdef"><b>Definition:</b> session_server.hpp:74</div></div>
 <div class="ttc" id="anamespaceipc_1_1session_1_1error_html_a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed"><div class="ttname"><a href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed">ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a></div><div class="ttdeci">@ S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</div><div class="ttdoc">Async completion handler is being called prematurely, because underlying object is shutting down,...</div></div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> common.hpp:296</div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> common.hpp:297</div></div>
 </div><!-- fragment --><p >To summarize: There are concurrent algorithms in play here, executing in interleaved async fashion via thread U (<code>m_worker</code>):</p><ul>
 <li>First, initialize IPC universe description; and start <code>Session_server m_session_srv</code>. Then begin loop:</li>
 <li>Algorithm 1 (one running throughout): Ask <code>m_session_srv</code> to accept the next session in the background. Once ready, give it to algorithm 2; and repeat.<ul>
@@ -542,7 +542,7 @@ $(function() {
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 23 2024 04:22:07 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Mon Feb 26 2024 02:12:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
