@@ -109,10 +109,10 @@ jobs:
         with:
           sparse-checkout: VERSION
           fetch-depth: 0 # Get all history regarding tags.  We'll need that for VERSION checking below.
-      - name: Grab version in `VERSION` file in repository
+      - name: Grab repository version from `VERSION` file
         id: repo_version
         run: |
-          # Grab version in `VERSION` file in repository
+          # Grab repository version from `VERSION` file.
           if [ ! -e VERSION ]; then
             echo '::error ::No VERSION file in repository root.  One must exist.'
             exit 1
