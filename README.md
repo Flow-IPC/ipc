@@ -296,14 +296,14 @@ pretty easy to have this Flow-IPC meta-project work with such a source tree.  Th
       a Flow-IPC `*_full.tar.gz` or `*_full.zip` archive,
       you can rename or delete the existing `./flow` before setting the symlink.
   - You can specify a different Flow project root entirely; use the CMake knob (cache setting) named
-    `IPC_META_ROOT_flow` to specify the path to this directory.  So `cmake -DIPC_META_ROOT_flow=...`
+    `FLOW_LIKE_META_ROOT_flow` to specify the path to this directory.  So `cmake -DFLOW_LIKE_META_ROOT_flow=...`
     (or `ccmake ...same...`).
     - In this case `./flow` will be ignored (whether or not it exists).
 
 Actually, one can use either of those 2 technique for some or all of the
 `ipc_{core|transport_structured|session|shm|shm_arena_lend}` sub-projects as well.
-The symlink or cache-setting name would be not `flow` or `IPC_META_ROOT_flow` but instead
-`ipc_{...|...|...|...|...}` or `IPC_META_ROOT_ipc_{...|...|...|...|...}`, respectively,
+The symlink or cache-setting name would be not `flow` or `FLOW_LIKE_META_ROOT_flow` but instead
+`ipc_{...|...|...|...|...}` or `FLOW_LIKE_META_ROOT_ipc_{...|...|...|...|...}`, respectively,
 depending on the sub-project in question.
 
 That said it will only work if it is indeed a bona-fide open-source tree with a root `CMakeLists.txt`

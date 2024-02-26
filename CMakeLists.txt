@@ -28,14 +28,12 @@ set(PROJ_CAMEL "Ipc")
 set(PROJ_VERSION "1.0.0")
 set(PROJ_HUMAN "Flow-IPC")
 
-project(${PROJ_CAMEL} VERSION ${PROJ_VERSION} LANGUAGES CXX)
-
 # The children below rely on this being set and its value to detect they're part of the meta-project,
 # as opposed to being loaded separately, and then to load needed things off this place.
 # So in *nix setting this indicates to each kid below that they're a part of one big `make`.
 # (Whereas otherwise each kid is on its own and assumes the all its dependencies have had `make` and `make install`
 # done, and the exported stuff is somewhere the `make` will know to search.)
-set(IPC_META_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+set(FLOW_LIKE_META_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
 # The following might be a little tough to realize if looking through multiple layers of CMake scripts, so
 # for your convenience let's summarize how we do the whole thing.
@@ -99,27 +97,30 @@ foreach(ipc_meta_project ${IPC_META_PROJECTS})
       set(ipc_meta_project_dir "<unknown>")
     endif()
 
-    set(IPC_META_ROOT_${ipc_meta_project} ${ipc_meta_project_dir} CACHE STRING
+    set(FLOW_LIKE_META_ROOT_${ipc_meta_project} ${ipc_meta_project_dir} CACHE STRING
         "Location of sub-project [${ipc_meta_project}]; defaults to resolved [./${ipc_meta_project}] if exists.")
 
-    if(NOT (EXISTS ${IPC_META_ROOT_${ipc_meta_project}}))
-      message(FATAL_ERROR "[${IPC_META_ROOT_${ipc_meta_project}}] does not exist.  Therefore: "
-                            "Unable to determine IPC_META_ROOT_${ipc_meta_project}; either symlink "
+    if(NOT (EXISTS ${FLOW_LIKE_META_ROOT_${ipc_meta_project}}))
+      message(FATAL_ERROR "[${FLOW_LIKE_META_ROOT_${ipc_meta_project}}] does not exist.  Therefore: "
+                            "Unable to determine FLOW_LIKE_META_ROOT_${ipc_meta_project}; either symlink "
                             "[./${ipc_meta_project}], place sub-project there directly, or set "
                             "cache setting explicitly.  You may need to now clear cache (or blow away build) "
                             "for the symlink or direct-placement methods to work.")
     endif()
 
     list(POP_BACK CMAKE_MESSAGE_INDENT)
-    message(CHECK_PASS "(Path = [${IPC_META_ROOT_${ipc_meta_project}}]; it exists.)")
+    message(CHECK_PASS "(Path = [${FLOW_LIKE_META_ROOT_${ipc_meta_project}}]; it exists.)")
   endblock()
 endforeach()
 
-# Got through that; now actually do the add_subdirectory()s.  Output/error handling is crisper this way than doing
-# add_subdirectory() within the above loop.
+include("${FLOW_LIKE_META_ROOT_flow}/tools/cmake/FlowLikeProject.cmake") # Determine $PROJ_VERSION, at least.
+project(${PROJ_CAMEL} VERSION ${PROJ_VERSION} DESCRIPTION ${PROJ_HUMAN} LANGUAGES CXX)
+
+# Got through that; now actually do the add_subdirectory()s.  This needs to below the project() call just above.
+# (Also, output/error handling is crisper this way than doing add_subdirectory() within the above loop.)
 foreach(ipc_meta_project ${IPC_META_PROJECTS})
   # Finally!  Note in the build output the name is normalized to simply ${ipc_meta_project} (e.g., "flow").
-  add_subdirectory(${IPC_META_ROOT_${ipc_meta_project}} ${ipc_meta_project})
+  add_subdirectory(${FLOW_LIKE_META_ROOT_${ipc_meta_project}} ${ipc_meta_project})
 endforeach()
 
 # Going back to the summary comment, we're now done with the sub-projects' code generation and, where applicable,
@@ -129,14 +130,14 @@ endforeach()
 # that would also get built just as for each of the IPC_META_PROJECTs.  We'd still just need the following line;
 # no changes.)
 
-include("${IPC_META_ROOT_flow}/tools/cmake/FlowLikeCodeGenerate.cmake")
+include("${FLOW_LIKE_META_ROOT_flow}/tools/cmake/FlowLikeCodeGenerate.cmake")
 
 # As noted in the summary FlowLikeCodeGenerate.cmake does not do doc generation.
 # FlowLikeDocGenerate.cmake does that; and it's up to each project root CMake script to include() it.
 # So let's do it, much like flow/CMakeLists.txt (which handles its own docs) does.
 
 # See this guy; it'll explain inside.  It mandates the following procedure and documents details.
-set(DOC_GEN_CMAKE_SCRIPT "${IPC_META_ROOT_flow}/tools/cmake/FlowLikeDocGenerate.cmake")
+set(DOC_GEN_CMAKE_SCRIPT "${FLOW_LIKE_META_ROOT_flow}/tools/cmake/FlowLikeDocGenerate.cmake")
 
 # It may also be instructive to contrast with `flow`'s CMakeLists.txt.
 #   - Flow has its own self-contained doc generation, though it uses the same FlowLikeDocGenerate utility.
@@ -146,11 +147,11 @@ set(DOC_GEN_CMAKE_SCRIPT "${IPC_META_ROOT_flow}/tools/cmake/FlowLikeDocGenerate.
 #     - Therefore you see src/doc/manual, which lives directly inside this meta-project as opposed to any kid.
 
 set(DOC_INPUT
-    ${IPC_META_ROOT_ipc_core}/src/ipc
-    ${IPC_META_ROOT_ipc_transport_structured}/src/ipc
-    ${IPC_META_ROOT_ipc_session}/src/ipc
-    ${IPC_META_ROOT_ipc_shm}/src/ipc
-    ${IPC_META_ROOT_ipc_shm_arena_lend}/src/ipc
+    ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc
+    ${FLOW_LIKE_META_ROOT_ipc_transport_structured}/src/ipc
+    ${FLOW_LIKE_META_ROOT_ipc_session}/src/ipc
+    ${FLOW_LIKE_META_ROOT_ipc_shm}/src/ipc
+    ${FLOW_LIKE_META_ROOT_ipc_shm_arena_lend}/src/ipc
     src/doc/manual)
 
 # For now I (ygoldfel) am excluding echan's SHM-jemalloc stuff which *has* been integrated into Flow-IPC
