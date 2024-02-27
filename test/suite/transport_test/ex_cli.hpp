@@ -185,7 +185,7 @@ void CLASS::client_connect_one()
 
   m_init_chans_cli.resize(1); // Expect 1.
   Error_code err_code;
-  const bool ok = m_ses.sync_connect(m_ses.mdt_builder(), &m_init_chans_cli, nullptr, nullptr, &err_code);
+  const bool ok = m_ses.core()->sync_connect(m_ses.mdt_builder(), &m_init_chans_cli, nullptr, nullptr, &err_code);
   ASSERT(ok);
   if (!err_code)
   {
@@ -262,10 +262,10 @@ void CLASS::client_connect_2()
   auto mdt_cli = m_ses.mdt_builder();
   mdt_cli->initPayload().setNumChansYouWant(0); // They're gonna verify this contrived thing.
   Error_code err_code;
-  const bool ok = m_ses.sync_connect(m_ses.mdt_builder(), nullptr, // Open 0 from cli.
-                                     &m_mdt_srv, // Do get some mdt.
-                                     nullptr, // Open 0 from srv (consistent with mdt_cli payload).
-                                     &err_code);
+  const bool ok = m_ses.core()->sync_connect(m_ses.mdt_builder(), nullptr, // Open 0 from cli.
+                                             &m_mdt_srv, // Do get some mdt.
+                                             nullptr, // Open 0 from srv (consistent with mdt_cli payload).
+                                             &err_code);
   ASSERT(ok);
   if (err_code)
   {
@@ -373,7 +373,7 @@ CLASS::App_session::App_session(Ex_cli* guy, unsigned int test_idx, Task&& i_am_
 
   // Go!
   Error_code err_code;
-  const bool ok = m_ses->sync_connect(mdt_cli, &m_chans_b, &m_mdt_srv, &m_chans_a, &err_code);
+  const bool ok = m_ses->core()->sync_connect(mdt_cli, &m_chans_b, &m_mdt_srv, &m_chans_a, &err_code);
   ASSERT(ok);
   if (err_code)
   {
