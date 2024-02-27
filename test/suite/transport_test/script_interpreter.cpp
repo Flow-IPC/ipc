@@ -33,7 +33,7 @@ namespace
  *   <cmd> <time> <time-units> */
 const util::String_view S_KEYWD_SLEEP = "SLEEP";
 
-/* Test Native_socket_stream::async_connect().  On success load peer into table as 0, 1, ....
+/* Test Native_socket_stream::sync_connect().  On success load peer into table as 0, 1, ....
  *   <cmd> <sh-name> <timeout> <timeout-units> */
 const util::String_view S_KEYWD_SOCK_STREAM_CONNECT = "SOCK_STREAM_CONNECT";
 

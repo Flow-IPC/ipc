@@ -264,7 +264,7 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
     // Wrapping it in std::optional<> or unique_ptr<> may be helpful, depending on what you need to do first.
     flow::async::Single_thread_task_loop m_worker;
 
-    // Accessed from thread U only, this is -- at a given point in time -- either (1) awaiting m_next_session.async_connect()
+    // Accessed from thread U only, this is -- at a given point in time -- either (1) awaiting m_next_session.async_connectXXXsearch-more-in-manual()
     // completion; or (2) empty (as-if default-constructed).
     Session m_next_session;
 
