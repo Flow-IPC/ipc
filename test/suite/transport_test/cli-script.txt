@@ -17,8 +17,8 @@
 
 # Please see "Timeout notes" in srv-script.txt.  Then come back here.
 
-# <cmd> <sh-name> <timeout> <timeout-units>
-SOCK_STREAM_CONNECT _socks_1 50 ms
+# <cmd> <sh-name>
+SOCK_STREAM_CONNECT _socks_1
 # -> stm 0
 
 HNDL_CONNECT_PAIR
@@ -104,7 +104,7 @@ BLOB_STREAM_MQ_BIPC_SEND_END 0 1 0 0 s
 # Channels now.
 
 # Prepare our side of socket stream.
-SOCK_STREAM_CONNECT _socks_1 3 s
+SOCK_STREAM_CONNECT _socks_1
 # -> stm 2
 
 # A brief pause while they create MQs.
@@ -134,7 +134,7 @@ CHAN_BUNDLE_POSIX_RECV 0 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 0 15 ms
 
 # Now bipc instead of POSIX.
 
-SOCK_STREAM_CONNECT _socks_1 1 s
+SOCK_STREAM_CONNECT _socks_1
 # -> stm 3
 SLEEP 100 ms
 CHAN_BUNDLE_BIPC_CREATE _mqd_4 0 3

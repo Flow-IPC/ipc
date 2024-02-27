@@ -685,59 +685,21 @@ void Script_interpreter::cmd_socket_stream_connect()
   using std::string;
 
   const auto abs_name = next_required_typed_value<Shared_name>();
-  const auto timeout = next_required_dur();
 
   FLOW_LOG_INFO("Connecting a Native_socket_stream to [" << abs_name << "].");
 
   Native_socket_stream peer(m_ipc_logger, ostream_op_string("=>", abs_name));
-  bool insta_fail;
-  struct State
+  Error_code err_code;
+  peer.sync_connect(abs_name, &err_code);
+
+  if (err_code)
   {
-    Error_code m_err_code;
-  };
-  boost::shared_ptr<State> state(new State);
-  auto& err_code = state->m_err_code;
+    failed(false, "Connect failed.", err_code);
+  }
+  // else
 
-  // Do this (potentially) async first.
-  auto async_task = [&](const Done_promise& done_promise)
-  {
-    insta_fail = !(peer.async_connect(abs_name,
-                                      [state, done_promise](const Error_code& async_err_code)
-    {
-      state->m_err_code = async_err_code;
-      done_promise->set_value();
-    }));
-    if (insta_fail)
-    {
-      done_promise->set_value(); // Completion handler won't run; we are immediately done.
-    }
-  };
-
-  // If it [a]sync-completes before timeout, then the following will (synchronously) run.
-  test_with_timeout(timeout, async_task, [&]()
-  {
-    if (insta_fail)
-    {
-      failed(false, "Native_socket_stream::async_connect() should have instantly returned initial success, "
-                      "meaning not a wrong-state call; but returned failure instead.");
-    }
-    // else
-
-    if (err_code)
-    {
-      failed(false, "Connect failed.", err_code);
-    }
-    // else
-
-    m_test_sock_streams.emplace_back(new Native_socket_stream(std::move(peer)));
-    // Test Native_socket_stream move ctor, while we're at it. --^
-
-    FLOW_LOG_INFO("Connect to [" << abs_name << "] succeeded yielding "
-                  "peer stream [" << *(m_test_sock_streams.back()) << "]; remote-peer Process_credentials "
-                  "[" << m_test_sock_streams.back()->remote_peer_process_credentials() << "]; "
-                  "handle saved at index [" << (m_test_sock_streams.size() - 1) << "].");
-  });
-  // Otherwise it'll throw which shall unwind stack, hence destroy `peer` (hence join its internal thread(s)).
+  m_test_sock_streams.emplace_back(new Native_socket_stream(std::move(peer)));
+  // Test Native_socket_stream move ctor, while we're at it. --^
 } // Script_interpreter::cmd_socket_stream_connect()
 
 void Script_interpreter::cmd_sleep()
