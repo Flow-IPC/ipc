@@ -43,11 +43,7 @@ int main(int argc, char** argv)
 
   if (argc != 4)
   {
-    if (argc >= 1)
-    {
-      return usage_error(logger, argv[0]);
-    }
-    return usage_exit_code();
+    return usage_error(logger, argv[0]);
   }
 
   int object_type_int;
