@@ -243,7 +243,7 @@ To summarize: There are concurrent algorithms in play here, executing in interle
     - Kicked off in each successful `on_new_session()` invocation.
     - The meat of it is in `process_session()` which we will describe @ref sessions_down "next".
 
-What about the client side?  It is simpler, as there are no concurrent sessions; at most just one at a given time.
+What about the client side?  It is simpler, as there are no concurrent sessions; at most just one at a given time; plus every connect attempt is a straightforward non-blocking call that either immediately succeeds or immediately fails (the latter usually meaning no server is active/listening).
 
   ~~~
   class Process : // In session-client app B.
@@ -264,8 +264,10 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
     // Wrapping it in std::optional<> or unique_ptr<> may be helpful, depending on what you need to do first.
     flow::async::Single_thread_task_loop m_worker;
 
-    // Accessed from thread U only, this is -- at a given point in time -- either (1) awaiting m_next_session.async_connectXXXsearch-more-in-manual()
-    // completion; or (2) empty (as-if default-constructed).
+    // Accessed from thread U only, this is -- at a given point in time, not counting non-blocking synchronous
+    // calls into `Client_session::sync_connect() -- either (1) sitting there empty (as-if default-constructed),
+    // because *m_active_session is currently open; or (2) sitting there empty (as-if default-constructed), because
+    // the last `.sync_connect()` failed (server inactive/not listening), so we're waiting a bit to check again.
     Session m_next_session;
 
     // You'll see in the next section.  This shall encapsulate the active Session and your other IPC-involved algorithms and data.
@@ -284,7 +286,6 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
       m_worker.post([this]()
       {
         // We are in thread U.  From now on we do work here.
-
         open_next_session();
       });
     }
@@ -301,8 +302,8 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
       {
         m_worker.post([this, err_code]()
         {
-          // We'll get into this later; but this is relevant only once m_next_session.async_connect() succeeds.
-          // Spoiler alert: Because the handler must be supplied before async_connect(), we pre-hook-this up;
+          // We'll get into this later; but this is relevant only once m_next_session.sync_connect() succeeds.
+          // Spoiler alert: Because the handler must be supplied before sync_connect(), we pre-hook-this up;
           // but the real handling of the error in an open session will be in App_session m_active_session.
           // We just forward it; otherwise it's not in the purview of class Process:
           m_active_session->on_session_hosed(err_code);
@@ -310,35 +311,28 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
       });
 
       // It's not doing anything; now we attempt connect.  Don't worry; that forwarding error handler does not
-      // matter yet -- only once the async_connect() succeeds.
-      m_next_session.async_connect([this](const Error_code& err_code)
+      // matter yet -- only once the sync_connect() succeeds.
+      Error_code err_code;
+      m_next_session.sync_connect(&err_code); // This is a synchronous, non-blocking call!
+      if (err_code)
       {
-        if (err_code == ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER)
-        {
-          return;
-        }
-        m_worker.post([this, err_code]()
-        {
-          if (err_code)
-          {
-            // async_connect() failed.  Assuming everything is configured okay, this would usually only happen
-            // if the opposing server is currently inactive.  Therefore it's not a great idea to immediately
-            // async_connect() again.  A reasonable plan is to schedule another attempt in 250-1000ms.
-            // If the app need not do anything else in the meantime, it could just this_thread::sleep_*();
-            // otherwise use async scheduling, such as via flow::async's m_worker.schedule_from_now().
-            // Details left as exercise to reader.
+        // sync_connect() failed.  Assuming everything is configured okay, this would only happen
+        // if the opposing server is currently inactive.  Therefore it's not a great idea to immediately
+        // sync_connect() again.  A reasonable plan is to schedule another attempt in 250-5000ms.
+        // If the app need not do anything else in the meantime, it could just this_thread::sleep_*()
+        // between attempts in a loop; otherwise use async scheduling, such as via flow::async's
+        // m_worker.schedule_from_now() or boost.asio's timers.
+        // Details left as exercise to reader.
 
-            // ...;
-            return;
-          }
-          // else: Success!  m_next_session is ready to go.
+        // ...;
+        return;
+      }
+      // else: Success!  m_next_session is ready to go.
 
-          process_session(); // We'll explain what to do inside here, next.
-          // m_next_session is empty (as-if default-cted) again.
-          // It'll stay that way, until the stuff kicked-off in process_session() detects the death of the
-          // Session we just opened.  Then, we'll call open_next_session() again.
-        });
-      });
+      process_session(); // We'll explain what to do inside here, next.
+      // m_next_session is empty (as-if default-cted) again.
+      // It'll stay that way, until the stuff kicked-off in process_session() detects the death of the
+      // Session we just opened.  Then, we'll call open_next_session() again.
     } // open_next_session()
   }; // class Process
   ~~~
@@ -442,7 +436,7 @@ So now all that's left is to hook this up to the rest of `Process`, in each appl
 
     // That's it!  We've already set up m_active_session->on_session_hosed() back in open_next_session().
     // We provided the on-session-closed logic just above.  And in the client-side API the Session is open upon
-    // successful async_connect().  The rest is up to App_session in the mean-time.
+    // successful sync_connect().  The rest is up to App_session in the mean-time.
   }
   ~~~
 

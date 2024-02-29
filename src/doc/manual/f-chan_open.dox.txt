@@ -88,7 +88,7 @@ That said please remember the following limitation:
 In practice this should be more than sufficient for all but the wildest scenarios (in fact exactly 1 such segment should be plenty), as we'll informally show below.
 
 ### Opening init-channels ###
-Simply: you can optionally have N channels available as soon as the session becomes available in opened state (i.e., upon `Client_session::async_connect()` success and `Session_server::async_accept()` success + `Session_server::init_handlers()` sync return).  Then you can immediately begin to use them on either side!
+Simply: you can optionally have N channels available as soon as the session becomes available in opened state (i.e., upon `Client_session::sync_connect()` sync success and `Session_server::async_accept()` success + `Session_server::init_handlers()` sync return).  Then you can immediately begin to use them on either side!
 
 The question is, of course: how many is N, and subsequently which one to use for what purpose.  Naturally the two sides must agree on both aspects, else chaos ensues.  The answer can range from
   - very simple (N=1!); to
@@ -98,12 +98,12 @@ The question is, of course: how many is N, and subsequently which one to use for
 This requires large amounts of flexibility despite involving zero asynchronicity.  What it does *not* require is back-and-forth negotiation.  (If that is truly required, you'll need to consider @ref on_demand "opening on-demand channels".)
 
 So here's how it works in the client->server direction:
-  - Client side uses 2nd overload of @link ipc::session::Client_session::async_connect() Client_session::async_connect()@endlink, specifying how many channels -- call it C -- it wants opened *on behalf of the client*.  C can be zero.  Plus, optionally, via the same overload:
+  - Client side uses 2nd overload of @link ipc::session::Client_session_mv::sync_connect() Client_session::sync_connect()@endlink, specifying how many channels -- call it C -- it wants opened *on behalf of the client*.  C can be zero.  Plus, optionally, via the same overload:
     - client side specifies via a **client-behalf channel-open metadatum** Mc any other information it deems worthwhile -- especially having to do with the nature of the C channels it is mandating be init-opened.
   - As a result:
     - C **client-behalf init-channels** are made available to server side via 2nd overload of @link ipc::session::Session_server::async_accept() Session_server::async_accept()@endlink.
       - **Client-behalf channel-open metadatum** Mc is made available, optionally, alongside those C init-channels.
-    - The same C client-behalf init-channels are made available to client side via `async_connect()` itself, locally.
+    - The same C client-behalf init-channels are made available to client side via `sync_connect()` itself, locally.
 
 The server->client direction is similar but reversed; the data transmitted server->client being specified via 2nd @link ipc::session::Session_server::async_accept() Session_server::async_accept()@endlink overload and, in summary, comprising:
   - S **server-behalf init-channels** and
@@ -129,7 +129,7 @@ The metadata requires a capnp input file whose resulting capnp-generated .c++ fi
   }
   ~~~
 
-We are now ready to make the more-complex `async_connect()` call.  This is a different overload than the one used in the simpler example in @ref session_setup.
+We are now ready to make the more-complex `sync_connect()` call.  This is a different overload than the one used in the simpler example in @ref session_setup.
 
   ~~~
   namespace my_meta_app
@@ -147,32 +147,24 @@ We are now ready to make the more-complex `async_connect()` call.  This is a dif
     // Expected channel-count is specified via the .size() of this vector<Channel>, filled with empty `Channel`s.
     Session::Channels init_channels(boost::lexical_cast<size_t>(argv[1])); // <-- ATTN: runtime config.
 
-    session.async_connect(mdt, // Client-to-server metadata.
-                          &init_channels, // Out-arg for cli->srv init-channels as well as in-arg for how many we want.
-                          nullptr, nullptr, // In our example we expect no srv->cli metadata nor srv->cli init-channels.
-                          [...](const Error_code& err_code)
+    Error_code err_code;
+    session.sync_connect(mdt, // Client-to-server metadata.
+                         &init_channels, // Out-arg for cli->srv init-channels as well as in-arg for how many we want.
+                         nullptr, nullptr, // In our example we expect no srv->cli metadata nor srv->cli init-channels.
+                         &err_code);
+    if (err_code);
     {
-      if (err_code != ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER)
-      {
-        return;
-      }
-      post([..., err_code]()
-      {
-        if (err_code)
-        {
-          // ...
-          return;
-        }
-        // else
+      // ...
+      return;
+    }
+    // else:
 
-        // `session` is open!
-        // `init_channels` are open!  Probably, since we specified num_structured_channels to server, we would
-        // now upgrade that many of leading `init_channels` to a struc::Channel each (exercise left to reader).
+    // `session` is open!
+    // `init_channels` are open!  Probably, since we specified num_structured_channels to server, we would
+    // now upgrade that many of leading `init_channels` to a struc::Channel each (exercise left to reader).
 
-        // Operate on `session` (etc.) in here, long-term, until it is hosed.
-        go_do_ipc_yay(...);
-      });
-    });
+    // Operate on `session` (etc.) in here, long-term, until it is hosed.
+    go_do_ipc_yay(...);
   } // namespace my_meta_app
   ~~~
 
@@ -249,7 +241,7 @@ While either side *can* accept passive-opens, it will only do so if indeed a pas
   - Session-server: It is an argument to the @link ipc::session::Server_session::init_handlers() Server_session::init_handlers()@endlink method overload.  Again, in our earlier example code we chose the other overload thus disabling server-side passive-opening; by adding an arg we would've indicated otherwise.
 
 This may seem asymmetrical, contrary to the spirit of the allegedly-side-agnostic `Session` concept, but that is not so:
-  - `Session_client` ctor is invoked before the session is "opened," as `async_connect()` has not been called let alone succeeded.
+  - `Session_client` ctor is invoked before the session is "opened," as `sync_connect()` has not been called let alone succeeded.
   - `Session_server::init_handlers()` is invoked just before the session is opened, as `init_handlers()` *is* the step that promotes the session to "opened" state.
 
 ---
