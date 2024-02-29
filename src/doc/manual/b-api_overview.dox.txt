@@ -89,8 +89,9 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > Session session(nullptr, APP_B_AS_CLI, // This is us (connector).
 >                 APP_A_AS_SRV, // The opposing application (acceptor).
 >                 ...);
-> session.async_connect([...](const auto& err_code) { if (!err_code) { ...`session` is ready.... } });
-> // ^-- asio-style API.  Non-blocking/synchronous API also available (integrate directly with poll(), epoll_...(), etc.).
+> Error_code err_code;
+> session.sync_connect(&err_code); // Synchronous, non-blocking.
+> if (!err_code) { ...`session` is ready.... } else { ...opposing server not active/listening... }
 >
 > // Server side:
 > Session_server session_srv(nullptr, APP_A_AS_SRV, // This is us (acceptor).
@@ -98,6 +99,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > Session session;
 > session_srv.async_accept(&session,
 >                          [...](const auto& err_code) { if (!err_code) { ...`session` is ~ready.... } });
+> // ^-- asio-style API.  Non-blocking/synchronous API also available (integrate directly with poll(), epoll_...(), etc.).
 >
 > // NOTE: Upon opening session, capabilities of `session` on either side are **exactly the same**.
 > // Client/server status matters only when establishing the IPC conversation;
@@ -111,17 +113,15 @@ Having obtained a `Session`, the application can open transport channels (and, i
 > // Client side: Example: Expect 1 client-requested channel; N server-requested channels.
 > Session::Channels my_init_channels(1);
 > Session::Channels their_init_channels;
-> session.async_connect(..., &my_init_channels, ..., &their_init_channels,
->                       [...](const auto& err_code)
+> Error_code err_code;
+> session.sync_connect(..., &my_init_channels, ..., &their_init_channels, &err_code); // Synchronous, non-blocking.
+> if (!err_code)
 > {
->   if (!err_code)
->   {
->     // `session` is ready, but we might not even care that much because:
->     //   my_init_channels[0] = The 1 pre-opened Session::Channel_obj we requested.
->     //   their_init_channels = vector<Session::Channel_obj> = The N pre-opened channels opposing side requested.
->     // Sessions are mostly a way to establish channels after all, and we've got ours!
->   }
-> });
+>   // `session` is ready, but we might not even care that much because:
+>   //   my_init_channels[0] = The 1 pre-opened Session::Channel_obj we requested.
+>   //   their_init_channels = vector<Session::Channel_obj> = The N pre-opened channels opposing side requested.
+>   // Sessions are mostly a way to establish channels after all, and we've got ours!
+> }
 > // Server side: Example: Expect <cmd line arg> server-requested channels; N client-requested channels.
 > Session::Channels my_init_channels(lexical_cast<size_t>(argv[2]));
 > Session::Channels their_init_channels;
@@ -257,7 +257,8 @@ All transport APIs at this layer, as well the structured layer (see below), have
 > const auto SRV_ADDR = util::Shared_name::ct("sharedSockNameSrv");
 > // ^-- Client and server need to agree on this, and it must not conflict.  ipc::session would take care of this.
 > Native_socket_stream sock(nullptr, "cool_a_nickname");
-> sock.async_connect(SRV_ADDR, [...](const auto& err_code) { ... });
+> Error_code err_code;
+> sock.sync_connect(SRV_ADDR, &err_code); // Synchronous, non-blocking.
 >
 > // Client/server: server.  A dedicated server-acceptor class exists for this.
 >

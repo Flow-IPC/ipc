@@ -107,7 +107,7 @@ Lifecycle of process versus lifecycle of session: Overview
 The IPC-related lifecycle of any session-client process is particularly simple:
   -# Start.
   -# Create the @ref universe_desc "IPC universe description".
-  -# Construct @link ipc::session::Client_session Client_session C@endlink (ideally SHM-backed extension thereof); and `C.async_connect()` to the server.
+  -# Construct @link ipc::session::Client_session Client_session C@endlink (ideally SHM-backed extension thereof); and `C.sync_connect()` to the server.
      -# If this fails, server is likely inactive; hence sleep perhaps a second; then retry&lowast;&lowast;.  Repeat until success.
   -# Engage in IPC via now-open `Session C` until (gracefully) told to exit (such as via SIGINT/SIGTERM)&lowast;; or:
   -# Is informed by `Session C` on-error handler that the session was closed by the opposing side; therefore:
@@ -115,7 +115,7 @@ The IPC-related lifecycle of any session-client process is particularly simple:
      -# Go back to step 3.
 
 &lowast; - In this case destroy `C` and exit process.<br>
-&lowast;&lowast; - See ipc::session::Client_session::async_connect() doc note regarding dealing with inactive opposing server.
+&lowast;&lowast; - See @link ipc::session::Client_session_mv::sync_connect() Client_session::sync_connect() Reference doc@endlink note regarding dealing with inactive opposing server.
 
 Thus a typical session-client is, as far as IPC is concerned, always either trying to open a session or is engaging in IPC via exactly one open session; and it only stops doing the latter if it itself exits entirely; or the session is closed by the opposing side.  There is, in production, no known good reason to end a session otherwise nor to create simultaneous 2+ `Client_session`s in one process.
 
@@ -170,40 +170,31 @@ So now we can construct our `Client_session` (which we named just `Session` sinc
     session(..., // Logger.
             APP_B_AS_CLI, // Part of the IPC universe description: Our own info.
             APP_A_AS_SRV, // Part of the IPC universe description: The opposing server's info.
-            ...); // On-error handler (discussed separately).  This is relevant only after async_connect() success.
+            ...); // On-error handler (discussed separately).  This is relevant only after sync_connect() success.
   ~~~
 
-Now we can attempt connection via `async_connect()`.  There are 2 forms, the simple and the advanced.  Ironically, due to its ability to pre-open channels, the advanced form is in most cases the *easier* one to use all-in-all -- it makes it unnecessary to do annoying possibly-async channel-opening later -- but we aren't talking about channel opening yet, so that part is not relevant; hence for now we'll go with the simpler API.  (@ref chan_open gets into all that.)
+Now we can attempt connection via `sync_connect()`.  There are 2 forms, the simple and the advanced.  Ironically, due to its ability to pre-open channels, the advanced form is in most cases the *easier* one to use all-in-all -- it makes it unnecessary to do annoying possibly-async channel-opening later -- but we aren't talking about channel opening yet, so that part is not relevant; hence for now we'll go with the simpler API.  (@ref chan_open gets into all that.)
 
 Using it is simple:
 
   ~~~
   // Thread U.
-  session.async_connect([...](const Error_code& err_code)
+  Error_code err_code;
+  session.sync_connect(&err_code);
+  if (err_code)
   {
-    if (err_code == ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER)
-    {
-      return;
-    }
-    post([..., err_code]()
-    {
-      // Thread U.
-      if (err_code)
-      {
-        // async_connect() failed.  Assuming everything is configured okay, this would usually only happen
-        // if the opposing server is currently inactive.  Therefore it's not a great idea to immediately
-        // async_connect() again.  A reasonable plan is to schedule another attempt in 250-1000ms.
+    // sync_connect() failed.  Assuming everything is configured okay, this would usually only happen
+    // if the opposing server is currently inactive.  Therefore it's not a great idea to immediately
+    // sync_connect() again.  A reasonable plan is to schedule another attempt in 250-5000ms.
 
-        // ...;
-        return;
-      }
-      // else: Success!
+    // ...;
+    return;
+  }
+  // else: Success!
 
-      // Operate on `session` in here, long-term, until it is hosed.  Once it is hosed, probably repeat this
-      // entire procedure.
-      go_do_ipc_yay(...);
-    });
-  });
+  // Operate on `session` in here, long-term, until it is hosed.  Once it is hosed, probably repeat this
+  // entire procedure.
+  go_do_ipc_yay(...);
   ~~~
 
 `Session_server` and `Server_session` setup

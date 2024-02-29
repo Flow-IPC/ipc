@@ -183,7 +183,7 @@ int Driver::main(int argc, char const * const * argv)
   /* are opened (and transparently muxed/demuxed by struc::Channel if used for a given Channel)): */ \
   true, \
   /* The metadata mini-schema optionally used in: open_channel() (either direction) at channel-open time, */ \
-  /* async_connect() (c2s) at session-open time, async_accept() (s2c) at session-open time: */ \
+  /* sync_connect() (c2s) at session-open time, sync_accept() (s2c) at session-open time: */ \
   capnp::ExMdt
 #define SESSION_CFG_SHM \
   session::schema::MqType::POSIX, true, capnp::ExMdt

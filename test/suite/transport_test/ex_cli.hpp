@@ -176,7 +176,7 @@ void CLASS::client_connect_one()
   {
     post([this]()
     {
-      FLOW_LOG_WARNING("Should not have gotten as far as error handler: async_connect() should have failed.");
+      FLOW_LOG_WARNING("Should not have gotten as far as error handler: sync_connect() should have failed.");
       done_and_done(false);
     });
   });
@@ -184,34 +184,23 @@ void CLASS::client_connect_one()
   FLOW_LOG_INFO("Connecting session; requesting 1 init-channel (expecting failure).");
 
   m_init_chans_cli.resize(1); // Expect 1.
-  const bool ok = m_ses.async_connect(m_ses.mdt_builder(), &m_init_chans_cli, nullptr, nullptr,
-                                      [this](const Error_code& err_code)
-  {
-    if (err_code == session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER)
-    {
-      return;
-    }
-    // else
-
-    post([this, err_code]()
-    {
-      if (!err_code)
-      {
-        FLOW_LOG_WARNING("Expected an async_connect() error; got success instead.");
-        done_and_done(false);
-        return;
-        /* By the way, below, we might not always do this kind of "nicer" handling of an unexpected situations;
-         * we might just ASSERT().  I guess I just wanted to set up some precedent for how it might look to
-         * not simply crash.  I don't know.  It's just tedious to keep doing this all over: this isn't production
-         * code. */
-      }
-      // else
-      FLOW_LOG_INFO("As expected got error ([" << err_code << "] [" << err_code.message() << "]).");
-
-      client_connect_two();
-    }); // post()
-  }); // m_ses.async_connect()
+  Error_code err_code;
+  const bool ok = m_ses.sync_connect(m_ses.mdt_builder(), &m_init_chans_cli, nullptr, nullptr, &err_code);
   ASSERT(ok);
+  if (!err_code)
+  {
+    FLOW_LOG_WARNING("Expected a sync_connect() error; got success instead.");
+    done_and_done(false);
+    return;
+    /* By the way, below, we might not always do this kind of "nicer" handling of an unexpected situations;
+     * we might just ASSERT().  I guess I just wanted to set up some precedent for how it might look to
+     * not simply crash.  I don't know.  It's just tedious to keep doing this all over: this isn't production
+     * code. */
+  }
+  // else
+  FLOW_LOG_INFO("As expected got error ([" << err_code << "] [" << err_code.message() << "]).");
+
+  client_connect_two();
 } // CLASS::client_connect_one()
 
 TEMPLATE
@@ -272,35 +261,25 @@ void CLASS::client_connect_2()
 
   auto mdt_cli = m_ses.mdt_builder();
   mdt_cli->initPayload().setNumChansYouWant(0); // They're gonna verify this contrived thing.
-  const bool ok = m_ses.async_connect(m_ses.mdt_builder(), nullptr, // Open 0 from cli.
-                                      &m_mdt_srv, // Do get some mdt.
-                                      nullptr, // Open 0 from srv (consistent with mdt_cli payload).
-                                      [this](const Error_code& err_code)
-  {
-    if (err_code == session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER)
-    {
-      return;
-    }
-    // else
-
-    post([this, err_code]()
-    {
-      if (err_code)
-      {
-        FLOW_LOG_WARNING("async_connect() failed; should succeed from now on; please check Flow-IPC logs for "
-                         "details.  Usually this happens due to running from the wrong CWD or named "
-                         "wrong; but just check the logs.  Error emitted: "
-                         "[" << err_code << "] [" << err_code.message() << "].");
-        done_and_done(false);
-        return;
-      }
-      // else if (!err_code):
-
-      FLOW_LOG_INFO("Client_app [" << S_CLI_NAME_2 << "] session ready.  Cool; everything is as expected; but for this "
-                    "Client_app we do not do much further.");
-    });
-  });
+  Error_code err_code;
+  const bool ok = m_ses.sync_connect(m_ses.mdt_builder(), nullptr, // Open 0 from cli.
+                                     &m_mdt_srv, // Do get some mdt.
+                                     nullptr, // Open 0 from srv (consistent with mdt_cli payload).
+                                     &err_code);
   ASSERT(ok);
+  if (err_code)
+  {
+    FLOW_LOG_WARNING("sync_connect() failed; should succeed from now on; please check Flow-IPC logs for "
+                     "details.  Usually this happens due to running from the wrong CWD or named "
+                     "wrong; but just check the logs.  Error emitted: "
+                     "[" << err_code << "] [" << err_code.message() << "].");
+    done_and_done(false);
+    return;
+  }
+  // else if (!err_code):
+
+  FLOW_LOG_INFO("Client_app [" << S_CLI_NAME_2 << "] session ready.  Cool; everything is as expected; but for this "
+                "Client_app we do not do much further.");
 } // CLASS::client_connect_2()
 
 TEMPLATE
@@ -311,7 +290,7 @@ CLASS::App_session::App_session(Ex_cli* guy, unsigned int test_idx, Task&& i_am_
 {
   using util::sync_io::Asio_waitable_native_handle;
 
-  FLOW_LOG_INFO("App_session [" << this << "]: I am not yet open!  Gonna async_connect() now.");
+  FLOW_LOG_INFO("App_session [" << this << "]: I am not yet open!  Gonna sync_connect() now.");
 
   /* Could've done much/all of this in the ctor initializer but just didn't feel like it.  You can at any rate
    * see one can default-ct a Client_session (initialized) and just overwrite it with a move-assigned one. */
@@ -374,7 +353,7 @@ CLASS::App_session::App_session(Ex_cli* guy, unsigned int test_idx, Task&& i_am_
 
   // OK, since our event loop is boost.asio, from here using m_ses is about the same as using an async-I/O Session.
 
-  /* We are gonna do a full-on fancy async_connect() with all the features in-use, much like the opposing
+  /* We are gonna do a full-on fancy sync_connect() with all the features in-use, much like the opposing
    * async_accept().  Basically this matches complementary logic in Ex_srv; but in that code the
    * 2 Client_apps' stuff is a little bit mixed together in nearby code, whereas we just worry about
    * *this Client_app (CLI_NAME-guy).  (The other side's code could be separated out by Client_app a bit
@@ -393,60 +372,49 @@ CLASS::App_session::App_session(Ex_cli* guy, unsigned int test_idx, Task&& i_am_
   ASSERT(m_chans_a.empty());
 
   // Go!
-  const bool ok = m_ses->async_connect(mdt_cli, &m_chans_b, &m_mdt_srv, &m_chans_a,
-                                       [this](const Error_code& err_code)
-  {
-    if (err_code == session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER)
-    {
-      return;
-    }
-    // else:
-
-    m_guy->post([this, err_code]()
-    {
-      if (err_code)
-      {
-        FLOW_LOG_WARNING("async_connect() failed; should succeed from now on; please check Flow-IPC logs for deets.  "
-                         "Usually this happens due to running from the wrong CWD or named "
-                         "wrong; but just check the logs.  Error emitted: "
-                         "[" << err_code << "] [" << err_code.message() << "].");
-        m_guy->done_and_done(false);
-        return;
-      }
-      // else if (!err_code):
-
-      FLOW_LOG_INFO("App_session [" << this << "]: I am open!  Well, my session::Session [" << *m_ses << "] is open, "
-                    "and I have 2 init-channel sets sized "
-                    "[" << m_chans_a.size() << ", " << m_chans_b.size() << "] "
-                    "pre-opened too.  Also I have some srv->cli mdt.  Let's check some things about it ~all.");
-
-      ASSERT(m_chans_b.size() == S_N_INIT_CHANS_B); // This guy is pre-sized: size() should not change.
-      // And yeah, our contrived/demo thing is that they send this number as part of mdt also.
-      ASSERT(m_mdt_srv->getPayload().getNumChansYouWant() == m_chans_b.size());
-
-      ASSERT(m_chans_a.size() == S_N_INIT_CHANS_A);
-
-      FLOW_LOG_INFO("Looks good!  Now let's active-open some type-B channels (and passive-open some type-A ones).");
-
-      for (size_t idx = 0; idx != S_N_CHANS_B - S_N_INIT_CHANS_B; ++idx)
-      {
-        m_chans_b.emplace_back();
-
-        auto mdt = m_ses->core()->mdt_builder();
-        mdt->initPayload().initMdtTwo().setTwoPayload(6767);
-        Error_code err_code_non_fatal;
-        const bool ok = m_ses->core()->open_channel(&(m_chans_b.back()), mdt, &err_code_non_fatal);
-        ASSERT(ok && "Error fired now or earlier -- unexpected.");
-        ASSERT((!err_code_non_fatal) && "Non-fatal error emitted by open_channel(), but we expect total success.");
-
-        FLOW_LOG_INFO("Cool, active-opened channel (to [" << m_chans_b.size() << "] type-B channels total): "
-                      "[" << m_chans_b.back() << "].");
-      }
-
-      use_channels_if_ready(S_N_CHANS_A, S_N_CHANS_B);
-    }); // post()
-  }); // m_ses->async_connect()
+  Error_code err_code;
+  const bool ok = m_ses->core()->sync_connect(mdt_cli, &m_chans_b, &m_mdt_srv, &m_chans_a, &err_code);
   ASSERT(ok);
+  if (err_code)
+  {
+    FLOW_LOG_WARNING("sync_connect() failed; should succeed from now on; please check Flow-IPC logs for deets.  "
+                     "Usually this happens due to running from the wrong CWD or named "
+                     "wrong; but just check the logs.  Error emitted: "
+                     "[" << err_code << "] [" << err_code.message() << "].");
+    m_guy->done_and_done(false);
+    return;
+  }
+  // else if (!err_code):
+
+  FLOW_LOG_INFO("App_session [" << this << "]: I am open!  Well, my session::Session [" << *m_ses << "] is open, "
+                "and I have 2 init-channel sets sized "
+                "[" << m_chans_a.size() << ", " << m_chans_b.size() << "] "
+                "pre-opened too.  Also I have some srv->cli mdt.  Let's check some things about it ~all.");
+
+  ASSERT(m_chans_b.size() == S_N_INIT_CHANS_B); // This guy is pre-sized: size() should not change.
+  // And yeah, our contrived/demo thing is that they send this number as part of mdt also.
+  ASSERT(m_mdt_srv->getPayload().getNumChansYouWant() == m_chans_b.size());
+
+  ASSERT(m_chans_a.size() == S_N_INIT_CHANS_A);
+
+  FLOW_LOG_INFO("Looks good!  Now let's active-open some type-B channels (and passive-open some type-A ones).");
+
+  for (size_t idx = 0; idx != S_N_CHANS_B - S_N_INIT_CHANS_B; ++idx)
+  {
+    m_chans_b.emplace_back();
+
+    auto mdt = m_ses->core()->mdt_builder();
+    mdt->initPayload().initMdtTwo().setTwoPayload(6767);
+    Error_code err_code_non_fatal;
+    const bool ok = m_ses->core()->open_channel(&(m_chans_b.back()), mdt, &err_code_non_fatal);
+    ASSERT(ok && "Error fired now or earlier -- unexpected.");
+    ASSERT((!err_code_non_fatal) && "Non-fatal error emitted by open_channel(), but we expect total success.");
+
+    FLOW_LOG_INFO("Cool, active-opened channel (to [" << m_chans_b.size() << "] type-B channels total): "
+                  "[" << m_chans_b.back() << "].");
+  }
+
+  use_channels_if_ready(S_N_CHANS_A, S_N_CHANS_B);
 } // CLASS::App_session::App_session()
 
 TEMPLATE
