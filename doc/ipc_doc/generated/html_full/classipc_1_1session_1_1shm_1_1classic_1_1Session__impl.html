@@ -219,7 +219,7 @@ Related Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename <a class="el" href="classSession__impl__t.html">Session_impl_t</a>&gt;<br />
 class ipc::session::shm::classic::Session_impl&lt; Session_impl_t &gt;</div><p >Common data and logic for <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session__impl.html" title="Core internally-used implementation of shm::classic::Server_session: it is to the latter what its pub...">shm::classic::Server_session_impl</a> and <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Client__session__impl.html" title="Core internally-used implementation of shm::classic::Client_session: it is to the latter what its pub...">shm::classic::Client_session_impl</a>. </p>
-<p >SHM-classic is such that the two sides are exactly the same, once the two <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">shm::classic::Pool_arena</a> handles have been set up. So that stuff that is all the same is here in this internally-used super-class of the 2 <code>*_impl</code>. The latter add the initial assignment of the two arena handles and, relatedly, the client/server-specific APIs (e.g., <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Client__session__impl.html#a37982dfb2ad7b7cb07c35faa64259324" title="See Client_session_mv counterpart.">Client_session_impl::async_connect()</a>).</p>
+<p >SHM-classic is such that the two sides are exactly the same, once the two <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">shm::classic::Pool_arena</a> handles have been set up. So that stuff that is all the same is here in this internally-used super-class of the 2 <code>*_impl</code>. The latter add the initial assignment of the two arena handles and, relatedly, the client/server-specific APIs (e.g., <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Client__session__impl.html#a100541ab213d66e23684d8041f8462c6" title="See Client_session_mv counterpart.">Client_session_impl::sync_connect()</a>).</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname"><a class="el" href="classSession__impl__t.html">Session_impl_t</a></td><td>Our base that our sub-class wants to build on-top-of. E.g., <code><a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session__impl.html" title="Core internally-used implementation of shm::classic::Server_session: it is to the latter what its pub...">Server_session_impl</a>&lt;...&gt;</code>. </td></tr>
@@ -993,7 +993,7 @@ template&lt;typename <a class="el" href="classSession__impl__t.html">Session_imp
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:24 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

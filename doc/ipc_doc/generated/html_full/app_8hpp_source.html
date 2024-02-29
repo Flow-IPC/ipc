@@ -329,7 +329,7 @@ $(function() {
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment">   *       items are moot (as opening a session is a prerequisite for anything else).</span></div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="comment">   *   - Permissions set on any SHM pool created for a given `&quot;shm::*::Server_session&quot;`. and</span></div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="comment">   *     `&quot;shm::*::Session_server&quot;`. A Client_app may not be able to complete its session-open attempt</span></div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment">   *     (shm::classic::Client_session::async_connect(), etc.) if its user lacks the permissions to open the</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment">   *     (shm::classic::Client_session::sync_connect(), etc.) if its user lacks the permissions to open the</span></div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="comment">   *     underlying SHM-pool(s) resource in the file system.(It also conceivably may be able to complete the</span></div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="comment">   *     session-open but fail if opening a pool on-demand later; the session will then likely end</span></div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="comment">   *     prematurely.  This depends on the inner workings of the particular SHM system chosen;</span></div>
@@ -383,7 +383,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

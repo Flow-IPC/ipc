@@ -114,7 +114,7 @@ Public Attributes</h2></td></tr>
 struct ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Sync_op_state</div><p >State in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a>, when a sync-op is in fact in progress, meaning <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a> is not null. </p>
 <p >See discussion in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a> doc header. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01353">1353</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01354">1354</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a6b5142da7049fc212faff3914e69379b" name="a6b5142da7049fc212faff3914e69379b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6b5142da7049fc212faff3914e69379b">&#9670;&nbsp;</a></span>id_t</h2>
@@ -132,7 +132,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>ID of each sync operation: a distinct value is used each time a <code>*this</code> is created/placed into <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01358">1358</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01359">1359</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -153,7 +153,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>See <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state.html#a6b5142da7049fc212faff3914e69379b" title="ID of each sync operation: a distinct value is used each time a *this is created/placed into m_sync_o...">id_t</a>; used to check an arriving sync op result as belonging to the currently-waiting sync op. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01370">1370</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01371">1371</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -180,7 +180,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p >It then nullifies the entire <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state.html" title="State in m_sync_op_state, when a sync-op is in fact in progress, meaning m_sync_op_state is not null.">Sync_op_state</a>, unlocks mutex, and returns the result (timeout, error, or success payload) from <code>sync_*()</code>.</p>
 <p >Note that <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state.html#a5c49d5ee9989c5c0dc518868205687f0" title="In-traffic processing thread W, having set m_result_if_any to non-monostate, use m_op_done_signal....">m_op_done_signal</a> is not state, really, but 100% a signaling device. Its purpose is for thread W to wake thread U instead of waiting until the timeout period elapses, so that it may return the result as quickly as it is available. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01398">1398</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01399">1399</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -205,7 +205,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <li><code><a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state_1_1Request__result.html" title="A successul result of sync_request().">Request_result</a></code>: It finished due to receiving response matching <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state.html#ad6f8e016b2abc3654e1915cc8c77c268" title="See id_t; used to check an arriving sync op result as belonging to the currently-waiting sync op.">m_id</a>; that response is inside. (If more sync-op APIs are added over time, more <code>variant</code> types may be added to express results of other ops than <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>.) </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01380">1380</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01381">1381</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -215,7 +215,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:24 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

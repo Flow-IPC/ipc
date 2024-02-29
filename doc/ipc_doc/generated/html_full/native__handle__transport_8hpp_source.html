@@ -259,11 +259,11 @@ $(function() {
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment">   * ### Informal corollary -- NULL-state ctors with 1+ args ###</span></div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment">   * Other, 1+ arg, ctors that similarly create a NULL-state peer object are allowed/encouraged</span></div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment">   * where relevant.  In particular one taking a `Logger*` and a `nickname` string -- so as to subsequently enter a</span></div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment">   * CONNECTING state via an `async_connect()` method, on the way to PEER state -- is reasonable.</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment">   * connecting phase via an `*_connect()` method, on the way to PEER state -- is reasonable.</span></div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">   * However this is not a formal part of this concept and is arguably not a general behavior.</span></div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment">   * Such a ctor is informally intended for the following use at least:</span></div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">   *   - One creates a Native_handle_sender that is `Logger`-appointed and nicely-`nickname`d; then one calls</span></div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">   *     `async_connect()` on it in order to move it to CONNECTING and, hopefully, PEER states in that order.</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">   *     `*_connect()` on it in order to move it to a connecting phase and, hopefully, PEER state in that order.</span></div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">   *     It will retain the logger and nickname (or whatever) throughout.</span></div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">   */</span></div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1Native__handle__sender.html#abafdb9a1294fe2160c61d48f1cd327ff">  197</a></span>  <a class="code hl_function" href="classipc_1_1transport_1_1Native__handle__sender.html#abafdb9a1294fe2160c61d48f1cd327ff">Native_handle_sender</a>();</div>
@@ -948,7 +948,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

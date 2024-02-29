@@ -97,7 +97,7 @@ Public Attributes</h2></td></tr>
 struct ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE &gt;::Master_channel_req</div><p >An open-channel/log-in request out-message. </p>
 <p >Together with that is stored a <code>Builder</code> into its metadata sub-field.</p>
 <h3>Rationale</h3>
-<p >This explanation is written for <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#a4229549db1093aaa1e7e84c6e6467e80" title="See Client_session_mv counterpart.">open_channel()</a> case, but the same applies for the log-in request and <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#af03a9fca2006fba2cc522efa1178e83e" title="See Client_session_mv counterpart.">async_connect()</a>.</p>
+<p >This explanation is written for <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#a4229549db1093aaa1e7e84c6e6467e80" title="See Client_session_mv counterpart.">open_channel()</a> case, but the same applies for the log-in request and <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#adebedf1cbe09067a8f785a524e146b2f" title="Core implementation of sync_connect().">async_connect()</a>.</p>
 <p >Why store the <code>Builder</code>, if it can always be obtained from <a class="el" href="structipc_1_1session_1_1Client__session__impl_1_1Master__channel__req.html#a2efbffcde4a54093aeaee550462e66ba" title="The open-channel-request-to-server out-message for the session master channel (in subsequent open_cha...">m_req_msg</a>? Answer: On one hand, <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#ae37fe210e9809b4670b49e0d5b727d31" title="See Client_session_mv counterpart.">mdt_builder()</a> needs to return that <code>Builder</code>, so that the user can set the metadata. However, <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#a4229549db1093aaa1e7e84c6e6467e80" title="See Client_session_mv counterpart.">open_channel()</a> aims to then stuff the underlying bits into the open-channel request out-message which is is our internal impl detail, unknown to the user. We could return a stand-alone just-the-metadata structure and <code>Builder</code> to it, but (1) then we'd have to transfer that over into the out-message &ndash; slow, possibly painful (involving capnp orphans), and (2) it has to be backed by a <code>MessageBuilder</code>. So we'd have to set up a <code>MallocMessageBuilder</code> or something just for this thing &ndash; only to end up painfully copying over data from one serialization to another. Instead we maintain zero-copy and avoid these issues:</p><ul>
 <li>Set up the open-channel request out-message directly in <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#ae37fe210e9809b4670b49e0d5b727d31" title="See Client_session_mv counterpart.">mdt_builder()</a>. (Its ref-count shall always be 1.)</li>
 <li>Point a <code>Builder</code> to the metadata sub-field.</li>
@@ -106,7 +106,7 @@ struct ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIV
 <li><a class="el" href="classipc_1_1session_1_1Client__session__impl.html#a4229549db1093aaa1e7e84c6e6467e80" title="See Client_session_mv counterpart.">open_channel()</a> receives the alias, which points to the <code>Builder</code>. Since the <code>Builder</code> is the first member of this <code>struct</code>, its raw address (by C++ aliasing rules) equals that of the whole <code>struct</code>. Hence <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#a4229549db1093aaa1e7e84c6e6467e80" title="See Client_session_mv counterpart.">open_channel()</a> can get to the <code>struct</code> and thus to the out-message member <a class="el" href="structipc_1_1session_1_1Client__session__impl_1_1Master__channel__req.html#a2efbffcde4a54093aeaee550462e66ba" title="The open-channel-request-to-server out-message for the session master channel (in subsequent open_cha...">m_req_msg</a>. It can then <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">transport::struc::Channel::send()</a> that. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l00500">500</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l00592">592</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="aea58b5dbfa73097537dbcebbdaef1e40" name="aea58b5dbfa73097537dbcebbdaef1e40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea58b5dbfa73097537dbcebbdaef1e40">&#9670;&nbsp;</a></span>m_mdt_builder</h2>
@@ -125,7 +125,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p>The <code>Builder</code> <code>m_req_msg-&gt;body_root()-&gt;getMetadata()</code>. </p>
 <dl class="section warning"><dt>Warning</dt><dd>As of this writing this <em>must</em> be the first member. Otherwise one would need to use something like <code>offsetof</code> to be able to get from <code>&amp;m_mdt_builder</code> (what <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#ae37fe210e9809b4670b49e0d5b727d31" title="See Client_session_mv counterpart.">mdt_builder()</a> returns) to <code>this</code> and hence to <a class="el" href="structipc_1_1session_1_1Client__session__impl_1_1Master__channel__req.html#a2efbffcde4a54093aeaee550462e66ba" title="The open-channel-request-to-server out-message for the session master channel (in subsequent open_cha...">m_req_msg</a> to <code>send()</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l00510">510</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l00602">602</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -145,9 +145,9 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>The open-channel-request-to-server out-message for the session master channel (in subsequent <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#a4229549db1093aaa1e7e84c6e6467e80" title="See Client_session_mv counterpart.">open_channel()</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l00513">513</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l00605">605</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l00971">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE &gt;::async_connect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01082">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE &gt;::async_connect()</a>.</p>
 
 </div>
 </div>
@@ -157,7 +157,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:24 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

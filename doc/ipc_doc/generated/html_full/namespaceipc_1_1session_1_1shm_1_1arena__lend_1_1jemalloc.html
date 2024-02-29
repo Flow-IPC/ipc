@@ -176,7 +176,7 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
 <p >First see the Implementation section of <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a>. It gives a detailed description of the overall design &ndash; both its own side and this (client) side too. So read it; then come back here.</p>
 <p >That said, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a837b4566cb2a734eb0ba58f285d084fe" title="This is to session::Client_session what shm::arena_lend::jemalloc::Server_session is to session::Serv...">shm::arena_lend::jemalloc::Client_session</a> is a much simpler situation. It is not inter-operating with any server object; and (as explained in the referenced doc header) all it needs to do is create 1 each of <code>Shm_session</code> and <code>Arena</code> objects and register the latter with the former to enable lending objects</p>
 <p >So all we have to do is provide a modified <code>async_connect()</code> which does the above. How? Answer:</p><ul>
-<li>execute vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Client__session__impl.html#aff6328d20d75ed739c68e79aa080a813" title="See Client_session_mv counterpart.">Client_session_impl::async_connect()</a>; once that triggers the on-done handler:</li>
+<li>execute vanilla <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#adebedf1cbe09067a8f785a524e146b2f" title="Core implementation of sync_connect().">session::Client_session_impl::async_connect()</a>; once that triggers the on-done handler:</li>
 <li>set up <code>Shm_session</code> and <code>Arena</code> (though for the former there's a prerequisite async step to establish an interal-use IPC channel);</li>
 <li>invoke the user's original on-done handler.</li>
 </ul>
@@ -235,7 +235,7 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html#l00552">552</a> of file <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html#l00583">583</a> of file <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -473,7 +473,7 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:24 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

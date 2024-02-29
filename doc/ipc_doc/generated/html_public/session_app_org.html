@@ -276,7 +276,7 @@ $(function() {
 </ul>
 </li>
 </ul>
-<p >What about the client side? It is simpler, as there are no concurrent sessions; at most just one at a given time.</p>
+<p >What about the client side? It is simpler, as there are no concurrent sessions; at most just one at a given time; plus every connect attempt is a straightforward non-blocking call that either immediately succeeds or immediately fails (the latter usually meaning no server is active/listening).</p>
 <div class="fragment"><div class="line"><span class="keyword">class </span>Process : <span class="comment">// In session-client app B.</span></div>
 <div class="line">  <span class="keyword">public</span> flow::log::Log_context</div>
 <div class="line">{</div>
@@ -295,8 +295,10 @@ $(function() {
 <div class="line">  <span class="comment">// Wrapping it in std::optional&lt;&gt; or unique_ptr&lt;&gt; may be helpful, depending on what you need to do first.</span></div>
 <div class="line">  flow::async::Single_thread_task_loop m_worker;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Accessed from thread U only, this is -- at a given point in time -- either (1) awaiting m_next_session.async_connect()</span></div>
-<div class="line">  <span class="comment">// completion; or (2) empty (as-if default-constructed).</span></div>
+<div class="line">  <span class="comment">// Accessed from thread U only, this is -- at a given point in time, not counting non-blocking synchronous</span></div>
+<div class="line">  <span class="comment">// calls into `Client_session::sync_connect() -- either (1) sitting there empty (as-if default-constructed),</span></div>
+<div class="line">  <span class="comment">// because *m_active_session is currently open; or (2) sitting there empty (as-if default-constructed), because</span></div>
+<div class="line">  <span class="comment">// the last `.sync_connect()` failed (server inactive/not listening), so we&#39;re waiting a bit to check again.</span></div>
 <div class="line">  Session m_next_session;</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// You&#39;ll see in the next section.  This shall encapsulate the active Session and your other IPC-involved algorithms and data.</span></div>
@@ -315,7 +317,6 @@ $(function() {
 <div class="line">    m_worker.post([<span class="keyword">this</span>]()</div>
 <div class="line">    {</div>
 <div class="line">      <span class="comment">// We are in thread U.  From now on we do work here.</span></div>
-<div class="line"> </div>
 <div class="line">      open_next_session();</div>
 <div class="line">    });</div>
 <div class="line">  }</div>
@@ -332,8 +333,8 @@ $(function() {
 <div class="line">    {</div>
 <div class="line">      m_worker.post([<span class="keyword">this</span>, err_code]()</div>
 <div class="line">      {</div>
-<div class="line">        <span class="comment">// We&#39;ll get into this later; but this is relevant only once m_next_session.async_connect() succeeds.</span></div>
-<div class="line">        <span class="comment">// Spoiler alert: Because the handler must be supplied before async_connect(), we pre-hook-this up;</span></div>
+<div class="line">        <span class="comment">// We&#39;ll get into this later; but this is relevant only once m_next_session.sync_connect() succeeds.</span></div>
+<div class="line">        <span class="comment">// Spoiler alert: Because the handler must be supplied before sync_connect(), we pre-hook-this up;</span></div>
 <div class="line">        <span class="comment">// but the real handling of the error in an open session will be in App_session m_active_session.</span></div>
 <div class="line">        <span class="comment">// We just forward it; otherwise it&#39;s not in the purview of class Process:</span></div>
 <div class="line">        m_active_session-&gt;on_session_hosed(err_code);</div>
@@ -341,35 +342,28 @@ $(function() {
 <div class="line">    });</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// It&#39;s not doing anything; now we attempt connect.  Don&#39;t worry; that forwarding error handler does not</span></div>
-<div class="line">    <span class="comment">// matter yet -- only once the async_connect() succeeds.</span></div>
-<div class="line">    m_next_session.async_connect([<span class="keyword">this</span>](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
+<div class="line">    <span class="comment">// matter yet -- only once the sync_connect() succeeds.</span></div>
+<div class="line">    <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> err_code;</div>
+<div class="line">    m_next_session.sync_connect(&amp;err_code); <span class="comment">// This is a synchronous, non-blocking call!</span></div>
+<div class="line">    <span class="keywordflow">if</span> (err_code)</div>
 <div class="line">    {</div>
-<div class="line">      <span class="keywordflow">if</span> (err_code == <a class="code hl_enumvalue" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed">ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>)</div>
-<div class="line">      {</div>
-<div class="line">        <span class="keywordflow">return</span>;</div>
-<div class="line">      }</div>
-<div class="line">      m_worker.post([<span class="keyword">this</span>, err_code]()</div>
-<div class="line">      {</div>
-<div class="line">        <span class="keywordflow">if</span> (err_code)</div>
-<div class="line">        {</div>
-<div class="line">          <span class="comment">// async_connect() failed.  Assuming everything is configured okay, this would usually only happen</span></div>
-<div class="line">          <span class="comment">// if the opposing server is currently inactive.  Therefore it&#39;s not a great idea to immediately</span></div>
-<div class="line">          <span class="comment">// async_connect() again.  A reasonable plan is to schedule another attempt in 250-1000ms.</span></div>
-<div class="line">          <span class="comment">// If the app need not do anything else in the meantime, it could just this_thread::sleep_*();</span></div>
-<div class="line">          <span class="comment">// otherwise use async scheduling, such as via flow::async&#39;s m_worker.schedule_from_now().</span></div>
-<div class="line">          <span class="comment">// Details left as exercise to reader.</span></div>
+<div class="line">      <span class="comment">// sync_connect() failed.  Assuming everything is configured okay, this would only happen</span></div>
+<div class="line">      <span class="comment">// if the opposing server is currently inactive.  Therefore it&#39;s not a great idea to immediately</span></div>
+<div class="line">      <span class="comment">// sync_connect() again.  A reasonable plan is to schedule another attempt in 250-5000ms.</span></div>
+<div class="line">      <span class="comment">// If the app need not do anything else in the meantime, it could just this_thread::sleep_*()</span></div>
+<div class="line">      <span class="comment">// between attempts in a loop; otherwise use async scheduling, such as via flow::async&#39;s</span></div>
+<div class="line">      <span class="comment">// m_worker.schedule_from_now() or boost.asio&#39;s timers.</span></div>
+<div class="line">      <span class="comment">// Details left as exercise to reader.</span></div>
 <div class="line"> </div>
-<div class="line">          <span class="comment">// ...;</span></div>
-<div class="line">          <span class="keywordflow">return</span>;</div>
-<div class="line">        }</div>
-<div class="line">        <span class="comment">// else: Success!  m_next_session is ready to go.</span></div>
+<div class="line">      <span class="comment">// ...;</span></div>
+<div class="line">      <span class="keywordflow">return</span>;</div>
+<div class="line">    }</div>
+<div class="line">    <span class="comment">// else: Success!  m_next_session is ready to go.</span></div>
 <div class="line"> </div>
-<div class="line">        process_session(); <span class="comment">// We&#39;ll explain what to do inside here, next.</span></div>
-<div class="line">        <span class="comment">// m_next_session is empty (as-if default-cted) again.</span></div>
-<div class="line">        <span class="comment">// It&#39;ll stay that way, until the stuff kicked-off in process_session() detects the death of the</span></div>
-<div class="line">        <span class="comment">// Session we just opened.  Then, we&#39;ll call open_next_session() again.</span></div>
-<div class="line">      });</div>
-<div class="line">    });</div>
+<div class="line">    process_session(); <span class="comment">// We&#39;ll explain what to do inside here, next.</span></div>
+<div class="line">    <span class="comment">// m_next_session is empty (as-if default-cted) again.</span></div>
+<div class="line">    <span class="comment">// It&#39;ll stay that way, until the stuff kicked-off in process_session() detects the death of the</span></div>
+<div class="line">    <span class="comment">// Session we just opened.  Then, we&#39;ll call open_next_session() again.</span></div>
 <div class="line">  } <span class="comment">// open_next_session()</span></div>
 <div class="line">}; <span class="comment">// class Process</span></div>
 <div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Session__mv_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">ipc::session::shm::classic::Session_mv</a></div><div class="ttdoc">Implements the SHM-related API common to shm::classic::Server_session and shm::classic::Client_sessio...</div><div class="ttdef"><b>Definition:</b> session.hpp:44</div></div>
@@ -466,7 +460,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">  <span class="comment">// That&#39;s it!  We&#39;ve already set up m_active_session-&gt;on_session_hosed() back in open_next_session().</span></div>
 <div class="line">  <span class="comment">// We provided the on-session-closed logic just above.  And in the client-side API the Session is open upon</span></div>
-<div class="line">  <span class="comment">// successful async_connect().  The rest is up to App_session in the mean-time.</span></div>
+<div class="line">  <span class="comment">// successful sync_connect().  The rest is up to App_session in the mean-time.</span></div>
 <div class="line">}</div>
 </div><!-- fragment --><p >Server is somewhat more complex as usual.</p>
 <div class="fragment"><div class="line"><span class="comment">// In session-server app Ap.</span></div>
@@ -542,7 +536,7 @@ $(function() {
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:21 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

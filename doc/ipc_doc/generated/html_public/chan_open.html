@@ -124,7 +124,7 @@ $(function() {
 </ul>
 <p >In practice this should be more than sufficient for all but the wildest scenarios (in fact exactly 1 such segment should be plenty), as we'll informally show below.</p>
 <h3>Opening init-channels</h3>
-<p >Simply: you can optionally have N channels available as soon as the session becomes available in opened state (i.e., upon <code>Client_session::async_connect()</code> success and <code>Session_server::async_accept()</code> success + <code>Session_server::init_handlers()</code> sync return). Then you can immediately begin to use them on either side!</p>
+<p >Simply: you can optionally have N channels available as soon as the session becomes available in opened state (i.e., upon <code>Client_session::sync_connect()</code> sync success and <code>Session_server::async_accept()</code> success + <code>Session_server::init_handlers()</code> sync return). Then you can immediately begin to use them on either side!</p>
 <p >The question is, of course: how many is N, and subsequently which one to use for what purpose. Naturally the two sides must agree on both aspects, else chaos ensues. The answer can range from</p><ul>
 <li>very simple (N=1!); to</li>
 <li>complex (client wants C, server wants S, N=S+C; channel purpose is hard-coded on each side); to</li>
@@ -132,7 +132,7 @@ $(function() {
 </ul>
 <p >This requires large amounts of flexibility despite involving zero asynchronicity. What it does <em>not</em> require is back-and-forth negotiation. (If that is truly required, you'll need to consider <a class="el" href="chan_open.html#on_demand">opening on-demand channels</a>.)</p>
 <p >So here's how it works in the client-&gt;server direction:</p><ul>
-<li>Client side uses 2nd overload of <a class="el" href="classipc_1_1session_1_1Client__session__mv.html#ae0992c43ab3a978a1023d320d043d8de">Client_session::async_connect()</a>, specifying how many channels &ndash; call it C &ndash; it wants opened <em>on behalf of the client</em>. C can be zero. Plus, optionally, via the same overload:<ul>
+<li>Client side uses 2nd overload of <a class="el" href="classipc_1_1session_1_1Client__session__mv.html#ab971ea979200828d572638c60d7d9f44">Client_session::sync_connect()</a>, specifying how many channels &ndash; call it C &ndash; it wants opened <em>on behalf of the client</em>. C can be zero. Plus, optionally, via the same overload:<ul>
 <li>client side specifies via a <b>client-behalf channel-open metadatum</b> Mc any other information it deems worthwhile &ndash; especially having to do with the nature of the C channels it is mandating be init-opened.</li>
 </ul>
 </li>
@@ -141,7 +141,7 @@ $(function() {
 <li><b>Client-behalf channel-open metadatum</b> Mc is made available, optionally, alongside those C init-channels.</li>
 </ul>
 </li>
-<li>The same C client-behalf init-channels are made available to client side via <code>async_connect()</code> itself, locally.</li>
+<li>The same C client-behalf init-channels are made available to client side via <code>sync_connect()</code> itself, locally.</li>
 </ul>
 </li>
 </ul>
@@ -162,7 +162,7 @@ $(function() {
 <div class="line">{</div>
 <div class="line">  numStructuredChannels @0 :Size;</div>
 <div class="line">}</div>
-</div><!-- fragment --><p >We are now ready to make the more-complex <code>async_connect()</code> call. This is a different overload than the one used in the simpler example in <a class="el" href="session_setup.html">Sessions: Setting Up an IPC Context</a>.</p>
+</div><!-- fragment --><p >We are now ready to make the more-complex <code>sync_connect()</code> call. This is a different overload than the one used in the simpler example in <a class="el" href="session_setup.html">Sessions: Setting Up an IPC Context</a>.</p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>my_meta_app</div>
 <div class="line">{</div>
 <div class="line">  <span class="comment">// ...</span></div>
@@ -178,34 +178,25 @@ $(function() {
 <div class="line">  <span class="comment">// Expected channel-count is specified via the .size() of this vector&lt;Channel&gt;, filled with empty `Channel`s.</span></div>
 <div class="line">  Session::Channels init_channels(boost::lexical_cast&lt;size_t&gt;(argv[1])); <span class="comment">// &lt;-- ATTN: runtime config.</span></div>
 <div class="line"> </div>
-<div class="line">  session.async_connect(mdt, <span class="comment">// Client-to-server metadata.</span></div>
-<div class="line">                        &amp;init_channels, <span class="comment">// Out-arg for cli-&gt;srv init-channels as well as in-arg for how many we want.</span></div>
-<div class="line">                        <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>, <span class="comment">// In our example we expect no srv-&gt;cli metadata nor srv-&gt;cli init-channels.</span></div>
-<div class="line">                        [...](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
+<div class="line">  <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> err_code;</div>
+<div class="line">  session.sync_connect(mdt, <span class="comment">// Client-to-server metadata.</span></div>
+<div class="line">                       &amp;init_channels, <span class="comment">// Out-arg for cli-&gt;srv init-channels as well as in-arg for how many we want.</span></div>
+<div class="line">                       <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>, <span class="comment">// In our example we expect no srv-&gt;cli metadata nor srv-&gt;cli init-channels.</span></div>
+<div class="line">                       &amp;err_code);</div>
+<div class="line">  <span class="keywordflow">if</span> (err_code);</div>
 <div class="line">  {</div>
-<div class="line">    <span class="keywordflow">if</span> (err_code != <a class="code hl_enumvalue" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed">ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>)</div>
-<div class="line">    {</div>
-<div class="line">      <span class="keywordflow">return</span>;</div>
-<div class="line">    }</div>
-<div class="line">    post([..., err_code]()</div>
-<div class="line">    {</div>
-<div class="line">      <span class="keywordflow">if</span> (err_code)</div>
-<div class="line">      {</div>
-<div class="line">        <span class="comment">// ...</span></div>
-<div class="line">        <span class="keywordflow">return</span>;</div>
-<div class="line">      }</div>
-<div class="line">      <span class="comment">// else</span></div>
+<div class="line">    <span class="comment">// ...</span></div>
+<div class="line">    <span class="keywordflow">return</span>;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="comment">// else:</span></div>
 <div class="line"> </div>
-<div class="line">      <span class="comment">// `session` is open!</span></div>
-<div class="line">      <span class="comment">// `init_channels` are open!  Probably, since we specified num_structured_channels to server, we would</span></div>
-<div class="line">      <span class="comment">// now upgrade that many of leading `init_channels` to a struc::Channel each (exercise left to reader).</span></div>
+<div class="line">  <span class="comment">// `session` is open!</span></div>
+<div class="line">  <span class="comment">// `init_channels` are open!  Probably, since we specified num_structured_channels to server, we would</span></div>
+<div class="line">  <span class="comment">// now upgrade that many of leading `init_channels` to a struc::Channel each (exercise left to reader).</span></div>
 <div class="line"> </div>
-<div class="line">      <span class="comment">// Operate on `session` (etc.) in here, long-term, until it is hosed.</span></div>
-<div class="line">      go_do_ipc_yay(...);</div>
-<div class="line">    });</div>
-<div class="line">  });</div>
+<div class="line">  <span class="comment">// Operate on `session` (etc.) in here, long-term, until it is hosed.</span></div>
+<div class="line">  go_do_ipc_yay(...);</div>
 <div class="line">} <span class="comment">// namespace my_meta_app</span></div>
-<div class="ttc" id="anamespaceipc_1_1session_1_1error_html_a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed"><div class="ttname"><a href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed">ipc::session::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a></div><div class="ttdeci">@ S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</div><div class="ttdoc">Async completion handler is being called prematurely, because underlying object is shutting down,...</div></div>
 <div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> common.hpp:297</div></div>
 </div><!-- fragment --><p >On the server end, accordingly:</p>
 <div class="fragment"><div class="line"><span class="comment">// ...</span></div>
@@ -274,7 +265,7 @@ $(function() {
 <li>Session-server: It is an argument to the <a class="el" href="classipc_1_1session_1_1Server__session__mv.html#a99097e5aa6883877c74f8a93ebc9f3e1">Server_session::init_handlers()</a> method overload. Again, in our earlier example code we chose the other overload thus disabling server-side passive-opening; by adding an arg we would've indicated otherwise.</li>
 </ul>
 <p >This may seem asymmetrical, contrary to the spirit of the allegedly-side-agnostic <code>Session</code> concept, but that is not so:</p><ul>
-<li><code>Session_client</code> ctor is invoked before the session is "opened," as <code>async_connect()</code> has not been called let alone succeeded.</li>
+<li><code>Session_client</code> ctor is invoked before the session is "opened," as <code>sync_connect()</code> has not been called let alone succeeded.</li>
 <li><code>Session_server::init_handlers()</code> is invoked just before the session is opened, as <code>init_handlers()</code> <em>is</em> the step that promotes the session to "opened" state.</li>
 </ul>
 <hr  />
@@ -408,7 +399,7 @@ $(function() {
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:50 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:21 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -295,7 +295,7 @@ class ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_hand
 </ul>
 <p >Therefore we will only explain here the differences between that socket-stream out-pipe algorithms and <code>*this</code> impl. Before going into it more consider these points:</p><ul>
 <li>Socket-stream has to worry about both directions <em>and</em> (some) interaction between the two (even though it is full-duplex). We do not. There are no mutual concurrency issues to speak of in particular.</li>
-<li>Socket-stream has to worry about going from NULL state to PEER state via CONNECTING (optionally) &ndash; <code>async_connect()</code>. We do not: the <code>_impl</code> is always in PEER state (unless ctor failed, but that's not interesting).</li>
+<li>Socket-stream has to worry about going from NULL state to PEER state via CONNECTING (optionally) &ndash; <code>sync_connect()</code> at least. We do not: the <code>_impl</code> is always in PEER state (unless ctor failed, but that's not interesting).</li>
 <li>Socket-stream must be able to transmit <code>Native_handle</code>s, and when applicable they correspond in a tricky way to byte 1 of the containing send/receive call. We do not transmit them &ndash; just blobs.</li>
 <li>Socket-stream is operating over a medium that lacks message boundaries; so it must worry about transmitting only part of a payload, etc. We do not: a low-level message either goes through, or it does not (would-block). A user message is 1-1 with a low-level message; so we need not transmit length prefixes. There are 2 exceptions:<ul>
 <li>An auto-ping is a special message. We express it as an "escape" low-level message (0-length &ndash; as a user message must not be 0-length) followed by an encoded enumeration value in the following message.</li>
@@ -1798,7 +1798,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:25 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

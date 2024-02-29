@@ -125,8 +125,9 @@ $(function() {
 <div class="line"><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> session(<span class="keyword">nullptr</span>, APP_B_AS_CLI, <span class="comment">// This is us (connector).</span></div>
 <div class="line">                APP_A_AS_SRV, <span class="comment">// The opposing application (acceptor).</span></div>
 <div class="line">                ...);</div>
-<div class="line">session.async_connect([...](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code) { <span class="keywordflow">if</span> (!err_code) { ...`session` is ready.... } });</div>
-<div class="line"><span class="comment">// ^-- asio-style API.  Non-blocking/synchronous API also available (integrate directly with poll(), epoll_...(), etc.).</span></div>
+<div class="line"><a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> err_code;</div>
+<div class="line">session.sync_connect(&amp;err_code); <span class="comment">// Synchronous, non-blocking.</span></div>
+<div class="line"><span class="keywordflow">if</span> (!err_code) { ...`session` is ready.... } <span class="keywordflow">else</span> { ...opposing server not active/listening... }</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Server side:</span></div>
 <div class="line"><a class="code hl_class" href="classipc_1_1session_1_1Session__server.html">Session_server</a> session_srv(<span class="keyword">nullptr</span>, APP_A_AS_SRV, <span class="comment">// This is us (acceptor).</span></div>
@@ -134,27 +135,27 @@ $(function() {
 <div class="line"><a class="code hl_class" href="classipc_1_1session_1_1Session.html">Session</a> session;</div>
 <div class="line">session_srv.async_accept(&amp;session,</div>
 <div class="line">                         [...](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code) { <span class="keywordflow">if</span> (!err_code) { ...`session` is ~ready.... } });</div>
+<div class="line"><span class="comment">// ^-- asio-style API.  Non-blocking/synchronous API also available (integrate directly with poll(), epoll_...(), etc.).</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// NOTE: Upon opening session, capabilities of `session` on either side are **exactly the same**.</span></div>
 <div class="line"><span class="comment">// Client/server status matters only when establishing the IPC conversation;</span></div>
 <div class="line"><span class="comment">// the conversation itself once established is arbitrariy and up to you fully.</span></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00297">common.hpp:297</a></div></div>
 </div><!-- fragment --><p >Open channel(s) in a session:</p><ul>
 <li>Easiest: Have them be pre-opened, so that they're ready from the session start:</li>
 </ul>
 <div class="fragment"><div class="line"><span class="comment">// Client side: Example: Expect 1 client-requested channel; N server-requested channels.</span></div>
 <div class="line">Session::Channels my_init_channels(1);</div>
 <div class="line">Session::Channels their_init_channels;</div>
-<div class="line">session.async_connect(..., &amp;my_init_channels, ..., &amp;their_init_channels,</div>
-<div class="line">                      [...](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code)</div>
+<div class="line"><a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> err_code;</div>
+<div class="line">session.sync_connect(..., &amp;my_init_channels, ..., &amp;their_init_channels, &amp;err_code); <span class="comment">// Synchronous, non-blocking.</span></div>
+<div class="line"><span class="keywordflow">if</span> (!err_code)</div>
 <div class="line">{</div>
-<div class="line">  <span class="keywordflow">if</span> (!err_code)</div>
-<div class="line">  {</div>
-<div class="line">    <span class="comment">// `session` is ready, but we might not even care that much because:</span></div>
-<div class="line">    <span class="comment">//   my_init_channels[0] = The 1 pre-opened Session::Channel_obj we requested.</span></div>
-<div class="line">    <span class="comment">//   their_init_channels = vector&lt;Session::Channel_obj&gt; = The N pre-opened channels opposing side requested.</span></div>
-<div class="line">    <span class="comment">// Sessions are mostly a way to establish channels after all, and we&#39;ve got ours!</span></div>
-<div class="line">  }</div>
-<div class="line">});</div>
+<div class="line">  <span class="comment">// `session` is ready, but we might not even care that much because:</span></div>
+<div class="line">  <span class="comment">//   my_init_channels[0] = The 1 pre-opened Session::Channel_obj we requested.</span></div>
+<div class="line">  <span class="comment">//   their_init_channels = vector&lt;Session::Channel_obj&gt; = The N pre-opened channels opposing side requested.</span></div>
+<div class="line">  <span class="comment">// Sessions are mostly a way to establish channels after all, and we&#39;ve got ours!</span></div>
+<div class="line">}</div>
 <div class="line"><span class="comment">// Server side: Example: Expect &lt;cmd line arg&gt; server-requested channels; N client-requested channels.</span></div>
 <div class="line">Session::Channels my_init_channels(lexical_cast&lt;size_t&gt;(argv[2]));</div>
 <div class="line">Session::Channels their_init_channels;</div>
@@ -283,7 +284,8 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> SRV_ADDR = util::Shared_name::ct(<span class="stringliteral">&quot;sharedSockNameSrv&quot;</span>);</div>
 <div class="line"><span class="comment">// ^-- Client and server need to agree on this, and it must not conflict.  ipc::session would take care of this.</span></div>
 <div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1Native__socket__stream.html">Native_socket_stream</a> sock(<span class="keyword">nullptr</span>, <span class="stringliteral">&quot;cool_a_nickname&quot;</span>);</div>
-<div class="line">sock.async_connect(SRV_ADDR, [...](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; err_code) { ... });</div>
+<div class="line"><a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> err_code;</div>
+<div class="line">sock.sync_connect(SRV_ADDR, &amp;err_code); <span class="comment">// Synchronous, non-blocking.</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Client/server: server.  A dedicated server-acceptor class exists for this.</span></div>
 <div class="line"> </div>
@@ -337,8 +339,8 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 <div class="ttc" id="aclassipc_1_1transport_1_1Blob__stream__mq__sender_html"><div class="ttname"><a href="classipc_1_1transport_1_1Blob__stream__mq__sender.html">ipc::transport::Blob_stream_mq_sender</a></div><div class="ttdoc">Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...</div><div class="ttdef"><b>Definition:</b> <a href="blob__stream__mq__snd_8hpp_source.html#l00164">blob_stream_mq_snd.hpp:165</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1Mqs__channel_html"><div class="ttname"><a href="classipc_1_1transport_1_1Mqs__channel.html">ipc::transport::Mqs_channel</a></div><div class="ttdoc">A Channel with at least a blobs pipe consisting of two MQs of type Persistent_mq_handle (template arg...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01174">channel.hpp:1180</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1Mqs__socket__stream__channel_html"><div class="ttname"><a href="classipc_1_1transport_1_1Mqs__socket__stream__channel.html">ipc::transport::Mqs_socket_stream_channel</a></div><div class="ttdoc">A Channel with a blobs pipe consisting of 2 MQs of type Persistent_mq_handle (template arg); and a ha...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01273">channel.hpp:1278</a></div></div>
-<div class="ttc" id="aclassipc_1_1transport_1_1Native__socket__stream__acceptor_html"><div class="ttname"><a href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html">ipc::transport::Native_socket_stream_acceptor</a></div><div class="ttdoc">A server object that binds to a Shared_name and listens for incoming Native_socket_stream::*_connect(...</div><div class="ttdef"><b>Definition:</b> <a href="native__socket__stream__acceptor_8hpp_source.html#l00102">native_socket_stream_acceptor.hpp:105</a></div></div>
-<div class="ttc" id="aclassipc_1_1transport_1_1Native__socket__stream_html"><div class="ttname"><a href="classipc_1_1transport_1_1Native__socket__stream.html">ipc::transport::Native_socket_stream</a></div><div class="ttdoc">Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...</div><div class="ttdef"><b>Definition:</b> <a href="native__socket__stream_8hpp_source.html#l00277">native_socket_stream.hpp:278</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Native__socket__stream__acceptor_html"><div class="ttname"><a href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html">ipc::transport::Native_socket_stream_acceptor</a></div><div class="ttdoc">A server object that binds to a Shared_name and listens for incoming Native_socket_stream connect att...</div><div class="ttdef"><b>Definition:</b> <a href="native__socket__stream__acceptor_8hpp_source.html#l00102">native_socket_stream_acceptor.hpp:105</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Native__socket__stream_html"><div class="ttname"><a href="classipc_1_1transport_1_1Native__socket__stream.html">ipc::transport::Native_socket_stream</a></div><div class="ttdoc">Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...</div><div class="ttdef"><b>Definition:</b> <a href="native__socket__stream_8hpp_source.html#l00270">native_socket_stream.hpp:271</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1Posix__mq__handle_html"><div class="ttname"><a href="classipc_1_1transport_1_1Posix__mq__handle.html">ipc::transport::Posix_mq_handle</a></div><div class="ttdoc">Implements the Persistent_mq_handle concept by wrapping the POSIX message queue API (see man mq_overv...</div><div class="ttdef"><b>Definition:</b> <a href="posix__mq__handle_8hpp_source.html#l00060">posix_mq_handle.hpp:62</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1Socket__stream__channel__of__blobs_html"><div class="ttname"><a href="classipc_1_1transport_1_1Socket__stream__channel__of__blobs.html">ipc::transport::Socket_stream_channel_of_blobs</a></div><div class="ttdoc">A Channel with a blobs pipe only (no handles pipe) that uses a Unix domain socket connection as the u...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01093">channel.hpp:1097</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1Socket__stream__channel_html"><div class="ttname"><a href="classipc_1_1transport_1_1Socket__stream__channel.html">ipc::transport::Socket_stream_channel</a></div><div class="ttdoc">A Channel with a handles pipe only (no blobs pipe) that uses a Unix domain socket connection as the u...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01025">channel.hpp:1029</a></div></div>
@@ -431,7 +433,7 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 <div class="line"> </div>
 <div class="line"><span class="comment">// The other side had best know how to add stuff and multiply at the end!  Check the in-message.</span></div>
 <div class="line">assert(rsp-&gt;body_root().getSumResponse().getResult() == int64_t(-44));</div>
-<div class="ttc" id="aclassipc_1_1transport_1_1struc_1_1Channel_html"><div class="ttname"><a href="classipc_1_1transport_1_1struc_1_1Channel.html">ipc::transport::struc::Channel</a></div><div class="ttdoc">Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00585">channel.hpp:588</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1struc_1_1Channel_html"><div class="ttname"><a href="classipc_1_1transport_1_1struc_1_1Channel.html">ipc::transport::struc::Channel</a></div><div class="ttdoc">Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00586">channel.hpp:589</a></div></div>
 <div class="ttc" id="anamespaceipc_1_1transport_1_1struc_html"><div class="ttname"><a href="namespaceipc_1_1transport_1_1struc.html">ipc::transport::struc</a></div><div class="ttdoc">Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8cpp_source.html#l00030">channel.cpp:31</a></div></div>
 </div><!-- fragment --><p >On the other side: Expect <b>request</b>. Send <b>response</b>. </p><div class="fragment"><div class="line"><span class="comment">// Same deal as on the other side.</span></div>
 <div class="line"><a class="code hl_class" href="classipc_1_1transport_1_1struc_1_1Channel.html">Session::Structured_channel&lt;my_meta_app::capnp::CoolMsg&gt;</a></div>
@@ -679,7 +681,7 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:24 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

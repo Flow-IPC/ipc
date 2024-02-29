@@ -105,7 +105,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a3176682a76814cc3f0fe5b79f7665aec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default ctor (object is in NULL state).  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3176682a76814cc3f0fe5b79f7665aec">More...</a><br /></td></tr>
 <tr class="separator:a3176682a76814cc3f0fe5b79f7665aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcfa1e87af688fea34809949ecbcdad0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afcfa1e87af688fea34809949ecbcdad0">Native_socket_stream</a> (flow::log::Logger *logger_ptr, <a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> nickname_str)</td></tr>
-<tr class="memdesc:afcfa1e87af688fea34809949ecbcdad0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> in NULL (not connected, not connecting) state.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afcfa1e87af688fea34809949ecbcdad0">More...</a><br /></td></tr>
+<tr class="memdesc:afcfa1e87af688fea34809949ecbcdad0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> in NULL (not connected) state.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afcfa1e87af688fea34809949ecbcdad0">More...</a><br /></td></tr>
 <tr class="separator:afcfa1e87af688fea34809949ecbcdad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8294867c6153e62ba9e8b683d3d8594"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ae8294867c6153e62ba9e8b683d3d8594">Native_socket_stream</a> (flow::log::Logger *logger_ptr, <a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> nickname_str, <a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">Native_handle</a> &amp;&amp;native_peer_socket_moved)</td></tr>
 <tr class="memdesc:ae8294867c6153e62ba9e8b683d3d8594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the socket-and-meta-blob stream by taking over an already-connected native Unix domain socket handle.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ae8294867c6153e62ba9e8b683d3d8594">More...</a><br /></td></tr>
@@ -127,9 +127,6 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html">Native_socket_stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html">Native_socket_stream</a> &amp;)=delete</td></tr>
 <tr class="memdesc:a3379e0892316b1185a85629fb8f5a04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment is disallowed. <br /></td></tr>
 <tr class="separator:a3379e0892316b1185a85629fb8f5a04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6dc47cc06da9404e02fe83012adb768"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html">Native_socket_stream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac6dc47cc06da9404e02fe83012adb768">release</a> ()</td></tr>
-<tr class="memdesc:ac6dc47cc06da9404e02fe83012adb768"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state only, with no prior send or receive ops, returns an object of this same type (as-if just constructed) operating on <code>*this</code> underlying low-level transport <code>Native_handle</code>; while <code>*this</code> becomes as-if default-cted.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac6dc47cc06da9404e02fe83012adb768">More...</a><br /></td></tr>
-<tr class="separator:ac6dc47cc06da9404e02fe83012adb768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80cb628f57f12c19f7ce46d0894c773a"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a80cb628f57f12c19f7ce46d0894c773a">nickname</a> () const</td></tr>
 <tr class="memdesc:a80cb628f57f12c19f7ce46d0894c773a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns nickname, a brief string suitable for logging.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a80cb628f57f12c19f7ce46d0894c773a">More...</a><br /></td></tr>
 <tr class="separator:a80cb628f57f12c19f7ce46d0894c773a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,14 +137,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af5e6e5ccf19782cb698017e9dcf85b34"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af5e6e5ccf19782cb698017e9dcf85b34">replace_event_wait_handles</a> (const Create_ev_wait_hndl_func &amp;create_ev_wait_hndl_func)</td></tr>
 <tr class="memdesc:af5e6e5ccf19782cb698017e9dcf85b34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> <em>and</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> APIs at the same time, per their concept contracts.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af5e6e5ccf19782cb698017e9dcf85b34">More...</a><br /></td></tr>
 <tr class="separator:af5e6e5ccf19782cb698017e9dcf85b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97fa6328b1d77a9ee212e09721fc398e"><td class="memTemplParams" colspan="2">template&lt;typename Event_wait_func_t &gt; </td></tr>
-<tr class="memitem:a97fa6328b1d77a9ee212e09721fc398e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a97fa6328b1d77a9ee212e09721fc398e">start_connect_ops</a> (Event_wait_func_t &amp;&amp;ev_wait_func)</td></tr>
-<tr class="memdesc:a97fa6328b1d77a9ee212e09721fc398e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern interaction between <code>*this</code> and the user's event loop; required before <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a> will work (as opposed to no-op/return <code>false</code>).  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a97fa6328b1d77a9ee212e09721fc398e">More...</a><br /></td></tr>
-<tr class="separator:a97fa6328b1d77a9ee212e09721fc398e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fed4817936af7f23d2beb8f75999d8d"><td class="memTemplParams" colspan="2">template&lt;typename Task_err &gt; </td></tr>
-<tr class="memitem:a3fed4817936af7f23d2beb8f75999d8d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d">async_connect</a> (const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a> &amp;absolute_name, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *sync_err_code, Task_err &amp;&amp;on_done_func)</td></tr>
-<tr class="memdesc:a3fed4817936af7f23d2beb8f75999d8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart for the essential semantics; however here according to <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> pattern the operation may complete synchronously thus emitting result immediately and ignoring <code>on_done_func</code>.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d">More...</a><br /></td></tr>
-<tr class="separator:a3fed4817936af7f23d2beb8f75999d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e22d55369f5bd67a4e0d277b73f2823"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e22d55369f5bd67a4e0d277b73f2823">sync_connect</a> (const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a> &amp;absolute_name, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0)</td></tr>
+<tr class="memdesc:a2e22d55369f5bd67a4e0d277b73f2823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e22d55369f5bd67a4e0d277b73f2823">More...</a><br /></td></tr>
+<tr class="separator:a2e22d55369f5bd67a4e0d277b73f2823"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a945fb744696feed25067241ce2b6ca4b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a945fb744696feed25067241ce2b6ca4b">send_meta_blob_max_size</a> () const</td></tr>
 <tr class="memdesc:a945fb744696feed25067241ce2b6ca4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a945fb744696feed25067241ce2b6ca4b">More...</a><br /></td></tr>
 <tr class="separator:a945fb744696feed25067241ce2b6ca4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,18 +241,13 @@ Related Functions</h2></td></tr>
 <p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
 <h3>How to use</h3>
 <p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply. The differences (some of which are quite important) are as follows.</p>
-<p >Before using <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a>, one must set up the "connect" API according to the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> pattern. Namely one must use <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a97fa6328b1d77a9ee212e09721fc398e" title="Sets up the sync_io-pattern interaction between *this and the user&#39;s event loop; required before asyn...">start_connect_ops()</a> successfully. See its doc header; but generally it is another instance of a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> pattern with which one must be familiar before using this class (and <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a>::</code> senders and receivers generally).</p>
-<p >Similarly &ndash; as described by the concepts being implemented &ndash; one must use <code>start_send_*_ops()</code> before the send API (<code>send_*()</code>, <code>*end_sending()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aaef9afdeb3800df615a01b22070acad8" title="Implements Native_handle_sender, Blob_sender API per contract.">auto_ping()</a>) and/or <code>start_receive_*_ops()</code> before the receive API (<code>async_receive_*()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac645b3e69ee3bfda64c0e9fda62f656a" title="Implements Native_handle_receiver, Blob_receiver API per contract.">idle_timer_run()</a>).</p>
+<p >As described by the concepts being implemented &ndash; one must use <code>start_send_*_ops()</code> before the send API (<code>send_*()</code>, <code>*end_sending()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aaef9afdeb3800df615a01b22070acad8" title="Implements Native_handle_sender, Blob_sender API per contract.">auto_ping()</a>) and/or <code>start_receive_*_ops()</code> before the receive API (<code>async_receive_*()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac645b3e69ee3bfda64c0e9fda62f656a" title="Implements Native_handle_receiver, Blob_receiver API per contract.">idle_timer_run()</a>).</p>
 <p >Before <code>start_*_ops()</code>, it may be required to call <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af5e6e5ccf19782cb698017e9dcf85b34" title="Implements Native_handle_sender and Native_handle_receiver APIs at the same time, per their concept c...">replace_event_wait_handles()</a> (depending on your use case).</p>
 <p >Regarding ctors: Naturally the <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-core-adopting ctor does not exist here, as we <em>are</em> a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> core. (Or I suppose it's just the move ctor.)</p>
 <h2>Thread safety </h2>
 <p >Boring stuff out of the way first: It is safe to concurrently act on 2 separate objects of this type. <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a80cb628f57f12c19f7ce46d0894c773a" title="Returns nickname, a brief string suitable for logging.">nickname()</a> and <code>ostream&lt;&lt;</code> are always safe to call, and they always yield the same value (modulo across move-assignment).</p>
 <p >Now as to invoking operation X concurrently with operation Y on the same <code>*this</code>, where at least X is non-<code>const</code>:</p>
 <p >Firstly let us define operation: Unlike with most APIs in the library, operations don't merely comprise methods (or related free functions). Rather, in addition, invoking <a class="el" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24" title="In sync_io pattern, concrete type storing user-supplied function invoked by pattern-implementing ipc:...">util::sync_io::Event_wait_func</a> <code>(*on_active_ev_func)()</code> &ndash; to inform <code>*this</code> of an active event due to an earlier async-wait requested by <code>*this</code> &ndash; is formally an operation on <code>*this</code>. It can be thought of as a member of its (non-<code>const</code>) API. For the below discussion we shall pretend these methods actually exist, to simplify discussion of these operations:</p><ul>
-<li><code>connect_on_active_ev()</code> (<code>on_active_ev_func</code> originating from <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a97fa6328b1d77a9ee212e09721fc398e" title="Sets up the sync_io-pattern interaction between *this and the user&#39;s event loop; required before asyn...">start_connect_ops()</a>).<ul>
-<li>Recall this may synchronously trigger <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a>-passed completion handler.</li>
-</ul>
-</li>
 <li><code>send_on_active_ev()</code> (<code>on_active_ev_func</code> originating from <code>start_send_*_ops()</code>).<ul>
 <li>Recall this may synchronously trigger <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afb680eb576497ac7e05e8294b49da0eb" title="Implements Native_handle_sender, Blob_sender API per contract.">async_end_sending()</a>-passed completion handler.</li>
 </ul>
@@ -272,8 +259,8 @@ Related Functions</h2></td></tr>
 </ul>
 <p >Objects of most types simply declare it to be unsafe to invoke (on one <code>*this</code>) non-<code>const</code> operation X concurrently with operation Y (whether X or Y are the same op or differ). <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code>, however, works as follows: By <em>default</em> that is indeed the rule... with the exception of the following specific exceptions, wherein it <em>is</em> <b>intentionally</b> safe.</p>
 <h3>In PEER state</h3>
-<p >Firstly, let's assume <code>*this</code> is in PEER state, which is achieved either by using the PEER-state ctor form (where a pre-connected <code>Native_handle</code> is subsumed), or else by successfully completing <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a> &ndash; that is, once it has invoked <code>on_done_func()</code> (the completion handler specified by user). Cool? Cool. We are in PEER state. Then:</p>
-<p >Boring ones first: <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a> simply returns <code>false</code> and is always safe to call (it is meant for NULL state). <code>*_max_size()</code> always return the same respective constant values and are always safe to call.</p>
+<p >Firstly, let's assume <code>*this</code> is in PEER state, which is achieved either by using the PEER-state ctor form (where a pre-connected <code>Native_handle</code> is subsumed), or else by successfully completing <code>*_connect()</code>. Cool? Cool. We are in PEER state. Then:</p>
+<p >Boring ones first: <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e22d55369f5bd67a4e0d277b73f2823" title="Identical to Async_io_obj counterpart.">sync_connect()</a> simply returns <code>false</code> and is always safe to call (it is meant for NULL state). <code>*_max_size()</code> always return the same respective constant values and are always safe to call.</p>
 <p >Much more significantly, we now list two specific categories of operations:</p><ul>
 <li>Send-ops:<ul>
 <li><code>send_*()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a69ed821cc3a41b68dd56880d45033a45" title="Implements Native_handle_sender, Blob_sender API per contract.">end_sending()</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afb680eb576497ac7e05e8294b49da0eb" title="Implements Native_handle_sender, Blob_sender API per contract.">async_end_sending()</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aaef9afdeb3800df615a01b22070acad8" title="Implements Native_handle_sender, Blob_sender API per contract.">auto_ping()</a>; and <code>send_on_active_ev()</code> (reminder: not a real method but a real op/see definition above).</li>
@@ -288,13 +275,7 @@ Related Functions</h2></td></tr>
 <p >Formally that's simply the case.</p>
 <p >Informally: it may be highly significant to performance of the user code that this is the case. It means that the two mutually-opposing pipes can operate concurrently, despite the fact they're operating on the same socket. E.g., an upload and download being highly active simultaneously will proceed in parallel on separate processor cores if possible. If your event loop is single-threaded in any case, then this does not matter; but if 2+ threads are involved, then it may well matter quite a bit. (For example: non-<code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> is internally built on a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">sync_io::Native_socket_stream</a>. It starts a thread (internally dubbed thread W) in which to perform significant incoming-direction work, while most &ndash; but not all &ndash; outgoing-direction work is done synchronously from its user's calling thread (dubbed thread U). Therefore it can keep 2 separate mutexes (one for each direction) and lock only 1 when doing in-work (in either thread U/W); and lock the other when doing out-work, in either thread U/W. So if a send can complete synchronously in thread U, while a receive does stuff in the background in thread W, the two may execute concurrently as opposed to serially. Running concurrently would decrease latency latency in sending and/or receipt.)</p>
 <h3>In NULL state</h3>
-<p >Now let's assume <code>*this</code> is in NULL state; meaning it has been cted using the NULL-state ctor; and either <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a> has not been invoked at all, or it has but has indicated (via completion handler as explained earlier) failure to connect. Then:</p>
-<p >Boring ones first: All the send-ops and receive-ops listed above (with the exception of <code>*_on_active_ev()</code>, which cannot be called at all until PEER state &ndash; you'll have no such function to call) simply return <code>false</code> and are always safe to call (they are meant for PEER state). <code>*_max_size()</code> similarly will all return zero and are always safe to call.</p>
-<p >That leaves only <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a> and <code>connect_on_active_ev()</code> (again, not a real method/see definition above). Formally we don't need to say this, but to be clear: the two may not be called concurrently to each other or themselves. However, to restate: The "boring" ones in the previous paragraph can be called safely, period (they'll just be useless, as they only make sense in PEER state).</p>
-<h3>What about CONNECTING state?</h3>
-<p >CONNECTING state refers to the no-man's-land between NULL and PEER: You've called <code>async_connect(F)</code>, <code>F()</code> being the completion handler, and <code>F(err_code_or_success)</code> has not yet been invoked to indicate the result.</p>
-<p >Formally we need not say anything additional to the text above that outlines the thread-safety rules. For convenience/clarity though: It is not safe to invoke operations (other than <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a80cb628f57f12c19f7ce46d0894c773a" title="Returns nickname, a brief string suitable for logging.">nickname()</a> and <code>ostream</code> output) concurrently during CONNECTING state, if one of them is non-<code>const</code>. Moreover, since the only way to know for sure you're not in CONNECTING state at a given moment is to never have called <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a>, or for it to have triggered the completion handler: Do not do potentially concurrent stuff while an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a> is outstanding. It is not safe.</p>
-<p >This rule should be easy to follow &ndash; e.g., who would want to try a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e1474a87ee8f5ec18bf6cc8d6cfe7b2" title="Implements Blob_sender API per contract.">send_blob()</a> until they're for-sure connected (a/k/a in PEER state)? There is however one trip-up point which may not be quite obvious: the otherwise-innocuous <code>*_max_size()</code> accessors. Don't call them during an oustanding <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a> (by which, again, we mean one whose completion handler has not yet been invoked); or, if you possibly do, then ensure non-concurrency against <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a> and <code>connect_on_active_ev()</code>, when state would switch between NULL=&gt;CONNECTING=&gt;NULL/PEER. They'll return 0 in NULL and CONNECTING states versus non-zero real values in PEER state; but during a transition behavior is undefined. While it is possible to use a mutex to guard against this, it may not be worth the trouble.</p>
+<p >Nothing interesting here.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a>: implemented concept. </dd>
 <dd>
 <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a>: implemented concept. </dd>
@@ -364,7 +345,7 @@ Related Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> in NULL (not connected, not connecting) state. </p>
+<p>Creates a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> in NULL (not connected) state. </p>
 <p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -507,55 +488,6 @@ Related Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3fed4817936af7f23d2beb8f75999d8d" name="a3fed4817936af7f23d2beb8f75999d8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fed4817936af7f23d2beb8f75999d8d">&#9670;&nbsp;</a></span>async_connect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Task_err &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ipc::transport::sync_io::Native_socket_stream::async_connect </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a> &amp;&#160;</td>
-          <td class="paramname"><em>absolute_name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>sync_err_code</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Task_err &amp;&amp;&#160;</td>
-          <td class="paramname"><em>on_done_func</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart for the essential semantics; however here according to <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> pattern the operation may complete synchronously thus emitting result immediately and ignoring <code>on_done_func</code>. </p>
-<p >Per <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> pattern: if internally more work is required asynchronously pending 1+ native handles being in 1+ active-event (readable, writable) state, this method shall later invoke the <code>Event_wait_func</code> registered via <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a97fa6328b1d77a9ee212e09721fc398e" title="Sets up the sync_io-pattern interaction between *this and the user&#39;s event loop; required before asyn...">start_connect_ops()</a> by the user of <code>*this</code>; and the error code <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24" title="A sync_io operation could not immediately complete; it will complete contingent on active async-wait ...">error::Code::S_SYNC_IO_WOULD_BLOCK</a> shall be emitted here synchronously (via <code>*sync_err_code</code> if not null, exception if null &ndash; per standard <code>flow::Error_code</code>-doc-header semantics). Meanwhile the completion handler <code>on_done_func()</code> shall execute once the required async-waits have been satisfied by the <code>*this</code> user, synchronously from inside the <code>(*on_active_ev_func)()</code> call that achieves this state.</p>
-<p >If, by contrast, no more work is required &ndash; the operation completed synchronously within this method &ndash; then: success or error <em>other than</em> error::code::S_SYNC_IO_WOULD_BLOB shall be emitted (again per standard semantics) synchronously; and <code>on_done_func()</code> shall not be saved nor ever executed by <code>*this</code>. Thus the result of the operation shall be either output directly synchronously &ndash; if op completed synchronously &ndash; or later via <code>on_done_func()</code> completion handler.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">absolute_name</td><td>See above. </td></tr>
-    <tr><td class="paramname">sync_err_code</td><td>See above. </td></tr>
-    <tr><td class="paramname">on_done_func</td><td>See above. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
-
-</div>
-</div>
 <a id="afb680eb576497ac7e05e8294b49da0eb" name="afb680eb576497ac7e05e8294b49da0eb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afb680eb576497ac7e05e8294b49da0eb">&#9670;&nbsp;</a></span>async_end_sending()</h2>
 
@@ -954,29 +886,6 @@ template&lt;typename Task_err_sz &gt; </div>
 
 </div>
 </div>
-<a id="ac6dc47cc06da9404e02fe83012adb768" name="ac6dc47cc06da9404e02fe83012adb768"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6dc47cc06da9404e02fe83012adb768">&#9670;&nbsp;</a></span>release()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html">Native_socket_stream</a> ipc::transport::sync_io::Native_socket_stream::release </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>In PEER state only, with no prior send or receive ops, returns an object of this same type (as-if just constructed) operating on <code>*this</code> underlying low-level transport <code>Native_handle</code>; while <code>*this</code> becomes as-if default-cted. </p>
-<p >It is similar to returning <code>Native_socket_stream(std::move(*this))</code>, except that any <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af5e6e5ccf19782cb698017e9dcf85b34" title="Implements Native_handle_sender and Native_handle_receiver APIs at the same time, per their concept c...">replace_event_wait_handles()</a> and <code>start_*_ops()</code> &ndash; generally irreversible publicly otherwise &ndash; are as-if undone on the returned object.</p>
-<p >Rationale: To be perfectly honest this was originally written in order to allow for async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a559ef620bfc3f46220dc7c3522bed32d" title="In PEER state only, with no prior send or receive ops, returns a sync_io::Native_socket_stream core (...">transport::Native_socket_stream::release()</a> to be writable.</p>
-<p >Behavior is undefined if <code>*this</code> is not in PEER state, or if it is, but you've invoked <code>async_receive_*()</code>, <code>send_*()</code>, <code>*end_sending()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aaef9afdeb3800df615a01b22070acad8" title="Implements Native_handle_sender, Blob_sender API per contract.">auto_ping()</a>, or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac645b3e69ee3bfda64c0e9fda62f656a" title="Implements Native_handle_receiver, Blob_receiver API per contract.">idle_timer_run()</a> in the past. (<code>start_*_ops()</code> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af5e6e5ccf19782cb698017e9dcf85b34" title="Implements Native_handle_sender and Native_handle_receiver APIs at the same time, per their concept c...">replace_event_wait_handles()</a> are fine.) Please be careful.</p>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
-
-</div>
-</div>
 <a id="a16b605c316922325415d60aeb0af3c40" name="a16b605c316922325415d60aeb0af3c40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a16b605c316922325415d60aeb0af3c40">&#9670;&nbsp;</a></span>remote_peer_process_credentials()</h2>
 
@@ -1027,7 +936,6 @@ template&lt;typename Create_ev_wait_hndl_func &gt; </div>
 
 <p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> <em>and</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> APIs at the same time, per their concept contracts. </p>
 <p >(Also implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> <em>and</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> APIs; they are identical.)</p>
-<p >In addition (to the reasons documented for the concept(s)) it shall no-op/warn/return <code>false</code>, if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a97fa6328b1d77a9ee212e09721fc398e" title="Sets up the sync_io-pattern interaction between *this and the user&#39;s event loop; required before asyn...">start_connect_ops()</a> has already been called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">create_ev_wait_hndl_func</td><td>See above. </td></tr>
@@ -1173,45 +1081,6 @@ template&lt;typename Create_ev_wait_hndl_func &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#a0f8f3fb816c09dd9a992a878892bbffb" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably/in-order,...">Native_handle_sender::send_native_handle()</a>: implemented concept. </dd></dl>
-
-</div>
-</div>
-<a id="a97fa6328b1d77a9ee212e09721fc398e" name="a97fa6328b1d77a9ee212e09721fc398e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97fa6328b1d77a9ee212e09721fc398e">&#9670;&nbsp;</a></span>start_connect_ops()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Event_wait_func_t &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ipc::transport::sync_io::Native_socket_stream::start_connect_ops </td>
-          <td>(</td>
-          <td class="paramtype">Event_wait_func_t &amp;&amp;&#160;</td>
-          <td class="paramname"><em>ev_wait_func</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets up the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern interaction between <code>*this</code> and the user's event loop; required before <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fed4817936af7f23d2beb8f75999d8d" title="See Async_io_obj counterpart for the essential semantics; however here according to sync_io pattern t...">async_connect()</a> will work (as opposed to no-op/return <code>false</code>). </p>
-<p >If in PEER state it is unnecessary and shall no-op and return <code>false</code>.</p>
-<p ><code>ev_wait_func()</code> &ndash; with signature matching <a class="el" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24" title="In sync_io pattern, concrete type storing user-supplied function invoked by pattern-implementing ipc:...">util::sync_io::Event_wait_func</a> &ndash; is a key function memorized by <code>*this</code>. It shall be invoked by <code>*this</code> operations when some op cannot complete synchronously and requires a certain event (readable/writable) to be active on a certain native-handle.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24" title="In sync_io pattern, concrete type storing user-supplied function invoked by pattern-implementing ipc:...">util::sync_io::Event_wait_func</a> doc header for useful and complete instructions on how to write an <code>ev_wait_func()</code> properly. Doing so correctly is the crux of using the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> pattern.</dd></dl>
-<p>This is a standard <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern API per <a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">util::sync_io</a> doc header.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Event_wait_func_t</td><td>Function type matching <a class="el" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24" title="In sync_io pattern, concrete type storing user-supplied function invoked by pattern-implementing ipc:...">util::sync_io::Event_wait_func</a>. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ev_wait_func</td><td>See above. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>false</code> if this has already been invoked; no-op logging aside. <code>true</code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -1363,6 +1232,44 @@ template&lt;typename Event_wait_func_t &gt; </div>
 
 </div>
 </div>
+<a id="a2e22d55369f5bd67a4e0d277b73f2823" name="a2e22d55369f5bd67a4e0d277b73f2823"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e22d55369f5bd67a4e0d277b73f2823">&#9670;&nbsp;</a></span>sync_connect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::transport::sync_io::Native_socket_stream::sync_connect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a> &amp;&#160;</td>
+          <td class="paramname"><em>absolute_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">absolute_name</td><td>See above. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See above. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a id="ac6108711cc8b33c3b7ef0491ba78e2f6" name="ac6108711cc8b33c3b7ef0491ba78e2f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac6108711cc8b33c3b7ef0491ba78e2f6">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
@@ -1496,7 +1403,7 @@ template&lt;typename Event_wait_func_t &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 26 2024 02:12:51 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Feb 29 2024 08:14:21 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
