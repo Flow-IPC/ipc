@@ -229,7 +229,7 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
   algo.m_asio.run();
 } // run_capnp_over_raw()
 
-void run_capnp_zero_copy(Channel_struc*);// chan_ptr)
+void run_capnp_zero_copy(Channel_struc*)// chan_ptr)
 {
   // XXX auto& chan = *chan_ptr;
 
