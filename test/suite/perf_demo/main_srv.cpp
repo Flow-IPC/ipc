@@ -206,16 +206,14 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
       FLOW_LOG_INFO("> Sending get-cache response fragments x N: [seg size, seg content...].");
 
+      const auto chunk_max_sz = m_chan.send_blob_max_size();
       for (size_t idx = 0; idx != capnp_segs.size(); ++idx)
       {
-        FLOW_LOG_INFO("> Sending get-cache response fragment: capnp segment count = [" << m_n << "].");
-
         const auto capnp_seg = capnp_segs[idx].asBytes();
         m_n = capnp_seg.size();
         m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
 
         auto start = capnp_seg.begin();
-        const auto chunk_max_sz = m_chan.send_blob_max_size();
         do
         {
           const auto chunk_sz = std::min(chunk_max_sz, m_n);
@@ -224,9 +222,11 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
           m_n -= chunk_sz;
         }
         while (m_n != 0);
-        FLOW_LOG_INFO("= Done.");
+        FLOW_LOG_INFO("= Sent segment [" << (idx + 1) << "] of [" << capnp_segs.size() << "]; "
+                      "segment capnp-sized = [" << capnp_seg.size() << "].");
       }
-    }
+      FLOW_LOG_INFO("= Done.");
+    } // on_request()
   }; // class Algo
 
   Algo algo(logger_ptr, chan_ptr);
