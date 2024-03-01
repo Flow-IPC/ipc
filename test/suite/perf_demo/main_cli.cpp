@@ -142,6 +142,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_sync()"); }
 
       // Send a dummy message as a request signal, so we can start timing RTT before sending it.
+      FLOW_LOG_INFO("= Got handshake SYN.");
       FLOW_LOG_INFO("> Issuing get-cache request via tiny message.");
       m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
 
