@@ -16,6 +16,7 @@
  * permissions and limitations under the License. */
 
 #include "common.hpp"
+#include <flow/perf/checkpt_timer.hpp>
 
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan);
 void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan);
