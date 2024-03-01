@@ -167,7 +167,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
     Channel_raw& m_chan;
     Error_code m_err_code;
     size_t m_sz;
-    size_t m_n;
+    size_t m_n = 0;
     Capnp_heap_engine m_capnp_msg;
 
     Algo(Logger* logger_ptr, Channel_raw* chan_ptr) :
@@ -183,6 +183,10 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       m_chan.replace_event_wait_handles([]() -> auto { return Asio_handle(g_asio); });
       m_chan.start_send_blob_ops(ev_wait);
       m_chan.start_receive_blob_ops(ev_wait);
+
+      // Send a dummy message to synchronize initialization.
+      FLOW_LOG_INFO("> Issuing handshake SYN for initialization sync.");
+      m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
 
       // Receive a dummy message as a request signal.
       FLOW_LOG_INFO("< Expecting get-cache request via tiny message.");

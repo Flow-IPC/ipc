@@ -112,7 +112,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
     Channel_raw& m_chan;
     Error_code m_err_code;
     size_t m_sz;
-    size_t m_n = 0;
+    size_t m_n;
     size_t m_n_segs;
     vector<Blob> m_segs;
     bool m_new_seg_next = true;
@@ -129,6 +129,17 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       m_chan.replace_event_wait_handles([]() -> auto { return Asio_handle(g_asio); });
       m_chan.start_send_blob_ops(ev_wait);
       m_chan.start_receive_blob_ops(ev_wait);
+
+      // Receive a dummy message to synchronize initialization.
+      FLOW_LOG_INFO("< Expecting handshake SYN for initialization sync.");
+      m_chan.async_receive_blob(Blob_mutable(&m_n, sizeof(m_n)), &m_err_code, &m_sz,
+                                [&](const Error_code& err_code, size_t) { on_sync(err_code); });
+      if (m_err_code != ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { on_sync(m_err_code); }
+    }
+
+    void on_sync(const Error_code& err_code)
+    {
+      if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_sync()"); }
 
       // Send a dummy message as a request signal, so we can start timing RTT before sending it.
       FLOW_LOG_INFO("> Issuing get-cache request via tiny message.");
