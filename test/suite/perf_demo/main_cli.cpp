@@ -94,6 +94,7 @@ int main(int argc, char const * const * argv)
 
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 {
+  using flow::Flow_log_component;
   using flow::log::Logger;
   using flow::log::Log_context;
   using boost::asio::post;
@@ -231,14 +232,4 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 
 void run_capnp_zero_copy(flow::log::Logger*, Channel_struc*)// chan_ptr)
 {
-  // XXX auto& chan = *chan_ptr;
-
-} // run_capnp_zero_copy()
-
-void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc*)// chan_ptr)
-{
-  FLOW_LOG_SET_CONTEXT(logger_ptr, Flow_log_component::S_UNCAT);
-
-  // XXX auto& chan = *chan_ptr;
-
 } // run_capnp_zero_copy()
