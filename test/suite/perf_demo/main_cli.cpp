@@ -110,6 +110,7 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
     Error_code err_code;
     size_t sz;
     size_t n = 0;
+    size_t n_segs;
     vector<Blob> segs;
     bool new_seg_next = true;
 
