@@ -124,8 +124,6 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       FLOW_LOG_INFO("-- RUN - capnp request/response over raw local-socket connection --");
     }
 
-    ~Algo()
-
     void start()
     {
       m_chan.replace_event_wait_handles([this]() -> auto { return Asio_handle(g_asio); });
