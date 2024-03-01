@@ -106,7 +106,6 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   using ::capnp::word;
   using boost::asio::post;
   using std::vector;
-  using std::string;
 
   using Capnp_word_array_ptr = kj::ArrayPtr<const word>;
   using Capnp_word_array_array_ptr = kj::ArrayPtr<const Capnp_word_array_ptr>;
@@ -151,7 +150,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       // Send a dummy message as a request signal, so we can start timing RTT before sending it.
       FLOW_LOG_INFO("= Got handshake SYN.");
 
-      m_timer.emplace(get_logger(), string("capnp-raw"), Timer::real_clock_types());
+      m_timer.emplace(get_logger(), "capnp-raw", Timer::real_clock_types(), 0);
       FLOW_LOG_INFO("> Issuing get-cache request via tiny message.");
       m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
       m_timer->checkpoint("sent request");
