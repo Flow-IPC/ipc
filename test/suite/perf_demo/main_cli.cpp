@@ -105,15 +105,19 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
 
   struct Algo // Just so we can arrange functions in chronological order really.
   {
-    static auto& chan = *chan_ptr;
-    static Task_engine asio;
-    static Error_code err_code;
-    static size_t sz;
-    static size_t n = 0;
-    static vector<Blob> segs;
-    static bool new_seg_next = true;
+    Channel_raw& chan;
+    Task_engine asio;
+    Error_code err_code;
+    size_t sz;
+    size_t n = 0;
+    vector<Blob> segs;
+    bool new_seg_next = true;
 
-    static void start()
+    Algo(Channel_raw* chan_ptr) :
+      chan(*chan_ptr)
+    {}
+
+    void start()
     {
       chan.replace_event_wait_handles([this]() -> auto { return Asio_handle(asio); });
       chan.start_send_blob_ops([&](Asio_handle* hndl_of_interest, bool snd_else_rcv, auto&& on_active_ev_func)
@@ -128,7 +132,7 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
       if (err_code != ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { on_n_segs(err_code, sz); }
     }
 
-    static void on_n_segs(const Error_code& err_code, size_t sz)
+    void on_n_segs(const Error_code& err_code, size_t sz)
     {
       if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_n_segs()"); }
       assert((sz == sizeof(n)) && "First in-message should be capnp-segment count.");
@@ -139,7 +143,7 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
       read_segs();
     }
 
-    static void read_segs()
+    void read_segs()
     {
       do
       {
@@ -157,7 +161,7 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
       while (!handle_blob(err_code, sz));
     }
 
-    static void on_blob(const Error_code& err_code, size_t sz)
+    void on_blob(const Error_code& err_code, size_t sz)
     {
       if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_seg_sz()"); }
       if (!handle_blob(err_code, sz))
@@ -166,7 +170,7 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
       }
     }
 
-    static bool handle_blob(const Error_code& err_code, size_t sz)
+    bool handle_blob(const Error_code& err_code, size_t sz)
     {
       if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_seg_sz()"); }
       if (new_seg_next)
@@ -195,7 +199,7 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
       return false;
     } // handle_blob()
 
-    static void on_complete_response()
+    void on_complete_response()
     {
       using ::capnp::word;
 
@@ -214,7 +218,8 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
     } // on_complete_response()
   }; // class Algo
 
-  post(asio, Algo::start);
+  Algo algo(chan_ptr);
+  post(asio, [&]() { algo.start(); });
   asio.run();
 } // run_capnp_over_raw()
 
