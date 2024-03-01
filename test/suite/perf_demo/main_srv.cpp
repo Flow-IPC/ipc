@@ -105,8 +105,8 @@ int main(int argc, char const * const * argv)
     session.init_handlers([](const Error_code&) {});
     // Session in PEER state (opened fully); so channels are ready too.
 
-    [[maybe_unused]] auto& chan_raw = chans[0]; // Binary channel for raw-ish tests.XXX
-    [[maybe_unused]] Channel_struc chan_struc(&log_logger, std::move(chans[1]), // Structured channel: SHM-backed underneath.XXX
+    auto& chan_raw = chans[0]; // Binary channel for raw-ish tests.XXX
+    Channel_struc chan_struc(&log_logger, std::move(chans[1]), // Structured channel: SHM-backed underneath.XXX
                              ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session);
 
     run_capnp_over_raw(&chan_raw);
