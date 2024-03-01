@@ -123,6 +123,8 @@ int main(int argc, char const * const * argv)
   return 0;
 } // main()
 
+Task_engine g_asio;
+
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 {
   using flow::Flow_log_component;
@@ -135,7 +137,6 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
     public Log_context
   {
     Channel_raw& m_chan;
-    Task_engine m_asio;
     Error_code m_err_code;
     size_t m_sz;
     size_t m_n;
@@ -147,7 +148,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 
     void start()
     {
-      m_chan.replace_event_wait_handles([this]() -> auto { return Asio_handle(m_asio); });
+      m_chan.replace_event_wait_handles([this]() -> auto { return Asio_handle(g_asio); });
       m_chan.start_send_blob_ops(ev_wait);
       m_chan.start_receive_blob_ops(ev_wait);
 
@@ -164,8 +165,8 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   }; // class Algo
 
   Algo algo(logger_ptr, chan_ptr);
-  post(algo.m_asio, [&]() { algo.start(); });
-  algo.m_asio.run();
+  post(g_asio, [&]() { algo.start(); });
+  g_asio.run();
 } // run_capnp_over_raw()
 
 void run_capnp_zero_copy(flow::log::Logger*, Channel_struc*)// chan_ptr)
