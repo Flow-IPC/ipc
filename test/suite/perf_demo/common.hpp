@@ -55,3 +55,6 @@ using Blob_mutable = ipc::util::Blob_mutable;
 
 // Invoke from main() from either application to ensure it's being run directly from the expected CWD.
 void ensure_run_env(const char* argv0, bool srv_else_cli);
+
+void ev_wait(Asio_handle* hndl_of_interest,
+             bool ev_of_interest_snd_else_rcv, ipc::util::sync_io::Task_ptr&& on_active_ev_func);

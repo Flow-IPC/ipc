@@ -19,8 +19,6 @@
 
 void run_capnp_over_raw(Channel_raw* chan);
 void run_capnp_zero_copy(Channel_struc* chan);
-void ev_wait(Asio_handle* hndl_of_interest,
-             bool ev_of_interest_snd_else_rcv, ipc::util::sync_io::Task_ptr&& on_active_ev_func);
 
 int main(int argc, char const * const * argv)
 {
@@ -230,21 +228,3 @@ void run_capnp_zero_copy(Channel_struc*)// chan_ptr)
   // XXX auto& chan = *chan_ptr;
 
 } // run_capnp_zero_copy()
-
-void ev_wait(Asio_handle* hndl_of_interest,
-             bool ev_of_interest_snd_else_rcv, ipc::util::sync_io::Task_ptr&& on_active_ev_func)
-{
-  // They want us to async-wait.  Oblige.
-  hndl_of_interest->async_wait(ev_of_interest_snd_else_rcv
-                                 ? Asio_handle::Base::wait_write
-                                 : Asio_handle::Base::wait_read,
-                               [on_active_ev_func = std::move(on_active_ev_func)]
-                                 (const Error_code& err_code)
-  {
-    if (err_code == boost::asio::error::operation_aborted)
-    {
-      return; // Stuff is shutting down.  GTFO.
-    }
-    (*on_active_ev_func)();
-  });
-}
