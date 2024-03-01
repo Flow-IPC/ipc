@@ -106,6 +106,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   using ::capnp::word;
   using boost::asio::post;
   using std::vector;
+  using std::string;
 
   using Capnp_word_array_ptr = kj::ArrayPtr<const word>;
   using Capnp_word_array_array_ptr = kj::ArrayPtr<const Capnp_word_array_ptr>;
