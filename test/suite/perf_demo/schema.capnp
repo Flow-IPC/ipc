@@ -15,7 +15,7 @@
 # See the License for the specific language governing
 # permissions and limitations under the License.
 
-@0x11ec23789d1380ad;
+@0xa30343c0b99be6ef;
 
 using Cxx = import "/capnp/c++.capnp";
 
