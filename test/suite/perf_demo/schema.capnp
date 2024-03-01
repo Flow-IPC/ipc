@@ -25,8 +25,8 @@ struct Body
 {
   union
   {
-    getCacheReq @0 :GetCachreEq;
-    getCacheRsp @0 :GetCachreEq;
+    getCacheReq @0 :GetCacheReq;
+    getCacheRsp @1 :GetCacheRsp;
   }
 }
 
