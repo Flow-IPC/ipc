@@ -17,8 +17,8 @@
 
 #include "common.hpp"
 
-void run_capnp_over_raw(Channel_raw* chan);
-void run_capnp_zero_copy(Channel_struc* chan);
+void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan);
+void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan);
 
 int main(int argc, char const * const * argv)
 {
@@ -76,8 +76,8 @@ int main(int argc, char const * const * argv)
     Channel_struc chan_struc(&log_logger, std::move(chans[1]), // Structured channel: SHM-backed underneath.
                              ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session);
 
-    run_capnp_over_raw(&chan_raw);
-    run_capnp_zero_copy(&chan_struc);
+    run_capnp_over_raw(&std_logger, &chan_raw);
+    run_capnp_zero_copy(&std_logger, &chan_struc);
 
     FLOW_LOG_INFO("Exiting.");
   } // try
@@ -92,8 +92,10 @@ int main(int argc, char const * const * argv)
   return 0;
 } // main()
 
-void run_capnp_over_raw(Channel_raw* chan_ptr)
+void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 {
+  using flow::log::Logger;
+  using flow::log::Log_context;
   using boost::asio::post;
   using std::vector;
 
@@ -101,7 +103,8 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
   using Capnp_word_array_array_ptr = kj::ArrayPtr<const Capnp_word_array_ptr>;
   using Capnp_heap_engine = ::capnp::SegmentArrayMessageReader;
 
-  struct Algo // Just so we can arrange functions in chronological order really.
+  struct Algo :// Just so we can arrange functions in chronological order really.
+    public Log_context
   {
     Channel_raw& m_chan;
     Task_engine m_asio;
@@ -112,9 +115,12 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
     vector<Blob> m_segs;
     bool m_new_seg_next = true;
 
-    Algo(Channel_raw* chan_ptr) :
+    Algo(Logger* logger_ptr, Channel_raw* chan_ptr) :
+      Log_context(logger_ptr, Flow_log_component::S_UNCAT),
       m_chan(*chan_ptr)
-    {}
+    {
+      FLOW_LOG_INFO("-- RUN - capnp request/response over raw local-socket connection --");
+    }
 
     void start()
     {
@@ -218,13 +224,21 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
     } // on_complete_response()
   }; // class Algo
 
-  Algo algo(chan_ptr);
+  Algo algo(logger_ptr, chan_ptr);
   post(algo.m_asio, [&]() { algo.start(); });
   algo.m_asio.run();
 } // run_capnp_over_raw()
 
-void run_capnp_zero_copy(Channel_struc*)// chan_ptr)
+void run_capnp_zero_copy(flow::log::Logger*, Channel_struc*)// chan_ptr)
 {
+  // XXX auto& chan = *chan_ptr;
+
+} // run_capnp_zero_copy()
+
+void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc*)// chan_ptr)
+{
+  FLOW_LOG_SET_CONTEXT(logger_ptr, Flow_log_component::S_UNCAT);
+
   // XXX auto& chan = *chan_ptr;
 
 } // run_capnp_zero_copy()
