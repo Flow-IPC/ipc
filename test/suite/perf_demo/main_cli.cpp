@@ -131,8 +131,10 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       m_chan.start_receive_blob_ops(ev_wait);
 
       // Send a dummy message as a request signal, so we can start timing RTT before sending it.
+      FLOW_LOG_INFO("> Issuing get-cache request via tiny message.");
       m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
 
+      FLOW_LOG_INFO("< Expecting get-cache response fragment: capnp segment count.");
       m_chan.async_receive_blob(Blob_mutable(&m_n, sizeof(m_n)), &m_err_code, &m_sz,
                                 [&](const Error_code& err_code, size_t sz) { on_n_segs(err_code, sz); });
       if (m_err_code != ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { on_n_segs(m_err_code, m_sz); }
@@ -145,6 +147,8 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       assert(m_n != 0);
 
       m_n_segs = m_n;
+      FLOW_LOG_INFO("= Got get-cache response fragment: capnp segment count = [" << m_n_segs << "].");
+
       m_segs.reserve(m_n_segs);
       read_segs();
     }

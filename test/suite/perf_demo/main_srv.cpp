@@ -144,7 +144,9 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
     Algo(Logger* logger_ptr, Channel_raw* chan_ptr) :
       Log_context(logger_ptr, Flow_log_component::S_UNCAT),
       m_chan(*chan_ptr)
-    {}
+    {
+      FLOW_LOG_INFO("-- RUN - capnp request/response over raw local-socket connection --");
+    }
 
     void start()
     {
@@ -153,6 +155,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       m_chan.start_receive_blob_ops(ev_wait);
 
       // Receive a dummy message as a request signal.
+      FLOW_LOG_INFO("< Expecting get-cache request via tiny message.");
       m_chan.async_receive_blob(Blob_mutable(&m_n, sizeof(m_n)), &m_err_code, &m_sz,
                                 [&](const Error_code& err_code, size_t) { on_request(err_code); });
       if (m_err_code != ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { on_request(m_err_code); }
@@ -161,6 +164,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
     void on_request(const Error_code& err_code)
     {
       if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_request()"); }
+      FLOW_LOG_INFO("= Got get-cache rerquest.");
     }
   }; // class Algo
 
