@@ -161,7 +161,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       if (m_err_code != ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { on_n_segs(m_err_code, m_sz); }
     }
 
-    void on_n_segs(const Error_code& err_code, size_t sz)
+    void on_n_segs(const Error_code& err_code, [[maybe_unused]] size_t sz)
     {
       if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_n_segs()"); }
       assert((sz == sizeof(m_n)) && "First in-message should be capnp-segment count.");
