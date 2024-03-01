@@ -20,6 +20,8 @@
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan);
 void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan);
 
+using Timer = flow::perf::Checkpointing_timer;
+
 int main(int argc, char const * const * argv)
 {
   using Session = Client_session;
@@ -118,10 +120,11 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
     size_t m_n_segs;
     vector<Blob> m_segs;
     bool m_new_seg_next = true;
+    std::optional<Timer> m_timer;
 
     Algo(Logger* logger_ptr, Channel_raw* chan_ptr) :
       Log_context(logger_ptr, Flow_log_component::S_UNCAT),
-      m_chan(*chan_ptr)
+      m_chan(*chan_ptr)      
     {
       FLOW_LOG_INFO("-- RUN - capnp request/response over raw local-socket connection --");
     }
@@ -145,8 +148,11 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 
       // Send a dummy message as a request signal, so we can start timing RTT before sending it.
       FLOW_LOG_INFO("= Got handshake SYN.");
+
+      m_timer.emplace(get_logger(), "capnp-raw", Timer::real_clock_types());
       FLOW_LOG_INFO("> Issuing get-cache request via tiny message.");
       m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
+      m_timer->checkpoint("sent request");
 
       FLOW_LOG_INFO("< Expecting get-cache response fragment: capnp segment count.");
       m_chan.async_receive_blob(Blob_mutable(&m_n, sizeof(m_n)), &m_err_code, &m_sz,
@@ -163,6 +169,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       m_n_segs = m_n;
       FLOW_LOG_INFO("= Got get-cache response fragment: capnp segment count = [" << m_n_segs << "].");
       FLOW_LOG_INFO("< Expecting get-cache response fragments x N: [seg size, seg content...].");
+      m_timer->checkpoint("got seg-count");
 
       m_segs.reserve(m_n_segs);
       read_segs();
@@ -220,9 +227,11 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 
           if (m_segs.size() == m_n_segs)
           {
+            m_timer->checkpoint("got last seg");
             on_complete_response();
             return true;
           }
+          m_timer->checkpoint("got a seg");
           m_new_seg_next = true;
         }
       }
@@ -247,6 +256,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 
       FLOW_LOG_INFO("= Done.  Total received size = "
                     "[" << ceil_div(capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << " Mi].");
+      FLOW_LOG_INFO("= Timing: [\n" << m_timer.value() << "\n].");
 
     } // on_complete_response()
   }; // class Algo
