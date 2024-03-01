@@ -25,6 +25,10 @@
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan);
 void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan);
 
+using Capnp_heap_engine = ::capnp::MallocMessageBuilder;
+Task_engine g_asio;
+Capnp_heap_engine g_capnp_msg;
+
 int main(int argc, char const * const * argv)
 {
   using Session = Session_server::Server_session_obj;
@@ -69,6 +73,32 @@ int main(int argc, char const * const * argv)
     ensure_run_env(argv[0], true);
 
     Session_server srv(&log_logger, SRV_APPS.find(SRV_NAME)->second, CLI_APPS);
+
+    {
+      FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder: START.");
+      constexpr size_t TOTAL_SZ = 1 * 1000 * 1024 * 1024;
+      constexpr size_t FILE_PART_SZ = 128 * 1024;
+      constexpr size_t HASH_SZ = 256 / 8;
+
+      auto file_parts_list = g_capnp_msg.initRoot<perf_demo::schema::Body>().initGetCacheRsp()
+                               .initFileParts(TOTAL_SZ / FILE_PART_SZ);
+      for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
+      {
+        auto file_part = file_parts_list[idx];
+        auto data = file_part.initData(FILE_PART_SZ);
+        for (size_t byte_idx = 0; byte_idx != FILE_PART_SZ; ++byte_idx)
+        {
+          data[byte_idx] = uint8_t(byte_idx % 256);
+        }
+        auto hash = file_part.initData(HASH_SZ);
+        for (size_t byte_idx = 0; byte_idx != HASH_SZ; ++byte_idx)
+        {
+          hash[byte_idx] = uint8_t(byte_idx % 256);
+        }
+      }
+
+      FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder: DONE.");
+    }
 
     FLOW_LOG_INFO("Session-server started; invoke session-client executable from same CWD; it will open session with "
                   "some init-channel(s).");
@@ -123,8 +153,6 @@ int main(int argc, char const * const * argv)
   return 0;
 } // main()
 
-Task_engine g_asio;
-
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 {
   using flow::Flow_log_component;
@@ -140,12 +168,14 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
     Error_code m_err_code;
     size_t m_sz;
     size_t m_n;
+    Capnp_heap_engine m_capnp_msg;
 
     Algo(Logger* logger_ptr, Channel_raw* chan_ptr) :
       Log_context(logger_ptr, Flow_log_component::S_UNCAT),
       m_chan(*chan_ptr)
     {
       FLOW_LOG_INFO("-- RUN - capnp request/response over raw local-socket connection --");
+
     }
 
     void start()
@@ -164,7 +194,9 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
     void on_request(const Error_code& err_code)
     {
       if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_request()"); }
-      FLOW_LOG_INFO("= Got get-cache rerquest.");
+      FLOW_LOG_INFO("= Got get-cache request.");
+
+      
     }
   }; // class Algo
 
