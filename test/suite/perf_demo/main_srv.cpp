@@ -43,7 +43,7 @@ int main(int argc, char const * const * argv)
   using std::string;
   using std::exception;
 
-  const string LOG_FILE = "perd_demo_srv.log";
+  const string LOG_FILE = "perf_demo_srv.log";
   const int BAD_EXIT = 1;
 
   /* Set up logging within this function.  We could easily just use `cout` and `cerr` instead, but this

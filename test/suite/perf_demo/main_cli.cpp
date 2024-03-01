@@ -243,10 +243,11 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       const Capnp_word_array_array_ptr capnp_segs_ptr(&(capnp_segs.front()), capnp_segs.size());
       Capnp_heap_engine capnp_msg(capnp_segs_ptr);
 
+      [[maybe_unused]] auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getGetCacheRsp(); // XXX
+
       FLOW_LOG_INFO("= Done.  Total received size = "
                     "[" << ceil_div(capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << " Mi].");
 
-      [[maybe_unused]] auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getGetCacheRsp(); // XXX
     } // on_complete_response()
   }; // class Algo
 
