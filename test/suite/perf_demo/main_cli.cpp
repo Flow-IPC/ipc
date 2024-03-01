@@ -226,9 +226,10 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
         seg.resize(seg.size() + sz);
         if (seg.size() == seg.capacity())
         {
-          FLOW_LOG_INFO("= Got segment [" << m_segs.size() << "] of [" << m_n_segs << "]; "
-                        "segment serialization size (capnp-decided) = "
-                        "[" << ceil_div(seg.size(), size_t(1024)) << " Ki].");
+          // It's e.g. 15 extra lines; let's not poison timing with that unless console logger turned up to TRACE+.
+          FLOW_LOG_TRACE("= Got segment [" << m_segs.size() << "] of [" << m_n_segs << "]; "
+                         "segment serialization size (capnp-decided) = "
+                         "[" << ceil_div(seg.size(), size_t(1024)) << " Ki].");
 
           if (m_segs.size() == m_n_segs)
           {

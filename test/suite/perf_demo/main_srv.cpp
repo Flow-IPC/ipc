@@ -220,9 +220,10 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
           m_n -= chunk_sz;
         }
         while (m_n != 0);
-        FLOW_LOG_INFO("= Sent segment [" << (idx + 1) << "] of [" << capnp_segs.size() << "]; "
-                      "segment serialization size (capnp-decided) = "
-                      "[" << ceil_div(capnp_seg.size(), size_t(1024)) << " Ki].");
+        // It's e.g. 15 extra lines; let's not poison timing with that unless console logger turned up to TRACE+.
+        FLOW_LOG_TRACE("= Sent segment [" << (idx + 1) << "] of [" << capnp_segs.size() << "]; "
+                       "segment serialization size (capnp-decided) = "
+                       "[" << ceil_div(capnp_seg.size(), size_t(1024)) << " Ki].");
       }
       FLOW_LOG_INFO("= Done.  Total allocated size = "
                     "[" << ceil_div(g_capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << " Mi].");
