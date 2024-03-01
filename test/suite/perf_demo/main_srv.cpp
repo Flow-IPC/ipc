@@ -22,6 +22,9 @@
 #include <flow/log/simple_ostream_logger.hpp>
 #include <flow/log/async_file_logger.hpp>
 
+void run_capnp_over_raw(Channel_raw* chan);
+void run_capnp_zero_copy(Channel_struc* chan);
+
 int main(int argc, char const * const * argv)
 {
   using Session = Session_server::Server_session_obj;
@@ -106,8 +109,8 @@ int main(int argc, char const * const * argv)
     [[maybe_unused]] Channel_struc chan_struc(&log_logger, std::move(chans[1]), // Structured channel: SHM-backed underneath.XXX
                              ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session);
 
-    //XXXrun_capnp_over_raw(&chan_raw);
-    //XXXrun_capnp_zero_copy(&chan_struc);
+    run_capnp_over_raw(&chan_raw);
+    run_capnp_zero_copy(&chan_struc);
 
     FLOW_LOG_INFO("Exiting.");
   } // try
@@ -119,3 +122,49 @@ int main(int argc, char const * const * argv)
 
   return 0;
 } // main()
+
+void run_capnp_over_raw(Channel_raw* chan_ptr)
+{
+  using boost::asio::post;
+  using std::vector;
+
+  struct Algo // Just so we can arrange functions in chronological order really.
+  {
+    Channel_raw& m_chan;
+    Task_engine m_asio;
+    Error_code m_err_code;
+    size_t m_sz;
+    size_t m_n;
+
+    Algo(Channel_raw* chan_ptr) :
+      m_chan(*chan_ptr)
+    {}
+
+    void start()
+    {
+      m_chan.replace_event_wait_handles([this]() -> auto { return Asio_handle(m_asio); });
+      m_chan.start_send_blob_ops(ev_wait);
+      m_chan.start_receive_blob_ops(ev_wait);
+
+      // Receive a dummy message as a request signal.
+      m_chan.async_receive_blob(Blob_mutable(&m_n, sizeof(m_n)), &m_err_code, &m_sz,
+                                [&](const Error_code& err_code, size_t) { on_request(err_code); });
+      if (m_err_code != ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { on_request(m_err_code); }
+    }
+
+    void on_request(const Error_code& err_code)
+    {
+      if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_request()"); }
+    }
+  }; // class Algo
+
+  Algo algo(chan_ptr);
+  post(algo.m_asio, [&]() { algo.start(); });
+  algo.m_asio.run();
+} // run_capnp_over_raw()
+
+void run_capnp_zero_copy(Channel_struc*)// chan_ptr)
+{
+  // XXX auto& chan = *chan_ptr;
+
+} // run_capnp_zero_copy()
