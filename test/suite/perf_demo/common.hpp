@@ -15,9 +15,14 @@
  * See the License for the specific language governing
  * permissions and limitations under the License. */
 
+#define JEM_ELSE_CLASSIC 1
+
 #include "schema.capnp.h"
 #include <ipc/transport/bipc_mq_handle.hpp>
 #include <ipc/session/shm/arena_lend/jemalloc/client_session.hpp>
+#include <ipc/session/shm/arena_lend/jemalloc/session_server.hpp>
+#include <ipc/session/shm/classic/client_session.hpp>
+#include <ipc/session/shm/classic/session_server.hpp>
 #include <ipc/session/app.hpp>
 #include <flow/log/simple_ostream_logger.hpp>
 #include <flow/log/async_file_logger.hpp>
@@ -39,7 +44,12 @@ using Runtime_error = flow::error::Runtime_error;
 using Blob = flow::util::Blob_sans_log_context;
 
 // Session will emit Unix-domain-socket-transport-based channels.  Structured-channels will be zero-copy-enabled.
+#if JEM_ELSE_CLASSIC
 namespace ssn = ipc::session::shm::arena_lend::jemalloc;
+#else
+namespace ssn = ipc::session::shm::classic;
+#endif
+
 using Client_session = ssn::Client_session<ipc::session::schema::MqType::NONE, false>;
 using Session_server = ssn::Session_server<ipc::session::schema::MqType::NONE, false>;
 // We'll use an unstructured channel of this type (again, Unix domain socket underneath) to time non-zero-copy xmission.

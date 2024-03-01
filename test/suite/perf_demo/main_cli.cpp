@@ -57,8 +57,11 @@ int main(int argc, char const * const * argv)
   log_config.configure_default_verbosity(Sev::S_INFO, true);
   Async_file_logger log_logger(nullptr, &log_config, log_file, false /* No rotation; we're no serious business. */);
 
-  ipc::session::shm::arena_lend::Borrower_shm_pool_collection_repository_singleton::get_instance()
-    .set_logger(&log_logger);
+#if JEM_ELSE_CLASSIC
+  /* Instructed to do so by ipc::session::shm::arena_lend public docs (short version: this is basically a global,
+   * and it would not be cool for ipc::session non-global objects to impose their individual loggers on it). */
+  ssn::Borrower_shm_pool_collection_repository_singleton::get_instance().set_logger(&log_logger);
+#endif
 
   try
   {

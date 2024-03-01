@@ -16,11 +16,6 @@
  * permissions and limitations under the License. */
 
 #include "common.hpp"
-#include "schema.capnp.h"
-#include <ipc/transport/bipc_mq_handle.hpp>
-#include <ipc/session/shm/arena_lend/jemalloc/session_server.hpp>
-#include <flow/log/simple_ostream_logger.hpp>
-#include <flow/log/async_file_logger.hpp>
 
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan);
 void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan);
@@ -63,10 +58,11 @@ int main(int argc, char const * const * argv)
   log_config.configure_default_verbosity(Sev::S_INFO, true);
   Async_file_logger log_logger(nullptr, &log_config, log_file, false /* No rotation; we're no serious business. */);
 
+#if JEM_ELSE_CLASSIC
   /* Instructed to do so by ipc::session::shm::arena_lend public docs (short version: this is basically a global,
    * and it would not be cool for ipc::session non-global objects to impose their individual loggers on it). */
-  ipc::session::shm::arena_lend::Borrower_shm_pool_collection_repository_singleton::get_instance()
-    .set_logger(&log_logger);
+  ssn::Borrower_shm_pool_collection_repository_singleton::get_instance().set_logger(&log_logger);
+#endif
 
   try
   {
