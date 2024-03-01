@@ -15,8 +15,6 @@
  * See the License for the specific language governing
  * permissions and limitations under the License. */
 
-#define JEM_ELSE_CLASSIC 1
-
 #include "schema.capnp.h"
 #include <ipc/transport/bipc_mq_handle.hpp>
 #include <ipc/session/shm/arena_lend/jemalloc/client_session.hpp>
@@ -42,6 +40,8 @@ extern const ipc::session::Client_app::Master_set CLI_APPS;
 using Error_code = flow::Error_code;
 using Runtime_error = flow::error::Runtime_error;
 using Blob = flow::util::Blob_sans_log_context;
+
+#define JEM_ELSE_CLASSIC 0
 
 // Session will emit Unix-domain-socket-transport-based channels.  Structured-channels will be zero-copy-enabled.
 #if JEM_ELSE_CLASSIC
