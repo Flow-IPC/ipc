@@ -99,6 +99,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   using flow::Flow_log_component;
   using flow::log::Logger;
   using flow::log::Log_context;
+  using flow::util::ceil_div;
   using ::capnp::word;
   using boost::asio::post;
   using std::vector;
