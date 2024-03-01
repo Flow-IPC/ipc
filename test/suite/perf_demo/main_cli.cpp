@@ -19,7 +19,7 @@
 
 void run_capnp_over_raw(Channel_raw* chan);
 void run_capnp_zero_copy(Channel_struc* chan);
-void ev_wait(Task_engine* asio, Asio_handle* hndl_of_interest,
+void ev_wait(Asio_handle* hndl_of_interest,
              bool ev_of_interest_snd_else_rcv, ipc::util::sync_io::Task_ptr&& on_active_ev_func);
 
 int main(int argc, char const * const * argv)
@@ -121,12 +121,8 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
     void start()
     {
       m_chan.replace_event_wait_handles([this]() -> auto { return Asio_handle(m_asio); });
-      m_chan.start_send_blob_ops
-        ([&](Asio_handle* hndl_of_interest, bool snd_else_rcv, auto&& on_active_ev_func)
-           { ev_wait(&m_asio, hndl_of_interest, snd_else_rcv, std::move(on_active_ev_func)); });
-      m_chan.start_receive_blob_ops
-        ([&](Asio_handle* hndl_of_interest, bool snd_else_rcv, auto&& on_active_ev_func)
-           { ev_wait(&m_asio, hndl_of_interest, snd_else_rcv, std::move(on_active_ev_func)); });
+      m_chan.start_send_blob_ops(ev_wait);
+      m_chan.start_receive_blob_ops(ev_wait);
 
       // Send a dummy message as a request signal, so we can start timing RTT before sending it.
       m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
@@ -235,7 +231,7 @@ void run_capnp_zero_copy(Channel_struc*)// chan_ptr)
 
 } // run_capnp_zero_copy()
 
-void ev_wait(Task_engine* asio, Asio_handle* hndl_of_interest,
+void ev_wait(Asio_handle* hndl_of_interest,
              bool ev_of_interest_snd_else_rcv, ipc::util::sync_io::Task_ptr&& on_active_ev_func)
 {
   // They want us to async-wait.  Oblige.
