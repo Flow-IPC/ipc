@@ -15,8 +15,7 @@
 # See the License for the specific language governing
 # permissions and limitations under the License.
 
-# This is very similar to ipc_shm's link_test.  Keeping comments light.
-
+# This test requires some little silly capnp schemas.
 find_package(CapnProto CONFIG REQUIRED)
 
 set(CAPNPC_IMPORT_DIRS ${FLOW_LIKE_META_ROOT_ipc_transport_structured}/src)
@@ -31,7 +30,7 @@ function(handle_binary name_sh)
   common_set_target_properties(${name})
 
   # Link good ol' libipc_shm_arena_lend.
-  target_link_libraries(${name} PRIVATE ${PROJ})
+  target_link_libraries(${name} PRIVATE ipc_shm_arena_lend)
 
   install(TARGETS ${name}
           RUNTIME DESTINATION bin)
