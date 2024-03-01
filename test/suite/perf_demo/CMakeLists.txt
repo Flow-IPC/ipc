@@ -1,0 +1,45 @@
+/* Flow-IPC
+ * Copyright 2023 Akamai Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in
+ * compliance with the License.  You may obtain a copy
+ * of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in
+ * writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing
+ * permissions and limitations under the License. */
+
+# This is very similar to ipc_shm's link_test.  Keeping comments light.
+
+find_package(CapnProto CONFIG REQUIRED)
+
+set(CAPNPC_IMPORT_DIRS ${FLOW_LIKE_META_ROOT_ipc_transport_structured}/src)
+capnp_generate_cpp(capnp_generated_srcs capnp_generated_hdrs_ignored "schema.capnp")
+
+function(handle_binary name_sh)
+  set(name "perf_demo_${name_sh}.exec") # Must match common.cpp constant values.
+  add_executable(${name} common.cpp "main_${name_sh}.cpp" ${capnp_generated_srcs})
+
+  target_include_directories(${name} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
+  common_set_target_properties(${name})
+
+  # Link good ol' libipc_shm_arena_lend.
+  target_link_libraries(${name} PRIVATE ${PROJ})
+
+  install(TARGETS ${name}
+          RUNTIME DESTINATION bin)
+
+  message(STATUS "Recommended: [cd ${CMAKE_INSTALL_PREFIX}/bin && "
+                   "./${name}].")
+  message(STATUS "Run srv program first in 1 terminal, then cli in another, as same user, from that dir.")
+endfunction()
+
+handle_binary(srv)
+handle_binary(cli)

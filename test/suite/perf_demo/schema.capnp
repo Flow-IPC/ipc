@@ -15,6 +15,33 @@
 # See the License for the specific language governing
 # permissions and limitations under the License.
 
-add_subdirectory(perf_demo)
-add_subdirectory(transport_test)
-add_subdirectory(unit_test)
+@0x11ec23789d1380ad;
+
+using Cxx = import "/capnp/c++.capnp";
+
+$Cxx.namespace("perf_demo::schema");
+
+struct Body
+{
+  union
+  {
+    getCacheReq @0 :GetCachreEq;
+    getCacheRsp @0 :GetCachreEq;
+  }
+}
+
+struct GetCacheReq
+{
+  fileName @0 :Text;
+}
+
+struct GetCacheRsp
+{
+  fileParts @0 :List(FilePart);
+}
+
+struct FilePart
+{
+  data @0 :Data;
+  hash @1 :Data;
+}
