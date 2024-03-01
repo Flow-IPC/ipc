@@ -128,7 +128,8 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
       // Send a dummy message as a request signal, so we can start timing RTT before sending it.
       chan.send_blob(Blob_const(&n, sizeof(n)));
 
-      chan.async_receive_blob(Blob_mutable(&n, sizeof(n)), &err_code, &sz, on_n_segs);
+      chan.async_receive_blob(Blob_mutable(&n, sizeof(n)), &err_code, &sz,
+                              [&](const Error_code& err_code, size_t sz) { on_n_segs(err_code, sz); });
       if (err_code != ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { on_n_segs(err_code, sz); }
     }
 
@@ -149,12 +150,14 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
       {
         if (new_seg_next)
         {
-          chan.async_receive_blob(Blob_mutable(&n, sizeof(n)), &err_code, &sz, on_blob);
+          chan.async_receive_blob(Blob_mutable(&n, sizeof(n)), &err_code, &sz,
+                                  [&](const Error_code& err_code, size_t sz) { on_blob(err_code, sz); });
         }
         else
         {
           auto& seg = segs.back();
-          chan.async_receive_blob(Blob_mutable(seg.end(), seg.capacity() - seg.size()), &err_code, &sz, on_blob);
+          chan.async_receive_blob(Blob_mutable(seg.end(), seg.capacity() - seg.size()), &err_code, &sz,
+                                  [&](const Error_code& err_code, size_t sz) { on_blob(err_code, sz); });
         }
         if (err_code == ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { return; }
       }
