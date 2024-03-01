@@ -72,8 +72,6 @@ int main(int argc, char const * const * argv)
   {
     ensure_run_env(argv[0], true);
 
-    Session_server srv(&log_logger, SRV_APPS.find(SRV_NAME)->second, CLI_APPS);
-
     {
       FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder: START.");
       constexpr size_t TOTAL_SZ = 1 * 1000 * 1024 * 1024;
@@ -100,8 +98,9 @@ int main(int argc, char const * const * argv)
       FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder: DONE.");
     }
 
-    FLOW_LOG_INFO("Session-server started; invoke session-client executable from same CWD; it will open session with "
-                  "some init-channel(s).");
+    Session_server srv(&log_logger, SRV_APPS.find(SRV_NAME)->second, CLI_APPS);
+    FLOW_LOG_INFO("Session-server started.  You can now invoke session-client executable from same CWD; "
+                  "it will open session with some channel(s).");
 
     Session session;
     promise<void> accepted_promise;
@@ -158,6 +157,8 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   using flow::Flow_log_component;
   using flow::log::Logger;
   using flow::log::Log_context;
+  using flow::util::ceil_div;
+  using ::capnp::word;
   using boost::asio::post;
   using std::vector;
 
@@ -223,9 +224,10 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
         }
         while (m_n != 0);
         FLOW_LOG_INFO("= Sent segment [" << (idx + 1) << "] of [" << capnp_segs.size() << "]; "
-                      "segment capnp-sized = [" << capnp_seg.size() << "].");
+                      "segment allocated sz (capnp-decided) = [" << ceil_div(capnp_seg.size(), size_t(1024)) << "Ki].");
       }
-      FLOW_LOG_INFO("= Done.");
+      FLOW_LOG_INFO("= Done.  Total allocated size = "
+                    "[" << ceil_div(g_capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << "Mi].");
     } // on_request()
   }; // class Algo
 

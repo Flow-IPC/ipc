@@ -99,10 +99,11 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   using flow::Flow_log_component;
   using flow::log::Logger;
   using flow::log::Log_context;
+  using ::capnp::word;
   using boost::asio::post;
   using std::vector;
 
-  using Capnp_word_array_ptr = kj::ArrayPtr<const ::capnp::word>;
+  using Capnp_word_array_ptr = kj::ArrayPtr<const word>;
   using Capnp_word_array_array_ptr = kj::ArrayPtr<const Capnp_word_array_ptr>;
   using Capnp_heap_engine = ::capnp::SegmentArrayMessageReader;
 
@@ -225,8 +226,6 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 
     void on_complete_response()
     {
-      using ::capnp::word;
-
       vector<Capnp_word_array_ptr> capnp_segs;
       capnp_segs.reserve(m_segs.size());
 
