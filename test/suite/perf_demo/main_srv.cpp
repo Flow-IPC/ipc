@@ -224,10 +224,11 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
         }
         while (m_n != 0);
         FLOW_LOG_INFO("= Sent segment [" << (idx + 1) << "] of [" << capnp_segs.size() << "]; "
-                      "segment allocated sz (capnp-decided) = [" << ceil_div(capnp_seg.size(), size_t(1024)) << "Ki].");
+                      "segment serialization size (capnp-decided) = "
+                      "[" << ceil_div(capnp_seg.size(), size_t(1024)) << " Ki].");
       }
       FLOW_LOG_INFO("= Done.  Total allocated size = "
-                    "[" << ceil_div(g_capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << "Mi].");
+                    "[" << ceil_div(g_capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << " Mi].");
     } // on_request()
   }; // class Algo
 

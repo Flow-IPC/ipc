@@ -161,6 +161,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 
       m_n_segs = m_n;
       FLOW_LOG_INFO("= Got get-cache response fragment: capnp segment count = [" << m_n_segs << "].");
+      FLOW_LOG_INFO("< Expecting get-cache response fragments x N: [seg size, seg content...].");
 
       m_segs.reserve(m_n_segs);
       read_segs();
@@ -212,6 +213,10 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
         seg.resize(seg.size() + sz);
         if (seg.size() == seg.capacity())
         {
+          FLOW_LOG_INFO("= Got segment [" << m_segs.size() << "] of [" << m_n_segs << "]; "
+                        "segment serialization size (capnp-decided) = "
+                        "[" << ceil_div(seg.size(), size_t(1024)) << " Ki].");
+
           if (m_segs.size() == m_n_segs)
           {
             on_complete_response();
@@ -236,6 +241,9 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       }
       const Capnp_word_array_array_ptr capnp_segs_ptr(&(capnp_segs.front()), capnp_segs.size());
       Capnp_heap_engine capnp_msg(capnp_segs_ptr);
+
+      FLOW_LOG_INFO("= Done.  Total received size = "
+                    "[" << ceil_div(capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << " Mi].");
 
       [[maybe_unused]] auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getGetCacheRsp(); // XXX
     } // on_complete_response()
