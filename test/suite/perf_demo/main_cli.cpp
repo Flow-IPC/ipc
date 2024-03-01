@@ -105,43 +105,45 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
 
   struct Algo // Just so we can arrange functions in chronological order really.
   {
-    Channel_raw& chan;
-    Task_engine asio;
-    Error_code err_code;
-    size_t sz;
-    size_t n = 0;
-    size_t n_segs;
-    vector<Blob> segs;
-    bool new_seg_next = true;
+    Channel_raw& m_chan;
+    Task_engine m_asio;
+    Error_code m_err_code;
+    size_t m_sz;
+    size_t m_n = 0;
+    size_t m_n_segs;
+    vector<Blob> m_segs;
+    bool m_new_seg_next = true;
 
     Algo(Channel_raw* chan_ptr) :
-      chan(*chan_ptr)
+      m_chan(*chan_ptr)
     {}
 
     void start()
     {
-      chan.replace_event_wait_handles([this]() -> auto { return Asio_handle(asio); });
-      chan.start_send_blob_ops([&](Asio_handle* hndl_of_interest, bool snd_else_rcv, auto&& on_active_ev_func)
-                                 { ev_wait(&asio, hndl_of_interest, snd_else_rcv, std::move(on_active_ev_func)); });
-      chan.start_receive_blob_ops([&](Asio_handle* hndl_of_interest, bool snd_else_rcv, auto&& on_active_ev_func)
-                                    { ev_wait(&asio, hndl_of_interest, snd_else_rcv, std::move(on_active_ev_func)); });
+      m_chan.replace_event_wait_handles([this]() -> auto { return Asio_handle(m_asio); });
+      m_chan.start_send_blob_ops
+        ([&](Asio_handle* hndl_of_interest, bool snd_else_rcv, auto&& on_active_ev_func)
+           { ev_wait(&m_asio, hndl_of_interest, snd_else_rcv, std::move(on_active_ev_func)); });
+      m_chan.start_receive_blob_ops
+        ([&](Asio_handle* hndl_of_interest, bool snd_else_rcv, auto&& on_active_ev_func)
+           { ev_wait(&m_asio, hndl_of_interest, snd_else_rcv, std::move(on_active_ev_func)); });
 
       // Send a dummy message as a request signal, so we can start timing RTT before sending it.
-      chan.send_blob(Blob_const(&n, sizeof(n)));
+      m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
 
-      chan.async_receive_blob(Blob_mutable(&n, sizeof(n)), &err_code, &sz,
-                              [&](const Error_code& err_code, size_t sz) { on_n_segs(err_code, sz); });
-      if (err_code != ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { on_n_segs(err_code, sz); }
+      m_chan.async_receive_blob(Blob_mutable(&m_n, sizeof(m_n)), &m_err_code, &m_sz,
+                                [&](const Error_code& err_code, size_t sz) { on_n_segs(err_code, sz); });
+      if (m_err_code != ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { on_n_segs(m_err_code, m_sz); }
     }
 
     void on_n_segs(const Error_code& err_code, size_t sz)
     {
       if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_n_segs()"); }
-      assert((sz == sizeof(n)) && "First in-message should be capnp-segment count.");
-      assert(n != 0);
+      assert((sz == sizeof(m_n)) && "First in-message should be capnp-segment count.");
+      assert(m_n != 0);
 
-      n_segs = n;
-      segs.reserve(n_segs);
+      m_n_segs = m_n;
+      m_segs.reserve(m_n_segs);
       read_segs();
     }
 
@@ -149,20 +151,20 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
     {
       do
       {
-        if (new_seg_next)
+        if (m_new_seg_next)
         {
-          chan.async_receive_blob(Blob_mutable(&n, sizeof(n)), &err_code, &sz,
-                                  [&](const Error_code& err_code, size_t sz) { on_blob(err_code, sz); });
+          m_chan.async_receive_blob(Blob_mutable(&m_n, sizeof(m_n)), &m_err_code, &m_sz,
+                                    [&](const Error_code& err_code, size_t sz) { on_blob(err_code, sz); });
         }
         else
         {
-          auto& seg = segs.back();
-          chan.async_receive_blob(Blob_mutable(seg.end(), seg.capacity() - seg.size()), &err_code, &sz,
-                                  [&](const Error_code& err_code, size_t sz) { on_blob(err_code, sz); });
+          auto& seg = m_segs.back();
+          m_chan.async_receive_blob(Blob_mutable(seg.end(), seg.capacity() - seg.size()), &m_err_code, &m_sz,
+                                    [&](const Error_code& err_code, size_t sz) { on_blob(err_code, sz); });
         }
-        if (err_code == ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { return; }
+        if (m_err_code == ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { return; }
       }
-      while (!handle_blob(err_code, sz));
+      while (!handle_blob(m_err_code, m_sz));
     }
 
     void on_blob(const Error_code& err_code, size_t sz)
@@ -177,26 +179,26 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
     bool handle_blob(const Error_code& err_code, size_t sz)
     {
       if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_seg_sz()"); }
-      if (new_seg_next)
+      if (m_new_seg_next)
       {
-        new_seg_next = false;
-        assert(n != 0);
+        m_new_seg_next = false;
+        assert(m_n != 0);
 
-        segs.emplace_back(n);
-        segs.back().clear();
+        m_segs.emplace_back(m_n);
+        m_segs.back().clear();
       }
       else
       {
-        auto& seg = segs.back();
+        auto& seg = m_segs.back();
         seg.resize(seg.size() + sz);
         if (seg.size() == seg.capacity())
         {
-          if (segs.size() == n_segs)
+          if (m_segs.size() == m_n_segs)
           {
             on_complete_response();
             return true;
           }
-          new_seg_next = true;
+          m_new_seg_next = true;
         }
       }
 
@@ -208,9 +210,9 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
       using ::capnp::word;
 
       vector<Capnp_word_array_ptr> capnp_segs;
-      capnp_segs.reserve(segs.size());
+      capnp_segs.reserve(m_segs.size());
 
-      for (const auto& seg : segs)
+      for (const auto& seg : m_segs)
       {
         capnp_segs.emplace_back(reinterpret_cast<const word*>(seg.const_data()), // uint8_t* -> word*.
                                 seg.size() / sizeof(word));
@@ -218,13 +220,13 @@ void run_capnp_over_raw(Channel_raw* chan_ptr)
       const Capnp_word_array_array_ptr capnp_segs_ptr(&(capnp_segs.front()), capnp_segs.size());
       Capnp_heap_engine capnp_msg(capnp_segs_ptr);
 
-      [[maybe_unused]] auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getCacheRsp(); // XXX
+      [[maybe_unused]] auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getGetCacheRsp(); // XXX
     } // on_complete_response()
   }; // class Algo
 
   Algo algo(chan_ptr);
-  post(asio, [&]() { algo.start(); });
-  asio.run();
+  post(algo.m_asio, [&]() { algo.start(); });
+  also.m_asio.run();
 } // run_capnp_over_raw()
 
 void run_capnp_zero_copy(Channel_struc* chan_ptr)
