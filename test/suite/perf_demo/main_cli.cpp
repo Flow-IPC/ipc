@@ -32,14 +32,15 @@ int main(int argc, char const * const * argv)
   using flow::log::Config;
   using flow::log::Sev;
   using flow::Flow_log_component;
+  using flow::util::String_view;
 
   using boost::promise;
 
   using std::string;
   using std::exception;
 
-  const string LOG_FILE = "perf_demo_cli.log";
-  const int BAD_EXIT = 1;
+  constexpr String_view LOG_FILE = "perf_demo_srv.log";
+  constexpr int BAD_EXIT = 1;
 
   /* Set up logging within this function.  We could easily just use `cout` and `cerr` instead, but this
    * Flow stuff will give us time stamps and such for free, so why not?  Normally, one derives from
@@ -52,7 +53,7 @@ int main(int argc, char const * const * argv)
   FLOW_LOG_SET_CONTEXT(&std_logger, Flow_log_component::S_UNCAT);
 
   // This is separate: the IPC/Flow logging will go into this file.
-  string log_file((argc >= 2) ? string(argv[1]) : LOG_FILE);
+  const auto log_file = (argc >= 2) ? String_view(argv[1]) : LOG_FILE;
   FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
   Config log_config = std_log_config;
   log_config.configure_default_verbosity(Sev::S_INFO, true);

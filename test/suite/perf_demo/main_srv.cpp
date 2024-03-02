@@ -41,7 +41,7 @@ int main(int argc, char const * const * argv)
   using std::exception;
 
   constexpr String_view LOG_FILE = "perf_demo_srv.log";
-  constexpr size_t TOTAL_SZ_MI = 1 * 1000;
+  constexpr float TOTAL_SZ_MI = 1 * 1000;
   constexpr int BAD_EXIT = 1;
 
   /* Set up logging within this function.  We could easily just use `cout` and `cerr` instead, but this
@@ -77,13 +77,13 @@ int main(int argc, char const * const * argv)
     ensure_run_env(argv[0], true);
 
     {
-      const auto total_sz_mi = (argc >= 2) ? lexical_cast<size_t>(argv[1]) : TOTAL_SZ_MI;
+      const auto total_sz_mi = (argc >= 2) ? lexical_cast<float>(argv[1]) : TOTAL_SZ_MI;
 
       FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder (rough size [" << total_sz_mi << " Mi]): START.");
       constexpr size_t FILE_PART_SZ = 128 * 1024;
 
       auto file_parts_list = g_capnp_msg.initRoot<perf_demo::schema::Body>().initGetCacheRsp()
-                               .initFileParts(total_sz_mi * 1024 * 1024 / FILE_PART_SZ);
+                               .initFileParts(size_t(total_sz_mi * 1024.f * 1024.f / float(FILE_PART_SZ)));
       for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
       {
         auto file_part = file_parts_list[idx];
