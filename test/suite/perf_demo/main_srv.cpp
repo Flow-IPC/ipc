@@ -87,7 +87,7 @@ int main(int argc, char const * const * argv)
         }
         file_part.setDataSizeToVerify(FILE_PART_SZ);
         file_part.setDataHashToVerify(boost::hash<String_view>()
-                                        (reinterpret_cast<char*>(data.begin()), FILE_PART_SZ));
+                                        (String_view(reinterpret_cast<char*>(data.begin()), FILE_PART_SZ)));
       }
 
       FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder: DONE.");
