@@ -361,7 +361,7 @@ void verify_rsp(const perf_demo::schema::GetCacheRsp::Reader& rsp_root)
   using flow::util::String_view;
 
   const auto file_parts_list = rsp_root.getFileParts();
-  if (file_parts_list.empty())
+  if (file_parts_list.size() == 0)
   {
     throw Runtime_error("Way too few file-parts... something is wrong.");
   }
