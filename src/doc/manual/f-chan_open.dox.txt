@@ -185,9 +185,9 @@ On the server end, accordingly:
                            &mdt_for_session_being_opened, // We do expect cli->srv metadata.
                            &init_channels_for_session_being_opened,
                            // Dummy function ignored in our case, because of nullptr in arg 2 above.
-                           [](auto&&, auto&&, auto&&) -> auto { return 0; },
+                           [](auto&&...) -> size_t { return 0; },
                            // No-op function, as in our example we don't transmit srv->cli metadata.
-                           [](auto&&, auto&&, auto&&, auto&&) {},
+                           [](auto&&...) {},
                            ([...](const Error_code& err_code)
   {
     // ...same as before...
