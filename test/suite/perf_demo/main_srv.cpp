@@ -17,13 +17,13 @@
 
 #include "common.hpp"
 
-void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan);
-void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan, Session* session_ptr);
-
 using Session = Session_server::Server_session_obj;
 using Capnp_heap_engine = ::capnp::MallocMessageBuilder;
 Task_engine g_asio;
 Capnp_heap_engine g_capnp_msg;
+
+void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan);
+void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan, Session* session_ptr);
 
 int main(int argc, char const * const * argv)
 {
