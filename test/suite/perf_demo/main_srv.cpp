@@ -275,15 +275,13 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
       FLOW_LOG_INFO("< Expecting get-cache request via tiny message.");
       Channel_struc::Msg_in_ptr req;
       m_chan.expect_msg(Channel_struc::Msg_which_in::GET_CACHE_REQ, &req,
-                        [&](Msg_in_ptr&& req) { on_request(std::move(req)); });
+                        [&](Channel_struc::Msg_in_ptr&& req) { on_request(std::move(req)); });
       if (req) { on_request(std::move(req)); }
     }
 
     void on_request(Channel_struc::Msg_in_ptr&& req)
     {
-      if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_request()"); }
-      FLOW_LOG_INFO("= Got get-cache request for file-name "
-                    "[" << req->body_root().getGetCacheReq().getFileName() << "].");
+      FLOW_LOG_INFO("= Got get-cache request [" << *req << "].");
 
       FLOW_LOG_INFO("> Sending get-cache (quite large) response.");
       m_chan.send(m_capnp_msg, req.get());
