@@ -245,7 +245,6 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
     public Log_context
   {
     Channel_struc& m_chan;
-    Error_code m_err_code;
     Session::Structured_msg_builder_config::Builder m_capnp_builder;
     Channel_struc::Msg_out m_capnp_msg;
 

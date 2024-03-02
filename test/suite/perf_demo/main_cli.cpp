@@ -155,8 +155,8 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       // Send a dummy message as a request signal, so we can start timing RTT before sending it.
       FLOW_LOG_INFO("= Got handshake SYN.");
 
-      m_timer.emplace(get_logger(), "capnp-raw", Timer::real_clock_types(), 100);
       FLOW_LOG_INFO("> Issuing get-cache request via tiny message.");
+      m_timer.emplace(get_logger(), "capnp-raw", Timer::real_clock_types(), 100);
       m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
       m_timer->checkpoint("sent request");
 
@@ -263,7 +263,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
                                    * in favor of direct capnp code (in this part of the demo). */
                                   ::capnp::ReaderOptions{ std::numeric_limits<uint64_t>::max() / sizeof(word), 64 });
 
-      const auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getGetCacheRsp(); // XXX
+      const auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getGetCacheRsp();
 
       m_timer->checkpoint("accessed deserialization root");
 
@@ -299,8 +299,95 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   Algo algo(logger_ptr, chan_ptr);
   post(g_asio, [&]() { algo.start(); });
   g_asio.run();
+  g_asio.restart();
 } // run_capnp_over_raw()
 
-void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, [[maybe_unused]] Channel_struc* chan_ptr)
+void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel_struc* chan_ptr)
 {
+  using flow::Flow_log_component;
+  using flow::log::Logger;
+  using flow::log::Log_context;
+  using flow::util::String_view;
+  using ::capnp::word;
+  using boost::asio::post;
+
+  struct Algo :// Just so we can arrange functions in chronological order really.
+    public Log_context
+  {
+    Channel_raw& m_chan;
+    std::optional<Timer> m_timer;
+
+    Algo(Logger* logger_ptr, Channel_raw* chan_ptr) :
+      Log_context(logger_ptr, Flow_log_component::S_UNCAT),
+      m_chan(*chan_ptr)      
+    {
+      FLOW_LOG_INFO("-- RUN - zero-copy (SHM-backed) capnp request/response using Flow-IPC --");
+    }
+
+    void start()
+    {
+      m_chan.replace_event_wait_handles([]() -> auto { return Asio_handle(g_asio); });
+      m_chan.start_ops(ev_wait);
+
+      // Receive a dummy message to synchronize initialization.
+      FLOW_LOG_INFO("< Expecting handshake SYN for initialization sync.");
+      Channel_struc::Msg_in_ptr req;
+      m_chan.expect_msg(Channel_struc::Msg_which_in::GET_CACHE_REQ, &req,
+                        [&](auto&&) { on_sync(); });
+      if (req) { on_sync(); }
+    }
+
+    void on_sync()
+    {
+      // Send a dummy message as a request signal, so we can start timing RTT before sending it.
+      FLOW_LOG_INFO("= Got handshake SYN.");
+
+      auto req = m_chan.create_msg();
+      req.body_root()->initGetCacheReq().setFileName("gigantic-file.bin");
+
+      FLOW_LOG_INFO("> Issuing get-cache request: [" << req << "].");
+      m_timer.emplace(get_logger(), "capnp-raw", Timer::real_clock_types(), 100);
+
+      m_chan.async_request(req, nullptr, nullptr,
+                           [&](Channel_struc::Msg_in_ptr&& rsp) { on_complete_response(rsp); });
+      m_timer->checkpoint("sent request");
+    }
+
+    void on_complete_response(Channel_struc::Msg_in_ptr&& rsp)
+    {
+      const auto rsp_root = rsp->body_root().getGetCacheRsp();
+
+      m_timer->checkpoint("accessed deserialization root");
+
+      FLOW_LOG_INFO("= Done.  Will verify contents (sizes, hashes).");
+
+      const auto file_parts_list = rsp_root.getFileParts();
+      if (file_parts_list.size() < 50)
+      {
+        throw Runtime_error("Way too few file-parts... something is wrong.");
+      }
+      for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
+      {
+        const auto file_part = file_parts_list[idx];
+        const auto data = file_part.getData();
+        const auto computed_hash = boost::hash<String_view>()
+                                     (String_view(reinterpret_cast<const char*>(data.begin()), data.size()));
+        if (file_part.getDataSizeToVerify() != data.size())
+        {
+          throw Runtime_error("A file-part's size does not match!");
+        }
+        if (file_part.getDataHashToVerify() != computed_hash)
+        {
+          throw Runtime_error("A file-part's hash does not match!");
+        }
+      }
+
+      FLOW_LOG_INFO("= Contents look good.  Timing results: [\n" << m_timer.value() << "\n].");
+    } // on_complete_response()
+  }; // class Algo
+
+  Algo algo(logger_ptr, chan_ptr);
+  post(g_asio, [&]() { algo.start(); });
+  g_asio.run();
+  g_asio.restart();
 } // run_capnp_zero_copy()
