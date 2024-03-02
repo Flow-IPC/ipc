@@ -248,7 +248,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
     Session::Structured_msg_builder_config::Builder m_capnp_builder;
     Channel_struc::Msg_out m_capnp_msg;
 
-    Algo(Logger* logger_ptr, Channel_raw* chan_ptr, Session* session_ptr) :
+    Algo(Logger* logger_ptr, Channel_struc* chan_ptr, Session* session_ptr) :
       Log_context(logger_ptr, Flow_log_component::S_UNCAT),
       m_chan(*chan_ptr),
       m_capnp_builder(session_ptr->session_shm_builder_config())
