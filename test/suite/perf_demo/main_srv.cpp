@@ -170,7 +170,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
     Error_code m_err_code;
     size_t m_sz;
     size_t m_n = 0;
-    Capnp_heap_engine m_capnp_msg;
+    optional<Capnp_heap_engine> m_capnp_msg;
 
     Algo(Logger* logger_ptr, Channel_raw* chan_ptr) :
       Log_context(logger_ptr, Flow_log_component::S_UNCAT),
@@ -293,7 +293,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
       FLOW_LOG_INFO("> Sending get-cache (quite large) response.");
       m_chan.send(m_capnp_msg, req.get());
       FLOW_LOG_INFO("= Done.");
-      m_capnp_msg.reset();
+      m_capnp_msg = {};
 
       FLOW_LOG_INFO("< Expecting client to signal they are done; so we can blow everything away.");
       Channel_struc::Msg_in_ptr req;
