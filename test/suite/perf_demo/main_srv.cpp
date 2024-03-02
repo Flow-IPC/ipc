@@ -35,12 +35,14 @@ int main(int argc, char const * const * argv)
   using flow::util::String_view;
 
   using boost::promise;
+  using boost::lexical_cast;
 
   using std::string;
   using std::exception;
 
-  const string LOG_FILE = "perf_demo_srv.log";
-  const int BAD_EXIT = 1;
+  constexpr String_view LOG_FILE = "perf_demo_srv.log";
+  constexpr size_t TOTAL_SZ_MI = 1 * 1000;
+  constexpr int BAD_EXIT = 1;
 
   /* Set up logging within this function.  We could easily just use `cout` and `cerr` instead, but this
    * Flow stuff will give us time stamps and such for free, so why not?  Normally, one derives from
@@ -52,8 +54,12 @@ int main(int argc, char const * const * argv)
   Simple_ostream_logger std_logger(&std_log_config);
   FLOW_LOG_SET_CONTEXT(&std_logger, Flow_log_component::S_UNCAT);
 
+  FLOW_LOG_INFO("FYI -- Usage: " << argv[0] << " [msg payload size in MiB] [log file]");
+  FLOW_LOG_INFO("FYI -- Defaults: " << TOTAL_SZ_MI << " " << LOG_FILE);
+
   // This is separate: the IPC/Flow logging will go into this file.
-  string log_file((argc >= 2) ? string(argv[1]) : LOG_FILE);
+  const auto log_file = (argc >= 3) ? String_view(argv[2]) : LOG_FILE;
+
   FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
   Config log_config = std_log_config;
   log_config.configure_default_verbosity(Sev::S_INFO, true);
@@ -71,12 +77,13 @@ int main(int argc, char const * const * argv)
     ensure_run_env(argv[0], true);
 
     {
-      FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder: START.");
-      constexpr size_t TOTAL_SZ = 1 * 1000 * 1024 * 1024;
+      const auto total_sz_mi = (argc >= 2) ? lexical_cast<size_t>(argv[1]) : TOTAL_SZ_MI;
+
+      FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder (rough size [" << total_sz_mi << " Mi]): START.");
       constexpr size_t FILE_PART_SZ = 128 * 1024;
 
       auto file_parts_list = g_capnp_msg.initRoot<perf_demo::schema::Body>().initGetCacheRsp()
-                               .initFileParts(TOTAL_SZ / FILE_PART_SZ);
+                               .initFileParts(total_sz_mi * 1024 * 1024 / FILE_PART_SZ);
       for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
       {
         auto file_part = file_parts_list[idx];
