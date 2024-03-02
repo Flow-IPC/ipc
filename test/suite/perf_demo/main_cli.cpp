@@ -328,6 +328,7 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
     {
       m_chan.replace_event_wait_handles([]() -> auto { return Asio_handle(g_asio); });
       m_chan.start_ops(ev_wait);
+      m_chan.start_and_poll([](const Error_code&) {});
 
       // Receive a dummy message to synchronize initialization.
       FLOW_LOG_INFO("< Expecting handshake SYN for initialization sync.");
