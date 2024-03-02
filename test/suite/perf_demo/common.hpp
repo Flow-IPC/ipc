@@ -41,8 +41,6 @@ using Error_code = flow::Error_code;
 using Runtime_error = flow::error::Runtime_error;
 using Blob = flow::util::Blob_sans_log_context;
 
-#define JEM_ELSE_CLASSIC 0
-
 // Session will emit Unix-domain-socket-transport-based channels.  Structured-channels will be zero-copy-enabled.
 #if JEM_ELSE_CLASSIC
 namespace ssn = ipc::session::shm::arena_lend::jemalloc;

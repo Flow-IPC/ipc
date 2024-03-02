@@ -21,11 +21,19 @@ find_package(CapnProto CONFIG REQUIRED)
 set(CAPNPC_IMPORT_DIRS ${FLOW_LIKE_META_ROOT_ipc_transport_structured}/src)
 capnp_generate_cpp(capnp_generated_srcs capnp_generated_hdrs_ignored "schema.capnp")
 
-function(handle_binary name_sh)
-  set(name "perf_demo_${name_sh}.exec") # Must match common.cpp constant values.
+function(handle_binary name_sh jem_else_classic)
+  if(jem_else_classic)
+    set(name_pfx "shm_jemalloc")
+    set(def_val "1")
+  else()
+    set(name_pfx "shm_classic")
+    set(def_val "0")
+  endif()
+  set(name "perf_demo_${name_sh}_${name_pfx}.exec") # Must match common.cpp constant values.
   add_executable(${name} common.cpp "main_${name_sh}.cpp" ${capnp_generated_srcs})
 
   target_include_directories(${name} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+  target_compile_definitions(${PROJ} PRIVATE "JEM_ELSE_CLASSIC=${def_val}")
 
   common_set_target_properties(${name})
 
@@ -38,7 +46,11 @@ function(handle_binary name_sh)
   message(STATUS "Recommended: [cd ${CMAKE_INSTALL_PREFIX}/bin && "
                    "./${name}].")
   message(STATUS "Run srv program first in 1 terminal, then cli in another, as same user, from that dir.")
+  message(STATUS "This variant internally uses [${name_pfx}] zero-copy backing mechanism.")
 endfunction()
 
-handle_binary(srv)
-handle_binary(cli)
+# Identical programs; except one uses SHM-jemalloc as internal SHM-provider; the other uses SHM-classic.
+handle_binary(srv TRUE)
+handle_binary(cli TRUE)
+handle_binary(srv FALSE)
+handle_binary(cli FALSE)
