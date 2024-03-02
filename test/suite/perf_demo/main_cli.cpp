@@ -19,10 +19,15 @@
 #include <flow/perf/checkpt_timer.hpp>
 
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan);
-void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan);
+void run_capnp_zero_cpy(flow::log::Logger* logger_ptr, Channel_struc* chan);
 void verify_rsp(const perf_demo::schema::GetCacheRsp::Reader& rsp_root);
 
 using Timer = flow::perf::Checkpointing_timer;
+using Clock_type = flow::perf::Clock_type;
+
+Task_engine g_asio;
+flow::util::Fine_duration g_capnp_over_raw_rtt;
+flow::util::Fine_duration g_capnp_zero_cpy_rtt;
 
 int main(int argc, char const * const * argv)
 {
@@ -34,6 +39,8 @@ int main(int argc, char const * const * argv)
   using flow::Flow_log_component;
   using flow::util::String_view;
   using boost::promise;
+  using boost::chrono::microseconds;
+  using boost::chrono::round;
   using std::exception;
 
   constexpr String_view LOG_FILE = "perf_demo_cli.log";
@@ -83,7 +90,22 @@ int main(int argc, char const * const * argv)
                              ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session);
 
     run_capnp_over_raw(&std_logger, &chan_raw);
-    run_capnp_zero_copy(&std_logger, &chan_struc);
+    run_capnp_zero_cpy(&std_logger, &chan_struc);
+
+    const auto raw_rtt = ceil_div(round<microseconds>(g_capnp_over_raw_rtt).count(), microseconds::rep(100)) * 100;
+    const auto zcp_rtt = ceil_div(round<microseconds>(g_capnp_zero_cpy_rtt).count(), microseconds::rep(100)) * 100;
+
+    FLOW_LOG_INFO("Benchmark summary (coarsened to 100s of usec): ");
+    FLOW_LOG_INFO("Transmission of ~[" << (g_total_sz / 1024) << " ki] of Cap'n Proto structured data: ");
+    FLOW_LOG_INFO("Via raw-local-stream-socket: RTT = [" << raw_rtt << " usec].");
+    FLOW_LOG_INFO("Via-zero-copy-Flow-IPC-channel ("
+#if JEM_ELSE_CLASSIC
+                  "SHM-jemalloc-backed"
+#else
+                  "SHM-classic-backed"
+#endif
+                  "): RTT = [" << zcp_rtt << " usec].");
+    FLOW_LOG_INFO("Ratio = [" << float(raw_rtt) / float(zcp_rtt) << "].");
 
     FLOW_LOG_INFO("Exiting.");
   } // try
@@ -97,8 +119,6 @@ int main(int argc, char const * const * argv)
 
   return 0;
 } // main()
-
-Task_engine g_asio;
 
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 {
@@ -272,6 +292,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       verify_rsp(rsp_root);
 
       FLOW_LOG_INFO("= Contents look good.  Timing results: [\n" << m_timer.value() << "\n].");
+      g_capnp_over_raw_rtt = (m_timer->since_start())[size_t(Clock_type::S_REAL_HI_RES)];
     } // on_complete_response()
   }; // class Algo
 
@@ -283,7 +304,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   g_asio.restart();
 } // run_capnp_over_raw()
 
-void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel_struc* chan_ptr)
+void run_capnp_zero_cpy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel_struc* chan_ptr)
 {
   using flow::Flow_log_component;
   using flow::log::Logger;
@@ -345,8 +366,9 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
       verify_rsp(rsp_root);
 
       FLOW_LOG_INFO("= Contents look good.  Timing results: [\n" << m_timer.value() << "\n].");
-      rsp.reset();
+      g_capnp_zero_cpy_rtt = (m_timer->since_start())[size_t(Clock_type::S_REAL_HI_RES)];
 
+      rsp.reset();
       FLOW_LOG_INFO("> Signaling server we are done; they can blow everything away now.");
 
       m_chan.send(m_chan.create_msg());
@@ -360,7 +382,7 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
   g_asio.restart();
   g_asio.poll();
   g_asio.restart();
-} // run_capnp_zero_copy()
+} // run_capnp_zero_cpy()
 
 void verify_rsp(const perf_demo::schema::GetCacheRsp::Reader& rsp_root)
 {
