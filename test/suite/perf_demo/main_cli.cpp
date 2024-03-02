@@ -294,7 +294,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       verify_rsp(rsp_root);
 
       FLOW_LOG_INFO("= Contents look good.  Timing results: [\n" << m_timer.value() << "\n].");
-      g_capnp_over_raw_rtt = (m_timer->since_start())[size_t(Clock_type::S_REAL_HI_RES)];
+      g_capnp_over_raw_rtt = m_timer->since_start().m_values[size_t(Clock_type::S_REAL_HI_RES)];
     } // on_complete_response()
   }; // class Algo
 
@@ -368,7 +368,7 @@ void run_capnp_zero_cpy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel_
       verify_rsp(rsp_root);
 
       FLOW_LOG_INFO("= Contents look good.  Timing results: [\n" << m_timer.value() << "\n].");
-      g_capnp_zero_cpy_rtt = (m_timer->since_start())[size_t(Clock_type::S_REAL_HI_RES)];
+      g_capnp_zero_cpy_rtt = m_timer->since_start().m_values[size_t(Clock_type::S_REAL_HI_RES)];
 
       rsp.reset();
       FLOW_LOG_INFO("> Signaling server we are done; they can blow everything away now.");
