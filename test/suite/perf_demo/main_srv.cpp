@@ -32,6 +32,7 @@ int main(int argc, char const * const * argv)
   using flow::log::Config;
   using flow::log::Sev;
   using flow::Flow_log_component;
+  using flow::util::String_view;
 
   using boost::promise;
 
@@ -73,7 +74,6 @@ int main(int argc, char const * const * argv)
       FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder: START.");
       constexpr size_t TOTAL_SZ = 1 * 1000 * 1024 * 1024;
       constexpr size_t FILE_PART_SZ = 128 * 1024;
-      constexpr size_t HASH_SZ = 256 / 8;
 
       auto file_parts_list = g_capnp_msg.initRoot<perf_demo::schema::Body>().initGetCacheRsp()
                                .initFileParts(TOTAL_SZ / FILE_PART_SZ);
@@ -85,11 +85,9 @@ int main(int argc, char const * const * argv)
         {
           data[byte_idx] = uint8_t(byte_idx % 256);
         }
-        auto hash = file_part.initData(HASH_SZ);
-        for (size_t byte_idx = 0; byte_idx != HASH_SZ; ++byte_idx)
-        {
-          hash[byte_idx] = uint8_t(byte_idx % 256);
-        }
+        file_part.setDataSizeToVerify(FILE_PART_SZ);
+        file_part.setDataHashToVerify(boost::hash<String_view>
+                                        (reinterpret_cast<char*>(data.begin()), FILE_PART_SZ));
       }
 
       FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder: DONE.");
