@@ -26,8 +26,8 @@ using Timer = flow::perf::Checkpointing_timer;
 using Clock_type = flow::perf::Clock_type;
 
 Task_engine g_asio;
-flow::util::Fine_duration g_capnp_over_raw_rtt;
-flow::util::Fine_duration g_capnp_zero_cpy_rtt;
+flow::Fine_duration g_capnp_over_raw_rtt;
+flow::Fine_duration g_capnp_zero_cpy_rtt;
 
 int main(int argc, char const * const * argv)
 {
