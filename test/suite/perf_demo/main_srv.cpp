@@ -286,6 +286,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
       FLOW_LOG_INFO("> Sending get-cache (quite large) response.");
       m_chan.send(m_capnp_msg, req.get());
       FLOW_LOG_INFO("= Done.");
+      g_asio.stop();
     } // on_request()
   }; // class Algo
 

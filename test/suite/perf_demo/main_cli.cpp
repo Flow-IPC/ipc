@@ -384,6 +384,7 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
       }
 
       FLOW_LOG_INFO("= Contents look good.  Timing results: [\n" << m_timer.value() << "\n].");
+      g_asio.stop();
     } // on_complete_response()
   }; // class Algo
 
