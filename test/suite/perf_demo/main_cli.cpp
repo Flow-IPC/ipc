@@ -257,7 +257,8 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
                                 seg.size() / sizeof(word));
       }
       const Capnp_word_array_array_ptr capnp_segs_ptr(&(capnp_segs.front()), capnp_segs.size());
-      Capnp_heap_engine capnp_msg(capnp_segs_ptr);
+      Capnp_heap_engine capnp_msg(capnp_segs_ptr,
+                                  ::capnp::ReaderOptions{ 2ull * 1024 * 1024 / sizeof(word), 64 });
 
       const auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getGetCacheRsp(); // XXX
 
