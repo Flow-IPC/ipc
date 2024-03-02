@@ -280,6 +280,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   g_asio.run();
   g_asio.restart();
   g_asio.poll();
+  g_asio.restart();
 } // run_capnp_over_raw()
 
 void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel_struc* chan_ptr)
@@ -358,6 +359,7 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
   g_asio.run();
   g_asio.restart();
   g_asio.poll();
+  g_asio.restart();
 } // run_capnp_zero_copy()
 
 void verify_rsp(const perf_demo::schema::GetCacheRsp::Reader& rsp_root)
