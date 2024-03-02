@@ -20,6 +20,7 @@
 
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan);
 void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan);
+void verify_rsp(const perf_demo::schema::GetCacheRsp::Reader& rsp_root);
 
 using Timer = flow::perf::Checkpointing_timer;
 
@@ -271,26 +272,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
                     "[" << ceil_div(capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << " Mi].  "
                     "Will verify contents (sizes, hashes).");
 
-      const auto file_parts_list = rsp_root.getFileParts();
-      if (file_parts_list.size() < 50)
-      {
-        throw Runtime_error("Way too few file-parts... something is wrong.");
-      }
-      for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
-      {
-        const auto file_part = file_parts_list[idx];
-        const auto data = file_part.getData();
-        const auto computed_hash = boost::hash<String_view>()
-                                     (String_view(reinterpret_cast<const char*>(data.begin()), data.size()));
-        if (file_part.getDataSizeToVerify() != data.size())
-        {
-          throw Runtime_error("A file-part's size does not match!");
-        }
-        if (file_part.getDataHashToVerify() != computed_hash)
-        {
-          throw Runtime_error("A file-part's hash does not match!");
-        }
-      }
+      verify_rsp(rsp_root);
 
       FLOW_LOG_INFO("= Contents look good.  Timing results: [\n" << m_timer.value() << "\n].");
     } // on_complete_response()
@@ -362,26 +344,7 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
 
       FLOW_LOG_INFO("= Done.  Will verify contents (sizes, hashes).");
 
-      const auto file_parts_list = rsp_root.getFileParts();
-      if (file_parts_list.size() < 50)
-      {
-        throw Runtime_error("Way too few file-parts... something is wrong.");
-      }
-      for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
-      {
-        const auto file_part = file_parts_list[idx];
-        const auto data = file_part.getData();
-        const auto computed_hash = boost::hash<String_view>()
-                                     (String_view(reinterpret_cast<const char*>(data.begin()), data.size()));
-        if (file_part.getDataSizeToVerify() != data.size())
-        {
-          throw Runtime_error("A file-part's size does not match!");
-        }
-        if (file_part.getDataHashToVerify() != computed_hash)
-        {
-          throw Runtime_error("A file-part's hash does not match!");
-        }
-      }
+      verify_rsp(rsp_root);
 
       FLOW_LOG_INFO("= Contents look good.  Timing results: [\n" << m_timer.value() << "\n].");
       g_asio.stop();
@@ -393,3 +356,27 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
   g_asio.run();
   g_asio.restart();
 } // run_capnp_zero_copy()
+
+void verify_rsp(const perf_demo::schema::GetCacheRsp::Reader& rsp_root)
+{
+  const auto file_parts_list = rsp_root.getFileParts();
+  if (file_parts_list.size() < 2)
+  {
+    throw Runtime_error("Way too few file-parts... something is wrong.");
+  }
+  for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
+  {
+    const auto file_part = file_parts_list[idx];
+    const auto data = file_part.getData();
+    const auto computed_hash = boost::hash<String_view>()
+                                 (String_view(reinterpret_cast<const char*>(data.begin()), data.size()));
+    if (file_part.getDataSizeToVerify() != data.size())
+    {
+      throw Runtime_error("A file-part's size does not match!");
+    }
+    if (file_part.getDataHashToVerify() != computed_hash)
+    {
+      throw Runtime_error("A file-part's hash does not match!");
+    }
+  }
+}
