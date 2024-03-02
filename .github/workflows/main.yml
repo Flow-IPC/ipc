@@ -778,8 +778,11 @@ jobs:
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_session_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        SRV_PID=$!
         sleep 1
         ./ipc_session_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
+        [ $SRV_EC -eq 0 ]
 
     - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
       if: |
@@ -796,8 +799,11 @@ jobs:
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_shm_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        SRV_PID=$!
         sleep 1
         ./ipc_shm_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
+        [ $SRV_EC -eq 0 ]
 
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
       if: |
@@ -816,8 +822,11 @@ jobs:
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_shm_arena_lend_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        SRV_PID=$!
         sleep 1
         ./ipc_shm_arena_lend_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
+        [ $SRV_EC -eq 0 ]
 
     - name: Run unit tests
       if: |
