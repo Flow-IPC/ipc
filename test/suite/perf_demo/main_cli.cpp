@@ -258,13 +258,18 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       }
       const Capnp_word_array_array_ptr capnp_segs_ptr(&(capnp_segs.front()), capnp_segs.size());
       Capnp_heap_engine capnp_msg(capnp_segs_ptr,
-                                  ::capnp::ReaderOptions{ 2ull * 1024 * 1024 * 1024 / sizeof(word), 64 });
+                                  /* Defeat safety limit.  Search for ReaderOptions in (e.g.) heap_serializer.hpp
+                                   * source code for explanation.  We do it here, since we are bypassing all that
+                                   * in favor of direct capnp code (in this part of the demo). */
+                                  ::capnp::ReaderOptions{ std::numeric_limits<uint64_t>::max() / sizeof(word), 64 });
 
       const auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getGetCacheRsp(); // XXX
 
+      m_timer->checkpoint("accessed deserialization root");
+
       FLOW_LOG_INFO("= Done.  Total received size = "
-                    "[" << ceil_div(capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << " Mi].");
-      FLOW_LOG_INFO("= Timing: [\n" << m_timer.value() << "\n].");
+                    "[" << ceil_div(capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << " Mi].  "
+                    "Will verify contents (sizes, hashes).");
 
       const auto file_parts_list = rsp_root.getFileParts();
       for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
@@ -282,6 +287,8 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
           throw Runtime_error("A file-part's hash does not match!");
         }
       }
+
+      FLOW_LOG_INFO("= Contents look good.  Timing results: [\n" << m_timer.value() << "\n].");
     } // on_complete_response()
   }; // class Algo
 
