@@ -314,10 +314,10 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
   struct Algo :// Just so we can arrange functions in chronological order really.
     public Log_context
   {
-    Channel_raw& m_chan;
+    Channel_struc& m_chan;
     std::optional<Timer> m_timer;
 
-    Algo(Logger* logger_ptr, Channel_raw* chan_ptr) :
+    Algo(Logger* logger_ptr, Channel_struc* chan_ptr) :
       Log_context(logger_ptr, Flow_log_component::S_UNCAT),
       m_chan(*chan_ptr)      
     {
