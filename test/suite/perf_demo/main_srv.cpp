@@ -56,7 +56,7 @@ int main(int argc, char const * const * argv)
   FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
   Config log_config = std_log_config;
   log_config.configure_default_verbosity(Sev::S_INFO, true);
-  Async_file_logger log_logger(nullptr, &log_config, log_file, false /* No rotation; we're no serious business. */);
+  Async_file_logger log_logger(nullptr, &log_config, log_file, false);
 
 #if JEM_ELSE_CLASSIC
   /* Instructed to do so by ipc::session::shm::arena_lend public docs (short version: this is basically a global,
@@ -104,8 +104,8 @@ int main(int argc, char const * const * argv)
     bool ok = false;
     Session_server::Channels chans;
     srv.async_accept(&session, &chans, nullptr, nullptr,
-                     [](auto&&, auto&&, auto&&) -> size_t { return 2; }, // 2 init-channels to open.
-                     [](auto&&, auto&&, auto&&, auto&&) {},
+                     [](auto&&...) -> size_t { return 2; }, // 2 init-channels to open.
+                     [](auto&&...) {},
                      [&](const Error_code& err_code)
     {
       if (err_code)

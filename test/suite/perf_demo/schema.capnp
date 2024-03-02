@@ -43,5 +43,6 @@ struct GetCacheRsp
 struct FilePart
 {
   data @0 :Data;
-  hash @1 :Data;
+  dataSize @1 :UInt64;
+  dataHashToVerify @2 :UInt64;
 }
