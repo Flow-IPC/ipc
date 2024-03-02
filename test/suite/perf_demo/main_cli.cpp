@@ -272,6 +272,10 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
                     "Will verify contents (sizes, hashes).");
 
       const auto file_parts_list = rsp_root.getFileParts();
+      if (file_parts_list < 50)
+      {
+        throw Runtime_error("Way too few file-parts... something is wrong.");
+      }
       for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
       {
         const auto file_part = file_parts_list[idx];
@@ -297,6 +301,6 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   g_asio.run();
 } // run_capnp_over_raw()
 
-void run_capnp_zero_copy(flow::log::Logger*, Channel_struc*)// chan_ptr)
+void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, [[maybe_unused]] Channel_struc* chan_ptr)
 {
 } // run_capnp_zero_copy()
