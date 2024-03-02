@@ -28,6 +28,7 @@ using Clock_type = flow::perf::Clock_type;
 Task_engine g_asio;
 flow::Fine_duration g_capnp_over_raw_rtt;
 flow::Fine_duration g_capnp_zero_cpy_rtt;
+size_t g_total_sz = 0;
 
 int main(int argc, char const * const * argv)
 {
@@ -38,6 +39,7 @@ int main(int argc, char const * const * argv)
   using flow::log::Sev;
   using flow::Flow_log_component;
   using flow::util::String_view;
+  using flow::util::ceil_div;
   using boost::promise;
   using boost::chrono::microseconds;
   using boost::chrono::round;
@@ -388,6 +390,8 @@ void verify_rsp(const perf_demo::schema::GetCacheRsp::Reader& rsp_root)
 {
   using flow::util::String_view;
 
+  size_t total_sz = 0;
+
   const auto file_parts_list = rsp_root.getFileParts();
   if (file_parts_list.size() == 0)
   {
@@ -407,5 +411,13 @@ void verify_rsp(const perf_demo::schema::GetCacheRsp::Reader& rsp_root)
     {
       throw Runtime_error("A file-part's hash does not match!");
     }
+
+    total_sz += data.size();
   }
+
+  if ((g_total_sz != 0) && (total_sz != g_total_sz))
+  {
+    throw Runtime_error("Total rough data sizes between different runs do not match!");
+  }
+  g_total_sz = total_sz;
 }
