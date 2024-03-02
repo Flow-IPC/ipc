@@ -278,7 +278,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
 #endif
     }
 
-    void on_request(const Error_code& err_code)
+    void on_request();//XXXconst Error_code& err_code)
     {
 #if 0
       if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_request()"); }
