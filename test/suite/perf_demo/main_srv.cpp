@@ -34,11 +34,8 @@ int main(int argc, char const * const * argv)
   using flow::Flow_log_component;
   using flow::util::String_view;
   using flow::util::ceil_div;
-
   using boost::promise;
   using boost::lexical_cast;
-
-  using std::string;
   using std::exception;
 
   constexpr String_view LOG_FILE = "perf_demo_srv.log";

@@ -33,13 +33,10 @@ int main(int argc, char const * const * argv)
   using flow::log::Sev;
   using flow::Flow_log_component;
   using flow::util::String_view;
-
   using boost::promise;
-
-  using std::string;
   using std::exception;
 
-  constexpr String_view LOG_FILE = "perf_demo_srv.log";
+  constexpr String_view LOG_FILE = "perf_demo_cli.log";
   constexpr int BAD_EXIT = 1;
 
   /* Set up logging within this function.  We could easily just use `cout` and `cerr` instead, but this
