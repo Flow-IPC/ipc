@@ -322,7 +322,7 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
       FLOW_LOG_INFO("= Got handshake SYN.");
 
       auto req = m_chan.create_msg();
-      req.body_root()->initGetCacheReq().setFileName("gigantic-file.bin");
+      req.body_root()->initGetCacheReq().setFileName("file.bin");
 
       FLOW_LOG_INFO("> Issuing get-cache request: [" << req << "].");
       m_timer.emplace(get_logger(), "capnp-flow-ipc-e2e-zero-copy", Timer::real_clock_types(), 100);
