@@ -18,15 +18,15 @@
 #include "common.hpp"
 
 void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan);
-void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan);
+void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan, Session* session_ptr);
 
+using Session = Session_server::Server_session_obj;
 using Capnp_heap_engine = ::capnp::MallocMessageBuilder;
 Task_engine g_asio;
 Capnp_heap_engine g_capnp_msg;
 
 int main(int argc, char const * const * argv)
 {
-  using Session = Session_server::Server_session_obj;
   using flow::log::Simple_ostream_logger;
   using flow::log::Async_file_logger;
   using flow::log::Config;
@@ -134,7 +134,7 @@ int main(int argc, char const * const * argv)
                              ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session);
 
     run_capnp_over_raw(&std_logger, &chan_raw);
-    run_capnp_zero_copy(&std_logger, &chan_struc);
+    run_capnp_zero_copy(&std_logger, &chan_struc, &session);
 
     FLOW_LOG_INFO("Exiting.");
   } // try
@@ -233,6 +233,91 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   g_asio.run();
 } // run_capnp_over_raw()
 
-void run_capnp_zero_copy(flow::log::Logger*, Channel_struc*)// chan_ptr)
+void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr, Session* session_ptr)
 {
+  using flow::Flow_log_component;
+  using flow::log::Logger;
+  using flow::log::Log_context;
+  using boost::asio::post;
+
+  struct Algo :// Just so we can arrange functions in chronological order really.
+    public Log_context
+  {
+    Channel_struc& m_chan;
+    Error_code m_err_code;
+    Session::Structured_msg_builder_config::Builder m_capnp_builder;
+    Channel_struc::Msg_out m_capnp_msg;
+
+    Algo(Logger* logger_ptr, Channel_raw* chan_ptr, Session* session_ptr) :
+      Log_context(logger_ptr, Flow_log_component::S_UNCAT),
+      m_chan(*chan_ptr),
+      m_capnp_builder(session_ptr->session_shm_builder_config())
+    {
+      FLOW_LOG_INFO("-- RUN - zero-copy (SHM-backed) capnp request/response using Flow-IPC --");
+    }
+
+    void start()
+    {
+      FLOW_LOG_INFO("= Prep: Deep-copying heap-backed capnp message into Flow-IPC SHM-backed message: START.");
+      m_capnp_builder.payload_msg_builder()->setRoot(g_capnp_msg.getRoot<perf_demo::schema::Body>().asReader());
+      FLOW_LOG_INFO("= Prep: Deep-copying heap-backed capnp message into Flow-IPC SHM-backed message: DONE.");
+
+      m_chan.replace_event_wait_handles([]() -> auto { return Asio_handle(g_asio); });
+      m_chan.start_ops(ev_wait);
+
+      // Send a dummy message to synchronize initialization.
+      FLOW_LOG_INFO("> Issuing handshake SYN for initialization sync.");
+      m_chan.send(m_chan.create_msg());
+
+      // Receive a dummy message as a request signal.
+      FLOW_LOG_INFO("< Expecting get-cache request via tiny message.");
+#if 0
+      m_chan.async_receive_blob(Blob_mutable(&m_n, sizeof(m_n)), &m_err_code, &m_sz,
+                                [&](const Error_code& err_code, size_t) { on_request(err_code); });
+      if (m_err_code != ipc::transport::error::Code::S_SYNC_IO_WOULD_BLOCK) { on_request(m_err_code); }
+#endif
+    }
+
+    void on_request(const Error_code& err_code)
+    {
+#if 0
+      if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_request()"); }
+      FLOW_LOG_INFO("= Got get-cache request.");
+
+      const auto capnp_segs = g_capnp_msg.getSegmentsForOutput();
+      m_n = capnp_segs.size();
+      FLOW_LOG_INFO("> Sending get-cache response fragment: capnp segment count = [" << m_n << "].");
+      m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
+      FLOW_LOG_INFO("> Sending get-cache response fragments x N: [seg size, seg content...].");
+
+      const auto chunk_max_sz = m_chan.send_blob_max_size();
+      for (size_t idx = 0; idx != capnp_segs.size(); ++idx)
+      {
+        const auto capnp_seg = capnp_segs[idx].asBytes();
+        m_n = capnp_seg.size();
+        m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
+
+        auto start = capnp_seg.begin();
+        do
+        {
+          const auto chunk_sz = std::min(chunk_max_sz, m_n);
+          m_chan.send_blob(Blob_const(start, chunk_sz));
+          start += chunk_sz;
+          m_n -= chunk_sz;
+        }
+        while (m_n != 0);
+        // It's e.g. 15 extra lines; let's not poison timing with that unless console logger turned up to TRACE+.
+        FLOW_LOG_TRACE("= Sent segment [" << (idx + 1) << "] of [" << capnp_segs.size() << "]; "
+                       "segment serialization size (capnp-decided) = "
+                       "[" << ceil_div(capnp_seg.size(), size_t(1024)) << " Ki].");
+      }
+      FLOW_LOG_INFO("= Done.  Total allocated size = "
+                    "[" << ceil_div(g_capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << " Mi].");
+#endif
+    } // on_request()
+  }; // class Algo
+
+  Algo algo(logger_ptr, chan_ptr, session_ptr);
+  post(g_asio, [&]() { algo.start(); });
+  g_asio.run();
 } // run_capnp_zero_copy()
