@@ -261,7 +261,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
     {
       FLOW_LOG_INFO("= Prep: Deep-copying heap-backed capnp message into Flow-IPC SHM-backed message: START.");
       m_capnp_builder.payload_msg_builder()->setRoot(g_capnp_msg.getRoot<perf_demo::schema::Body>().asReader());
-      m_capnp_msg(std::move(m_capnp_builder));
+      m_capnp_msg = Channel_struc::Msg_out(std::move(m_capnp_builder));
       FLOW_LOG_INFO("= Prep: Deep-copying heap-backed capnp message into Flow-IPC SHM-backed message: DONE.");
 
       m_chan.replace_event_wait_handles([]() -> auto { return Asio_handle(g_asio); });
