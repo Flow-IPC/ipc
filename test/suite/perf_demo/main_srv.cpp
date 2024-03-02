@@ -80,7 +80,7 @@ int main(int argc, char const * const * argv)
       const auto total_sz_mi = (argc >= 2) ? lexical_cast<float>(argv[1]) : TOTAL_SZ_MI;
 
       FLOW_LOG_INFO("Prep: Filling capnp MallocMessageBuilder (rough size [" << total_sz_mi << " Mi]): START.");
-      constexpr size_t FILE_PART_SZ = 128 * 1024;
+      constexpr size_t FILE_PART_SZ = 16 * 1024;
 
       auto file_parts_list = g_capnp_msg.initRoot<perf_demo::schema::Body>().initGetCacheRsp()
                                .initFileParts(size_t(total_sz_mi * 1024.f * 1024.f / float(FILE_PART_SZ)));
