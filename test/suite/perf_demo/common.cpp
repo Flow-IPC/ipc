@@ -43,7 +43,8 @@ const std::string CLI_NAME = "cli";
 // Universe of server apps: Just one.
 const ipc::session::Server_app::Master_set SRV_APPS
         ({ { SRV_NAME,
-             { { SRV_NAME, WORK_DIR / (S_EXEC_PREFIX + SRV_NAME + S_EXEC_POSTFIX), ::geteuid(), ::getegid() },
+             { { SRV_NAME, WORK_DIR / (S_EXEC_PREFIX + SRV_NAME + S_EXEC_PRE_POSTFIX + S_EXEC_POSTFIX),
+                 ::geteuid(), ::getegid() },
                { CLI_NAME }, // Allowed cli-apps that can open sessions.
                WORK_DIR,
                ipc::util::Permissions_level::S_GROUP_ACCESS } } });
@@ -58,7 +59,7 @@ const ipc::session::Client_app::Master_set CLI_APPS
                 /* The ipc::session security model is such that the binary must be invoked *exactly* using the
                 * command listed here.  In *nix land at least this is how that is likely to look.
                 * (In a production scenario this would be a canonical (absolute, etc.) path.) */
-                fs::path(".") / (S_EXEC_PREFIX + CLI_NAME + S_EXEC_POSTFIX),
+                fs::path(".") / (S_EXEC_PREFIX + CLI_NAME + S_EXEC_PRE_POSTFIX + S_EXEC_POSTFIX),
                 ::geteuid(), ::getegid()
               }
             }
