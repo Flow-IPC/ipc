@@ -33,7 +33,7 @@ function(handle_binary name_sh jem_else_classic)
   add_executable(${name} common.cpp "main_${name_sh}.cpp" ${capnp_generated_srcs})
 
   target_include_directories(${name} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-  target_compile_definitions(${PROJ} PRIVATE "JEM_ELSE_CLASSIC=${def_val}")
+  target_compile_definitions(${name} PRIVATE "JEM_ELSE_CLASSIC=${def_val}")
 
   common_set_target_properties(${name})
 
