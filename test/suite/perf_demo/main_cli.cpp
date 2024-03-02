@@ -279,6 +279,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   post(g_asio, [&]() { algo.start(); });
   g_asio.run();
   g_asio.restart();
+  g_asio.poll();
 } // run_capnp_over_raw()
 
 void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel_struc* chan_ptr)
@@ -343,6 +344,11 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
       verify_rsp(rsp_root);
 
       FLOW_LOG_INFO("= Contents look good.  Timing results: [\n" << m_timer.value() << "\n].");
+      rsp.reset();
+
+      FLOW_LOG_INFO("> Signaling server we are done; they can blow everything away now.");
+
+      m_chan.send(m_chan.create_msg());
       g_asio.stop();
     } // on_complete_response()
   }; // class Algo
@@ -351,6 +357,7 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
   post(g_asio, [&]() { algo.start(); });
   g_asio.run();
   g_asio.restart();
+  g_asio.poll();
 } // run_capnp_zero_copy()
 
 void verify_rsp(const perf_demo::schema::GetCacheRsp::Reader& rsp_root)

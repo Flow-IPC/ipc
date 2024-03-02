@@ -238,6 +238,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   post(g_asio, [&]() { algo.start(); });
   g_asio.run();
   g_asio.restart();
+  g_asio.poll();
 } // run_capnp_over_raw()
 
 void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr, Session* session_ptr)
@@ -292,7 +293,13 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
       FLOW_LOG_INFO("> Sending get-cache (quite large) response.");
       m_chan.send(m_capnp_msg, req.get());
       FLOW_LOG_INFO("= Done.");
-      g_asio.stop();
+      m_capnp_msg.reset();
+
+      FLOW_LOG_INFO("< Expecting client to signal they are done; so we can blow everything away.");
+      Channel_struc::Msg_in_ptr req;
+      m_chan.expect_msg(Channel_struc::Msg_which_in::GET_CACHE_REQ, &req,
+                        [&](auto&&) { g_asio.stop(); });
+      if (req) { g_asio.stop(); }
     } // on_request()
   }; // class Algo
 
@@ -300,4 +307,5 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
   post(g_asio, [&]() { algo.start(); });
   g_asio.run();
   g_asio.restart();
+  g_asio.poll();
 } // run_capnp_zero_copy()
