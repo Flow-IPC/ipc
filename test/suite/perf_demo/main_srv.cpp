@@ -170,7 +170,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
     Error_code m_err_code;
     size_t m_sz;
     size_t m_n = 0;
-    optional<Capnp_heap_engine> m_capnp_msg;
+    Capnp_heap_engine m_capnp_msg;
 
     Algo(Logger* logger_ptr, Channel_raw* chan_ptr) :
       Log_context(logger_ptr, Flow_log_component::S_UNCAT),
@@ -296,7 +296,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
       m_capnp_msg = {};
 
       FLOW_LOG_INFO("< Expecting client to signal they are done; so we can blow everything away.");
-      Channel_struc::Msg_in_ptr req;
+      req = {};
       m_chan.expect_msg(Channel_struc::Msg_which_in::GET_CACHE_REQ, &req,
                         [&](auto&&) { g_asio.stop(); });
       if (req) { g_asio.stop(); }
