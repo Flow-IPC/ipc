@@ -319,5 +319,6 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
 
   Algo algo(logger_ptr, chan_ptr, session_ptr);
   post(g_asio, [&]() { algo.start(); });
+  g_asio.restart();
   g_asio.run();
 } // run_capnp_zero_copy()
