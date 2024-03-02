@@ -106,6 +106,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   using flow::Flow_log_component;
   using flow::log::Logger;
   using flow::log::Log_context;
+  using flow::util::String_view;
   using flow::util::ceil_div;
   using ::capnp::word;
   using boost::asio::post;
@@ -258,12 +259,28 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       const Capnp_word_array_array_ptr capnp_segs_ptr(&(capnp_segs.front()), capnp_segs.size());
       Capnp_heap_engine capnp_msg(capnp_segs_ptr);
 
-      [[maybe_unused]] auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getGetCacheRsp(); // XXX
+      const auto rsp_root = capnp_msg.getRoot<perf_demo::schema::Body>().getGetCacheRsp(); // XXX
 
       FLOW_LOG_INFO("= Done.  Total received size = "
                     "[" << ceil_div(capnp_msg.sizeInWords() * sizeof(word), size_t(1024 * 1024)) << " Mi].");
       FLOW_LOG_INFO("= Timing: [\n" << m_timer.value() << "\n].");
 
+      const auto file_parts_list = rsp_root.getFileParts();
+      for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
+      {
+        const auto file_part = file_parts_list[idx];
+        const auto data = file_part.getData();
+        const auto computed_hash = boost::hash<String_view>()
+                                     (String_view(reinterpret_cast<const char*>(data.begin()), data.size()));
+        if (file_part.getDataSizeToVerify() != data.size())
+        {
+          throw Runtime_error("A file-part's size does not match!");
+        }
+        if (file_part.getDataHashToVerify() != computed_hash)
+        {
+          throw Runtime_error("A file-part's hash does not match!");
+        }
+      }
     } // on_complete_response()
   }; // class Algo
 
