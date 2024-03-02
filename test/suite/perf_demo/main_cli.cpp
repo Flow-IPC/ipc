@@ -272,7 +272,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
                     "Will verify contents (sizes, hashes).");
 
       const auto file_parts_list = rsp_root.getFileParts();
-      if (file_parts_list < 50)
+      if (file_parts_list.size() < 50)
       {
         throw Runtime_error("Way too few file-parts... something is wrong.");
       }
