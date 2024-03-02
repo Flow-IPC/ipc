@@ -86,7 +86,7 @@ int main(int argc, char const * const * argv)
           data[byte_idx] = uint8_t(byte_idx % 256);
         }
         file_part.setDataSizeToVerify(FILE_PART_SZ);
-        file_part.setDataHashToVerify(boost::hash<String_view>
+        file_part.setDataHashToVerify(boost::hash<String_view>()
                                         (reinterpret_cast<char*>(data.begin()), FILE_PART_SZ));
       }
 
