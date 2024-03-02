@@ -265,13 +265,14 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
 
       m_chan.replace_event_wait_handles([]() -> auto { return Asio_handle(g_asio); });
       m_chan.start_ops(ev_wait);
+      m_chan.start_and_poll([](const Error_code&) {});
 
       // Send a dummy message to synchronize initialization.
       FLOW_LOG_INFO("> Issuing handshake SYN for initialization sync.");
       m_chan.send(m_chan.create_msg());
 
       // Receive a dummy message as a request signal.
-      FLOW_LOG_INFO("< Expecting get-cache request via tiny message.");
+      FLOW_LOG_INFO("< Expecting get-cache request.");
       Channel_struc::Msg_in_ptr req;
       m_chan.expect_msg(Channel_struc::Msg_which_in::GET_CACHE_REQ, &req,
                         [&](Channel_struc::Msg_in_ptr&& req) { on_request(std::move(req)); });
