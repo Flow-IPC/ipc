@@ -107,7 +107,6 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
   using flow::Flow_log_component;
   using flow::log::Logger;
   using flow::log::Log_context;
-  using flow::util::String_view;
   using flow::util::ceil_div;
   using ::capnp::word;
   using boost::asio::post;
@@ -289,7 +288,6 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
   using flow::Flow_log_component;
   using flow::log::Logger;
   using flow::log::Log_context;
-  using flow::util::String_view;
   using ::capnp::word;
   using boost::asio::post;
 
@@ -359,6 +357,8 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
 
 void verify_rsp(const perf_demo::schema::GetCacheRsp::Reader& rsp_root)
 {
+  using flow::util::String_view;
+
   const auto file_parts_list = rsp_root.getFileParts();
   if (file_parts_list.size() < 2)
   {
