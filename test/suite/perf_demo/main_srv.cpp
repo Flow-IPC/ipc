@@ -33,6 +33,7 @@ int main(int argc, char const * const * argv)
   using flow::log::Sev;
   using flow::Flow_log_component;
   using flow::util::String_view;
+  using flow::util::ceil_div;
 
   using boost::promise;
   using boost::lexical_cast;
@@ -83,7 +84,8 @@ int main(int argc, char const * const * argv)
       constexpr size_t FILE_PART_SZ = 16 * 1024;
 
       auto file_parts_list = g_capnp_msg.initRoot<perf_demo::schema::Body>().initGetCacheRsp()
-                               .initFileParts(size_t(total_sz_mi * 1024.f * 1024.f / float(FILE_PART_SZ)));
+                               .initFileParts
+                                  (ceil_div(size_t(total_sz_mi * 1024.f * 1024.f), FILE_PART_SZ));
       for (size_t idx = 0; idx != file_parts_list.size(); ++idx)
       {
         auto file_part = file_parts_list[idx];
