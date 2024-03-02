@@ -32,6 +32,11 @@ const fs::path WORK_DIR = fs::canonical(fs::current_path().lexically_normal());
 // Has to match CMakeLists.txt-stored executable name.
 static const std::string S_EXEC_PREFIX = "perf_demo_";
 static const std::string S_EXEC_POSTFIX = ".exec";
+#if JEM_ELSE_CLASSIC
+static const std::string S_EXEC_PRE_POSTFIX = "_shm_jemalloc";
+#else
+static const std::string S_EXEC_PRE_POSTFIX = "_shm_classic";
+#endif
 const std::string SRV_NAME = "srv";
 const std::string CLI_NAME = "cli";
 
@@ -62,7 +67,8 @@ const ipc::session::Client_app::Master_set CLI_APPS
 
 void ensure_run_env(const char* argv0, bool srv_else_cli)
 {
-  const auto exp_path = WORK_DIR / (S_EXEC_PREFIX + (srv_else_cli ? SRV_NAME : CLI_NAME) + S_EXEC_POSTFIX);
+  const auto exp_path = WORK_DIR /
+                        (S_EXEC_PREFIX + (srv_else_cli ? SRV_NAME : CLI_NAME) + S_EXEC_PRE_POSTFIX + S_EXEC_POSTFIX);
   if (fs::canonical(fs::path(argv0)) != exp_path)
   {
     throw flow::error::Runtime_error

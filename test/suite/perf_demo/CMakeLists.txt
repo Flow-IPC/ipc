@@ -49,7 +49,7 @@ function(handle_binary name_sh jem_else_classic)
   message(STATUS "This variant internally uses [${name_pfx}] zero-copy backing mechanism.")
 endfunction()
 
-# Identical programs; except one uses SHM-jemalloc as internal SHM-provider; the other uses SHM-classic.
+# Identical programs; except one pair uses SHM-jemalloc as internal SHM-provider; the other uses SHM-classic.
 handle_binary(srv TRUE)
 handle_binary(cli TRUE)
 handle_binary(srv FALSE)
