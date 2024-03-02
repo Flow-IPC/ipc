@@ -349,7 +349,7 @@ void run_capnp_zero_copy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel
       m_timer.emplace(get_logger(), "capnp-raw", Timer::real_clock_types(), 100);
 
       m_chan.async_request(req, nullptr, nullptr,
-                           [&](Channel_struc::Msg_in_ptr&& rsp) { on_complete_response(rsp); });
+                           [&](Channel_struc::Msg_in_ptr&& rsp) { on_complete_response(std::move(rsp)); });
       m_timer->checkpoint("sent request");
     }
 
