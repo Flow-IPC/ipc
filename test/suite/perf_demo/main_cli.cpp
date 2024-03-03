@@ -288,7 +288,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
         // New segment's size known; reserve the space and then set .size() = 0, while leaving .capacity() same.
         m_segs.emplace_back(m_n);
         m_segs.back().clear();
-        assert(m_segs.capacity() == m_n); // Ensure it didn't dealloc.
+        assert(m_segs.back().capacity() == m_n); // Ensure it didn't dealloc.
       }
       else
       {
