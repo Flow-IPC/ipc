@@ -360,13 +360,13 @@ template&lt;typename Task_err , typename N_init_channels_by_srv_req_func , typen
 <li>the client-&gt;Server metadata (see below).</li>
 </ul>
 <p >Thus supply <code>Mdt_load_func mdt_load_func</code> arg which takes all 3 of these data, plus a blank capnp <code>Mdt_payload</code> structure to fill; and loads the latter as desired.</p>
-<p >To omit using this feature do nothing in <code>mdt_load_func()</code>. (The other <a class="el" href="classipc_1_1session_1_1Session__server.html#a13887cd64912bb5f5675e2817ff8435f" title="Asynchronously awaits for an opposing Client_session to request session establishment and calls on_do...">async_accept()</a> overload provides such a no-op function.)</p>
+<p >To omit using this feature do nothing in <code>mdt_load_func()</code>. (The other <a class="el" href="classipc_1_1session_1_1Session__server.html#a13887cd64912bb5f5675e2817ff8435f" title="Asynchronously awaits for an opposing Client_session to request session establishment and calls on_do...">async_accept()</a> overload provides such a no-op function.) Suggest this value in that case: <code>[](auto&amp;&amp;...) {}</code>.</p>
 <h3>Client-&gt;server metadata exchange</h3>
 <p >This is the reverse of the above. Whatever the opposing client chose to supply as client-&gt;server metadata shall be deserializable at <code>*mdt_from_cli_or_null</code> once (and if) <code>on_done_func(Error_code())</code> (successful accept) fires. If <code>mdt_from_cli_or_null</code> is null, the cli-&gt;srv metadata shall be ignored.</p>
 <h3>Init-channels by server request</h3>
 <p >Once the session is open, open_channel() and the on-passive-open handler may be used to open channels at will. In many use cases, however, a certain number of channels is required immediately before work can really begin (and, frequently, no further channels are even needed). For convenience (to avoid asynchrony/boiler-plate) the init-channels feature will pre-open a requested # of channels making them available right away, together with the freshly-open session &ndash; to both sides.</p>
 <p >The server may request 0 or more init-channels. They shall be opened and placed into <code>*init_channels_by_srv_req</code>. The number of channels requested may depend on the 3 piece of info outlined above in "Server-&gt;client metadata exchange." Thus supply <code>N_init_channels_by_srv_req_func n_init_channels_by_srv_req_func</code> arg which takes all 3 of these data and returns the <code>size_t</code> channel count (possibly 0). The resulting channels shall be loaded into <code>*init_channels_by_srv_req</code> before successful <code>on_done_func()</code> execution.</p>
-<p >If and only if <code>n_init_channels_by_srv_req_func()</code> would always return 0, you may provide a null <code>init_channels_by_srv_req</code>. <code>n_init_channels_by_srv_req_func</code> will then be ignored.</p>
+<p >If and only if <code>n_init_channels_by_srv_req_func()</code> would always return 0, you may provide a null <code>init_channels_by_srv_req</code>. <code>n_init_channels_by_srv_req_func</code> will then be ignored. Suggest this value in that case: <code>[](auto&amp;&amp;...) -&gt; size_t { return 0; }</code></p>
 <h3>Init-channels by client request</h3>
 <p >This is the reverse of the above. The opposing side shall request 0 or more init-channels-by-client-request; that number of channels shall be opened; and they will be placed into <code>*init_channels_by_cli_req</code> which shall be <code>-&gt;resize()</code>d accordingly, once (and if) <code>on_done_func(Error_code())</code> (successful connect) fires.</p>
 <p ><code>init_channels_by_srv_cli</code> being null is allowed, but only if the opposing server requests 0 init-channels-by-server-request. Otherwise an error shall be emitted (see below).</p>
@@ -534,7 +534,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 29 2024 08:14:21 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Mar 3 2024 05:42:39 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

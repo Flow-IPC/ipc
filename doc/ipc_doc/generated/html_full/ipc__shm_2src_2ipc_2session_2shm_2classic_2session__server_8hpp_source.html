@@ -737,8 +737,8 @@ $(function() {
 <div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>{</div>
 <div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>  <span class="comment">// As advertised this overload always means:</span></div>
 <div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span> </div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>  <span class="keyword">auto</span> ignored_func = [](<span class="keyword">auto</span>&amp;&amp;, <span class="keyword">auto</span>&amp;&amp;, <span class="keyword">auto</span>&amp;&amp;) -&gt; <span class="keywordtype">size_t</span> { <span class="keywordflow">return</span> 0; };</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>  <span class="keyword">auto</span> no_op_func = [](<span class="keyword">auto</span>&amp;&amp;, <span class="keyword">auto</span>&amp;&amp;, <span class="keyword">auto</span>&amp;&amp;, <span class="keyword">auto</span>&amp;&amp;) {};</div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>  <span class="keyword">auto</span> ignored_func = [](<span class="keyword">auto</span>&amp;&amp;...) -&gt; <span class="keywordtype">size_t</span> { <span class="keywordflow">return</span> 0; };</div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>  <span class="keyword">auto</span> no_op_func = [](<span class="keyword">auto</span>&amp;&amp;...) {};</div>
 <div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span> </div>
 <div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>  async_accept(target_session, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>, std::move(ignored_func), std::move(no_op_func),</div>
 <div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>               std::move(on_done_func));</div>
@@ -834,7 +834,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 29 2024 08:14:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Mar 3 2024 05:42:42 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

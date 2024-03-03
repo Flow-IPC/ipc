@@ -213,9 +213,9 @@ $(function() {
 <div class="line">                         &amp;mdt_for_session_being_opened, <span class="comment">// We do expect cli-&gt;srv metadata.</span></div>
 <div class="line">                         &amp;init_channels_for_session_being_opened,</div>
 <div class="line">                         <span class="comment">// Dummy function ignored in our case, because of nullptr in arg 2 above.</span></div>
-<div class="line">                         [](<span class="keyword">auto</span>&amp;&amp;, <span class="keyword">auto</span>&amp;&amp;, <span class="keyword">auto</span>&amp;&amp;) -&gt; <span class="keyword">auto</span> { <span class="keywordflow">return</span> 0; },</div>
+<div class="line">                         [](<span class="keyword">auto</span>&amp;&amp;...) -&gt; <span class="keywordtype">size_t</span> { <span class="keywordflow">return</span> 0; },</div>
 <div class="line">                         <span class="comment">// No-op function, as in our example we don&#39;t transmit srv-&gt;cli metadata.</span></div>
-<div class="line">                         [](<span class="keyword">auto</span>&amp;&amp;, <span class="keyword">auto</span>&amp;&amp;, <span class="keyword">auto</span>&amp;&amp;, <span class="keyword">auto</span>&amp;&amp;) {},</div>
+<div class="line">                         [](<span class="keyword">auto</span>&amp;&amp;...) {},</div>
 <div class="line">                         ([...](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
 <div class="line">{</div>
 <div class="line">  <span class="comment">// ...same as before...</span></div>
@@ -399,7 +399,7 @@ $(function() {
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 29 2024 08:14:21 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Mar 3 2024 05:42:39 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
