@@ -778,8 +778,11 @@ jobs:
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_session_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        SRV_PID=$!
         sleep 1
         ./ipc_session_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
+        [ $SRV_EC -eq 0 ]
 
     - name: Run link test [`ipc_shm` - Flow-IPC Shared Memory]
       if: |
@@ -796,8 +799,11 @@ jobs:
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_shm_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        SRV_PID=$!
         sleep 1
         ./ipc_shm_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
+        [ $SRV_EC -eq 0 ]
 
     - name: Run link test [`ipc_shm_arena_lend` - Flow-IPC SHM-jemalloc]
       if: |
@@ -816,8 +822,11 @@ jobs:
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ./ipc_shm_arena_lend_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        SRV_PID=$!
         sleep 1
         ./ipc_shm_arena_lend_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
+        [ $SRV_EC -eq 0 ]
 
     - name: Run unit tests
       if: |
@@ -890,6 +899,43 @@ jobs:
           [ $EC_ALL -eq 0 ] && [ $EC_LH -eq 0 ]
         fi
 
+    - name: Prepare run script for [perf_demo] variations below
+      if: |
+        !cancelled()
+      run: |
+        # Prepare run script for [perf_demo] variations below.
+        cat <<'EOF' > ${{ env.install-dir }}/bin/run_perf_demo.sh
+        # Script created by pipeline during job.
+        echo "Zero-copy backing type: [$1]."
+        cd ${{ env.install-dir }}/bin
+        OUT_DIR=logs/perf_demo/$1
+        mkdir -p $OUT_DIR
+        SUPP_DIR_A=${{ github.workspace }}/flow/src
+        SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
+        SUPP_DIR_C=${{ github.workspace }}/ipc_shm_arena_lend/src
+        { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
+            > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
+        ${{ env.setup-tests-env }}
+        ./perf_demo_srv_$1.exec 1000 $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        SRV_PID=$!
+        sleep 20 # It fills up a large structure before listening, so give it some time (mostly for slow build types).
+        ./perf_demo_cli_$1.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
+        [ $SRV_EC -eq 0 ]
+        EOF
+
+    - name: Run integration test [perf_demo - SHM-classic mode]
+      if: |
+        !cancelled()
+      run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_perf_demo.sh shm_classic
+
+    - name: Run integration test [perf_demo - SHM-jemalloc mode]
+      if: |
+        !cancelled()
+      run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_perf_demo.sh shm_jemalloc
+
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
     # any failing step is repeated with logging hiked up.  Note that formally (and practically)
     # higher-than-INFO verbosity is allowed to affect performance and thus is *not* right for
@@ -899,6 +945,9 @@ jobs:
     # As of this writing unit_test already runs with high verbosity, so we do not re-run on failure
     # like these.  The `link_test`s above are very basic tests, essentially there to ensure all built okay
     # and run a sanity-check of a core feature of each of ours libs; so no re-run on failure there either.
+    # Lastly perf_demo is about performance and as of this writing happen to lack that knob; so
+    # perhaps TODO: Add the verbosity knob and the re-run-on-failure step for that one.  It's about perf though,
+    # so does not seem like a high priority.
 
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
