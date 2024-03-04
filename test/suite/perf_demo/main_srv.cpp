@@ -107,7 +107,7 @@ int main(int argc, char const * const * argv)
   const auto log_file = (argc >= 3) ? String_view(argv[2]) : LOG_FILE;
   FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
   Config log_config = std_log_config;
-  log_config.configure_default_verbosity(Sev::S_INFO, true);
+  log_config.configure_default_verbosity(Sev::S_TRACE, true); // XXX
   Async_file_logger log_logger(nullptr, &log_config, log_file, false);
 
 #if JEM_ELSE_CLASSIC
