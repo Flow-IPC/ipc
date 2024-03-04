@@ -36,7 +36,7 @@ This is **Flow-IPC**: a C++ toolkit that makes IPC code:
 Here's an *example* of the performance gains you can expect when using Flow-IPC zero-copy transmission, from
 the included `perf_demo` tool.  (Here we use Cap'n Proto-described data.  Native C++ structures behave similarly.)
 
-![graph: perf_demo capnp-classic versus capnp-Flow-IPC](./src/doc.manual/assets/img/capnp_perf_v1.png)
+![graph: perf_demo capnp-classic versus capnp-Flow-IPC](./src/doc/manual/assets/img/capnp_perf_v1.png)
 
 Here, app 1 is a memory-caching server that has pre-loaded into RAM a few
 files ranging in size from 100kb to 1Gb.  App 2 (client) requests a file of some size.  App 1 (server) responds
@@ -122,7 +122,7 @@ zero-copy -- i.e., simply `::write()`ing a copy of the capnp serialization of `r
 `rsp` from a Unix domain socket FD -- sufficiently robust code would be significant in length and complexity;
 and challenging to make reusable.
 
---
+---
 
 Please see [Documentation](#documentation) and/or [Quick tour](#quick-tour) below for a more in-depth look into
 Flow-IPC.
