@@ -6,18 +6,29 @@ as an incremental task.)
 
 ## Background
 
-*IPC (inter-process communication)* is the practice of transmitting or sharing data structures between at least
-two running programs, whether *locally* (within a single machine) or networked.  In the C++ world of
-systems programming, *high-speed local IPC* is a common coding task.  Modern OS provide
-various IPC-transport choices (such as pipes and stream sockets), and in-place schema-based serialization
-tools (such as [Cap'n Proto](https://capnproto.org/language.html)) hugely help in representing structuring data
-in an organized, forward-compatible fashion.  Some IPC-transports (e.g., Unix domain sockets) allow transmission of
-*native handles* (FDs in \*nix) to, e.g., network sockets which is a key technique used in web servers.
+*IPC (inter-process communication)* is essentially this:
+  -# Process P1 has a data structure X, and it wants process P2 to access it (or a copy thereof) ASAP.  So:
+  -# P1 somehow makes X (or a copy of X) available to P2 in its memory.
+     - Also X can contain *native handle(s)* (FDs in \*Unix terminology).
+  -# P1 somehow signals P2 that X (or a copy of X) is available.
+  -# P2 now knows to access X (or a copy of X.  It can at least read it -- possibly write to it.
 
-Unfortunately, IPC code -- at least in C++ systems programming when low latencies are of value:
-  - is **painful to write/maintain** and is **rarely reusable**;
-  - is **slow**, as it is common to **copy a message twice** (sender -> transport -> receiver).
-    - Shared memory (SHM) can defeat this but increases development pain substantially.
+The OS and third-parties avail C++ developers of many tools for/around IPC.  Highlights:
+  - Pipes, Unix domain sockets, message queues (MQs), and more such *IPC transports* allow transmitting data
+    (usually binary blobs and sometimes FDs).  Usually a combo of `::write()` (in P1), `::read()`
+    (in P2), and a `select()`-like mechanism achieve steps 2-4 while *copying* X, like this: P1 -> the kernel -> P2.
+  - Shared memory (SHM) allows P1 to place X into a shared place and signal P2 to access it directly there,
+    eliminating both X copies.
+  - *In-place schema-based serialization tools*, the best of which is
+    [Cap'n Proto](https://capnproto.org/language.html), hugely help in representing *structured data* within
+    binary blobs.  This can make IPC more useful algorithmically.
+
+IPC is not so different from triggering a function call with argument X in a different thread -- just
+across process boundaries.  Unfortunately, in comparison to that:
+  - The resulting machine code is *much slower*.
+  - The source code to achieve it is *much more difficult to develop and reuse*.
+    - If one avoids copying X -- the basic cause of slowness -- the difficulty/lack of reusability spikes
+      further.
 
 ## Abstract
 
@@ -110,7 +121,7 @@ notifications -- no response expected; responses; and so on.)
     const auto file_part = rsp.getFileParts()[idx];
     if (file_part.getHashToVerify() != compute_hash(file_part.getData()))
     {
-      throw BadHashException(...);
+      throw Bad_hash_exception(...);
     }
   }
   ~~~
