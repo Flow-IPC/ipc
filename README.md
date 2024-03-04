@@ -45,10 +45,10 @@ See [CONTRIBUTING](./CONTRIBUTING.md) guide.
 
 ## Background
 
-We focus on IPC of data structures (and native sockets a/k/a FDs).  That is: Process P1 has a data structure X,
-and it wants process P2 to access it (or a copy thereof) ASAP.
+Flow-IPC focuses on IPC of data structures (and native sockets a/k/a FDs).  That is the central task is:
+Process P1 has a data structure *X*, and it wants process P2 to access it (or a copy thereof) ASAP.
 
-The OS and third-parties avail C++ developers of many tools for/around IPC.  Highlights:
+The OS and third-parties already avail C++ developers of many tools for/around IPC.  Highlights:
   - Pipes, Unix domain sockets, message queues (MQs), and more such *IPC transports* allow transmitting data
     (binary blobs and sometimes FDs).  Data are copied into the kernel by P1, then out of the kernel by P2.
   - P1 can put X into *shared memory* (SHM) and signal P2 to access it directly there,
@@ -57,10 +57,11 @@ The OS and third-parties avail C++ developers of many tools for/around IPC.  Hig
     [Cap'n Proto](https://capnproto.org/language.html), hugely help in representing *structured data* within
     binary blobs.
 
-IPC is not so different from triggering a function call with argument X in a different thread -- just
+Conceptually, IPC is not so different from triggering a function call with argument X in a different thread -- just
 across process boundaries.  Unfortunately, in comparison to that:
   - The resulting machine code is *much slower*.
-  - The source code to achieve it is *much more difficult to develop and reuse*.
+  - The source code to achieve it is *much more difficult to develop and reuse*, even with the help
+    of powerful APIs including Boost.interprocess and Boost.asio.
     - If one avoids copying X -- the basic cause of the slowness -- the difficulty/lack of reusability spikes
       further.
 
@@ -69,8 +70,8 @@ across process boundaries.  Unfortunately, in comparison to that:
 ![graph: perf_demo capnp-classic versus capnp-Flow-IPC](./src/doc/manual/assets/img/capnp_perf_v1.png)
 
 *Flow-IPC* makes IPC code:
-  - *easy* to write in reusable fashion -- transmitting **Cap'n Proto**-encoded structured data, **STL-compliant
-    native C++ data structures**, binary blobs, and **native handles (FDs)**;
+  - *easy* to write in reusable fashion -- transmitting *Cap'n Proto*-encoded structured data, *STL-compliant
+    native C++ data structures*, binary blobs, and *native handles (FDs)*;
   - *highly performant* by seamlessly eliminating *all* copying of the transmitted data.
      This is called *end-to-end zero-copy*.
     - If you transmit [Cap'n Proto schema](https://capnproto.org/language.html)-based messages, you get end-to-end
