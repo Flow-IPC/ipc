@@ -3,9 +3,12 @@
 We are happy to see that you are looking to help us improve Flow-IPC!  In order to ensure this goes as
 easily and quickly as possible, please follow the guidelines below.
 
+You may wish to glance at [INSTALL / Organization](./INSTALL.md#organization) first.
+
 ### Basics
 
-As mentioned in Organization, you may wish to contribute to the project.  Of course, in your own setting, it
+As mentioned in [Organization](./INSTALL.md#organization), you may
+wish to contribute to the project.  Of course, in your own setting, it
 may be perfectly reasonable to simply get a packaged `*_full.tar.gz` or `*_full.zip` archive, make the changes in this
 monolithic, non-SCS-mirrored copy; test them locally.  Eventually, though, you'll want to work with the central
 Git-SCS-mirrored project.  This section is about that.  It assumes basic familiarity with Git.
