@@ -1,33 +1,67 @@
 # Flow-IPC: Modern C++ toolkit for fast inter-process communication (IPC)
 
-**Flow-IPC** makes IPC code both performant and easy to write.  At this time it is for **C++17** (or higher)
-programs built for **Linux**, running on the x86-64 architecture.  (Support for macOS/BSD and ARM64 is planned
-as an incremental task.)
+In this context, IPC means the sharing or transmission of a *data structure* from *one process to another*.
+In C++ systems programing, this is a common activity with significant impact on system performance.  E.g.,
+it is used heavily in microservices.
+
+In serious C++ applications, high-performance IPC code tends to be difficult to develop and reuse,
+and the most obvious and effective technique to combat latency -- avoiding copying -- further increases the difficulty
+and decreases reusability by an order of magnitude.
+
+This project -- *Flow-IPC* -- enables C++ code for IPC that is both performant and easy to develop/reuse, with
+no trade-off between the two.
+
+Flow-IPC is for *C++17* (or higher) programs built for *Linux* that run on x86-64 processors.
+(Support for macOS/BSD and ARM64 is planned as an incremental task.  Adding networked IPC is also a natural
+next step.)
+
+## Documentation
+
+The [guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
+explains how to use Flow-IPC.  A comprehensive [Reference](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/namespaceipc.html)
+is inter-linked with that Manual.
+
+The [project web site](https://flow-ipc.github.io) contains links to documentation for each individual release as well.
+
+Please see below, in this README, for a [Primer](#flow-ipc-primer) as to the specifics of Flow-IPC.
+
+## Obtaining the source code
+
+- As a tarball/zip: The [project web site](https://flow-ipc.github.io) links to individual releases with notes, docs,
+  download links.
+- For Git access: `git clone --recurse-submodules git@github.com:Flow-IPC/ipc.git`
+
+## Installation
+
+See [INSTALL](./INSTALL.md) guide.
+
+## Contributing
+
+See [CONTRIBUTING](./CONTRIBUTING.md) guide.
+
+---
+
+# Flow-IPC Primer
 
 ## Background
 
-*IPC (inter-process communication)* is essentially this:
-  1. Process P1 has a data structure X, and it wants process P2 to access it (or a copy thereof) ASAP.  So:
-  2. P1 somehow makes X (or a copy of X) available to P2 in its memory.
-     - Also X can contain *native handle(s)* (FDs in \*Unix terminology).
-  3. P1 somehow signals P2 that X (or a copy of X) is available.
-  4. P2 now knows to access X (or a copy of X.  It can at least read it -- possibly write to it.
+We focus on IPC of data structures (and native sockets a/k/a FDs).  That is: Process P1 has a data structure X,
+and it wants process P2 to access it (or a copy thereof) ASAP.
 
 The OS and third-parties avail C++ developers of many tools for/around IPC.  Highlights:
   - Pipes, Unix domain sockets, message queues (MQs), and more such *IPC transports* allow transmitting data
-    (usually binary blobs and sometimes FDs).  Usually a combo of `::write()` (in P1), `::read()`
-    (in P2), and a `select()`-like mechanism achieve steps 2-4 while *copying* X, like this: P1 -> the kernel -> P2.
-  - Shared memory (SHM) allows P1 to place X into a shared place and signal P2 to access it directly there,
+    (binary blobs and sometimes FDs).  Data are copied into the kernel by P1, then out of the kernel by P2.
+  - P1 can put X into *shared memory* (SHM) and signal P2 to access it directly there,
     eliminating both X copies.
   - *In-place schema-based serialization tools*, the best of which is
     [Cap'n Proto](https://capnproto.org/language.html), hugely help in representing *structured data* within
-    binary blobs.  This can make IPC more useful algorithmically.
+    binary blobs.
 
 IPC is not so different from triggering a function call with argument X in a different thread -- just
 across process boundaries.  Unfortunately, in comparison to that:
   - The resulting machine code is *much slower*.
   - The source code to achieve it is *much more difficult to develop and reuse*.
-    - If one avoids copying X -- the basic cause of slowness -- the difficulty/lack of reusability spikes
+    - If one avoids copying X -- the basic cause of the slowness -- the difficulty/lack of reusability spikes
       further.
 
 ## Abstract
@@ -138,28 +172,6 @@ and challenging to make reusable.
 Please see [Documentation](#documentation) and/or [Quick tour](#quick-tour) below for a more in-depth look into
 Flow-IPC.
 
-## Obtaining the source code
-
-- As a tarball/zip: The [project web site](https://flow-ipc.github.io) links to individual releases with notes, docs,
-  download links.
-- For Git access: `git clone --recurse-submodules git@github.com:Flow-IPC/ipc.git`
-  - Forgot `--recurse-submodules`?  Fix it with: `cd ipc && git submodule update --init --recursive`.
-
-## Installation
-
-See [nearby INSTALL file](./INSTALL.md).
-
-## Contributing
-
-See [nearby CONTRIBUTING file](./INSTALL.md).
-
-## Documentation
-
-The [guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
-explains how to use Flow-IPC.  A comprehensive [Reference](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/namespaceipc.html)
-is inter-linked with that Manual.
-
-The [project web site](https://flow-ipc.github.io) contains links to the same for each individual release as well.
 
 ## Quick tour
 
