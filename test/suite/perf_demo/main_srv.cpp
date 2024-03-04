@@ -516,11 +516,15 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
        * Also one should (not "must") use .async_end_sending() before Channel dtor.  Again though... doesn't matter for
        * us!  But serious apps should do all the good stuff as recommended. */
 
+#if 0 // XXX
       FLOW_LOG_INFO("< Expecting client to signal they are done; so we can blow everything away.");
       req.reset();
       m_chan.expect_msg(Channel_struc::Msg_which_in::GET_CACHE_REQ, &req,
                         [&](auto&&) { g_asio.stop(); });
       if (req) { g_asio.stop(); }
+#else
+      g_asio.stop();
+#endif
 
       /* The .stop() is needed here, because struc::Channel is always reading all internally incoming messages ASAP;
        * so it always has an .async_wait() outstanding.  Hence the .run() never runs out of work, unless we
