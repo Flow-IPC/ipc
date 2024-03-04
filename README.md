@@ -66,6 +66,8 @@ across process boundaries.  Unfortunately, in comparison to that:
 
 ## How does Flow-IPC help?
 
+![graph: perf_demo capnp-classic versus capnp-Flow-IPC](./src/doc/manual/assets/img/capnp_perf_v1.png)
+
 *Flow-IPC* makes IPC code:
   - *easy* to write in reusable fashion -- transmitting **Cap'n Proto**-encoded structured data, **STL-compliant
     native C++ data structures**, binary blobs, and **native handles (FDs)**;
@@ -79,30 +81,13 @@ across process boundaries.  Unfortunately, in comparison to that:
       - In particular we integrate with [jemalloc](https://jemalloc.net), a commercial-grade thread-caching memory
         manager at the core of FreeBSD, Meta, and others.
 
-Here's an example of the performance gains you can expect when using Flow-IPC zero-copy transmission, from
+The graph above is an example of the performance gains you can expect when using Flow-IPC zero-copy transmission, from
 the included `perf_demo` tool.  (Here we use Cap'n Proto-described data.  Native C++ structures have a similar
 performance profile.)
 
-![graph: perf_demo capnp-classic versus capnp-Flow-IPC](./src/doc/manual/assets/img/capnp_perf_v1.png)
-
-Here, app 1 is a memory-caching server that has pre-loaded into RAM a few
+In this example, app 1 is a memory-caching server that has pre-loaded into RAM a few
 files ranging in size from 100kb to 1Gb.  App 2 (client) requests a file of some size.  App 1 (server) responds
-with a single message containing the file's data structured as a list of chunks, each along with that chunk's hash.
-App 2 receives the message and reports the round-trip time (RTT): from just before issuing the request to just after
-accessing some of the file data.  This RTT is the **IPC-induced latency**.  We compare the RTTs (latencies) of two
-techniques:
-  - The *blue line* shows the latency (RTT) when using "classic" IPC over a Unix-domain stream socket.  The server
-    `::write()`s all the chunks in sequence into the socket FD; the client `::read()`s them out of it.
-  - The *orange line* shows the RTT when using Flow-IPC with zero-copy enabled.
-
-Observations (tested using server-grade hardware):
-  - With Flow-IPC: the round-trip latency = ~100 microseconds *regardless of the size of the payload*.
-  - Without Flow-IPC: the latency is about 1 *milli*second for a 1-megabyte payload and approaching a *full second*
-    for a 1-gigabyte file.
-  - For very small messages the two techniques perform similarly: ~100 microseconds.
-
-The code for this, when using Flow-IPC, is straighforward.  First one defines a capnp schema in normal fashion
-(this is not Flow-IPC-specific):
+with a single message containing the file's data structured as a list of chunks, each accompanied by that chunk's hash:
 
   ~~~{.capnp}
   # ...
@@ -121,16 +106,35 @@ The code for this, when using Flow-IPC, is straighforward.  First one defines a 
   # ...
   ~~~
 
-Client-side, issue a request, in this case expecting a reply immediately.  (One can also issue async requests;
-notifications -- no response expected; responses; and so on.)
+App 2 receives the `GetCacheRsp` message and prints the round-trip time (RTT): from just before sending
+`GetCacheReq` to just after accessing some of the file data (e.g. `rsp.getFileParts()[0].getHashToVerify()` to check
+the first hash).  This RTT is the *IPC-induced latency*: roughly speaking the time (mostly as processor cycles)
+penalty compared to having a monolithic application.
+
+In the graph, we compare the RTTs (latencies) of two techniques:
+  - The *blue line* shows the latency (RTT) when using "classic" IPC over a Unix-domain stream socket.  The server
+    `::write()`s the capnp-generated serialization, in order, into the socket FD; the client `::read()`s it out of
+    there.
+  - The *orange line* shows the RTT when using Flow-IPC with zero-copy enabled.
+
+Observations (tested using server-grade hardware):
+  - With Flow-IPC: the round-trip latency is ~100 microseconds *regardless of the size of the payload*.
+  - Without Flow-IPC: the latency is about 1 *milli*second for a 1-megabyte payload and approaching a *full second*
+    for a 1-gigabyte file.
+    - Also significantly more RAM might be used at points.
+  - For very small messages the two techniques perform similarly: ~100 microseconds.
+
+The code for this, when using Flow-IPC, is straighforward.  Here's how it might look on the client side:
 
   ~~~
-  // Specify that we *do* want zero-copy:
+  // Specify that we *do* want zero-copy behavior, by merely choosing your backing session type.
   using Session = ipc::session::shm::classic::Client_session;
 
-  // Open session e.g. near start of program:
+  // Open session e.g. near start of program.  A session is the communication context between the processes
+  // engaging in IPC.  (You can create communication channels at will from the `session` object.  No more naming!)
 
-  // CLI_APP and SRV_APP are simple structs naming the 2 apps, so we know with whom to engage in IPC.
+  // CLI_APP + SRV_APP are simple structs naming the 2 apps ("us" and "them"), so we know with whom to engage in IPC
+  // and vice versa.
   Session session{ CLI_APP, SRV_APP, ... };
   // Ask for 1 communication *channel* to be immediately available.
   Session::Channels ipc_channels(1);
