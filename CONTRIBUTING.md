@@ -13,14 +13,16 @@ may be perfectly reasonable to simply get a packaged `*_full.tar.gz` or `*_full.
 monolithic, non-SCS-mirrored copy; test them locally.  Eventually, though, you'll want to work with the central
 Git-SCS-mirrored project.  This section is about that.  It assumes basic familiarity with Git.
 
-As noted in Organization, Flow-IPC is conveniently packaged in a monolithic meta-project.  "Normally"
+As noted in [Organization](./INSTALL.md#organization), Flow-IPC is
+conveniently packaged in a monolithic meta-project.  "Normally"
 working with Git in a given repo is straightforward: You clone with a command, you create branch and switch to
 it, you make changes/commits, and lastly you issue a pull request (PR) to merge this into the master
 development branch.  If this is accepted and merged, you're done!  (Acceptance, as of this writing, means that
 code reviewer(s) formally accept(s) your PR.  In addition an automated CI/CD pipeline shall execute for your
 PR, initially and after any update; it this fails, then acceptance is unlikely.)
 
-However, as also noted in Organization, Flow-IPC is a meta-project composed of -- primarily -- a handful
+However, as also noted in [Organization](./INSTALL.md#organization),
+Flow-IPC is a meta-project composed of -- primarily -- a handful
 of sub-projects: `flow` and `ipc_*`.  (In fact, as of this writing, the dependency tree between them is
 a mere queue: `flow` <= `ipc_core` <= `ipc_transport_structured` <= `ipc_session` <= `ipc_shm` <=
 `ipc_shm_arena_lend`.)  The meta-project itself bundles them together for convenience and tracking purposes;
