@@ -64,22 +64,24 @@ across process boundaries.  Unfortunately, in comparison to that:
     - If one avoids copying X -- the basic cause of the slowness -- the difficulty/lack of reusability spikes
       further.
 
-## Abstract
+## How does Flow-IPC help?
 
-This is **Flow-IPC**: a C++ toolkit that makes IPC code:
-  - **easy** to write in reusable fashion -- transmitting **Cap'n Proto**-encoded structured data, **STL-compliant
+*Flow-IPC* makes IPC code:
+  - *easy* to write in reusable fashion -- transmitting **Cap'n Proto**-encoded structured data, **STL-compliant
     native C++ data structures**, binary blobs, and **native handles (FDs)**;
-  - **highly performant** by seamlessly eliminating *all* copying of the transmitted data (**end-to-end zero-copy**).
-    - If you transmit [Cap'n Proto schema](https://capnproto.org/language.html)-based messages, you get zero-copy
-      performance with Flow-IPC.
+  - *highly performant* by seamlessly eliminating *all* copying of the transmitted data.
+     This is called *end-to-end zero-copy*.
+    - If you transmit [Cap'n Proto schema](https://capnproto.org/language.html)-based messages, you get end-to-end
+      zero-copy performance with Flow-IPC.
     - If you share native C++ data structures, including arbitrarily nested STL-compliant containers and pointers,
-      you also get zero-copy performance with Flow-IPC.  We provide access to shared memory for this purpose and manage
-      SHM arenas automatically, so you need not worry about cleanup, naming, or allocation details.
+      you also get end-to-end zero-copy performance with Flow-IPC.  We provide access to shared memory for this purpose
+      and manage SHM arenas automatically, so you need not worry about cleanup, naming, or allocation details.
       - In particular we integrate with [jemalloc](https://jemalloc.net), a commercial-grade thread-caching memory
         manager at the core of FreeBSD, Meta, and others.
 
-Here's an *example* of the performance gains you can expect when using Flow-IPC zero-copy transmission, from
-the included `perf_demo` tool.  (Here we use Cap'n Proto-described data.  Native C++ structures behave similarly.)
+Here's an example of the performance gains you can expect when using Flow-IPC zero-copy transmission, from
+the included `perf_demo` tool.  (Here we use Cap'n Proto-described data.  Native C++ structures have a similar
+performance profile.)
 
 ![graph: perf_demo capnp-classic versus capnp-Flow-IPC](./src/doc/manual/assets/img/capnp_perf_v1.png)
 
@@ -167,16 +169,10 @@ zero-copy -- i.e., simply `::write()`ing a copy of the capnp serialization of `r
 `rsp` from a Unix domain socket FD -- sufficiently robust code would be significant in length and complexity;
 and challenging to make reusable.
 
----
-
-Please see [Documentation](#documentation) and/or [Quick tour](#quick-tour) below for a more in-depth look into
-Flow-IPC.
-
-
 ## Quick tour
 
 Flow-IPC is comprehensive, aiming to be useful in black-box fashion but providing public APIs and customization
-at lower layers also.  The guided Manual (linked just above) covers everything...
+at lower layers also.  The guided Manual (linked above) covers everything...
 
 ...but here are a few specific topics of potential high interest, *in case* you're looking to jump into some
 code right away.

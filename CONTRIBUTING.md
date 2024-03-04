@@ -19,7 +19,7 @@ working with Git in a given repo is straightforward: You clone with a command, y
 it, you make changes/commits, and lastly you issue a pull request (PR) to merge this into the master
 development branch.  If this is accepted and merged, you're done!  (Acceptance, as of this writing, means that
 code reviewer(s) formally accept(s) your PR.  In addition an automated CI/CD pipeline shall execute for your
-PR, initially and after any update; it this fails, then acceptance is unlikely.)
+PR, initially and after any update; it this legitimately fails, then acceptance is unlikely.)
 
 However, as also noted in [Organization](./INSTALL.md#organization),
 Flow-IPC is a meta-project composed of -- primarily -- a handful
