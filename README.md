@@ -7,11 +7,11 @@ as an incremental task.)
 ## Background
 
 *IPC (inter-process communication)* is essentially this:
-  -# Process P1 has a data structure X, and it wants process P2 to access it (or a copy thereof) ASAP.  So:
-  -# P1 somehow makes X (or a copy of X) available to P2 in its memory.
+  1. Process P1 has a data structure X, and it wants process P2 to access it (or a copy thereof) ASAP.  So:
+  2. P1 somehow makes X (or a copy of X) available to P2 in its memory.
      - Also X can contain *native handle(s)* (FDs in \*Unix terminology).
-  -# P1 somehow signals P2 that X (or a copy of X) is available.
-  -# P2 now knows to access X (or a copy of X.  It can at least read it -- possibly write to it.
+  3. P1 somehow signals P2 that X (or a copy of X) is available.
+  4. P2 now knows to access X (or a copy of X.  It can at least read it -- possibly write to it.
 
 The OS and third-parties avail C++ developers of many tools for/around IPC.  Highlights:
   - Pipes, Unix domain sockets, message queues (MQs), and more such *IPC transports* allow transmitting data
