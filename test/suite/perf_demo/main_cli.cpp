@@ -60,12 +60,14 @@ int main(int argc, char const * const * argv)
 
   // Set up logging.
   Config std_log_config;
-  std_log_config.init_component_to_union_idx_mapping<Flow_log_component>(1000, 999);
+  std_log_config.init_component_to_union_idx_mapping<Flow_log_component>
+    (1000, Config::standard_component_payload_enum_sparse_length<Flow_log_component>());
+  std_log_config.init_component_to_union_idx_mapping<ipc::Log_component>
+    (2000, Config::standard_component_payload_enum_sparse_length<ipc::Log_component>());
   std_log_config.init_component_names<Flow_log_component>(flow::S_FLOW_LOG_COMPONENT_NAME_MAP, false, "flow-");
-  std_log_config.init_component_to_union_idx_mapping<ipc::Log_component>(2000, 999);
   std_log_config.init_component_names<ipc::Log_component>(ipc::S_IPC_LOG_COMPONENT_NAME_MAP, false, "ipc-");
   Simple_ostream_logger std_logger(&std_log_config);
-  FLOW_LOG_SET_CONTEXT(&std_logger, ipc::Log_component::S_UNCAT);
+  FLOW_LOG_SET_CONTEXT(&std_logger, Flow_log_component::S_UNCAT);
   // This is separate: the IPC/Flow logging will go into this file.
   const auto log_file = (argc >= 2) ? String_view(argv[1]) : LOG_FILE;
   FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
