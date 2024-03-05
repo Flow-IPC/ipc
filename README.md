@@ -30,8 +30,7 @@ Please see below, in this README, for a [Primer](#flow-ipc-primer) as to the spe
 - As a tarball/zip: The [project web site](https://flow-ipc.github.io) links to individual releases with notes, docs,
   download links.
 - For Git access: `git clone --recurse-submodules git@github.com:Flow-IPC/ipc.git`
-  - Don't forget `--recurse-submodules`, as most of the source code is in the subdirs `ipc_*` and `flow` obtained
-    by including this flag.
+  - **Note:** Don't forget `--recurse-submodules`.
 
 ## Installation
 
