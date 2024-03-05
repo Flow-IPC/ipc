@@ -22,7 +22,7 @@
 #   locally at that point.  However the actual time depends on computer speed, and on slower machines
 #   like default GitHub runners it can take longer than one experiences in a powerful lab machine.
 #   We are not benchmarking here or perf-testing, so to avoid false failures we use a less tight
-#   timeout that's still in the microseconds.  So 50usec is realistic usually, but we use 250usec.
+#   timeout that's still in the microseconds.  So 50usec is realistic usually, but we use 500usec.
 # - Moreover... particularly in open-source automated CI/CD pipeline... we sometimes run these
 #   tests (1) on slow machines *and* (2) while compiled with run-time sanitizers (ASAN, MSAN, etc.),
 #   some of which slow-down the code by up to, like, 5x.
@@ -134,21 +134,21 @@ BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 9 2 s
 # And then immediately this (hence short timeout).
 # This one will probably test *surplus*; but best to test it separately
 # next.
-BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 10 250 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 10 500 microseconds
 # They'll send 5 more quickly; we will wait and *then* receive.  ~2 of those should would-block on the send-side
 # which will exercise that (typically rarely exercised) logic.
 # Tests receive-side *surplus* and send-side *would-block*.
 SLEEP 2 s
-BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 1 250 microseconds
-BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 10 250 microseconds
-BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 1 250 microseconds
-BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 10 250 microseconds
-BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 1 250 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 1 500 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 10 500 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 1 500 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 10 500 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 10 0 1 500 microseconds
 # Try too-small *versus MQ requirement that rcv buf always be big-enough to receive the biggest possible msg* receive
 # buffer -- regardless of actual message size it should fail but not fatally, with INVALID_ARGUMENT.
-BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 9 INVALID_ARGUMENT 0 250 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 9 INVALID_ARGUMENT 0 500 microseconds
 # Pipe OK given large enough buffer size this time.  In fact let's use a bigger-than-needed one for fun.
-BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 11 0 5 250 microseconds
+BLOB_STREAM_MQ_POSIX_RECV_BLOB 2 11 0 5 500 microseconds
 
 SLEEP 1 s
 
