@@ -71,25 +71,14 @@ in-process:
 ## How does Flow-IPC help?
 
 With Flow-IPC, the above IPC op is easy to code, for any form of "X," whether: blobs, FDs, nested STL-compliant
-containers, C-style `struct`s with pointers, or Cap'n Proto schema-based structured data.  Moreover, it
-eliminates all copying of X -- which results in the best possible performance.
+containers, C-style `struct`s with pointers, or Cap'n Proto schema-based structured data.
 
-## Example: Zero-copy performance, Cap'n Proto content
+Moreover, it eliminates all copying of X -- which results in the best possible performance.
+This is called *end-to-end zero-copy*.
+
+## Example: End-to-end zero-copy performance, Cap'n Proto payload
 
 ![graph: perf_demo capnp-classic versus capnp-Flow-IPC](./src/doc/manual/assets/img/capnp_perf_v1.png)
-
-*Flow-IPC* makes IPC code:
-  - *easy* to write in reusable fashion -- transmitting *Cap'n Proto*-encoded structured data, *STL-compliant
-    native C++ structures*, binary blobs, and *native handles (FDs)*;
-  - *highly performant* by seamlessly eliminating *all* copying of the transmitted data.
-    This is called *end-to-end zero-copy*.
-    - If you transmit [Cap'n Proto schema](https://capnproto.org/language.html)-based messages, you get end-to-end
-      zero-copy performance with Flow-IPC.
-    - If you share native C++ data structures, including arbitrarily nested STL-compliant containers and pointers,
-      you also get end-to-end zero-copy performance with Flow-IPC.  We provide access to shared memory for this purpose
-      and manage SHM arenas automatically, so you need not worry about cleanup, naming, or allocation details.
-      - In particular we integrate with [jemalloc](https://jemalloc.net), a commercial-grade thread-caching memory
-        manager at the core of FreeBSD, Meta, and others.
 
 The graph above is an example of the performance gains you can expect when using Flow-IPC zero-copy transmission, from
 the included `perf_demo` tool.  (Here we use Cap'n Proto-described data.  Native C++ structures have a similar
