@@ -111,7 +111,7 @@ int main(int argc, char const * const * argv)
   const auto log_file = (argc >= 3) ? String_view(argv[2]) : LOG_FILE;
   FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
   Config log_config = std_log_config;
-  log_config.configure_default_verbosity(Sev::S_TRACE, true); // XXX
+  log_config.configure_default_verbosity(Sev::S_INFO, true);
   Async_file_logger log_logger(nullptr, &log_config, log_file, false);
 
 #if JEM_ELSE_CLASSIC
@@ -500,7 +500,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
       FLOW_LOG_INFO("= Done.");
       m_capnp_msg = {};
 
-      /* XXX There's a little subtlety here; basically everything is cool with the backing memory, until
+      /* There's a little subtlety here; basically everything is cool with the backing memory, until
        * the Session_server dtor runs, specifically in SHM-jemalloc's case; as it'll deinitialize jemalloc
        * and... stuff; the details don't matter (actually the fact that SHM-classic doesn't have this to worry about
        * is merely an internal property; formally one should still not access SHM-backed items once session-server
@@ -520,15 +520,11 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
        * Also one should (not "must") use .async_end_sending() before Channel dtor.  Again though... doesn't matter for
        * us!  But serious apps should do all the good stuff as recommended. */
 
-#if 0 // XXX
       FLOW_LOG_INFO("< Expecting client to signal they are done; so we can blow everything away.");
       req.reset();
       m_chan.expect_msg(Channel_struc::Msg_which_in::GET_CACHE_REQ, &req,
                         [&](auto&&) { g_asio.stop(); });
       if (req) { g_asio.stop(); }
-#else
-      g_asio.stop();
-#endif
 
       /* The .stop() is needed here, because struc::Channel is always reading all internally incoming messages ASAP;
        * so it always has an .async_wait() outstanding.  Hence the .run() never runs out of work, unless we
