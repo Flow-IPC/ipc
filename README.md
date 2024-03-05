@@ -68,11 +68,11 @@ in-process:
     - If one avoids copying X -- the basic cause of the slowness -- one must use SHM.  This increases the difficulty
       10-fold, and the resulting code is rarely reusable.
 
-<aside>
+<div style="background-color: #f9f9f9; border-left: 6px solid #ccc; margin: 20px; padding: 10px;">
 With Flow-IPC, the above IPC op is easy to code, for any form of "X," whether: blobs, FDs, nested STL-compliant
 containers, C-style `struct`s with pointers, or Cap'n Proto schema-based structured data.  Moreover, it
 eliminates all copying of X -- which results in the best possible performance.
-</aside>
+</div>
 
 ## How does Flow-IPC help?
 
