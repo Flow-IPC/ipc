@@ -12,7 +12,7 @@ var searchData=
   ['allow_5fimpl_9',['allow_impl',['../classipc_1_1transport_1_1Posix__mq__handle.html#a88e37b4835abbc491df222aebe31f46f',1,'ipc::transport::Posix_mq_handle']]],
   ['allow_5freceives_10',['allow_receives',['../classipc_1_1transport_1_1Bipc__mq__handle.html#a02e3582a466ed25128d35d3c767259cf',1,'ipc::transport::Bipc_mq_handle::allow_receives()'],['../classipc_1_1transport_1_1Persistent__mq__handle.html#aaedc972e2ce207875a3e7262f9064b65',1,'ipc::transport::Persistent_mq_handle::allow_receives()'],['../classipc_1_1transport_1_1Posix__mq__handle.html#a4041e66104bf38ddc9dce34d11ccd405',1,'ipc::transport::Posix_mq_handle::allow_receives()']]],
   ['allow_5fsends_11',['allow_sends',['../classipc_1_1transport_1_1Bipc__mq__handle.html#a7993a816c819b51af70d5ab775d41f8f',1,'ipc::transport::Bipc_mq_handle::allow_sends()'],['../classipc_1_1transport_1_1Persistent__mq__handle.html#af43b22d89c5a228c2a72c321c2e24545',1,'ipc::transport::Persistent_mq_handle::allow_sends()'],['../classipc_1_1transport_1_1Posix__mq__handle.html#a01d842eb304fff361d72a090113ffc9f',1,'ipc::transport::Posix_mq_handle::allow_sends()']]],
-  ['api_20overview_12',['API Overview',['../api_overview.html',1,'']]],
+  ['api_20overview_20_2f_20synopses_12',['API Overview / Synopses',['../api_overview.html',1,'']]],
   ['app_13',['App',['../structipc_1_1session_1_1App.html',1,'ipc::session']]],
   ['app_2ecpp_14',['app.cpp',['../app_8cpp.html',1,'']]],
   ['app_2ehpp_15',['app.hpp',['../app_8hpp.html',1,'']]],

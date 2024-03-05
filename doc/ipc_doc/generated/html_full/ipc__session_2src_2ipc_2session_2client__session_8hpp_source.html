@@ -419,9 +419,9 @@ $(function() {
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="comment">   * @return See other sync_connect() overload.</span></div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span><span class="comment">   */</span></div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classipc_1_1session_1_1Client__session__mv.html#ab971ea979200828d572638c60d7d9f44">sync_connect</a>(<span class="keyword">const</span> <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#a787253f02859ea6b99ce3eba92766431">Base::Mdt_builder_ptr</a>&amp; mdt,</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>                    <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f">Base::Channels</a>* init_channels_by_cli_req_pre_sized,</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>                    <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#a2b1215fb0c9738b9fcfbb337d23c43df">Base::Mdt_reader_ptr</a>* mdt_from_srv_or_null,</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>                    <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f">Base::Channels</a>* init_channels_by_srv_req,</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>                    <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f">Base::Channels</a>* init_channels_by_cli_req_pre_sized = 0,</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>                    <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#a2b1215fb0c9738b9fcfbb337d23c43df">Base::Mdt_reader_ptr</a>* mdt_from_srv_or_null = 0,</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>                    <span class="keyword">typename</span> <a class="code hl_typedef" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f">Base::Channels</a>* init_channels_by_srv_req = 0,</div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>                    <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>* err_code = 0);</div>
 <div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
 <div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span> </div>
@@ -475,7 +475,7 @@ $(function() {
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>}</div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span><a class="code hl_define" href="ipc__session_2src_2ipc_2session_2client__session_8hpp.html#a2e1779452d3b1f2df4122ac09ceab2ea">TEMPLATE_CLI_SESSION_MV</a></div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Client__session__mv.html#ac54023e6014e1e29585fd3e8cc366448">  406</a></span><span class="keywordtype">bool</span> CLASS_CLI_SESSION_MV::sync_connect(<span class="keyword">const</span> <span class="keyword">typename</span> Base::Mdt_builder_ptr&amp; mdt,</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Client__session__mv.html#a350e1a338a6874ce30f13345edad742a">  406</a></span><span class="keywordtype">bool</span> CLASS_CLI_SESSION_MV::sync_connect(<span class="keyword">const</span> <span class="keyword">typename</span> Base::Mdt_builder_ptr&amp; mdt,</div>
 <div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>                                        <span class="keyword">typename</span> Base::Channels* init_channels_by_cli_req_pre_sized,</div>
 <div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>                                        <span class="keyword">typename</span> Base::Mdt_reader_ptr* mdt_from_srv_or_null,</div>
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>                                        <span class="keyword">typename</span> Base::Channels* init_channels_by_srv_req,</div>
@@ -519,7 +519,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 3 2024 05:42:42 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Tue Mar 5 2024 06:04:43 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

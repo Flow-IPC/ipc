@@ -80,7 +80,7 @@ $(function() {
 </li>
 </ul>
 <p >We hope a picture is worth a thousand words, but please do scroll down to read a few words anyway.</p>
-<p >If you'd prefer a synopsis with code snippets, right away, try <a class="el" href="api_overview.html">API Overview</a>.</p>
+<p >If you'd prefer a synopsis with code snippets, right away, try <a class="el" href="api_overview.html">API Overview / Synopses</a>.</p>
 <h2>Executive summary: Why does Flow-IPC exist? </h2>
 <p >Multi-process microservice systems need to communicate between processes efficiently. Existing microservice communication frameworks are elegant at a high level but can add unacceptable latency out of the box. (This is true of even lower-level tools including the popular and powerful <a href="https://grpc.io/">gRPC</a>, usually written around <a href="https://protobuf.dev/">Protocol Buffers</a> serialization.) Low-level interprocess communication (<em>IPC</em>) solutions, typically custom-written on-demand to address this problem, struggle to do so comprehensively and in reusable fashion. Teams repeatedly spend resources on challenges like structured data and session cleanup. These issues make it difficult to break monolithic systems into more resilient multi-process systems that are also maximally performant.</p>
 <p >Flow-IPC is a modern C++ library that solves these problems. It adds virtually zero latency. Structured data are represented using the high-speed Cap’n Proto (<em>capnp</em>) serialization library, which is integrated directly into our shared memory (SHM) system. The Flow-IPC SHM system extends a commercial-grade memory manager (<em>jemalloc</em>, as used by FreeBSD and Meta). Overall, this approach eliminates all memory copying (end-to-end <em>zero copy</em>).</p>
@@ -109,7 +109,7 @@ $(function() {
 </ul>
 <p >Lastly Flow-IPC supplies <b>lower-level utilities</b> facilitating work with POSIX and SHM-based <b>message queues (MQs)</b> and <b>local (Unix domain) stream sockets</b>.</p>
 <h2>Delving deeper </h2>
-<p >The high-level diagram <a class="el" href="about.html#fig0">above</a> is a pretty good synopsis of the highest-impact features. The following diagram delves deeper, roughly introducing the <em>core</em> layer of <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>. Then we begin a textual exploration in <a class="el" href="api_overview.html">API Overview</a>.</p>
+<p >The high-level diagram <a class="el" href="about.html#fig0">above</a> is a pretty good synopsis of the highest-impact features. The following diagram delves deeper, roughly introducing the <em>core</em> layer of <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>. Then we begin a textual exploration in <a class="el" href="api_overview.html">API Overview / Synopses</a>.</p>
 <div class="image">
 <img src="1x1.png" alt=""/>
 <div class="caption">
@@ -132,7 +132,7 @@ Figure 1. IPC channels (core layer); SHM arenas; and your code.</div></div>
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 3 2024 05:42:42 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Tue Mar 5 2024 06:04:43 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

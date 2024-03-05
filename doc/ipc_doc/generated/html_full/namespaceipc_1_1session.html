@@ -305,7 +305,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   <table class="tparams">
     <tr><td class="paramname">S_MQ_TYPE_OR_NONE</td><td><a class="el" href="classipc_1_1session_1_1Session.html#a2f770785552536f3b929f293c44834d2" title="Each successful open_channel() and on-passive-open handler firing shall yield a concrete transport::C...">Session::Channel_obj</a> (channel openable via <code>open_channel()</code> on this or other side) type config: Enumeration constant that specifies which type of MQ to use (corresponding to all available <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">transport::Persistent_mq_handle</a> concept impls) or to not use one (<code>NONE</code>). Note: This <code>enum</code> type is capnp-generated; see common.capnp for values and brief docs. </td></tr>
     <tr><td class="paramname">S_TRANSMIT_NATIVE_HANDLES</td><td><a class="el" href="classipc_1_1session_1_1Session.html#a2f770785552536f3b929f293c44834d2" title="Each successful open_channel() and on-passive-open handler firing shall yield a concrete transport::C...">Session::Channel_obj</a> (channel openable via <code>open_channel()</code> on this or other side) type config: Whether it shall be possible to transmit a native handle via the channel. </td></tr>
-    <tr><td class="paramname">Mdt_payload</td><td>See <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept. In addition the same type may be used for <code>mdt</code> or <code>mdt_from_srv_or_null</code> in async_connect()XXX. (If it is used for open_channel() and/or passive-open and/or <code>*connect()</code> <code>mdt</code> and/or <code>mdt_from_srv_or_null</code>, recall that you can use a capnp-<code>union</code> internally for various purposes.)</td></tr>
+    <tr><td class="paramname">Mdt_payload</td><td>See <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept. In addition the same type may be used for <code>mdt</code> or <code>mdt_from_srv_or_null</code> in <code>*_connect()</code>. (If it is used for <code>open_channel()</code> and/or passive-open and/or <code>*connect()</code> <code>mdt</code> and/or <code>mdt_from_srv_or_null</code>, recall that you can use a capnp-<code>union</code> internally for various purposes.)</td></tr>
   </table>
   </dd>
 </dl>
@@ -1305,7 +1305,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 3 2024 05:42:42 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Tue Mar 5 2024 06:04:43 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
