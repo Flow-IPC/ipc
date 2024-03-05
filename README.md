@@ -222,7 +222,8 @@ underneath.
 
 ---
 
-Here's a bird's eye view of Flow-IPC (left) and a compact exploration of a single Flow-IPC channel (right).  \[click/tap to zoom]
+Here's a bird's eye view of Flow-IPC (left) and a compact exploration of a single Flow-IPC channel (right).
+(Click/tap to zoom.)
 
 ![graph: left-sessions/channels/arena right-channel capabilities](./src/doc/manual/assets/img/sessions_and_transport_high_v2.png)
 
