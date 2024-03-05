@@ -500,7 +500,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
       FLOW_LOG_INFO("= Done.");
       m_capnp_msg = {};
 
-      /* There's a little subtlety here; basically everything is cool with the backing memory, until
+      /* XXX There's a little subtlety here; basically everything is cool with the backing memory, until
        * the Session_server dtor runs, specifically in SHM-jemalloc's case; as it'll deinitialize jemalloc
        * and... stuff; the details don't matter (actually the fact that SHM-classic doesn't have this to worry about
        * is merely an internal property; formally one should still not access SHM-backed items once session-server

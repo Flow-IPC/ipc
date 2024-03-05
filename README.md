@@ -128,38 +128,42 @@ Observations (tested using server-grade hardware):
 The code for this, when using Flow-IPC, is straighforward.  Here's how it might look on the client side:
 
   ~~~
-  // Specify that we *do* want zero-copy behavior, by merely choosing your backing session type.
-  using Session = ipc::session::shm::classic::Client_session;
+  // Specify that we *do* want zero-copy behavior, by merely choosing your backing-session type.
+  using Session = ipc::session::shm::classic::Client_session; // Note the `::shm`: SHM-backed session.
+
+  // IPC app universe: simple structs naming the 2 apps (us and them), so we know with whom to engage in IPC,
+  // and same for "them" (server).
+  ipc::session::Client_app CLI_APP{ "cacheCli", "/usr/bin/cache_client.exec", CLI_UID, GID };
+  ipc::session::Server_app SRV_APP{ { "cacheSrv", "/usr/bin/cache_server.exec", SRV_UID, GID },
+                                    { CLI_APP.m_name }, "", ipc::util::Permissions_level::S_GROUP_ACCESS };
+  // ...
 
   // Open session e.g. near start of program.  A session is the communication context between the processes
   // engaging in IPC.  (You can create communication channels at will from the `session` object.  No more naming!)
-
-  // CLI_APP + SRV_APP are simple structs naming the 2 apps ("us" and "them"), so we know with whom to engage in IPC
-  // and vice versa.
   Session session{ CLI_APP, SRV_APP, ... };
   // Ask for 1 communication *channel* to be immediately available.
   Session::Channels ipc_channels(1);
   session.sync_connect(session.mdt_builder(), &ipc_channels); // Instant.
   auto& ipc_channel = ipc_channels[0];
-  // (Can also non-blockingly open more channel(s) anytime: session.open_channel().)
+  // (Can also instantly open more channel(s) anytime: `session.open_channel(&channel)`.)
 
   // ...
 
-  // Issue request and process response.  TIMING STARTS HERE -->
+  // Issue request and process response.  TIMING FOR ABOVE GRAPH STARTS HERE -->
   auto req_msg = ipc_channel.create_msg();
-  req_msg.body_root()->initGetCacheReq().setFileName("huge-file.bin"); // Vanilla Cap'n Proto-using code.
-  const auto rsp
-    = ipc_channel.sync_request(req_msg) // Send message; get ~instant reply.
-        ->body_root().getGetCacheRsp(); // Back to vanilla capnp work.
-  // <-- TIMING STOPS HERE.
+  req_msg.body_root()
+    ->initGetCacheReq().setFileName("huge-file.bin"); // Vanilla Cap'n Proto-using code.
+  const auto rsp_msg = ipc_channel.sync_request(req_msg); // Send message; get ~instant reply.
+  const auto rsp_root = rsp_msg->body_root().getGetCacheRsp(); // More vanilla capnp work.
+  // <-- TIMING FOR ABOVE GRAPH STOPS HERE.
   // ...
-  verify_hash(rsp, some_file_chunk_idx);
+  verify_hash(rsp_root, some_file_chunk_idx);
 
   // ...
 
-  void verify_hash(perf_demo::schema::GetCacheRsp::Reader rsp, size_t idx)
+  void verify_hash(perf_demo::schema::GetCacheRsp::Reader rsp_root, size_t idx)
   {
-    const auto file_part = rsp.getFileParts()[idx];
+    const auto file_part = rsp_root.getFileParts()[idx];
     if (file_part.getHashToVerify() != compute_hash(file_part.getData()))
     {
       throw Bad_hash_exception(...);
@@ -171,41 +175,40 @@ In comparison, without Flow-IPC: To achieve the same thing, with
 end-to-end zero-copy performance, a large amount of difficult code would be required, including management of
 SHM segments whose names and cleanup have to be coordinated between the 2 applications.  Even *without*
 zero-copy -- i.e., simply `::write()`ing a copy of the capnp serialization of `req_msg` to and `::read()`ing
-`rsp` from a Unix domain socket FD -- sufficiently robust code would be significant in length and complexity;
+`rsp` from a Unix domain socket FD -- sufficiently robust code would be non-trivial to write;
 and challenging to make reusable.
 
 The preceding example was chosen for 2 reasons:
   - *Performance*: It demonstrates the performance benefits of end-to-end zero-copy.
-  - *capnp integration*: It shows what it's like to transmit capnp-encoded structures using Flow-IPC.  (Plus
-    a quick look at session management.)
+  - *capnp integration*: It shows what it's like to transmit capnp-encoded structures using Flow-IPC, plus
+    a look at session/channel management and channel features like request/response.
 
-## So Flow-IPC is for sending Cap'n Proto messages?
+## So Flow-IPC is for transmitting Cap'n Proto messages?
 
 Yes... but only among other things!
-  - It can transmit native C++ data structures (including STL-compliant containers and pointers); native handles (FDs);
-    and binary blobs at a lower layer.  Schema-based data structures are not an ideal representation for many
+  - It transmits native C++ data structures (including STL-compliant containers and pointers); native handles (FDs);
+    and (at a lower layer) binary blobs.  Schema-based data structures are not always an ideal representation for many
     algorithms!
     - *Without Flow-IPC*: Transmitting such objects "by hand" ranges from annoying (blobs) to super-annoying (FDs)
       to really, really difficult (STL-compliant nested structures).
-  - It makes the act of opening IPC communication channels (and SHM arenas) easy.  Merely
-    name your two apps and open a *session*.  The *session* is a conversation context between the two processes.
-    Now *channels* can be opened/closed at any time, off this `Session` object -- no naming decisions to make or
-    native APIs to remember.  You can also optionally have N channels pre-opened for you and ready to go.
-    (In fact that's the easiest approach and often sufficient.)
-    - *Without Flow-IPC*: You must name every socket and MQ and SHM segment, and this name must be known on both sides;
-      you must arrange a connect-accept setup of some kind; open/create (and later clean-up) SHM segments;
-      invoke `mmap()`.  It is a ton of busy-work with many corner cases.
+  - It makes opening IPC communication channels (and SHM arenas if desired) easy.  One side of this
+    is demonstrated in the above example: Merely name your two apps and open a *session*.
+    Now *channels* can be opened/closed at any time, and/or ready at session start (as shown above).
+    - *Without Flow-IPC*: You must name ~every socket and MQ and SHM segment, and this name must be known on both sides
+      but not conflict; you must arrange a connect-accept setup of some kind; open/create (and later clean-up) SHM
+      segments; invoke `mmap()`.  It is a ton of busy-work with many corner cases.
   - For safety/auth, one specifies 1 of 3 presets that will govern permissions settings applied to various OS object
-    underneath: *unrestricted*, *shared-user* (all applications have same user ID), or shared-group (all applications
-    have same group ID but differing user IDs).
-    - *Without Flow-IPC*: Sometimes treated as an afterthought, serious server applications will need to specify
-      permissions masks on each individual OS object (SHM segment handle, POSIX MQ handle, stream-socket, etc.).
+    underneath: *unrestricted*, *shared-user* (all applications have same user ID), or *shared-group* (all applications
+    have same group ID but differing user IDs).  We chose the latter above (`S_GROUP_ACCESS`).
+    - *Without Flow-IPC*: Sometimes treated as an afterthought, serious server applications need to specify
+      permission masks on each individual OS object (SHM segment handle, POSIX MQ handle, stream-socket, etc.).
 
-That said, Flow-IPC provides API entry points at every layer of operation.  Flow-IPC is *not* designed as
+Flow-IPC provides API entry points at every layer of operation.  Flow-IPC is *not* designed as
 merely a "black box" of capabilities.  E.g., for advanced users:
-  - Various lower-level APIs, such as low-level transports (Unix domain sockets, MQs) and SHM operations can be
-    accessed directly.  You can also plug-in your own.
-  - By implementing or accessing some of the handful of key concepts, you can customize behaviors at all layers,
+  - Various lower-level APIs, such as low-level transports (Unix domain sockets, MQs) and SHM operations, can be
+    accessed directly.  You can also plug-in your own transports.
+    - (Networked channels and sessions are in the works.)
+  - By implementing/accessing some of the handful of key C++ concepts, you can customize behaviors at all layers,
     including serialization-memory backing, additional SHM providers, and C-style native data structures that use raw
     pointers.
 
