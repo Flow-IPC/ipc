@@ -57,8 +57,8 @@ The OS and third-parties already avail C++ developers of many tools for/around I
     [Cap'n Proto](https://capnproto.org/language.html), hugely help in representing *structured data* within
     binary blobs.
 
-Conceptually, IPC is not so different from triggering a function call with argument X in a different thread -- just
-across process boundaries.  Unfortunately, in comparison to that:
+Conceptually, IPC is not so different from triggering a function call with argument X in a different thread -- but
+across process boundaries.  Unfortunately, in comparison to triggering `F(X)` in another thread:
   - The resulting machine code is *much slower*.
   - The source code to achieve it is *much more difficult to develop and reuse*, even with the help
     of powerful APIs including Boost.interprocess and Boost.asio.
