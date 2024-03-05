@@ -113,8 +113,8 @@ hash:
   ~~~
 
 App 2 receives the `GetCacheRsp` message and prints the round-trip time (RTT): from just before sending
-`GetCacheReq` to just after accessing some of the file data (e.g. `rsp.getFileParts()[0].getHashToVerify()` to check
-the first hash).  This RTT is the *IPC-induced latency*: roughly speaking the time (mostly as processor cycles)
+`GetCacheReq` to just after accessing some of the file data (e.g. `rsp_root.getFileParts()[0].getHashToVerify()` to
+check the first hash).  This RTT is the *IPC-induced latency*: roughly speaking the time
 penalty compared to having a monolithic application.
 
 Observations (tested using decent server-grade hardware):
@@ -130,11 +130,12 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
   // Specify that we *do* want zero-copy behavior, by merely choosing your backing-session type.
   using Session = ipc::session::shm::classic::Client_session; // Note the `::shm`: means SHM-backed session.
 
-  // IPC app universe: simple structs naming the 2 apps (us and them), so we know with whom to engage in IPC,
+  // IPC app universe: simple structs naming the 2 apps, so we know with whom to engage in IPC,
   // and same for "them" (server).
   ipc::session::Client_app CLI_APP{ "cacheCli", "/usr/bin/cache_client.exec", CLI_UID, GID };
   ipc::session::Server_app SRV_APP{ { "cacheSrv", "/usr/bin/cache_server.exec", SRV_UID, GID },
-                                    { CLI_APP.m_name }, "", ipc::util::Permissions_level::S_GROUP_ACCESS };
+                                    { CLI_APP.m_name }, "",
+                                    ipc::util::Permissions_level::S_GROUP_ACCESS }; // Safety/permissions selector.
   // ...
 
   // Open session e.g. near start of program.  A session is the communication context between the processes
@@ -151,16 +152,16 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
   // Issue request and process response.  TIMING FOR ABOVE GRAPH STARTS HERE -->
   auto req_msg = ipc_channel.create_msg();
   req_msg.body_root()
-    ->initGetCacheReq().setFileName("huge-file.bin"); // Vanilla Cap'n Proto-using code.
+    ->initGetCacheReq().setFileName("huge-file.bin"); // Vanilla capnp code: call Cap'n Proto-generated-API: mutators.
   const auto rsp_msg = ipc_channel.sync_request(req_msg); // Send message; get ~instant reply.
-  const auto rsp_root = rsp_msg->body_root().getGetCacheRsp(); // More vanilla capnp work.
+  const auto rsp_root = rsp_msg->body_root().getGetCacheRsp(); // More vanilla capnp work: accessors.
   // <-- TIMING FOR ABOVE GRAPH STOPS HERE.
   // ...
   verify_hash(rsp_root, some_file_chunk_idx);
 
   // ...
 
-  void verify_hash(perf_demo::schema::GetCacheRsp::Reader rsp_root, size_t idx)
+  void verify_hash(const schema::GetCacheRsp::Reader& rsp_root, size_t idx)
   {
     const auto file_part = rsp_root.getFileParts()[idx];
     if (file_part.getHashToVerify() != compute_hash(file_part.getData()))
@@ -174,13 +175,12 @@ In comparison, without Flow-IPC: To achieve the same thing, with
 end-to-end zero-copy performance, a large amount of difficult code would be required, including management of
 SHM segments whose names and cleanup have to be coordinated between the 2 applications.  Even *without*
 zero-copy -- i.e., simply `::write()`ing a copy of the capnp serialization of `req_msg` to and `::read()`ing
-`rsp` from a Unix domain socket FD -- sufficiently robust code would be non-trivial to write;
-and challenging to make reusable.
+`rsp_msg` from a Unix domain socket FD -- sufficiently robust code would be non-trivial to write in comparison.
 
 The preceding example was chosen for 2 reasons:
   - *Performance*: It demonstrates the performance benefits of end-to-end zero-copy.
   - *capnp integration*: It shows what it's like to transmit capnp-encoded structures using Flow-IPC, plus
-    a look at session/channel management and channel features like request/response.
+    a look at session/channel management and (glacingly) Flow-IPC channel features like request/response.
 
 ## So Flow-IPC is for transmitting Cap'n Proto messages?
 
@@ -198,7 +198,7 @@ Yes... but only among other things!
       segments; invoke `mmap()`.  It is a ton of busy-work with many corner cases.
   - For safety/auth, one specifies 1 of 3 presets that will govern permissions settings applied to various OS object
     underneath: *unrestricted*, *shared-user* (all applications have same user ID), or *shared-group* (all applications
-    have same group ID but differing user IDs).  We chose the latter above (`S_GROUP_ACCESS`).
+    have same group ID but differing user IDs).
     - *Without Flow-IPC*: Sometimes treated as an afterthought, serious server applications need to specify
       permission masks on each individual OS object (SHM segment handle, POSIX MQ handle, stream-socket, etc.).
 
