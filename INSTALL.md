@@ -191,7 +191,7 @@ To read the latter -- the guided Manual + References -- consider the following.
   - If you're perusing docs only, that's all.  You're done!
 
 In contrast, if you have changed the source code (for Flow-IPC proper, Flow, or both): See
-[nearby CONTRIBUTING file](./CONTRIBUTING.md).
+[CONTRIBUTING](./CONTRIBUTING.md) file.
 It includes instructions on how docs are generated and updated.  Spoiler alert: Most things are automatic;
 the only manual part is that you should peruse any changed docs for your visual satisfaction before
 submitting your code.

@@ -1,11 +1,11 @@
-## Contributing to the project
+# Contributing to the project
 
-We are happy to see that you are looking to help us improve Flow-IPC!  In order to ensure this goes as
+We are happy to see that you are looking to help us improve the project!  In order to ensure this goes as
 easily and quickly as possible, please follow the guidelines below.
 
 You may wish to glance at [INSTALL / Organization](./INSTALL.md#organization) first.
 
-### Basics
+## Basics
 
 As mentioned in [Organization](./INSTALL.md#organization), you may
 wish to contribute to the project.  Of course, in your own setting, it
@@ -59,7 +59,7 @@ pointer(s) to the latest commit in each guy's master branch.
 
 That said, for now at least, we'll leave it to the official Git documentation.
 
-### Some details
+## Some details
 
 This section is not meant as a detailed/formal manual.  This project follows established conventions
 and tools of open-source development, Git+GitHub specifically; so the exact steps to follow should come naturally.
@@ -151,13 +151,19 @@ You can watch all these pipeline runs under Actions tab in GitHub:
     is the source code that controls each given pipeline run.)
   - `ipc` repo will have "Flow-IPC pipeline" under Actions tab.  (Ditto regarding `main.yml` viewing.)
 
-### Reporting an issue
+## Reporting an issue
 
 Please report issues via GitHub.
 
-### License
+## License
 
 By contributing, you agree that your contributions will be licensed under its Apache License, Version
 2.0.  (Some sub-projects may use a difference license.  Please check the given file's license header and/or
 the nearest LICENSE file, traveling up the directory tree.  However this meta-project, and as of this
 writing the majority of sub-projects in the meta-project, indeed use the aforementioned license.)
+
+## Coding style
+
+Please ensure that your code changes or additions
+match the current coding style used by the project.
+This is formalized in the file doc-coding_style.cpp.

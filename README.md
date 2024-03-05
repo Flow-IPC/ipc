@@ -30,6 +30,8 @@ Please see below, in this README, for a [Primer](#flow-ipc-primer) as to the spe
 - As a tarball/zip: The [project web site](https://flow-ipc.github.io) links to individual releases with notes, docs,
   download links.
 - For Git access: `git clone --recurse-submodules git@github.com:Flow-IPC/ipc.git`
+  - Don't forget `--recurse-submodules`, as most of the source code is in the subdirs `ipc_*` and `flow` obtained
+    by including this flag.
 
 ## Installation
 
@@ -57,9 +59,10 @@ The OS and third-parties already avail C++ developers of many tools for/around I
     [Cap'n Proto](https://capnproto.org/language.html), hugely help in representing *structured data* within
     binary blobs.
 
-Conceptually, IPC is not so different from triggering a function call with argument X in a different thread -- but
-across process boundaries.  Unfortunately, in comparison to triggering `F(X)` in another thread:
-  - The resulting machine code is *much slower*.
+Conceptually, the IPC op above is not so different from triggering a function call with argument X in a different
+thread -- but across process boundaries.  Unfortunately, in comparison to triggering `F(X)` in another thread
+in-process:
+  - The resulting machine code is *much slower*, using more processor cycles and memory.
   - The source code to achieve it is *much more difficult to develop and reuse*, even with the help
     of powerful APIs including Boost.interprocess and Boost.asio.
     - If one avoids copying X -- the basic cause of the slowness -- the difficulty/lack of reusability spikes
@@ -129,7 +132,7 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
 
   ~~~
   // Specify that we *do* want zero-copy behavior, by merely choosing your backing-session type.
-  using Session = ipc::session::shm::classic::Client_session; // Note the `::shm`: SHM-backed session.
+  using Session = ipc::session::shm::classic::Client_session; // Note the `::shm`: means SHM-backed session.
 
   // IPC app universe: simple structs naming the 2 apps (us and them), so we know with whom to engage in IPC,
   // and same for "them" (server).
@@ -140,7 +143,7 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
 
   // Open session e.g. near start of program.  A session is the communication context between the processes
   // engaging in IPC.  (You can create communication channels at will from the `session` object.  No more naming!)
-  Session session{ CLI_APP, SRV_APP, ... };
+  Session session{ CLI_APP, SRV_APP, on_session_closed_func };
   // Ask for 1 communication *channel* to be immediately available.
   Session::Channels ipc_channels(1);
   session.sync_connect(session.mdt_builder(), &ipc_channels); // Instant.
