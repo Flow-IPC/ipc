@@ -45,15 +45,15 @@ See [CONTRIBUTING](./CONTRIBUTING.md) guide.
 
 ## Background
 
-Flow-IPC focuses on IPC of data structures (and native sockets a/k/a FDs).  That is the central task is:
+Flow-IPC focuses on IPC of data structures (and native sockets a/k/a FDs).  I.e., the central scenario is:
 Process P1 has a data structure *X*, and it wants process P2 to access it (or a copy thereof) ASAP.
 
 The OS and third-parties already avail C++ developers of many tools for/around IPC.  Highlights:
-  - Pipes, Unix domain sockets, message queues (MQs), and more such *IPC transports* allow transmitting data
+  - Pipes, Unix domain socket streams, message queues (MQs), and more such *IPC transports* allow transmitting data
     (binary blobs and sometimes FDs).  Data are copied into the kernel by P1, then out of the kernel by P2.
   - P1 can put X into *shared memory* (SHM) and signal P2 to access it directly there,
-    eliminating both X copies.
-  - *In-place schema-based serialization tools*, the best of which is
+    eliminating both copy-X operations.
+  - *Zero-copy schema-based serialization tools*, the best of which is
     [Cap'n Proto](https://capnproto.org/language.html), hugely help in representing *structured data* within
     binary blobs.
 
@@ -71,9 +71,9 @@ across process boundaries.  Unfortunately, in comparison to that:
 
 *Flow-IPC* makes IPC code:
   - *easy* to write in reusable fashion -- transmitting *Cap'n Proto*-encoded structured data, *STL-compliant
-    native C++ data structures*, binary blobs, and *native handles (FDs)*;
+    native C++ structures*, binary blobs, and *native handles (FDs)*;
   - *highly performant* by seamlessly eliminating *all* copying of the transmitted data.
-     This is called *end-to-end zero-copy*.
+    This is called *end-to-end zero-copy*.
     - If you transmit [Cap'n Proto schema](https://capnproto.org/language.html)-based messages, you get end-to-end
       zero-copy performance with Flow-IPC.
     - If you share native C++ data structures, including arbitrarily nested STL-compliant containers and pointers,
@@ -174,56 +174,71 @@ zero-copy -- i.e., simply `::write()`ing a copy of the capnp serialization of `r
 `rsp` from a Unix domain socket FD -- sufficiently robust code would be significant in length and complexity;
 and challenging to make reusable.
 
-## Quick tour
+The preceding example was chosen for 2 reasons:
+  - *Performance*: It demonstrates the performance benefits of end-to-end zero-copy.
+  - *capnp integration*: It shows what it's like to transmit capnp-encoded structures using Flow-IPC.  (Plus
+    a quick look at session management.)
 
-Flow-IPC is comprehensive, aiming to be useful in black-box fashion but providing public APIs and customization
-at lower layers also.  The guided Manual (linked above) covers everything...
+## So Flow-IPC is for sending Cap'n Proto messages?
 
-...but here are a few specific topics of potential high interest, *in case* you're looking to jump into some
-code right away.
+Yes... but only among other things!
+  - It can transmit native C++ data structures (including STL-compliant containers and pointers); native handles (FDs);
+    and binary blobs at a lower layer.  Schema-based data structures are not an ideal representation for many
+    algorithms!
+    - *Without Flow-IPC*: Transmitting such objects "by hand" ranges from annoying (blobs) to super-annoying (FDs)
+      to really, really difficult (STL-compliant nested structures).
+  - It makes the act of opening IPC communication channels (and SHM arenas) easy.  Merely
+    name your two apps and open a *session*.  The *session* is a conversation context between the two processes.
+    Now *channels* can be opened/closed at any time, off this `Session` object -- no naming decisions to make or
+    native APIs to remember.  You can also optionally have N channels pre-opened for you and ready to go.
+    (In fact that's the easiest approach and often sufficient.)
+    - *Without Flow-IPC*: You must name every socket and MQ and SHM segment, and this name must be known on both sides;
+      you must arrange a connect-accept setup of some kind; open/create (and later clean-up) SHM segments;
+      invoke `mmap()`.  It is a ton of busy-work with many corner cases.
+  - For safety/auth, one specifies 1 of 3 presets that will govern permissions settings applied to various OS object
+    underneath: *unrestricted*, *shared-user* (all applications have same user ID), or shared-group (all applications
+    have same group ID but differing user IDs).
+    - *Without Flow-IPC*: Sometimes treated as an afterthought, serious server applications will need to specify
+      permissions masks on each individual OS object (SHM segment handle, POSIX MQ handle, stream-socket, etc.).
 
-  - Perhaps the median topic of interest is transmission of structured-data messages, as described
-    by a [schema language](https://capnproto.org/language.html), namely Cap'n Proto a/k/a *capnp*.
-    capnp by itself provides best-in-class *serialization*.  However: If you'd like to *transmit* your
-    serialized capnp-encoded message between processes, you're on your own: capnp provides only rudimentary
-    capabilities.  With Flow-IPC, however, it becomes easy:
-    - See the [synopsis/example](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_synopsis)
-      of transmitting structured Cap'n Proto-described messages between processes.
-    - Yet that still involves (behind the scenes) having to *copy the content of the data twice*: sender user memory =>
-      IPC transport (e.g., Unix domain socket) => receiver user memory.  Messages can be very large including,
-      e.g., entire images or videos in a web cache server.
-    - Ideally, instead, one wants **end-to-end zero-copy performance** and semantics.  I.e., receiver user memory *is*
-      sender user memory: "Sender" simply writes the data; "receiver" (having been informed in some way) simply reads
-      those same data, in-place.
-      - Normally this requires shared memory (SHM) work which is difficult coding even in specialized scenarios.
-      - Flow-IPC, however, makes it very easy...
-    - ...as shown in this
-      [explanation](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_zero)
-      and [code example](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_transport_struc_zero_synopsis).
-      Note the *2 changed lines of code* when setting up.
-      - The "meat" of the earlier-linked example code remains unchanged; just regular capnp accessor/mutator calls
-        familiar to vanilla-Cap'n Proto users.  (Users of Protocol Buffers and similar should also feel right at home.)
-  - The above example jumps into the middle of things, after you've connected from one program to another
-    (established a *session*) and have at least 1 *channel* opened.  Without Flow-IPC, accomplishing this is no mean
-    feat either and tends to be written and rewritten by each project that wants to do IPC, again and again.
-    With Flow-IPC, it is easy: see the
-    [synopsis about sessions](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html#api_overview_sessions_synopsis).
-  - You can also check out a [simple complete example](https://github.com/Flow-IPC/ipc_shm/tree/main/test/basic/link_test),
-    namely one of our functional tests, in which one program
-    connects to another, establishes a session and channel, then transmits exchanges a capnp-encoded hello-world, with
-    end-to-end zero copy.
-
-We guess those are the likely topics of highest interest.  That said, Flow-IPC provides entry points at every layer
-of operation, both higher and lower than the above.  Flow-IPC is *not* designed as merely a "black box" of capabilities.
-E.g., for advanced users:
+That said, Flow-IPC provides API entry points at every layer of operation.  Flow-IPC is *not* designed as
+merely a "black box" of capabilities.  E.g., for advanced users:
   - Various lower-level APIs, such as low-level transports (Unix domain sockets, MQs) and SHM operations can be
     accessed directly.  You can also plug-in your own.
   - By implementing or accessing some of the handful of key concepts, you can customize behaviors at all layers,
     including serialization-memory backing, additional SHM providers, and C-style native data structures that use raw
     pointers.
 
-Flow-IPC is comprehensive and flexible, as well as performance-oriented with an eye to safety.
-The [API tour page of the Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html)
-will show you around.  The rest of the [guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/pages.html)
-and the [Reference](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/namespaceipc.html)
-go deeper.
+## What's next?
+
+If the [example](#how-does-flow-ipc-help) and/or [promises](#so-flow-ipc-is-for-sending-cap-n-proto-messages) above
+have piqued your interest:
+
+In the Manual, the [API Overview / Synopsis](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html)
+summarizes (with code snippets) what is available in Flow-IPC.
+
+These diagrams from the Manual might also be helpful in showing what's available and/or some of what is going on
+underneath.
+
+---
+
+Here's a bird's eye view of Flow-IPC (left) and a compact exploration of a single Flow-IPC channel (right).
+
+![graph: left-sessions/channels/arena right-channel capabilities](./src/doc/manual/assets/img/sessions_and_transport_high_v2.png)
+
+- On the left -- Flow-IPC's mission: applications speaking to each other performantly, in organized fashion.
+  The infrastructure inside the dotted-line boxes is provided by Flow-IPC.  Perhaps most centrally this offers
+  communication *channels* over which one can transmit *messages* with a few lines of code.
+- On the right -- zooming into a single *channel*; and how it transmits data of various kinds, especially without
+  copying (therefore at high speed).
+  - "capnp" stands for [Cap'n Proto](https://capnproto.org/language.html).
+  - This diagram is arguably too "busy."  If so: Please do not worry about the details.  It is a *survey* of what and
+    how one *could* transmit via Flow-IPC; different details might appeal to different users.
+  - Ultimately, if you've got a message or data structure to share between processes, Flow-IPC will let you do it
+    with a few lines of code.
+
+---
+
+The following diagram delves deeper, roughly speaking introducing the *core* layer of `ipc::transport`.
+
+![graph: IPC channels (core layer); SHM arenas; and your code](./src/doc/manual/assets/img/transport_core_v1.png)
