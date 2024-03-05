@@ -21,8 +21,14 @@ using Cxx = import "/capnp/c++.capnp";
 
 $Cxx.namespace("perf_demo::schema");
 
+using Hash = UInt64;
+
 struct Body
 {
+  # We simulate a simple scenario of a cache client and cache server processes, where:
+  #   - server has memory-cached various files in memory, some quite large (e.g., between 100k and 1G bytes);
+  #   - client process requests an object via small GetCacheReq message;
+  #   - server responds with (potentially) large GetCacheRsp message including the file's contents.
   union
   {
     getCacheReq @0 :GetCacheReq;
@@ -33,16 +39,22 @@ struct Body
 struct GetCacheReq
 {
   fileName @0 :Text;
+  # The file whose memory-cached contents server shall fetch.  For now this is just for show.
+  # TODO: Perhaps based on the file name server could return files of various sizes.
+  # At the moment the server program just takes the benchmarked file size as a command-line arg;
+  # instead we can give it to the client, or it can auto-run a benchmark with various sizes.
 }
 
 struct GetCacheRsp
 {
-  fileParts @0 :List(FilePart);
-}
+  # We simulate the server returning files in multiple equally-sized chunks, each sized at its discretion.
+  # A decent estimate of the serialized size of a given GetCacheRsp is `data.size()` summed over all `fileParts`.
+  struct FilePart
+  {
+    data @0 :Data;
+    dataSizeToVerify @1 :UInt64; # Recipient can verify that `data` blob's size is indeed this.
+    dataHashToVerify @2 :Hash; # Recipient can hash `data` and verify it is indeed this.
+  }
 
-struct FilePart
-{
-  data @0 :Data;
-  dataSizeToVerify @1 :UInt64;
-  dataHashToVerify @2 :UInt64;
+  fileParts @0 :List(FilePart);
 }
