@@ -82,13 +82,20 @@ This is called *end-to-end zero-copy*.
 
 The graph above is an example of the performance gains you can expect when using Flow-IPC zero-copy transmission, from
 the included `perf_demo` tool.  (Here we use Cap'n Proto-described data.  Native C++ structures have a similar
-performance profile.)
+performance profile.)  In the graph, we compare the RTTs (latencies) of two techniques, for transmitted payloads
+of various sizes.
+  - The *blue line* shows the latency (RTT) when using "classic" IPC over a Unix-domain stream socket.  The server
+    `::write()`s the capnp-generated serialization, in order, into the socket FD; the client `::read()`s it out of
+    there.
+  - The *orange line* shows the RTT when using Flow-IPC with zero-copy enabled.
 
 In this example, app 1 is a memory-caching server that has pre-loaded into RAM a few
 files ranging in size from 100kb to 1Gb.  App 2 (client) requests a file of some size.  App 1 (server) responds
-with a single message containing the file's data structured as a list of chunks, each accompanied by that chunk's hash:
+with a single message containing the file's data structured as a sequence of chunks, each accompanied by that chunk's
+hash:
 
   ~~~{.capnp}
+  # Cap'n Proto schema fragment:
   # ...
   struct GetCacheReq { fileName @0 :Text; }
   struct GetCacheRsp
@@ -110,13 +117,7 @@ App 2 receives the `GetCacheRsp` message and prints the round-trip time (RTT): f
 the first hash).  This RTT is the *IPC-induced latency*: roughly speaking the time (mostly as processor cycles)
 penalty compared to having a monolithic application.
 
-In the graph, we compare the RTTs (latencies) of two techniques:
-  - The *blue line* shows the latency (RTT) when using "classic" IPC over a Unix-domain stream socket.  The server
-    `::write()`s the capnp-generated serialization, in order, into the socket FD; the client `::read()`s it out of
-    there.
-  - The *orange line* shows the RTT when using Flow-IPC with zero-copy enabled.
-
-Observations (tested using server-grade hardware):
+Observations (tested using decent server-grade hardware):
   - With Flow-IPC: the round-trip latency is ~100 microseconds *regardless of the size of the payload*.
   - Without Flow-IPC: the latency is about 1 *milli*second for a 1-megabyte payload and approaching a *full second*
     for a 1-gigabyte file.
