@@ -68,11 +68,13 @@ in-process:
     - If one avoids copying X -- the basic cause of the slowness -- one must use SHM.  This increases the difficulty
       10-fold, and the resulting code is rarely reusable.
 
-**With Flow-IPC, the above IPC op is easy to code, for any form of "X," whether: blobs, FDs, nested STL-compliant
-containers, C-style `struct`s with pointers, or Cap'n Proto schema-based structured data.  Moreover, it
-eliminates all copying of X -- which results in the best possible performance.**
-
 ## How does Flow-IPC help?
+
+With Flow-IPC, the above IPC op is easy to code, for any form of "X," whether: blobs, FDs, nested STL-compliant
+containers, C-style `struct`s with pointers, or Cap'n Proto schema-based structured data.  Moreover, it
+eliminates all copying of X -- which results in the best possible performance.
+
+## Example: Zero-copy performance, Cap'n Proto content
 
 ![graph: perf_demo capnp-classic versus capnp-Flow-IPC](./src/doc/manual/assets/img/capnp_perf_v1.png)
 
