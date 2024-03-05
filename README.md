@@ -215,6 +215,8 @@ merely a "black box" of capabilities.  E.g., for advanced users:
     including serialization-memory backing, additional SHM providers, and C-style native data structures that use raw
     pointers.
 
+---
+
 ## What's next?
 
 If the [example](#how-does-flow-ipc-help) and/or [promises](#so-flow-ipc-is-for-sending-cap-n-proto-messages) above
