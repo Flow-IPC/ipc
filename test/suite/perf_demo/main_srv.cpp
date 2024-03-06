@@ -527,6 +527,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
                         [&](auto&&) { g_asio.stop(); });
       if (req) { g_asio.stop(); }
 #else
+      flow::util::this_thread::sleep_for(seconds(5));
       g_asio.stop();
 #endif
 
