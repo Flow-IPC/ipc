@@ -7,7 +7,7 @@ var searchData=
   ['handle_5fmq_5fapi_5fresult_4',['handle_mq_api_result',['../classipc_1_1transport_1_1Posix__mq__handle.html#a244ee5da96550553edca346d77c2a825',1,'ipc::transport::Posix_mq_handle']]],
   ['handle_5fnew_5ferror_5',['handle_new_error',['../classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#ad3f5d174c65db9d5ec3b14769fb9574a',1,'ipc::transport::struc::sync_io::Channel']]],
   ['handle_5ft_6',['handle_t',['../structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25',1,'ipc::util::Native_handle']]],
-  ['handlers_5fare_5fset_7',['handlers_are_set',['../classipc_1_1session_1_1Server__session__impl.html#a4daca8475a4805d179908a89502e09f2',1,'ipc::session::Server_session_impl']]],
+  ['handlers_5fare_5fset_7',['handlers_are_set',['../classipc_1_1session_1_1Server__session__impl.html#ae33e5c8ca6904844689e78ee764bc2da',1,'ipc::session::Server_session_impl']]],
   ['handlers_5fpoll_8',['handlers_poll',['../classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a3a0adf8ce8fc29ec55b4c8c30886c1fc',1,'ipc::transport::struc::sync_io::Channel']]],
   ['handlers_5fpost_9',['handlers_post',['../classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a126c0d7ee5fcab20dc8c87884fdd7597',1,'ipc::transport::struc::sync_io::Channel']]],
   ['has_5ftrailing_5fseparator_10',['has_trailing_separator',['../classipc_1_1util_1_1Shared__name.html#a774e872b51100b728e0780b39f563ed9',1,'ipc::util::Shared_name']]],

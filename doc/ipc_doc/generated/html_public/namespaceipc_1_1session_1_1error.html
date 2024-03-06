@@ -97,6 +97,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fac734bd48bbfe30867f627363a8d5afc4">S_SERVER_MASTER_LOG_IN_REQUEST_CONFIG_MISMATCH</a>
 , <br />
 &#160;&#160;<a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa5c437fa266aea0c8e2b348ee84dd61fa">S_RESOURCE_OWNER_UNEXPECTED</a>
+, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa24eaed39f149e32f6ceaad54d24f8759">S_SESSION_FINISHED</a>
 , <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a>
 <br />
  }</td></tr>
@@ -177,6 +178,8 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>S_CODE_LOWES
 <tr><td class="fieldname"><a id="a0708d4bec9ae853f4d7e3d7822fc8f2fac734bd48bbfe30867f627363a8d5afc4" name="a0708d4bec9ae853f4d7e3d7822fc8f2fac734bd48bbfe30867f627363a8d5afc4"></a>S_SERVER_MASTER_LOG_IN_REQUEST_CONFIG_MISMATCH&#160;</td><td class="fielddoc"><p ><a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> master channel: log-in as server: opposing client's compile-time type config differs from local server's counterpart config; did you use the proper Server/Client_session paired templates and mutually equal template parameters? </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a0708d4bec9ae853f4d7e3d7822fc8f2fa5c437fa266aea0c8e2b348ee84dd61fa" name="a0708d4bec9ae853f4d7e3d7822fc8f2fa5c437fa266aea0c8e2b348ee84dd61fa"></a>S_RESOURCE_OWNER_UNEXPECTED&#160;</td><td class="fielddoc"><p >A resource in the file system (file, SHM pool, MQ, etc.) has or could have unexpected owner; <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> may emit this when acquiring resources and/or opening session if the server process is not running as the configured user, or a previous iteration was not running as that user. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0708d4bec9ae853f4d7e3d7822fc8f2fa24eaed39f149e32f6ceaad54d24f8759" name="a0708d4bec9ae853f4d7e3d7822fc8f2fa24eaed39f149e32f6ceaad54d24f8759"></a>S_SESSION_FINISHED&#160;</td><td class="fielddoc"><p >The opposing end of the session in question has been closed gracefully by the user invoking the end-session API. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a0708d4bec9ae853f4d7e3d7822fc8f2fa6fba12db09e5bebfaa04f6372c41c2cf" name="a0708d4bec9ae853f4d7e3d7822fc8f2fa6fba12db09e5bebfaa04f6372c41c2cf"></a>S_END_SENTINEL&#160;</td><td class="fielddoc"><p >SENTINEL: Not an error. This Code must never be issued by an error/success-emitting API; I/O use only. </p>
 </td></tr>
@@ -291,7 +294,7 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>S_CODE_LOWES
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 5 2024 10:30:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed Mar 6 2024 08:59:58 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

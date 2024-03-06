@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['persistent_5fmq_5fhandle_0',['Persistent_mq_handle',['../classipc_1_1transport_1_1Persistent__mq__handle.html',1,'ipc::transport']]],
-  ['pool_5farena_1',['Pool_arena',['../classipc_1_1shm_1_1classic_1_1Pool__arena.html',1,'ipc::shm::classic']]],
-  ['posix_5fmq_5fhandle_2',['Posix_mq_handle',['../classipc_1_1transport_1_1Posix__mq__handle.html',1,'ipc::transport']]],
-  ['process_5fcredentials_3',['Process_credentials',['../classipc_1_1util_1_1Process__credentials.html',1,'ipc::util']]],
-  ['protocol_5fnegotiator_4',['Protocol_negotiator',['../classipc_1_1transport_1_1Protocol__negotiator.html',1,'ipc::transport']]]
+  ['open_5fchannel_5freq_0',['Open_channel_req',['../structipc_1_1session_1_1Server__session__impl_1_1Open__channel__req.html',1,'ipc::session::Server_session_impl']]],
+  ['opt_5fpeer_5fprocess_5fcredentials_1',['Opt_peer_process_credentials',['../classipc_1_1transport_1_1asio__local__stream__socket_1_1Opt__peer__process__credentials.html',1,'ipc::transport::asio_local_stream_socket']]]
 ];

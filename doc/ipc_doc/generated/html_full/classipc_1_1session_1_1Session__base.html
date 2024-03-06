@@ -68,6 +68,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
@@ -89,7 +90,7 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for ipc::session::Session_base&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1session_1_1Session__base__inherit__graph.svg" width="1278" height="664"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1session_1_1Session__base__inherit__graph.svg" width="1296" height="702"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -99,6 +100,12 @@ Collaboration diagram for ipc::session::Session_base&lt; S_MQ_TYPE_OR_NONE, S_TR
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__base_1_1Graceful__finisher.html">Graceful_finisher</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional to use by subclasses, this operates a simple state machine that carries out a graceful-session-end handshake procedure.  <a href="classipc_1_1session_1_1Session__base_1_1Graceful__finisher.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a848c0f5247644ada0f8b0ab816eedda8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__base.html#a848c0f5247644ada0f8b0ab816eedda8">Persistent_mq_handle_from_cfg</a> = std::conditional_t&lt;!<a class="el" href="classipc_1_1session_1_1Session__base.html#a27a5731a648effb6b4b42f0312affa74">S_MQS_ENABLED</a>, <a class="el" href="classipc_1_1transport_1_1Null__peer.html">transport::Null_peer</a>, std::conditional_t&lt; S_MQ_TYPE_OR_NONE==schema::MqType::POSIX, <a class="el" href="classipc_1_1transport_1_1Posix__mq__handle.html">transport::Posix_mq_handle</a>, <a class="el" href="classipc_1_1transport_1_1Bipc__mq__handle.html">transport::Bipc_mq_handle</a> &gt; &gt;</td></tr>
@@ -213,7 +220,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:ae769a82bdec0d16702111ad06716faae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets on_err_func() (do not call if already set).  <a href="classipc_1_1session_1_1Session__base.html#ae769a82bdec0d16702111ad06716faae">More...</a><br /></td></tr>
 <tr class="separator:ae769a82bdec0d16702111ad06716faae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca82817beaac36d0006c44012f9fef03"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__base.html#aca82817beaac36d0006c44012f9fef03">on_err_func_set</a> () const</td></tr>
-<tr class="memdesc:aca82817beaac36d0006c44012f9fef03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <a class="el" href="classipc_1_1session_1_1Session__base.html#ae769a82bdec0d16702111ad06716faae" title="Sets on_err_func() (do not call if already set).">set_on_err_func()</a> has been called, or .  <a href="classipc_1_1session_1_1Session__base.html#aca82817beaac36d0006c44012f9fef03">More...</a><br /></td></tr>
+<tr class="memdesc:aca82817beaac36d0006c44012f9fef03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <a class="el" href="classipc_1_1session_1_1Session__base.html#ae769a82bdec0d16702111ad06716faae" title="Sets on_err_func() (do not call if already set).">set_on_err_func()</a> has been called.  <a href="classipc_1_1session_1_1Session__base.html#aca82817beaac36d0006c44012f9fef03">More...</a><br /></td></tr>
 <tr class="separator:aca82817beaac36d0006c44012f9fef03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21b146b02d257d95f4aaeaca12b8d320"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classipc_1_1session_1_1Session__base.html#a3c0824a54ef32915c5c5ea76481f2409">On_passive_open_channel_func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__base.html#a21b146b02d257d95f4aaeaca12b8d320">on_passive_open_channel_func_or_empty</a> () const</td></tr>
 <tr class="memdesc:a21b146b02d257d95f4aaeaca12b8d320"><td class="mdescLeft">&#160;</td><td class="mdescRight">The on-passive-open handler (may be empty even in final state, meaning user wants passive-opens disabled on this side).  <a href="classipc_1_1session_1_1Session__base.html#a21b146b02d257d95f4aaeaca12b8d320">More...</a><br /></td></tr>
@@ -231,7 +238,7 @@ Static Protected Attributes</h2></td></tr>
 <tr class="memdesc:ae68b7b80ff82ba5cde28a53fa52a5095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal timeout for <code>open_channel()</code>.  <a href="classipc_1_1session_1_1Session__base.html#ae68b7b80ff82ba5cde28a53fa52a5095">More...</a><br /></td></tr>
 <tr class="separator:ae68b7b80ff82ba5cde28a53fa52a5095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0b52934c6b1204cb3ba676480727d27"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__base.html#af0b52934c6b1204cb3ba676480727d27">S_MQS_MAX_MSG_SZ</a> = 8 * 1024</td></tr>
-<tr class="memdesc:af0b52934c6b1204cb3ba676480727d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">The max sendable MQ message size as decided by <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a37d0b0fdbe58ecb22e19c8bebfe976cd" title="Helper for create_channel_and_resources(), invoked and compiled if and only if S_MQS_ENABLED,...">Server_session_impl::make_channel_mqs()</a> (and imposed on both sides, both directions), if <a class="el" href="classipc_1_1session_1_1Session__base.html#a27a5731a648effb6b4b42f0312affa74" title="See Session_mv.">S_MQS_ENABLED</a> <em>and</em> <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a5de86bde678c98c48f300742bd98f7ff" title="See Session_mv counterpart.">Server_session_impl::S_SHM_ENABLED</a> is <code>false</code>, when a channel is opened (regardless of which side did the active-open or requested pre-opening at session start).  <a href="classipc_1_1session_1_1Session__base.html#af0b52934c6b1204cb3ba676480727d27">More...</a><br /></td></tr>
+<tr class="memdesc:af0b52934c6b1204cb3ba676480727d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">The max sendable MQ message size as decided by <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a84d54a57d3e06c064cde737d1f4be472" title="Helper for create_channel_and_resources(), invoked and compiled if and only if S_MQS_ENABLED,...">Server_session_impl::make_channel_mqs()</a> (and imposed on both sides, both directions), if <a class="el" href="classipc_1_1session_1_1Session__base.html#a27a5731a648effb6b4b42f0312affa74" title="See Session_mv.">S_MQS_ENABLED</a> <em>and</em> <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a1ded7990451b90f29e11f8fa7ce0e80b" title="See Session_mv counterpart.">Server_session_impl::S_SHM_ENABLED</a> is <code>false</code>, when a channel is opened (regardless of which side did the active-open or requested pre-opening at session start).  <a href="classipc_1_1session_1_1Session__base.html#af0b52934c6b1204cb3ba676480727d27">More...</a><br /></td></tr>
 <tr class="separator:af0b52934c6b1204cb3ba676480727d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
@@ -258,8 +265,9 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;<br />
 class ipc::session::Session_base&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;</div><p >Internal type containing data and types common to internal types <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> and <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> which are the respective true cores of <a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc" title="A vanilla Server_session with no optional capabilities.">Server_session</a> and <a class="el" href="namespaceipc_1_1session.html#a77d8fda00e1e17f595a6a5d4c44375e7" title="A vanilla Client_session with no optional capabilities.">Client_session</a> respectively. </p>
-<p >A <a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc" title="A vanilla Server_session with no optional capabilities.">Server_session</a> and <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> share many basic properties, some public. For example consider that a <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> on this side has 1 counterpart <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> on the other side (or vice versa); for both it is salient which <a class="el" href="structipc_1_1session_1_1Server__app.html" title="An App that is used as a server in at least one client-server IPC split.">Server_app</a> is on the server side and which <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> is on the client side. In terms of types/constants, on each side the two <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> objects must be identically configured via various template params which results in non-trivial type aliases like the highly significant <a class="el" href="classipc_1_1session_1_1Session__base.html#a71f02a809d667c23ff8af29a96940bd1" title="See Session_mv (or Session concept).">Channel_obj</a>, exposed in the <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept, and constants like <a class="el" href="classipc_1_1session_1_1Session__base.html#a1f7c4243c8bd55930f51a568884c8aaf" title="See Session_mv.">S_SOCKET_STREAM_ENABLED</a>.</p>
+<p >A <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> and <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> share many basic properties, some public. For example consider that a <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> on this side has 1 counterpart <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> on the other side (or vice versa); for both it is salient which <a class="el" href="structipc_1_1session_1_1Server__app.html" title="An App that is used as a server in at least one client-server IPC split.">Server_app</a> is on the server side and which <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> is on the client side. In terms of types/constants, on each side the two <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> objects must be identically configured via various template params which results in non-trivial type aliases like the highly significant <a class="el" href="classipc_1_1session_1_1Session__base.html#a71f02a809d667c23ff8af29a96940bd1" title="See Session_mv (or Session concept).">Channel_obj</a>, exposed in the <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept, and constants like <a class="el" href="classipc_1_1session_1_1Session__base.html#a1f7c4243c8bd55930f51a568884c8aaf" title="See Session_mv.">S_SOCKET_STREAM_ENABLED</a>.</p>
 <p >Regarding data: an operational (PEER-state) <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> (on either end) will need various members to be set before it is indeed in PEER state. This object stores such data, usually unset at first, and features <code>protected</code> setters to invoke once each, until all are set permanently for PEER state.</p>
+<p ><a class="el" href="classipc_1_1session_1_1Session__base.html" title="Internal type containing data and types common to internal types Server_session_impl and Client_sessi...">Session_base</a> also has a <code>protected</code> inner class, <a class="el" href="classipc_1_1session_1_1Session__base_1_1Graceful__finisher.html" title="Optional to use by subclasses, this operates a simple state machine that carries out a graceful-sessi...">Session_base::Graceful_finisher</a> which certain variations (for which this is necessary) of <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> and <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> use to carry out a graceful-session-end handshake procedure. This is here in <a class="el" href="classipc_1_1session_1_1Session__base.html" title="Internal type containing data and types common to internal types Server_session_impl and Client_sessi...">Session_base</a> &ndash; despite being somewhat more algorithmic/stateful than the other stuff here &ndash; essentially because the <a class="el" href="classipc_1_1session_1_1Session__base_1_1Graceful__finisher.html" title="Optional to use by subclasses, this operates a simple state machine that carries out a graceful-sessi...">Graceful_finisher</a> (if needed at all) on each side acts completely symmetrically. Other items tend to be (internally) asymmetrical in behavior between <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> and <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> (and variants). More info on <a class="el" href="classipc_1_1session_1_1Session__base_1_1Graceful__finisher.html" title="Optional to use by subclasses, this operates a simple state machine that carries out a graceful-sessi...">Session_base::Graceful_finisher</a> in its own doc header.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Mdt_payload</td><td>See <a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc" title="A vanilla Server_session with no optional capabilities.">Server_session</a>, <a class="el" href="namespaceipc_1_1session.html#a77d8fda00e1e17f595a6a5d4c44375e7" title="A vanilla Client_session with no optional capabilities.">Client_session</a> (or <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept). </td></tr>
@@ -269,7 +277,7 @@ class ipc::session::Session_base&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLE
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00057">57</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00067">67</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a71f02a809d667c23ff8af29a96940bd1" name="a71f02a809d667c23ff8af29a96940bd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a71f02a809d667c23ff8af29a96940bd1">&#9670;&nbsp;</a></span>Channel_obj</h2>
@@ -287,7 +295,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a> (or <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00101">101</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00111">111</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -307,7 +315,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a>. Note: If changed from <code>vector</code> please update those doc headers too. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00112">112</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00122">122</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -348,7 +356,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <li>As of this writing, for serializing/deserializing, it's either the heap-allocating engine on either side, or it's something SHM-based (which could be faster). However at least some SHM-based builders/readers themselves (internally) require a <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> to function, which would require a <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> typically, creating a cyclical feature dependency. Plus, SHM has cleanup considerations. So a heap-based engine on either side is the natural choice. The cost is some perf: one copies from heap into the session master transport; and from there into heap on the other side. In this context that's not a significant perf loss. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00342">342</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00352">352</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -376,7 +384,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>Observer of <a class="el" href="classipc_1_1session_1_1Session__base.html#af0ca2a01d7d0d92038aae56fc1cdd505" title="Handle to Master_structured_channel.">Master_structured_channel_ptr</a>. See its doc header. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00359">359</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00369">369</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -406,7 +414,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <h3>Rationale for type chosen</h3>
 <p >It's a handle at all, because at first and possibly later there may be no session master channel, so a null value is useful. (Though, <code>std::optional</code> could be used instead.) It's a ref-counted pointer as opposed to <code>unique_ptr</code> so that it can be observed via <a class="el" href="classipc_1_1session_1_1Session__base.html#ae2a123b29dd044a638e94d1f294c8f28" title="Observer of Master_structured_channel_ptr. See its doc header.">Master_structured_channel_observer</a> (<code>weak_ptr</code>) which is not (and cannot) be available for <code>unique_ptr</code>. The observing is needed tactically for certain async lambda needs. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00356">356</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00366">366</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -426,7 +434,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a> (or <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00122">122</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00132">132</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -446,7 +454,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a> (or <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00126">126</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00136">136</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -466,7 +474,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a> (or <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00115">115</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00125">125</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -486,7 +494,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a> (or <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00118">118</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00128">128</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -514,7 +522,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>Concrete function type for the on-passive-open handler (if any), used for storage. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00362">362</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00372">372</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -534,7 +542,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>Relevant only if <a class="el" href="classipc_1_1session_1_1Session__base.html#a27a5731a648effb6b4b42f0312affa74" title="See Session_mv.">S_MQS_ENABLED</a>, this is the Persistent_mq_handle-concept impl type specified by the user via <code>S_MQ_TYPE_OR_NONE</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00093">93</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00103">103</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -554,7 +562,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a> (or <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00129">129</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00139">139</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -574,7 +582,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a> (or <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00132">132</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00142">142</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -639,7 +647,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00534">534</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00786">786</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -678,7 +686,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00553">553</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00805">805</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -702,7 +710,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p >This value shall be set from the start in a <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> but determined during a given <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a>'s log-in (the opposing <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> will transmit the <a class="el" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd" title="Brief application name, readable to humans and unique across all other applications&#39; names; used both...">Client_app::m_name</a>). The log-in shall complete the <code>Server_session</code>'s entry to PEER state.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00621">621</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00873">873</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -725,7 +733,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p >This value shall be generated uniquely (within some context) for each new <code>Server_session</code> produced by <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a>; and <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> shall find that out while logging in (last part of entering PEER state).</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00633">633</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00885">885</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -748,7 +756,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p >This may be called anytime.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00701">701</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00953">953</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00063">ipc::util::IPC_KERNEL_PERSISTENT_RUN_DIR</a>.</p>
 
@@ -773,7 +781,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p >This may be called anytime.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00668">668</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00920">920</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2session__shared__name_8cpp_source.html#l00044">ipc::session::build_conventional_shared_name()</a>, <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>, <a class="el" href="shared__name_8hpp_source.html#l00315">ipc::util::Shared_name::S_RESOURCE_TYPE_ID_MUTEX</a>, and <a class="el" href="shared__name_8hpp_source.html#l00280">ipc::util::Shared_name::S_SENTINEL</a>.</p>
 <div class="dynheader">
@@ -820,7 +828,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00735">735</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00987">987</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -859,7 +867,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00786">786</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l01132">1132</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -891,7 +899,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>Marks this session as hosed for (truthy) reason <code>err_code</code>; and <em>synchronously</em> invokes on-error handler; only invoke if not already <a class="el" href="classipc_1_1session_1_1Session__base.html#a398f3e6a30b3fae8e110af9fd1ff75e3" title="Returns true if and only if hose() has been called.">hosed()</a>. </p>
 <p >This utility is important and has certain pre-conditions (behavior undefined if not met; assertion may trip):</p><ul>
-<li><code>*this</code> must be in PEER state. In particular <a class="el" href="classipc_1_1session_1_1Session__base.html#aca82817beaac36d0006c44012f9fef03" title="Returns true if and only if set_on_err_func() has been called, or .">on_err_func_set()</a> must return <code>true</code>.</li>
+<li><code>*this</code> must be in PEER state. In particular <a class="el" href="classipc_1_1session_1_1Session__base.html#aca82817beaac36d0006c44012f9fef03" title="Returns true if and only if set_on_err_func() has been called.">on_err_func_set()</a> must return <code>true</code>.</li>
 <li><a class="el" href="classipc_1_1session_1_1Session__base.html#a398f3e6a30b3fae8e110af9fd1ff75e3" title="Returns true if and only if hose() has been called.">hosed()</a> must return <code>false</code>.</li>
 <li><code>err_code</code> must be truthy (non-success).</li>
 <li>This must be invoked from a thread such that it is OK to <em>synchronously</em> invoke on-error handler. As of this writing this is <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a>'s or <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a>'s thread W in practice, which is how thread safety of <a class="el" href="classipc_1_1session_1_1Session__base.html#a7f9e67dccbab4f3191734c2834bafb63" title="Marks this session as hosed for (truthy) reason err_code; and synchronously invokes on-error handler;...">hose()</a> versus <a class="el" href="classipc_1_1session_1_1Session__base.html#a398f3e6a30b3fae8e110af9fd1ff75e3" title="Returns true if and only if hose() has been called.">hosed()</a> is also guaranteed by those users.</li>
@@ -903,7 +911,15 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00652">652</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00904">904</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="session__base_8hpp_source.html#l01037">ipc::session::Session_base&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::Graceful_finisher::Graceful_finisher()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1session_1_1Session__base_a7f9e67dccbab4f3191734c2834bafb63_icgraph.svg" width="352" height="59"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
@@ -930,10 +946,18 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </div><div class="memdoc">
 
 <p>Returns <code>true</code> if and only if <a class="el" href="classipc_1_1session_1_1Session__base.html#a7f9e67dccbab4f3191734c2834bafb63" title="Marks this session as hosed for (truthy) reason err_code; and synchronously invokes on-error handler;...">hose()</a> has been called. </p>
-<p >If so then <a class="el" href="classipc_1_1session_1_1Session__base.html#a7d25e45d33beb8af9ae03b05d676b0e4" title="See set_on_err_func().">m_on_err_func</a> has been executed already. <code>*this</code> must be in PEER state. In particular <a class="el" href="classipc_1_1session_1_1Session__base.html#aca82817beaac36d0006c44012f9fef03" title="Returns true if and only if set_on_err_func() has been called, or .">on_err_func_set()</a> must return <code>true</code>.</p>
+<p >If so then <a class="el" href="classipc_1_1session_1_1Session__base.html#a7d25e45d33beb8af9ae03b05d676b0e4" title="See set_on_err_func().">m_on_err_func</a> has been executed already. <code>*this</code> must be in PEER state. In particular <a class="el" href="classipc_1_1session_1_1Session__base.html#aca82817beaac36d0006c44012f9fef03" title="Returns true if and only if set_on_err_func() has been called.">on_err_func_set()</a> must return <code>true</code>.</p>
 <dl class="section return"><dt>Returns</dt><dd>Ditto. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00661">661</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00913">913</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="session__base_8hpp_source.html#l01037">ipc::session::Session_base&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::Graceful_finisher::Graceful_finisher()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1session_1_1Session__base_a398f3e6a30b3fae8e110af9fd1ff75e3_icgraph.svg" width="352" height="59"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
@@ -959,10 +983,10 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </table>
 </div><div class="memdoc">
 
-<p>Returns <code>true</code> if and only if <a class="el" href="classipc_1_1session_1_1Session__base.html#ae769a82bdec0d16702111ad06716faae" title="Sets on_err_func() (do not call if already set).">set_on_err_func()</a> has been called, or . </p>
+<p>Returns <code>true</code> if and only if <a class="el" href="classipc_1_1session_1_1Session__base.html#ae769a82bdec0d16702111ad06716faae" title="Sets on_err_func() (do not call if already set).">set_on_err_func()</a> has been called. </p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00646">646</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00898">898</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -991,7 +1015,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p>The on-passive-open handler (may be empty even in final state, meaning user wants passive-opens disabled on this side). </p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00640">640</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00892">892</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1013,7 +1037,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p >This must be called no earlier than <a class="el" href="classipc_1_1session_1_1Session__base.html#a28825fcdeaf1249a7bf810a3b2ca7c38" title="Sets srv_namespace() (do not call if already set).">set_srv_namespace()</a>; otherwise behavior undefined (assertion may trip).</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00714">714</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00966">966</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2session__shared__name_8cpp_source.html#l00044">ipc::session::build_conventional_shared_name()</a>, <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>, <a class="el" href="native__socket__stream__acceptor_8hpp_source.html#l00120">ipc::transport::Native_socket_stream_acceptor::S_RESOURCE_TYPE_ID</a>, and <a class="el" href="shared__name_8hpp_source.html#l00280">ipc::util::Shared_name::S_SENTINEL</a>.</p>
 <div class="dynheader">
@@ -1059,7 +1083,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00572">572</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00824">824</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1097,7 +1121,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00595">595</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00847">847</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="shared__name_8hpp_source.html#l00280">ipc::util::Shared_name::S_SENTINEL</a>.</p>
 
@@ -1137,7 +1161,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00612">612</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00864">864</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1175,7 +1199,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00605">605</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00857">857</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1213,7 +1237,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00585">585</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00837">837</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="shared__name_8hpp_source.html#l00280">ipc::util::Shared_name::S_SENTINEL</a>.</p>
 
@@ -1235,10 +1259,10 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a>, <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a>. </p>
 <p >However in <a class="el" href="classipc_1_1session_1_1Session__base.html" title="Internal type containing data and types common to internal types Server_session_impl and Client_sessi...">Session_base</a> this value may be not-yet-set (empty), or set (and immutable from then on).</p>
-<p >This value shall be known and immutable from construction for <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a>, since server namespace &ndash; PID as of this writing &ndash; can be determined from the start on the server side and applies to every server session that <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> produces. <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a>, however, determines it at the latest possible moment which is at <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#adebedf1cbe09067a8f785a524e146b2f" title="Core implementation of sync_connect().">Client_session_impl::async_connect()</a> time, at which point it needs to determine the PID via PID file.</p>
+<p >This value shall be known and immutable from construction for <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a>, since server namespace &ndash; PID as of this writing &ndash; can be determined from the start on the server side and applies to every server session that <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> produces. <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a>, however, determines it at the latest possible moment which is at <a class="el" href="classipc_1_1session_1_1Client__session__impl.html#a56c0d2b0ff082d1f7b0738e2528b4a92" title="Core implementation of sync_connect().">Client_session_impl::async_connect()</a> time, at which point it needs to determine the PID via PID file.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00627">627</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00879">879</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1267,10 +1291,10 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__base.html#a3ebdafe7e70719e6d12dd0b15ae85106" title="See Server_session_impl, Client_session_impl.">cli_app_ptr()</a>. </p>
 <h3>Rationale for it being <code>atomic&lt;&gt;</code></h3>
-<p >It is for the following specific reason. Consider <code>ostream&lt;&lt;</code> of <code>*this</code>. <code>*this</code> is really either in <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> or <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a>. In both cases these <code>ostream&lt;&lt;</code>s access only <a class="el" href="classipc_1_1session_1_1Session__base.html#afd32d90b86d699263a0f02637dd7c6c6" title="Reference to Server_app (referring to local process in Server_session_impl, opposing process in Clien...">m_srv_app_ref</a>, which is immutable throughout (so no problem there) and <a class="el" href="classipc_1_1session_1_1Session__base.html#aa8cccc9369af1dff6b59dee1a12f72d8" title="See cli_app_ptr().">m_cli_app_ptr</a>. For <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> <a class="el" href="classipc_1_1session_1_1Session__base.html#aa8cccc9369af1dff6b59dee1a12f72d8" title="See cli_app_ptr().">m_cli_app_ptr</a> is also immutable throughout (so no problem there). For <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> however it does change in one spot: <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a92861565c698467bc58e44fbe471e356" title="For use by internal user Session_server: See Server_session_mv counterpart.">Server_session_impl::async_accept_log_in()</a> internal async handler for the log-in request shall, on success, call <a class="el" href="classipc_1_1session_1_1Session__base.html#a60a081ce0f85651202d23b4d543d093c" title="Sets cli_app_ptr() (do not call if already set).">set_cli_app_ptr()</a> and change it from null to non-null. This could cause concurrent access to the data member, even though it's a mere pointer (but we don't count on the alleged "atomicity" of this; it is generally considered not safe).</p>
+<p >It is for the following specific reason. Consider <code>ostream&lt;&lt;</code> of <code>*this</code>. <code>*this</code> is really either in <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> or <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a>. In both cases these <code>ostream&lt;&lt;</code>s access only <a class="el" href="classipc_1_1session_1_1Session__base.html#afd32d90b86d699263a0f02637dd7c6c6" title="Reference to Server_app (referring to local process in Server_session_impl, opposing process in Clien...">m_srv_app_ref</a>, which is immutable throughout (so no problem there) and <a class="el" href="classipc_1_1session_1_1Session__base.html#aa8cccc9369af1dff6b59dee1a12f72d8" title="See cli_app_ptr().">m_cli_app_ptr</a>. For <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a> <a class="el" href="classipc_1_1session_1_1Session__base.html#aa8cccc9369af1dff6b59dee1a12f72d8" title="See cli_app_ptr().">m_cli_app_ptr</a> is also immutable throughout (so no problem there). For <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> however it does change in one spot: <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#aee35d521d9997d48f6b5565730e60e93" title="For use by internal user Session_server: See Server_session_mv counterpart.">Server_session_impl::async_accept_log_in()</a> internal async handler for the log-in request shall, on success, call <a class="el" href="classipc_1_1session_1_1Session__base.html#a60a081ce0f85651202d23b4d543d093c" title="Sets cli_app_ptr() (do not call if already set).">set_cli_app_ptr()</a> and change it from null to non-null. This could cause concurrent access to the data member, even though it's a mere pointer (but we don't count on the alleged "atomicity" of this; it is generally considered not safe).</p>
 <p >Now, as of this writing, there's exactly one spot where <code>ostream&lt;&lt;</code> could be invoked from thread U while it is being assigned in thread W: <code>async_accept_log_in()</code> is called by our internal code in <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> and only once; the only thing that can occur in thread U until the log-in response handler is executed is that <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> dtor is called. Before that dtor stops that thread W, it does print the <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> once as of this writing. Therefore, out of sheer caution, this guy is <code>atomic&lt;&gt;</code>. That said there could be other such invocations, as code might change during maintenance in the future, in which case this <code>atomic&lt;&gt;</code>ness will quietly come in handy. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00498">498</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00750">750</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1298,7 +1322,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__base.html#abd1e814b3b640f4bdaa2553352405f26" title="See Server_session_impl, Client_session_impl.">cli_namespace()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00504">504</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00756">756</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1326,7 +1350,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__base.html#ae769a82bdec0d16702111ad06716faae" title="Sets on_err_func() (do not call if already set).">set_on_err_func()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00507">507</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00759">759</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1354,7 +1378,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__base.html#a21b146b02d257d95f4aaeaca12b8d320" title="The on-passive-open handler (may be empty even in final state, meaning user wants passive-opens disab...">on_passive_open_channel_func_or_empty()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00510">510</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00762">762</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1385,7 +1409,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <h3>Concurrency</h3>
 <p >See <a class="el" href="classipc_1_1session_1_1Session__base.html#a7f9e67dccbab4f3191734c2834bafb63" title="Marks this session as hosed for (truthy) reason err_code; and synchronously invokes on-error handler;...">hose()</a> and <a class="el" href="classipc_1_1session_1_1Session__base.html#a398f3e6a30b3fae8e110af9fd1ff75e3" title="Returns true if and only if hose() has been called.">hosed()</a> doc headers. TL;DR: It is up to the caller to only call those, basically, from thread W only. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00521">521</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00773">773</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1406,7 +1430,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <p>Reference to <a class="el" href="structipc_1_1session_1_1Server__app.html" title="An App that is used as a server in at least one client-server IPC split.">Server_app</a> (referring to local process in <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a>, opposing process in <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a>). </p>
 <p >This is known from construction and immutable (both the reference, of course, and the <a class="el" href="structipc_1_1session_1_1Server__app.html" title="An App that is used as a server in at least one client-server IPC split.">Server_app</a> itself). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00233">233</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00243">243</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1434,7 +1458,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__base.html#a4d1327608d6067ed6690bd4efa323c6f" title="See Server_session_impl, Client_session_impl.">srv_namespace()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00501">501</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00753">753</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1462,7 +1486,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00064">64</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00074">74</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1488,15 +1512,15 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </table>
 </div><div class="memdoc">
 
-<p>The max sendable MQ message size as decided by <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a37d0b0fdbe58ecb22e19c8bebfe976cd" title="Helper for create_channel_and_resources(), invoked and compiled if and only if S_MQS_ENABLED,...">Server_session_impl::make_channel_mqs()</a> (and imposed on both sides, both directions), if <a class="el" href="classipc_1_1session_1_1Session__base.html#a27a5731a648effb6b4b42f0312affa74" title="See Session_mv.">S_MQS_ENABLED</a> <em>and</em> <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a5de86bde678c98c48f300742bd98f7ff" title="See Session_mv counterpart.">Server_session_impl::S_SHM_ENABLED</a> is <code>false</code>, when a channel is opened (regardless of which side did the active-open or requested pre-opening at session start). </p>
+<p>The max sendable MQ message size as decided by <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a84d54a57d3e06c064cde737d1f4be472" title="Helper for create_channel_and_resources(), invoked and compiled if and only if S_MQS_ENABLED,...">Server_session_impl::make_channel_mqs()</a> (and imposed on both sides, both directions), if <a class="el" href="classipc_1_1session_1_1Session__base.html#a27a5731a648effb6b4b42f0312affa74" title="See Session_mv.">S_MQS_ENABLED</a> <em>and</em> <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a1ded7990451b90f29e11f8fa7ce0e80b" title="See Session_mv counterpart.">Server_session_impl::S_SHM_ENABLED</a> is <code>false</code>, when a channel is opened (regardless of which side did the active-open or requested pre-opening at session start). </p>
 <p >If <code>*this</code> belongs to <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a>, that's what this is. If it belongs to <a class="el" href="classipc_1_1session_1_1Client__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Client_session_mv class template.">Client_session_impl</a>, then this is what the opposing process &ndash; if they're using the same code! &ndash; will have decided.</p>
 <p >Our own <a class="el" href="classipc_1_1session_1_1Session__base.html#a08b3d69a6707dcbb233076b7a48de285" title="See Session_mv::heap_fixed_builder_config() (1-arg).">heap_fixed_builder_config()</a>, forwarded to <a class="el" href="classipc_1_1session_1_1Session__mv.html#a107684fdd5d233549c6daac26a81a542" title="Utility that obtains a heap-based (non-zero-copy) Struct_builder::Config, constructed with the most e...">Session_mv::heap_fixed_builder_config()</a>, similarly uses this constant in a matching way.</p>
-<dl class="section note"><dt>Note</dt><dd>If <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a5de86bde678c98c48f300742bd98f7ff" title="See Session_mv counterpart.">Server_session_impl::S_SHM_ENABLED</a> is <code>true</code>, then a different (much smaller) MQ message size limit is configured. In that case, also, <a class="el" href="classipc_1_1session_1_1Session__base.html#a08b3d69a6707dcbb233076b7a48de285" title="See Session_mv::heap_fixed_builder_config() (1-arg).">heap_fixed_builder_config()</a> is not relevant and should not be used.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a1ded7990451b90f29e11f8fa7ce0e80b" title="See Session_mv counterpart.">Server_session_impl::S_SHM_ENABLED</a> is <code>true</code>, then a different (much smaller) MQ message size limit is configured. In that case, also, <a class="el" href="classipc_1_1session_1_1Session__base.html#a08b3d69a6707dcbb233076b7a48de285" title="See Session_mv::heap_fixed_builder_config() (1-arg).">heap_fixed_builder_config()</a> is not relevant and should not be used.</dd></dl>
 <p>While it looks simple, there is a number of subtleties one must understand if <em>ever</em> considering changing it.</p>
 <h3>bipc versus POSIX MQs</h3>
 <p >As of this writing the same constant value is used for both types of MQ configurable. The actual value is chosen due to a certain aspect of POSIX MQs (discussed just below); and we reuse it for bipc, though we absolutely do not have to, for simplicity/for lack of better ideas at the moment. It would be possible to bifurcate those two cases if really desired.</p>
 <h3>Why 8Ki?</h3>
-<p >By default in Linux POSIX MQs this happens to be the actual limit for # of unread messages &ndash; visible in /proc/sys/fs/mqueue/msgsize_max &ndash; so we cannot go higher typically. However that file can be modified. For now we assume a typical environment; or at least that it will not go <em>below</em> this typical default. If did try a higher number here, opening of MQs by server will likely emit an error and refuse (<a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a37d0b0fdbe58ecb22e19c8bebfe976cd" title="Helper for create_channel_and_resources(), invoked and compiled if and only if S_MQS_ENABLED,...">Server_session_impl::make_channel_mqs()</a>).</p>
+<p >By default in Linux POSIX MQs this happens to be the actual limit for # of unread messages &ndash; visible in /proc/sys/fs/mqueue/msgsize_max &ndash; so we cannot go higher typically. However that file can be modified. For now we assume a typical environment; or at least that it will not go <em>below</em> this typical default. If did try a higher number here, opening of MQs by server will likely emit an error and refuse (<a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a84d54a57d3e06c064cde737d1f4be472" title="Helper for create_channel_and_resources(), invoked and compiled if and only if S_MQS_ENABLED,...">Server_session_impl::make_channel_mqs()</a>).</p>
 <h3>Things to consider if changing the value away from the above</h3>
 <ul>
 <li>Contemplate why you're doing it. bipc MQs are seen (in Boost source) to be a simple zero-copy data structure in an internally maintained kernel-persistent SHM pool; while I (ygoldfel) haven't verified via kernal source, likely Linux POSIX MQ impl is something very similar (reasoning omitted but trust me). So copy perf should not be a factor; only RAM use and the functional ability to transmit messages of a certain size.<ul>
@@ -1507,14 +1531,14 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 <li>Suppose you have changed this value, and suppose the <code>Heap_fixed_builder</code>-based use case <em>does</em> matter. If <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a> has not yet been released in production, ever, then it's fine (assuming, that is, it'll work in the first place given the aforementioned <code>/proc/sys/...</code> limit for POSIX MQs). If it <em>has</em> been released then there is an annoying subtlety to consider:<ul>
 <li>If you can guarantee (via release process) that the client and server will always use the same <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a> software, then you're still fine. Just change this value; done. Otherwise though:</li>
 <li>There's the unfortunate caveat that is <a class="el" href="classipc_1_1session_1_1Session__base.html#a08b3d69a6707dcbb233076b7a48de285" title="See Session_mv::heap_fixed_builder_config() (1-arg).">Session_base::heap_fixed_builder_config()</a>. There you will note it says that the <em>server</em> decides (for both sides) what this value is. In that case that method will be correct in the server process; but if the client process is speaking to a different version of the server, with a different value for <a class="el" href="classipc_1_1session_1_1Session__base.html#af0b52934c6b1204cb3ba676480727d27" title="The max sendable MQ message size as decided by Server_session_impl::make_channel_mqs() (and imposed o...">S_MQS_MAX_MSG_SZ</a>, then that is a potential bug.<ul>
-<li>Therefore it would be advisable to not mess with it (again... once a production version is out there). If you <em>do</em> mess with it, there are ways to ensure it all works out anyway: logic could be added wherein the client specifies its own <a class="el" href="classipc_1_1session_1_1Session__base.html#af0b52934c6b1204cb3ba676480727d27" title="The max sendable MQ message size as decided by Server_session_impl::make_channel_mqs() (and imposed o...">S_MQS_MAX_MSG_SZ</a> when issuing an open-channel request, and the server must honor it in its <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a37d0b0fdbe58ecb22e19c8bebfe976cd" title="Helper for create_channel_and_resources(), invoked and compiled if and only if S_MQS_ENABLED,...">Server_session_impl::make_channel_mqs()</a>. So it can be done &ndash; just know that in that case you'll have to actually add such logic; or somewhat break <a class="el" href="classipc_1_1session_1_1Session__base.html#a08b3d69a6707dcbb233076b7a48de285" title="See Session_mv::heap_fixed_builder_config() (1-arg).">heap_fixed_builder_config()</a>. The reason I (ygoldfel) have not done this already is it seems unlikely (for various reasons listed above) that tweaking this value is of much practical value. </li>
+<li>Therefore it would be advisable to not mess with it (again... once a production version is out there). If you <em>do</em> mess with it, there are ways to ensure it all works out anyway: logic could be added wherein the client specifies its own <a class="el" href="classipc_1_1session_1_1Session__base.html#af0b52934c6b1204cb3ba676480727d27" title="The max sendable MQ message size as decided by Server_session_impl::make_channel_mqs() (and imposed o...">S_MQS_MAX_MSG_SZ</a> when issuing an open-channel request, and the server must honor it in its <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a84d54a57d3e06c064cde737d1f4be472" title="Helper for create_channel_and_resources(), invoked and compiled if and only if S_MQS_ENABLED,...">Server_session_impl::make_channel_mqs()</a>. So it can be done &ndash; just know that in that case you'll have to actually add such logic; or somewhat break <a class="el" href="classipc_1_1session_1_1Session__base.html#a08b3d69a6707dcbb233076b7a48de285" title="See Session_mv::heap_fixed_builder_config() (1-arg).">heap_fixed_builder_config()</a>. The reason I (ygoldfel) have not done this already is it seems unlikely (for various reasons listed above) that tweaking this value is of much practical value. </li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00311">311</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00321">321</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1542,10 +1566,10 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>Internal timeout for <code>open_channel()</code>. </p>
 <h3>The value</h3>
-<p >We initially tried something much less generous, 500ms. It worked fine, but some people encountered the timeout due to unrelated reasons, and it was natural to blame it on the timeout. This much longer timeout should make it obvious, in such a situation, that it's not about some slowness inside Flow-IPC but a pathological application problem &ndash; particularly around session-open time. For example not calling <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#a2566a23cc8ace2fc70887e8a56c4cb9f" title="See Server_session_mv counterpart.">Server_session_impl::init_handlers()</a>, or calling it late, as of this writing can cause issues with this.</p>
+<p >We initially tried something much less generous, 500ms. It worked fine, but some people encountered the timeout due to unrelated reasons, and it was natural to blame it on the timeout. This much longer timeout should make it obvious, in such a situation, that it's not about some slowness inside Flow-IPC but a pathological application problem &ndash; particularly around session-open time. For example not calling <a class="el" href="classipc_1_1session_1_1Server__session__impl.html#ac93040ccdaf5a261a053a8b55bd2e14e" title="See Server_session_mv counterpart.">Server_session_impl::init_handlers()</a>, or calling it late, as of this writing can cause issues with this.</p>
 <p >The downside is it makes <a class="el" href="classipc_1_1session_1_1Session.html#aab01aefa0243abf84c7cc36d3ab2d852" title="Synchronously active-opens a new channel which, on success, is moved-to *target_channel.">Session::open_channel()</a> potentially blocking formally speaking, whereas 500ms could still claim to be non-blocking. It's a matter of perspective really. This value just seems to cause less confusion. We might reconsider the whole thing however. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00252">252</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00262">262</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1573,7 +1597,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00067">67</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__base_8hpp_source.html#l00077">77</a> of file <a class="el" href="session__base_8hpp_source.html">session_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -1583,7 +1607,7 @@ template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, ty
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 5 2024 10:30:58 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed Mar 6 2024 09:00:01 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

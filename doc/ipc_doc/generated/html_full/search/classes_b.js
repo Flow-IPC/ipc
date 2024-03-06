@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['rcv_5fuser_5frequest_0',['Rcv_user_request',['../structipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl_1_1Rcv__user__request.html',1,'ipc::transport::sync_io::Native_socket_stream::Impl']]],
-  ['reader_1',['Reader',['../classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html',1,'ipc::transport::struc::shm']]],
-  ['request_5fresult_2',['Request_result',['../structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state_1_1Request__result.html',1,'ipc::transport::struc::Channel::Sync_op_state']]]
+  ['persistent_5fmq_5fhandle_0',['Persistent_mq_handle',['../classipc_1_1transport_1_1Persistent__mq__handle.html',1,'ipc::transport']]],
+  ['pool_5farena_1',['Pool_arena',['../classipc_1_1shm_1_1classic_1_1Pool__arena.html',1,'ipc::shm::classic']]],
+  ['posix_5fmq_5fhandle_2',['Posix_mq_handle',['../classipc_1_1transport_1_1Posix__mq__handle.html',1,'ipc::transport']]],
+  ['process_5fcredentials_3',['Process_credentials',['../classipc_1_1util_1_1Process__credentials.html',1,'ipc::util']]],
+  ['protocol_5fnegotiator_4',['Protocol_negotiator',['../classipc_1_1transport_1_1Protocol__negotiator.html',1,'ipc::transport']]]
 ];

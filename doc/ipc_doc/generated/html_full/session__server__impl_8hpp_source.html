@@ -166,11 +166,11 @@ $(function() {
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment"> * Server_session::async_accept_log_in() handler-invoking thread: Ws.  This is really a separate thread for</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment"> * each `Server_session`, so in fact 2 different async-accept requests can cause 2 handlers to invoke simultaneously.</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Session__server__impl.html#a5fc42e333522f7b1ed11fbff4ae72e5c">   97</a></span><span class="comment"> * So each time one calls async_accept() from thread U (i.e., user thread(s) from which they must never invoke</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment"> * So each time one calls async_accept() from thread U (i.e., user thread(s) from which they must never invoke</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment"> * mutating stuff concurrently), that kicks off transport::Native_socket_stream_acceptor::async_accept(),</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment"> * which fires handler in thread Wa; we then kick off `Server_session::async_accept_log_in()`, which fires</span></div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment"> * handler in thread Ws, where we finalize the `Server_session` and emit it to user.  There is no cross-posting</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment"> * to some other worker thread W (but read on).</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1Session__server__impl.html#a5fc42e333522f7b1ed11fbff4ae72e5c">  101</a></span><span class="comment"> * to some other worker thread W (but read on).</span></div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment"> * The obvious question is, do the handlers, some of which (as noted) may run concurrently to each other</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment"> * (request 1&#39;s Ws handler can co-execute with request 2&#39;s Wa handler; and request 2&#39;s Wa handler can co-execute</span></div>
@@ -1148,7 +1148,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 5 2024 10:30:58 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed Mar 6 2024 09:00:01 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
