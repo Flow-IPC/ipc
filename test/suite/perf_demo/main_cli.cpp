@@ -427,11 +427,6 @@ void run_capnp_zero_cpy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel_
       g_capnp_zero_cpy_rtt = m_timer->since_start().m_values[size_t(Clock_type::S_REAL_HI_RES)];
 
       rsp.reset();
-#if 0 // XXX
-      FLOW_LOG_INFO("> Signaling server we are done; they can blow everything away now.");
-
-      m_chan.send(m_chan.create_msg());
-#endif
       g_asio.stop();
     } // on_complete_response()
   }; // class Algo

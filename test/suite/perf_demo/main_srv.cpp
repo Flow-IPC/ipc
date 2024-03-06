@@ -498,38 +498,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
       FLOW_LOG_INFO("> Sending get-cache (quite large) response.");
       m_chan.send(m_capnp_msg, req.get());
       FLOW_LOG_INFO("= Done.");
-      m_capnp_msg = {};
-
-      /* There's a little subtlety here; basically everything is cool with the backing memory, until
-       * the Session_server dtor runs, specifically in SHM-jemalloc's case; as it'll deinitialize jemalloc
-       * and... stuff; the details don't matter (actually the fact that SHM-classic doesn't have this to worry about
-       * is merely an internal property; formally one should still not access SHM-backed items once session-server
-       * goes away -- even with SHM-classic).  What matters = the principles explained in
-       * "Sessions: Teardown; Organizing Your Code" in the guided Manual; which is that when a session-hosing
-       * error is reported, one should nullify any SHM-backed objects related to that session; then sometime later
-       * (usually soon but w/e) destroy the Session object (have its dtor run).  If it's done in that order,
-       * and it's not a crash/zombie situation on the other side, then everything will be safe.  (If it's a crash/zombie
-       * situation, then one should still follow that procedure; and there's a good -- as good as possible -- chance
-       * one would escape bad consequences.)  As we explained in the "disclaimer" comment at the top: we didn't
-       * arrange this app in that nice organized way (for reasons); and our session and channel error handlers
-       * literally just no-op (see above).  It is OK though; we control the order of things; all we need to do
-       * is nullify SHM-backed stuff before server goes down.  That's why we let the client do that and then
-       * send us a message after that... and then we stop.  To be clear: This isn't unsafe; it is safe and formally
-       * at that.  Just, don't do this kind of stuff in serious applications.
-       *
-       * Also one should (not "must") use .async_end_sending() before Channel dtor.  Again though... doesn't matter for
-       * us!  But serious apps should do all the good stuff as recommended. */
-
-#if 0 // XXX
-      FLOW_LOG_INFO("< Expecting client to signal they are done; so we can blow everything away.");
-      req.reset();
-      m_chan.expect_msg(Channel_struc::Msg_which_in::GET_CACHE_REQ, &req,
-                        [&](auto&&) { g_asio.stop(); });
-      if (req) { g_asio.stop(); }
-#else
-      flow::util::this_thread::sleep_for(boost::chrono::seconds(5));
       g_asio.stop();
-#endif
 
       /* The .stop() is needed here, because struc::Channel is always reading all internally incoming messages ASAP;
        * so it always has an .async_wait() outstanding.  Hence the .run() never runs out of work, unless we
