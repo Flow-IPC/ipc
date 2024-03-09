@@ -64,7 +64,7 @@ in-process:
   - The resulting machine code is *much slower*, using more processor cycles and memory.
   - The source code to achieve it is *much more difficult to develop and reuse*, even with the help
     of powerful APIs including Boost.interprocess and Boost.asio.
-    - If one avoids copying X -- the basic cause of the slowness -- one must use SHM.  This increases the difficulty
+    - If one wishes to avoid copying X -- the basic cause of the slowness -- one must use SHM to store X.  This increases the difficulty
       10-fold, and the resulting code is rarely reusable.
 
 ## How does Flow-IPC help?
