@@ -114,7 +114,7 @@ hash:
 App 2 receives the `GetCacheRsp` message and prints the round-trip time (RTT): from just before sending
 `GetCacheReq` to just after accessing some of the file data (e.g. `rsp_root.getFileParts()[0].getHashToVerify()` to
 check the first hash).  This RTT is the *IPC-induced latency*: roughly speaking the time
-penalty compared to having a monolithic application.
+penalty compared to having a monolithic (1-process) application (instead of the *split* into app 1 and app 2).
 
 Observations (tested using decent server-grade hardware):
   - With Flow-IPC: the round-trip latency is ~100 microseconds *regardless of the size of the payload*.
