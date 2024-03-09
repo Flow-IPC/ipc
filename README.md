@@ -140,9 +140,9 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
   // Open session e.g. near start of program.  A session is the communication context between the processes
   // engaging in IPC.  (You can create communication channels at will from the `session` object.  No more naming!)
   Session session{ CLI_APP, SRV_APP, on_session_closed_func };
-  // Ask for 1 communication *channel* to be immediately available.
+  // Ask for 1 communication *channel* to be available on both sides from the very start of the session.
   Session::Channels ipc_channels(1);
-  session.sync_connect(session.mdt_builder(), &ipc_channels); // Instant.
+  session.sync_connect(session.mdt_builder(), &ipc_channels); // Instantly open session -- and the 1 channel.
   auto& ipc_channel = ipc_channels[0];
   // (Can also instantly open more channel(s) anytime: `session.open_channel(&channel)`.)
 
@@ -160,6 +160,7 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
 
   // ...
 
+  // More vanilla Cap'n Proto accessor code.
   void verify_hash(const schema::GetCacheRsp::Reader& rsp_root, size_t idx)
   {
     const auto file_part = rsp_root.getFileParts()[idx];
