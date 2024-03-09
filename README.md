@@ -126,7 +126,7 @@ Observations (tested using decent server-grade hardware):
 The code for this, when using Flow-IPC, is straighforward.  Here's how it might look on the client side:
 
   ~~~
-  // Specify that we *do* want zero-copy behavior, by merely choosing your backing-session type.
+  // Specify that we *do* want zero-copy behavior, by merely choosing our backing-session type.
   using Session = ipc::session::shm::classic::Client_session; // Note the `::shm`: means SHM-backed session.
 
   // IPC app universe: simple structs naming the 2 apps, so we know with whom to engage in IPC,
