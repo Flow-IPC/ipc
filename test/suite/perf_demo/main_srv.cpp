@@ -25,7 +25,7 @@
  * a benchmark summary.
  *
  * If macro JEM_ELSE_CLASSIC is set to 1, the SHM-provider providing zero-copy mechanics (internally) will be
- * SHM-jemalloc.  Otherwise (e.g., undefined or set to 0) it will SHM-classic.  (In our experience the benchmark
+ * SHM-jemalloc.  Otherwise (e.g., undefined or set to 0) it will be SHM-classic.  (In our experience the benchmark
  * results so far are pretty similar, but it's still nice to exercise both.)  As of this writing the nearby
  * build script shall generate both pairs of programs:
  * perf_demo_{srv|cli}_shm_classic.exec and perf_demo_{srv|cli}_shm_jemalloc.exec.  So pick which type you want
@@ -45,24 +45,24 @@
  *     don't have to worry about tons of possible runtime scenarios... we can take some shortcuts for brevity's sake;
  *     the applications remain stable and safe, and the code's easier to follow at a glance.
  *     - Same deal with setting up session and channel error handlers.  Serious applications should!  We need not.
- *   - We use a few stylistic "shortcuts" like (file-local) global variables.  Serious applications should not (and the
- *     actual Flow-IPC code do not) make such shortcuts!
+ *   - We use a few stylistic "shortcuts" like (file-local) global variables.  Serious applications should probably not
+ *     (and the actual Flow-IPC code does not) make such shortcuts!
  *
- * This is common for test code and doesn't usually engender this kind of of disclaimer.  Why make say the above
+ * This is common for test code and doesn't usually engender this kind of disclaimer.  Why say the above
  * then?  Answer: It seems likely that once we add some more benchmarks, both applications (including the shared code,
- * currently common.[hc]pp) in the meta-app should morph into a more stylistically beautiful thing.  Please keep
+ * currently common.[hc]pp) in the meta-app should morph into a more beautiful thing.  Please keep
  * this in mind when/if expanding this meta-application. */
 
 using Session = Session_server::Server_session_obj;
 // For when we test "classic" use of Cap'n Proto (capnp), sans Flow-IPC structured-transport layer.
 using Capnp_heap_engine = ::capnp::MallocMessageBuilder;
 
-/* In this app we stubbornly stick to the original thread without creating a new ones.  This is partially to show
+/* In this app we stubbornly stick to the original thread without creating new ones.  This is partially to show
  * an example that it can be done if desired, via use of sync_io-pattern API; and more importantly to not even
  * give away the slight latency increase (due to context switching and inter-thread signaling) endemic to the
  * simpler async-I/O API, which involves background threads being created.  We are testing max perf here.
  *
- * This boost::asio::io_context's .run() is executed from the original thread, and the various Flow-IPC async ops
+ * This boost::asio::io_context's .run() is executed from (as) the original thread, and the various Flow-IPC async ops
  * hook into this event loop.
  *
  * It doesn't need to be global; it's just for coding expediency (for now at least), as it's referenced in a few
@@ -129,7 +129,7 @@ int main(int argc, char const * const * argv)
       const auto total_sz_mi = (argc >= 2) ? lexical_cast<float>(argv[1]) : TOTAL_SZ_MI;
 
       /* Fill out vanilla capnp::MallocMessageBuilder g_capnp_msg with a whole bunch of data.
-       * A given benchmarks can then transmit this directly; or prepare a perhaps-non-vanilla MessageBuilder
+       * A given benchmark can then transmit this directly; or prepare a perhaps-non-vanilla MessageBuilder
        * (perhaps a fancy Flow-IPC SHM-backed one!) and deep-copy this guy into that, for identical data
        * that the opposing side can (upon receipt) access and verify using the exact same code.
        *
@@ -144,7 +144,7 @@ int main(int argc, char const * const * argv)
        *   - [Client (they) issue a short message, the get-cache-request.
        *   - We receive it and immediately response with the prepared structure as the get-cache-response message.
        *   - Client receives the short message and briefly accesses some part of it.]
-       *   - Client has *timed* the parts in [] brackets.  That's the RTT result of the benchmark.  So it prints
+       *   - Client has *timed* the parts in [brackets] above.  That's the RTT result of the benchmark.  So it prints
        *     that result.
        *   - Client then runs through the whole structure and checks file-part hashes and sizes and what-not.
        *
@@ -164,14 +164,14 @@ int main(int argc, char const * const * argv)
         auto data = file_part.initData(FILE_PART_SZ);
         for (size_t byte_idx = 0; byte_idx != FILE_PART_SZ; ++byte_idx)
         {
-          data[byte_idx] = uint8_t(byte_idx % 256);
+          data[byte_idx] = uint8_t(byte_idx % 256); // Dummy data... let's not just leave it as zeroes.
         }
         file_part.setDataSizeToVerify(FILE_PART_SZ);
         /* Obviously a Boost string hash is not a cryptographically sound hash.  Fine for our purposes
          * of sanity-checking that whatever the client received and accessed was at least mutually consistent nad
          * not junk that accidentally didn't cause capnp to throw an exception during an accessor. */
         file_part.setDataHashToVerify(boost::hash<String_view>()
-                                        (String_view(reinterpret_cast<char*>(data.begin()), FILE_PART_SZ)));
+                                        (String_view(reinterpret_cast<const char*>(data.begin()), FILE_PART_SZ)));
       }
 
       /* Note total_sz_mi is just a rough guide; we only count the GetCacheRsp.data field as "taking space";
@@ -233,7 +233,7 @@ int main(int argc, char const * const * argv)
      * This one we'll just keep using in this raw form (no Flow-IPC transport::struc::Channel over it). */
     auto& chan_raw = chans[0];
 
-    // And this one we immediately upgrade to a Flow-IPC transport::Struc::Channel.
+    // And this one we immediately upgrade to a Flow-IPC transport::struc::Channel.
     Channel_struc chan_struc(&log_logger, std::move(chans[1]), // Structured channel: SHM-backed underneath.
                              ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session);
 
@@ -267,7 +267,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
    * large response; the client receives it; spits out RTT for the timing run; and verifies the data appears to
    * be fine.  Now specifically in *this* run:
    *   - "The data" is simply g_capnp_msg, a MallocMessageBuilder-backed (so, stored as N segments in heap, not SHM,
-   *     as arranged by capnp-supplied MallocMessageBuilder).  So it's already prepared back in main(), we needn't
+   *     as arranged by capnp-supplied MallocMessageBuilder).  So it's already prepared back in main(): we needn't
    *     do any more prep.
    *   - The "send" and "receive" transport mechanism is a local stream socket (Unix domain socket), as prepared
    *     for us by main() in *chan_ptr.
@@ -287,7 +287,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
    *   - Can't this be done in, like, one line using a capnp helper API?  Why all these lines?
    *     (NOTE: This particularly applies to the run_capnp_over_raw() counterpart in main_cli.cpp; we are mostly
    *     sending stuff, which Flow-IPC unstructured-transport API makes very easy; but reading involves potential
-   *     asyncness; so that other run_capnpa_over_raw() is actually quite a few lines.)
+   *     asyncness; so that other run_capnpa_over_raw() -- over in main_cli.cpp -- is actually quite a few lines.)
    *     - Indeed; something in capnp file serialize.h -- perhaps writeMessageToFd(int fd, MessageBuilder&) to write
    *       and StreamFdMessageReader object to read -- probably will do it.  1-5 lines or so.  We could fish out
    *       the FD from *chan_ptr and have at it.  Reasons why I (ygoldfel) didn't:
@@ -310,7 +310,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
    *       as a show of purity.  The thinking is: This giant comment aside, this approach is a decent-enough mix
    *       between (1) realistic perf simulation of not-using-Flow-IPC-for-e2e-zero-copy; (2) not using unrealistically
    *       simple code that makes unrealistic assumptions about serious apps; (3) not going overboard with that and
-   *       therefore using Flow-IPC lower layers (not the e2e-zero-copy layer) to make it short enough.
+   *       therefore using Flow-IPC lower layers (not the e2e-zero-copy layer) to make the code short enough.
    *     
    * @todo In retrospect there is one thing that would simplify particularly the main_cli.cpp side, that we could've
    * done here.  (The server would take a bit longer to run, outside the benchmarked section when preparing, but who
@@ -320,7 +320,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
    * specifically sending the segment count and each segment's size -- just one big buffer.  Code would be simpler...
    * but less realistic -- probably -- as this involves an extra copy of the whole serialization on the sender side.
    * Realistically probably one would want to avoid that... at which point it's back to doing some form of what we do
-   * here.  So... toss-up whether to change this or not.  It would work as a ~equally valid perf measurement at any
+   * here.  So... toss-up whether to change this or not.  It would work as an ~equally valid perf measurement at any
    * rate. */
 
   // On to the code.
@@ -341,7 +341,6 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       m_chan(*chan_ptr)
     {
       FLOW_LOG_INFO("-- RUN - capnp request/response over raw local-socket connection --");
-
     }
 
     void start()
@@ -419,7 +418,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
           m_n -= chunk_sz;
         }
         while (m_n != 0);
-        // It's e.g. 15 extra lines; let's not poison timing with that unless console logger turned up to TRACE+.
+        // It's e.g. 15 extra log lines; let's not poison timing with that unless console logger turned up to TRACE+.
         FLOW_LOG_TRACE("= Sent segment [" << (idx + 1) << "] of [" << capnp_segs.size() << "]; "
                        "segment serialization size (capnp-decided) = "
                        "[" << ceil_div(capnp_seg.size(), size_t(1024)) << " Ki].");
@@ -446,7 +445,8 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
    * Obviously you'll see -- especially on the client side -- how much simpler it is.  And it'll be much, much, much
    * faster for most sizes above, like, 10k: as the data are *never* copied.
    *
-   * Keeping comments light, since it's the same thing but much simpler; unless there's a difference of course. */
+   * Keeping comments light, since it's the same thing but much simpler (unless there's a difference; then
+   * we comment away). */
 
   struct Algo :
     public Log_context
@@ -503,7 +503,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
       /* The .stop() is needed here, because struc::Channel is always reading all internally incoming messages ASAP;
        * so it always has an .async_wait() outstanding.  Hence the .run() never runs out of work, unless we
        * flip the g_asio internal "is-stopped" switch which causes it to in fact return the moment
-       * the .stop()ping task (function, such as this one) returns. */
+       * the .stop()ping task (function, such as this one) returns.  .stop() flips that switch. */
     } // on_request()
   }; // class Algo
 
