@@ -368,7 +368,7 @@ void run_capnp_zero_cpy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel_
   using ::capnp::word;
   using boost::asio::post;
 
-  // Reminder: see main_srv.cpp run_capnp_over_raw() counterpart; we keep comments light except for client-specifics.
+  // Reminder: see main_srv.cpp run_capnp_zero_cpy() counterpart; we keep comments light except for client-specifics.
 
   struct Algo :
     public Log_context
