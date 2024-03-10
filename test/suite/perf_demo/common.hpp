@@ -52,11 +52,10 @@ using Client_session = ssn::Client_session<ipc::session::schema::MqType::NONE, f
 using Session_server = ssn::Session_server<ipc::session::schema::MqType::NONE, false>;
 // We'll use an unstructured channel of this type (again, Unix domain socket underneath) to time non-zero-copy xmission.
 using Channel_raw = Client_session::Channel_obj;
-// We'll use a structured channel of this type to time non-zero-copy transmission of capnp-backed structured data.
+// We'll use a structured channel of this type to time zero-copy transmission of capnp-backed structured data.
 using Channel_struc = Client_session::Structured_channel<perf_demo::schema::Body>::Sync_io_obj;
 
-// A/k/a boost::asio::io_context.
-using Task_engine = flow::util::Task_engine;
+using Task_engine = flow::util::Task_engine; // A/k/a boost::asio::io_context.
 using Asio_handle = ipc::util::sync_io::Asio_waitable_native_handle;
 using Blob_const = ipc::util::Blob_const;
 using Blob_mutable = ipc::util::Blob_mutable;
