@@ -180,7 +180,7 @@ zero-copy -- i.e., simply `::write()`ing a copy of the capnp serialization of `r
 The preceding example was chosen for 2 reasons:
   - *Performance*: It demonstrates the performance benefits of end-to-end zero-copy.
   - *capnp integration*: It shows what it's like to transmit capnp-encoded structures using Flow-IPC, plus
-    a look at session/channel management and (glacingly) Flow-IPC channel features like request/response.
+    a look at session/channel management and (glancingly) Flow-IPC channel features like request/response.
 
 ## So Flow-IPC is for transmitting Cap'n Proto messages?
 
