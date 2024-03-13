@@ -215,7 +215,7 @@ merely a "black box" of capabilities.  E.g., for advanced users:
 
 ## What's next?
 
-If the [example](#how-does-flow-ipc-help) and/or [promises](#so-flow-ipc-is-for-sending-cap-n-proto-messages) above
+If the [example](#how-does-flow-ipc-help) and/or [promises](#so-flow-ipc-is-for-transmitting-capn-proto-messages) above
 have piqued your interest:
 
 In the Manual, the [API Overview / Synopsis](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html)
