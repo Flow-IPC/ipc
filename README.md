@@ -219,7 +219,7 @@ If the [example](#how-does-flow-ipc-help) and/or [promises](#so-flow-ipc-is-for-
 have piqued your interest:
 
 Find a little example of transmitting a structured message containing the string `Hello, world!` and
-the number `42` in this [pair of test programs](./ipc_shm_arena_lend/test/basic/link_test/).
+the number `42` in this [pair of test programs](https://github.com/Flow-IPC/ipc_shm/tree/main/test/basic/link_test).
 
 In the Manual, the [API Overview / Synopsis](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/api_overview.html)
 summarizes (with code snippets) what is available in Flow-IPC.
