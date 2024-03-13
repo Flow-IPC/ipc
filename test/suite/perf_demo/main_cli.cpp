@@ -87,8 +87,8 @@ int main(int argc, char const * const * argv)
     Channel_struc chan_struc(&(*log_logger), std::move(chans[1]), // Structured channel: SHM-backed underneath.
                              ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session);
 
-    run_capnp_over_raw(&std_logger, &chan_raw); // Benchmark 1.  capnp data transmission without Flow-IPC zero-copy.
-    run_capnp_zero_cpy(&std_logger, &chan_struc); // Benchmark 2.  Same but with it.
+    run_capnp_over_raw(&(*std_logger), &chan_raw); // Benchmark 1.  capnp data transmission without Flow-IPC zero-copy.
+    run_capnp_zero_cpy(&(*std_logger), &chan_struc); // Benchmark 2.  Same but with it.
 
     /* They already printed detailed timing info; now let's summarize the total results.  As you can see it
      * just prints b1's RTT, b2's RTT, and the ratio; while reminding how much data was transmitted.

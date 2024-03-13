@@ -213,8 +213,8 @@ int main(int argc, char const * const * argv)
     Channel_struc chan_struc(&(*log_logger), std::move(chans[1]), // Structured channel: SHM-backed underneath.
                              ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session);
 
-    run_capnp_over_raw(&std_logger, &chan_raw); // Benchmark 1.  capnp data transmission without Flow-IPC zero-copy.
-    run_capnp_zero_copy(&std_logger, &chan_struc, &session); // Benchmark 2.  Same but with it.
+    run_capnp_over_raw(&(*std_logger), &chan_raw); // Benchmark 1.  capnp data transmission without Flow-IPC zero-copy.
+    run_capnp_zero_copy(&(*std_logger), &chan_struc, &session); // Benchmark 2.  Same but with it.
 
     FLOW_LOG_INFO("Exiting.");
   } // try
