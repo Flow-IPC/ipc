@@ -104,7 +104,7 @@ void setup_logging(std::optional<flow::log::Simple_ostream_logger>* std_logger,
 
   // This is separate: the IPC/Flow logging will go into this file.
   const auto LOG_FILE = ostream_op_string(S_EXEC_PREFIX, srv_else_cli ? SRV_NAME : CLI_NAME, ".log");
-  const size_t ARG_IDX = srv_else_cli ? 1 : 2;
+  const size_t ARG_IDX = srv_else_cli ? 2 : 1;
   const auto log_file = (size_t(argc) > ARG_IDX) ? String_view(argv[ARG_IDX]) : String_view(LOG_FILE);
   FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
   static auto log_config = std_log_config;
