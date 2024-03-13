@@ -51,6 +51,7 @@ int main(int argc, char const * const * argv)
   using boost::chrono::microseconds;
   using boost::chrono::round;
   using std::exception;
+  using std::optional;
 
   /* Set up logging within this function.  We could easily just use `cout` and `cerr` instead, but this
    * Flow stuff will give us time stamps and such for free, so why not?  Normally, one derives from

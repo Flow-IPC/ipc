@@ -88,6 +88,7 @@ int main(int argc, char const * const * argv)
   using boost::promise;
   using boost::lexical_cast;
   using std::exception;
+  using std::optional;
 
   constexpr float TOTAL_SZ_MI = 1 * 1000;
 
