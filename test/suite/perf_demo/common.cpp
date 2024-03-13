@@ -57,8 +57,8 @@ const ipc::session::Client_app::Master_set CLI_APPS
               {
                 CLI_NAME,
                 /* The ipc::session security model is such that the binary must be invoked *exactly* using the
-                * command listed here.  In *nix land at least this is how that is likely to look.
-                * (In a production scenario this would be a canonical (absolute, etc.) path.) */
+                 * command listed here.  In *nix land at least this is how that is likely to look.
+                 * (In a production scenario this would be a canonical (absolute, etc.) path.) */
                 fs::path(".") / (S_EXEC_PREFIX + CLI_NAME + S_EXEC_PRE_POSTFIX + S_EXEC_POSTFIX),
                 ::geteuid(), ::getegid()
               }
@@ -77,6 +77,39 @@ void ensure_run_env(const char* argv0, bool srv_else_cli)
                                            "equal our particular executable off the CWD, namely [", exp_path, "]; "
                                            "try again please.  I.e., the CWD must contain the executable."));
   }
+}
+
+void setup_logging(std::optional<flow::log::Simple_ostream_logger>* std_logger,
+                   std::optional<flow::log::Async_file_logger>* log_logger,
+                   int argc, char const * const * argv, bool srv_else_cli)
+{
+  using flow::util::String_view;
+  using flow::util::ostream_op_string;
+  using flow::log::Config;
+  using flow::log::Sev;
+  using flow::Flow_log_component;
+
+  // `static`s below because must exist throughout the logger's existence; this is an easy way in our little app.
+
+  // Console logger setup.
+  static Config std_log_config;
+  std_log_config.init_component_to_union_idx_mapping<Flow_log_component>
+    (1000, Config::standard_component_payload_enum_sparse_length<Flow_log_component>());
+  std_log_config.init_component_to_union_idx_mapping<ipc::Log_component>
+    (2000, Config::standard_component_payload_enum_sparse_length<ipc::Log_component>());
+  std_log_config.init_component_names<Flow_log_component>(flow::S_FLOW_LOG_COMPONENT_NAME_MAP, false, "flow-");
+  std_log_config.init_component_names<ipc::Log_component>(ipc::S_IPC_LOG_COMPONENT_NAME_MAP, false, "ipc-");
+  std_logger->emplace(&std_log_config);
+  FLOW_LOG_SET_CONTEXT(&(**std_logger), Flow_log_component::S_UNCAT);
+
+  // This is separate: the IPC/Flow logging will go into this file.
+  const auto LOG_FILE = ostream_op_string(S_EXEC_PREFIX, srv_else_cli ? SRV_NAME : CLI_NAME, ".log");
+  const size_t ARG_IDX = srv_else_cli ? 1 : 2;
+  const auto log_file = (argc > ARG_IDX) ? String_view(argv[ARG_IDX]) : String_view(LOG_FILE);
+  FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
+  static auto log_config = std_log_config;
+  log_config.configure_default_verbosity(Sev::S_INFO, true);
+  log_logger->emplace(nullptr, &log_config, log_file, false /* No rotation; we're no serious business. */);
 }
 
 void ev_wait(Asio_handle* hndl_of_interest,
