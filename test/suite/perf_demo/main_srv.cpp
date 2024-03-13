@@ -82,43 +82,29 @@ int main(int argc, char const * const * argv)
 {
   using flow::log::Simple_ostream_logger;
   using flow::log::Async_file_logger;
-  using flow::log::Config;
-  using flow::log::Sev;
   using flow::Flow_log_component;
   using flow::util::String_view;
   using flow::util::ceil_div;
   using boost::promise;
   using boost::lexical_cast;
   using std::exception;
+  using std::optional;
 
-  constexpr String_view LOG_FILE = "perf_demo_srv.log";
   constexpr float TOTAL_SZ_MI = 1 * 1000;
-  constexpr int BAD_EXIT = 1;
 
-  // Set up logging.
-  Config std_log_config;
-  std_log_config.init_component_to_union_idx_mapping<Flow_log_component>
-    (1000, Config::standard_component_payload_enum_sparse_length<Flow_log_component>());
-  std_log_config.init_component_to_union_idx_mapping<ipc::Log_component>
-    (2000, Config::standard_component_payload_enum_sparse_length<ipc::Log_component>());
-  std_log_config.init_component_names<Flow_log_component>(flow::S_FLOW_LOG_COMPONENT_NAME_MAP, false, "flow-");
-  std_log_config.init_component_names<ipc::Log_component>(ipc::S_IPC_LOG_COMPONENT_NAME_MAP, false, "ipc-");
-  Simple_ostream_logger std_logger(&std_log_config);
-  FLOW_LOG_SET_CONTEXT(&std_logger, Flow_log_component::S_UNCAT);
-  FLOW_LOG_INFO("FYI -- Usage: " << argv[0] << " [msg payload size in MiB] [log file]");
-  FLOW_LOG_INFO("FYI -- Defaults: " << TOTAL_SZ_MI << " " << LOG_FILE);
-  // This is separate: the IPC/Flow logging will go into this file.
-  const auto log_file = (argc >= 3) ? String_view(argv[2]) : LOG_FILE;
-  FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
-  Config log_config = std_log_config;
-  log_config.configure_default_verbosity(Sev::S_INFO, true);
-  Async_file_logger log_logger(nullptr, &log_config, log_file, false);
+  /* Set up logging within this function.  We could easily just use `cout` and `cerr` instead, but this
+   * Flow stuff will give us time stamps and such for free, so why not?  Normally, one derives from
+   * Log_context to do this very trivially, but we just have the one function, main(), so far so: */
+  optional<Simple_ostream_logger> std_logger;
+  optional<Async_file_logger> log_logger;
+  setup_logging(&std_logger, &log_logger, argc, argv, true);
+  FLOW_LOG_SET_CONTEXT(&(*std_logger), Flow_log_component::S_UNCAT);
 
 #if JEM_ELSE_CLASSIC
   /* Instructed to do so by ipc::session::shm::arena_lend public docs (short version: this is basically a global,
    * and it would not be cool for ipc::session non-global objects to impose their individual loggers on it). */
   ipc::session::shm::arena_lend::Borrower_shm_pool_collection_repository_singleton::get_instance()
-    .set_logger(&log_logger);
+    .set_logger(&(*log_logger));
 #endif
 
   try
@@ -184,43 +170,33 @@ int main(int argc, char const * const * argv)
     /* Accept one session.  Use the async-I/O API, as perf for this part really doesn't matter to anyone ever,
      * and we're not timing it anyway, and it doesn't affect what happens after.  We don't start a thread; just
      * use promise/future pattern to wait until Session_server is ready with success or failure. */
-    Session_server srv(&log_logger, SRV_APPS.find(SRV_NAME)->second, CLI_APPS);
+    Session_server srv(&(*log_logger), SRV_APPS.find(SRV_NAME)->second, CLI_APPS);
     FLOW_LOG_INFO("Session-server started.  You can now invoke session-client executable from same CWD; "
                   "it will open session with some channel(s).");
 
     Session session;
-    promise<void> accepted_promise;
-    bool ok = false;
+    promise<Error_code> accepted_promise;
     Session_server::Channels chans;
     srv.async_accept(&session, &chans, nullptr, nullptr,
                      [](auto&&...) -> size_t { return 2; }, // 2 init-channels to open.
                      [](auto&&...) {},
                      [&](const Error_code& err_code)
     {
-      if (err_code)
-      {
-        FLOW_LOG_WARNING("Error is totally unexpected.  Error: [" << err_code << "] [" << err_code.message() << "].");
-      }
-      else
-      {
-        FLOW_LOG_INFO("Session accepted: [" << session << "].");
-        ok = true;
-      }
-      // Either way though:
-      accepted_promise.set_value();
+      accepted_promise.set_value(err_code);
     });
-    accepted_promise.get_future().wait();
-    if (!ok)
+    const auto err_code = accepted_promise.get_future().get();
+    if (err_code)
     {
-      return BAD_EXIT;
+      throw Runtime_error(err_code, "totally unexpected error while accepting");
     }
     // else
+    FLOW_LOG_INFO("Session accepted: [" << session << "].");
 
     /* Ignore session errors (see disclaimer comment at top of for general justification).
      * Basically we know it'll be, if anything, just the client disconnecting from us when it's done; and by that
      * point we'll be shutting down anyway.  And any transmission error will be detected along the channel of
      * transmission.  As a not-serious-production-app, no need for this stuff. */
-    session.init_handlers([](const Error_code&) {});
+    session.init_handlers([](auto&&...) {});
     // Session in PEER state (opened fully); so channels are ready too.
 
     /* For now there are just these two channels.  (See above where we specified `return 2`.)
@@ -234,18 +210,18 @@ int main(int argc, char const * const * argv)
     auto& chan_raw = chans[0];
 
     // And this one we immediately upgrade to a Flow-IPC transport::struc::Channel.
-    Channel_struc chan_struc(&log_logger, std::move(chans[1]), // Structured channel: SHM-backed underneath.
+    Channel_struc chan_struc(&(*log_logger), std::move(chans[1]), // Structured channel: SHM-backed underneath.
                              ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session);
 
-    run_capnp_over_raw(&std_logger, &chan_raw); // Benchmark 1.  capnp data transmission without Flow-IPC zero-copy.
-    run_capnp_zero_copy(&std_logger, &chan_struc, &session); // Benchmark 2.  Same but with it.
+    run_capnp_over_raw(&(*std_logger), &chan_raw); // Benchmark 1.  capnp data transmission without Flow-IPC zero-copy.
+    run_capnp_zero_copy(&(*std_logger), &chan_struc, &session); // Benchmark 2.  Same but with it.
 
     FLOW_LOG_INFO("Exiting.");
   } // try
   catch (const exception& exc)
   {
     FLOW_LOG_WARNING("Caught exception: [" << exc.what() << "].");
-    return BAD_EXIT;
+    return 1;
   }
 
   return 0;

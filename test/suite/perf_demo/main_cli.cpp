@@ -45,46 +45,32 @@ int main(int argc, char const * const * argv)
   using Session = Client_session;
   using flow::log::Simple_ostream_logger;
   using flow::log::Async_file_logger;
-  using flow::log::Config;
-  using flow::log::Sev;
   using flow::Flow_log_component;
-  using flow::util::String_view;
   using flow::util::ceil_div;
   using boost::promise;
   using boost::chrono::microseconds;
   using boost::chrono::round;
   using std::exception;
+  using std::optional;
 
-  constexpr String_view LOG_FILE = "perf_demo_cli.log";
-  constexpr int BAD_EXIT = 1;
-
-  // Set up logging.
-  Config std_log_config;
-  std_log_config.init_component_to_union_idx_mapping<Flow_log_component>
-    (1000, Config::standard_component_payload_enum_sparse_length<Flow_log_component>());
-  std_log_config.init_component_to_union_idx_mapping<ipc::Log_component>
-    (2000, Config::standard_component_payload_enum_sparse_length<ipc::Log_component>());
-  std_log_config.init_component_names<Flow_log_component>(flow::S_FLOW_LOG_COMPONENT_NAME_MAP, false, "flow-");
-  std_log_config.init_component_names<ipc::Log_component>(ipc::S_IPC_LOG_COMPONENT_NAME_MAP, false, "ipc-");
-  Simple_ostream_logger std_logger(&std_log_config);
-  FLOW_LOG_SET_CONTEXT(&std_logger, Flow_log_component::S_UNCAT);
-  // This is separate: the IPC/Flow logging will go into this file.
-  const auto log_file = (argc >= 2) ? String_view(argv[1]) : LOG_FILE;
-  FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
-  Config log_config = std_log_config;
-  log_config.configure_default_verbosity(Sev::S_INFO, true);
-  Async_file_logger log_logger(nullptr, &log_config, log_file, false);
+  /* Set up logging within this function.  We could easily just use `cout` and `cerr` instead, but this
+   * Flow stuff will give us time stamps and such for free, so why not?  Normally, one derives from
+   * Log_context to do this very trivially, but we just have the one function, main(), so far so: */
+  optional<Simple_ostream_logger> std_logger;
+  optional<Async_file_logger> log_logger;
+  setup_logging(&std_logger, &log_logger, argc, argv, false);
+  FLOW_LOG_SET_CONTEXT(&(*std_logger), Flow_log_component::S_UNCAT);
 
 #if JEM_ELSE_CLASSIC
   ipc::session::shm::arena_lend::Borrower_shm_pool_collection_repository_singleton::get_instance()
-    .set_logger(&log_logger);
+    .set_logger(&(*log_logger));
 #endif
 
   try
   {
     ensure_run_env(argv[0], false);
 
-    Session session(&log_logger,
+    Session session(&(*log_logger),
                     CLI_APPS.find(CLI_NAME)->second,
                     SRV_APPS.find(SRV_NAME)->second, [](const Error_code&) {});
 
@@ -98,11 +84,11 @@ int main(int argc, char const * const * argv)
     assert(chans.size() == 2); // Server shall offer us 2 channels.  (We could also ask for some above, but we won't.)
 
     auto& chan_raw = chans[0]; // Binary channel for raw-ish tests.
-    Channel_struc chan_struc(&log_logger, std::move(chans[1]), // Structured channel: SHM-backed underneath.
+    Channel_struc chan_struc(&(*log_logger), std::move(chans[1]), // Structured channel: SHM-backed underneath.
                              ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session);
 
-    run_capnp_over_raw(&std_logger, &chan_raw); // Benchmark 1.  capnp data transmission without Flow-IPC zero-copy.
-    run_capnp_zero_cpy(&std_logger, &chan_struc); // Benchmark 2.  Same but with it.
+    run_capnp_over_raw(&(*std_logger), &chan_raw); // Benchmark 1.  capnp data transmission without Flow-IPC zero-copy.
+    run_capnp_zero_cpy(&(*std_logger), &chan_struc); // Benchmark 2.  Same but with it.
 
     /* They already printed detailed timing info; now let's summarize the total results.  As you can see it
      * just prints b1's RTT, b2's RTT, and the ratio; while reminding how much data was transmitted.
@@ -142,7 +128,7 @@ int main(int argc, char const * const * argv)
     FLOW_LOG_WARNING("Caught exception: [" << exc.what() << "].");
     FLOW_LOG_WARNING("(Perhaps you did not execute session-server executable in parallel, or "
                      "you executed one or both of us oddly?)");
-    return BAD_EXIT;
+    return 1;
   }
 
   return 0;

@@ -26,6 +26,7 @@
 #include <flow/log/async_file_logger.hpp>
 #include <boost/filesystem/path.hpp>
 #include <string>
+#include <optional>
 
 namespace fs = boost::filesystem;
 
@@ -62,6 +63,10 @@ using Blob_mutable = ipc::util::Blob_mutable;
 
 // Invoke from main() from either application to ensure it's being run directly from the expected CWD.
 void ensure_run_env(const char* argv0, bool srv_else_cli);
+// Invoke from main() to set up console and file logging.
+void setup_logging(std::optional<flow::log::Simple_ostream_logger>* std_logger,
+                   std::optional<flow::log::Async_file_logger>* log_logger,
+                   int argc, char const * const * argv, bool srv_else_cli);
 
 void ev_wait(Asio_handle* hndl_of_interest,
              bool ev_of_interest_snd_else_rcv, ipc::util::sync_io::Task_ptr&& on_active_ev_func);
