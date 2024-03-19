@@ -117,7 +117,7 @@ class IpcRecipe(ConanFile):
         if self.options.build:
             #XXXself.requires("jemalloc/5.2.1")
             self.requires("capnproto/1.0.1")
-            self.requires("gtest/1.14.0")
+            #XXXself.requires("gtest/1.14.0")
             self.requires("flow/1.0")
 
     def build_requirements(self):
