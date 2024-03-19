@@ -717,9 +717,11 @@ jobs:
         mkdir -p ${{ env.install-dir }}
         CONFIG_LOG_PATH=$(find /home/runner/.conan/data/m4/1.4.19/_/_/build -name config.log)
         if [ -n "$CONFIG_LOG_PATH" ]; then
+          echo "Config file XXX [$CONFIG_LOG_PATH]."
           cp "$CONFIG_LOG_PATH" ${{ env.install-dir }}/config.log
         fi
         if [ "$INSTALL_STATUS" != "0" ]; then
+          echo "FAILING."
           exit $INSTALL_STATUS
         fi
 
