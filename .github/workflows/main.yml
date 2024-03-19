@@ -713,7 +713,42 @@ jobs:
         # Install Flow-IPC dependencies with Conan using the profile.
         conan editable add flow flow/1.0
         conan install . \
-          --profile:build conan_profile --profile:host conan_profile --build missing
+          --profile:build conan_profile --profile:host conan_profile --build missing || INSTALL_STATUS=$?
+        mkdir -p ${{ env.install-dir }}
+        CONFIG_LOG_PATH=$(find /home/runner/.conan/data/m4/1.4.19/_/_/build -name config.log)
+        if [ -n "$CONFIG_LOG_PATH" ]; then
+          cp "$CONFIG_LOG_PATH" ${{ env.install-dir }}/config.log
+        fi
+        if [ "$INSTALL_STATUS" != "0" ]; then
+          exit $INSTALL_STATUS
+        fi
+
+    - name: Package XXX logs tarball
+      if: |
+        always()
+      run: |
+        # Package test/demo logs tarball.
+        cd ${{ env.install-dir }}/bin
+        tar cvzf logs.tgz logs
+        rm -rf logs # Save runner space.
+
+    - name: Upload XXX logs (please inspect if failure(s) seen above)
+      if: |
+        always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: XXX-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
+        path: ${{ env.install-dir }}/bin/logs.tgz
+
+
+
+
+
+
+
+
+
+
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
 # Do we need to manually save it as an artifact?  For that matter we would then need the binary and
