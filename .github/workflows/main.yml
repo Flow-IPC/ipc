@@ -714,7 +714,7 @@ jobs:
         conan editable add flow flow/1.0
         conan install . \
           --profile:build conan_profile --profile:host conan_profile --build missing || INSTALL_STATUS=$?
-        mkdir -p ${{ env.install-dir }}
+        mkdir -p ${{ env.install-dir }}/bin/logs
         CONFIG_LOG_PATH=$(find /home/runner/.conan/data/m4/1.4.19/_/_/build -name config.log)
         if [ -n "$CONFIG_LOG_PATH" ]; then
           echo "Config file XXX [$CONFIG_LOG_PATH]."
