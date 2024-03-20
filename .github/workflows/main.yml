@@ -553,7 +553,6 @@ jobs:
           export BUILT_CMD_PREFIX='setarch -R'
           echo 'Shall use `setarch -R` to disable ASLR to avoid TSAN-built binary misbehavior.'
         fi
-
       # TODO: Ideally would go, like other things, under github.workspace somewhere (maybe build/),
       # but that var isn't available in `strategy` up above, where we specify the compiler option
       # pointing to this file.  Surely we could cook something up; but meanwhile /tmp works fine.
