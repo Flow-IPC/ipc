@@ -523,6 +523,36 @@ jobs:
           cat $SAN_SUPP_CFG
           echo '--file ]]]'
         fi
+      # Must execute this ahead of any command that might at any point execute any binary built using the
+      # build-and-test build config.  In addition, must then preface any such command with: $BUILT_CMD_PREFIX.
+      # Rationale: For most situations this is unnecessary, and the script will do nothing, while $BUILT_CMD_PREFIX
+      # will be empty as a result.  It *is* necessary only when the "target" command would execute at least one
+      # program that was built with TSAN or ASAN sanitizer (TODO: MSAN too? unknown at the moment) flags.
+      # Unfortunately, in that case, ASLR (virtual address randomization) performed by at least Linux kernel
+      # can randomly tickle a bug/problem in clang sanitizers (apparently fixed in clang-18 in late 2023) which
+      # causes a message like `FATAL: ThreadSanitizer: unexpected memory mapping 0x767804872000-0x767804d00000`
+      # to be immediately printed, with program instantly exiting failingly.  This would at least be obvious, if
+      # it's our actual code (a demo/test) failing: we can see it in the logs; but since we build deps (like jemalloc)
+      # with the same compile/link settings (e.g., -fsanitizer=thread), the problem can manifest as early as
+      # the *configure* step of something like jemalloc or m4; so configure will mysteriously fail with messages
+      # such as `checking size of void *... 0 / configure: error: Unsupported pointer size: 0`.  Really, though,
+      # it is a `configure`-created test C program that errors-out as shown before (can be seen in config.log which
+      # has to be uploaded as an artifact to even see it... a pain).  Anyway!  The easiest work-around was
+      # suggested in https://stackoverflow.com/questions/5194666/disable-randomization-of-memory-addresses:
+      # disable ASLR by using `setarch` which then invokes whatever command you wanted in the first place.
+      # This should not affect our test coverage (in fact it perhaps make it more repeatable which is good);
+      # and the security aspects of ASLR are not a real factor in our context.
+      #
+      # TODO: Revisit, particularly when adding more `clang`s and/or other compilers with which TSAN and ASAN
+      # are enabled.  Also see about MSAN (as of this writing it is disabled for orthogonal reasons, so it's moot).
+      setup-run-env: |
+        if [ '${{ matrix.build-test-cfg.sanitizer-name }}' = asan ]; then
+          export BUILT_CMD_PREFIX='setarch -R'
+          echo 'Shall use `setarch -R` to disable ASLR to avoid ASAN-built binary misbehavior.'
+        elif [ '${{ matrix.build-test-cfg.sanitizer-name }}' = tsan ]; then
+          export BUILT_CMD_PREFIX='setarch -R'
+          echo 'Shall use `setarch -R` to disable ASLR to avoid TSAN-built binary misbehavior.'
+        fi
       # TODO: Ideally would go, like other things, under github.workspace somewhere (maybe build/),
       # but that var isn't available in `strategy` up above, where we specify the compiler option
       # pointing to this file.  Surely we could cook something up; but meanwhile /tmp works fine.
@@ -701,12 +731,37 @@ jobs:
     - name: Install Flow-IPC dependencies with Conan using the profile
       run: |
         # Install Flow-IPC dependencies with Conan using the profile.
+        ${{ env.setup-run-env }}
         conan editable add flow flow/1.0
-        conan install . \
-          --profile:build conan_profile --profile:host conan_profile --build missing
+        # At least `configure` mini-programs are built with our build-settings, so $BUILD_CMD_PREFIX is required.
+        $BUILT_CMD_PREFIX \
+          conan install . \
+          --profile:build conan_profile --profile:host conan_profile --build missing || FAILED=yep
+        # Dep build failure is easy to diagnose from stdout/err, unless it happens during a `configure`;
+        # then it'll often print something insane like "checking size of void *... 0" and suggest looking at
+        # config.log... which will usually reveal the true problem, like a seg-fault or TSAN-triggered problem
+        # running the configure-generated test program.  So let's get all the `config.log`s we can find
+        # and put them where later the log artifact tarball will be sourced; recreate the same dir structure as
+        # in the Conan dep build area, but include only the `config.log` files.  Note: This is probably only truly
+        # useful if indeed the above command fails; but can't hurt to include it regardless.
+        SRC=/home/runner/.conan/data
+        DST=${{ env.install-dir }}/bin/logs/dep_build/conan-data
+        find $SRC -name config.log | while read -r config_log; do
+          # Remove the $SRC part of the path to get a relative path.
+          REL_PATH="${config_log#$SRC/}"
+          # Determine the directory path within $DST where the config.log should be copied.
+          DST_DIR="$DST/${REL_PATH%/*}"
+          mkdir -p "$DST_DIR"
+          cp -v "$config_log" "$DST_DIR"
+        done
+        [ "$FAILED" != yep ]
 
     - name: Build libraries and demos/tests with Conan
-      run: conan build .
+      run: |
+        # Build libraries and demos/tests with Conan.
+        ${{ env.setup-run-env }}
+        # At least capnp compiler binary is built with our build-settings, so $BUILD_CMD_PREFIX is required.
+        $BUILT_CMD_PREFIX conan build .
 
     - name: Install built targets with Makefile
       run: |
@@ -764,7 +819,9 @@ jobs:
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./ipc_core_link_test.exec $OUT_DIR/log.log > $OUT_DIR/console.log 2>&1
+        ${{ env.setup-run-env }}
+        $BUILT_CMD_PREFIX \
+          ./ipc_core_link_test.exec $OUT_DIR/log.log > $OUT_DIR/console.log 2>&1
 
     - name: Run link test [`ipc_transport_structured` - Flow-IPC Structured Transport]
       if: |
@@ -778,7 +835,9 @@ jobs:
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./ipc_transport_structured_link_test.exec $OUT_DIR/log.log > $OUT_DIR/console.log 2>&1
+        ${{ env.setup-run-env }}
+        $BUILT_CMD_PREFIX \
+          ./ipc_transport_structured_link_test.exec $OUT_DIR/log.log > $OUT_DIR/console.log 2>&1
 
     - name: Run link test [`ipc_session` - Flow-IPC Sessions]
       if: |
@@ -794,10 +853,13 @@ jobs:
               $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./ipc_session_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        ${{ env.setup-run-env }}
+        $BUILT_CMD_PREFIX \
+          ./ipc_session_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
         sleep 1
-        ./ipc_session_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        $BUILT_CMD_PREFIX \
+          ./ipc_session_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
         [ $SRV_EC -eq 0 ]
 
@@ -815,10 +877,13 @@ jobs:
               $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./ipc_shm_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        ${{ env.setup-run-env }}
+        $BUILT_CMD_PREFIX \
+          ./ipc_shm_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
         sleep 1
-        ./ipc_shm_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        $BUILT_CMD_PREFIX \
+          ./ipc_shm_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
         [ $SRV_EC -eq 0 ]
 
@@ -838,10 +903,13 @@ jobs:
               $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./ipc_shm_arena_lend_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        ${{ env.setup-run-env }}
+        $BUILT_CMD_PREFIX \
+          ./ipc_shm_arena_lend_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
         sleep 1
-        ./ipc_shm_arena_lend_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        $BUILT_CMD_PREFIX \
+          ./ipc_shm_arena_lend_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
         [ $SRV_EC -eq 0 ]
 
@@ -854,7 +922,7 @@ jobs:
         # Some newline issues with the possible additional args; so need to make a wrapper script
         # and then redirect, as desired, its output.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_unit_test.sh
-        ./libipc_unit_test.exec "$@"
+        $BUILT_CMD_PREFIX ./libipc_unit_test.exec "$@"
         EOF
         RUN_IT='/usr/bin/bash -e ${{ env.install-dir }}/bin/run_unit_test.sh'
         OUT_DIR=logs/libipc_unit_test
@@ -870,6 +938,7 @@ jobs:
               $SUPP_DIR_OWN/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_OWN/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
+        ${{ env.setup-run-env }}
         if [ '${{ matrix.build-test-cfg.sanitizer-name }}' != tsan ]; then
           # This is what we want to do normally.
           $RUN_IT > $OUT_DIR/console.log 2>&1
@@ -935,10 +1004,13 @@ jobs:
               $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./perf_demo_srv_$1.exec 1000 $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
+        ${{ env.setup-run-env }}
+        $BUILT_CMD_PREFIX \
+          ./perf_demo_srv_$1.exec 1000 $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
         sleep 20 # It fills up a large structure before listening, so give it some time (mostly for slow build types).
-        ./perf_demo_cli_$1.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
+        $BUILT_CMD_PREFIX \
+          ./perf_demo_cli_$1.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
         [ $SRV_EC -eq 0 ]
         EOF
@@ -983,11 +1055,14 @@ jobs:
         { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ./transport_test.exec scripted $OUT_DIR/srv.log info $1 \
+        ${{ env.setup-run-env }}
+        $BUILT_CMD_PREFIX \
+          ./transport_test.exec scripted $OUT_DIR/srv.log info $1 \
           < srv-script.txt > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
         sleep 1
-        ./transport_test.exec scripted $OUT_DIR/cli.log info $1 \
+        $BUILT_CMD_PREFIX \
+          ./transport_test.exec scripted $OUT_DIR/cli.log info $1 \
           < cli-script.txt > $OUT_DIR/cli.console.log 2>&1 &
         CLI_PID=$!
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
@@ -1052,11 +1127,14 @@ jobs:
               $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
-        ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/srv.log info $1 \
+        ${{ env.setup-run-env }}
+        $BUILT_CMD_PREFIX \
+          ~/bin/ex_srv.exec exercise-srv$3 $OUT_DIR/srv.log info $1 \
           > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
         sleep 5
-        ~/bin/ex_cli.exec exercise-cli$3 $OUT_DIR/cli.log info $1 \
+        $BUILT_CMD_PREFIX \
+          ~/bin/ex_cli.exec exercise-cli$3 $OUT_DIR/cli.log info $1 \
           > $OUT_DIR/cli.console.log 2>&1 &
         CLI_PID=$!
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
