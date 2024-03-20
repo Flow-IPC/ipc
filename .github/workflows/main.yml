@@ -737,7 +737,25 @@ jobs:
         # At least `configure` mini-programs are built with our build-settings, so $BUILD_CMD_PREFIX is required.
         $BUILT_CMD_PREFIX \
           conan install . \
-          --profile:build conan_profile --profile:host conan_profile --build missing
+          --profile:build conan_profile --profile:host conan_profile --build missing || EC=$?
+        # Dep build failure is easy to diagnose from stdout/err, unless it happens during a `configure`;
+        # then it'll often print something insane like "checking size of void *... 0" and suggest looking at
+        # config.log... which will usually reveal the true problem, like a seg-fault or TSAN-triggered problem
+        # running the configure-generated test program.  So let's get all the `config.log`s we can find
+        # and put them where later the log artifact tarball will be sourced; recreate the same dir structure as
+        # in the Conan dep build area, but include only the `config.log` files.  Note: This is probably only truly
+        # useful if indeed the above command fails; but can't hurt to include it regardless.
+        SRC=/home/runner/.conan/data
+        DST=${{ env.install-dir }}/bin/logs/dep_build/conan-data
+        find $SRC -name config.log | while read -r config_log; do
+          # Remove the $SRC part of the path to get a relative path.
+          REL_PATH="${config_log#$SRC/}"
+          # Determine the directory path within $DST where the config.log should be copied.
+          DST_DIR="$DST/${REL_PATH%/*}"
+          mkdir -p "$DST_DIR"
+          cp -v "$config_log" "$DST_DIR"
+        done
+        [ $EC -eq 0 ]
 
     - name: Build libraries and demos/tests with Conan
       run: |
