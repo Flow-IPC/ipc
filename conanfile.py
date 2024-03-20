@@ -115,11 +115,10 @@ class IpcRecipe(ConanFile):
 
     def requirements(self):
         if self.options.build:
-            # XXX self.requires("jemalloc/5.2.1") # XXX this now sometimes fails during `jemalloc` configure step with ASAN, TSAN
-            # XXX plus something below and/or jemalloc requires `m4` which now sometimes fails during `m4` configure step with ASAN, TSAN
-            self.requires("gtest/1.14.0")
             self.requires("capnproto/1.0.1")
             self.requires("flow/1.0")
+            self.requires("gtest/1.14.0")
+            self.requires("jemalloc/5.2.1")
 
     def build_requirements(self):
         self.tool_requires("cmake/3.26.3")

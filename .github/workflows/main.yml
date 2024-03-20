@@ -712,7 +712,7 @@ jobs:
       run: |
         # Install Flow-IPC dependencies with Conan using the profile.
         conan editable add flow flow/1.0
-        setarch `uname -m` -R \
+        setarch -R \
           conan install . \
           --profile:build conan_profile --profile:host conan_profile --build missing || INSTALL_STATUS=$?
         mkdir -p ${{ env.install-dir }}/bin/logs
