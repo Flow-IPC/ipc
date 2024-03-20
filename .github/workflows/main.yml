@@ -737,7 +737,8 @@ jobs:
         # At least `configure` mini-programs are built with our build-settings, so $BUILD_CMD_PREFIX is required.
         $BUILT_CMD_PREFIX \
           conan install . \
-          --profile:build conan_profile --profile:host conan_profile --build missing || EC=$?
+          --profile:build conan_profile --profile:host conan_profile --build missing || true
+        EC=$?
         # Dep build failure is easy to diagnose from stdout/err, unless it happens during a `configure`;
         # then it'll often print something insane like "checking size of void *... 0" and suggest looking at
         # config.log... which will usually reveal the true problem, like a seg-fault or TSAN-triggered problem
