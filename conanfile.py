@@ -114,7 +114,7 @@ class IpcRecipe(ConanFile):
 
     def requirements(self):
         if self.options.build:
-            flow_version = load_version_from_file("./flow/VERSIONXXX")
+            flow_version = load_version_from_file("./flow/VERSION")
             self.requires("capnproto/1.0.1")
             self.requires(f"flow/{flow_version}")
             self.requires("gtest/1.14.0")
