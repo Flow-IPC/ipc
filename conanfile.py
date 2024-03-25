@@ -18,16 +18,16 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, cmake_layout, CMakeDeps, CMakeToolchain
 
-def load_version_from_file(): # TODO: Code-reuse from flow/conanfile.py?
-    version_path = './VERSION'
-    with open(version_path, 'r') as version_file:
+def load_version_from_file(version_path):  # Now takes version_path as an argument
+    with open(version_path, "r") as version_file:
         # Read the entire file content and strip whitespace (matches what FlowLikeProject.cmake does).
         version = version_file.read().strip()
     return version
 
 class IpcRecipe(ConanFile):
     name = "ipc"
-    version = load_version_from_file()
+    version = load_version_from_file("./VERSION")
+    flow_version = load_version_from_file("./flow/VERSION")
     settings = "os", "compiler", "build_type", "arch"
 
     DOXYGEN_VERSION = "1.9.4"
@@ -116,7 +116,7 @@ class IpcRecipe(ConanFile):
     def requirements(self):
         if self.options.build:
             self.requires("capnproto/1.0.1")
-            self.requires("flow/1.0")
+            self.requires(f"flow/{self.flow_version}")
             self.requires("gtest/1.14.0")
             self.requires("jemalloc/5.2.1")
 
