@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -501,7 +501,7 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 </ul>
 </li>
 </ul>
-<p >For Cap'n Proto enthusiasts, <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send().">ipc::transport::struc::Msg_out</a> provides a couple ways of structuring your message-filling in addition to the vanilla way shown in the example above.</p><ul>
+<p >For Cap'n Proto enthusiasts, <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">ipc::transport::struc::Msg_out</a> provides a couple ways of structuring your message-filling in addition to the vanilla way shown in the example above.</p><ul>
 <li><code>Msg_out::orphanage()</code> lets one operate a capnp <em>orphanage</em>. You can build things there in bottom-up fashion and then <code>...adopt....()</code> them into the root message.</li>
 <li>Construct <code>Msg_out</code> explicitly, by giving it an existing <code>capnp::MessageBuilder</code>. This allows for completely arbitrary Cap'n Proto mutation work, without having to use any orphanage.</li>
 </ul>
@@ -681,7 +681,7 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 20 2024 06:27:24 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Tue Mar 26 2024 02:49:32 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

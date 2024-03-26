@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -179,7 +179,7 @@ $(function() {
 <dl class="section user"><dt></dt><dd>After that it's a matter of using the documented <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html"><code>sync_io</code> API</a>. It is similar, but not identical, to <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">the async-I/O one</a>.</dd></dl>
 <hr  />
 <h2>Using a <code>struc::Channel</code> to transmit </h2>
-<p >Naturally you'll need something to send, and therefore receive, before you can do that. You'll need to create an <b>out-message</b> as per <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send().">ipc::transport::struc::Msg_out</a> API. Let's get into that.</p>
+<p >Naturally you'll need something to send, and therefore receive, before you can do that. You'll need to create an <b>out-message</b> as per <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">ipc::transport::struc::Msg_out</a> API. Let's get into that.</p>
 <h3>Creating and mutating out-messages</h3>
 <p ><code>struc::Msg_out</code> is, in essence, not too much different from a container. You declare it; you construct it (on the stack if desired); you mutate it; you destroy it. <code>struc::Msg_out</code>s are not copyable, but they are (cheaply) movable (move-constructible, move-assignable). While they can be constructed explicitly, it's by far easiest to leverage your <code>struc::Channel</code> &ndash; in our case <code>Cool_structured_channel</code>:</p>
 <div class="fragment"><div class="line">Cool_structured_channel::Msg_out msg = cool_channel.create_msg();</div>
@@ -617,7 +617,7 @@ Last thing (applies to async-I/O pattern only, not <code>sync_io</code>): <code>
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 20 2024 06:27:24 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Tue Mar 26 2024 02:49:32 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

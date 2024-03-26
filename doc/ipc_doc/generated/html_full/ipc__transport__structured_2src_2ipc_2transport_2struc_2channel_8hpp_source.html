@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -219,8 +219,8 @@ $(function() {
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment"> * What does struc::Channel add, broadly speaking, that transport::Channel does not already have?  Why even bother?</span></div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment"> * Answer:</span></div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment"> *   - Firstly, each message no longer consists of an (optional unstructured binary blob, optional #Native_handle) pair.</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment"> *     Instead if consists of a (structured capnp-schema-based message, #Native_handle) pair, where the latter is</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment"> *     optional.  In other words this class adds the (mandatory) ability to send *structured* data instead of mere</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment"> *     Instead if consists of a (structured capnp-schema-based message, optional #Native_handle) pair.</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment"> *     In other words this class adds the (mandatory) ability to send *structured* data instead of mere</span></div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment"> *     binary blobs.  The schema language of choice is Cap&#39;n Proto (capnp), which allows for zero-copy perf</span></div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment"> *     *at least* until blobs enter the transport and after they exit the transport.</span></div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment"> *     - By choosing to use SHM-based serialization storage for out-messages, zero-copy perf can be extended</span></div>
@@ -341,8 +341,8 @@ $(function() {
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment"> *     incoming GET_REQ `x` and similarly for the POSTs.</span></div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment"> *   - I am a client, and I issue GET and POST messages.  I invoke `async_request(x, ..., nullptr, handle_get_rsp)`</span></div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment"> *     for a GET and `async_request(y, ..., nullptr, handle_post_rsp)`, where earlier one did:</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment"> *     - `x = ....create_msg()`; `x-&gt;root_body-&gt;initGetReq().set{Url|HostHeader}(...)`;</span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment"> *     - `y = ....create_msg()`; `y-&gt;root_body-&gt;initPostReq().set{Url|HostHeader|PostBody}(...)`.</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment"> *     - `x = ....create_msg()`; `x-&gt;body_root()-&gt;initGetReq().set{Url|HostHeader}(...)`;</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment"> *     - `y = ....create_msg()`; `y-&gt;body_root()-&gt;initPostReq().set{Url|HostHeader|PostBody}(...)`.</span></div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment"> * Last but not least: How does one read the contents of an incoming message?  For both paths -- unsolicited message</span></div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment"> * expectation via expect_msg()/expect_msgs() + response message expectation via async_request() alike -- the</span></div>
@@ -477,7 +477,7 @@ $(function() {
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span><span class="comment"> * the underlying serialization will not be destroyed yet, even if #Msg_out is.  Normally the opposing</span></div>
 <div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span><span class="comment"> * struc::Channel will be used to receive the message, in a real #Msg_in, via an aforementioned in-message</span></div>
 <div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span><span class="comment"> * handler.  If this does not occur, the message leaks until the containing SHM arena is cleaned-up.</span></div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span><span class="comment"> * (If you use ipc::session to manage SHM arena(s), which is the normal scenarios, then ipc::session will take</span></div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span><span class="comment"> * (If you use ipc::session to manage SHM arena(s), which is the normal scenario, then ipc::session will take</span></div>
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span><span class="comment"> * care of this for you.  See ipc::session documentation, starting with the namespace doc header.)</span></div>
 <div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span><span class="comment"> * Suppose in your application, at this point, you will never again write to the #Msg_out further (modify it).</span></div>
@@ -965,7 +965,7 @@ $(function() {
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span><span class="comment">   *</span></div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span><span class="comment">   * @note You may use this in logged-in phase; or in logging-in phase, as a server.</span></div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span><span class="comment">   * ### Send mechanics (applied to async_request() also) ###</span></div>
+<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span><span class="comment">   * ### Send mechanics (applies also to async_request() and sync_request()) ###</span></div>
 <div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span><span class="comment">   * The purpose of this important method is hopefully clear.  That it&#39;s, essentially, a wrapper for</span></div>
 <div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span><span class="comment">   * one of the aforementioned transport::Channel methods is also probably obvious.  However its error-reporting</span></div>
 <div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span><span class="comment">   * semantics are somewhat different from transport::Channel and the `Blob_sender`/`Native_handle_sender` concept(s) it</span></div>
@@ -980,7 +980,7 @@ $(function() {
 <div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span><span class="comment">   *     - If not -- if it emitted error E -- then send() emits error E.</span></div>
 <div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span><span class="comment">   *       - And `*this` shall be considered hosed for any subsequent transmission.</span></div>
 <div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span><span class="comment">   * ### In more detail (applied to async_request() also) ###</span></div>
+<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span><span class="comment">   * ### In more detail (applies also to async_request() and sync_request()) ###</span></div>
 <div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span><span class="comment">   * Here is what the method does, ignoring logged-in phase checks and potential change inside.</span></div>
 <div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span><span class="comment">   *   -# If `msg` contains a #Native_handle, but Channel::S_HAS_BLOB_PIPE_ONLY is `true`, then returns `false`</span></div>
 <div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span><span class="comment">   *      and otherwise no-ops.  This is a misuse of the chosen #Owned_channel as configured: a handles pipe</span></div>
@@ -2802,7 +2802,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 20 2024 06:27:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Tue Mar 26 2024 02:49:35 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
