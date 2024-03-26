@@ -96,6 +96,9 @@ hash:
   ~~~{.capnp}
   # Cap'n Proto schema fragment:
   # ...
+  $Cxx.namespace("perf_demo::schema");
+  struct Body { union { getCacheReq @0 :GetCacheReq; getCacheRsp @1 :GetCacheRsp; } }
+
   struct GetCacheReq { fileName @0 :Text; }
   struct GetCacheRsp
   {
@@ -127,24 +130,32 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
 
   ~~~
   // Specify that we *do* want zero-copy behavior, by merely choosing our backing-session type.
-  using Session = ipc::session::shm::classic::Client_session; // Note the `::shm`: means SHM-backed session.
+  using Session = ipc::session::shm::classic::Client_session<...>; // Note the `::shm`: means SHM-backed session.
 
   // IPC app universe: simple structs naming the 2 apps, so we know with whom to engage in IPC,
   // and same for "them" (server).
-  ipc::session::Client_app CLI_APP{ "cacheCli", "/usr/bin/cache_client.exec", CLI_UID, GID };
-  ipc::session::Server_app SRV_APP{ { "cacheSrv", "/usr/bin/cache_server.exec", SRV_UID, GID },
-                                    { CLI_APP.m_name }, "",
-                                    ipc::util::Permissions_level::S_GROUP_ACCESS }; // Safety/permissions selector.
+  const ipc::session::Client_app CLI_APP{ "cacheCli", "/usr/bin/cache_client.exec", CLI_UID, GID };
+  const ipc::session::Server_app SRV_APP{ { "cacheSrv", "/usr/bin/cache_server.exec", SRV_UID, GID },
+                                          { CLI_APP.m_name }, "",
+                                          ipc::util::Permissions_level::S_GROUP_ACCESS }; // Safety/permissions selector.
   // ...
 
   // Open session e.g. near start of program.  A session is the communication context between the processes
   // engaging in IPC.  (You can create communication channels at will from the `session` object.  No more naming!)
   Session session{ CLI_APP, SRV_APP, on_session_closed_func };
   // Ask for 1 communication *channel* to be available on both sides from the very start of the session.
-  Session::Channels ipc_channels(1);
-  session.sync_connect(session.mdt_builder(), &ipc_channels); // Instantly open session -- and the 1 channel.
-  auto& ipc_channel = ipc_channels[0];
+  Session::Channels ipc_raw_channels(1);
+  session.sync_connect(session.mdt_builder(), &ipc_raw_channels); // Instantly open session -- and the 1 channel.
+  auto& ipc_raw_channel = ipc_raw_channels[0];
   // (Can also instantly open more channel(s) anytime: `session.open_channel(&channel)`.)
+
+  // ipc_raw_channel is a raw (unstructured) channel for blobs (and/or FDs).  We want to speak capnp over it,
+  // so we upgrade it to a struc::Channel -- note the capnp-generated `perf_demo::schema::Body` class, as
+  // earlier declared in the .capnp schema.
+  Session::Structured_channel<perf_demo::schema::Body>
+    ipc_channel{ nullptr, std::move(ipc_raw_channel), // "Eat" the raw channel object.
+                 ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM, &session };
+  // Ready to exchange capnp messages via ipc_channel.
 
   // ...
 
@@ -161,7 +172,7 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
   // ...
 
   // More vanilla Cap'n Proto accessor code.
-  void verify_hash(const schema::GetCacheRsp::Reader& rsp_root, size_t idx)
+  void verify_hash(const cache_demo::schema::GetCacheRsp::Reader& rsp_root, size_t idx)
   {
     const auto file_part = rsp_root.getFileParts()[idx];
     if (file_part.getHashToVerify() != compute_hash(file_part.getData()))

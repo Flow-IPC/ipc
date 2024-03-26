@@ -732,7 +732,8 @@ jobs:
       run: |
         # Install Flow-IPC dependencies with Conan using the profile.
         ${{ env.setup-run-env }}
-        conan editable add flow flow/1.0
+        FLOW_VERSION=`cat flow/VERSION`
+        conan editable add flow flow/$FLOW_VERSION
         # At least `configure` mini-programs are built with our build-settings, so $BUILD_CMD_PREFIX is required.
         $BUILT_CMD_PREFIX \
           conan install . \

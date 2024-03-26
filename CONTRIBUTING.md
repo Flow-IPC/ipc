@@ -5,6 +5,13 @@ easily and quickly as possible, please follow the guidelines below.
 
 You may wish to glance at [INSTALL / Organization](./INSTALL.md#organization) first.
 
+## Reporting an issue
+
+Please report and/or comment on issues in GitHub, after checking the Issues tab.  Note that there are several
+repos, each with its own Issues list.  As of this writing the repos are `ipc` (the meta-repo), `ipc_*` (5
+repos together constituting the bulk of Flow-IPC), and `flow`.  When in doubt as to where to file a new
+issue, please default to the `ipc` repo's Issues list.
+
 ## Basics
 
 As mentioned in [Organization](./INSTALL.md#organization), you may
@@ -68,7 +75,7 @@ We assume either familiarity with such processes or the willingness to learn the
 So in this section we will point out a few specifics that should help and may or may not otherwise be obvious.
 
 The Flow-IPC product (including Flow dependency) lives in the [Flow-IPC organization](https://github.com/Flow-IPC)
-at GitHub.  This is open-source.  There is also a [web site hosted using GitHub pages](https://flow-ipc.github.io)]
+at GitHub.  This is open-source.  There is also a [web site hosted using GitHub pages](https://flow-ipc.github.io)
 which hosts, at least, online copies of generated documentation.
 
 The master branch in each repo is called `main`.  Thus any contribution will involve:
@@ -102,7 +109,7 @@ how that works.
      - It builds and tests the code in many configurations, such as Release, Debug, size-minimizing Release,
        Release with debug info, run-time sanitizers ASAN, UBSAN, TSAN.  The matrix includes all those configurations
        across several versions of clang compiler/linker and several versions of gcc compiler/linker.  All in all
-       the build/test job runs across ~40 configuration as of this writing.
+       the build/test job runs across ~40 configurations as of this writing.
      - It generates documentation and makes it available as a downloadable artifact (a tarball to download and peruse).
      - If any of that fails, most likely you'll need to update the PR which will re-run the pipeline.
        If it fails, then the pipeline output should make clear what went wrong.
@@ -140,7 +147,9 @@ by checking-in the updated submodule pointer(s) to `main` of `ipc`, the Flow-IPC
 and checked-in using the `ipc/` pipeline.  (Search for `git push` in the two `main.yml` files to see what we mean.)
 We have already mentioned this above.
 
-The above steps for *locally* generating the documentation are provided only so you can locally test soure code changes' effects on the resulting docs.  Locally generating and verifying docs, after changing source code, is a good idea.
+The above steps for *locally* generating the documentation are provided only
+so you can locally test soure code changes' effects on the resulting docs.
+Locally generating and verifying docs, after changing source code, is a good idea.
 However it's also possible (and for some people/situations preferable) to skip it.
 The CI/CD pipeline will mandatorily generate the docs, when a PR is created or updated, as we explained above.
 If you did not locally verify the new docs by generating and perusing them, then you must peruse the
@@ -151,10 +160,6 @@ You can watch all these pipeline runs under Actions tab in GitHub:
     is the source code that controls each given pipeline run.)
   - `ipc` repo will have "Flow-IPC pipeline" under Actions tab.  (Ditto regarding `main.yml` viewing.)
 
-## Reporting an issue
-
-Please report issues via GitHub.
-
 ## License
 
 By contributing, you agree that your contributions will be licensed under its Apache License, Version
@@ -164,6 +169,5 @@ writing the majority of sub-projects in the meta-project, indeed use the aforeme
 
 ## Coding style
 
-Please ensure that your code changes or additions
-match the current coding style used by the project.
-This is formalized in the file doc-coding_style.cpp.
+Please ensure that your code changes or additions match the current coding style used by the project.
+This is formalized in the file `doc-coding_style.cpp` in the `flow` repo.
