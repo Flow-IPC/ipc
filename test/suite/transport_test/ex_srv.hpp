@@ -407,11 +407,14 @@ void CLASS::server_accept_loop()
           post([this, idx]()
           {
             FLOW_LOG_INFO("App_session in slot [" << idx << "] reports it's done-for.  Deleting object from outside "
-                          "its own code.");
+                          "its own code.  XXX");
+            flow::util::this_thread::sleep_for(boost::chrono::seconds(3));
 
             ASSERT(m_app_sessions[idx]);
 
             m_app_sessions[idx].reset();
+            FLOW_LOG_INFO("XXX cont");
+            flow::util::this_thread::sleep_for(boost::chrono::seconds(3));
 
             ASSERT(!m_app_sessions[idx]);
 
