@@ -12,6 +12,10 @@ repos, each with its own Issues list.  As of this writing the repos are `ipc` (t
 repos together constituting the bulk of Flow-IPC), and `flow`.  When in doubt as to where to file a new
 issue, please default to the `ipc` repo's Issues list.
 
+You may also reach the maintainers -- and the rest of the community -- via the Discussions board.
+Navigate to the [Discussions tab](https://github.com/orgs/Flow-IPC/discussions) off the Flow-IPC organization
+page or `ipc` repo page.
+
 ## Basics
 
 As mentioned in [Organization](./INSTALL.md#organization), you may
