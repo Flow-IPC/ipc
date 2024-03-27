@@ -13,7 +13,7 @@ no trade-off between the two.
 
 Flow-IPC is for *C++17* (or higher) programs built for *Linux* that run on x86-64 processors.
 (Support for macOS/BSD and ARM64 is planned as an incremental task.  Adding networked IPC is also a natural
-next step.)
+next step, depending on demand.)
 
 ## Documentation
 
@@ -93,13 +93,23 @@ files ranging in size from 100kb to 1Gb.  App 2 (client) requests a file of some
 with a single message containing the file's data structured as a sequence of chunks, each accompanied by that chunk's
 hash:
 
-  ~~~{.capnp}
-  # Cap'n Proto schema fragment:
-  # ...
-  $Cxx.namespace("perf_demo::schema");
-  struct Body { union { getCacheReq @0 :GetCacheReq; getCacheRsp @1 :GetCacheRsp; } }
+  ~~~capnp
+  # Cap'n Proto schema (.capnp file, generates .h and .c++ source code using capnp compiler tool):
 
-  struct GetCacheReq { fileName @0 :Text; }
+  $Cxx.namespace("perf_demo::schema");
+  struct Body
+  {
+    union
+    {
+      getCacheReq @0 :GetCacheReq;
+      getCacheRsp @1 :GetCacheRsp;
+    }
+  }
+
+  struct GetCacheReq
+  {
+    fileName @0 :Text;
+  }
   struct GetCacheRsp
   {
     # We simulate the server returning files in multiple equally-sized chunks, each sized at its discretion.
@@ -128,15 +138,26 @@ Observations (tested using decent server-grade hardware):
 
 The code for this, when using Flow-IPC, is straighforward.  Here's how it might look on the client side:
 
-  ~~~
+  ~~~cpp
   // Specify that we *do* want zero-copy behavior, by merely choosing our backing-session type.
-  using Session = ipc::session::shm::classic::Client_session<...>; // Note the `::shm`: means SHM-backed session.
+  // In other words, setting this alias says, “be fast about Cap’n Proto things.”
+  // (Different (subsequent) capnp-serialization-backing and SHM-related behaviors are available;
+  // just change this alias’s value. E.g., omit `::shm::classic` to disable SHM entirely; or
+  // specify `::shm::arena_lend::jemalloc` to employ jemalloc-based SHM. Subsequent code remains
+  // the same! This demonstrates a key design tenet of Flow-IPC.)
+  using Session = ipc::session::shm::classic::Client_session<...>;
 
-  // IPC app universe: simple structs naming the 2 apps, so we know with whom to engage in IPC,
-  // and same for "them" (server).
-  const ipc::session::Client_app CLI_APP{ "cacheCli", "/usr/bin/cache_client.exec", CLI_UID, GID };
+  // IPC app universe: simple structs naming and describing the 2 apps involved.
+  //   - Name the apps, so client knows where to find server, and server knows who can connect to it.
+  //   - Specify certain items -- binary location, user/group -- will be cross-checked with the OS for safety.
+  //   - Specify a safety/permissions policy, so that internally permissions are set as restrictively as possible,
+  //     but not more.
+  // The applications should share this code (so the same statement should execute in the server app also).
+  const ipc::session::Client_app CLI_APP{ "cacheCli", // Name.
+                                          "/usr/bin/cache_client.exec", CLI_UID, GID }; // Safety details.
   const ipc::session::Server_app SRV_APP{ { "cacheSrv", "/usr/bin/cache_server.exec", SRV_UID, GID },
-                                          { CLI_APP.m_name }, "",
+                                          { CLI_APP.m_name }, // Which apps may connect to cacheSrv?  (cacheCli may.)
+                                          "", // (Optional path override; disregard.)
                                           ipc::util::Permissions_level::S_GROUP_ACCESS }; // Safety/permissions selector.
   // ...
 
@@ -251,8 +272,8 @@ Here's a bird's eye view of Flow-IPC (left) and a compact exploration of a singl
 - On the right -- zooming into a single *channel*; and how it transmits data of various kinds, especially without
   copying (therefore at high speed).
   - "capnp" stands for [Cap'n Proto](https://capnproto.org/language.html).
-  - This diagram is arguably too "busy."  If so: Please do not worry about the details.  It is a *survey* of what and
-    how one *could* transmit via Flow-IPC; different details might appeal to different users.
+  - This diagram is a *survey* of what and how one *could* transmit via Flow-IPC; different details might appeal
+    to different users.
   - Ultimately, if you've got a message or data structure to share between processes, Flow-IPC will let you do it
     with a few lines of code.
 
