@@ -153,12 +153,14 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
   //   - Specify a safety/permissions policy, so that internally permissions are set as restrictively as possible,
   //     but not more.
   // The applications should share this code (so the same statement should execute in the server app also).
-  const ipc::session::Client_app CLI_APP{ "cacheCli", // Name.
-                                          "/usr/bin/cache_client.exec", CLI_UID, GID }; // Safety details.
-  const ipc::session::Server_app SRV_APP{ { "cacheSrv", "/usr/bin/cache_server.exec", SRV_UID, GID },
-                                          { CLI_APP.m_name }, // Which apps may connect to cacheSrv?  (cacheCli may.)
-                                          "", // (Optional path override; disregard.)
-                                          ipc::util::Permissions_level::S_GROUP_ACCESS }; // Safety/permissions selector.
+  const ipc::session::Client_app CLI_APP
+    { "cacheCli",                                     // Name.
+      "/usr/bin/cache_client.exec", CLI_UID, GID };   // Safety details.
+  const ipc::session::Server_app SRV_APP
+    { { "cacheSrv", "/usr/bin/cache_server.exec", SRV_UID, GID },
+      { CLI_APP.m_name },                             // Which apps may connect?  cacheCli may.
+      "",                                             // (Optional path override; disregard.)
+      ipc::util::Permissions_level::S_GROUP_ACCESS }; // Safety/permissions selector.
   // ...
 
   // Open session e.g. near start of program.  A session is the communication context between the processes
