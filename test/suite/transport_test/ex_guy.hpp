@@ -225,7 +225,7 @@ bool Ex_guy::run(bool srv_else_cli, Task&& body)
 
     FLOW_LOG_INFO("Determining our location to ensure it matches [" << exp_bin_path << "].");
 #ifndef FLOW_OS_LINUX
-#  error "We expect Linux in this test/demo program."
+    static_assert(false, "We expect Linux in this test/demo program.");
 #endif
     const auto bin_path = fs::read_symlink("/proc/self/exe"); // Can throw.
     if (bin_path != exp_bin_path)
