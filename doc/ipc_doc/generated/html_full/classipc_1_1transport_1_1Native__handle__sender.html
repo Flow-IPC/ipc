@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.2</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -185,7 +185,7 @@ Static Public Attributes</h2></td></tr>
 <p >It should be noted that this decision to make <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html#ac96b0aa01c286d525f9dcfa6dacc4220" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably/in-order,...">send_native_handle()</a> synchronous/non-blocking/never-would-blocking has percolated through much of <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> and even <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a>: all our impls; <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a> and all its impls; <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a>; and quite significantly <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>. You'll note <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">struc::Channel::send()</a> is also synchronous/non-blocking/never-would-blocking, and even its implementation at the stage of actually sending binary data via Native_handle_sender/Blob_sender is quite straightforward. In Flow-IPC a <code>send*()</code> "just works."</p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>Comparing <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#af5d889f8a209353b3d69f70b44a2095c" title="In PEER state: Returns max blob.size() such that send_blob() shall not fail due to too-long payload w...">Blob_sender::send_blob_max_size()</a> (and similar checks in that family of concepts) to test whether the object is in PEER state is easy enough, but perhaps we can have a utility that would more expressively describe this check: <code>in_peer_state()</code> free function or something? It can still use the same technique internally. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__handle__transport_8hpp_source.html#l00158">158</a> of file <a class="el" href="native__handle__transport_8hpp_source.html">native_handle_transport.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle__transport_8hpp_source.html#l00159">159</a> of file <a class="el" href="native__handle__transport_8hpp_source.html">native_handle_transport.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abafdb9a1294fe2160c61d48f1cd327ff" name="abafdb9a1294fe2160c61d48f1cd327ff"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abafdb9a1294fe2160c61d48f1cd327ff">&#9670;&nbsp;</a></span>Native_handle_sender() <span class="overload">[1/3]</span></h2>
@@ -564,7 +564,7 @@ template&lt;typename Task_err &gt; </div>
 
 <p>Shared_name relative-folder fragment (no separators) identifying this resource type. Equals <code>_receiver</code>'s. </p>
 
-<p class="definition">Definition at line <a class="el" href="native__handle__transport_8hpp_source.html#l00164">164</a> of file <a class="el" href="native__handle__transport_8hpp_source.html">native_handle_transport.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle__transport_8hpp_source.html#l00165">165</a> of file <a class="el" href="native__handle__transport_8hpp_source.html">native_handle_transport.hpp</a>.</p>
 
 </div>
 </div>
@@ -574,7 +574,7 @@ template&lt;typename Task_err &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2024 03:21:16 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 30 2024 02:06:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.2</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -215,7 +215,7 @@ $(function() {
 <div class="line">msg.store_native_handle_or_null(<a class="code hl_typedef" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">Native_handle</a>(::dup(STDOUT_FILENO)));</div>
 <div class="line"><span class="comment">// Receiving process -- upon receipt -- can write to that FD and cause output to appear in *our* stdout.</span></div>
 <div class="ttc" id="anamespaceipc_1_1transport_html_a7ee4551983d9df16ec16a3139bac50e8"><div class="ttname"><a href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">ipc::transport::Native_handle</a></div><div class="ttdeci">util::Native_handle Native_handle</div><div class="ttdoc">Convenience alias for the commonly used type util::Native_handle.</div><div class="ttdef"><b>Definition:</b> <a href="transport__fwd_8hpp_source.html#l00081">transport_fwd.hpp:81</a></div></div>
-<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html">ipc::util::Native_handle</a></div><div class="ttdoc">A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00061">native_handle.hpp:62</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html">ipc::util::Native_handle</a></div><div class="ttdoc">A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00062">native_handle.hpp:63</a></div></div>
 </div><!-- fragment --><h3>Sending notification messages</h3>
 <p >So you've loaded up your <code>struc::Channel::Msg_out</code> a/k/a <code>struc::Msg_out</code>. Now you'll presumably want to send it. The <code>Msg_out</code> is a <b>message</b>, while a message actually sent via channel (and received by the opposing side) is a <b>message instance</b>. Therefore the act of invoking one of the send methods of a <code>struc::Channel</code> (<code>.send()</code>, <code>.async_request()</code>, <code>.sync_request()</code>) creates a message instance from a message &ndash; which the opposing side obtains as an <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">ipc::transport::struc::Msg_in</a> (but more on this later). All properties of a message instance are contained either in the message itself or in the arguments to the chosen <code>struc::Channel</code> send method; they cannot be changed subsequently.</p>
 <p >A message is a message; but a message <em>instance</em> is one of 2 things:</p><ul>
@@ -579,7 +579,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">  <span class="comment">// ...Destroy channel.  See next section of Manual....</span></div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00297">common.hpp:297</a></div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00298">common.hpp:298</a></div></div>
 </div><!-- fragment --><p >Chronologically:</p><ol type="1">
 <li>Point X: We've called <code>.expect_msg()</code>. Say it returned <code>true</code> which means the channel is <em>not</em> hosed at that exact point in time. It, itself, lacks an <code>err_code</code> arg in its signature, so it cannot itself emit a new error.</li>
 <li>Point A: Apparently a message has arrived. So at that exact point the channel is <em>not</em> hosed either. Even if it is, <code>.create_msg()</code> has nothing to do with transmitting anything, and certainyl all the message-reading and -filling logic is orthogonal to the channel itself. No problem.</li>
@@ -617,7 +617,7 @@ Last thing (applies to async-I/O pattern only, not <code>sync_io</code>): <code>
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2024 03:21:15 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 30 2024 02:06:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

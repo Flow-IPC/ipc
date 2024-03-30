@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.2</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -157,7 +157,7 @@ Public Member Functions</h2></td></tr>
 <p >It might seem unnecessarily complex: user must call <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html#ae450aff09cc9d71b75b382d59a9cfc23" title="Prior to deserialization() obtains a memory area max_sz bytes long into which the user may write-to u...">add_serialization_segment()</a>, then write to that <code>Blob</code> and adjust its range. They could conceivably just allocate their own <code>Blob</code> and then <code>move()</code> it into <code>*this</code> via a single, simpler <code>add_serialization_segment(Blob&amp;&amp;)</code> call. So why is it done the former way?</p>
 <p >Answer: It's to support the possibilities discussed in the "Allocation and perf" section above. <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html#ae450aff09cc9d71b75b382d59a9cfc23" title="Prior to deserialization() obtains a memory area max_sz bytes long into which the user may write-to u...">add_serialization_segment()</a> places the responsibility of obtaining target memory for the blob-read on the <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">Struct_reader</a> concept impl. Hence different concept impls can be swapped in for different perf/use-case trade-offs. One would use a pool &ndash; another would use the heap... etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html#l00411">411</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html#l00412">412</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8395ee937193713e413c36c144ea9a30" name="a8395ee937193713e413c36c144ea9a30"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8395ee937193713e413c36c144ea9a30">&#9670;&nbsp;</a></span>Struct_reader() <span class="overload">[1/2]</span></h2>
@@ -343,7 +343,7 @@ template&lt;typename Struct &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2024 03:21:16 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 30 2024 02:06:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.2</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -70,7 +70,7 @@ $(function() {
 <p >Here we discuss the environmental requirements for using Flow-IPC as well as quality-of-life setup basics including logging. (Or go back to preceding page: <a class="el" href="api_overview.html">API Overview / Synopses</a>.)</p>
 <h2>OS and build environment </h2>
 <dl class="section note"><dt>Note</dt><dd>In the short term (as of October 2023) this may become an open-source library with potentially wide distribution. Some of the below items may change in that case; for example it may become a header-only library or have that mode, and it may support additional OS rather than Linux. We would also include specific information on building it from source as befits a wide-release project. Until then we leave out specific instructions on building the library itself as outside the scope of the present document; while listing the environmental requirements/recommendations as follows. It is vaguely informational; until this is a wide-release library we stay away from rigorous build instructions here. Even once it becomes a wide-release product, possibly such instructions shall live outside this manual. Looking outside the src/ directory you'll certainly find the relevant build scripts which cover all that.</dd></dl>
-<p>This is a Linux library (actually set of libraries, but in this Manual we treat Flow-IPC as a monolithic whole for simplicity). As of this writing it is to be built in 64-bit mode (x86-64 a/k/a AMD64). (Most code by far is not OS/architecture-specific, but at least certain aspects of the optionally-used SHM-jemalloc component are.) It is intended for use <em>at least</em> in a deployed server setting. As of this writing it relies on some Linux-specific techniques such as /proc/...pid.../ and /dev/shm/ semantics. In the future it is quite realistic it would be extended to other OS and architectures &ndash; possibly even Windows, but definitely MacOS/Darwin and FreeBSD and orthogonally perhaps ARM64 and so on.</p>
+<p>This is a Linux library (actually set of libraries, but in this Manual we treat Flow-IPC as a monolithic whole for simplicity). As of this writing it is to be built in 64-bit mode (x86-64 a/k/a AMD64). (Most code by far is not OS/architecture-specific, but at least certain aspects of the optionally-used SHM-jemalloc component are.) It is intended for use <em>at least</em> in a deployed server setting. As of this writing it relies on some Linux-specific techniques such as /proc/...pid.../ and /dev/shm/ semantics. In the future it is quite realistic it would be extended to other OS and architectures &ndash; possibly even Windows, but definitely macOS/Darwin/similar and orthogonally perhaps ARM64 and so on.</p>
 <p >It is a linked library (libraries) that must be built in <b>C++17</b> compiler mode, as must any of its <code>#include</code>rs (translation units). It has been specifically tested (as of this writing) on a range of gcc and clang compilers/linkers. We omit details in this text, since this is likely to evolve over time. Generally such topics are well covered outside of src/ directories; start with the top-level <code>README.md</code> for an overview; it will point you to CMake scripts and so on &ndash; if there is interest.</p>
 <p >Regarding the briefly-mentioned-above testing: As of this writing there is an automated CI/CD test suite which checks the various combinations of compiler and build-type (debug, release, various sanitizers, etc.) &ndash; both building and functionality. Again we omit details here; but as of this writing you can see the details at the official open-source project (GitHub organization "Flow-IPC," as I write this). You'll likely find a few files like <code>.github/...</code>, <code>conanfile.py</code>, and sanitizer-specific <code>.cfg</code> files which control this stuff. This is well outside our scope in this Manual, but we wanted you to be aware of such things.</p>
 <p >Regarding test code itself: We do not talk about it in this Manual or Reference (again: out of scope); but it is in the same repo (repos). Some test code (of the unit-test variety) is in <code>test/</code> subdirs at various levels near production code; other test code is outside <code>src/</code> entirely &ndash; whether the unit test driver program(s) or the various integration-tests.</p>
@@ -122,7 +122,7 @@ $(function() {
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2024 03:21:15 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 30 2024 02:06:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

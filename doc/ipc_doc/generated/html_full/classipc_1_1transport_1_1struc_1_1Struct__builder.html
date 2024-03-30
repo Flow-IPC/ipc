@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.2</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -191,7 +191,7 @@ Public Member Functions</h2></td></tr>
 <p >Single pre-allocated area to be reused by <em>every</em> new <code>*this</code>: This would be, of course, blindingly fast: probably <code><a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Config</a></code> would allocate a single <code>Sharing_blob</code> and each <code>*this</code> it created would be told to use that blob, no questions asked. The problem, obviously, is that 2+ <code>*this</code>es might step on each other concurrently. I.e., any use of this would basically require a pattern wherein a <code>*this</code> is created, mutated, emitted, destroyed; <em>then</em> same for the next out-message; and so on. Then there is no problem. Simply put, then: it is reasonable to develop such an impl of <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> &ndash; if one requires the user to carefully ensure each out-message is entirely handled before work on the next one begins. For some applications that may be reasonable.</p>
 <p >Similar reasoning could be extended to 2-tier (zero-copy/SHM-based) impls of <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a>. Naturally however one would need to ensure the given payload is fully consumed by the opposing side (<a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">Struct_reader</a>) before creating the next <code>*this</code>; it is not enough for merely the local <code>*this</code> to be destroyed, as the underlying payload may be referred-to by a <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">Struct_reader</a> still. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html#l00196">196</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html#l00197">197</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ab90424897efed06ffc6b0884761fb31f" name="ab90424897efed06ffc6b0884761fb31f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab90424897efed06ffc6b0884761fb31f">&#9670;&nbsp;</a></span>Session</h2>
@@ -208,7 +208,7 @@ Public Member Functions</h2></td></tr>
 <p>Type objects of which specify to <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#af5085934123f075c6d0701e9e45e4bcc" title="Returns the serialization in the form of a sequence of 1+ pointers to Blobs which are guaranteed to r...">emit_serialization()</a> the opposing recipient for which the serialization is intended; <a class="el" href="structipc_1_1transport_1_1struc_1_1Null__session.html" title="Value for Struct_builder::Session when no extra information is needed when serializing Struct_builder...">Null_session</a> if no information is necessary to specify this. </p>
 <p >Informally: typically, in a non-zero-copy builder the serialization itself would contain all necessary information, hence this would be <a class="el" href="structipc_1_1transport_1_1struc_1_1Null__session.html" title="Value for Struct_builder::Session when no extra information is needed when serializing Struct_builder...">Null_session</a>; zero-copy (SHM-based) builder needs to specify a non-empty type here. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html#l00247">247</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html#l00248">248</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -399,7 +399,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2024 03:21:16 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 30 2024 02:06:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.2</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -184,44 +184,45 @@ $(function() {
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">     *     its own .is_regular_file(), but boost.fs lacks this; though the latter is described in terms of</span></div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment">     *     of the free function anyway; so meh.) */</span></div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">#ifndef FLOW_OS_LINUX</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">#  error &quot;We rely on Linux /dev/... (etc.) semantics, where the object-mapped files are classified as regular files.&quot;</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> err_code;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keyword">const</span> <span class="keyword">auto</span> dir_entry_status = dir_entry.status(err_code);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">if</span> (err_code || !fs::is_regular_file(dir_entry_status))</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    {</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    }</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="comment">// else</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    handle_name_func(<a class="code hl_function" href="classipc_1_1util_1_1Shared__name.html#a48f20b7b54490aa10dc64081d34c55b2">Shared_name::ct</a>(dir_entry.path().filename().native()));</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  } <span class="comment">// for (dir_entry)</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>} <span class="comment">// for_each_persistent_impl()</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Handle_name_func&gt;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="namespaceipc_1_1util.html#a74135195ff6c2f840092c21e522f964a">  130</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceipc_1_1util.html#a74135195ff6c2f840092c21e522f964a">for_each_persistent_shm_pool</a>(<span class="keyword">const</span> Handle_name_func&amp; handle_name_func)</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>{</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#ifndef FLOW_OS_LINUX</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#  error &quot;This method relies on/has been tested only with Linux /dev/shm semantics.&quot;</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <a class="code hl_function" href="namespaceipc_1_1util.html#a49b39ceb74614b5f2d26dd86fd71bcb3">for_each_persistent_impl</a>(<span class="stringliteral">&quot;/dev/shm&quot;</span>, handle_name_func);</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>}</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>} <span class="comment">// namespace ipc::util</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">static_assert</span>(<span class="keyword">false</span>, <span class="stringliteral">&quot;We rely on Linux /dev/... (etc.) semantics, where the object-mapped files &quot;</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                           <span class="stringliteral">&quot;are classified as regular files.&quot;</span>);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> err_code;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keyword">const</span> <span class="keyword">auto</span> dir_entry_status = dir_entry.status(err_code);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordflow">if</span> (err_code || !fs::is_regular_file(dir_entry_status))</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    }</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="comment">// else</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    handle_name_func(<a class="code hl_function" href="classipc_1_1util_1_1Shared__name.html#a48f20b7b54490aa10dc64081d34c55b2">Shared_name::ct</a>(dir_entry.path().filename().native()));</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  } <span class="comment">// for (dir_entry)</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>} <span class="comment">// for_each_persistent_impl()</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Handle_name_func&gt;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="namespaceipc_1_1util.html#a74135195ff6c2f840092c21e522f964a">  131</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceipc_1_1util.html#a74135195ff6c2f840092c21e522f964a">for_each_persistent_shm_pool</a>(<span class="keyword">const</span> Handle_name_func&amp; handle_name_func)</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>{</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#ifndef FLOW_OS_LINUX</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keyword">static_assert</span>(<span class="keyword">false</span>, <span class="stringliteral">&quot;This method relies on/has been tested only with Linux /dev/shm semantics.&quot;</span>);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <a class="code hl_function" href="namespaceipc_1_1util.html#a49b39ceb74614b5f2d26dd86fd71bcb3">for_each_persistent_impl</a>(<span class="stringliteral">&quot;/dev/shm&quot;</span>, handle_name_func);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>}</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>} <span class="comment">// namespace ipc::util</span></div>
 <div class="ttc" id="aclassipc_1_1util_1_1Shared__name_html_a48f20b7b54490aa10dc64081d34c55b2"><div class="ttname"><a href="classipc_1_1util_1_1Shared__name.html#a48f20b7b54490aa10dc64081d34c55b2">ipc::util::Shared_name::ct</a></div><div class="ttdeci">static Shared_name ct(const Source &amp;src)</div><div class="ttdoc">Copy-constructs from a char-sequence container (including string, util::String_view,...</div><div class="ttdef"><b>Definition:</b> <a href="shared__name_8hpp_source.html#l00674">shared_name.hpp:674</a></div></div>
 <div class="ttc" id="adetail_2util__fwd_8hpp_html"><div class="ttname"><a href="detail_2util__fwd_8hpp.html">util_fwd.hpp</a></div></div>
 <div class="ttc" id="anamespaceipc_1_1util_html"><div class="ttname"><a href="namespaceipc_1_1util.html">ipc::util</a></div><div class="ttdoc">Flow-IPC module containing miscellaneous general-use facilities that ubiquitously used by ~all Flow-I...</div><div class="ttdef"><b>Definition:</b> <a href="default__init__allocator_8hpp_source.html#l00023">default_init_allocator.hpp:24</a></div></div>
 <div class="ttc" id="anamespaceipc_1_1util_html_a49b39ceb74614b5f2d26dd86fd71bcb3"><div class="ttname"><a href="namespaceipc_1_1util.html#a49b39ceb74614b5f2d26dd86fd71bcb3">ipc::util::for_each_persistent_impl</a></div><div class="ttdeci">void for_each_persistent_impl(const fs::path &amp;persistent_obj_dev_dir_path, const Handle_name_func &amp;handle_name_func)</div><div class="ttdoc">Implementation of Persistent_object::for_each_persistent(); for example see shm::classic::Pool_arena:...</div><div class="ttdef"><b>Definition:</b> <a href="util_8hpp_source.html#l00090">util.hpp:90</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1util_html_a74135195ff6c2f840092c21e522f964a"><div class="ttname"><a href="namespaceipc_1_1util.html#a74135195ff6c2f840092c21e522f964a">ipc::util::for_each_persistent_shm_pool</a></div><div class="ttdeci">void for_each_persistent_shm_pool(const Handle_name_func &amp;handle_name_func)</div><div class="ttdoc">Equivalent to shm::classic::Pool_arena::for_each_persistent().</div><div class="ttdef"><b>Definition:</b> <a href="util_8hpp_source.html#l00130">util.hpp:130</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html_a74135195ff6c2f840092c21e522f964a"><div class="ttname"><a href="namespaceipc_1_1util.html#a74135195ff6c2f840092c21e522f964a">ipc::util::for_each_persistent_shm_pool</a></div><div class="ttdeci">void for_each_persistent_shm_pool(const Handle_name_func &amp;handle_name_func)</div><div class="ttdoc">Equivalent to shm::classic::Pool_arena::for_each_persistent().</div><div class="ttdef"><b>Definition:</b> <a href="util_8hpp_source.html#l00131">util.hpp:131</a></div></div>
 <div class="ttc" id="anamespaceipc_1_1util_html_abd43da87aa17031604c7906757c07d46"><div class="ttname"><a href="namespaceipc_1_1util.html#abd43da87aa17031604c7906757c07d46">ipc::util::op_with_possible_bipc_exception</a></div><div class="ttdeci">void op_with_possible_bipc_exception(flow::log::Logger *logger_ptr, Error_code *err_code, const Error_code &amp;misc_bipc_lib_error, String_view context, const Func &amp;func)</div><div class="ttdoc">Internal (to ipc) utility that invokes the given function that invokes a boost.interprocess operation...</div><div class="ttdef"><b>Definition:</b> <a href="util_8hpp_source.html#l00034">util.hpp:34</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1util_html_ae6ac47812a90d1287c61e0b7de7bc4f5"><div class="ttname"><a href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">ipc::util::String_view</a></div><div class="ttdeci">flow::util::String_view String_view</div><div class="ttdoc">Short-hand for Flow's String_view.</div><div class="ttdef"><b>Definition:</b> <a href="util__fwd_8hpp_source.html#l00109">util_fwd.hpp:109</a></div></div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00297">common.hpp:297</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html_ae6ac47812a90d1287c61e0b7de7bc4f5"><div class="ttname"><a href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">ipc::util::String_view</a></div><div class="ttdeci">flow::util::String_view String_view</div><div class="ttdoc">Short-hand for Flow's String_view.</div><div class="ttdef"><b>Definition:</b> <a href="util__fwd_8hpp_source.html#l00115">util_fwd.hpp:115</a></div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00298">common.hpp:298</a></div></div>
 <div class="ttc" id="ashared__name_8hpp_html"><div class="ttname"><a href="shared__name_8hpp.html">shared_name.hpp</a></div></div>
 <div class="ttc" id="autil__fwd_8hpp_html"><div class="ttname"><a href="util__fwd_8hpp.html">util_fwd.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2024 03:21:15 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 30 2024 02:06:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

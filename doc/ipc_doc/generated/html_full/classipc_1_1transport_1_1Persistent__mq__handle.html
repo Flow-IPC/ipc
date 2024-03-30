@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.2</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -253,7 +253,7 @@ Related Functions</h2></td></tr>
 <p >However &ndash; we did ~such a thing with <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__sender.html" title="Implements sync_io::Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (...">sync_io::Blob_stream_mq_sender</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver.html" title="Implements sync_io::Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ...">sync_io::Blob_stream_mq_receiver</a> which are templated on <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> as a template-parameter; and, being <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern-impls (see <a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">util::sync_io</a>), they each expose a waitable-on <a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8" title="Convenience alias for the commonly used type util::Native_handle.">Native_handle</a>. Indeed as of this writing each of these templates keeps a "secret" thread W that performs blocking waits, while the user-accessible API makes it look like a nice, kernel-reported-via-FDs reactor/proactor-supporting I/O object. By operating on what is directly available via the present concept, this setup of <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html" title="Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...">Blob_stream_mq_sender</a> and <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> internals is agnostic to the type of MQ.</p>
 <p >However, if one wanted to take advantage of the non-concept (edit: see below update) ability to be watched (via FD) with the kernel's help and without an added thread, they could specialize <code>Blob_stream_mq_*er</code> for <a class="el" href="classipc_1_1transport_1_1Posix__mq__handle.html" title="Implements the Persistent_mq_handle concept by wrapping the POSIX message queue API (see man mq_overv...">Posix_mq_handle</a> which does offer a kernel-FD accessor <code>.<a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#a25e96c4f060cc3c4b611c4e2de60abaf" title="Available if and only if S_HAS_NATIVE_HANDLE is true: Returns the stored native MQ handle; null means...">native_handle()</a></code>. Update: This is now done (in fact it is not specialized as of this writing but rather uses a few simple <code>if constexpr ()</code>s). Accordingly the concept now allows for <code><a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#a25e96c4f060cc3c4b611c4e2de60abaf" title="Available if and only if S_HAS_NATIVE_HANDLE is true: Returns the stored native MQ handle; null means...">native_handle()</a></code> optionally: see <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#ac2c0b560893c6a8b71aac0e748770076" title="true if and only if native_handle() method exists, and the returned value may be waited-on by poll()/...">Persistent_mq_handle::S_HAS_NATIVE_HANDLE</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="persistent__mq__handle_8hpp_source.html#l00193">193</a> of file <a class="el" href="persistent__mq__handle_8hpp_source.html">persistent_mq_handle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="persistent__mq__handle_8hpp_source.html#l00194">194</a> of file <a class="el" href="persistent__mq__handle_8hpp_source.html">persistent_mq_handle.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a22abfaa801a9e2f974a8cd179544d19a" name="a22abfaa801a9e2f974a8cd179544d19a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22abfaa801a9e2f974a8cd179544d19a">&#9670;&nbsp;</a></span>Persistent_mq_handle() <span class="overload">[1/5]</span></h2>
@@ -1365,7 +1365,7 @@ template&lt;typename Handle_name_func &gt; </div>
 
 <p><code>true</code> if and only if <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#a25e96c4f060cc3c4b611c4e2de60abaf" title="Available if and only if S_HAS_NATIVE_HANDLE is true: Returns the stored native MQ handle; null means...">native_handle()</a> method exists, and the returned value may be waited-on by <code>poll()</code>/etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="persistent__mq__handle_8hpp_source.html#l00202">202</a> of file <a class="el" href="persistent__mq__handle_8hpp_source.html">persistent_mq_handle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="persistent__mq__handle_8hpp_source.html#l00203">203</a> of file <a class="el" href="persistent__mq__handle_8hpp_source.html">persistent_mq_handle.hpp</a>.</p>
 
 </div>
 </div>
@@ -1391,7 +1391,7 @@ template&lt;typename Handle_name_func &gt; </div>
 
 <p>Shared_name relative-folder fragment (no separators) identifying this resource type. </p>
 
-<p class="definition">Definition at line <a class="el" href="persistent__mq__handle_8hpp_source.html#l00199">199</a> of file <a class="el" href="persistent__mq__handle_8hpp_source.html">persistent_mq_handle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="persistent__mq__handle_8hpp_source.html#l00200">200</a> of file <a class="el" href="persistent__mq__handle_8hpp_source.html">persistent_mq_handle.hpp</a>.</p>
 
 </div>
 </div>
@@ -1401,7 +1401,7 @@ template&lt;typename Handle_name_func &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2024 03:21:16 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 30 2024 02:06:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

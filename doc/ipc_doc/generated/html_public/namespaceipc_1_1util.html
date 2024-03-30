@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.2</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -425,7 +425,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 <p>Simple specifier of desired access permissions, usually but not necessarily translated into a <code>Permissions</code> value (though even then different value in different contexts). </p>
 <p >May be used to map, say, from a Permissions_level to a <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152" title="Short-hand for Unix (POSIX) permissions class.">Permissions</a> value in an <code>array&lt;Permissions, size_t(Permissions_level::S_END_SENTINEL)&gt;</code>.</p>
-<p >While, unlike <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152" title="Short-hand for Unix (POSIX) permissions class.">Permissions</a>, this <code>enum</code> intends not be overtly based on a POSIX RWXRWXRWC model, it does still assume the 3 user groupings are "user themselves," "user's group," and "everyone." The 1st and 3rd are likely universal, but the 2nd may not apply to all OS &ndash; through probably all POSIX/Unix ones &ndash; and even for something like Linux there could be different groupings such as ones based on OS ACL. As of this writing it's fine, as this is a POSIX-targeted library at least (in fact, Linux, as of this writing, but that could change to include, say, MacOS/BSD). </p>
+<p >While, unlike <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152" title="Short-hand for Unix (POSIX) permissions class.">Permissions</a>, this <code>enum</code> intends not be overtly based on a POSIX RWXRWXRWX model, it does still assume the 3 user groupings are "user themselves," "user's group," and "everyone." The 1st and 3rd are likely universal, but the 2nd may not apply to all OS &ndash; through probably all POSIX/Unix ones &ndash; and even for something like Linux there could be different groupings such as ones based on OS ACL. As of this writing it's fine, as this is a POSIX-targeted library at least (in fact, Linux, as of this writing, but that could change to include, say, macOS/similar). </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2ec0bfdddb41a1ef0403e4bb8967705dac43e9194d6c0e9803ecabbf3cb4c97fa" name="a2ec0bfdddb41a1ef0403e4bb8967705dac43e9194d6c0e9803ecabbf3cb4c97fa"></a>S_NO_ACCESS&#160;</td><td class="fielddoc"><p >Forbids all access, even by the creator's user. Most likely this would be useful for testing or debugging. </p>
 </td></tr>
@@ -1746,7 +1746,7 @@ template&lt;typename Persistent_object &gt; </div>
 <p>Utility that sets the permissions of the given resource (at the supplied file system path) to specified POSIX value. </p>
 <p >If the resource cannot be accessed (not found, permissions...) that system Error_code shall be emitted.</p>
 <h3>Rationale</h3>
-<p >It may seem unnecessary, particularly given that it sometimes (in our internal code, but I mention it publicly for exposition purposes) placed right after the creation of the resource (file, SHM pool, POSIX MQ, shared mutex, etc.) &ndash; where the same <code>perms</code> is supplied to the creation-API, whichever is applicable. The reason is that those APIs tend to make the corresponding OS call (e.g., <code>open()</code>) which is bound by the "process umask" in POSIX/Linux; so for example if it's set to the typical 022 (octal), then it's impossible to make the resource group- or all-writable, regardless of <code>perms</code>. <a class="el" href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435" title="Utility that sets the permissions of the given resource (at the supplied file system path) to specifi...">set_resource_permissions()</a> uses a technique that bypasses the umask thing. Note that it does not make any calls to change the umask to accomplish this.</p>
+<p >It may seem unnecessary, particularly given that it sometimes (in our internal code, but I mention it publicly for exposition purposes) is placed right after the creation of the resource (file, SHM pool, POSIX MQ, shared mutex, etc.) &ndash; where the same <code>perms</code> is supplied to the creation-API, whichever is applicable. The reason is that those APIs tend to make the corresponding OS call (e.g., <code>open()</code>) which is bound by the "process umask" in POSIX/Linux; so for example if it's set to the typical 022 (octal), then it's impossible to make the resource group- or all-writable, regardless of <code>perms</code>. <a class="el" href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435" title="Utility that sets the permissions of the given resource (at the supplied file system path) to specifi...">set_resource_permissions()</a> uses a technique that bypasses the umask thing. Note that it does not make any calls to change the umask to accomplish this.</p>
 <p >Note 1: Sometimes there is not even the creation-API argument for <code>perms</code>; in which case the rationale is even more straightforward.</p>
 <p >Note 2: Sometimes there <em>is</em> that API... and (namely in boost.ipc at least) they actually took care to do this (what we do here) themselves (via <code>fchmod()</code> and such)... so we don't need to; in fact I (ygoldfel) treated it as valuable confirmation of the correctness of this maneuver.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1882,7 +1882,7 @@ template&lt;typename Persistent_object &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2024 03:21:13 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 30 2024 02:06:51 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

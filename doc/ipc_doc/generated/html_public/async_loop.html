@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;1.0.2</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -102,13 +102,13 @@ $(function() {
 <p>That <b>note</b> aside: The most basic operation of interest to us has the following form:</p>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Task&gt; <span class="comment">// Task = function type matching signature `void F()`.</span></div>
 <div class="line"><span class="keywordtype">void</span> post(<a class="code hl_typedef" href="namespaceipc_1_1util.html#a31e67d3a017477a04b313927e2f2c733">Task</a>&amp;&amp; task);</div>
-<div class="ttc" id="anamespaceipc_1_1util_html_a31e67d3a017477a04b313927e2f2c733"><div class="ttname"><a href="namespaceipc_1_1util.html#a31e67d3a017477a04b313927e2f2c733">ipc::util::Task</a></div><div class="ttdeci">flow::async::Task Task</div><div class="ttdoc">Short-hand for polymorphic function (a-la std::function&lt;&gt;) that takes no arguments and returns nothin...</div><div class="ttdef"><b>Definition:</b> util_fwd.hpp:116</div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html_a31e67d3a017477a04b313927e2f2c733"><div class="ttname"><a href="namespaceipc_1_1util.html#a31e67d3a017477a04b313927e2f2c733">ipc::util::Task</a></div><div class="ttdeci">flow::async::Task Task</div><div class="ttdoc">Short-hand for polymorphic function (a-la std::function&lt;&gt;) that takes no arguments and returns nothin...</div><div class="ttdef"><b>Definition:</b> util_fwd.hpp:122</div></div>
 </div><!-- fragment --><p >This operation, invokable both from within an already-executing task on thread U, or from any other thread, enqueues <code>std::move(task)</code> onto the task-queue, so that <code>run()</code> either wakes up thread U (if currently sleeping) and executes <code>task()</code> (no args), or else it'll get invoked once ongoing tasks have been executed and popped. <code>post()</code> itself does not synchronously invoke <code>task()</code>; but if invoked from within a task (i.e., from thread U, i.e., from <code>run()</code> itself), then <code>run()</code> will possibly invoke the moment the current (posting) task returns.</p>
 <dl class="section note"><dt>Note</dt><dd><code>post()</code> is thread-safe, in that it takes care of any synchronization of the internally-kept task-queue, itself.</dd></dl>
 <p>Now, consider the aforementioned <code>Blob_receiver</code> receive op. Its API is as follows:</p>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Handler&gt; <span class="comment">// Handler = function type matching signature `void F(const Error_code&amp;, size_t n_sz)`.</span></div>
 <div class="line"><span class="keywordtype">void</span> async_receive_blob(<a class="code hl_typedef" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">ipc::util::Blob_mutable</a> target_buf, Handler&amp;&amp; handler);</div>
-<div class="ttc" id="anamespaceipc_1_1util_html_a6cb62ae434900f3a8915b33ec5d61a96"><div class="ttname"><a href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">ipc::util::Blob_mutable</a></div><div class="ttdeci">boost::asio::mutable_buffer Blob_mutable</div><div class="ttdoc">Short-hand for an mutable blob somewhere in memory, stored as exactly a void* and a size_t.</div><div class="ttdef"><b>Definition:</b> util_fwd.hpp:134</div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html_a6cb62ae434900f3a8915b33ec5d61a96"><div class="ttname"><a href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">ipc::util::Blob_mutable</a></div><div class="ttdeci">boost::asio::mutable_buffer Blob_mutable</div><div class="ttdoc">Short-hand for an mutable blob somewhere in memory, stored as exactly a void* and a size_t.</div><div class="ttdef"><b>Definition:</b> util_fwd.hpp:140</div></div>
 </div><!-- fragment --><p >To use it, a task in the context of an event loop in thread U might be written as follows:</p>
 <p ><a class="anchor" id="proactor_ex"></a> </p><div class="fragment"><div class="line"><span class="keyword">class </span>My_loop</div>
 <div class="line">{</div>
@@ -161,7 +161,7 @@ $(function() {
 <div class="line">  }</div>
 <div class="line">};</div>
 <div class="ttc" id="anamespaceipc_1_1transport_1_1error_html_adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed"><div class="ttname"><a href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">ipc::transport::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a></div><div class="ttdeci">@ S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</div><div class="ttdoc">Async completion handler is being called prematurely, because underlying object is shutting down,...</div></div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> common.hpp:297</div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> common.hpp:298</div></div>
 </div><!-- fragment --><p >The key points:</p><ul>
 <li>When operating according to this pattern, the user handler is always invoked from (formally) "unspecified thread that is not thread U." In reality it is thread W in our case, but that should not matter.</li>
 <li>In the proactor pattern &ndash; when there's only one thread U as opposed to concurrent workers U1, U2, ... &ndash; user tasks can safely assume they're never invoked concurrently with each other. Therefore, usually, the completion handler supplied to this Flow-IPC API (<code>Blob_receiver::async_receive_blob()</code> in this case) should perform the bulk of its work in thread U and thus must invoke <code>post()</code>, capturing any required args in the lambda first.<ul>
@@ -299,7 +299,7 @@ $(function() {
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2024 03:21:12 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 30 2024 02:06:51 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
