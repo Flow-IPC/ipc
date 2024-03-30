@@ -8,20 +8,7 @@ subdirectories.  The build/installation procedure will take care of everything f
 (not including the handful of third-party prerequisites like Boost which will need to be installed
 separately; instructions below).
 
-If you've obtained this project as a pre-packaged source archive (named `*_full.tar.gz` or `*_full.zip`),
-then you have everything you need
-(other than potentially third-party prerequisites like Boost), located where it needs to be (namely,
-the subdirectories `ipc_*` and `flow`).  This is great and easy.  We recommend working this way in all
-situations *except if your aim is to make changes that would be checked-in to the public open-source project*.
-(If that is your aim eventually, but not right now, it might make sense to work in the monolithic model for
-a while; then switch-over to the Git setup described in the following paragraphs, once you're ready to
-contribute to the public project.)
-
-If you do not aim to immediately contribute to the public project, we encourage you to skip right to the
-[next section](#installation) -- and you can later skip over Contributing section(s).
-
-If you *do* aim to immediately contribute to the public project, please at least glance at
-[Contributing](#contributing) in the present document first.
+We do assume you've grabbed everything per [README: Obtaining the source code](./README.md#obtaining-the-source-code).
 
 ## Installation
 
