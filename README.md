@@ -8,9 +8,13 @@ VIDEO 1: EXTERNAL
 
 <video src="https://user-images.githubusercontent.com/126239/151336683-4f0c423a-7bd5-4580-888b-4c08fdfdd4e9.mp4">ALT TEXT</video>
 
-VIDEO 2: IN-REPO, RELATIVE URL
+VIDEO 2: IN-REPO, RELATIVE URL (nope, does not work, unlike for embedded images)
 
-<video src="src/doc/manual/assets/vid/test_vid_v1.mp4">ALT TEXT</video>
+<video src="./src/doc/manual/assets/vid/test_vid_v1.mp4">ALT TEXT</video>
+
+VIDEO 3: UPLOADED TO FAKE ISSUE
+
+<video src="https://github.com/Flow-IPC/ipc/assets/32211091/2c1a89ca-20d7-4984-90d6-1246b8a73537">ALT TEXT</video>
 
 ---
 
