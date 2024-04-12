@@ -4,7 +4,13 @@
 
 VIDEO TEST!
 
-<video src="https://user-images.githubusercontent.com/126239/151336683-4f0c423a-7bd5-4580-888b-4c08fdfdd4e9.mp4"></video>
+VIDEO 1: EXTERNAL
+
+<video src="https://user-images.githubusercontent.com/126239/151336683-4f0c423a-7bd5-4580-888b-4c08fdfdd4e9.mp4">ALT TEXT</video>
+
+VIDEO 2: IN-REPO, RELATIVE URL
+
+<video src="src/doc/manual/assets/vid/test_vid_v1.mp4">ALT TEXT</video>
 
 ---
 
