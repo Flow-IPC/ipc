@@ -291,6 +291,8 @@ All transport APIs at this layer, as well the structured layer (see below), have
 >     some_target_vector.resize(n_rcvd);
 >     // some_target_vector.begin()..end() = received blob.
 >     // fd.m_native_handle = `int` file descriptor/raw handle.
+>     // ...Deal with those inputs....
+>   }
 > });
 >
 > // In this case we create a Channel with 1 bidirectional pipe, a Unix domain socket stream, for both FDs and blobs.
@@ -623,12 +625,12 @@ Further capabilities are outside our scope here; but the main point is: At a min
 >   widgetHandle @7 :ShmHandle;
 > }
 > ~~~
-> 
+>
 > **Owner/lender** process transmitting such a message:
 > ~~~
 > auto x = session.session_shm()->construct<Widget>();
 > // ...Fill out *x as above....
-> 
+>
 > auto msg = cool_channel.create_msg();
 > // Ready the storage inside the out-message.
 > auto widget_handle_root = msg.body_root()->initSomeMsg().initWidgetHandle(); // Note `widgetHandle: ShmHandle` in schema.
@@ -637,12 +639,12 @@ Further capabilities are outside our scope here; but the main point is: At a min
 > // IPC-transmit it via struc::Channel.
 > cool_channel.send(msg);
 > ~~~
-> 
+>
 > **Borrower** process receiving such a message and accessing the native data structure `Widget`:
 > ~~~
 > flow::util::Blob_sans_log_context lend_blob;
 > shm::capnp_get_shm_handle_to_borrow(msg->body_root().getSomeMsg().getWidgetHandle(), &lend_blob);
-> 
+>
 > auto x = session.borrow_object<Widget>(lend_blob);
 > FLOW_LOG_INFO("Hey, let's read inside SHM after receiving SHM-handle: [" << x_borrowed->m_flag << "].");
 > // We can write to it too, in most cases.
