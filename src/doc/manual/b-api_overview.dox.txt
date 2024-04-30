@@ -649,7 +649,7 @@ Further capabilities are outside our scope here; but the main point is: At a min
 > FLOW_LOG_INFO("Hey, let's read inside SHM after receiving SHM-handle: [" << x_borrowed->m_flag << "].");
 > // We can write to it too, in most cases.
 > x->m_str[0] = 'Y';
-> // (Can modify with allocations too, as long as you use an Activator context again, same is owner process above.)
+> // (Can modify with allocations too, as long as you use an Activator context again, same as in owner process above.)
 > ~~~
 
 When one gets into this relatively advanced area, there are differences and trade-offs between the available SHM-providers.  If your alias at the very top is `using ssn = ipc::session::shm::classic`, then you get total read/write abilities and maximized object lifetime.  That is the SHM-classic provider.  Instead, if you choose SHM-jemalloc (`using ssn = ipc::session::shm::arena_lend::jemalloc`), then the borrower (receiver) process can only read, and there are some subtle differences in max object lifetime.  (The latter applies only if you need objects to live beyond a given `Session`.)  However, you get in return: superior safety characteristics; and the commercial-grade jemalloc allocation algorithm (thread-caching, fragmentation avoidance, and more).
