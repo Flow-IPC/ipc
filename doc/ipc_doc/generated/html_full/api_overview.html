@@ -651,7 +651,7 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 <div class="line">FLOW_LOG_INFO(<span class="stringliteral">&quot;Hey, let&#39;s read inside SHM after receiving SHM-handle: [&quot;</span> &lt;&lt; x_borrowed-&gt;m_flag &lt;&lt; <span class="stringliteral">&quot;].&quot;</span>);</div>
 <div class="line"><span class="comment">// We can write to it too, in most cases.</span></div>
 <div class="line">x-&gt;m_str[0] = <span class="charliteral">&#39;Y&#39;</span>;</div>
-<div class="line"><span class="comment">// (Can modify with allocations too, as long as you use an Activator context again, same is owner process above.)</span></div>
+<div class="line"><span class="comment">// (Can modify with allocations too, as long as you use an Activator context again, same as in owner process above.)</span></div>
 <div class="ttc" id="anamespaceipc_1_1transport_1_1struc_1_1shm_html_adb38fe88cfd5e758ef52c482d2902669"><div class="ttname"><a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">ipc::transport::struc::shm::capnp_get_shm_handle_to_borrow</a></div><div class="ttdeci">void capnp_get_shm_handle_to_borrow(const schema::ShmHandle::Reader &amp;shm_handle_root, flow::util::Blob_sans_log_context *arg_to_borrow)</div><div class="ttdoc">Utility that's the reverse of capnp_set_lent_shm_handle() to be invoked on the deserializing side.</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8cpp_source.html#l00050">util.cpp:50</a></div></div>
 </div><!-- fragment --> </blockquote>
 <p>When one gets into this relatively advanced area, there are differences and trade-offs between the available SHM-providers. If your alias at the very top is <code>using ssn = <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic.html" title="Support for SHM-backed ipc::session sessions and session-servers with the SHM-classic (ipc::shm::clas...">ipc::session::shm::classic</a></code>, then you get total read/write abilities and maximized object lifetime. That is the SHM-classic provider. Instead, if you choose SHM-jemalloc (<code>using ssn = <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html" title="Support for SHM-backed ipc::session sessions and session-servers with the SHM-jemalloc (ipc::shm::are...">ipc::session::shm::arena_lend::jemalloc</a></code>), then the borrower (receiver) process can only read, and there are some subtle differences in max object lifetime. (The latter applies only if you need objects to live beyond a given <code>Session</code>.) However, you get in return: superior safety characteristics; and the commercial-grade jemalloc allocation algorithm (thread-caching, fragmentation avoidance, and more).</p>
@@ -683,7 +683,7 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 22 2024 23:55:47 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Tue Apr 30 2024 23:39:19 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
