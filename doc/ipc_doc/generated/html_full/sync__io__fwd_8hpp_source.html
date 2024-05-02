@@ -118,7 +118,7 @@ $(function() {
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"> * in terms of `sync_io::X`; the latter is essentially the core logic, while the former provides</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"> * auto-parallelization and a simpler interface.</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"> * @note For this reason comment sometimes refer to a `sync_io::X` *core*: where the basic `X`-ish capabalities and</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"> * @note For this reason comments sometimes refer to a `sync_io::X` *core*: where the basic `X`-ish capabalities and</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"> *       data live.  The *async-I/O* `X` is then often built around a `sync_io::X` core.  Because of this it is</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"> *       usually easy, and fast, to convert a `sync_io::X` into an `X` -- via a move-like ctor called</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"> *       `sync_io`-core *adopting ctor*.  Additionally, ipc::transport::Channel template -- which bundles local peer</span></div>
@@ -350,7 +350,7 @@ $(function() {
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment"> *       but `sync_err_code` is a null pointer, then a `flow::error::Runtime_error` is thrown with</span></div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment"> *       the would be `*sync_err_code` stored inside the exception object (and a message in its `.what()`).</span></div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment"> * So let&#39;s say you call `sync_io` x.async_receive_blob(), providing it `&amp;sync_err_code, &amp;sz` args, otherwise</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment"> * So let&#39;s say you call `sync_io` `x.async_receive_blob()`, providing it `&amp;sync_err_code, &amp;sz` args, otherwise</span></div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment"> * using the same arg values as with async-I/O.  (For simplicity of discussion let&#39;s assume you did not pass</span></div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment"> * null pointer for the sync-err-code arg.)  Then: `F()` will no longer</span></div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment"> * execute from some unspecified thread at some unknown future time.  Instead there are 2 possibilities.</span></div>
@@ -555,16 +555,16 @@ $(function() {
 <div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span><span class="comment"> * you simply don&#39;t provide one.  (By convention it will also lack an `async_` prefix in the method name.)</span></div>
 <div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span><span class="comment"> * Beyond that, everything is the same:</span></div>
 <div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span><span class="comment"> *   - It may (or may not) initiate an async-wait by calling the `Event_wait_func` you supplied via</span></div>
-<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span><span class="comment"> *     `start_*_ops()`.</span></div>
+<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span><span class="comment"> *     `start_*ops()`.</span></div>
 <div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span><span class="comment"> *   - Your `Event_wait_func` should indeed -- on successful async-wait -- invoke `(*on_active_ev_func)()`.</span></div>
 <div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span><span class="comment"> *     Internally that may continue, or complete, whatever async processing `x` needs to do.</span></div>
 <div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span><span class="comment"> *     - The difference: it won&#39;t invoke some completion handler of yours... as you didn&#39;t (and couldn&#39;t) provide one.</span></div>
 <div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span><span class="comment"> * ### Multiple op-types in a given `sync_io`-pattern-implementing object ###</span></div>
-<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span><span class="comment"> * Consider, first, ipc::session::sync_io::Session_server.  It has only one operation, really:</span></div>
-<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span><span class="comment"> * session::sync_io::Session_server::async_accept().  To set it up, you&#39;ll do (as explained above by another example</span></div>
-<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span><span class="comment"> * use case): `x.start_accept_ops()`, possibly preceded by `x.replace_event_wait_handles()` (but that guy is beside</span></div>
-<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span><span class="comment"> * the point).</span></div>
+<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span><span class="comment"> * Consider, first, ipc::session::sync_io::Session_server_adapter.  It has only one operation, really:</span></div>
+<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span><span class="comment"> * session::sync_io::Session_server_adapter::async_accept().  To set it up, you&#39;ll do (as explained above by another</span></div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span><span class="comment"> * example use case): `x.start_ops()`, possibly preceded by `x.replace_event_wait_handles()` (but that guy is</span></div>
+<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span><span class="comment"> * beside the point).</span></div>
 <div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span><span class="comment"> * Easy enough.  The `x` can&#39;t do any other &quot;type of thing.&quot;  Same is true of, say,</span></div>
 <div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span><span class="comment"> * ipc::transport::sync_io::Blob_stream_mq_sender: it can only `x.send_blob()` (and `x.auto_ping()`,</span></div>
@@ -668,8 +668,8 @@ $(function() {
 <div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span><span class="comment"> * ------------------------</span></div>
 <div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span><span class="comment"> * Suppose `T` is an ipc::transport or ipc::session object type, always in a `&quot;sync_io&quot;` sub-namespace, that</span></div>
 <div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span><span class="comment"> * operates according to the `sync_io` pattern.  (For example, `T` might be transport::sync_io::Native_socket_stream.)</span></div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span><span class="comment"> * Then `T::start_X_ops(Event_wait_func&amp;&amp;)`, and/or a compatible template, must be invoked to begin unidirectional work</span></div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span><span class="comment"> * of type X (e.g., `start_X_ops()` might be `start_send_blob_ops()` or</span></div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span><span class="comment"> * Then `T::start_*ops(Event_wait_func&amp;&amp;)`, and/or a compatible template, must be invoked to begin unidirectional work</span></div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span><span class="comment"> * of type X (e.g., `start_*ops()` might be `start_send_blob_ops()` or</span></div>
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span><span class="comment"> * `start_receive_native_handle_ops()`) on a given `T`; the `T` memorizes the function until its destruction.</span></div>
 <div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span><span class="comment"> * From that point on, the `T` might at times be unable to complete an operation (for example</span></div>
@@ -690,7 +690,7 @@ $(function() {
 <div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span><span class="comment"> *     the user must invoke `(*on_active_ev_func)()` (without args and expecting no return value).</span></div>
 <div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span><span class="comment"> *     - In terms of thread safety, and generally, one should consider this function a non-`const` member of `T`&#39;s</span></div>
 <div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span><span class="comment"> *       sub-API.  (The sub-API in question is the set of methods that correspond to unidirectional-operation</span></div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span><span class="comment"> *       of type X, where `T::start_X_ops()` was invoked to kick things off.  For example, in `Native_socket_stream`</span></div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span><span class="comment"> *       of type X, where `T::start_*ops()` was invoked to kick things off.  For example, in `Native_socket_stream`</span></div>
 <div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span><span class="comment"> *       as used as a Blob_sender, that&#39;s its `send_blob()` and `*end_sending()` methods.)</span></div>
 <div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="comment"> *       That is, `(*on_active_ev_func)()` may not be called concurrently to any `T` sub-API method</span></div>
 <div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="comment"> *       (`Native_socket_stream::send_blob()`, `*end_sending()` in the recent example) or other</span></div>
@@ -698,7 +698,7 @@ $(function() {
 <div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="comment"> *       `Event_wait_func` to indicate interest in a new event.</span></div>
 <div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span><span class="comment"> * Naturally the key question arises: what, specifically, should a particular #Event_wait_func (as passed-into</span></div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><span class="comment"> * a `T::start_X_ops()`) *do*?  Indeed, this requires great care on the `sync_io` pattern user&#39;s part.</span></div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><span class="comment"> * a `T::start_*ops()`) *do*?  Indeed, this requires great care on the `sync_io` pattern user&#39;s part.</span></div>
 <div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span><span class="comment"> * Formally speaking the contract is as follows.  Let `F` be the particular `Event_wait_func`.</span></div>
 <div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span><span class="comment"> *   -# Upon `F()` being called, it shall register -- through a technique of the user&#39;s choice (a couple are</span></div>
@@ -842,7 +842,7 @@ $(function() {
 <div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span><span class="comment"> * a boost.asio `posix::descriptor` which itself is a thin wrapper around a native handle (FD).  It has</span></div>
 <div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span><span class="comment"> * boost.asio-supplied `.async_wait()`.  However, and this is a key point:</span></div>
 <div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span><span class="comment"> * To make it work, before invoking `T::start_X_ops()`, you must supply your execution context/executor -- usually</span></div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span><span class="comment"> * To make it work, before invoking `T::start_*ops()`, you must supply your execution context/executor -- usually</span></div>
 <div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span><span class="comment"> * a boost.asio `Task_engine` (a/k/a `boost::asio::io_contexst`) or strand (`boost::asio::io_context::strand`) --</span></div>
 <div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span><span class="comment"> * w/r/t which you plan to `.async_wait()` down the line.  This is done via `T::replace_event_wait_handles()`,</span></div>
 <div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span><span class="comment"> * an otherwise optional call.  If using flow.async, this might be (e.g.):</span></div>
@@ -862,7 +862,7 @@ $(function() {
 <div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span><span class="comment"> * @note As explained in &quot;Integrating with reactor-pattern...&quot; above, `hndl` is</span></div>
 <div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span><span class="comment"> *       a boost.asio I/O object, as opposed to just a Native_handle or even Native_handle::handle_t,</span></div>
 <div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span><span class="comment"> *       specifically for the boost.asio integration use case.  If *not* integrating with boost.asio,</span></div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span><span class="comment"> *       `start_X_ops()` is to be used without preceding it by `replace_event_wait_handles()`,</span></div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span><span class="comment"> *       `start_*ops()` is to be used without preceding it by `replace_event_wait_handles()`,</span></div>
 <div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span><span class="comment"> *       and `hndl-&gt;native_handle()` is the only meaningful part of `*hndl`, with `.async_wait()` being meaningless</span></div>
 <div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span><span class="comment"> *       and unused.  Conversely, if integrating with boost.asio, `hndl-&gt;native_handle()` itself should not be</span></div>
 <div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span><span class="comment"> *       required in your code, while `.async_wait()` is the only meaningful aspect of `*hndl`.</span></div>
@@ -881,7 +881,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 30 2024 23:39:19 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu May 2 2024 02:08:30 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
