@@ -46,7 +46,7 @@ name: Flow-IPC pipeline
 #       for pragamtic reasons.)
 #  - doc-and-release:
 #    - Summary: 1, generate documentation from the source code (using Doxygen et al) and make it conveniently
-#      available.  2, update GitHub Release and GitHub Pages web site with automatically with any relevant info, namely
+#      available.  2, update GitHub Release and GitHub Pages web site automatically with any relevant info, namely
 #      with the generated docs and source code tarball/zip.
 #    - Generate the documentation using Doxygen et al.  The goal here is the *canonical generated documentation*, not
 #      *testing the ability to generate it*.  It's a subtle difference, but it's important to note it, because
@@ -92,8 +92,8 @@ on:
     # Created release tag?  Just in case, should ensure these builds/tests pass (just in case, but it's redundant
     # against the branch=main trigger above); generate docs and make them available as artifact (nice: docs for
     # a particular product version available online); plus:
-    # signal web sites to update accordingly (there's probably a new release to present, with full source code attached;
-    # and there are docs for; nice: docs a particular product version available online).
+    # signal web site to update accordingly (there's probably a new release to present, with full source code attached;
+    # and there are docs for it; nice: docs for a particular product version available online).
     tags:
       - v*
   # To create the button that runs a workflow manually: testing, debugging, demoing.
