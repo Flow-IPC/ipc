@@ -316,7 +316,7 @@ All those subleties about different types of pipes in a `Channel` bundle complet
 @anchor api_overview_transport_struc
 Transport (structured)
 ----------------------
-While a `Channel` transports blobs and/or native handles, it is likely the Flow-IPC user will want to be able to transmit schema-based structured data, gaining the benefits of that approach including arbitrary data-structuree complexity and forward/backward-compatibility.  [capnp (Cap'n Proto)](https://capnproto.org) is the best-in-class third-party framework for schema-based structured data; ipc::transport's structured layer works by integrating with capnp.
+While a `Channel` transports blobs and/or native handles, it is likely the Flow-IPC user will want to be able to transmit schema-based structured data, gaining the benefits of that approach including arbitrary data-structure complexity and forward/backward-compatibility.  [capnp (Cap'n Proto)](https://capnproto.org) is the best-in-class third-party framework for schema-based structured data; ipc::transport's structured layer works by integrating with capnp.
 
 To deal with structured data instead of mere blobs (though a schema-based structure can, of course, itself store blobs such as images), one simply constructs an ipc::transport::struc::Channel, feeding it an `std::move()`d already-opened @link ipc::transport::Channel Channel@endlink.  This is called **upgrading** an unstructured `Channel` to a `struc::Channel`.  A key template parameter to `struc::Channel` is a capnp-generated root schema class of the user's choice.  This declares, at compile-time, what data structures (messages) one can transmit via that `struc::Channel` (and an identically-typed counterpart `struc::Channel` in the opposing process).
 
