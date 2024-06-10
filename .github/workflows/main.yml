@@ -635,7 +635,7 @@ jobs:
     #     hidden configure-script-generated binary abort => capnp binary build fails.
     #   - capnp binary fails MSAN at startup; hence capnp-compilation of our .capnp schemas fails.
     # We have worked around all these, so the thing altogether works.  It's just somewhat odd and entropy-ridden;
-    # and might cause maintanability problems over time, as it has already in the past.
+    # and might cause maintainability problems over time, as it has already in the past.
     # The TODO is to be more judicious about it
     # and only apply these things to the libs/executables we want it applied.  It is probably not so simple;
     # but worst-case it should be possible to use something like build-type-cflags-override to target our code;
@@ -804,7 +804,7 @@ jobs:
 
     # Here, as in all other tests below, we assemble a suppressions file in case this is a sanitized
     # run; and we follow the procedure explained near setup-tests-env definition.  To reiterate: to avoid
-    # tedium, but at the cost of mantainability of this file (meaning if a suppressions context is added then
+    # tedium, but at the cost of maintainability of this file (meaning if a suppressions context is added then
     # a few lines would need to be added here), we only list those contexts where *any* sanitizer has
     # *any* suppression; otherwise we skip it for brevity.  `find . -name 'suppressions*.cfg` is pretty useful
     # to determine their presence in addition to whether the test itself has its specific suppressions of any kind.
