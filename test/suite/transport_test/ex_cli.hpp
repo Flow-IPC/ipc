@@ -1153,7 +1153,7 @@ TEMPLATE
 template<typename Task>
 void CLASS::App_session::expect_ping_and_a(size_t chan_idx, Task&& task)
 {
-  FLOW_LOG_INFO("App_session [" << this << "]: Chan A[" << chan_idx << "]: Awaiting ping before proceeeding.");
+  FLOW_LOG_INFO("App_session [" << this << "]: Chan A[" << chan_idx << "]: Awaiting ping before proceeding.");
   m_struct_chans_a[chan_idx]->expect_msg(capnp::ExBodyA::MSG_TWO,
                                          [this, chan_idx, task = std::move(task)](Msg_in_ptr_a&& msg_in) mutable
   {
@@ -1176,7 +1176,7 @@ TEMPLATE
 template<typename Task>
 void CLASS::App_session::expect_pings_and_b(size_t chan_idx, Task&& task)
 {
-  FLOW_LOG_INFO("App_session [" << this << "]: Chan B[" << chan_idx << "]: Awaiting ping before proceeeding.");
+  FLOW_LOG_INFO("App_session [" << this << "]: Chan B[" << chan_idx << "]: Awaiting ping before proceeding.");
   m_struct_chans_b[chan_idx]->expect_msgs(capnp::ExBodyB::MSG_TWO,
                                           [this, chan_idx, task = std::move(task)](Msg_in_ptr_b&& msg_in) mutable
   {
