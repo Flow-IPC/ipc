@@ -118,7 +118,7 @@ SHM-backed capabilities become available, like everything else in the ipc::sessi
     - An **app-scope arena** (a/k/a `.app_shm()`), for that specific distinct `Client_app`, is created.  This arena's **lifetime** is *until the `Session_server` is destroyed*.  That is: its lifetime spans all future sessions, not just the one that triggered its creation (in on-demand fashion).
   - If the app-scope arena has already been created, it is not re-created; but it is made equally accessible via `.app_shm()` accessors.
 
-@note With SHM-jemalloc the app-scope arena is accessible (can be allocated in) only on the session-server end.  The `.app_shm()` accesors do not exist on the session-client end.
+@note With SHM-jemalloc the app-scope arena is accessible (can be allocated in) only on the session-server end.  The `.app_shm()` accessors do not exist on the session-client end.
 
 ---
 
