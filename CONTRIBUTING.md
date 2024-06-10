@@ -152,7 +152,7 @@ and checked-in using the `ipc/` pipeline.  (Search for `git push` in the two `ma
 We have already mentioned this above.
 
 The above steps for *locally* generating the documentation are provided only
-so you can locally test soure code changes' effects on the resulting docs.
+so you can locally test source code changes' effects on the resulting docs.
 Locally generating and verifying docs, after changing source code, is a good idea.
 However it's also possible (and for some people/situations preferable) to skip it.
 The CI/CD pipeline will mandatorily generate the docs, when a PR is created or updated, as we explained above.
