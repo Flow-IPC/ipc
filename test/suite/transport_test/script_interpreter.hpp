@@ -89,7 +89,7 @@ private:
    * vec.push_back(std::move(some_mq_peer_unique_ptr)); // Add a slot. */
   using Mq_peer_lists = std::map<std::type_index, Mq_peer_list_variant>;
 
-  // Similar stuff here but simpler; there are only 2 variants: POSIX vs. Bipc; a Chan_bundle is both snder and receiver.
+  // Similar stuff here but simpler; there are only 2 variants: POSIX vs. Bipc; a Chan_bundle is both sender and receiver.
   template<typename Chan_bundle>
   using Chan_bundle_list = std::vector<boost::shared_ptr<Chan_bundle>>;
   using Chan_bundle_list_variant = std::variant<Chan_bundle_list<Posix_mqs_socket_stream_channel>,
