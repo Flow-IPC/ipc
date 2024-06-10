@@ -6,7 +6,7 @@ transport_test.exec is an integration-test program that tests ipc::transport, ip
 
 In this mode it is an interactive(ish) tool that:
   - So far tests much of the *unstructured* layer (not *structured* layer) of ipc::transport.
-  - So far avoids any dependence on ipc::session (i.e., it establishes varius IPC pipes manually, though it does get
+  - So far avoids any dependence on ipc::session (i.e., it establishes various IPC pipes manually, though it does get
     up to the transport::Channel level (wherein various pipes are bundled together)).
   - Can be used at a whim to test various patterns of API use without constant laborious code editing and recompiling.
     - This is already achieved.  I (ygoldfel) wrote it b/c testing what I wanted to test the usual way seemed painful.
