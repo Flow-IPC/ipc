@@ -1667,7 +1667,7 @@ void Script_interpreter::cmd_chan_bundle_create()
 
     /* Got here: mq_out, mq_in are ready.  We have sock_stm also.  We can now bundle them all into
      * Mqs_socket_stream_channel.
-     * As advertised, as we do so, the sock_stm in the slot gets "eaten" (becames a NULL-state Native_socket_stream).
+     * As advertised, as we do so, the sock_stm in the slot gets "eaten" (becomes a NULL-state Native_socket_stream).
      * This happens via move-semantics. So the sock_stm in the slot becomes unusable by itself. */
 
     FLOW_LOG_INFO("Wrapping all 3 peers [" << *mq_in << "] [" << *mq_out << "] [" << *sock_stm << "] in a new "
