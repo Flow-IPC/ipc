@@ -27,7 +27,7 @@ The tool:
   - writes Flow-IPC logs to file log (2nd arg) with sev (4th arg); [data] and [trace] are useful; [info] is good as a
   way to check realistically the verbosity level of the library APIs (do note sometimes timeouts in in-script are so
   tight that using [data] or [trace] may lead to a test failure due to timeout);
-  - reads/parses the entire script for STDIN, then executes it in order (so either type all lines, Ctlr-D; or redirect
+  - reads/parses the entire script for STDIN, then executes it in order (so either type all lines, Ctrl-D; or redirect
   from a file);
   - acts synchronously: each command completes before the next starts (and if it fails, the program exits).
 
