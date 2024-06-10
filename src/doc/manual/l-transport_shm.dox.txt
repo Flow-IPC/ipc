@@ -198,7 +198,7 @@ So that would definitely be taxing to code.  And indeed, particularly with legac
 
 @warning As a rule `std::` containers are not SHM-friendly, at least in gcc as of gcc-9; they assume raw-pointer-using allocators.  By contrast `boost::container::*` corrected those issues.  `std::vector` happens to be okay in gcc-8 at least, but it's safer to just go with `boost::container`.  E.g., its `std::list` bro is broken in this regard.
 
-Once you've chosen your STL-compliant SHM-friendly container type -- or developed your own! -- you must take care to, also, specify (as the `Allocator` template paramater to the container type) the **SHM-allocating allocator** we've provided.  (boost.interprocess provides an allocator template for similar use; but it is stateful, which is a huge pain in the butt -- plus it uses additional RAM to store the allocator pointer.)  Use this allocator:
+Once you've chosen your STL-compliant SHM-friendly container type -- or developed your own! -- you must take care to, also, specify (as the `Allocator` template parameter to the container type) the **SHM-allocating allocator** we've provided.  (boost.interprocess provides an allocator template for similar use; but it is stateful, which is a huge pain in the butt -- plus it uses additional RAM to store the allocator pointer.)  Use this allocator:
 
   ~~~
   template<typename T>
