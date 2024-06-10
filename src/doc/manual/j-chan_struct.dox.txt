@@ -693,7 +693,7 @@ The channel might get hosed *at any time*.  Consider this code:
 
 Chronologically:
   -# Point X: We've called `.expect_msg()`.  Say it returned `true` which means the channel is *not* hosed at that exact point in time.  It, itself, lacks an `err_code` arg in its signature, so it cannot itself emit a new error.
-  -# Point A: Apparently a message has arrived.  So at that exact point the channel is *not* hosed either.  Even if it is, `.create_msg()` has nothing to do with transmitting anything, and certainyl all the message-reading and -filling logic is orthogonal to the channel itself.  No problem.
+  -# Point A: Apparently a message has arrived.  So at that exact point the channel is *not* hosed either.  Even if it is, `.create_msg()` has nothing to do with transmitting anything, and certainly all the message-reading and -filling logic is orthogonal to the channel itself.  No problem.
   -# Point B: Here we `.send()`.  That's a transmission-related API, and moreover it can itself emit a (new) error.  Anyway, we don't know if the channel is hosed or not per se, and there's only one way to find out: call it.
   -# Point C: Now there are 2 error-related outputs: `ok` (return value) and `err_code` (out-arg).  (We could have passed-in null or omitted arg -- same thing -- in which case we'd need to be ready to catch resulting exception.)
     - Suppose `ok == true`, but `err_code` is truthy.  That would indicate *new channel-hosing error* being emitted.  Hence we call `teardown()` which will stop work on this channel -- deinitialize whatever, etc.
