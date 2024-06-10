@@ -30,7 +30,7 @@ About safety
 You might note that the word we use here is **safety**, not *security*.  Of course your semantic preferences may differ, but what we mean to convey is this:
 
   - **Security** is about protection from malicious code, wherever it may live.  Flow-IPC deals with IPC, and IPC by definition occurs within one OS instance ("machine"), so the potential malicious code would *probably* be running within the same machine, possibly even within the same application/process being developed.
-  - **Safety** is about being generally safe with respect to one's data strucutures and code, so that (for example, and for example *only*):
+  - **Safety** is about being generally safe with respect to one's data structures and code, so that (for example, and for example *only*):
     - If application A wants to talk to application B, it is indeed talking to application B and not application C.
       - In particular, if application A talks to B and C, and (say) SHared Memory is used all around, ideally the system should segregate vaddr (virtual address) areas in such a way as to make it impossible or at least unlikely that (due to an un-malicious user-code bug, maybe buffer overflow) data meant for B ends up being read by C.  (Customers might see that as *security*, but in our nomenclature it's about safety, since it's not an attack that caused the potential data breach but the vendor's own bug.)
     - If application B goes down, gracefully or especially ungracefully, application A should be wary of accessing resources shared (e.g., in SHared Memory -- SHM) with application B, and ideally it would know about the problem as soon as physically possible so as to limit the scope of damage in the meantime.
