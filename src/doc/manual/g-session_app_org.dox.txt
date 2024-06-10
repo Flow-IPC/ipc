@@ -53,7 +53,7 @@ So let's get into the relatively easy topic: the API for closing an open session
 
 If the closing trigger is *local*, then one simply destroys the `Session` object (its destructor getting called), or in the case of the server side potentially 1+ `Session` object(s).  That's it.  Then it can exit the process.
 
-@note When locally-triggered (process is exiting gracefully), a session-server should, also, destroy the `Session_server` object (its destrctuctor getting called).  The order does not matter; for example `Session_server` can be destroyed first.
+@note When locally-triggered (process is exiting gracefully), a session-server should, also, destroy the `Session_server` object (its destructor getting called).  The order does not matter; for example `Session_server` can be destroyed first.
 
 If the closing trigger is the peer *partner*, then one... also simply destroys the one, relevant `Session` object.  Then one either attempts to start another session (if a session-client, or server acting equally to a client), or does nothing (if acting as a server that can accept arbitrary number of concurrent sessions anyway).
 
