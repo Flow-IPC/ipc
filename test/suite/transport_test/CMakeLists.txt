@@ -44,7 +44,7 @@ common_set_target_properties(${NAME})
 # Link good ol' libipc_shm_arena_lend.
 target_link_libraries(${NAME} PRIVATE ipc_shm_arena_lend)
 
-# Export (to separate directory, as there are multiple usefule files) if they `make install` or equivalent.
+# Export (to separate directory, as there are multiple useful files) if they `make install` or equivalent.
 install(TARGETS ${NAME}
         RUNTIME DESTINATION bin/${NAME_ROOT})
 # Our input scripts for transport_test.exec SCRIPTED mode.  (One can also input one's own or even use it
