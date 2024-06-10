@@ -269,7 +269,7 @@ Quick snippets to demonstrate follow.  Here we chose the session-client as the p
       // Thread U.
       auto new_channel = std::move(*new_channel_ptr);
 
-      // It's ready: the other side successfuly invoked session.open_channel().
+      // It's ready: the other side successfully invoked session.open_channel().
       // Use it.  E.g., upgrade it to struc::Channel, or not, then send/receive stuff.
       go_do_ipc_yay(std::move(new_channel));
     });
@@ -319,7 +319,7 @@ We've covered pretty much every approach for opening channels via ipc::session. 
       // Fish out the metadata.
       const bool do_upgrade_to_struct_chan = chan_open_mdt->getPayload().getDoUpgradeToStructuredChannel();
 
-      // It's ready: the other side successfuly invoked session.open_channel().
+      // It's ready: the other side successfully invoked session.open_channel().
       // Use it.  E.g., upgrade it to struc::Channel, or not -- based on `do_upgrade_to_struct_chan`.
       go_do_ipc_yay(std::move(new_channel), do_upgrade_to_struct_chan);
     });
