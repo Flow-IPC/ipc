@@ -720,7 +720,7 @@ jobs:
         # sanitizers' suppressions.  (Note, though, that MSAN does not have a run-time suppression
         # system; only these ignore-lists.  The others do also have ignore-lists though.
         # The format is totally different between the 2 types of suppression.)
-        # Our MSAN support is budding compared to UBSAN/ASAN/TSAN; so just specify the one ingore-list file
+        # Our MSAN support is budding compared to UBSAN/ASAN/TSAN; so just specify the one ignore-list file
         # we have now.  TODO: If/when MSAN support gets filled out like the others', then use a context system
         # a-la env.setup-tests-env.
         cat ${{ github.workspace }}/flow/src/sanitize/msan/ignore_list_${{ matrix.compiler.name }}.cfg \
