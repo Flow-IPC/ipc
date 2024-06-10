@@ -490,7 +490,7 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
       Uptr<Channel_b> ch;
       if constexpr(S_CLASSIC_ELSE_JEM)
       {
-        /* SHM-classic: Out-messages: Doesn't matter which arena; they're not rememembered by server beyond handler
+        /* SHM-classic: Out-messages: Doesn't matter which arena; they're not remembered by server beyond handler
          * (in our case).
          * In-messages: Server sends app-scope messages; in arena-sharing providers like SHM-classic receiver must
          * specify the in-messages' scope. */
@@ -499,7 +499,7 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
       }
       else
       {
-        /* SHM-jemalloc: Out-messages: Doesn't matter which arena; they're not rememembered by server beyond handler
+        /* SHM-jemalloc: Out-messages: Doesn't matter which arena; they're not remembered by server beyond handler
          * (in our case).
          * In-messages: In arena-lending providers like SHM-jemalloc receiver will deserialize fine regardless of
          * in which (properly lent) arena sender constructed msg.
