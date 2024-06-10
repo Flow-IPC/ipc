@@ -136,7 +136,7 @@ Observations (tested using decent server-grade hardware):
     - Also significantly more RAM might be used at points.
   - For very small messages the two techniques perform similarly: ~100 microseconds.
 
-The code for this, when using Flow-IPC, is straighforward.  Here's how it might look on the client side:
+The code for this, when using Flow-IPC, is straightforward.  Here's how it might look on the client side:
 
   ~~~cpp
   // Specify that we *do* want zero-copy behavior, by merely choosing our backing-session type.

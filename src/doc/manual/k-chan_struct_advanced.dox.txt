@@ -31,7 +31,7 @@ In @ref chan_struct we kept things simple: Create `struc::Channel`.  Create a me
 
 However the abilities of the ipc::transport **structured layer** go beyond that basic and effective paradigm.  Hand-wavily speaking, an ipc::transport::struc::Msg_out (which represents a **message**, as opposed to message instance, and is not so different conceptually from a container) can be seen as not a short-lived message -- that exists essentially just before sending and just after receiving -- but as a *data structure* whose lifetime is practically unlimited (if so desired).
 
-It is probably clear already that capnp provides the ability to express many data structures (as ~anything can be built on top of `struct`s, `union`s, and `List`s).  (Granted, things like sorted trees and hash-tables would need some some added code to be conveniently accessed directly within a capnp schema, but that is also possible.)
+It is probably clear already that capnp provides the ability to express many data structures (as ~anything can be built on top of `struct`s, `union`s, and `List`s).  (Granted, things like sorted trees and hash-tables would need some added code to be conveniently accessed directly within a capnp schema, but that is also possible.)
 
 @note If a native capnp schema is insufficient for your data structure's performance or semantic needs, we provide first-class-citizen support for direct C++ data structures, including STL-compliant containers, in shared memory.  See @ref transport_shm.
 
@@ -47,7 +47,7 @@ Potentially one might also want the following property:
 
 As you will soon see, this merely requires the use of a SHM-backed serializer -- but that is already assumed at least in the default recommendation and example code in @ref chan_struct.
 
-Finally, there is the matter of the the **lifetime** of a given `Msg_out` and associated `Msg_in`s.  There are a few ways to think about this, but supposing one uses the ipc::session paradigm for channel opening (and possibly SHM use), it can be roughly described as the following capabilities:
+Finally, there is the matter of the **lifetime** of a given `Msg_out` and associated `Msg_in`s.  There are a few ways to think about this, but supposing one uses the ipc::session paradigm for channel opening (and possibly SHM use), it can be roughly described as the following capabilities:
   - a `Msg_out` (+ `Msg_in`s) lifetime that is at least equal to that of a particular ipc::session::Session;
   - a lifetime exceeding that of the session's.
 
@@ -108,7 +108,7 @@ For SHM-backed messages it is more fun, as the message and subsequent message in
 
 Thus, conceptually, there is a ref-count: 1 for the `Msg_out`; 1 for each `Msg_in`.  Once it reaches zero, the lifetime of the data ends, and the RAM resources are returned for use by other items.  (This is all thread-safe in cross-process fashion.  It's fine if destructors run concurrently to each other, with a new related `Msg_in` being created in another process, etc.)
 
-@note `Msg_in`s are exclusively trafficked via `Msg_in_ptr`s which are mere `shared_ptr<Msg_in>`s; hence once a particular `shared_ptr` group reaches ref-count-zero, the destructor is invoked, and voilà for that particular *one* message instance.  This applies regardless of SHM-backed versus heap-backed messages.  Meanwile `Msg_out` can live wherever you want (you can wrap it in a `shared_ptr` if you want); but don't confuse where these *objects* live as opposed to where the *data structure* lives (similarly to a regular `std::vector` potentially living on the stack but allocating its buffer elsewhere, typically heap but depending on the `Allocator` used elsewhere).
+@note `Msg_in`s are exclusively trafficked via `Msg_in_ptr`s which are mere `shared_ptr<Msg_in>`s; hence once a particular `shared_ptr` group reaches ref-count-zero, the destructor is invoked, and voilà for that particular *one* message instance.  This applies regardless of SHM-backed versus heap-backed messages.  Meanwhile `Msg_out` can live wherever you want (you can wrap it in a `shared_ptr` if you want); but don't confuse where these *objects* live as opposed to where the *data structure* lives (similarly to a regular `std::vector` potentially living on the stack but allocating its buffer elsewhere, typically heap but depending on the `Allocator` used elsewhere).
 
 @anchor msg_ct
 ### Constructing messages; reusing messages among different `struc::Channel`s ###
@@ -116,7 +116,7 @@ We can now discuss freely how one creates a `Msg_out`.  You already know about `
 
 @note A message *instance* is created internally by `struc::Channel` at receipt time.  By the time you get the `Msg_in_ptr` into your code, it's already in existence, and it will go out of existence when that `shared_ptr<Msg_in> = Msg_in_ptr`'s shared-pointer group reaches ref-count-zero.
 
-Formally speaking the backing (SHM versus heap; plus config) of any given `Msg_out` is controlled via the formal concepts ipc::transport::struc::Struct_builder and ipc::transport::struc::Struct_builder::Config (and the deserialization counterparts ipc::transport::struc::Struct_reader and ipc::transport::struc::Struct_reader::Config).  You can read all about them and their impls -- or even potentially how to create your own for truly advanced fanciness -- by following those links into the Reference and going from there.  (In that case you will also need to understand `struc::Channel` non-tag constructor form as well as the related `Struct_builder_config` and `Struct_reader_config` class template paramers which match `Struct_builder::Config` and `Struct_reader::Config` concepts repsectively.)  Here in the guided Manual we won't get into it to that level of formality and depth.  We strive to keep it immediately useful but nevertheless sufficiently advanced for most needs.
+Formally speaking the backing (SHM versus heap; plus config) of any given `Msg_out` is controlled via the formal concepts ipc::transport::struc::Struct_builder and ipc::transport::struc::Struct_builder::Config (and the deserialization counterparts ipc::transport::struc::Struct_reader and ipc::transport::struc::Struct_reader::Config).  You can read all about them and their impls -- or even potentially how to create your own for truly advanced fanciness -- by following those links into the Reference and going from there.  (In that case you will also need to understand `struc::Channel` non-tag constructor form as well as the related `Struct_builder_config` and `Struct_reader_config` class template parameters which match `Struct_builder::Config` and `Struct_reader::Config` concepts respectively.)  Here in the guided Manual we won't get into it to that level of formality and depth.  We strive to keep it immediately useful but nevertheless sufficiently advanced for most needs.
 
 So here are the relevant recipes with all currently available types of message backing.  Let's start with the simplest one: **heap-backed messages**.
 

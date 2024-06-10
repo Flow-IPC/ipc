@@ -54,8 +54,8 @@ The second question to answer is: Do you want to, underneath it all, use **messa
 (Otherwise specify `S_MQ_TYPE_OR_NONE = ipc::session::schema::MqType::NONE`.)
 
 An ipc:session-generated `Channel` contains *either one or two bidirectional pipes*; if 2 then they can be used independently of each other, one capable of transmitting blobs, the other of blobs and blob/native-handle pairs.  If used directly, sans upgrade to structured messaging, you can use the pipe(s) as desired.  Alternatively if a 2-pipe `Channel` is upgraded to `struc::Channel` in particular, then it will handle the pipe choice internally on your behalf.  For *performance*:
-  - `struc::Channel` shall use the the blobs-only pipe for any message that does *not* contain (as specified by the user) a native handle.
-  - `struc::Channel` shall use the the blobs-and-handles pipe for any message *does* contain a native handle.
+  - `struc::Channel` shall use the blobs-only pipe for any message that does *not* contain (as specified by the user) a native handle.
+  - `struc::Channel` shall use the blobs-and-handles pipe for any message *does* contain a native handle.
   - `struc::Channel` shall never reorder messages (maintaining, internally, a little reassembly queue in the rare case of a race between a handle-bearing and non-handle-bearing message).
 
 All of that said, the bottom line is:
@@ -213,7 +213,7 @@ On the server end, accordingly:
     a_session.init_handlers(...); // On-error handler (discussed separately).
 
     // `a_session` is open!
-    // `its_init_channels` are open!  Probably, since we receivied num_structured_channels from server, we would
+    // `its_init_channels` are open!  Probably, since we received num_structured_channels from server, we would
     // now upgrade that many of leading `its_init_channels` to a struc::Channel each (exercise left to reader).
 
     // Operate on `a_session` (etc.) in here, long-term, until it is hosed.
@@ -269,7 +269,7 @@ Quick snippets to demonstrate follow.  Here we chose the session-client as the p
       // Thread U.
       auto new_channel = std::move(*new_channel_ptr);
 
-      // It's ready: the other side successfuly invoked session.open_channel().
+      // It's ready: the other side successfully invoked session.open_channel().
       // Use it.  E.g., upgrade it to struc::Channel, or not, then send/receive stuff.
       go_do_ipc_yay(std::move(new_channel));
     });
@@ -319,14 +319,14 @@ We've covered pretty much every approach for opening channels via ipc::session. 
       // Fish out the metadata.
       const bool do_upgrade_to_struct_chan = chan_open_mdt->getPayload().getDoUpgradeToStructuredChannel();
 
-      // It's ready: the other side successfuly invoked session.open_channel().
+      // It's ready: the other side successfully invoked session.open_channel().
       // Use it.  E.g., upgrade it to struc::Channel, or not -- based on `do_upgrade_to_struct_chan`.
       go_do_ipc_yay(std::move(new_channel), do_upgrade_to_struct_chan);
     });
   });
   ~~~
 
-On the active-open side it is accomplished as follows: a different overload of `open_channel()` also takes a metadata structure, a blank one first being obtained via `Session::mdt_builder()` and then typically modified with some capnp-generated accessorsno differently fromn the pre-session-open metadata example @ref chan_open_mdt_ex "here."
+On the active-open side it is accomplished as follows: a different overload of `open_channel()` also takes a metadata structure, a blank one first being obtained via `Session::mdt_builder()` and then typically modified with some capnp-generated accessors no differently from the pre-session-open metadata example @ref chan_open_mdt_ex "here."
 
   ~~~
   Channel new_channel;
@@ -352,7 +352,7 @@ In the somewhat advanced situation where one wants to use both methods of channe
     struct InitChannelCfg
     {
       numStructuredChannels @0 :Size;
-      # Futher stuff... needn't just be scalars either.
+      # Further stuff... needn't just be scalars either.
     }
     struct OnDemandChannelCfg
     {

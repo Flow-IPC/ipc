@@ -76,7 +76,7 @@ find_package(CapnProto CONFIG REQUIRED)
 # The relevant translation units (.cpp, .capnp -> .c++) shall be listed directly below, in normal CMake fashion,
 # under the relevant unit-test executables.  We do not make an intermediate libtest* or anything like that;
 # the relevant object files are compiled directly from their relevant source files.  (This is pretty common
-# when using the GOogle unit-test framework.)  Do note, again, that those relevant source files are directly
+# when using the Google unit-test framework.)  Do note, again, that those relevant source files are directly
 # under the sub-projects' source trees: ipc_*/src/.../test/....
 #
 # This executable, libipc_unit_test, is the compendium of unit tests to execute.

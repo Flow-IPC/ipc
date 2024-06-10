@@ -114,7 +114,7 @@ private:
     Channels_a m_struct_chans_a;
     Channels_b m_struct_chans_b;
 
-    // Place to save an out-request msg ID so undo_expect_responses() can be called on it to stop expecting respones.
+    // Place to save an out-request msg ID so undo_expect_responses() can be called on it to stop expecting responses.
     struc::Channel_base::msg_id_out_t m_saved_req_id_out;
 
     /* Not-very-rigorous expectations count: e.g., expect some message = ++m_expectations_a;
@@ -1751,7 +1751,7 @@ TEMPLATE
 template<typename Task>
 void CLASS::App_session::expect_ping_and_b(size_t chan_idx, Task&& task)
 {
-  FLOW_LOG_INFO("App_session [" << this << "]: Chan B[" << chan_idx << "]: Awaiting ping before proceeeding.");
+  FLOW_LOG_INFO("App_session [" << this << "]: Chan B[" << chan_idx << "]: Awaiting ping before proceeding.");
   m_struct_chans_b[chan_idx]->expect_msg(capnp::ExBodyB::MSG_TWO,
                                          [this, chan_idx, task = std::move(task)](Msg_in_ptr_b&& msg_in) mutable
   {
