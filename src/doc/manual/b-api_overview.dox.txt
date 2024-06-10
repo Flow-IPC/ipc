@@ -523,7 +523,7 @@ At no point do you have to worry about naming a SHM pool, removing it from the f
 > Session::Structured_channel<...> chan(...,
 >                                       Channel_base::S_SERIALIZE_VIA_SESSION_SHM, ...); // <-- CHANGED LINE.
 > // --- CHANGE TO --v
-> // Now the the message can live *past* the session: until the Session_server is destroyed, meaning
+> // Now the message can live *past* the session: until the Session_server is destroyed, meaning
 > // your process accepting incoming sessions exits.  For example, suppose your session-server accepts
 > // (sessions) from many session-client processes of one application over its lifetime; session-client A sends
 > // a PutCache message containing a large file's contents to session-server which memorizes it (to serve later);

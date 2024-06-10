@@ -54,8 +54,8 @@ The second question to answer is: Do you want to, underneath it all, use **messa
 (Otherwise specify `S_MQ_TYPE_OR_NONE = ipc::session::schema::MqType::NONE`.)
 
 An ipc:session-generated `Channel` contains *either one or two bidirectional pipes*; if 2 then they can be used independently of each other, one capable of transmitting blobs, the other of blobs and blob/native-handle pairs.  If used directly, sans upgrade to structured messaging, you can use the pipe(s) as desired.  Alternatively if a 2-pipe `Channel` is upgraded to `struc::Channel` in particular, then it will handle the pipe choice internally on your behalf.  For *performance*:
-  - `struc::Channel` shall use the the blobs-only pipe for any message that does *not* contain (as specified by the user) a native handle.
-  - `struc::Channel` shall use the the blobs-and-handles pipe for any message *does* contain a native handle.
+  - `struc::Channel` shall use the blobs-only pipe for any message that does *not* contain (as specified by the user) a native handle.
+  - `struc::Channel` shall use the blobs-and-handles pipe for any message *does* contain a native handle.
   - `struc::Channel` shall never reorder messages (maintaining, internally, a little reassembly queue in the rare case of a race between a handle-bearing and non-handle-bearing message).
 
 All of that said, the bottom line is:

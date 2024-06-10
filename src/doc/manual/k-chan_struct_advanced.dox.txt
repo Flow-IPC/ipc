@@ -47,7 +47,7 @@ Potentially one might also want the following property:
 
 As you will soon see, this merely requires the use of a SHM-backed serializer -- but that is already assumed at least in the default recommendation and example code in @ref chan_struct.
 
-Finally, there is the matter of the the **lifetime** of a given `Msg_out` and associated `Msg_in`s.  There are a few ways to think about this, but supposing one uses the ipc::session paradigm for channel opening (and possibly SHM use), it can be roughly described as the following capabilities:
+Finally, there is the matter of the **lifetime** of a given `Msg_out` and associated `Msg_in`s.  There are a few ways to think about this, but supposing one uses the ipc::session paradigm for channel opening (and possibly SHM use), it can be roughly described as the following capabilities:
   - a `Msg_out` (+ `Msg_in`s) lifetime that is at least equal to that of a particular ipc::session::Session;
   - a lifetime exceeding that of the session's.
 

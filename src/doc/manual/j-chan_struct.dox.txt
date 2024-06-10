@@ -206,7 +206,7 @@ _Tip_: Let `X` be a compound field, particularly `List`, `Text` (string/list-of-
 (However, if the new `n` is different from the preceding, then there is no choice but to re-`.initX()`.  A list/blob/string's size cannot be modified in capnp.  It is best to avoid any situation where the `n` would change; try to design your protocol differently.)
 
 @par
-_Tip_: Use `ostream <<` to pretty-print a `struc::Msg_out`, without newlines/indentation and truncated as needed to a reasonable length.  For fully indented pretty-printing you may use `capnp::prettyPrint(msg.body_root()->asReader()).flatten().cStr()`.  (Be wary of the perf cost of such an operation, especially for large messages.  Though if done within a `FLOW_LOG_*()` no evaluation occurs, unless the the log-level check passes.)
+_Tip_: Use `ostream <<` to pretty-print a `struc::Msg_out`, without newlines/indentation and truncated as needed to a reasonable length.  For fully indented pretty-printing you may use `capnp::prettyPrint(msg.body_root()->asReader()).flatten().cStr()`.  (Be wary of the perf cost of such an operation, especially for large messages.  Though if done within a `FLOW_LOG_*()` no evaluation occurs, unless the log-level check passes.)
 
 ---
 
