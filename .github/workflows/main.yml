@@ -689,7 +689,7 @@ jobs:
     # As it stands, whatever matrix compiler/build-type is chosen applies not just to our code (correct)
     # and 3rd party libraries we link like lib{boost_*|capnp|kj|jemalloc} (semi-optional but good) but also
     # unfortunately any items built from source during "Install Flow-IPC dependencies" step that we then
-    # use during during the build step for our own code subsequently.  At a minimum this will slow down
+    # use during the build step for our own code subsequently.  At a minimum this will slow down
     # such programs.  (For the time being we accept this as not-so-bad; to target this config at some things
     # but not others is hard/a ticket.)  In particular, though, the capnp compiler binary is built this way;
     # and our "Build targets" step uses it to build key things (namely convert .capnp schemas into .c++
