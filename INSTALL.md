@@ -160,7 +160,7 @@ The documentation consists of:
   - (minor) comments, about the build, in `CMakeLists.txt`, `*.cmake`, `conanfile.py` (in various directories
     including this one where the top-level `CMakeLists.txt` lives);
   - (major/main) documentation directly in the comments throughout the source code; these have been,
-    and can be again, conviently generated using certain tools (namely Doxygen and friends), via the
+    and can be again, conveniently generated using certain tools (namely Doxygen and friends), via the
     above-shown `make ipc_doc_public ipc_doc_full flow_doc_public flow_doc_full` command.
     - The generated documentation consists of:
       - (Flow-IPC proper) a clickable guided Manual + Reference.
