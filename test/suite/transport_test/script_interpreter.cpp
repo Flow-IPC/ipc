@@ -960,7 +960,7 @@ void Script_interpreter::cmd_blob_sender_send_end_impl(const Peer_list& peers, u
     }
   }); // test_with_timeout()
   /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
-   * which shall destroy `peers` which shall shall destroy *peer (hence join its internal thread(s)). */
+   * which shall destroy `peers` which shall destroy *peer (hence join its internal thread(s)). */
 } // Script_interpreter::cmd_blob_sender_send_end_impl()
 
 void Script_interpreter::cmd_socket_stream_send_end()
@@ -1128,7 +1128,7 @@ void Script_interpreter::cmd_socket_stream_receiver_recv_impl(const Peer_list& p
     }
   }); // test_with_timeout()
   /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
-   * which shall destroy m_test_* which shall shall destroy *peer (hence join its internal thread(s)). */
+   * which shall destroy m_test_* which shall destroy *peer (hence join its internal thread(s)). */
 } // Script_interpreter::cmd_socket_stream_receiver_recv_impl()
 
 void Script_interpreter::cmd_socket_stream_recv_blob()
@@ -1227,7 +1227,7 @@ void Script_interpreter::cmd_blob_receiver_recv_blob_impl(const Peer_list& peers
     validate_rcvd_blob_contents(blob, exp_blob_n); // Throw on error.
   }); // test_with_timeout()
   /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
-   * which shall destroy m_test_sock_streams which shall shall destroy *sock_stm (hence join its internal thread(s)). */
+   * which shall destroy m_test_sock_streams which shall destroy *sock_stm (hence join its internal thread(s)). */
 } // Script_interpreter::cmd_blob_receiver_recv_blob_impl()
 
 flow::util::Blob Script_interpreter::test_blob(size_t n) const
@@ -1431,7 +1431,7 @@ void Script_interpreter::cmd_socket_stream_acceptor_accept()
     }
   });
   /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
-   * which shall destroy m_test_sock_stm_acceptors and m_test_sock_streams which shall shall destroy any
+   * which shall destroy m_test_sock_stm_acceptors and m_test_sock_streams which shall destroy any
    * added streams and `acceptor` (hence join their internal threads). */
 } // Script_interpreter::cmd_socket_stream_acceptor_accept()
 
