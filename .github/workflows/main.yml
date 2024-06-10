@@ -379,7 +379,7 @@ jobs:
 
         # We concentrate on clang sanitizers; they are newer/nicer; also MSAN is clang-only.  So gcc ones excluded.
         # Attention!  Excluding some sanitizer job(s) (with these reasons):
-        #   - MSAN: MSAN protects against reads of ununitialized memory; it is clang-only (not gcc), unlike the other
+        #   - MSAN: MSAN protects against reads of uninitialized memory; it is clang-only (not gcc), unlike the other
         #     *SAN.  Its mission overlaps at least partially with UBSAN's; for example for sure there were a couple of
         #     uninitialized reads in test code which UBSAN caught.  Its current state -- if not excluded -- is as
         #     follows: 1, due to (as of this writing) building dependencies, including the capnp compiler binary used
