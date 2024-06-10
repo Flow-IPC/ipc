@@ -92,7 +92,7 @@ The master branch in each repo is called `main`.  Thus any contribution will inv
 We have some automated CI/CD pipelines.  Namely `flow`, being special as a self-contained project, has the
 pipeline steps in `flow/.github/workflows/main.yml` -- this is Flow's dedicated CI/CD pipeline; and `ipc`,
 covering Flow-IPC as an overall monolithic project, similarly has Flow-IPC's CI/CD pipeline steps in
-`.github/worksflows/main.yml`.  Therefore:
+`.github/workflows/main.yml`.  Therefore:
   - Certain automated build/test/doc-generation runs occur when:
     - creating a PR against `flow` repo;
     - updating that PR;
