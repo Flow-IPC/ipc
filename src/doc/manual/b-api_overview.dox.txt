@@ -311,7 +311,7 @@ All transport APIs at this layer, as well the structured layer (see below), have
 > chan.send_blob(...); // No problem.
 > ~~~
 
-All those subleties about different types of pipes in a `Channel` bundle completely disappear when one deals with structured-data `struc::Channel`s.  They are a higher-layer abstraction and will leverage whatever `transport::Channel` it adapts.  In addition to handling capnp-encoded structured data and SHM-backed zero-copy, it also provides basics like request/response, request-method multiplexing, and a bit more.  So let's get into that.
+All those subtleties about different types of pipes in a `Channel` bundle completely disappear when one deals with structured-data `struc::Channel`s.  They are a higher-layer abstraction and will leverage whatever `transport::Channel` it adapts.  In addition to handling capnp-encoded structured data and SHM-backed zero-copy, it also provides basics like request/response, request-method multiplexing, and a bit more.  So let's get into that.
 
 @anchor api_overview_transport_struc
 Transport (structured)

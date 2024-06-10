@@ -370,7 +370,7 @@ Yes and no.  Depends.  First if `T` is a POD (as defined earlier in this Manual 
 To recap: if it's a POD, same `T` on all sides.  If it uses STL-compliant/pointer stuff, then the most generic way it to use `Session::Allocator` in owner code; `Session::Borrower_allocator` in borrower code.  And if targeting SHM-classic specifically, it is *okay* -- for conciseness though not genericness -- to just use the same type `T` on both sides, period.
 
 @par
-What's going on here, you ask?  We'd rather not get into it here; we've provided the recipe.  But various docs inside ipc::shm explain all the subleties.  Long story short: SHM-classic is highly symmetric and (relatively) simple, so the borrower and owner are really internally operating on the same SHM-pool.  In SHM-jemalloc only the owner even *has* the arena per se; the borrower has only a read-only view into parts of it -- so it needs a special, degenerate "borrower" allocator which is used not to *allocate* but to only interpret pointers properly.  (Whereas on the owner side it is used for that *and* allocation code.)
+What's going on here, you ask?  We'd rather not get into it here; we've provided the recipe.  But various docs inside ipc::shm explain all the subtleties.  Long story short: SHM-classic is highly symmetric and (relatively) simple, so the borrower and owner are really internally operating on the same SHM-pool.  In SHM-jemalloc only the owner even *has* the arena per se; the borrower has only a read-only view into parts of it -- so it needs a special, degenerate "borrower" allocator which is used not to *allocate* but to only interpret pointers properly.  (Whereas on the owner side it is used for that *and* allocation code.)
 
 ---
 
