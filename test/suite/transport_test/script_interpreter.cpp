@@ -190,7 +190,7 @@ const util::String_view S_KEYWD_CHAN_BUNDLE_BIPC_RECV_BLOB = "CHAN_BUNDLE_BIPC_R
 /* Test {Posix_mqs_socket_stream_channel|Bipc_mqs_socket_stream_channel}::ctor (creation).  Really this operation
  * composes a number of things which are more carefully tested by other commands above.  So mostly this is a setup
  * command, so that we can then test send/receive transmission over the Channel which bundles 2 unidirectional
- * MQ pipes and a full-fuplex Native_socket_stream pipe.  In particular it expects to always succeed: failure
+ * MQ pipes and a full-duplex Native_socket_stream pipe.  In particular it expects to always succeed: failure
  * of ctor call shall always fail the test.  As such, to successfully use this, the other side (in this or other
  * invocation of Script_interpreter) shall invoke a similar command:
  *   - Its <mq-sh-name-prefix> must be the same.
