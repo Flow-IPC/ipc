@@ -31,7 +31,7 @@ In @ref chan_struct we kept things simple: Create `struc::Channel`.  Create a me
 
 However the abilities of the ipc::transport **structured layer** go beyond that basic and effective paradigm.  Hand-wavily speaking, an ipc::transport::struc::Msg_out (which represents a **message**, as opposed to message instance, and is not so different conceptually from a container) can be seen as not a short-lived message -- that exists essentially just before sending and just after receiving -- but as a *data structure* whose lifetime is practically unlimited (if so desired).
 
-It is probably clear already that capnp provides the ability to express many data structures (as ~anything can be built on top of `struct`s, `union`s, and `List`s).  (Granted, things like sorted trees and hash-tables would need some some added code to be conveniently accessed directly within a capnp schema, but that is also possible.)
+It is probably clear already that capnp provides the ability to express many data structures (as ~anything can be built on top of `struct`s, `union`s, and `List`s).  (Granted, things like sorted trees and hash-tables would need some added code to be conveniently accessed directly within a capnp schema, but that is also possible.)
 
 @note If a native capnp schema is insufficient for your data structure's performance or semantic needs, we provide first-class-citizen support for direct C++ data structures, including STL-compliant containers, in shared memory.  See @ref transport_shm.
 
