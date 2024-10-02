@@ -24,8 +24,6 @@ message(CHECK_START "(Project [${PROJ}] root CMake script executing.)")
 list(APPEND CMAKE_MESSAGE_INDENT "- ")
 
 set(PROJ_CAMEL "Ipc")
-# TODO: Get it from nearest `VERSION` file perhaps.
-set(PROJ_VERSION "1.0.0")
 set(PROJ_HUMAN "Flow-IPC")
 
 # The children below rely on this being set and its value to detect they're part of the meta-project,
