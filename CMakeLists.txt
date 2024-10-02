@@ -49,7 +49,7 @@ set(FLOW_LIKE_META_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 #         - Build tests (from its X/test/{basic|suite}/CMakeLists.txt); can be enabled/disabled via CFG_ x 2.
 #         - (As of this writing no library to build; though it'd be easy to add it if it made sense.)
 #       - include(FlowLikeDocGenerate).  Same as for each guy above.
-#         - (This is where we generate the targets for monolithic documentation for all of ipc_* together.
+#         - (This is where we generate the targets for monolithic documentation for all of ipc_* together.)
 #
 # Thus, assuming *nix, after going through each bullet above in order, the following is possible:
 #   - `make`: Makes all the libraries and all the tests (modulo CFG_* enabling/disabling parts).
