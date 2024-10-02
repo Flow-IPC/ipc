@@ -260,7 +260,6 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 
     void on_blob(const Error_code& err_code, size_t sz)
     {
-      if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_seg_sz()"); }
       if (!handle_blob(err_code, sz))
       {
         read_segs();
@@ -269,7 +268,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 
     bool handle_blob(const Error_code& err_code, size_t sz)
     {
-      if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():on_seg_sz()"); }
+      if (err_code) { throw Runtime_error(err_code, "run_capnp_over_raw():handle_blob()"); }
       if (m_new_seg_next)
       {
         m_new_seg_next = false;
