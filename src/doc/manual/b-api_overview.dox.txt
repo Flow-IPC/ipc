@@ -646,7 +646,7 @@ Further capabilities are outside our scope here; but the main point is: At a min
 > shm::capnp_get_shm_handle_to_borrow(msg->body_root().getSomeMsg().getWidgetHandle(), &lend_blob);
 >
 > auto x = session.borrow_object<Widget>(lend_blob);
-> FLOW_LOG_INFO("Hey, let's read inside SHM after receiving SHM-handle: [" << x_borrowed->m_flag << "].");
+> FLOW_LOG_INFO("Hey, let's read inside SHM after receiving SHM-handle: [" << x->m_flag << "].");
 > // We can write to it too, in most cases.
 > x->m_str[0] = 'Y';
 > // (Can modify with allocations too, as long as you use an Activator context again, same as in owner process above.)
