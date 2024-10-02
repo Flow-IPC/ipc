@@ -29,7 +29,7 @@ set(PROJ_HUMAN "Flow-IPC")
 # The children below rely on this being set and its value to detect they're part of the meta-project,
 # as opposed to being loaded separately, and then to load needed things off this place.
 # So in *nix setting this indicates to each kid below that they're a part of one big `make`.
-# (Whereas otherwise each kid is on its own and assumes the all its dependencies have had `make` and `make install`
+# (Whereas otherwise each kid is on its own and assumes all its dependencies have had `make` and `make install`
 # done, and the exported stuff is somewhere the `make` will know to search.)
 set(FLOW_LIKE_META_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
