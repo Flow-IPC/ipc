@@ -114,7 +114,7 @@ endforeach()
 include("${FLOW_LIKE_META_ROOT_flow}/tools/cmake/FlowLikeProject.cmake") # Determine $PROJ_VERSION, at least.
 project(${PROJ_CAMEL} VERSION ${PROJ_VERSION} DESCRIPTION ${PROJ_HUMAN} LANGUAGES CXX)
 
-# Got through that; now actually do the add_subdirectory()s.  This needs to below the project() call just above.
+# Got through that; now actually do the add_subdirectory()s.  This needs to be below the project() call just above.
 # (Also, output/error handling is crisper this way than doing add_subdirectory() within the above loop.)
 foreach(ipc_meta_project ${IPC_META_PROJECTS})
   # Finally!  Note in the build output the name is normalized to simply ${ipc_meta_project} (e.g., "flow").
