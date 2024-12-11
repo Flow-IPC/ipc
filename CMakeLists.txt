@@ -24,14 +24,12 @@ message(CHECK_START "(Project [${PROJ}] root CMake script executing.)")
 list(APPEND CMAKE_MESSAGE_INDENT "- ")
 
 set(PROJ_CAMEL "Ipc")
-# TODO: Get it from nearest `VERSION` file perhaps.
-set(PROJ_VERSION "1.0.0")
 set(PROJ_HUMAN "Flow-IPC")
 
 # The children below rely on this being set and its value to detect they're part of the meta-project,
 # as opposed to being loaded separately, and then to load needed things off this place.
 # So in *nix setting this indicates to each kid below that they're a part of one big `make`.
-# (Whereas otherwise each kid is on its own and assumes the all its dependencies have had `make` and `make install`
+# (Whereas otherwise each kid is on its own and assumes all its dependencies have had `make` and `make install`
 # done, and the exported stuff is somewhere the `make` will know to search.)
 set(FLOW_LIKE_META_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -51,7 +49,7 @@ set(FLOW_LIKE_META_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 #         - Build tests (from its X/test/{basic|suite}/CMakeLists.txt); can be enabled/disabled via CFG_ x 2.
 #         - (As of this writing no library to build; though it'd be easy to add it if it made sense.)
 #       - include(FlowLikeDocGenerate).  Same as for each guy above.
-#         - (This is where we generate the targets for monolithic documentation for all of ipc_* together.
+#         - (This is where we generate the targets for monolithic documentation for all of ipc_* together.)
 #
 # Thus, assuming *nix, after going through each bullet above in order, the following is possible:
 #   - `make`: Makes all the libraries and all the tests (modulo CFG_* enabling/disabling parts).
@@ -116,7 +114,7 @@ endforeach()
 include("${FLOW_LIKE_META_ROOT_flow}/tools/cmake/FlowLikeProject.cmake") # Determine $PROJ_VERSION, at least.
 project(${PROJ_CAMEL} VERSION ${PROJ_VERSION} DESCRIPTION ${PROJ_HUMAN} LANGUAGES CXX)
 
-# Got through that; now actually do the add_subdirectory()s.  This needs to below the project() call just above.
+# Got through that; now actually do the add_subdirectory()s.  This needs to be below the project() call just above.
 # (Also, output/error handling is crisper this way than doing add_subdirectory() within the above loop.)
 foreach(ipc_meta_project ${IPC_META_PROJECTS})
   # Finally!  Note in the build output the name is normalized to simply ${ipc_meta_project} (e.g., "flow").
