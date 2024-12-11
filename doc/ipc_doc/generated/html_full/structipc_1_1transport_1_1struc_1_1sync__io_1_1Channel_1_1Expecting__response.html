@@ -103,7 +103,7 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename Channel_obj, typename Message_body, typename Struct_builder_config, typename Struct_reader_config&gt;<br />
 struct ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Expecting_response</div><p >Policy for how to act upon receiving a response in-message that indicates its originating out-message is the message associated with this object in <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a3d4c8da3dd620d113479f5c6a3f96c3a" title="Table mapping originating out-message to the policy for handling an in-message that indicates that ou...">Expecting_response_map</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01092">1092</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01093">1093</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a5f68a8c574bf52f8fce42ea01c564923" name="a5f68a8c574bf52f8fce42ea01c564923"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f68a8c574bf52f8fce42ea01c564923">&#9670;&nbsp;</a></span>Ptr</h2>
@@ -121,7 +121,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Short-hand to cheap handle type. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01097">1097</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01098">1098</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -143,9 +143,9 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p>The handler to invoke on receiving a response to the requesting <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a83fb4462a8d4045bdb56b694bf80393c" title="See Async_io_obj counterpart.">Msg_out</a> (see <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a0dc388e18b0fc0fa2d8ad0a6953fb039" title="See Async_io_obj counterpart.">send()</a> response-expecting form). </p>
 <p >The <code>shared_ptr</code> wrapper is because in case of <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#a615b5613ac4e2bc93be88b8835e6a22c" title="true if receiving a response means request is satisfied; false if undo_expect_responses() must be inv...">m_one_expected</a> being <code>false</code> we have to copy it when <code><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a126c0d7ee5fcab20dc8c87884fdd7597" title="Record handler to invoke in handlers_poll() soon.">handlers_post()</a></code>ing; <code>move()</code> could destroy it (leave it <code>.empty()</code>) instead. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01114">1114</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01115">1115</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03903">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_struct_new_msg_in_is_next_expected()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03904">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_struct_new_msg_in_is_next_expected()</a>.</p>
 
 </div>
 </div>
@@ -166,9 +166,9 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p><code>true</code> if receiving a response means request is satisfied; <code>false</code> if <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a5aae7a7f907f56fa07a230eadec2fedf" title="See Async_io_obj counterpart.">undo_expect_responses()</a> must be invoked to mark request satisfied. </p>
 <p >This controls the mechanism by which an <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html" title="Policy for how to act upon receiving a response in-message that indicates its originating out-message...">Expecting_response</a> is removed from the expected-responses map, freeing the non-zero RAM (at least) resource involved. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01106">1106</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01107">1107</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03903">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_struct_new_msg_in_is_next_expected()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03904">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_struct_new_msg_in_is_next_expected()</a>.</p>
 
 </div>
 </div>
@@ -178,7 +178,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu May 2 2024 23:56:39 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed Dec 11 2024 07:46:49 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

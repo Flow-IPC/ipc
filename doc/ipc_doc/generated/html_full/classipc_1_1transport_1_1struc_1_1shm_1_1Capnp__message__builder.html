@@ -338,7 +338,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>The outer data structured stored in SHM representing the entire list of capnp-requested segments <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a78c9e811a0cc8105fee37baf5f94929c" title="The inner data structure stored in SHM representing one capnp-requested segment storing all or part o...">Segment_in_shm</a>. </p>
 <h3>Rationale (<code>bipc::</code> vs <code>std::</code>)</h3>
-<p >Why <code>bipc::list</code> and not <code>std::list</code>? Answer: <code>std::list</code>, at least in gcc-8.3.0, gave a compile error fairly clearly implying <code>std::list</code> stores <code>Node*</code> instead of <code><a class="el" href="classAllocator.html">Allocator</a>&lt;Node&gt;::pointer</code>; in other words it is not compatible with SHM (which bipc docs did claim &ndash; but that could easily have been outdated).</p>
+<p >Why <code>bipc::list</code> and not <code>std::list</code>? Answer: <code>std::list</code>, at least in gcc-8.3.0, gave a compile error fairly clearly implying <code>std::list</code> stores <code>Node*</code> instead of <code><a class="el" href="classAllocator.html">Allocator</a>&lt;Node&gt;::pointer</code>; in other words it is not compatible with SHM (which bipc docs did warn people about &ndash; but that could easily have been outdated).</p>
 <p >Curiously <code>std::vector</code> did not have that problem and worked fine, as far as that went, but we prefer a linked-list here. </p>
 
 <p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00136">136</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
@@ -676,7 +676,7 @@ template&lt;typename Shm_arena &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu May 2 2024 23:56:39 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed Dec 11 2024 07:46:49 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

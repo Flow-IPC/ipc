@@ -789,99 +789,101 @@ $(function() {
 <div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span><span class="comment"> * However `EPOLLONESHOT` pertains to the entire descriptor, not one specific waited-on event (read or write).</span></div>
 <div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span><span class="comment"> * Therefore this optimization is helpful only if `.events` is being set to `EPOLLIN` or `EPOLLOUT` -- not</span></div>
-<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span><span class="comment"> * `EPOLLIN | EPOLLOUT`.  Be careful.</span></div>
-<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span><span class="comment"> * ### Integrating with boost.asio ###</span></div>
-<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span><span class="comment"> * Suppose your application is using boost.asio (possibly with flow.async to manage threads),</span></div>
-<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span><span class="comment"> * with a `flow::util::Task_engine::run()` comprising the event loop, in proactor pattern fashion.</span></div>
-<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span><span class="comment"> * (We would recommend just that, preferring it to an old-school reactor-pattern via `[e]poll*()` directly.)</span></div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span><span class="comment"> * *Your* loop is asynchronously expressed, but you can still use the `sync_io` pattern to graft</span></div>
-<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span><span class="comment"> * Flow-IPC operations into it, so that they are invoked synchronously, when you want, in the exact thread you</span></div>
-<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span><span class="comment"> * want.  In fact, doing so is *significantly* simpler than integrating with a reactor-style `[e]poll*()`.</span></div>
-<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span><span class="comment"> * That is because, conceptually, each `Event_wait_func` invocation is essentially expressing the following</span></div>
-<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span><span class="comment"> * boost.asio operation:</span></div>
-<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span><span class="comment"> *   ~~~</span></div>
-<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span><span class="comment"> *   some_low_level_transport.async_wait(wait_write, // (or `wait_read`.)</span></div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span><span class="comment"> *                                       [...](const Error_code&amp; err_code)</span></div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span><span class="comment"> *   {</span></div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span><span class="comment"> *     // Can do I/O, or error?  Do I/O, or handle error.</span></div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span><span class="comment"> *     // ...If no error then possibly even at some point continue the async-op chain...</span></div>
-<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span><span class="comment"> *     same_or_other_low_level_transport.async_wait(wait_write, // (or `wait_read`.)</span></div>
-<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span><span class="comment"> *                                                  ...);</span></div>
-<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span><span class="comment"> *   }</span></div>
-<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span><span class="comment"> *   ~~~</span></div>
-<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span><span class="comment"> * Because of that you have to code essentially none of the stuff above (pertaining to a reactor-style `[e]poll*()`</span></div>
-<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span><span class="comment"> * loop): no manual registering/deregistering, wondering how to handle error-event, etc. etc.</span></div>
-<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span><span class="comment"> * So what to do, specifically?  It is quite straightforward.  Suppose you&#39;re got `Task_engine E` doing</span></div>
-<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span><span class="comment"> * `E.run()` as your event loop.  (Any `flow::async::*_loop` does that too, just internally once you do</span></div>
-<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span><span class="comment"> * `loop.start()`.)  E.g., if you&#39;ve got TCP sockets attached to `E`, you might be doing</span></div>
-<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span><span class="comment"> * `m_tcp_sock.async_read_some(..., [](const Error_code&amp; err_code) { ... };` and so on.</span></div>
-<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span><span class="comment"> * When `Event_wait_func F(hndl, snd_else_rcv, on_ev_func)` is invoked, you will simply do:</span></div>
+<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span><span class="comment"> * `EPOLLIN | EPOLLOUT`.  Be careful.  That said, it should be possible to use `dup()` to clone the descriptor</span></div>
+<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span><span class="comment"> * in question; then use the original for (e.g.) `EPOLLIN` exclusively and the clone for `EPOLLOUT` exclusively</span></div>
+<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span><span class="comment"> * resulting in a clean solution.</span></div>
+<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span><span class="comment"> * ### Integrating with boost.asio ###</span></div>
+<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span><span class="comment"> * Suppose your application is using boost.asio (possibly with flow.async to manage threads),</span></div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span><span class="comment"> * with a `flow::util::Task_engine::run()` comprising the event loop, in proactor pattern fashion.</span></div>
+<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span><span class="comment"> * (We would recommend just that, preferring it to an old-school reactor-pattern via `[e]poll*()` directly.)</span></div>
+<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span><span class="comment"> * *Your* loop is asynchronously expressed, but you can still use the `sync_io` pattern to graft</span></div>
+<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span><span class="comment"> * Flow-IPC operations into it, so that they are invoked synchronously, when you want, in the exact thread you</span></div>
+<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span><span class="comment"> * want.  In fact, doing so is *significantly* simpler than integrating with a reactor-style `[e]poll*()`.</span></div>
+<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span><span class="comment"> * That is because, conceptually, each `Event_wait_func` invocation is essentially expressing the following</span></div>
+<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span><span class="comment"> * boost.asio operation:</span></div>
+<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span><span class="comment"> *   ~~~</span></div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span><span class="comment"> *   some_low_level_transport.async_wait(wait_write, // (or `wait_read`.)</span></div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span><span class="comment"> *                                       [...](const Error_code&amp; err_code)</span></div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span><span class="comment"> *   {</span></div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span><span class="comment"> *     // Can do I/O, or error?  Do I/O, or handle error.</span></div>
+<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span><span class="comment"> *     // ...If no error then possibly even at some point continue the async-op chain...</span></div>
+<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span><span class="comment"> *     same_or_other_low_level_transport.async_wait(wait_write, // (or `wait_read`.)</span></div>
+<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span><span class="comment"> *                                                  ...);</span></div>
+<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span><span class="comment"> *   }</span></div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span><span class="comment"> *   ~~~</span></div>
+<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span><span class="comment"> * Because of that you have to code essentially none of the stuff above (pertaining to a reactor-style `[e]poll*()`</span></div>
+<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span><span class="comment"> * loop): no manual registering/deregistering, wondering how to handle error-event, etc. etc.</span></div>
+<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span><span class="comment"> * So what to do, specifically?  It is quite straightforward.  Suppose you&#39;re got `Task_engine E` doing</span></div>
+<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span><span class="comment"> * `E.run()` as your event loop.  (Any `flow::async::*_loop` does that too, just internally once you do</span></div>
+<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span><span class="comment"> * `loop.start()`.)  E.g., if you&#39;ve got TCP sockets attached to `E`, you might be doing</span></div>
+<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span><span class="comment"> * `m_tcp_sock.async_read_some(..., [](const Error_code&amp; err_code) { ... };` and so on.</span></div>
 <div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span><span class="comment"> *   ~~~</span></div>
-<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span><span class="comment"> *   hndl-&gt;async_wait(snd_else_rcv ? Asio_waitable_native_handle::Base::wait_write</span></div>
-<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span><span class="comment"> *                                 : Asio_waitable_native_handle::Base::wait_read,</span></div>
-<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span><span class="comment"> *                    [on_ev_func = std::move(on_ev_func)](const Error_code&amp; err_code)</span></div>
-<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span><span class="comment"> *   {</span></div>
-<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span><span class="comment"> *     if (err_code != boost::asio::error::operation_aborted)</span></div>
-<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span><span class="comment"> *     {</span></div>
-<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span><span class="comment"> *       (*on_ev_func)(); // Note: err_code is disregarded.  Whether it&#39;s readable/writable or hosed, must invoke.</span></div>
-<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span><span class="comment"> *     }</span></div>
-<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span><span class="comment"> *     // else { Stuff is shutting down; do absolutely nothing!  SOP on operation_aborted generally. }</span></div>
-<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span><span class="comment"> *   }</span></div>
-<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span><span class="comment"> *   ~~~</span></div>
-<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span><span class="comment"> * Basically, Flow-IPC wants to do an `async_wait()`... so you do it for Flow-IPC, being the master of your</span></div>
-<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span><span class="comment"> * (boost.asio) domain (so to speak).</span></div>
-<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span><span class="comment"> * `hndl` is an `Asio_waitable_native_handle*`.  Asio_waitable_native_handle is a razor-thin wrapper around</span></div>
-<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span><span class="comment"> * a boost.asio `posix::descriptor` which itself is a thin wrapper around a native handle (FD).  It has</span></div>
-<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span><span class="comment"> * boost.asio-supplied `.async_wait()`.  However, and this is a key point:</span></div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span><span class="comment"> * To make it work, before invoking `T::start_*ops()`, you must supply your execution context/executor -- usually</span></div>
-<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span><span class="comment"> * a boost.asio `Task_engine` (a/k/a `boost::asio::io_contexst`) or strand (`boost::asio::io_context::strand`) --</span></div>
-<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span><span class="comment"> * w/r/t which you plan to `.async_wait()` down the line.  This is done via `T::replace_event_wait_handles()`,</span></div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span><span class="comment"> * an otherwise optional call.  If using flow.async, this might be (e.g.):</span></div>
-<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span><span class="comment"> *   ~~~</span></div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span><span class="comment"> *   flow::async::Single_thread_task_loop m_your_single_threaded_event_loop;</span></div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span><span class="comment"> *   ipc::transport::Native_socket_stream m_sock_stream;</span></div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span><span class="comment"> *   // ...</span></div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span><span class="comment"> *   m_sock_stream.replace_event_wait_handles([this]() -&gt; auto</span></div>
-<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span><span class="comment"> *   {</span></div>
-<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span><span class="comment"> *     return ipc::util::async_io::Asio_waitable_native_handle</span></div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span><span class="comment"> *              (*(m_your_single_threaded_event_loop.task_engine()));</span></div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span><span class="comment"> *   });</span></div>
-<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span><span class="comment"> *   m_sock_stream.start_send_blob_ops(F); // F is your Event_wait_func.</span></div>
-<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span><span class="comment"> *   ~~~</span></div>
-<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span><span class="comment"> * @note As explained in &quot;Integrating with reactor-pattern...&quot; above, `hndl` is</span></div>
-<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span><span class="comment"> *       a boost.asio I/O object, as opposed to just a Native_handle or even Native_handle::handle_t,</span></div>
-<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span><span class="comment"> *       specifically for the boost.asio integration use case.  If *not* integrating with boost.asio,</span></div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span><span class="comment"> *       `start_*ops()` is to be used without preceding it by `replace_event_wait_handles()`,</span></div>
-<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span><span class="comment"> *       and `hndl-&gt;native_handle()` is the only meaningful part of `*hndl`, with `.async_wait()` being meaningless</span></div>
-<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span><span class="comment"> *       and unused.  Conversely, if integrating with boost.asio, `hndl-&gt;native_handle()` itself should not be</span></div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span><span class="comment"> *       required in your code, while `.async_wait()` is the only meaningful aspect of `*hndl`.</span></div>
-<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno"><a class="line" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24">  798</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24">Event_wait_func</a> = <a class="code hl_typedef" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">Function</a>&lt;void (<a class="code hl_class" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html">Asio_waitable_native_handle</a>* hndl_of_interest,</div>
-<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>                                       <span class="keywordtype">bool</span> ev_of_interest_snd_else_rcv,</div>
-<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>                                       <a class="code hl_typedef" href="namespaceipc_1_1util_1_1sync__io.html#ac6973c71fc70c6d867b0f2255c642532">Task_ptr</a>&amp;&amp; on_active_ev_func)&gt;;</div>
-<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span> </div>
-<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>} <span class="comment">// namespace ipc::util::sync_io</span></div>
+<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span><span class="comment"> * When `Event_wait_func F(hndl, snd_else_rcv, on_ev_func)` is invoked, you will simply do:</span></div>
+<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span><span class="comment"> *   ~~~</span></div>
+<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span><span class="comment"> *   hndl-&gt;async_wait(snd_else_rcv ? Asio_waitable_native_handle::Base::wait_write</span></div>
+<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span><span class="comment"> *                                 : Asio_waitable_native_handle::Base::wait_read,</span></div>
+<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span><span class="comment"> *                    [on_ev_func = std::move(on_ev_func)](const Error_code&amp; err_code)</span></div>
+<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span><span class="comment"> *   {</span></div>
+<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span><span class="comment"> *     if (err_code != boost::asio::error::operation_aborted)</span></div>
+<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span><span class="comment"> *     {</span></div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span><span class="comment"> *       (*on_ev_func)(); // Note: err_code is disregarded.  Whether it&#39;s readable/writable or hosed, must invoke.</span></div>
+<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span><span class="comment"> *     }</span></div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span><span class="comment"> *     // else { Stuff is shutting down; do absolutely nothing!  SOP on operation_aborted generally. }</span></div>
+<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span><span class="comment"> *   }</span></div>
+<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span><span class="comment"> *   ~~~</span></div>
+<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span><span class="comment"> * Basically, Flow-IPC wants to do an `async_wait()`... so you do it for Flow-IPC, being the master of your</span></div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span><span class="comment"> * (boost.asio) domain (so to speak).</span></div>
+<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span><span class="comment"> * `hndl` is an `Asio_waitable_native_handle*`.  Asio_waitable_native_handle is a razor-thin wrapper around</span></div>
+<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span><span class="comment"> * a boost.asio `posix::descriptor` which itself is a thin wrapper around a native handle (FD).  It has</span></div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span><span class="comment"> * boost.asio-supplied `.async_wait()`.  However, and this is a key point:</span></div>
+<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span><span class="comment"> * To make it work, before invoking `T::start_*ops()`, you must supply your execution context/executor -- usually</span></div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span><span class="comment"> * a boost.asio `Task_engine` (a/k/a `boost::asio::io_contexst`) or strand (`boost::asio::io_context::strand`) --</span></div>
+<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span><span class="comment"> * w/r/t which you plan to `.async_wait()` down the line.  This is done via `T::replace_event_wait_handles()`,</span></div>
+<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span><span class="comment"> * an otherwise optional call.  If using flow.async, this might be (e.g.):</span></div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span><span class="comment"> *   ~~~</span></div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span><span class="comment"> *   flow::async::Single_thread_task_loop m_your_single_threaded_event_loop;</span></div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span><span class="comment"> *   ipc::transport::Native_socket_stream m_sock_stream;</span></div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span><span class="comment"> *   // ...</span></div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span><span class="comment"> *   m_sock_stream.replace_event_wait_handles([this]() -&gt; auto</span></div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span><span class="comment"> *   {</span></div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span><span class="comment"> *     return ipc::util::async_io::Asio_waitable_native_handle</span></div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span><span class="comment"> *              (*(m_your_single_threaded_event_loop.task_engine()));</span></div>
+<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span><span class="comment"> *   });</span></div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span><span class="comment"> *   m_sock_stream.start_send_blob_ops(F); // F is your Event_wait_func.</span></div>
+<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span><span class="comment"> *   ~~~</span></div>
+<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span><span class="comment"> * @note As explained in &quot;Integrating with reactor-pattern...&quot; above, `hndl` is</span></div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span><span class="comment"> *       a boost.asio I/O object, as opposed to just a Native_handle or even Native_handle::handle_t,</span></div>
+<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span><span class="comment"> *       specifically for the boost.asio integration use case.  If *not* integrating with boost.asio,</span></div>
+<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span><span class="comment"> *       `start_*ops()` is to be used without preceding it by `replace_event_wait_handles()`,</span></div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span><span class="comment"> *       and `hndl-&gt;native_handle()` is the only meaningful part of `*hndl`, with `.async_wait()` being meaningless</span></div>
+<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span><span class="comment"> *       and unused.  Conversely, if integrating with boost.asio, `hndl-&gt;native_handle()` itself should not be</span></div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span><span class="comment"> *       required in your code, while `.async_wait()` is the only meaningful aspect of `*hndl`.</span></div>
+<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00800" name="l00800"></a><span class="lineno"><a class="line" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24">  800</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24">Event_wait_func</a> = <a class="code hl_typedef" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">Function</a>&lt;void (<a class="code hl_class" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html">Asio_waitable_native_handle</a>* hndl_of_interest,</div>
+<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>                                       <span class="keywordtype">bool</span> ev_of_interest_snd_else_rcv,</div>
+<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>                                       <a class="code hl_typedef" href="namespaceipc_1_1util_1_1sync__io.html#ac6973c71fc70c6d867b0f2255c642532">Task_ptr</a>&amp;&amp; on_active_ev_func)&gt;;</div>
+<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span> </div>
+<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>} <span class="comment">// namespace ipc::util::sync_io</span></div>
 <div class="ttc" id="aclassipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle_html"><div class="ttname"><a href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html">ipc::util::sync_io::Asio_waitable_native_handle</a></div><div class="ttdoc">Useful if using the sync_io pattern within a user event loop built on boost.asio (optionally with flo...</div><div class="ttdef"><b>Definition:</b> <a href="asio__waitable__native__hndl_8hpp_source.html#l00080">asio_waitable_native_hndl.hpp:81</a></div></div>
 <div class="ttc" id="anamespaceipc_1_1util_1_1sync__io_html"><div class="ttname"><a href="namespaceipc_1_1util_1_1sync__io.html">ipc::util::sync_io</a></div><div class="ttdoc">Contains common code, as well as important explanatory documentation in the following text,...</div><div class="ttdef"><b>Definition:</b> <a href="detail_2util__fwd_8hpp_source.html#l00208">util_fwd.hpp:209</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1util_1_1sync__io_html_aa0b9a3cc6bdc7dedbef4f9e06851aa24"><div class="ttname"><a href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24">ipc::util::sync_io::Event_wait_func</a></div><div class="ttdeci">Function&lt; void(Asio_waitable_native_handle *hndl_of_interest, bool ev_of_interest_snd_else_rcv, Task_ptr &amp;&amp;on_active_ev_func)&gt; Event_wait_func</div><div class="ttdoc">In sync_io pattern, concrete type storing user-supplied function invoked by pattern-implementing ipc:...</div><div class="ttdef"><b>Definition:</b> <a href="sync__io__fwd_8hpp_source.html#l00798">sync_io_fwd.hpp:800</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_1_1sync__io_html_aa0b9a3cc6bdc7dedbef4f9e06851aa24"><div class="ttname"><a href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24">ipc::util::sync_io::Event_wait_func</a></div><div class="ttdeci">Function&lt; void(Asio_waitable_native_handle *hndl_of_interest, bool ev_of_interest_snd_else_rcv, Task_ptr &amp;&amp;on_active_ev_func)&gt; Event_wait_func</div><div class="ttdoc">In sync_io pattern, concrete type storing user-supplied function invoked by pattern-implementing ipc:...</div><div class="ttdef"><b>Definition:</b> <a href="sync__io__fwd_8hpp_source.html#l00800">sync_io_fwd.hpp:802</a></div></div>
 <div class="ttc" id="anamespaceipc_1_1util_1_1sync__io_html_ac6973c71fc70c6d867b0f2255c642532"><div class="ttname"><a href="namespaceipc_1_1util_1_1sync__io.html#ac6973c71fc70c6d867b0f2255c642532">ipc::util::sync_io::Task_ptr</a></div><div class="ttdeci">boost::shared_ptr&lt; Task &gt; Task_ptr</div><div class="ttdoc">Short-hand for ref-counted pointer to a Function&lt;&gt; that takes no arguments and returns nothing; in pa...</div><div class="ttdef"><b>Definition:</b> <a href="sync__io__fwd_8hpp_source.html#l00585">sync_io_fwd.hpp:585</a></div></div>
 <div class="ttc" id="anamespaceipc_html_aa455c7f045059736578ca275fc1a851f"><div class="ttname"><a href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">ipc::Function</a></div><div class="ttdeci">flow::Function&lt; Signature &gt; Function</div><div class="ttdoc">Short-hand for polymorphic functor holder which is very common. This is essentially std::function.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00302">common.hpp:302</a></div></div>
 <div class="ttc" id="autil__fwd_8hpp_html"><div class="ttname"><a href="util__fwd_8hpp.html">util_fwd.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu May 2 2024 23:56:38 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed Dec 11 2024 07:46:48 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
