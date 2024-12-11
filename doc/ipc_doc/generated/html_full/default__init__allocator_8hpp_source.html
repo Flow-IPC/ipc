@@ -101,7 +101,7 @@ $(function() {
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"> * ### Rationale (why) ###</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> * Suppose you have `vector&lt;uint8_t&gt; v(10);`.  This will create a buffer and fill with at least 10 zeroes.</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> * What if you want it *not* do this?  Maybe you don&#39;t want it for performane.</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> * What if you want it *not* do this?  Maybe you don&#39;t want it because performance.</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"> * Actually, consider an even sneakier situation that involves correctness, not just perf.  Suppose you</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> * have `vector&lt;uint8_t&gt; v` with `.capacity() == 10` and `.size() == 0`, but you&#39;re letting some 3rd-party code</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> * operate in range `[v.begin(), v.begin() + v.capacity())`, and you&#39;re using `.size()` as a store of the result</span></div>
@@ -224,7 +224,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu May 2 2024 23:56:38 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed Dec 11 2024 07:46:48 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

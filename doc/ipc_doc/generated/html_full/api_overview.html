@@ -648,7 +648,7 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 <div class="line"><a class="code hl_function" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">shm::capnp_get_shm_handle_to_borrow</a>(msg-&gt;body_root().getSomeMsg().getWidgetHandle(), &amp;lend_blob);</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">auto</span> x = session.borrow_object&lt;Widget&gt;(lend_blob);</div>
-<div class="line">FLOW_LOG_INFO(<span class="stringliteral">&quot;Hey, let&#39;s read inside SHM after receiving SHM-handle: [&quot;</span> &lt;&lt; x_borrowed-&gt;m_flag &lt;&lt; <span class="stringliteral">&quot;].&quot;</span>);</div>
+<div class="line">FLOW_LOG_INFO(<span class="stringliteral">&quot;Hey, let&#39;s read inside SHM after receiving SHM-handle: [&quot;</span> &lt;&lt; x-&gt;m_flag &lt;&lt; <span class="stringliteral">&quot;].&quot;</span>);</div>
 <div class="line"><span class="comment">// We can write to it too, in most cases.</span></div>
 <div class="line">x-&gt;m_str[0] = <span class="charliteral">&#39;Y&#39;</span>;</div>
 <div class="line"><span class="comment">// (Can modify with allocations too, as long as you use an Activator context again, same as in owner process above.)</span></div>
@@ -683,7 +683,7 @@ This async-I/O-versus-<code>sync_io</code> choice is available for all other par
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu May 2 2024 23:56:38 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed Dec 11 2024 07:46:48 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
