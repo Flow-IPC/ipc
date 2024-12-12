@@ -161,7 +161,7 @@ Related Functions</h2></td></tr>
 </li>
 <li>The OS can be somehow told to tickle a dedicated-to-this-purpose FD (per timer) at a particular time, while <a class="el" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24" title="In sync_io pattern, concrete type storing user-supplied function invoked by pattern-implementing ipc:...">Event_wait_func</a> is used (same as it is for Unix domain sockets, etc.) to wait for readability of that FD. <code>epoll_wait()</code> (or ...) would wake up like on any other event and inform X, and X would even know which timer it is, by being informed via <code>Event_wait_func</code>'s' <code>on_active_ev_func</code> arg.</li>
 </ul>
-<p >The latter option is much more attractive in terms of API simplicity from the user's point of view (at least). So we go with that. Having make this decision, how to actually make it work? Possibilities:</p><ul>
+<p >The latter option is much more attractive in terms of API simplicity from the user's point of view (at least). So we go with that. Having made this decision, how to actually make it work? Possibilities:</p><ul>
 <li>The OS has these mechanisms. Linux, at least, has <code>timerfd_create()</code> and buddies, specifically for this. One can schedule a timer, so the kernel keeps track of all that and does it in the background; when ready the FD becomes readable. Done.<ul>
 <li>This is a very reasonable approach. However it is not very portable, and the API is hairy enough to require a bunch of (internal to us) wrapping code: specifying the time along the proper clock, rescheduling, canceling....</li>
 </ul>
@@ -602,7 +602,7 @@ Here is the call graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Dec 11 2024 07:46:49 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Thu Dec 12 2024 06:10:34 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
