@@ -412,9 +412,18 @@ Example owner/lender code:
   auto msg = cool_channel.create_msg();
   // Ready the lend_blob-storage inside the out-message.
   auto widget_handle_root = msg.body_root()->initSomeMsg().initWidgetHandle();
+
   // Perform the lend_object() step and load the result into the out-message.
+
+  const auto hndl_blob = session.lend_object(x);
+  // ATTENTION! SHM-jemalloc-backed lend_object() can fail, if right then the session got hosed (opposing process down).
+  if (shm_blob.empty())
+  {
+    throw ...; // Or some other error handling technique.
+  }
+
   ipc::transport::struc::shm::capnp_set_lent_shm_handle(&widget_handle_root, // Output.
-                                                        session.lend_object(x)); // Input.
+                                                        shm_blob); // Input.
 
   // IPC-transmit it via struc::Channel.
   cool_channel.send(msg);
@@ -427,10 +436,18 @@ And counterpart borrower code:
   ipc::transport::struc::shm::capnp_get_shm_handle_to_borrow(msg->body_root().getSomeMsg().getWidgetHandle(), &lend_blob);
 
   auto x_borrowed = session.borrow_object<Widget_brw>(lend_blob);
+  // ATTENTION! SHM-jemalloc-backed borrow_object() can fail, if right then the session got hosed (opposing process down).
+  if (!x_borrowed)
+  {
+    throw ...; // Or some other error handling technique.
+  }
+
   FLOW_LOG_INFO("Hey, let's read inside SHM after receiving SHM-handle: [" << x_borrowed->m_flag << "].");
   ~~~
 
 Simple!  That said we opportunistically note: The borrower-side is using `Widget_brw`, a type we have not explicitly provided the code for in the actual example.  Per the side-bar above, with SHM-classic it could just be `Widget` (same as in owner); but with SHM-jemalloc and generically you'd need to define a mirror of `Widget` called `Widget_brw` which would use `Session::Borrower_allocator` instead of `Session::Allocator` all-over.  We'll leave that as an exercise to the reader.  Tip: You do *not* need to copy paste the same type twice.  Use template trickery -- perhaps `std::conditional_t` -- to conveniently pick between the two `*llocator` templates depending on a compile-time `bool S_OWN_ELSE_BRW` template parameter perhaps.
+
+@note Regarding `session.lend_object()` and `session.borrow_object()` failing: As you can see above, your code should be ready for these to return an empty blob and null, respectively, indicating an error.  In practice, assuming you're using them with proper inputs, this will not happen with SHM-classic, but it absolutely can happen with SHM-jemalloc; and SHM-provider-agnostic code should therefore assume the latter.  What does it mean?  Answer: It means, at least, that no further lending/borrowing shall work in this session.  In practice you should assume it means the entire session is hosed in general (the opposing process is probably down).  This *will* be (shortly) emitted as an error by the `Session` via its on-error handler you had to register (via ctor or `.init_handlers()`, on client and server sides respectively).  Almost certainly each not-yet-hosed PEER-state `Channel` from that session shall report similarly.  The safest course of action is to react to any of these signals -- including lend/borrow methods returning empty/null -- in a common way (abandon session ASAP in orderly fashion).  That topic is discussed in-depth in @ref session_app_org.
 
 ### What can you do with a borrowed (received) data structured in SHM? ###
 The answer to this is sprinkled throughout the above.  Nevertheless it seemed prudent to put a fine point on the answer as well as perhaps provide some algorithmic tips.
