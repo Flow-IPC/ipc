@@ -364,9 +364,18 @@ Raw pointers are not allowed in a POD in this context (nor are they, generally, 
 <div class="line"><span class="keyword">auto</span> msg = cool_channel.create_msg();</div>
 <div class="line"><span class="comment">// Ready the lend_blob-storage inside the out-message.</span></div>
 <div class="line"><span class="keyword">auto</span> widget_handle_root = msg.body_root()-&gt;initSomeMsg().initWidgetHandle();</div>
+<div class="line"> </div>
 <div class="line"><span class="comment">// Perform the lend_object() step and load the result into the out-message.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> hndl_blob = session.lend_object(x);</div>
+<div class="line"><span class="comment">// ATTENTION! SHM-jemalloc-backed lend_object() can fail, if right then the session got hosed (opposing process down).</span></div>
+<div class="line"><span class="keywordflow">if</span> (shm_blob.empty())</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">throw</span> ...; <span class="comment">// Or some other error handling technique.</span></div>
+<div class="line">}</div>
+<div class="line"> </div>
 <div class="line"><a class="code hl_function" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ab592ce6eddbe24c57dc71f34018fb042">ipc::transport::struc::shm::capnp_set_lent_shm_handle</a>(&amp;widget_handle_root, <span class="comment">// Output.</span></div>
-<div class="line">                                                      session.lend_object(x)); <span class="comment">// Input.</span></div>
+<div class="line">                                                      shm_blob); <span class="comment">// Input.</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// IPC-transmit it via struc::Channel.</span></div>
 <div class="line">cool_channel.send(msg);</div>
@@ -376,9 +385,16 @@ Raw pointers are not allowed in a POD in this context (nor are they, generally, 
 <div class="line"><a class="code hl_function" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">ipc::transport::struc::shm::capnp_get_shm_handle_to_borrow</a>(msg-&gt;body_root().getSomeMsg().getWidgetHandle(), &amp;lend_blob);</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">auto</span> x_borrowed = session.borrow_object&lt;Widget_brw&gt;(lend_blob);</div>
+<div class="line"><span class="comment">// ATTENTION! SHM-jemalloc-backed borrow_object() can fail, if right then the session got hosed (opposing process down).</span></div>
+<div class="line"><span class="keywordflow">if</span> (!x_borrowed)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">throw</span> ...; <span class="comment">// Or some other error handling technique.</span></div>
+<div class="line">}</div>
+<div class="line"> </div>
 <div class="line">FLOW_LOG_INFO(<span class="stringliteral">&quot;Hey, let&#39;s read inside SHM after receiving SHM-handle: [&quot;</span> &lt;&lt; x_borrowed-&gt;m_flag &lt;&lt; <span class="stringliteral">&quot;].&quot;</span>);</div>
-<div class="ttc" id="anamespaceipc_1_1transport_1_1struc_1_1shm_html_adb38fe88cfd5e758ef52c482d2902669"><div class="ttname"><a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">ipc::transport::struc::shm::capnp_get_shm_handle_to_borrow</a></div><div class="ttdeci">void capnp_get_shm_handle_to_borrow(const schema::ShmHandle::Reader &amp;shm_handle_root, flow::util::Blob_sans_log_context *arg_to_borrow)</div><div class="ttdoc">Utility that's the reverse of capnp_set_lent_shm_handle() to be invoked on the deserializing side.</div><div class="ttdef"><b>Definition:</b> util.cpp:50</div></div>
+<div class="ttc" id="anamespaceipc_1_1transport_1_1struc_1_1shm_html_adb38fe88cfd5e758ef52c482d2902669"><div class="ttname"><a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">ipc::transport::struc::shm::capnp_get_shm_handle_to_borrow</a></div><div class="ttdeci">void capnp_get_shm_handle_to_borrow(const schema::ShmHandle::Reader &amp;shm_handle_root, flow::util::Blob_sans_log_context *arg_to_borrow)</div><div class="ttdoc">Utility that's the reverse of capnp_set_lent_shm_handle() to be invoked on the deserializing side.</div><div class="ttdef"><b>Definition:</b> util.cpp:51</div></div>
 </div><!-- fragment --><p >Simple! That said we opportunistically note: The borrower-side is using <code>Widget_brw</code>, a type we have not explicitly provided the code for in the actual example. Per the side-bar above, with SHM-classic it could just be <code>Widget</code> (same as in owner); but with SHM-jemalloc and generically you'd need to define a mirror of <code>Widget</code> called <code>Widget_brw</code> which would use <code>Session::Borrower_allocator</code> instead of <code>Session::Allocator</code> all-over. We'll leave that as an exercise to the reader. Tip: You do <em>not</em> need to copy paste the same type twice. Use template trickery &ndash; perhaps <code>std::conditional_t</code> &ndash; to conveniently pick between the two <code>*llocator</code> templates depending on a compile-time <code>bool S_OWN_ELSE_BRW</code> template parameter perhaps.</p>
+<dl class="section note"><dt>Note</dt><dd>Regarding <code>session.lend_object()</code> and <code>session.borrow_object()</code> failing: As you can see above, your code should be ready for these to return an empty blob and null, respectively, indicating an error. In practice, assuming you're using them with proper inputs, this will not happen with SHM-classic, but it absolutely can happen with SHM-jemalloc; and SHM-provider-agnostic code should therefore assume the latter. What does it mean? Answer: It means, at least, that no further lending/borrowing shall work in this session. In practice you should assume it means the entire session is hosed in general (the opposing process is probably down). This <em>will</em> be (shortly) emitted as an error by the <code>Session</code> via its on-error handler you had to register (via ctor or <code>.init_handlers()</code>, on client and server sides respectively). Almost certainly each not-yet-hosed PEER-state <code>Channel</code> from that session shall report similarly. The safest course of action is to react to any of these signals &ndash; including lend/borrow methods returning empty/null &ndash; in a common way (abandon session ASAP in orderly fashion). That topic is discussed in-depth in <a class="el" href="session_app_org.html">Sessions: Teardown; Organizing Your Code</a>.</dd></dl>
 <h3>What can you do with a borrowed (received) data structured in SHM?</h3>
 <p >The answer to this is sprinkled throughout the above. Nevertheless it seemed prudent to put a fine point on the answer as well as perhaps provide some algorithmic tips.</p>
 <p >Firstly, in every case, you can access it in read-only fashion. The syntax is just C++ syntax.</p>
@@ -398,7 +414,7 @@ So... even if you can (which you <em>can</em> with SHM-classic): Should you (1) 
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 12 2024 06:10:30 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Dec 21 2024 00:38:29 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

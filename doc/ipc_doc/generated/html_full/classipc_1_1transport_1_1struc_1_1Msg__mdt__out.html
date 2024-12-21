@@ -379,7 +379,7 @@ template&lt;typename Struct_builder_config &gt; </div>
 </dl>
 <p>if <code>id_or_none == 0</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="msg__mdt__out_8hpp_source.html#l00143">143</a> of file <a class="el" href="msg__mdt__out_8hpp_source.html">msg_mdt_out.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msg__mdt__out_8hpp_source.html#l00144">144</a> of file <a class="el" href="msg__mdt__out_8hpp_source.html">msg_mdt_out.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="msg_8hpp_source.html#l01018">ipc::transport::struc::Msg_out&lt; Message_body, Struct_builder_t &gt;::body_root()</a>.</p>
 <div class="dynheader">
@@ -410,7 +410,7 @@ template&lt;typename Struct_builder_config &gt; </div>
 <p >May be useful for, say, pretty-printing it to log (e.g.: <code>capnp::prettyPrint(M.body_root()-&gt;asReader()).flatten().cStr()</code>).</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="msg__mdt__out_8hpp_source.html#l00200">200</a> of file <a class="el" href="msg__mdt__out_8hpp_source.html">msg_mdt_out.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msg__mdt__out_8hpp_source.html#l00201">201</a> of file <a class="el" href="msg__mdt__out_8hpp_source.html">msg_mdt_out.hpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04353">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::send_core()</a>.</p>
 <div class="dynheader">
@@ -461,9 +461,9 @@ template&lt;typename Struct_builder_config &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>What <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html#a91d2575343b28f83e22a71e7f7b3ff40" title="Returns the serialization in the form of a sequence of 1+ Blobs.">Msg_out::emit_serialization()</a> would have placed in the target list container. In our case that container must have size 1, so we just return this. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>What <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html#a91d2575343b28f83e22a71e7f7b3ff40" title="Returns the serialization in the form of a sequence of 1+ Blobs.">Msg_out::emit_serialization()</a> would have placed in the target list container; or null if it would have failed. In case of success: In our case that container must have size 1, so we just return that first element. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="msg__mdt__out_8hpp_source.html#l00206">206</a> of file <a class="el" href="msg__mdt__out_8hpp_source.html">msg_mdt_out.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msg__mdt__out_8hpp_source.html#l00207">207</a> of file <a class="el" href="msg__mdt__out_8hpp_source.html">msg_mdt_out.hpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04353">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::send_core()</a>.</p>
 <div class="dynheader">
@@ -494,7 +494,7 @@ template&lt;typename Struct_builder_config &gt; </div>
 <p >We could return a pointer to something stored, but as of this writing such an optimization would be pointless, as it's really invoked just once in practice.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="msg__mdt__out_8hpp_source.html#l00193">193</a> of file <a class="el" href="msg__mdt__out_8hpp_source.html">msg_mdt_out.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msg__mdt__out_8hpp_source.html#l00194">194</a> of file <a class="el" href="msg__mdt__out_8hpp_source.html">msg_mdt_out.hpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04018">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_struct_inform_of_unexpected_response()</a>.</p>
 <div class="dynheader">
@@ -512,7 +512,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 12 2024 06:10:34 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Dec 21 2024 00:38:33 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

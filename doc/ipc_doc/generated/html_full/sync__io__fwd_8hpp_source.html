@@ -300,7 +300,7 @@ $(function() {
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment"> *     So it will return either:</span></div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment"> *     - `SSL_ERROR_WANT_READ` (meaning, &quot;the underlying stream-socket handle (FD) needs to be readable -- call me</span></div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="comment"> *       again after you&#39;ve *async-waited* successfully on this *event-of-interest*, and I will try again&quot;); or</span></div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="comment"> *     - `SSL_ERROR_WANT_WRITE` (same but needs writability isntead).</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="comment"> *     - `SSL_ERROR_WANT_WRITE` (same but needs writability instead).</span></div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="comment"> * Your application would then internally register interest in FD so-and-so to be readable or writable.  Perhaps</span></div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment"> * some `SSL_write()` would be interested in another such event simultaneously too.  So then the next time the</span></div>
@@ -652,7 +652,7 @@ $(function() {
 <div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span><span class="comment"> * @note That said it is recommended that one `std::move()` any #Task_ptr whenever possible, such as when</span></div>
 <div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span><span class="comment"> *       capturing it in a lambda (e.g., `[task_ptr = std::move(task_ptr)`).  This advice applies generally</span></div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span><span class="comment"> *       to all `shared_ptr` captures (*&quot;whenever possible&quot;* being important), but this is just a reminder.</span></div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span><span class="comment"> *       to all `shared_ptr` captures (&quot;whenever possible&quot; being important), but this is just a reminder.</span></div>
 <div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00585" name="l00585"></a><span class="lineno"><a class="line" href="namespaceipc_1_1util_1_1sync__io.html#ac6973c71fc70c6d867b0f2255c642532">  585</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceipc_1_1util_1_1sync__io.html#ac6973c71fc70c6d867b0f2255c642532">Task_ptr</a> = boost::shared_ptr&lt;Task&gt;;</div>
 <div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span><span class="comment"></span> </div>
@@ -812,7 +812,7 @@ $(function() {
 <div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span><span class="comment"> * ### Integrating with boost.asio ###</span></div>
 <div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span><span class="comment"> * Suppose your application is using boost.asio (possibly with flow.async to manage threads),</span></div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span><span class="comment"> * with a `flow::util::Task_engine::run()` comprising the event loop, in proactor pattern fashion.</span></div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span><span class="comment"> * with a `flow::util::Task_engine::run()` embodying the event loop, in proactor pattern fashion.</span></div>
 <div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span><span class="comment"> * (We would recommend just that, preferring it to an old-school reactor-pattern via `[e]poll*()` directly.)</span></div>
 <div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span><span class="comment"> * *Your* loop is asynchronously expressed, but you can still use the `sync_io` pattern to graft</span></div>
 <div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span><span class="comment"> * Flow-IPC operations into it, so that they are invoked synchronously, when you want, in the exact thread you</span></div>
@@ -862,7 +862,7 @@ $(function() {
 <div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span><span class="comment"> * boost.asio-supplied `.async_wait()`.  However, and this is a key point:</span></div>
 <div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span><span class="comment"> * To make it work, before invoking `T::start_*ops()`, you must supply your execution context/executor -- usually</span></div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span><span class="comment"> * a boost.asio `Task_engine` (a/k/a `boost::asio::io_contexst`) or strand (`boost::asio::io_context::strand`) --</span></div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span><span class="comment"> * a boost.asio `Task_engine` (a/k/a `boost::asio::io_context`) or strand (`boost::asio::io_context::strand`) --</span></div>
 <div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span><span class="comment"> * w/r/t which you plan to `.async_wait()` down the line.  This is done via `T::replace_event_wait_handles()`,</span></div>
 <div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span><span class="comment"> * an otherwise optional call.  If using flow.async, this might be (e.g.):</span></div>
 <div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span><span class="comment"> *</span></div>
@@ -900,7 +900,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 12 2024 06:10:33 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Dec 21 2024 00:38:32 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -129,9 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3a21d479a863dd80df331b902c7fef16"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a3a21d479a863dd80df331b902c7fef16">~Capnp_message_builder</a> ()</td></tr>
 <tr class="memdesc:a3a21d479a863dd80df331b902c7fef16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrements owner-process count by 1; if current count is 1 deallocates SHM-stored data.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a3a21d479a863dd80df331b902c7fef16">More...</a><br /></td></tr>
 <tr class="separator:a3a21d479a863dd80df331b902c7fef16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a613441302d5735d686adb7d6d92fb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a4a613441302d5735d686adb7d6d92fb0">lend</a> (schema::detail::ShmTopSerialization::Builder *capnp_root, <a class="el" href="namespaceipc_1_1session_1_1shm.html#af2acc444cc9664e57df8143b66b78d70">session::shm::Arena_to_shm_session_t</a>&lt; <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#ad96e79475a2bccc0c7186da577b61a38">Arena</a> &gt; *shm_session)</td></tr>
-<tr class="memdesc:a4a613441302d5735d686adb7d6d92fb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be called after being done mutating underlying structured data, increments owner-process count by 1 via <code>shm_session-&gt;lend_object()</code>; and populates a capnp-<code>struct</code> field, saving the encoding of the outer SHM handle to the serialization-segment data structure <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#ac2e22abe941240ffa765bff7d288ce1e" title="The outer data structured stored in SHM representing the entire list of capnp-requested segments Segm...">Segments_in_shm</a> into that field.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a4a613441302d5735d686adb7d6d92fb0">More...</a><br /></td></tr>
-<tr class="separator:a4a613441302d5735d686adb7d6d92fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adde965642bf6f38036dfc31f0b9e75f4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#adde965642bf6f38036dfc31f0b9e75f4">lend</a> (schema::detail::ShmTopSerialization::Builder *capnp_root, <a class="el" href="namespaceipc_1_1session_1_1shm.html#af2acc444cc9664e57df8143b66b78d70">session::shm::Arena_to_shm_session_t</a>&lt; <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#ad96e79475a2bccc0c7186da577b61a38">Arena</a> &gt; *shm_session)</td></tr>
+<tr class="memdesc:adde965642bf6f38036dfc31f0b9e75f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be called after being done mutating underlying structured data, increments owner-process count by 1 via <code>shm_session-&gt;lend_object()</code>; and populates a capnp-<code>struct</code> field, saving the encoding of the outer SHM handle to the serialization-segment data structure <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#ac2e22abe941240ffa765bff7d288ce1e" title="The outer data structured stored in SHM representing the entire list of capnp-requested segments Segm...">Segments_in_shm</a> into that field.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#adde965642bf6f38036dfc31f0b9e75f4">More...</a><br /></td></tr>
+<tr class="separator:adde965642bf6f38036dfc31f0b9e75f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27d819a8373d2706f8c09341601a9cab"><td class="memItemLeft" align="right" valign="top">kj::ArrayPtr&lt;::capnp::word &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a27d819a8373d2706f8c09341601a9cab">allocateSegment</a> (unsigned int min_sz) override</td></tr>
 <tr class="memdesc:a27d819a8373d2706f8c09341601a9cab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <code>MessageBuilder</code> API.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a27d819a8373d2706f8c09341601a9cab">More...</a><br /></td></tr>
 <tr class="separator:a27d819a8373d2706f8c09341601a9cab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,9 +168,9 @@ Related Functions</h2></td></tr>
 class ipc::transport::struc::shm::Capnp_message_builder&lt; Shm_arena &gt;</div><p >A <code>capnp::MessageBuilder</code> used by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">shm::Builder</a>: similar to a <code>MallocMessageBuilder</code> with the <code>GROW_HEURISTICALLY</code> alloc-strategy but allocating via a SHM provider (of template-arg-specific type) in SHM instead of the heap via <code>malloc()</code>. </p>
 <p >It can also be used as a <a class="el" href="classCapnp__msg__builder__interface.html">Capnp_msg_builder_interface</a> (<code>capnp::MessageBuilder</code>) independently of the rest of <a class="el" href="namespaceipc_1_1transport_1_1struc.html" title="Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...">ipc::transport::struc</a> or even <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a>, although that was not the impetus for its development.</p>
 <p >Its <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#ac2e22abe941240ffa765bff7d288ce1e" title="The outer data structured stored in SHM representing the entire list of capnp-requested segments Segm...">Segments_in_shm</a> type alias is <code>public</code>: <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html" title="Implements Struct_reader concept by interpreting a serialization by shm::Builder with the same templa...">shm::Reader</a> must know/understand it in order to be able to interpret the SHM-stored data structure.</p>
-<p >Contrast this with <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html" title="A capnp::MessageBuilder used by Heap_fixed_builder: similar to a capnp::MallocMessageBuilder with the...">Heap_fixed_builder_capnp_message_builder</a> which allocates in regular heap. The <code>*this</code>-user-facing output API &ndash; meaning the thing invoked by struc::Builder::emit_serialization() &ndash; is <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a4a613441302d5735d686adb7d6d92fb0" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">lend()</a>. Cf. <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54" title="Returns pointers to Blobs which are the serialization segments at this time.">Heap_fixed_builder_capnp_message_builder::emit_segment_blobs()</a>. Why are they so different? Answer:</p><ul>
+<p >Contrast this with <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html" title="A capnp::MessageBuilder used by Heap_fixed_builder: similar to a capnp::MallocMessageBuilder with the...">Heap_fixed_builder_capnp_message_builder</a> which allocates in regular heap. The <code>*this</code>-user-facing output API &ndash; meaning the thing invoked by struc::Builder::emit_serialization() &ndash; is <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#adde965642bf6f38036dfc31f0b9e75f4" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">lend()</a>. Cf. <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54" title="Returns pointers to Blobs which are the serialization segments at this time.">Heap_fixed_builder_capnp_message_builder::emit_segment_blobs()</a>. Why are they so different? Answer:</p><ul>
 <li>The latter is meant to emit M segments, each (some) bytes long, to all be transmitted directly over IPC. So it outputs them, to copy into the IPC transport!</li>
-<li>We are meant to emit a <em>handle to a data structure storing those M segments</em> to be transmitted directly over IPC. The handle is transmitted; not the entire segments. So it outputs that handle! It just so happens to output it via a capnp mutator call. (It could instead emit a <code>flow::util::Blob</code> and let the caller transmit it however it wants. Why bother though? Just do it. However do see a related to-do in <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a4a613441302d5735d686adb7d6d92fb0" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">lend()</a> doc header.)</li>
+<li>We are meant to emit a <em>handle to a data structure storing those M segments</em> to be transmitted directly over IPC. The handle is transmitted; not the entire segments. So it outputs that handle! It just so happens to output it via a capnp mutator call. (It could instead emit a <code>flow::util::Blob</code> and let the caller transmit it however it wants. Why bother though? Just do it. However do see a related to-do in <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#adde965642bf6f38036dfc31f0b9e75f4" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">lend()</a> doc header.)</li>
 </ul>
 <h3>Move-ctible and move-assignable</h3>
 <p >Please see similar section in <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html" title="A capnp::MessageBuilder used by Heap_fixed_builder: similar to a capnp::MallocMessageBuilder with the...">Heap_fixed_builder_capnp_message_builder</a> doc header; it applies very similarly to us. Spoiler alert: A move-from involves copying 200+ bytes; consider wrapping <code>*this</code> in a <code>unique_ptr</code> if moving <code>*this</code>.</p>
@@ -249,7 +249,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>Short-hand for the SHM-arena activator coupled with <a class="el" href="classAllocator.html">Allocator</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00213">213</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00216">216</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
 
 </div>
 </div>
@@ -291,9 +291,9 @@ template&lt;typename Shm_arena &gt; </div>
 </div><div class="memdoc">
 
 <p>The inner data structure stored in SHM representing one capnp-requested segment storing all or part of the serialization. </p>
-<p ><code>.capacity()</code> is how much was allocated which is at least what capnp-requested via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a27d819a8373d2706f8c09341601a9cab" title="Implements MessageBuilder API.">allocateSegment()</a> <code>virtual</code> API we implement. <code>.size()</code> is how many bytes of that were in fact ultimately used by capnp during the <em>last</em> serialization as capped by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a4a613441302d5735d686adb7d6d92fb0" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">lend()</a>. If <code>*this</code> is reused, then capnp may write past <code>.size()</code> (but not past <code>.capacity()</code>); <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a4a613441302d5735d686adb7d6d92fb0" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">lend()</a> will then re-correct <code>.size()</code> to the true segment size used by capnp as reported by <code>this-&gt;getSegmentsForOutput()</code>.</p>
+<p ><code>.capacity()</code> is how much was allocated which is at least what capnp-requested via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a27d819a8373d2706f8c09341601a9cab" title="Implements MessageBuilder API.">allocateSegment()</a> <code>virtual</code> API we implement. <code>.size()</code> is how many bytes of that were in fact ultimately used by capnp during the <em>last</em> serialization as capped by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#adde965642bf6f38036dfc31f0b9e75f4" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">lend()</a>. If <code>*this</code> is reused, then capnp may write past <code>.size()</code> (but not past <code>.capacity()</code>); <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#adde965642bf6f38036dfc31f0b9e75f4" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">lend()</a> will then re-correct <code>.size()</code> to the true segment size used by capnp as reported by <code>this-&gt;getSegmentsForOutput()</code>.</p>
 <h3>Choice of container type</h3>
-<p >In the past this was, first, <code>std::vector&lt;uint8_t&gt;</code> (which needed <code>Default_init_allocator</code> to avoid 0-filling during <code>.resize()</code> &ndash; see <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a4a613441302d5735d686adb7d6d92fb0" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">lend()</a>); then <code>bipc::vector&lt;uint8_t&gt;</code> (which needed <code>.resize(n, default_init_t)</code> extension for the same reason ). Then, as intended originally, it became <code>flow::util::Basic_blob&lt;&gt;</code>. Why that over <code>vector&lt;uint8_t&gt;</code>? Answer: <code>Basic_blob</code>'s express purpose is to do just this; some of its main documented aspects (lack of zero-init, iron-clad known perf) are directly counted-upon by us. So we use it for similar reasons as using <code>flow::util::Blob</code> all over the code for such purposes &ndash; maybe even more so.</p>
+<p >In the past this was, first, <code>std::vector&lt;uint8_t&gt;</code> (which needed <code>Default_init_allocator</code> to avoid 0-filling during <code>.resize()</code> &ndash; see <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#adde965642bf6f38036dfc31f0b9e75f4" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">lend()</a>); then <code>bipc::vector&lt;uint8_t&gt;</code> (which needed <code>.resize(n, default_init_t)</code> extension for the same reason ). Then, as intended originally, it became <code>flow::util::Basic_blob&lt;&gt;</code>. Why that over <code>vector&lt;uint8_t&gt;</code>? Answer: <code>Basic_blob</code>'s express purpose is to do just this; some of its main documented aspects (lack of zero-init, iron-clad known perf) are directly counted-upon by us. So we use it for similar reasons as using <code>flow::util::Blob</code> all over the code for such purposes &ndash; maybe even more so.</p>
 <p >So really the only thing missing, before we could use it, was its SHM-friendly/custom-allocator support. <code>Blob</code> cannot do it. Once the latter was generalized to <code>Basic_blob&lt;<a class="el" href="classAllocator.html">Allocator</a>&gt;</code> we could switch to it, leaving behind a number of rather annoying caveats of the various <code>vector&lt;uint8_t&gt;</code> impls (0-init especially on <code>.resize()</code>, slow destructor on large blobs, and more).</p>
 <p >For reasons stated in its doc header <code>Basic_blob</code> does not log in normal fashion (memorizing a <code>Logger*</code> via ctor) but only if supplied an optional <code>Logger*</code> in each particular call. (<code>Blob</code> is a sub-class that adds such functionality at the expense of a bit of RAM/perf, but this is impossible with a custom SHM allocator.) So that's why <code>get_logger()</code> is passed to the few APIs we call on our <code>Basic_blob</code>. </p>
 
@@ -412,7 +412,7 @@ template&lt;typename Shm_arena &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00239">239</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00242">242</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
 
 </div>
 </div>
@@ -432,7 +432,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>Decrements owner-process count by 1; if current count is 1 deallocates SHM-stored data. </p>
 
-<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00253">253</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00256">256</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
 
 </div>
 </div>
@@ -475,12 +475,12 @@ template&lt;typename Shm_arena &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See <code>MessageBuilder</code> API. The ptr and size of the area for capnp to serialize-to. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00364">364</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00385">385</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a4a613441302d5735d686adb7d6d92fb0" name="a4a613441302d5735d686adb7d6d92fb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a613441302d5735d686adb7d6d92fb0">&#9670;&nbsp;</a></span>lend()</h2>
+<a id="adde965642bf6f38036dfc31f0b9e75f4" name="adde965642bf6f38036dfc31f0b9e75f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adde965642bf6f38036dfc31f0b9e75f4">&#9670;&nbsp;</a></span>lend()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -488,7 +488,7 @@ template&lt;typename Shm_arena &gt; </div>
 template&lt;typename Shm_arena &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html">ipc::transport::struc::shm::Capnp_message_builder</a>&lt; Shm_arena &gt;::lend </td>
+          <td class="memname">bool <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html">ipc::transport::struc::shm::Capnp_message_builder</a>&lt; Shm_arena &gt;::lend </td>
           <td>(</td>
           <td class="paramtype">schema::detail::ShmTopSerialization::Builder *&#160;</td>
           <td class="paramname"><em>capnp_root</em>, </td>
@@ -509,23 +509,24 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>To be called after being done mutating underlying structured data, increments owner-process count by 1 via <code>shm_session-&gt;lend_object()</code>; and populates a capnp-<code>struct</code> field, saving the encoding of the outer SHM handle to the serialization-segment data structure <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#ac2e22abe941240ffa765bff7d288ce1e" title="The outer data structured stored in SHM representing the entire list of capnp-requested segments Segm...">Segments_in_shm</a> into that field. </p>
 <p >You may call this method more than once per <code>*this</code>. In particular this is necessary if sending the SHM-handle via IPC more than once &ndash; even if one has already sent it to that same process (or another). Even if the bits populated into <code>*capnp_root</code> shall always be the same for a given <code>*this</code>, it is nevertheless required to call it repeatedly when sharing repeatedly.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000038">Todo:</a></b></dt><dd>Would be nice to provide a more-general counterpart to existing <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a4a613441302d5735d686adb7d6d92fb0" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">Capnp_message_builder::lend()</a> (in addition to that one which outputs into a capnp structure), such as one that outputs a mere <code>Blob</code>. The existing one is suitable for the main use-case which is internally by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">shm::Builder</a>; but <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html" title="A capnp::MessageBuilder used by shm::Builder: similar to a MallocMessageBuilder with the GROW_HEURIST...">Capnp_message_builder</a> is also usable as a <code>capnp::MessageBuilder</code> directly. If a user were to indeed leverage it in that latter capacity, they may want to transmit/store the SHM-handle some other way. Note that as of this writing the direct-use-by-general-user-as-<code>MessageBuilder</code> use-case is supported "just
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000038">Todo:</a></b></dt><dd>Would be nice to provide a more-general counterpart to existing <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#adde965642bf6f38036dfc31f0b9e75f4" title="To be called after being done mutating underlying structured data, increments owner-process count by ...">Capnp_message_builder::lend()</a> (in addition to that one which outputs into a capnp structure), such as one that outputs a mere <code>Blob</code>. The existing one is suitable for the main use-case which is internally by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">shm::Builder</a>; but <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html" title="A capnp::MessageBuilder used by shm::Builder: similar to a MallocMessageBuilder with the GROW_HEURIST...">Capnp_message_builder</a> is also usable as a <code>capnp::MessageBuilder</code> directly. If a user were to indeed leverage it in that latter capacity, they may want to transmit/store the SHM-handle some other way. Note that as of this writing the direct-use-by-general-user-as-<code>MessageBuilder</code> use-case is supported "just
 because" it can be; nothing in particular needed it.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">capnp_root</td><td>The target SHM-handle serialization root to populate as noted above. </td></tr>
+    <tr><td class="paramname">capnp_root</td><td>The target SHM-handle serialization root to populate as noted above. Untouched if <code>false</code> returned. </td></tr>
     <tr><td class="paramname">shm_session</td><td><code>Shm_session</code> to the opposing recipient to which we are lending. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> on success; <code>false</code> if and only if <code>shm_session-&gt;lend_object()</code> failed (returned empty blob). Assuming general buglessness of the code up to this point the latter means the session is permanently down; which is eminently possible in a normally functioning system. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00261">261</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00264">264</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8cpp_source.html#l00028">ipc::transport::struc::shm::capnp_set_lent_shm_handle()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder_a4a613441302d5735d686adb7d6d92fb0_cgraph.svg" width="352" height="59"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder_adde965642bf6f38036dfc31f0b9e75f4_cgraph.svg" width="352" height="59"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -578,7 +579,7 @@ template&lt;typename Shm_arena &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00423">423</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00444">444</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
 
 </div>
 </div>
@@ -607,7 +608,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>See ctor. </p>
 
-<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00218">218</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00221">221</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
 
 </div>
 </div>
@@ -637,7 +638,7 @@ template&lt;typename Shm_arena &gt; </div>
 <p >Roughly speaking the actual size will be the higher of <code>min_sz</code> or this. Its initial value (seg 1's) is a constant. Its subsequent value is the sum of sizes of the previous segments; meaning itself plus whatever <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#a27d819a8373d2706f8c09341601a9cab" title="Implements MessageBuilder API.">allocateSegment()</a> decided to allocate. This results in exponential growth... ish.</p>
 <p >This follows <code>MallocMessageBuilder</code> GROW_HEURISTICALLY logic, straight-up lifted from their source code. </p>
 
-<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00228">228</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00231">231</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
 
 </div>
 </div>
@@ -665,7 +666,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>Outer SHM handle to the data structured in SHM that stores the capnp-requested serialization segments. </p>
 
-<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00231">231</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00234">234</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
 
 </div>
 </div>
@@ -676,7 +677,7 @@ template&lt;typename Shm_arena &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 12 2024 06:10:34 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Dec 21 2024 00:38:33 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

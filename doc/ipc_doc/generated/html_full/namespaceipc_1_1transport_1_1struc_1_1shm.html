@@ -86,6 +86,9 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceipc_1_1transport_1_1struc_1_1shm_1_1classic"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1classic.html">classic</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1transport_1_1struc_1_1shm_1_1classic"><td class="mdescLeft">&#160;</td><td class="mdescRight">As of this writing certain convenience aliases supplied for the SHM-classic SHM-provider as pertains to zero-copy structured message passing with that SHM-provider. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceipc_1_1transport_1_1struc_1_1shm_1_1error"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html">error</a></td></tr>
+<tr class="memdesc:namespaceipc_1_1transport_1_1struc_1_1shm_1_1error"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analogous to <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html" title="Analogous to ipc::transport::error but applies to the sub-namespace ipc::transport::struc – errors ha...">ipc::transport::struc::error</a> but applies to the sub-namespace <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html" title="Segregates zero-copy/SHM implementations of concepts residing in parent namespace ipc::transport::str...">ipc::transport::struc::shm</a> &ndash; errors having to do with structured messaging with zero-copy backed by SHM. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -159,14 +162,14 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">shm_handle_root</td><td><code>ShmHandle</code> reader to access. Behavior undefined if was not set by <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ab592ce6eddbe24c57dc71f34018fb042" title="Utility that saves the result of a Shm_session1::lend_object&lt;T&gt;(const shared_ptr&lt;T&gt;&amp;) result into the...">capnp_set_lent_shm_handle()</a>. </td></tr>
-    <tr><td class="paramname">arg_to_borrow</td><td>Shall be set to what to pass to <code>borrow_object&lt;T&gt;()</code> (non-null pointer or behavior undefined/assertion may trip). <code>arg_to_borrow-&gt;get_logger()</code> shall not be modified; so set it what you want, if you want. </td></tr>
+    <tr><td class="paramname">arg_to_borrow</td><td>Shall be set to what to pass to <code>borrow_object&lt;T&gt;()</code> (non-null pointer or behavior undefined/assertion may trip). <code>arg_to_borrow-&gt;get_logger()</code> shall not be modified; so set it to what you want, if you want. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8cpp_source.html#l00050">50</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8cpp_source.html#l00051">51</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00655">ipc::transport::struc::shm::Reader&lt; Shm_arena &gt;::deserialization()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00681">ipc::transport::struc::shm::Reader&lt; Shm_arena &gt;::deserialization()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -220,14 +223,14 @@ Here is the caller graph for this function:</div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">shm_handle_root</td><td>Non-null (or behavior undefined/assertion may trip) pointer to <code>ShmHandle</code> builder to mutate. </td></tr>
-    <tr><td class="paramname">lend_result</td><td>What <code>lend_object&lt;T&gt;()</code> returned. Not <code>.empty()</code>, or behavior undefined (assertion may trip). </td></tr>
+    <tr><td class="paramname">lend_result</td><td>What <code>lend_object&lt;T&gt;()</code> returned. Not <code>.empty()</code>, or behavior undefined (assertion may trip). Reminder: if that returned <code>.empty()</code>, the session is likely hosed, and you cannot transmit SHM objects between the two endpoints, so there is no point in calling us. </td></tr>
   </table>
   </dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8cpp_source.html#l00028">28</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="capnp__msg__builder_8hpp_source.html#l00262">ipc::transport::struc::shm::Capnp_message_builder&lt; Shm_arena &gt;::lend()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="capnp__msg__builder_8hpp_source.html#l00265">ipc::transport::struc::shm::Capnp_message_builder&lt; Shm_arena &gt;::lend()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -275,7 +278,7 @@ template&lt;typename Shm_arena &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00617">617</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00643">643</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -317,7 +320,7 @@ template&lt;typename Shm_arena &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00423">423</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="capnp__msg__builder_8hpp_source.html#l00444">444</a> of file <a class="el" href="capnp__msg__builder_8hpp_source.html">capnp_msg_builder.hpp</a>.</p>
 
 </div>
 </div>
@@ -359,14 +362,14 @@ template&lt;typename Shm_arena &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00829">829</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00860">860</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 12 2024 06:10:34 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Dec 21 2024 00:38:33 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

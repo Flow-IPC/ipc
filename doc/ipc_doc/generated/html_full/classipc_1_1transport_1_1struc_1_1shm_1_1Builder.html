@@ -183,7 +183,7 @@ class ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;</div><p >Implements
 <p >That is, each mutation via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> may, as needed, trigger a SHM allocation. In this algorithm, unlike <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a>, the size of each (SHM-)allocated segment will be determined intelligently based on an exponential-growth algorithm, similarly to that mode of capnp's <code>MallocMessageBuilder</code>. Hence there is no knob to control segment size, as it is determined dynamically, internally.</p>
 <h3>Failure mode; reasonable uses</h3>
 <p >First see "Failure mode" and "Reasonable uses" in <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> doc header; then come back here. Back already? Good news: that failure mode (leaf-too-big) does <em>not</em> apply here. As long as the SHM provider is able to dole out RAM, there is no limit at all on the size/complexity of what one mutates over <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a>. In fact <code>*this</code> provides the "2-layer approach" specified in that doc header section you just came back from reading.</p>
-<p >The only realistic failure mode in <code>*this</code> is the following:</p><ol type="1">
+<p >There are two realistic failure modes in <code>*this</code>. The first is the following:</p><ol type="1">
 <li>User attempts to mutate via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a>.</li>
 <li>capnp internals recognize the current segment is used up and asks for a new segment of at least N bytes.</li>
 <li><code>*this</code> asks the SHM provider (see template param docs below) to allocate &gt;=N bytes.</li>
@@ -191,12 +191,13 @@ class ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;</div><p >Implements
 <li>This propagates to the user via their <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> mutation statement: it throws.</li>
 </ol>
 <p >The key here: This cannot be detected via <code>*this</code>. In spirit it is similar to <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a></code>-originated mutations by the user running out of regular-heap (even virtual disk heap, if enabled) and is outside our scope to control. The only remedy: choose a SHM provider that does not run out of space beyond simply running out of RAM; e.g., by mapping more SHM pools, or whatever. Otherwise, all the user can do is catch the <code>bad_alloc</code>-like exception around their mutations on <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> and take whatever contingency steps.</p>
+<p >The second failure mode is <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> failing. See its doc header for more information. In a similar key, <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#aceb5816f4e9f312a8ce2ef17feb81223" title="Implements concept API.">Reader::deserialization()</a> can fail down the line. See its doc header for more information.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html" title="Implements Struct_reader concept by interpreting a serialization by shm::Builder with the same templa...">shm::Reader</a> Counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">Struct_reader</a> implementation that can deserialize data that this has serialized. </dd>
 <dd>
 <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a>: implemented concept.</dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Shm_arena</td><td>SHM provider type with the ability to allocate STL-compliant data structures directly in SHM, returning a <code>shared_ptr</code> outer-SHM-handle that is possible to <code>lend_object()</code>/<code>borrow_object()</code> via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a2d9808d9b0c04cf84c8e439b1643506d" title="Implements concept API.">shm::Builder::Session</a>. <code>Shm_arena::Handle&lt;T&gt;</code> must equal <code>shared_ptr&lt;T&gt;</code> (meaning type with standard <code>shared_ptr&lt;T&gt;</code> semantics; in practice probably either <code>std::shared_ptr&lt;T&gt;</code> or <code>boost::shared_ptr&lt;T&gt;</code>). It must provide a <code>construct&lt;T&gt;()</code> method as exemplified by <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36" title="Constructs an object of given type with given ctor args, having allocated space directly in attached ...">shm::classic::Pool_arena::construct()</a>. (This is an <em>example</em>; you do not have to use <code>Pool_arena</code> and indeed should choose a SHM provider suitable to your needs, especially as regards to being able to allocate sufficiently large segments.) That is: <code>Handle&lt;T&gt; construct&lt;T&gt;(...ctor_args...)</code>, such that if it returned <code>p</code> then <code><a class="el" href="namespaceipc_1_1session_1_1shm.html#af2acc444cc9664e57df8143b66b78d70" title="Alias that, given an Arena type (with Arena::construct&lt;T&gt;() which allocates/constructs a T),...">session::shm::Arena_to_shm_session_t</a>&lt;Shm_arena&gt;</code> pointee has method <code>flow::util::Blob_sans_log_context lend_object&lt;T&gt;(const Handle&lt;T&gt;&amp; p)</code>. Next, if the returned blob <code>b</code> is bit-wise copied into an IPC transport and copied out of it and then given to counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html" title="Implements Struct_reader concept by interpreting a serialization by shm::Builder with the same templa...">shm::Reader</a>, then <code><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#ae77502abf0b04ad7543266fc6c34f49d" title="See shm::Builder::Session.">shm::Reader::Session</a></code> pointee has method <code>borrow_object&lt;T&gt;(b)</code> that shall return (in the receiving process) <code>Handle&lt;T&gt;</code> that points to the same SHM-stored data structure originally returned by <code>construct()</code>. In addition <code>Shm_arena</code> must be compatible with <code>Stateless_allocator</code> requirements as explained in "Additional formal requirements" below.</td></tr>
+    <tr><td class="paramname">Shm_arena</td><td>SHM provider type with the ability to allocate STL-compliant data structures directly in SHM, returning a <code>shared_ptr</code> outer-SHM-handle that is possible to <code>lend_object()</code>/<code>borrow_object()</code> via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a2d9808d9b0c04cf84c8e439b1643506d" title="Implements concept API.">shm::Builder::Session</a>. <code>Shm_arena::Handle&lt;T&gt;</code> must equal <code>shared_ptr&lt;T&gt;</code> (meaning type with standard <code>shared_ptr&lt;T&gt;</code> semantics; in practice probably either <code>std::shared_ptr&lt;T&gt;</code> or <code>boost::shared_ptr&lt;T&gt;</code>). It must provide a <code>construct&lt;T&gt;()</code> method as exemplified by <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36" title="Constructs an object of given type with given ctor args, having allocated space directly in attached ...">shm::classic::Pool_arena::construct()</a>. (This is an <em>example</em>; you do not have to use <code>Pool_arena</code> and indeed should choose a SHM provider suitable to your needs, especially as regards to being able to allocate sufficiently large segments.) That is: <code>Handle&lt;T&gt; construct&lt;T&gt;(...ctor_args...)</code>, such that if it returned <code>p</code> then <code><a class="el" href="namespaceipc_1_1session_1_1shm.html#af2acc444cc9664e57df8143b66b78d70" title="Alias that, given an Arena type (with Arena::construct&lt;T&gt;() which allocates/constructs a T),...">session::shm::Arena_to_shm_session_t</a>&lt;Shm_arena&gt;</code> pointee has method <code>flow::util::Blob_sans_log_context lend_object&lt;T&gt;(const Handle&lt;T&gt;&amp; p)</code>. Next, if the returned blob <code>b</code> is bit-wise copied into an IPC transport and copied out of it and then given to counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html" title="Implements Struct_reader concept by interpreting a serialization by shm::Builder with the same templa...">shm::Reader</a>, then <code><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#ae77502abf0b04ad7543266fc6c34f49d" title="See shm::Builder::Session.">shm::Reader::Session</a></code> pointee has method <code>borrow_object&lt;T&gt;(b)</code> that shall return (in the receiving process) <code>Handle&lt;T&gt;</code> that points to the same SHM-stored data structure originally returned by <code>construct()</code>. In addition <code>Shm_arena</code> must be compatible with <code>Stateless_allocator</code> requirements as explained in "Additional formal requirements" below. Lastly, <code>lend_object()</code> and <code>borrow_object()</code> may return an empty blob/null respectively, indicating (assuming proper inputs) the session is permanently down (opposing process is likely down/closed session).</td></tr>
   </table>
   </dd>
 </dl>
@@ -204,7 +205,7 @@ class ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;</div><p >Implements
 <p >Information on <code>T</code> that <code>*this</code> shall use with <code>Shm_arena::construct&lt;T&gt;()</code>: As of this writing it is <code>list&lt;Basic_blob&gt;</code>, representing (internally) the capnp-requested 1+ segments in which the serialization mutated via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> is stored in zero-copy fashion. In order for this to work, the <code><a class="el" href="classAllocator.html">Allocator</a></code> template arg on both <code>list</code> and the inner <code>Blob</code>s shall be <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">ipc::shm::stl::Stateless_allocator</a>. Therefore, the requirement is: <code>Shm_arena</code> must formally meet the requirements for <code>Arena</code> from <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">ipc::shm::stl::Stateless_allocator</a> doc header. Briefly these are: <code>allocate(n) -&gt; void*</code>, <code>deallocate(void*)</code>, <code>Pointer</code> fancy-pointer type that is SHM-storable.</p>
 <p >A simple (likely the simplest) example is <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">ipc::shm::classic::Pool_arena</a>, which satisfies both <code>Shm_arena</code> and <code><a class="el" href="namespaceipc_1_1session_1_1shm.html#af2acc444cc9664e57df8143b66b78d70" title="Alias that, given an Arena type (with Arena::construct&lt;T&gt;() which allocates/constructs a T),...">session::shm::Arena_to_shm_session_t</a>&lt;Shm_arena&gt;</code>-pointee requirements. However, it has deficiencies w/r/t max pool size having to be specified and a non-industry-strength allocation algorithm. The Jemalloc-based SHM provider in ipc::shm::arena_lend::jemalloc is more complex &ndash; with a separate <code>Arena_to_shm_session_t&lt;Shm_arena&gt;</code> pointee from <code>Shm_arena</code> &ndash; but lacks these problems. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00117">117</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00124">124</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a9bc898884381eebdb03f0dd9f74895de" name="a9bc898884381eebdb03f0dd9f74895de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9bc898884381eebdb03f0dd9f74895de">&#9670;&nbsp;</a></span>Arena</h2>
@@ -222,7 +223,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>Short-hand for <code>Shm_arena</code> template param. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00125">125</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00132">132</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -252,7 +253,7 @@ template&lt;typename Shm_arena &gt; </div>
 <p >This is the bottom-serialization builder.</p>
 <p >As explained at the top of the class doc header, this one uses a segment-sizing strategy similar that of <code>capnp::MallocMessageBuilder</code> operating in <code>GROW_HEURISTICALLY</code> mode. I.e., it'll start with a reasonable guess for segment 1 size; then grow exponentially each time a new segment is requested. More or less, each new segment's size equals that of the preceding segments' sizes added up. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00298">298</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00308">308</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -273,7 +274,7 @@ template&lt;typename Shm_arena &gt; </div>
 <p>Implements concept API. </p>
 <p >This being a zero-copy (SHM-based) <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a>, information is needed for <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> beyond the payload itself: pointer to a <code>Shm_session</code> object. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00174">174</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00181">181</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -344,9 +345,9 @@ template&lt;typename Shm_arena &gt; </div>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a460aa187c0aaa5adfb81ecc902c7eca9" title="Default ctor, leaving *this in a state only suitable for destruction or being moved-to.">Struct_builder::Struct_builder()</a>: implemented concept. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00515">515</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00528">528</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00164">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Config::m_top_builder_frame_postfix_sz</a>, <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00161">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Config::m_top_builder_frame_prefix_sz</a>, and <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00046">ipc::transport::struc::shm::Builder_base::S_MAX_SERIALIZATION_SEGMENT_SZ</a>.</p>
+<p class="reference">References <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00171">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Config::m_top_builder_frame_postfix_sz</a>, <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00168">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Config::m_top_builder_frame_prefix_sz</a>, and <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00048">ipc::transport::struc::shm::Builder_base::S_MAX_SERIALIZATION_SEGMENT_SZ</a>.</p>
 
 </div>
 </div>
@@ -409,7 +410,7 @@ template&lt;typename Shm_arena &gt; </div>
 <p >If <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> is used more than once (and hence deserialized more than once), then the ref-count can grow further beyond 2.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a008f6b6456a4b2dab63cdda5f9e4cfe5" title="Destructor. Do not use *payload_msg_builder() or any copies thereof past this.">Struct_builder::~Struct_builder()</a>: implemented concept. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00536">536</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00549">549</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -450,27 +451,21 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>Implements concept API. </p>
 <h3>Errors</h3>
-<p >As implied in class doc header, the top serialization is just a small SHM-handle, so <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da3deddc950bfa6d35ae03c9494eec15a6" title="Structured message serialization (e.g., when sending over channel): A user-mutated datum (e....">error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG</a> is not realistically possible.</p>
-<p >As of this writing no other failure modes exist. However see "Failure mode" notes in <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> doc header. These would manifest before one would have a chance to <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> though.</p>
+<p ><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#a25a6db383af491442917e2dc8ff944a8a80f5c2d8f8e819b23122a4fa1ea08500" title="Structured message serialization: SHM-session lend_object() indicated failure when preparing an encod...">error::Code::S_SERIALIZE_FAILED_SESSION_HOSED</a> is eminently possible with at least some providers (as of this writing not SHM-classic, yes SHM-jemalloc). Be ready for this eventuality.</p>
+<p >See also "Failure mode" notes in <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> doc header. These would manifest before one would have a chance to <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> though.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target_blobs</td><td>See above. Also recall (see ctor) that for each returned <code>blob</code> (realistically just one): individual segment sizes shall never exceed Config::m_segment_sz (for the [<code>begin()</code>, <code>end()</code>) area), with <code>start() == Config::m_frame_prefix_sz</code>, and with <code>capacity() - start() - size() &gt;= Config::m_frame_postfix_sz</code>. Config::m_segment_sz is ceiling-nearest-word-adjusted. </td></tr>
     <tr><td class="paramname">session</td><td>See above. In this case... just... see <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a2d9808d9b0c04cf84c8e439b1643506d" title="Implements concept API.">Session</a>. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See above. Long story short: in practice never fails.</td></tr>
+    <tr><td class="paramname">err_code</td><td>See above. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#a25a6db383af491442917e2dc8ff944a8a80f5c2d8f8e819b23122a4fa1ea08500" title="Structured message serialization: SHM-session lend_object() indicated failure when preparing an encod...">error::Code::S_SERIALIZE_FAILED_SESSION_HOSED</a> (the SHM-session was unable to encode the location of the serialization in SHM, for the benefit of the opposing process that would deserialize this, because session's <code>lend_object()</code> method indicated the session is down).</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#af5085934123f075c6d0701e9e45e4bcc" title="Returns the serialization in the form of a sequence of 1+ pointers to Blobs which are guaranteed to r...">Struct_builder::emit_serialization()</a>: implemented concept. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00554">554</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00567">567</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="heap__serializer_8cpp_source.html#l00072">ipc::transport::struc::Heap_fixed_builder::emit_serialization()</a>, and <a class="el" href="heap__serializer_8cpp_source.html#l00035">ipc::transport::struc::NULL_SESSION</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1struc_1_1shm_1_1Builder_a7909a2d1e1d24037fb8af5338fffa783_cgraph.svg" width="324" height="83"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
+<p class="reference">References <a class="el" href="heap__serializer_8cpp_source.html#l00035">ipc::transport::struc::NULL_SESSION</a>, and <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#a25a6db383af491442917e2dc8ff944a8a80f5c2d8f8e819b23122a4fa1ea08500">ipc::transport::struc::shm::error::S_SERIALIZE_FAILED_SESSION_HOSED</a>.</p>
 
 </div>
 </div>
@@ -493,7 +488,7 @@ template&lt;typename Shm_arena &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#ae1516b0d68c48f2e13baf6aca366ac6c" title="Returns what target_blobs.size() would return after calling emit_serialization(&amp;target_blobs) (with a...">Struct_builder::n_serialization_segments()</a>: implemented concept. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00609">609</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00635">635</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -554,7 +549,7 @@ template&lt;typename Shm_arena &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a9a4b9587c162f85ad4d3e0a5fad8dffb" title="Pointer to the payload Capnp_msg_builder_interface, suitable for mutation by the user.">Struct_builder::payload_msg_builder()</a>: implemented concept. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00546">546</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00559">559</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -605,7 +600,7 @@ template&lt;typename Shm_arena &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00617">617</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00643">643</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -637,7 +632,7 @@ template&lt;typename Shm_arena &gt; </div>
 <p >See similar section in <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a8f8e07a71aa5e47d6b8094b2a004cc7d" title="The capnp builder engine which really does the work including owning the needed allocated segments so...">Heap_fixed_builder::m_engine</a> doc header. Same thing here.</p>
 <p >Moreover: We also have <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a3283aa7dc43b3851b94ff65f1f01d5e1" title="The top-serialization builder, namely Heap_fixed_builder, of our simple SHM-handle-bearing schema.">m_top_engine</a>, itself a <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a>, which is cheaply move-ctible/assignable (as of this writing another <code>unique_ptr</code> and a <code>size_t</code>). So a move-from for us means copying those items, plus the wrapping <code>unique_ptr&lt;Capnp_heap_engine&gt;</code> here. That is acceptable perf. Had we not wrapped the 2 <a class="el" href="classCapnp__msg__builder__interface.html">Capnp_msg_builder_interface</a> objects involved (this guy and the one inside <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a3283aa7dc43b3851b94ff65f1f01d5e1" title="The top-serialization builder, namely Heap_fixed_builder, of our simple SHM-handle-bearing schema.">m_top_engine</a>), a move-from would lug-around something like 400+ bytes; not great. A couple added allocs/deallocs of ~8 bytes should indeed be better. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00318">318</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00328">328</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -665,7 +660,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>The top-serialization builder, namely <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a>, of our simple SHM-handle-bearing schema. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00303">303</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00313">313</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -676,7 +671,7 @@ template&lt;typename Shm_arena &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 12 2024 06:10:34 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Dec 21 2024 00:38:33 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
