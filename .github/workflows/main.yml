@@ -733,6 +733,10 @@ jobs:
       run: |
         # Install Flow-IPC dependencies with Conan using the profile.
         ${{ env.setup-run-env }}
+        # Next 3 lines: Must do same as flow's main.yml; see that code.
+        # TODO: See the TODO there which applies to these lines.
+        NON_REMOTE_BOOST_VER=1.87
+        conan export ./flow/conan/boost/$NON_REMOTE_BOOST_VER boost/$NON_REMOTE_BOOST_VER.0@
         FLOW_VERSION=`cat flow/VERSION`
         conan editable add flow flow/$FLOW_VERSION
         # At least `configure` mini-programs are built with our build-settings, so $BUILD_CMD_PREFIX is required.
