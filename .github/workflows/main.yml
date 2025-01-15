@@ -933,7 +933,7 @@ jobs:
     - name: Run unit tests
       if: |
         false
-        # XXX !cancelled()
+      # XXX !cancelled()
       run: |
         # Run unit tests.
         cd ${{ env.install-dir }}/bin
@@ -1041,7 +1041,7 @@ jobs:
     - name: Run integration test [perf_demo - SHM-jemalloc mode]
       if: |
         false
-        # XXX !cancelled()
+      # XXX !cancelled()
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_perf_demo.sh shm_jemalloc
 
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
@@ -1061,7 +1061,7 @@ jobs:
     - name: Prepare run script for [transport_test - Scripted mode] variations below
       if: |
         false
-        # XXX !cancelled()
+      # XXX !cancelled()
       run: |
         # Prepare run script for [transport_test - Scripted mode] variations below.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_sc.sh
@@ -1096,13 +1096,13 @@ jobs:
       id: transport_test_scripted
       if: |
         false
-        # XXX !cancelled()
+      # XXX !cancelled()
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_sc.sh info
 
     - name: Re-run with increased logging, on failure only
       if: |
         false
-        # XXX (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
+      # XXX (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_sc.sh data
 
     # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
@@ -1113,7 +1113,7 @@ jobs:
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: |
         false
-        # XXX !cancelled()
+      # XXX !cancelled()
       run: |
         # Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode].
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
@@ -1125,7 +1125,7 @@ jobs:
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: |
         false
-        # XXX !cancelled()
+      # XXX !cancelled()
       run: |
         # Prepare run script for [transport_test - Exercise mode] variations below.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_ex.sh
@@ -1172,26 +1172,26 @@ jobs:
       id: transport_test_ex_heap
       if: |
         false
-        # XXX !cancelled()
+      # XXX !cancelled()
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh info heap
 
     - name: Re-run with increased logging, on failure only
       if: |
         false
-        # XXX (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
+      # XXX (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh data heap_log_level_data
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
       if: |
         false
-        # XXX !cancelled()
+      # XXX !cancelled()
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh info shm_classic -shm-c
 
     - name: Re-run with increased logging, on failure only
       if: |
         false
-        # XXX (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
+      # XXX (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh data shm_classic_log_level_data -shm-c
 
     # Disabling this particular test run for the specific case of clang-17 in TSAN (thread sanitizer) config
@@ -1224,20 +1224,20 @@ jobs:
       id: transport_test_ex_shm_j
       if: |
         false
-        # XXX (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
+      # XXX (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh info shm_jemalloc -shm-j
 
     - name: Re-run with increased logging, on failure only
       if: |
         false
-        # XXX (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
+      # XXX (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh data shm_jemalloc_log_level_data -shm-j
 
     # See earlier comment block about why we saved all the logs including for console-output-only tests/demos.
     - name: Check test/demo logs for non-fatal sanitizer error(s)
       if: |
         false
-        # XXX (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'ubsan')
+      # XXX (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'ubsan')
       run: |
         cd ${{ env.install-dir }}/bin/logs
         # grep returns 0 if 1+ found, 1 if none found, 2+ on error.  So check results explicitly instead of -e.
