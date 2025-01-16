@@ -457,7 +457,9 @@ jobs:
           - compiler: { id: gcc-11 }
           - compiler: { id: gcc-13 }
           - compiler: { id: clang-13 }
-          # - build-test-cfg: { id: debug }
+          - compiler: { id: clang-15 }
+          - build-test-cfg: { id: debug }
+          - build-test-cfg: { id: minsizerel }          
           - build-test-cfg: { id: relwithdebinfo }
           - build-test-cfg: { id: relwithdebinfo-asan }
           - build-test-cfg: { id: relwithdebinfo-ubsan }
