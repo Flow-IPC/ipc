@@ -197,8 +197,11 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
 
       FLOW_LOG_INFO("> Issuing get-cache request via tiny message.");
       m_timer.emplace(get_logger(), "capnp-raw", Timer::real_clock_types(), 100); // Begin timing.
+      FLOW_LOG_INFO("XXX - After: m_timer.emplace(get_logger(), "capnp-raw", Timer::real_clock_types(), 100); // Begin timing.");
       m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
+      FLOW_LOG_INFO("XXX - After: m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));");
       m_timer->checkpoint("sent request");
+      FLOW_LOG_INFO("XXX - After: m_timer->checkpoint(\"sent request\");");
 
       FLOW_LOG_INFO("< Expecting get-cache response fragment: capnp segment count.");
       m_chan.async_receive_blob(Blob_mutable(&m_n, sizeof(m_n)), &m_err_code, &m_sz,
