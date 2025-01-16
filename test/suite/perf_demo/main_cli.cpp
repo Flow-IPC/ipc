@@ -198,8 +198,10 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       FLOW_LOG_INFO("> Issuing get-cache request via tiny message.");
       m_timer.emplace(get_logger(), "capnp-raw", Timer::real_clock_types(), 100); // Begin timing.
       FLOW_LOG_INFO("XXX - After: m_timer.emplace(get_logger(), \"capnp-raw\", Timer::real_clock_types(), 100); // Begin timing.");
-      m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
-      FLOW_LOG_INFO("XXX - After: m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));");
+      Error_code sys_err_code;
+      m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)), &sys_err_code);
+      if (sys_err_code) { throw Runtime_error(sys_err_code, "run_capnp_over_raw():on_sync():send_blob()"); }
+      FLOW_LOG_INFO("XXX 2.0 - After: m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));");
       m_timer->checkpoint("sent request");
       FLOW_LOG_INFO("XXX - After: m_timer->checkpoint(\"sent request\");");
 
