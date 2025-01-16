@@ -394,7 +394,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
         do
         {
           const auto chunk_sz = std::min(chunk_max_sz, m_n);
-          m_chan.send_blob(Blob_const(start, chunk_sz), sys_err_code);
+          m_chan.send_blob(Blob_const(start, chunk_sz), &sys_err_code);
           if (sys_err_code) { throw Runtime_error(sys_err_code, "XXXrun_capnp_over_raw():on_request():send_blob()-3"); }
           start += chunk_sz;
           m_n -= chunk_sz;
