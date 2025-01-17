@@ -451,19 +451,6 @@ jobs:
             build-test-cfg: { id: relwithdebinfo-tsan }
           - compiler: { id: clang-13 }
             build-test-cfg: { id: relwithdebinfo-tsan }
-          # XXX
-          - compiler: { id: gcc-9 }
-          - compiler: { id: gcc-10 }
-          - compiler: { id: gcc-11 }
-          - compiler: { id: gcc-13 }
-          - compiler: { id: clang-13 }
-          - compiler: { id: clang-15 }
-          - build-test-cfg: { id: debug }
-          - build-test-cfg: { id: minsizerel }          
-          - build-test-cfg: { id: relwithdebinfo }
-          - build-test-cfg: { id: relwithdebinfo-asan }
-          - build-test-cfg: { id: relwithdebinfo-ubsan }
-          - build-test-cfg: { id: relwithdebinfo-tsan }
 
     # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
     runs-on: ubuntu-22.04
@@ -934,8 +921,7 @@ jobs:
 
     - name: Run unit tests
       if: |
-        false
-      # XXX !cancelled()
+        !cancelled()
       run: |
         # Run unit tests.
         cd ${{ env.install-dir }}/bin
@@ -1042,8 +1028,7 @@ jobs:
 
     - name: Run integration test [perf_demo - SHM-jemalloc mode]
       if: |
-        false
-      # XXX !cancelled()
+        !cancelled()
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_perf_demo.sh shm_jemalloc
 
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
@@ -1062,8 +1047,7 @@ jobs:
     # This follows the instructions in bin/transport_test/README.txt.
     - name: Prepare run script for [transport_test - Scripted mode] variations below
       if: |
-        false
-      # XXX !cancelled()
+        !cancelled()
       run: |
         # Prepare run script for [transport_test - Scripted mode] variations below.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_sc.sh
@@ -1097,14 +1081,12 @@ jobs:
     - name: Run integration test [transport_test - Scripted mode]
       id: transport_test_scripted
       if: |
-        false
-      # XXX !cancelled()
+        !cancelled()
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_sc.sh info
 
     - name: Re-run with increased logging, on failure only
       if: |
-        false
-      # XXX (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_scripted.outcome == 'failure')
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_sc.sh data
 
     # The following [Exercise mode] tests follow the instructions in bin/transport_test/README.txt.
@@ -1114,8 +1096,7 @@ jobs:
 
     - name: Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode]
       if: |
-        false
-      # XXX !cancelled()
+        !cancelled()
       run: |
         # Prepare IPC-session safety-friendly run-time environment for [transport_test - Exercise mode].
         mkdir -p ~/bin/ex_srv_run ~/bin/ex_cli_run
@@ -1126,8 +1107,7 @@ jobs:
 
     - name: Prepare run script for [transport_test - Exercise mode] variations below
       if: |
-        false
-      # XXX !cancelled()
+        !cancelled()
       run: |
         # Prepare run script for [transport_test - Exercise mode] variations below.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_ex.sh
@@ -1173,27 +1153,23 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - Heap sub-mode]
       id: transport_test_ex_heap
       if: |
-        false
-      # XXX !cancelled()
+        !cancelled()
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh info heap
 
     - name: Re-run with increased logging, on failure only
       if: |
-        false
-      # XXX (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_ex_heap.outcome == 'failure')
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh data heap_log_level_data
 
     - name: Run integration test [transport_test - Exercise mode - SHM-classic sub-mode]
       id: transport_test_ex_shm_c
       if: |
-        false
-      # XXX !cancelled()
+        !cancelled()
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh info shm_classic -shm-c
 
     - name: Re-run with increased logging, on failure only
       if: |
-        false
-      # XXX (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_ex_shm_c.outcome == 'failure')
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh data shm_classic_log_level_data -shm-c
 
     # Disabling this particular test run for the specific case of clang-17 in TSAN (thread sanitizer) config
@@ -1225,21 +1201,18 @@ jobs:
     - name: Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode]
       id: transport_test_ex_shm_j
       if: |
-        false
-      # XXX (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
+        (!cancelled()) && ((matrix.compiler.id != 'clang-17') || (matrix.build-test-cfg.sanitizer-name != 'tsan'))
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh info shm_jemalloc -shm-j
 
     - name: Re-run with increased logging, on failure only
       if: |
-        false
-      # XXX (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
+        (!cancelled()) && (steps.transport_test_ex_shm_j.outcome == 'failure')
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_transport_test_ex.sh data shm_jemalloc_log_level_data -shm-j
 
     # See earlier comment block about why we saved all the logs including for console-output-only tests/demos.
     - name: Check test/demo logs for non-fatal sanitizer error(s)
       if: |
-        false
-      # XXX (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'ubsan')
+        (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'ubsan')
       run: |
         cd ${{ env.install-dir }}/bin/logs
         # grep returns 0 if 1+ found, 1 if none found, 2+ on error.  So check results explicitly instead of -e.

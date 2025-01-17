@@ -108,7 +108,7 @@ void setup_logging(std::optional<flow::log::Simple_ostream_logger>* std_logger,
   const auto log_file = (size_t(argc) > ARG_IDX) ? String_view(argv[ARG_IDX]) : String_view(LOG_FILE);
   FLOW_LOG_INFO("Opening log file [" << log_file << "] for IPC/Flow logs only.");
   static auto log_config = std_log_config;
-  log_config.configure_default_verbosity(Sev::S_INFO, true);//DATA, true);// XXX Sev::S_INFO, true);
+  log_config.configure_default_verbosity(Sev::S_INFO, true);
   log_logger->emplace(nullptr, &log_config, log_file, false /* No rotation; we're no serious business. */);
 }
 

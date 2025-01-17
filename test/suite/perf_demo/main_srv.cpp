@@ -338,9 +338,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
        * client sends get-cache-request, but we're still setting something up after accepting the session;
        * so we only send the response once we're ready to do that; but client has already started timing. */
       FLOW_LOG_INFO("> Issuing handshake SYN for initialization sync.");
-      //Error_code sys_err_code;
-      m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));//, &sys_err_code);
-      //if (sys_err_code) { throw Runtime_error(sys_err_code, "XXXrun_capnp_over_raw():start()"); }
+      m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
 
       /* Receive a dummy message as a request signal.  Technically we should expect an actual capnp-encoded
        * (albeit small) GetCacheReq here; but we'll accept any message; in the big benchmark this detail does not
@@ -372,9 +370,7 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       const auto capnp_segs = g_capnp_msg.getSegmentsForOutput();
       m_n = capnp_segs.size();
       FLOW_LOG_INFO("> Sending get-cache response fragment: capnp segment count = [" << m_n << "].");
-      //Error_code sys_err_code;
-      m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));//, &sys_err_code);
-      //if (sys_err_code) { throw Runtime_error(sys_err_code, "XXXrun_capnp_over_raw():on_request():send_blob()"); }
+      m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
       FLOW_LOG_INFO("> Sending get-cache response fragments x N: [seg size, seg content...].");
 
       /* Essentially (through Flow-IPC unstructured-transport layer) mostly do a bunch ~64k ::write()s.
@@ -387,15 +383,13 @@ void run_capnp_over_raw(flow::log::Logger* logger_ptr, Channel_raw* chan_ptr)
       {
         const auto capnp_seg = capnp_segs[idx].asBytes();
         m_n = capnp_seg.size();
-        m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));//, &sys_err_code);
-        //if (sys_err_code) { throw Runtime_error(sys_err_code, "XXXrun_capnp_over_raw():on_request():send_blob()-2"); }
+        m_chan.send_blob(Blob_const(&m_n, sizeof(m_n)));
 
         auto start = capnp_seg.begin();
         do
         {
           const auto chunk_sz = std::min(chunk_max_sz, m_n);
-          m_chan.send_blob(Blob_const(start, chunk_sz));//, &sys_err_code);
-          //if (sys_err_code) { throw Runtime_error(sys_err_code, "XXXrun_capnp_over_raw():on_request():send_blob()-3"); }
+          m_chan.send_blob(Blob_const(start, chunk_sz));
           start += chunk_sz;
           m_n -= chunk_sz;
         }
