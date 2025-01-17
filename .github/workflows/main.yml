@@ -215,7 +215,14 @@ jobs:
 
     strategy:
       fail-fast: false
+
+      # Please read notes in similar place in Flow's main.yml regarding the matrix's setup, especially
+      # the bulk of it that discusses how the C++ standard setting (17, 20, etc.) is handled.
+      # We omit that large comment here and related comments inline inside the `matrix`.  Same deal as for Flow.
       matrix:
+        cxx-std:
+          - id: cxx17
+          - id: cxx20
         compiler:
           - id: gcc-9
             name: gcc
@@ -451,11 +458,38 @@ jobs:
             build-test-cfg: { id: relwithdebinfo-tsan }
           - compiler: { id: clang-13 }
             build-test-cfg: { id: relwithdebinfo-tsan }
+          # The rest of these deal with C++20; again please see Flow's main.yml commentary.
+          # TODO: I am sure there's an overarching TODO somewhere around here to the same effect but... to
+          # reiterate... it's unpleasant so much is copy-pasted from one .yml to the other, and even accepting
+          # that it is odd that for some items the real comment is in A, while B says see A; while for others
+          # it is the opposite.  The info is there, and it's not redundant (only the code is), but still.
+          - cxx-std: { id: cxx20 }
+            compiler: { id: gcc-9 }
+          - cxx-std: { id: cxx20 }
+            compiler: { id: gcc-10 }
+          - cxx-std: { id: cxx20 }
+            compiler: { id: gcc-11 }
+          - cxx-std: { id: cxx20 }
+            compiler: { id: clang-13 }
+          - cxx-std: { id: cxx20 }
+            compiler: { id: clang-15 }
+          - cxx-std: { id: cxx20 }
+            compiler: { id: clang-16 }
+          - cxx-std: { id: cxx20 }
+            build-test-cfg: { id: release }
+          - cxx-std: { id: cxx20 }
+            build-test-cfg: { id: minsizerel }
+          - cxx-std: { id: cxx20 }
+            build-test-cfg: { id: relwithdebinfo-asan }
+          - cxx-std: { id: cxx20 }
+            build-test-cfg: { id: relwithdebinfo-ubsan }
+          - cxx-std: { id: cxx20 }
+            build-test-cfg: { id: relwithdebinfo-tsan }
 
     # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
     runs-on: ubuntu-22.04
 
-    name: ${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
+    name: ${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}
 
     env:
       build-dir: ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-profile-build-type }}
@@ -652,7 +686,7 @@ jobs:
         [settings]
         compiler = ${{ matrix.compiler.name }}
         compiler.version = ${{ matrix.compiler.version }}
-        compiler.cppstd = 17
+        compiler.cppstd = ${{ ((matrix.cxx-std.id == 'cxx20') && '20') || '17' }}
         # TODO: Consider testing with LLVM-libc++ also (with clang anyway).
         compiler.libcxx = libstdc++11
         arch = x86_64
@@ -672,10 +706,16 @@ jobs:
         ${{ matrix.build-test-cfg.conan-profile-custom-buildenv }}
 
         [options]
+        # TODO: Are the next 2 lines needed, since we are building via `ipc` conanfile.py?
+        # I (ygoldfel) am admittedly Conan-ignorant.
         flow:doc = False
         flow:build = True
         ipc:doc = False
         ipc:build = True
+        # `0` here as of this writing would effectively mean `17` too.  Specifying `17` explicitly has the same
+        # effect in the end but goes down a slightly different code-path in FlowLikeCodeGenerate.cmake.  It's not
+        # a huge deal... but it's a little nice to cover more paths, so let's do the `0` path when applicable.
+        ipc:build_cxx_std = ${{ ((matrix.cxx-std.id == 'cxx20') && '20') || '0' }}
         EOF
         # (Oddly enough `no-lto: True` and `...: False` do still evaluate as `true` and `false` respectively.
         # Hence why this compares against `false` and not `False`....)
@@ -1244,7 +1284,7 @@ jobs:
         always()
       uses: actions/upload-artifact@v4
       with:
-        name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}
+        name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}
         path: ${{ env.install-dir }}/bin/logs.tgz
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?

@@ -34,6 +34,7 @@ class IpcRecipe(ConanFile):
     options = {
         "build": [True, False],
         "build_no_lto": [True, False],
+
         # Replaces the core C/C++ compiler flags (not linker flags) for the chosen settings.build_type.
         # Note that these appear *after* any C[XX]FLAGS and tools.build.c[xx]flags
         # on the compiler command line, so it would not be
@@ -46,6 +47,10 @@ class IpcRecipe(ConanFile):
         # This affects `ipc` CMake only; meaning flow, ipc_*, ipc objects will have this overridden; while
         # Boost libs, jemalloc lib, capnp/kj, gtest libs will build how they would've built anyway.
         "build_type_cflags_override": "ANY",
+
+        # 0 => default (let build script decide, as of this writing 17 meaning C++17) or a #, probably `20` as of
+        # this writing.
+        "build_cxx_std": ["ANY"],
         "doc": [True, False],
     }
 
@@ -53,6 +58,7 @@ class IpcRecipe(ConanFile):
         "build": True,
         "build_no_lto": False,
         "build_type_cflags_override": "",
+        "build_cxx_std": 0,
         "doc": False,
     }
 
@@ -93,6 +99,8 @@ class IpcRecipe(ConanFile):
                 suffix = str(self.settings.build_type).upper()
                 toolchain.variables["CMAKE_CXX_FLAGS_" + suffix] = self.options.build_type_cflags_override
                 toolchain.variables["CMAKE_C_FLAGS_" + suffix] = self.options.build_type_cflags_override
+            if self.options.build_cxx_std != 0:
+                toolchain.variables["CMAKE_CXX_STANDARD"] = self.options.build_cxx_std
         else:
             toolchain.variables["CFG_SKIP_CODE_GEN"] = "ON"
         if self.options.doc:
