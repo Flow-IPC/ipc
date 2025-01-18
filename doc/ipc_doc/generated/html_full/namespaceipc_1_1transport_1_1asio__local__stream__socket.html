@@ -515,7 +515,7 @@ template&lt;typename Task_err &gt; </div>
 
 <p class="reference">References <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00158">ipc::util::blob_data()</a>, <a class="el" href="native__handle_8cpp_source.html#l00061">ipc::util::Native_handle::null()</a>, and <a class="el" href="detail_2asio__local__stream__socket_8hpp_source.html#l00031">on_wait_writable_or_error()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00850">ipc::transport::sync_io::Native_socket_stream::Impl::snd_async_write_q_head_payload()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00849">ipc::transport::sync_io::Native_socket_stream::Impl::snd_async_write_q_head_payload()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -579,7 +579,7 @@ Here is the caller graph for this function:</div>
 
 <p class="reference">References <a class="el" href="detail_2asio__local__stream__socket_8cpp_source.html#l00028">endpoint_at_shared_name()</a>, <a class="el" href="shared__name_8cpp_source.html#l00150">ipc::util::Shared_name::size()</a>, and <a class="el" href="shared__name_8cpp_source.html#l00140">ipc::util::Shared_name::str()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8cpp_source.html#l00281">ipc::transport::sync_io::Native_socket_stream::Impl::async_connect()</a>, <a class="el" href="detail_2asio__local__stream__socket_8cpp_source.html#l00028">endpoint_at_shared_name()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00037">ipc::transport::Native_socket_stream_acceptor::Native_socket_stream_acceptor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8cpp_source.html#l00280">ipc::transport::sync_io::Native_socket_stream::Impl::async_connect()</a>, <a class="el" href="detail_2asio__local__stream__socket_8cpp_source.html#l00028">endpoint_at_shared_name()</a>, and <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00037">ipc::transport::Native_socket_stream_acceptor::Native_socket_stream_acceptor()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -713,11 +713,11 @@ Here is the caller graph for this function:</div>
 </ul>
 <p >Lastly, I note that potentially using <code>SOCK_SEQPACKET</code> (which purports to conserve message boundaries at all times) instead of <code>SOCK_STREAM</code> (which we use) might remove all ambiguity. On the other hand it's barely documented itself. The rationale for the decision to use <code>SOCK_STREAM</code> is discussed elsewhere; this note is to reassure that I (ygoldfel) don't quite find the above complexity reason enough to switch to <code>SOCK_SEQPACKET</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00202">202</a> of file <a class="el" href="asio__local__stream__socket_8cpp_source.html">asio_local_stream_socket.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00201">201</a> of file <a class="el" href="asio__local__stream__socket_8cpp_source.html">asio_local_stream_socket.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00202">nb_read_some_with_native_handle()</a>, and <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a8c068cf7b73b09b5ed3fa3532de1747c">ipc::transport::error::S_LOW_LVL_UNEXPECTED_STREAM_PAYLOAD_BEYOND_HNDL</a>.</p>
+<p class="reference">References <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00201">nb_read_some_with_native_handle()</a>, and <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a8c068cf7b73b09b5ed3fa3532de1747c">ipc::transport::error::S_LOW_LVL_UNEXPECTED_STREAM_PAYLOAD_BEYOND_HNDL</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00202">nb_read_some_with_native_handle()</a>, and <a class="el" href="native__socket__stream__impl__rcv_8cpp_source.html#l00683">ipc::transport::sync_io::Native_socket_stream::Impl::rcv_nb_read_low_lvl_payload()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00201">nb_read_some_with_native_handle()</a>, and <a class="el" href="native__socket__stream__impl__rcv_8cpp_source.html#l00683">ipc::transport::sync_io::Native_socket_stream::Impl::rcv_nb_read_low_lvl_payload()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -819,7 +819,7 @@ Here is the caller graph for this function:</div>
 
 <p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00085">ipc::util::Native_handle::m_native_handle</a>, and <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00036">nb_write_some_with_native_handle()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00036">nb_write_some_with_native_handle()</a>, <a class="el" href="detail_2asio__local__stream__socket_8hpp_source.html#l00031">on_wait_writable_or_error()</a>, and <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00740">ipc::transport::sync_io::Native_socket_stream::Impl::snd_nb_write_low_lvl_payload()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00036">nb_write_some_with_native_handle()</a>, <a class="el" href="detail_2asio__local__stream__socket_8hpp_source.html#l00031">on_wait_writable_or_error()</a>, and <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00739">ipc::transport::sync_io::Native_socket_stream::Impl::snd_nb_write_low_lvl_payload()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1049,7 +1049,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00417">417</a> of file <a class="el" href="asio__local__stream__socket_8cpp_source.html">asio_local_stream_socket.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00415">415</a> of file <a class="el" href="asio__local__stream__socket_8cpp_source.html">asio_local_stream_socket.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2session__impl_8hpp_source.html#l00270">ipc::session::shm::arena_lend::jemalloc::Session_impl&lt; Session_impl_t &gt;::init_shm()</a>, and <a class="el" href="msg_8hpp_source.html#l01038">ipc::transport::struc::Msg_out&lt; Message_body, Struct_builder_t &gt;::store_native_handle_or_null()</a>.</p>
 <div class="dynheader">
@@ -1064,7 +1064,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Dec 21 2024 00:38:33 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Jan 18 2025 02:15:58 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
