@@ -100,61 +100,59 @@ $(function() {
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#af872520154fc00afaa59c7eec607a225">   28</a></span><a class="code hl_typedef" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a05656e297b98f4c370841d2f9be52a5f">Endpoint</a> <a class="code hl_function" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#af872520154fc00afaa59c7eec607a225">endpoint_at_shared_name</a>(flow::log::Logger* logger_ptr,</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                                 <span class="keyword">const</span> <a class="code hl_class" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a>&amp; absolute_name, <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>* err_code)</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">namespace </span>bind_ns = flow::util::bind_ns;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">using </span>boost::system::system_error;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">using </span>std::string;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  FLOW_ERROR_EXEC_FUNC_AND_THROW_ON_ERROR(<a class="code hl_typedef" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a05656e297b98f4c370841d2f9be52a5f">Endpoint</a>, <a class="code hl_function" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#af872520154fc00afaa59c7eec607a225">endpoint_at_shared_name</a>,</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                                          logger_ptr, bind_ns::cref(absolute_name), _1);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// ^-- Call ourselves and return if err_code is null.  If got to present line, err_code is not null.</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">using </span>boost::system::system_error;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">using </span>std::string;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  FLOW_ERROR_EXEC_AND_THROW_ON_ERROR(<a class="code hl_typedef" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a05656e297b98f4c370841d2f9be52a5f">Endpoint</a>, <a class="code hl_function" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#af872520154fc00afaa59c7eec607a225">endpoint_at_shared_name</a>, logger_ptr, absolute_name, _1);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="comment">// ^-- Call ourselves and return if err_code is null.  If got to present line, err_code is not null.</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  FLOW_LOG_SET_CONTEXT(logger_ptr, Log_component::S_TRANSPORT);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  FLOW_LOG_SET_CONTEXT(logger_ptr, Log_component::S_TRANSPORT);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="comment">/* Make the name &quot;string&quot; as required to construct the endpoint.  This is more subtle than one might expect.</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">   * POSIX-y Unix domain sockets are either anonymous (not OK for us), or the endpoints live as files in the</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">   * file system.  Linux adds the delightful extension, &quot;abstract namespace,&quot; wherein instead the endpoints are</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">   * named in a cosmically present namespace unconnected to the file system.  This avoids the file system issues,</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">   * such as permissions and directories and ..., so we want to use that.  How to specify it, though?</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">   * Well, more or less, at the native level, the sockaddr_un member sun_path (a `char` array) is used either way;</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">   * to specify an abstract name one sets the first byte to NUL (which wouldn&#39;t be a valid value otherwise); then</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">   * the rest of sun_path[] (up to the specified size of the sockaddr_un) is taken as the abstract-namespace name.</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">   * Fine... but we use boost.asio; how to get its `endpoint` to behave that way?  Bad news is it&#39;s not explicitly</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">   * documented all the way.  Good news is it&#39;s quite doable.  Firstly, endpoint::data() lets one manually set</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">   * the whole sockaddr_un structure ourselves -- that part being no prettier than coding this stuff sans boost.asio</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">   * but overall still nicer than all-native code.  However, turns out we need not do that either (though this is</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">   * the part that isn&#39;t explicitly documented but clearly intended if one checks the Boost header code).</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">   * Namely: `endpoint` ctor, and the parallel counterpart endpoint::path() mutator overloads, have 2 forms:</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">   * one taking `const char*`; and one taking `string[_view]`.  `const char*` is clearly insufficient (proof left</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">   * as exercise to comment reader).  Fascinatingly, string[_view] *is* sufficient: A string[_view] can perfectly</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">   * safely store multiple NUL characters; and indeed one can see in the Boost header code that it *specifically*</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">   * supports the weird NUL-led abstract-namespace use case (again, I leave details for you to verify). */</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordtype">string</span> abstract_namespace_name(<span class="keywordtype">size_t</span>(1), <span class="charliteral">&#39;\0&#39;</span>); <span class="comment">// Start with NUL!</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  abstract_namespace_name += absolute_name.<a class="code hl_function" href="classipc_1_1util_1_1Shared__name.html#ae89e1e061f87ffe0288514e254837595">str</a>(); <span class="comment">// After the NUL append the real deal!</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  FLOW_LOG_TRACE(<span class="stringliteral">&quot;Abstract-namespace (Linux extension) name above consists of 1 NUL + the name &quot;</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                 <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; absolute_name &lt;&lt; <span class="stringliteral">&quot;]; total of [&quot;</span> &lt;&lt; abstract_namespace_name.<a class="code hl_function" href="classipc_1_1util_1_1Shared__name.html#af34db2934e116f8a4fdd403fd04695af">size</a>() &lt;&lt; <span class="stringliteral">&quot;] bytes.&quot;</span>);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <a class="code hl_typedef" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a05656e297b98f4c370841d2f9be52a5f">Endpoint</a> endpoint;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keyword">auto</span>&amp; sys_err_code = *err_code;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">try</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="comment">/* Throws on error.  (It&#39;s annoying there&#39;s no error-code-returning API; a bit odd actually.)</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">     * In practice it&#39;ll throw only on too-long name (as of this writing; Boost 1.76), but we don&#39;t rely on this. */</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    endpoint.path(abstract_namespace_name);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    sys_err_code.clear(); <span class="comment">// If it didn&#39;t throw.</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> system_error&amp; exc)</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    FLOW_LOG_WARNING(<span class="stringliteral">&quot;Unable to set up native local stream endpoint structure; &quot;</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                     <span class="stringliteral">&quot;could be due to name length; details logged below.&quot;</span>);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    sys_err_code = exc.code();</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    FLOW_ERROR_SYS_ERROR_LOG_WARNING();</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordflow">return</span> endpoint; <span class="comment">// sys_err_code is set; `endpoint` might be empty.</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>} <span class="comment">// endpoint_at_shared_name()</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>} <span class="comment">// namespace ipc::transport::asio_local_stream_socket</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">/* Make the name &quot;string&quot; as required to construct the endpoint.  This is more subtle than one might expect.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">   * POSIX-y Unix domain sockets are either anonymous (not OK for us), or the endpoints live as files in the</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">   * file system.  Linux adds the delightful extension, &quot;abstract namespace,&quot; wherein instead the endpoints are</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">   * named in a cosmically present namespace unconnected to the file system.  This avoids the file system issues,</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">   * such as permissions and directories and ..., so we want to use that.  How to specify it, though?</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">   * Well, more or less, at the native level, the sockaddr_un member sun_path (a `char` array) is used either way;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">   * to specify an abstract name one sets the first byte to NUL (which wouldn&#39;t be a valid value otherwise); then</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">   * the rest of sun_path[] (up to the specified size of the sockaddr_un) is taken as the abstract-namespace name.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">   * Fine... but we use boost.asio; how to get its `endpoint` to behave that way?  Bad news is it&#39;s not explicitly</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">   * documented all the way.  Good news is it&#39;s quite doable.  Firstly, endpoint::data() lets one manually set</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">   * the whole sockaddr_un structure ourselves -- that part being no prettier than coding this stuff sans boost.asio</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">   * but overall still nicer than all-native code.  However, turns out we need not do that either (though this is</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">   * the part that isn&#39;t explicitly documented but clearly intended if one checks the Boost header code).</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">   * Namely: `endpoint` ctor, and the parallel counterpart endpoint::path() mutator overloads, have 2 forms:</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">   * one taking `const char*`; and one taking `string[_view]`.  `const char*` is clearly insufficient (proof left</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">   * as exercise to comment reader).  Fascinatingly, string[_view] *is* sufficient: A string[_view] can perfectly</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">   * safely store multiple NUL characters; and indeed one can see in the Boost header code that it *specifically*</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">   * supports the weird NUL-led abstract-namespace use case (again, I leave details for you to verify). */</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">string</span> abstract_namespace_name(<span class="keywordtype">size_t</span>(1), <span class="charliteral">&#39;\0&#39;</span>); <span class="comment">// Start with NUL!</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  abstract_namespace_name += absolute_name.<a class="code hl_function" href="classipc_1_1util_1_1Shared__name.html#ae89e1e061f87ffe0288514e254837595">str</a>(); <span class="comment">// After the NUL append the real deal!</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  FLOW_LOG_TRACE(<span class="stringliteral">&quot;Abstract-namespace (Linux extension) name above consists of 1 NUL + the name &quot;</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                 <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; absolute_name &lt;&lt; <span class="stringliteral">&quot;]; total of [&quot;</span> &lt;&lt; abstract_namespace_name.<a class="code hl_function" href="classipc_1_1util_1_1Shared__name.html#af34db2934e116f8a4fdd403fd04695af">size</a>() &lt;&lt; <span class="stringliteral">&quot;] bytes.&quot;</span>);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_typedef" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a05656e297b98f4c370841d2f9be52a5f">Endpoint</a> endpoint;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">auto</span>&amp; sys_err_code = *err_code;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="comment">/* Throws on error.  (It&#39;s annoying there&#39;s no error-code-returning API; a bit odd actually.)</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">     * In practice it&#39;ll throw only on too-long name (as of this writing; Boost 1.76), but we don&#39;t rely on this. */</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    endpoint.path(abstract_namespace_name);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    sys_err_code.clear(); <span class="comment">// If it didn&#39;t throw.</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> system_error&amp; exc)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    FLOW_LOG_WARNING(<span class="stringliteral">&quot;Unable to set up native local stream endpoint structure; &quot;</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                     <span class="stringliteral">&quot;could be due to name length; details logged below.&quot;</span>);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    sys_err_code = exc.code();</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    FLOW_ERROR_SYS_ERROR_LOG_WARNING();</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordflow">return</span> endpoint; <span class="comment">// sys_err_code is set; `endpoint` might be empty.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>} <span class="comment">// endpoint_at_shared_name()</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>} <span class="comment">// namespace ipc::transport::asio_local_stream_socket</span></div>
 <div class="ttc" id="aclassipc_1_1util_1_1Shared__name_html"><div class="ttname"><a href="classipc_1_1util_1_1Shared__name.html">ipc::util::Shared_name</a></div><div class="ttdoc">String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...</div><div class="ttdef"><b>Definition:</b> <a href="shared__name_8hpp_source.html#l00241">shared_name.hpp:242</a></div></div>
 <div class="ttc" id="aclassipc_1_1util_1_1Shared__name_html_ae89e1e061f87ffe0288514e254837595"><div class="ttname"><a href="classipc_1_1util_1_1Shared__name.html#ae89e1e061f87ffe0288514e254837595">ipc::util::Shared_name::str</a></div><div class="ttdeci">const std::string &amp; str() const</div><div class="ttdoc">Returns (sans copying) ref to immutable entire wrapped name string, suitable to pass into sys calls w...</div><div class="ttdef"><b>Definition:</b> <a href="shared__name_8cpp_source.html#l00140">shared_name.cpp:140</a></div></div>
 <div class="ttc" id="aclassipc_1_1util_1_1Shared__name_html_af34db2934e116f8a4fdd403fd04695af"><div class="ttname"><a href="classipc_1_1util_1_1Shared__name.html#af34db2934e116f8a4fdd403fd04695af">ipc::util::Shared_name::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdoc">Returns str().size().</div><div class="ttdef"><b>Definition:</b> <a href="shared__name_8cpp_source.html#l00150">shared_name.cpp:150</a></div></div>
@@ -167,7 +165,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Dec 21 2024 00:38:32 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Jan 18 2025 02:15:57 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

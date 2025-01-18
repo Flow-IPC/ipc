@@ -237,8 +237,8 @@ $(function() {
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="keyword">auto</span> capnp_uuid = msg_root-&gt;initAuthHeader().initSessionToken();</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="keyword">static_assert</span>(std::remove_reference_t&lt;<span class="keyword">decltype</span>(session_token)&gt;::static_size() == 2 * <span class="keyword">sizeof</span>(uint64_t),</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                <span class="stringliteral">&quot;World is broken: UUIDs expected to be 16 bytes!&quot;</span>);</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="keyword">auto</span>&amp; first8 = *(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint64_t*<span class="keyword">&gt;</span>(session_token.data)); <span class="comment">// capnp_uuid is aligned OK, so this is too.</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="keyword">auto</span>&amp; last8 = *(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint64_t*<span class="keyword">&gt;</span>(session_token.data + <span class="keyword">sizeof</span>(uint64_t))); <span class="comment">// As is this.</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="keyword">auto</span>&amp; first8 = *(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint64_t*<span class="keyword">&gt;</span>(session_token.data())); <span class="comment">// capnp_uuid is aligned, so this is too.</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="keyword">auto</span>&amp; last8 = *(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint64_t*<span class="keyword">&gt;</span>(session_token.data() + <span class="keyword">sizeof</span>(uint64_t))); <span class="comment">// As is this.</span></div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  capnp_uuid.setFirst8(native_to_little(first8)); <span class="comment">// Reminder: Likely no-op + copy of uint64_t.</span></div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  capnp_uuid.setLast8(native_to_little(last8)); <span class="comment">// Ditto.</span></div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
@@ -319,7 +319,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Dec 21 2024 00:38:32 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Jan 18 2025 02:15:58 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
