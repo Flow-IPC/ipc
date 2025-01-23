@@ -103,7 +103,7 @@ Having obtained a `Session`, the application can open transport channels (and, i
 >
 > // NOTE: Upon opening session, capabilities of `session` on either side are **exactly the same**.
 > // Client/server status matters only when establishing the IPC conversation;
-> // the conversation itself once established is arbitrariy and up to you fully.
+> // the conversation itself once established is arbitrary and up to you fully.
 > ~~~
 >
 > Open channel(s) in a session:
@@ -311,12 +311,12 @@ All transport APIs at this layer, as well the structured layer (see below), have
 > chan.send_blob(...); // No problem.
 > ~~~
 
-All those subleties about different types of pipes in a `Channel` bundle completely disappear when one deals with structured-data `struc::Channel`s.  They are a higher-layer abstraction and will leverage whatever `transport::Channel` it adapts.  In addition to handling capnp-encoded structured data and SHM-backed zero-copy, it also provides basics like request/response, request-method multiplexing, and a bit more.  So let's get into that.
+All those subtleties about different types of pipes in a `Channel` bundle completely disappear when one deals with structured-data `struc::Channel`s.  They are a higher-layer abstraction and will leverage whatever `transport::Channel` it adapts.  In addition to handling capnp-encoded structured data and SHM-backed zero-copy, it also provides basics like request/response, request-method multiplexing, and a bit more.  So let's get into that.
 
 @anchor api_overview_transport_struc
 Transport (structured)
 ----------------------
-While a `Channel` transports blobs and/or native handles, it is likely the Flow-IPC user will want to be able to transmit schema-based structured data, gaining the benefits of that approach including arbitrary data-structuree complexity and forward/backward-compatibility.  [capnp (Cap'n Proto)](https://capnproto.org) is the best-in-class third-party framework for schema-based structured data; ipc::transport's structured layer works by integrating with capnp.
+While a `Channel` transports blobs and/or native handles, it is likely the Flow-IPC user will want to be able to transmit schema-based structured data, gaining the benefits of that approach including arbitrary data-structure complexity and forward/backward-compatibility.  [capnp (Cap'n Proto)](https://capnproto.org) is the best-in-class third-party framework for schema-based structured data; ipc::transport's structured layer works by integrating with capnp.
 
 To deal with structured data instead of mere blobs (though a schema-based structure can, of course, itself store blobs such as images), one simply constructs an ipc::transport::struc::Channel, feeding it an `std::move()`d already-opened @link ipc::transport::Channel Channel@endlink.  This is called **upgrading** an unstructured `Channel` to a `struc::Channel`.  A key template parameter to `struc::Channel` is a capnp-generated root schema class of the user's choice.  This declares, at compile-time, what data structures (messages) one can transmit via that `struc::Channel` (and an identically-typed counterpart `struc::Channel` in the opposing process).
 
@@ -523,7 +523,7 @@ At no point do you have to worry about naming a SHM pool, removing it from the f
 > Session::Structured_channel<...> chan(...,
 >                                       Channel_base::S_SERIALIZE_VIA_SESSION_SHM, ...); // <-- CHANGED LINE.
 > // --- CHANGE TO --v
-> // Now the the message can live *past* the session: until the Session_server is destroyed, meaning
+> // Now the message can live *past* the session: until the Session_server is destroyed, meaning
 > // your process accepting incoming sessions exits.  For example, suppose your session-server accepts
 > // (sessions) from many session-client processes of one application over its lifetime; session-client A sends
 > // a PutCache message containing a large file's contents to session-server which memorizes it (to serve later);
@@ -611,7 +611,7 @@ Further capabilities are outside our scope here; but the main point is: At a min
 > }
 > ~~~
 >
-> Example of trasmitting a SHM-backed native data structure to another process follows.  We transmit a handle through a capnp structured message here, but it can be done using any IPC mechanism whatsoever; even (e.g.) a file.
+> Example of transmitting a SHM-backed native data structure to another process follows.  We transmit a handle through a capnp structured message here, but it can be done using any IPC mechanism whatsoever; even (e.g.) a file.
 >
 > Schema which includes a native-object-in-SHM field:
 > ~~~{.capnp}

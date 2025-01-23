@@ -6,7 +6,7 @@ transport_test.exec is an integration-test program that tests ipc::transport, ip
 
 In this mode it is an interactive(ish) tool that:
   - So far tests much of the *unstructured* layer (not *structured* layer) of ipc::transport.
-  - So far avoids any dependence on ipc::session (i.e., it establishes varius IPC pipes manually, though it does get
+  - So far avoids any dependence on ipc::session (i.e., it establishes various IPC pipes manually, though it does get
     up to the transport::Channel level (wherein various pipes are bundled together)).
   - Can be used at a whim to test various patterns of API use without constant laborious code editing and recompiling.
     - This is already achieved.  I (ygoldfel) wrote it b/c testing what I wanted to test the usual way seemed painful.
@@ -27,7 +27,7 @@ The tool:
   - writes Flow-IPC logs to file log (2nd arg) with sev (4th arg); [data] and [trace] are useful; [info] is good as a
   way to check realistically the verbosity level of the library APIs (do note sometimes timeouts in in-script are so
   tight that using [data] or [trace] may lead to a test failure due to timeout);
-  - reads/parses the entire script for STDIN, then executes it in order (so either type all lines, Ctlr-D; or redirect
+  - reads/parses the entire script for STDIN, then executes it in order (so either type all lines, Ctrl-D; or redirect
   from a file);
   - acts synchronously: each command completes before the next starts (and if it fails, the program exits).
 

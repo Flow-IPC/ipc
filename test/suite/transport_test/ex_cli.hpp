@@ -490,7 +490,7 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
       Uptr<Channel_b> ch;
       if constexpr(S_CLASSIC_ELSE_JEM)
       {
-        /* SHM-classic: Out-messages: Doesn't matter which arena; they're not rememembered by server beyond handler
+        /* SHM-classic: Out-messages: Doesn't matter which arena; they're not remembered by server beyond handler
          * (in our case).
          * In-messages: Server sends app-scope messages; in arena-sharing providers like SHM-classic receiver must
          * specify the in-messages' scope. */
@@ -499,7 +499,7 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
       }
       else
       {
-        /* SHM-jemalloc: Out-messages: Doesn't matter which arena; they're not rememembered by server beyond handler
+        /* SHM-jemalloc: Out-messages: Doesn't matter which arena; they're not remembered by server beyond handler
          * (in our case).
          * In-messages: In arena-lending providers like SHM-jemalloc receiver will deserialize fine regardless of
          * in which (properly lent) arena sender constructed msg.
@@ -1153,7 +1153,7 @@ TEMPLATE
 template<typename Task>
 void CLASS::App_session::expect_ping_and_a(size_t chan_idx, Task&& task)
 {
-  FLOW_LOG_INFO("App_session [" << this << "]: Chan A[" << chan_idx << "]: Awaiting ping before proceeeding.");
+  FLOW_LOG_INFO("App_session [" << this << "]: Chan A[" << chan_idx << "]: Awaiting ping before proceeding.");
   m_struct_chans_a[chan_idx]->expect_msg(capnp::ExBodyA::MSG_TWO,
                                          [this, chan_idx, task = std::move(task)](Msg_in_ptr_a&& msg_in) mutable
   {
@@ -1176,7 +1176,7 @@ TEMPLATE
 template<typename Task>
 void CLASS::App_session::expect_pings_and_b(size_t chan_idx, Task&& task)
 {
-  FLOW_LOG_INFO("App_session [" << this << "]: Chan B[" << chan_idx << "]: Awaiting ping before proceeeding.");
+  FLOW_LOG_INFO("App_session [" << this << "]: Chan B[" << chan_idx << "]: Awaiting ping before proceeding.");
   m_struct_chans_b[chan_idx]->expect_msgs(capnp::ExBodyB::MSG_TWO,
                                           [this, chan_idx, task = std::move(task)](Msg_in_ptr_b&& msg_in) mutable
   {

@@ -118,7 +118,7 @@ SHM-backed capabilities become available, like everything else in the ipc::sessi
     - An **app-scope arena** (a/k/a `.app_shm()`), for that specific distinct `Client_app`, is created.  This arena's **lifetime** is *until the `Session_server` is destroyed*.  That is: its lifetime spans all future sessions, not just the one that triggered its creation (in on-demand fashion).
   - If the app-scope arena has already been created, it is not re-created; but it is made equally accessible via `.app_shm()` accessors.
 
-@note With SHM-jemalloc the app-scope arena is accessible (can be allocated in) only on the session-server end.  The `.app_shm()` accesors do not exist on the session-client end.
+@note With SHM-jemalloc the app-scope arena is accessible (can be allocated in) only on the session-server end.  The `.app_shm()` accessors do not exist on the session-client end.
 
 ---
 
@@ -198,7 +198,7 @@ So that would definitely be taxing to code.  And indeed, particularly with legac
 
 @warning As a rule `std::` containers are not SHM-friendly, at least in gcc as of gcc-9; they assume raw-pointer-using allocators.  By contrast `boost::container::*` corrected those issues.  `std::vector` happens to be okay in gcc-8 at least, but it's safer to just go with `boost::container`.  E.g., its `std::list` bro is broken in this regard.
 
-Once you've chosen your STL-compliant SHM-friendly container type -- or developed your own! -- you must take care to, also, specify (as the `Allocator` template paramater to the container type) the **SHM-allocating allocator** we've provided.  (boost.interprocess provides an allocator template for similar use; but it is stateful, which is a huge pain in the butt -- plus it uses additional RAM to store the allocator pointer.)  Use this allocator:
+Once you've chosen your STL-compliant SHM-friendly container type -- or developed your own! -- you must take care to, also, specify (as the `Allocator` template parameter to the container type) the **SHM-allocating allocator** we've provided.  (boost.interprocess provides an allocator template for similar use; but it is stateful, which is a huge pain in the butt -- plus it uses additional RAM to store the allocator pointer.)  Use this allocator:
 
   ~~~
   template<typename T>
@@ -370,7 +370,7 @@ Yes and no.  Depends.  First if `T` is a POD (as defined earlier in this Manual 
 To recap: if it's a POD, same `T` on all sides.  If it uses STL-compliant/pointer stuff, then the most generic way it to use `Session::Allocator` in owner code; `Session::Borrower_allocator` in borrower code.  And if targeting SHM-classic specifically, it is *okay* -- for conciseness though not genericness -- to just use the same type `T` on both sides, period.
 
 @par
-What's going on here, you ask?  We'd rather not get into it here; we've provided the recipe.  But various docs inside ipc::shm explain all the subleties.  Long story short: SHM-classic is highly symmetric and (relatively) simple, so the borrower and owner are really internally operating on the same SHM-pool.  In SHM-jemalloc only the owner even *has* the arena per se; the borrower has only a read-only view into parts of it -- so it needs a special, degenerate "borrower" allocator which is used not to *allocate* but to only interpret pointers properly.  (Whereas on the owner side it is used for that *and* allocation code.)
+What's going on here, you ask?  We'd rather not get into it here; we've provided the recipe.  But various docs inside ipc::shm explain all the subtleties.  Long story short: SHM-classic is highly symmetric and (relatively) simple, so the borrower and owner are really internally operating on the same SHM-pool.  In SHM-jemalloc only the owner even *has* the arena per se; the borrower has only a read-only view into parts of it -- so it needs a special, degenerate "borrower" allocator which is used not to *allocate* but to only interpret pointers properly.  (Whereas on the owner side it is used for that *and* allocation code.)
 
 ---
 

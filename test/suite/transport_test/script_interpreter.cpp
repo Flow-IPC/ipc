@@ -190,7 +190,7 @@ const util::String_view S_KEYWD_CHAN_BUNDLE_BIPC_RECV_BLOB = "CHAN_BUNDLE_BIPC_R
 /* Test {Posix_mqs_socket_stream_channel|Bipc_mqs_socket_stream_channel}::ctor (creation).  Really this operation
  * composes a number of things which are more carefully tested by other commands above.  So mostly this is a setup
  * command, so that we can then test send/receive transmission over the Channel which bundles 2 unidirectional
- * MQ pipes and a full-fuplex Native_socket_stream pipe.  In particular it expects to always succeed: failure
+ * MQ pipes and a full-duplex Native_socket_stream pipe.  In particular it expects to always succeed: failure
  * of ctor call shall always fail the test.  As such, to successfully use this, the other side (in this or other
  * invocation of Script_interpreter) shall invoke a similar command:
  *   - Its <mq-sh-name-prefix> must be the same.
@@ -960,7 +960,7 @@ void Script_interpreter::cmd_blob_sender_send_end_impl(const Peer_list& peers, u
     }
   }); // test_with_timeout()
   /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
-   * which shall destroy `peers` which shall shall destroy *peer (hence join its internal thread(s)). */
+   * which shall destroy `peers` which shall destroy *peer (hence join its internal thread(s)). */
 } // Script_interpreter::cmd_blob_sender_send_end_impl()
 
 void Script_interpreter::cmd_socket_stream_send_end()
@@ -1128,7 +1128,7 @@ void Script_interpreter::cmd_socket_stream_receiver_recv_impl(const Peer_list& p
     }
   }); // test_with_timeout()
   /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
-   * which shall destroy m_test_* which shall shall destroy *peer (hence join its internal thread(s)). */
+   * which shall destroy m_test_* which shall destroy *peer (hence join its internal thread(s)). */
 } // Script_interpreter::cmd_socket_stream_receiver_recv_impl()
 
 void Script_interpreter::cmd_socket_stream_recv_blob()
@@ -1227,7 +1227,7 @@ void Script_interpreter::cmd_blob_receiver_recv_blob_impl(const Peer_list& peers
     validate_rcvd_blob_contents(blob, exp_blob_n); // Throw on error.
   }); // test_with_timeout()
   /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
-   * which shall destroy m_test_sock_streams which shall shall destroy *sock_stm (hence join its internal thread(s)). */
+   * which shall destroy m_test_sock_streams which shall destroy *sock_stm (hence join its internal thread(s)). */
 } // Script_interpreter::cmd_blob_receiver_recv_blob_impl()
 
 flow::util::Blob Script_interpreter::test_blob(size_t n) const
@@ -1431,7 +1431,7 @@ void Script_interpreter::cmd_socket_stream_acceptor_accept()
     }
   });
   /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
-   * which shall destroy m_test_sock_stm_acceptors and m_test_sock_streams which shall shall destroy any
+   * which shall destroy m_test_sock_stm_acceptors and m_test_sock_streams which shall destroy any
    * added streams and `acceptor` (hence join their internal threads). */
 } // Script_interpreter::cmd_socket_stream_acceptor_accept()
 
@@ -1667,7 +1667,7 @@ void Script_interpreter::cmd_chan_bundle_create()
 
     /* Got here: mq_out, mq_in are ready.  We have sock_stm also.  We can now bundle them all into
      * Mqs_socket_stream_channel.
-     * As advertised, as we do so, the sock_stm in the slot gets "eaten" (becames a NULL-state Native_socket_stream).
+     * As advertised, as we do so, the sock_stm in the slot gets "eaten" (becomes a NULL-state Native_socket_stream).
      * This happens via move-semantics. So the sock_stm in the slot becomes unusable by itself. */
 
     FLOW_LOG_INFO("Wrapping all 3 peers [" << *mq_in << "] [" << *mq_out << "] [" << *sock_stm << "] in a new "

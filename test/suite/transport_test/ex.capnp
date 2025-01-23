@@ -46,7 +46,7 @@ struct ExMdt
   }
 
   numChansYouWant @2 :Size;
-  # Guy (cli or srv) filling-out the metadata, say, sets this to # of init-channels the *recepient* will want opened
+  # Guy (cli or srv) filling-out the metadata, say, sets this to # of init-channels the *recipient* will want opened
   # on its behalf.  This is contrived and only for demo purposes; so in our apps we just, like, assert this value is
   # consistent with that.  E.g., client will say "you want 3 init-channels" and then server will go,
   # "ah yes, indeed I was gonna open 3 init-channels."

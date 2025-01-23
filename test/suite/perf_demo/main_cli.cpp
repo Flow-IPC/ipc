@@ -93,7 +93,7 @@ int main(int argc, char const * const * argv)
     /* They already printed detailed timing info; now let's summarize the total results.  As you can see it
      * just prints b1's RTT, b2's RTT, and the ratio; while reminding how much data was transmitted.
      * (Ultimately b2's RTT will always be about the same and small; whereas b1's involves a bunch of copying
-     * into/out of tranport and hence will be proportional to data size.)
+     * into/out of transport and hence will be proportional to data size.)
      *
      * The only subtlety is that we coarsen the RTT to be a multiple of 100us, rounding up.  Reason: It's not
      * bulletproof, and it might be different on slower machines, but for now I've found this to be decent in practice:
