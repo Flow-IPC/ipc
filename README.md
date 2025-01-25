@@ -3,7 +3,7 @@
 In this context, IPC means the sharing or transmission of a *data structure* from *one process to another*. XXX - INTENTIONAL CHANGE - RESOLVED!!
 In C++ systems programing, this is a common activity with significant impact on system performance.  E.g.,
 it is used heavily in microservices.
-
+XXX - INTENTIONAL CHANGE 2 - FEAT!!
 In serious C++ applications, high-performance IPC code tends to be difficult to develop and reuse,
 and the most obvious and effective technique to combat latency -- avoiding copying -- further increases the difficulty
 and decreases reusability by an order of magnitude.
