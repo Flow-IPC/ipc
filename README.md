@@ -14,7 +14,7 @@ no trade-off between the two.
 Flow-IPC is for *C++17* (or higher) programs built for *Linux* that run on x86-64 processors.
 (Support for macOS/BSD and ARM64 is planned as an incremental task.  Adding networked IPC is also a natural
 next step, depending on demand.)
-
+XXX - UPSTREAM CHANGE 2!
 ## Documentation
 
 The [guided Manual](https://flow-ipc.github.io/doc/flow-ipc/versions/main/generated/html_public/about.html)
