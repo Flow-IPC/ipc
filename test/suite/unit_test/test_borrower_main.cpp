@@ -18,11 +18,11 @@
 #include "ipc/shm/arena_lend/borrower_shm_pool_collection.hpp"
 #include "ipc/shm/arena_lend/shm_pool.hpp"
 #include "ipc/shm/arena_lend/test/test_borrower.hpp"
-#include "ipc/test/test_common_util.hpp"
-#include "ipc/test/test_config.hpp"
 #include "ipc/test/test_logger.hpp"
-#include <boost/program_options.hpp>
+#include <flow/test/test_common_util.hpp>
+#include <flow/test/test_config.hpp>
 #include <flow/log/log.hpp>
+#include <boost/program_options.hpp>
 
 using std::string;
 using std::cout;
@@ -37,7 +37,7 @@ using ipc::shm::arena_lend::Shm_pool;
 using ipc::shm::arena_lend::Shm_pool_collection;
 using ipc::shm::arena_lend::test::Test_borrower;
 using ipc::test::Test_logger;
-using ipc::test::Test_config;
+using flow::test::Test_config;
 
 using Collection_id = ipc::shm::arena_lend::Collection_id;
 using pool_id_t = ipc::shm::arena_lend::Shm_pool::pool_id_t;

@@ -94,9 +94,9 @@ void setup_logging(std::optional<flow::log::Simple_ostream_logger>* std_logger,
   // Console logger setup.
   static Config std_log_config;
   std_log_config.init_component_to_union_idx_mapping<Flow_log_component>
-    (1000, Config::standard_component_payload_enum_sparse_length<Flow_log_component>());
+    (1000, Config::standard_component_payload_enum_sparse_length<Flow_log_component>(), true);
   std_log_config.init_component_to_union_idx_mapping<ipc::Log_component>
-    (2000, Config::standard_component_payload_enum_sparse_length<ipc::Log_component>());
+    (2000, Config::standard_component_payload_enum_sparse_length<ipc::Log_component>(), true);
   std_log_config.init_component_names<Flow_log_component>(flow::S_FLOW_LOG_COMPONENT_NAME_MAP, false, "flow-");
   std_log_config.init_component_names<ipc::Log_component>(ipc::S_IPC_LOG_COMPONENT_NAME_MAP, false, "ipc-");
   std_logger->emplace(&std_log_config);

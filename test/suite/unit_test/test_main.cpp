@@ -15,16 +15,16 @@
  * See the License for the specific language governing
  * permissions and limitations under the License. */
 
+#include <flow/test/test_config.hpp>
+#include <flow/log/log.hpp>
 #include <gtest/gtest.h>
 #include <boost/program_options.hpp>
 #include <iostream>
-#include <flow/log/log.hpp>
-#include "ipc/test/test_config.hpp"
 
 using std::cout;
 using std::cerr;
 using std::string;
-using ipc::test::Test_config;
+using flow::test::Test_config;
 
 // const char* malloc_conf = "tcache:false";
 
@@ -72,7 +72,6 @@ int main(int argc, char **argv)
 int configure_logging(int argc, char* argv[])
 {
   namespace po = boost::program_options;
-  using namespace ipc::test;
 
   Test_config::get_singleton(); // Touching it just below.
 
