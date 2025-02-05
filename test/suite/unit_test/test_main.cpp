@@ -76,10 +76,13 @@ int configure_logging(int argc, char* argv[])
   Test_config::get_singleton(); // Touching it just below.
 
   po::options_description cmd_line_opts("unit test options");
+  const string HELP_PARAM = "help";
   cmd_line_opts.add_options()
-    ((Test_config::S_HELP_PARAM + ",h").c_str(), "help")
-    ((Test_config::S_LOG_SEVERITY_PARAM + ",l").c_str(), po::value<flow::log::Sev>(&Test_config::get_singleton().m_sev),
-     "minimum log severity");
+    ((HELP_PARAM + ",h").c_str(), "help")
+    ("min-log-severity,l", po::value<flow::log::Sev>(&Test_config::get_singleton().m_sev),
+     "minimum log severity")
+    ("do-not-fail-benchmarks", po::bool_switch(&Test_config::get_singleton().m_do_not_fail_benchmarks),
+     "sensitive (not necessarily all) benchmarks may be performed but won't cause failure.");
 
   try
   {
@@ -88,7 +91,7 @@ int configure_logging(int argc, char* argv[])
     po::store(cmd_line_parsed_opts, vm);
     po::notify(vm);
 
-    if (vm.count(Test_config::S_HELP_PARAM) > 0)
+    if (vm.count(HELP_PARAM) > 0)
     {
       cout << cmd_line_opts << "\n";
       return 1;
