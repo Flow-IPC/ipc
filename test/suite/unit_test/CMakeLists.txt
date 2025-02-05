@@ -65,7 +65,6 @@ set(isal_root ${FLOW_LIKE_META_ROOT_ipc_shm_arena_lend}/src)
 
 set(SRCS
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_common_util.cpp
-    ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_config.cpp
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_file_util.cpp
     ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/shm_session_test.cpp
@@ -106,7 +105,6 @@ handle_binary(libipc_unit_test.exec)
 
 set(SRCS
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_common_util.cpp
-    ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_config.cpp
     ${isal_root}/ipc/shm/arena_lend/test/test_borrower.cpp
     test_borrower_main.cpp)
 unset(CAPNP_SCHEMAS)

@@ -75,9 +75,10 @@ static int parse_and_execute(int argc, char** argv)
   Test_config::get_singleton(); // Touching it just below.
 
   po::options_description cmd_line_opts("unit test options");
+  const string HELP_PARAM = "help";
   cmd_line_opts.add_options()
-    ((Test_config::S_HELP_PARAM + ",h").c_str(), "help")
-    ((Test_config::S_LOG_SEVERITY_PARAM + ",l").c_str(), po::value<flow::log::Sev>(&Test_config::get_singleton().m_sev),
+    ((HELP_PARAM + ",h").c_str(), "help")
+    ("min-log-severity,l", po::value<flow::log::Sev>(&Test_config::get_singleton().m_sev),
       "minimum log severity")
     ((Test_borrower::S_SHM_POOL_COLLECTION_ID_PARAM + ",c").c_str(),
      po::value<Collection_id>(&shm_pool_collection_id),
@@ -95,7 +96,7 @@ static int parse_and_execute(int argc, char** argv)
     po::store(cmd_line_parsed_opts, vm);
     po::notify(vm);
 
-    if (vm.count(Test_config::S_HELP_PARAM) > 0)
+    if (vm.count(HELP_PARAM) > 0)
     {
       cout << cmd_line_opts << "\n";
       return static_cast<int>(Status_code::S_HELP);
