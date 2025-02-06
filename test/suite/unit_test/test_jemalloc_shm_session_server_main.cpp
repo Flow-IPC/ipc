@@ -18,16 +18,16 @@
 #include "ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server.hpp"
 #include "ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server_executor.hpp"
 #include "ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server_launcher.hpp"
-#include "ipc/test/test_common_util.hpp"
 #include "ipc/test/test_logger.hpp"
 #include <ipc/common.hpp>
+#include <flow/test/test_common_util.hpp>
 
 using ipc::session::shm::arena_lend::jemalloc::test::Test_shm_session_server;
 using ipc::session::shm::arena_lend::jemalloc::test::Test_shm_session_server_executor;
 using ipc::session::shm::arena_lend::jemalloc::test::Test_shm_session_server_launcher;
 
 using ipc::Log_component;
-using ipc::test::to_underlying;
+using flow::test::to_underlying;
 using std::string_view;
 
 static int usage_exit_code();

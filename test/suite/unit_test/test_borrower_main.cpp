@@ -18,11 +18,11 @@
 #include "ipc/shm/arena_lend/borrower_shm_pool_collection.hpp"
 #include "ipc/shm/arena_lend/shm_pool.hpp"
 #include "ipc/shm/arena_lend/test/test_borrower.hpp"
-#include "ipc/test/test_common_util.hpp"
-#include "ipc/test/test_config.hpp"
 #include "ipc/test/test_logger.hpp"
-#include <boost/program_options.hpp>
+#include <flow/test/test_common_util.hpp>
+#include <flow/test/test_config.hpp>
 #include <flow/log/log.hpp>
+#include <boost/program_options.hpp>
 
 using std::string;
 using std::cout;
@@ -37,7 +37,7 @@ using ipc::shm::arena_lend::Shm_pool;
 using ipc::shm::arena_lend::Shm_pool_collection;
 using ipc::shm::arena_lend::test::Test_borrower;
 using ipc::test::Test_logger;
-using ipc::test::Test_config;
+using flow::test::Test_config;
 
 using Collection_id = ipc::shm::arena_lend::Collection_id;
 using pool_id_t = ipc::shm::arena_lend::Shm_pool::pool_id_t;
@@ -75,9 +75,10 @@ static int parse_and_execute(int argc, char** argv)
   Test_config::get_singleton(); // Touching it just below.
 
   po::options_description cmd_line_opts("unit test options");
+  const string HELP_PARAM = "help";
   cmd_line_opts.add_options()
-    ((Test_config::S_HELP_PARAM + ",h").c_str(), "help")
-    ((Test_config::S_LOG_SEVERITY_PARAM + ",l").c_str(), po::value<flow::log::Sev>(&Test_config::get_singleton().m_sev),
+    ((HELP_PARAM + ",h").c_str(), "help")
+    ("min-log-severity,l", po::value<flow::log::Sev>(&Test_config::get_singleton().m_sev),
       "minimum log severity")
     ((Test_borrower::S_SHM_POOL_COLLECTION_ID_PARAM + ",c").c_str(),
      po::value<Collection_id>(&shm_pool_collection_id),
@@ -95,7 +96,7 @@ static int parse_and_execute(int argc, char** argv)
     po::store(cmd_line_parsed_opts, vm);
     po::notify(vm);
 
-    if (vm.count(Test_config::S_HELP_PARAM) > 0)
+    if (vm.count(HELP_PARAM) > 0)
     {
       cout << cmd_line_opts << "\n";
       return static_cast<int>(Status_code::S_HELP);
