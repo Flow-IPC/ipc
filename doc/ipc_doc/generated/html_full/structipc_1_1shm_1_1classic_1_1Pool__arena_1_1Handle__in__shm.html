@@ -110,7 +110,7 @@ struct ipc::shm::classic::Pool_arena::Handle_in_shm&lt; T &gt;</div><p >The data
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00514">514</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00516">516</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aef706713d40d801d0cb213e08201c571" name="aef706713d40d801d0cb213e08201c571"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef706713d40d801d0cb213e08201c571">&#9670;&nbsp;</a></span>Atomic_owner_ct</h2>
@@ -133,7 +133,7 @@ template&lt;typename T &gt; </div>
 <li><em>minus</em> any corresponding invocations of the <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb" title="Outer handle to a SHM-stored object; really a regular-looking shared_ptr but with custom deleter that...">Handle</a> custom deleter. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00526">526</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00528">528</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
 </div>
 </div>
@@ -154,9 +154,9 @@ template&lt;typename T &gt; </div>
 
 <p>See <a class="el" href="structipc_1_1shm_1_1classic_1_1Pool__arena_1_1Handle__in__shm.html#aef706713d40d801d0cb213e08201c571" title="Atomically accessed count of each time the following events occurs for a given Handle_in_shm in the b...">Atomic_owner_ct</a> doc header. This value is 1+; once it reaches 0 <code>*this</code> is destroyed in SHM. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00538">538</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00540">540</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00723">ipc::shm::classic::Pool_arena::handle_deleter_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00725">ipc::shm::classic::Pool_arena::handle_deleter_impl()</a>.</p>
 
 </div>
 </div>
@@ -177,9 +177,9 @@ template&lt;typename T &gt; </div>
 <p>The constructed object; <code>Handle::get()</code> returns <code>&amp;m_obj</code>. </p>
 <p >This must be the first member in <a class="el" href="structipc_1_1shm_1_1classic_1_1Pool__arena_1_1Handle__in__shm.html" title="The data structure stored in SHM corresponding to an original construct()-returned Handle; exactly on...">Handle_in_shm</a>, because the custom deleter <code>reinterpret_cast</code>s <code>Handle::get()</code> to mean <code>Handle_in_shm*</code>. If this arrangement is modified, one would need to use <code>offsetof</code> (or something) as well. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00535">535</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00537">537</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00723">ipc::shm::classic::Pool_arena::handle_deleter_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00725">ipc::shm::classic::Pool_arena::handle_deleter_impl()</a>.</p>
 
 </div>
 </div>
@@ -189,7 +189,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 7 2025 02:05:28 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Fri Feb 14 2025 20:27:57 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

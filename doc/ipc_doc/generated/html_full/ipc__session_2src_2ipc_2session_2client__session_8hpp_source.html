@@ -101,7 +101,7 @@ $(function() {
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"></span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">/**</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> * Implements Session concept on the Client_app end: a Session_mv that first achieves PEER state by connecting</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> * to an opposing Session_server_mv via Client_session_mv::sync_connect().  See overview of Session hierarchy</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> * to an opposing Session_server via Client_session_mv::sync_connect().  See overview of Session hierarchy</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"> * in namespace ipc::session doc header; then come back here if desired.</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> * It is unusual to use Client_session_mv template directly.  If you do wish to set up a client-side session peer,</span></div>
@@ -115,7 +115,7 @@ $(function() {
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"> * (hence Client_session_mv to which it aliases) is its super-class, and until PEER state is reached its API</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment"> * remains the only relevant API to use.  Once Client_session_mv::sync_connect() puts `*this` into PEER</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"> * state, super-class Session_mv (= Session concept) API continues to be relevant.  Also in PEER state</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"> * SHM-relevant additional API members (e.g., shm::classic::Session_mv::app_shm()`) become of interest.</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"> * SHM-relevant additional API members (e.g., shm::classic::Session_mv::app_shm()) become of interest.</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"> * Summary hierarchy:</span></div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"> *   - Session_mv (Session concept impl)</span></div>
@@ -152,7 +152,7 @@ $(function() {
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment"> *     when the opposing side invokes open_channel().</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment"> *   - However it is possible to configure either side to not accept passive-opens; meaning to be useful</span></div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment"> *     such a side shall be exclusively doing open_channel() (active-opens).  One might conclude, then, that</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment"> *     Server_session should be passive-opening, while #Client_session should be active-opening.</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment"> *     #Server_session should be passive-opening, while #Client_session should be active-opening.</span></div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment"> *     That is *not* the case.  In PEER state established on both sides, the 2 sides are identical in this</span></div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment"> *     respect.  If both sides are configured to accept passive-opens, then there&#39;s no question.</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment"> *     If one side is so configured, it can be either side.  If both sides are so configured, the session is useless,</span></div>
@@ -519,7 +519,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 7 2025 02:05:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Fri Feb 14 2025 20:27:57 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
