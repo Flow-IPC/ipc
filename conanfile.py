@@ -77,7 +77,7 @@ class IpcRecipe(ConanFile):
         if self.options.build:
             toolchain.variables["CFG_ENABLE_TEST_SUITE"] = "ON"
 
-            # TODO: We're not doing anything wrong here; we tell jemalloc itself to be built with this
+            # We're not doing anything wrong here; we tell jemalloc itself to be built with this
             # API-name prefix via options.jemalloc.prefix, and then we tell Flow-IPC CMake script(s) what that was via
             # FLOW_IPC_JEMALLOC_PREFIX CMake variable (as if via `-DFLOW_IPC_JEMALLOC_PREFIX=je_` to `cmake`).  But:
             # Flow-IPC CMake script(s) can figure this out by itself; if FLOW_IPC_JEMALLOC_PREFIX is not given, then
@@ -88,10 +88,19 @@ class IpcRecipe(ConanFile):
             # FLOW_IPC_JEMALLOC_PREFIX.
             # So this approach is fine; just it would be nice if the Conan magic worked in a more understandable way;
             # if Flow-IPC CMake script(s) can find libjemalloc.a and headers, why can't it
-            # find_program(jemalloc-config)?  This slightly suggests something is "off" possibly.
+            # find_program(jemalloc-config)?  This slightly suggests something is "off" possibly*.
             # Still, the bottom line is it works, so this fallback is fine too.  One could say it'd be nice to
             # test Flow-IPC CMake script(s) smartness in the way that would be more likely used by the user;
             # but one could say that is splitting hairs too.
+            #
+            # (*) Update: Indeed something is "off": the Conan recipe for jemalloc specifically in package() chooses
+            # to install the header(s) and libraries but not jemalloc-config (which would be used in this context)
+            # or jemalloc.pc (which is used elsewhere in a CMake build script with its preferred
+            # pkg_check_modules() technique).  TODO: So the true fix for both issues is to fix (or somehow wrangle)
+            # jemalloc Conan recipe to install jemalloc fully/normally.  Meanwhile here we work around it this way,
+            # while elsewhere we use a fallback to pkg_check_modules() which is why we need not, here, try to
+            # determine the lib/header locations and supply them manually as well.  Once resolved delete this comment
+            # and the next line.  (Elsewhere = ipc_shm_arena_lend/src/CMakeLists.txt; see the analogous TODO there.)
             toolchain.variables["FLOW_IPC_JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
 
             if self.options.build_no_lto:
