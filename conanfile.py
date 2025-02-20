@@ -133,7 +133,7 @@ class IpcRecipe(ConanFile):
     def requirements(self):
         if self.options.build:
             flow_version = load_version_from_file("./flow/VERSION")
-            self.requires("capnproto/1.0.1")
+            self.requires("capnproto/1.0.2")
             self.requires(f"flow/{flow_version}")
             self.requires("jemalloc/5.2.1")
 
