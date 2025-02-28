@@ -657,7 +657,9 @@ jobs:
     # to-dos more easily (targeting different build settings at built product source versus tools used to build it
     # = prime example).
     - name: Install the latest version of Conan 2
-      run: pip install 'conan>=2,<3'
+      run: |
+        pip install 'conan>=2,<3'
+        pip install --upgrade requests
 
     - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
       uses: actions/checkout@v4
