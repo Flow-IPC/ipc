@@ -669,7 +669,7 @@ jobs:
         matrix.build-test-cfg.conan-custom-settings-defs
       run: |
         # Add custom settings for Conan packages.
-        pip install PyYAML
+        pip install --upgrade PyYAML
         CONAN_USER_SETTINGS_PATH=$(conan config home)/settings_user.yml
         python -c "
         import yaml
@@ -1353,7 +1353,7 @@ jobs:
       run: sudo apt-get install -y graphviz
 
     - name: Install the latest version of Conan 2
-      run: pip install 'conan>=2,<3'
+      run: pip install --upgrade 'conan>=2,<3'
 
     - name: Checkout `ipc` repository and submodules (like `flow`)
       uses: actions/checkout@v4
