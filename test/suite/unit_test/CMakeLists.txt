@@ -30,13 +30,24 @@ find_package(CapnProto CONFIG REQUIRED)
 # ipc/shm/arena_lend/jemalloc/test/shm_pool_collection_test.  (TODO: Is that a copy/paste error or accurate?)
 
 # Make those binaries in very similar ways; call this for each.
-function(handle_binary name) # Load SRCS and CAPNP_SCHEMAS before calling.
+function(handle_binary name_root) # Load SRCS and CAPNP_SCHEMAS before calling.
+  set(name "${name_root}.exec")
+
   if(CAPNP_SCHEMAS)
     set(CAPNPC_SRC_PREFIX ${isal_root})
-    capnp_generate_cpp(capnp_generated_srcs capnp_generated_hdrs_ignored ${CAPNP_SCHEMAS})
+    capnp_generate_cpp(capnp_generated_srcs capnp_generated_hdrs ${CAPNP_SCHEMAS})
+
+    # Create a custom target that depends on the generated files.
+    add_custom_target(${name_root}_schema_generation
+                      DEPENDS ${capnp_generated_srcs} ${capnp_generated_hdrs})
   endif()
 
   add_executable(${name} ${SRCS} ${capnp_generated_srcs})
+
+  if(CAPNP_SCHEMAS)
+    # Add explicit dependency on schema generation; otherwise things tend to go weird with a parallelized build.
+    add_dependencies(${name} ${name_root}_schema_generation)
+  endif()
 
   # Test header files are *not* exported for user to include; rather they exist only to be cross-included by
   # each other (namely the support files are).  For that to work add the source dir(s) into the include-path.
@@ -47,7 +58,7 @@ function(handle_binary name) # Load SRCS and CAPNP_SCHEMAS before calling.
                              ${FLOW_LIKE_META_ROOT_ipc_session}/src
                              ${FLOW_LIKE_META_ROOT_ipc_shm}/src
                              ${isal_root}
-                             # So that generated-above .capnp.h are found by SRCS' .cpps' `#include`s.:
+                             # So that generated-above .capnp.h are found by SRCS' .cpps' `#include`s:
                              ${CMAKE_CURRENT_BINARY_DIR})
 
   # Do stuff we've resolved to do on all our targets.
@@ -101,14 +112,14 @@ set(SRCS
 set(CAPNP_SCHEMAS
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_message.capnp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_session_metadata.capnp)
-handle_binary(libipc_unit_test.exec)
+handle_binary(libipc_unit_test)
 
 set(SRCS
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_common_util.cpp
     ${isal_root}/ipc/shm/arena_lend/test/test_borrower.cpp
     test_borrower_main.cpp)
 unset(CAPNP_SCHEMAS)
-handle_binary(libipc_test_borrower.exec)
+handle_binary(libipc_test_borrower)
 
 set(SRCS
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_common_util.cpp
@@ -121,4 +132,4 @@ set(SRCS
 set(CAPNP_SCHEMAS
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_message.capnp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_session_metadata.capnp)
-handle_binary(libipc_test_jemalloc_shm_session_server.exec)
+handle_binary(libipc_test_jemalloc_shm_session_server)
