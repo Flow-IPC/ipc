@@ -19,7 +19,7 @@
 find_package(CapnProto CONFIG REQUIRED)
 
 set(CAPNPC_IMPORT_DIRS ${FLOW_LIKE_META_ROOT_ipc_transport_structured}/src)
-capnp_generate_cpp(capnp_generated_srcs capnp_generated_hdrs_ignored "schema.capnp")
+capnp_generate_cpp(capnp_generated_srcs capnp_generated_hdrs "schema.capnp")
 
 # Create a custom target that depends on the generated files.
 add_custom_target(perf_demo_schema_generation DEPENDS ${capnp_generated_srcs} ${capnp_generated_hdrs})
