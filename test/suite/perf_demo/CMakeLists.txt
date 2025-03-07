@@ -21,6 +21,9 @@ find_package(CapnProto CONFIG REQUIRED)
 set(CAPNPC_IMPORT_DIRS ${FLOW_LIKE_META_ROOT_ipc_transport_structured}/src)
 capnp_generate_cpp(capnp_generated_srcs capnp_generated_hdrs_ignored "schema.capnp")
 
+# Create a custom target that depends on the generated files.
+add_custom_target(perf_demo_schema_generation DEPENDS ${capnp_generated_srcs} ${capnp_generated_hdrs})
+
 function(handle_binary name_sh jem_else_classic)
   if(jem_else_classic)
     set(name_pfx "shm_jemalloc")
@@ -31,6 +34,9 @@ function(handle_binary name_sh jem_else_classic)
   endif()
   set(name "perf_demo_${name_sh}_${name_pfx}.exec") # Must match common.cpp constant values.
   add_executable(${name} common.cpp "main_${name_sh}.cpp" ${capnp_generated_srcs})
+
+  # Add explicit dependency on schema generation; otherwise things tend to go weird with a parallelized build.
+  add_dependencies(${name} perf_demo_schema_generation)
 
   target_include_directories(${name} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
   target_compile_definitions(${name} PRIVATE "JEM_ELSE_CLASSIC=${def_val}")

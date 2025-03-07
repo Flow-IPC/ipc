@@ -16,6 +16,7 @@
 # permissions and limitations under the License.
 
 from conan import ConanFile
+from conan.tools.build import build_jobs
 from conan.tools.cmake import CMake, cmake_layout, CMakeDeps, CMakeToolchain
 
 def load_version_from_file(version_path):  # Now takes version_path as an argument
@@ -124,11 +125,11 @@ class IpcRecipe(ConanFile):
 
         # Cannot use cmake.build(...) because not possible to pass make arguments like --keep-going.
         if self.options.build:
-            self.run("cmake --build . -- --keep-going VERBOSE=1")
+            self.run(f"cmake --build . -- --keep-going VERBOSE=1 -j{build_jobs(self)}")
         if self.options.doc:
             # Note: `flow_doc_public flow_doc_full` could also be added here and work; however
             # we leave that to `flow` and its own Conan setup.
-            self.run("cmake --build . -- ipc_doc_public ipc_doc_full --keep-going VERBOSE=1")
+            self.run(f"cmake --build . -- ipc_doc_public ipc_doc_full --keep-going VERBOSE=1 -j{build_jobs(self)}")
 
     def requirements(self):
         if self.options.build:

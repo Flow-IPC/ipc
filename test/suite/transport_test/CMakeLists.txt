@@ -20,7 +20,7 @@ find_package(CapnProto CONFIG REQUIRED)
 
 # Test program: transport_test.
 # It's a compendium of tests and test tools for testing ipc::transport (including ipc::transport::struc)
-# and ipc::session.   SHM modes are tested extensively.
+# and ipc::session.  SHM modes are tested extensively.
 #
 # Please see ./README.txt.
 
