@@ -124,7 +124,7 @@ class IpcRecipe(ConanFile):
 
         # Cannot use cmake.build(...) because not possible to pass make arguments like --keep-going.
         if self.options.build:
-            self.run("cmake --build . -- --keep-going VERBOSE=1")
+            self.run("cmake --build . -- --keep-going -j4 VERBOSE=1") # XXX -j4
         if self.options.doc:
             # Note: `flow_doc_public flow_doc_full` could also be added here and work; however
             # we leave that to `flow` and its own Conan setup.
