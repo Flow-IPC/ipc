@@ -46,7 +46,7 @@
   * Removed `ipc::shm::arena_lend::jemalloc::Ipc_arena::construct(bool use_cache)`.
     * For `use_cache = true`, call `construct_thread_cached()` (new).
     * For `use_cache = false`, call `construct(Ctor_args&&... args)`.
-  * Renamed `ipc::shm::arena_lend::jemalloc::Shm_pool_collection::construct()` to `maybe_thread_caching()`.
+  * Renamed `ipc::shm::arena_lend::jemalloc::Shm_pool_collection::construct()` to `construct_maybe_thread_cached()`.
   * `ipc_shm_arena_lend`: Build script: renamed optional cache-settings:
     * `JEMALLOC_PREFIX` to `FLOW_IPC_JEMALLOC_PREFIX`
     * `JEMALLOC_LIB` to `JEMALLOC_LIBRARIES`
