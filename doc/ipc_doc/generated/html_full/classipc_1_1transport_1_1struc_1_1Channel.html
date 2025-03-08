@@ -242,10 +242,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
 Private Types</h2></td></tr>
 <tr class="memitem:ade399eda73424def3da0dd67596d2cff"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff">Mutex</a> = flow::util::Mutex_non_recursive</td></tr>
-<tr class="memdesc:ade399eda73424def3da0dd67596d2cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a> type.  <a href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff">More...</a><br /></td></tr>
+<tr class="memdesc:ade399eda73424def3da0dd67596d2cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a> (and similar) type.  <a href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff">More...</a><br /></td></tr>
 <tr class="separator:ade399eda73424def3da0dd67596d2cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0d9dcd9c3ccf8e064f0cca69b30ea25"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#af0d9dcd9c3ccf8e064f0cca69b30ea25">Lock_guard</a> = flow::util::Lock_guard&lt; <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff">Mutex</a> &gt;</td></tr>
-<tr class="memdesc:af0d9dcd9c3ccf8e064f0cca69b30ea25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff" title="Short-hand for m_mutex type.">Mutex</a> lock.  <a href="classipc_1_1transport_1_1struc_1_1Channel.html#af0d9dcd9c3ccf8e064f0cca69b30ea25">More...</a><br /></td></tr>
+<tr class="memdesc:af0d9dcd9c3ccf8e064f0cca69b30ea25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff" title="Short-hand for m_mutex (and similar) type.">Mutex</a> lock.  <a href="classipc_1_1transport_1_1struc_1_1Channel.html#af0d9dcd9c3ccf8e064f0cca69b30ea25">More...</a><br /></td></tr>
 <tr class="separator:af0d9dcd9c3ccf8e064f0cca69b30ea25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1df9dd26651017e61d7701bf3af42260"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a1df9dd26651017e61d7701bf3af42260">On_msg_func</a> = <a class="el" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">Function</a>&lt; void(<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae1f4b316eaeb7ed520a84d9e21e21063">Msg_in_ptr</a> &amp;&amp;msg)&gt;</td></tr>
 <tr class="memdesc:a1df9dd26651017e61d7701bf3af42260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concrete type corresponding to <code>On_msg_handler</code> template param: in-message handler.  <a href="classipc_1_1transport_1_1struc_1_1Channel.html#a1df9dd26651017e61d7701bf3af42260">More...</a><br /></td></tr>
@@ -260,6 +260,9 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:a0500d7dc635203ec6c32ca4b096a96c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a0500d7dc635203ec6c32ca4b096a96c6">m_sync_op_mutex</a></td></tr>
+<tr class="memdesc:a0500d7dc635203ec6c32ca4b096a96c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex causing, specifically, any <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> (or similar future methods) to execute in series and not concurrently.  <a href="classipc_1_1transport_1_1struc_1_1Channel.html#a0500d7dc635203ec6c32ca4b096a96c6">More...</a><br /></td></tr>
+<tr class="separator:a0500d7dc635203ec6c32ca4b096a96c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01c90903e715ebcf64d8b5ea0d114bc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0">m_mutex</a></td></tr>
 <tr class="memdesc:a01c90903e715ebcf64d8b5ea0d114bc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex protecting the in-message/out-message state in <code>*this</code>.  <a href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0">More...</a><br /></td></tr>
 <tr class="separator:a01c90903e715ebcf64d8b5ea0d114bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -450,8 +453,7 @@ class ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_build
 <p >In-message handlers, and all other handlers (including those from <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a33b4785c212ad88d8322fcc2f4369351" title="Permanently memorizes the incoming-direction on-error handler, thus authorizing the emission of any i...">start()</a>, <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab7cd0bed6392cb155f9ee21071c5226b" title="Registers the handler to invoke when a response in-message arrives, but no response-expectation has b...">set_unexpected_response_handler()</a>, <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a9ec7ff431b51fec8aacacccb23a2d4e3" title="Registers the handler to invoke when the remote peer encounters the condition that would fire the rem...">set_remote_unexpected_response_handler()</a>, <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab08057edd9832d94ea0e18a17c42200a" title="Operating at the unstructured layer, executes a graceful-close send by forwarding to the async transp...">async_end_sending()</a>), are invoked from an unspecified thread guaranteed not to be among the user invoking threads. No 2 such handlers shall be invoked concurrently to each other.</p>
 <p >Messages are emitted in the order received, except reordered as required by the queueing of not-yet-expected unsolicited messages (as explained earlier).</p>
 <p >Attention! Regarding general thread safety: A given <code>*this</code> features stronger safety than most other APIs:</p><ul>
-<li><b>It is safe</b> to invoke a method concurrently with another method call (to the same or other API) on the same <code>*this</code>...</li>
-<li>...except that <b>it is not safe</b> to invoke <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> concurrently with <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> on the same <code>*this</code>.</li>
+<li><b>It is safe</b> to invoke a method concurrently with another method call (to the same or other API) on the same <code>*this</code>.</li>
 </ul>
 <p >You <em>may</em> call <code>*this</code> APIs directly from any in-message handler or other handler. Exception: You may <em>not</em> invoke <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> (or any other <code>sync_*()</code> that may be added over time) from an in-message handler or other handler. Doing so can disrupt the timeliness of delivering other async results.</p>
 <p >Informal recommendation: You should off-load most or all handling of in-messages onto your own thread(s) (such as via boost.asio <code>post()</code> or the flow.async infrastructure). For example, suppose your program has some main worker thread U, implemented as a <code>flow::async::Single_thread_task_loop U</code>. Then, e.g.:</p><ul>
@@ -461,7 +463,6 @@ class ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_build
 </ul>
 <p >This is <em>not</em> a requirement. It is entirely conceivable one would want to piggy-back onto our internal unspecified thread (or threads &ndash; formally speaking &ndash; but the guarantee is handlers are called non-concurrently, so in most senses one can treat it as a single thread). However please be mindful:</p><ul>
 <li>If your handler code is "heavy," then you may slow down internal <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> and <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> processing on a number of layers (though, only relevant to <code>*this</code>).</li>
-<li>Let's say we call your own thread, thread U, and the internal/unspecified <code>*this</code> thread where it invokes handlers, thread W. Then it is your responsibility to ensure you do not call a <code>this-&gt;<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a></code> concurrently to another <code>this-&gt;<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a></code> method. If you choose a design where you make such calls both from thread U and thread W, you must protect <code>*this</code> access with a mutex or other mechanism &ndash; and moreover, most likely, you'll need to design your protocol to ensure instant responses to <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a></code>s.</li>
 </ul>
 <h3>Pipe-hosing error semantics</h3>
 <p >The underlying <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a>, which every <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> takes over in the first place at construction, can fail &ndash; encounter a pipe-hosing error. Briefly speaking, a <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> out-pipe can &ndash; depending on the actual low-level transport involved &ndash; be hosed while the in-pipe(s) remain unaffected; and indeed when a <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> internally consists of 2 bidirectional pipes, it is even possible for 1 out-pipe to be hosed, while the other is not. (The same holds of in-pipes.) However, these details strongly depend on the actual low-level transports involved. To simplify error handling, these details are hidden away and normalized to the following straightforward behavior.</p>
@@ -514,8 +515,8 @@ class ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_build
 transport::Channel does not already have?").</p>
 <p >Perf, in particular low latency, is essential for this work-horse class template. For performance &ndash; or perhaps more accurately for most direct/deterministic flow control/thread structure &ndash; we use <code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code> objects throughout; our <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a9426e8e562dd4c9ea1bc1f69f47bb99f" title="Useful for generic programming, the sync_io-pattern counterpart to *this type.">Sync_io_obj</a> core (<code>m_sync_io</code>) and the <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a4a0188052c15cab70d712f41b0e74ba7" title="Short-hand for the transport::Channel type passed into ctor and returned by owned_channel().">Owned_channel</a> subsumed by it create no handler-invoking threads. We, however, are ourselves an async-I/O-pattern object, and therefore essentially by definition of how that pattern works we start a worker thread W in which to (1) perform all asynchronously-delayed (i.e., contingent on event async-waits) work of all the aforementioned layers below us (helpfully encapsulated in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a9426e8e562dd4c9ea1bc1f69f47bb99f" title="Useful for generic programming, the sync_io-pattern counterpart to *this type.">Sync_io_obj</a> <code>m_sync_io</code>); and (2) invoke user-supplied completion handlers.</p>
 <p >This thread W (<code>m_worker</code>) is the only async-worker thread. Everything else is (to reiterate) <code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code>-pattern.</p>
-<p >Thread U is (as per usual) the term for the user's calling thread (as usual they may of course use 2+ threads if desired; but via <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a> we essentially make all such calls non-concurrent... so as usual we call it thread U, as if it is one thread). We do allow transmission APIs to be invoked from within completion handlers of our own other transmission APIs (e.g., <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">send()</a></code> or <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a160a8d49624f15a2596ee7b0244584b0" title="Registers the expectation of up to 1 notification in-message whose Msg_which equals which.">expect_msg()</a></code> directly within <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a160a8d49624f15a2596ee7b0244584b0" title="Registers the expectation of up to 1 notification in-message whose Msg_which equals which.">expect_msg()</a></code> handler). (<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>, being blocking, is the exception.)</p>
-<p >Since there are 2+ threads, U and W, with async-processing in the latter potentially occurring concurrently with API calls in the former &ndash; and with our explicitly allowing concurrent calls on the same <code>*this</code> except for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> &ndash; there's a big fat mutex <code>m_mutex</code> locked around most code. That said thread contention is unlikely in most use cases, unless the user causes it in their own code. (Details omitted here.)</p>
+<p >Thread U is (as per usual) the term for the user's calling thread (as usual they may of course use 2+ threads if desired; but via <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a> and <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a0500d7dc635203ec6c32ca4b096a96c6" title="Mutex causing, specifically, any sync_request() (or similar future methods) to execute in series and ...">m_sync_op_mutex</a> we essentially make all such calls non-concurrent... so as usual we call it thread U, as if it is one thread). We do allow transmission APIs to be invoked from within completion handlers of our own other transmission APIs (e.g., <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">send()</a></code> or <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a160a8d49624f15a2596ee7b0244584b0" title="Registers the expectation of up to 1 notification in-message whose Msg_which equals which.">expect_msg()</a></code> directly within <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a160a8d49624f15a2596ee7b0244584b0" title="Registers the expectation of up to 1 notification in-message whose Msg_which equals which.">expect_msg()</a></code> handler). (<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>, being blocking, is the exception.)</p>
+<p >Since there are 2+ threads, U and W, with async-processing in the latter potentially occurring concurrently with API calls in the former &ndash; and with our explicitly allowing concurrent calls on the same <code>*this</code> &ndash; there's a big fat mutex <code>m_mutex</code> locked around most code. That said thread contention is unlikely in most use cases, unless the user causes it in their own code. (Details omitted here.)</p>
 <h3>Implementation</h3>
 <p >Unlike in the past, when <code>*this</code> template was monolithic, now it is split into the core functionality in <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">sync_io::Channel</a> (<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a9426e8e562dd4c9ea1bc1f69f47bb99f" title="Useful for generic programming, the sync_io-pattern counterpart to *this type.">Sync_io_obj</a> <code>m_sync_io</code>) and the (relatively limited) logic necessary on top of this to adapt that into the async-I/O pattern, wherein user handlers fire from thread W, and any necessary internal async ops occur automatically in thread W without user participation.</p>
 <p >Therefore the really complicated stuff is abstracted away in the <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a9426e8e562dd4c9ea1bc1f69f47bb99f" title="Useful for generic programming, the sync_io-pattern counterpart to *this type.">Sync_io_obj</a>. The adapting logic is simple enough to be understandable by reading the code and inline comments, especially on the data members. </p>
@@ -529,7 +530,7 @@ transport::Channel does not already have?").</p>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00586">586</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00580">580</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ae01d976c856e82b4370e9e69e6128cff" name="ae01d976c856e82b4370e9e69e6128cff"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae01d976c856e82b4370e9e69e6128cff">&#9670;&nbsp;</a></span>Async_io_obj</h2>
@@ -547,7 +548,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>You may disregard. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00597">597</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00591">591</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -567,7 +568,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Short-hand for the builder engine type. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00603">603</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00597">597</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -593,7 +594,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </table>
 </div><div class="memdoc">
 
-<p>Short-hand for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff" title="Short-hand for m_mutex type.">Mutex</a> lock. </p>
+<p>Short-hand for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff" title="Short-hand for m_mutex (and similar) type.">Mutex</a> lock. </p>
 
 <p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01357">1357</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
@@ -615,7 +616,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Short-hand for the <code>Message_body</code> template param, this is the capnp message schema transmissible over <code>*this</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00608">608</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00602">602</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -635,7 +636,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Short-hand for convenience for the same thing in non-parameterized base <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html" title="Channel base that contains non-parameterized public items such as tag types and constants.">Channel_base</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00649">649</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00643">643</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -658,7 +659,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <dd>
 <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae1f4b316eaeb7ed520a84d9e21e21063" title="A ref-counted handle to Msg_in.">Msg_in_ptr</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00639">639</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00633">633</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -679,7 +680,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p>A ref-counted handle to <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a05d1cd2fc6a81a39c50a24322fb5c165" title="Encapsulation of any in-message instance received by a *this of this type.">Msg_in</a>. </p>
 <p >Generally one obtains a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a05d1cd2fc6a81a39c50a24322fb5c165" title="Encapsulation of any in-message instance received by a *this of this type.">Msg_in</a> via a handle thereto via handler passed to event registration APIs such as <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a3376b821b129ca3847484a178e080c67" title="Registers the expectation of 0+ notification in-messages whose Msg_which equals which.">expect_msgs()</a> or <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a97506bcb695f22e7ca6b480bae5b2346" title="Identical to send() sends the out-message not as a notification but as a request, registering the exp...">async_request()</a>; then one accesses its contents via capnp-generated accessors on <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html#a56fa38feb9c907ae3f0f1a6ff16dd32f" title="The Body root capnp-generated accessor object.">Msg_in::body_root()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00646">646</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00640">640</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -701,7 +702,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p >A <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a860cc99a701576879ebb5a1db58153cc" title="Encapsulation of any out-message payload sent or meant to be sent via send() (et al) by a *this of th...">Msg_out</a> is container-like, in that there is only one of these regardless of how many times one has sent it &ndash; even in other <code>*this</code>es of the same <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> concrete type.</p>
 <dl class="section see"><dt>See also</dt><dd>"Lifecycle of an out-message" section of this class's doc header. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00630">630</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00624">624</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -722,7 +723,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p>Short-hand for the <code>Message_body</code> top-level anon capnp-<code>union</code> enumeration. </p>
 <p >This important type determines the type of in-message or out-message the (remote or local, respectively) user chose. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00615">615</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00609">609</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -742,7 +743,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Stylistic nicety, indicating that a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a9a0382aa663c177f2a38b576d06b251e" title="Short-hand for the Message_body top-level anon capnp-union enumeration.">Msg_which</a> applies to an in-message rather than an out-message. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00618">618</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00612">612</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -762,7 +763,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Stylistic nicety, indicating that a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a9a0382aa663c177f2a38b576d06b251e" title="Short-hand for the Message_body top-level anon capnp-union enumeration.">Msg_which</a> applies to an out-message rather than an in-message. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00621">621</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00615">615</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -788,7 +789,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </table>
 </div><div class="memdoc">
 
-<p>Short-hand for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a> type. </p>
+<p>Short-hand for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a> (and similar) type. </p>
 
 <p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01354">1354</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
@@ -839,7 +840,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Short-hand for the <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> type passed into ctor and returned by <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a1d0225edcfe5f000f26787d5fa5f6821" title="Access to immutable transport::Channel moved-into *this at construction.">owned_channel()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00600">600</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00594">594</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -859,7 +860,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Short-hand for the reader engine type. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00605">605</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00599">599</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -879,7 +880,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Useful for generic programming, the <code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code>-pattern counterpart to <code>*this</code> type. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00594">594</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l00588">588</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -945,9 +946,9 @@ template&lt;typename... Ctor_args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01608">1608</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01630">1630</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01477">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::m_mutex</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01574">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::m_sync_io</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01556">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::m_worker</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l02384">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::replace_event_wait_handles()</a>, and <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l02391">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::start_ops()</a>.</p>
+<p class="reference">References <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01494">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::m_mutex</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01596">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::m_sync_io</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01578">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::m_worker</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l02384">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::replace_event_wait_handles()</a>, and <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l02391">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::start_ops()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -982,7 +983,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </ul>
 <p >See discussion in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab08057edd9832d94ea0e18a17c42200a" title="Operating at the unstructured layer, executes a graceful-close send by forwarding to the async transp...">async_end_sending()</a> doc header or shorter version in class doc header. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01680">1680</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01702">1702</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">ipc::transport::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>.</p>
 
@@ -1028,7 +1029,7 @@ template&lt;typename Task_err &gt; </div>
 <li>If <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a4a0188052c15cab70d712f41b0e74ba7" title="Short-hand for the transport::Channel type passed into ctor and returned by owned_channel().">Owned_channel</a> out-pipe is hosed anyway, this will simply get to <code>*this</code> destruction stage immediately, which is fine: it's what one would do if they decide to not mess with <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab08057edd9832d94ea0e18a17c42200a" title="Operating at the unstructured layer, executes a graceful-close send by forwarding to the async transp...">async_end_sending()</a> at all.</li>
 <li>If <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a4a0188052c15cab70d712f41b0e74ba7" title="Short-hand for the transport::Channel type passed into ctor and returned by owned_channel().">Owned_channel</a> out-pipe is fine (despite something else &ndash; possibly in-pipe, possibly structured protocol &ndash; being not-at-all-fine), this will in civilized fashion flush anything that might still be pending for whatever reason &ndash; and gracefully inform the other side that, at any rate, this peer does not want to talk anymore. This reduces entropy; and at worst does not help anything but does not hurt.</li>
 </ul>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000027">Todo:</a></b></dt><dd>Consider adding blocking <code>struc::Channel::sync_end_sending()</code>, possibly with timeout, since <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab08057edd9832d94ea0e18a17c42200a" title="Operating at the unstructured layer, executes a graceful-close send by forwarding to the async transp...">async_end_sending()</a></code> to completion is recommended (but not required) to execute at EOL of any <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>. The "blocking" part is good because it's convenient to not have to worry about handling completion with async semantics boiler-plate. The "timeout" part is good because it's a best-effort operation, when in a bad/slow environment, and blocking &ndash; even during deinit &ndash; would be important to avoid. For example, the <code>Session</code> impls' dtors perform this op; we don't want those to block for any significant time if at all avoidable. The reason it's a mere to-do currently is that a bug-free opposing <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> should not let would-block occur for any real length of time; so blocking is presumably unlikely. Nevertheless.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000028">Todo:</a></b></dt><dd>Consider adding blocking <code>struc::Channel::sync_end_sending()</code>, possibly with timeout, since <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab08057edd9832d94ea0e18a17c42200a" title="Operating at the unstructured layer, executes a graceful-close send by forwarding to the async transp...">async_end_sending()</a></code> to completion is recommended (but not required) to execute at EOL of any <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>. The "blocking" part is good because it's convenient to not have to worry about handling completion with async semantics boiler-plate. The "timeout" part is good because it's a best-effort operation, when in a bad/slow environment, and blocking &ndash; even during deinit &ndash; would be important to avoid. For example, the <code>Session</code> impls' dtors perform this op; we don't want those to block for any significant time if at all avoidable. The reason it's a mere to-do currently is that a bug-free opposing <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> should not let would-block occur for any real length of time; so blocking is presumably unlikely. Nevertheless.</dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Task_err</td><td>See <a class="el" href="classipc_1_1transport_1_1Channel.html#a37fcdfdbefd8ee7e374b0596782ad128" title="Performs hndl_snd()-&gt; and/or blob_snd()-&gt; same method, synthesizing completion handlers into one if a...">transport::Channel::async_end_sending()</a>. </td></tr>
@@ -1043,7 +1044,7 @@ template&lt;typename Task_err &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1Channel.html#a37fcdfdbefd8ee7e374b0596782ad128" title="Performs hndl_snd()-&gt; and/or blob_snd()-&gt; same method, synthesizing completion handlers into one if a...">transport::Channel::async_end_sending()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01772">1772</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01794">1794</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
 
@@ -1128,7 +1129,7 @@ Informally: In log-in phase, as a server, it would be unorthodox to use this met
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>false</code> if no-op-ing due to one of the following conditions: invoked in logging-in phase as client but <code>originating_msg_or_null</code> is non-null; invoked in logging-in phase as server but <code>originating_msg_or_null</code> is null; <code>msg</code> with-handle, but <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a4a0188052c15cab70d712f41b0e74ba7" title="Short-hand for the transport::Channel type passed into ctor and returned by owned_channel().">Owned_channel</a> has no handles pipe; an <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> was previously emitted via on-error handler or <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">send()</a> / <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a97506bcb695f22e7ca6b480bae5b2346" title="Identical to send() sends the out-message not as a notification but as a request, registering the exp...">async_request()</a> / <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>; <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab08057edd9832d94ea0e18a17c42200a" title="Operating at the unstructured layer, executes a graceful-close send by forwarding to the async transp...">async_end_sending()</a> has already been called. <code>true</code> otherwise (but some <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> may be emitted due to send failure). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02263">2263</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02285">2285</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1162,7 +1163,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new out-message payload, blank to start. Note <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a860cc99a701576879ebb5a1db58153cc" title="Encapsulation of any out-message payload sent or meant to be sent via send() (et al) by a *this of th...">Msg_out</a> is cheaply move-assignable and move-constructible (but not copyable). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02025">2025</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02047">2047</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1221,7 +1222,7 @@ template&lt;typename On_msg_handler &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success; <code>false</code> due to one of the above conditions. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02040">2040</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02062">2062</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1273,7 +1274,7 @@ template&lt;typename On_msg_handler &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success; <code>false</code> due to one of the above conditions. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02033">2033</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02055">2055</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="session__base_8hpp_source.html#l01070">ipc::session::Session_base&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::Graceful_finisher::Graceful_finisher()</a>.</p>
 <div class="dynheader">
@@ -1340,7 +1341,7 @@ template&lt;bool MSG_ELSE_LOG_IN, typename On_msg_handler &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a160a8d49624f15a2596ee7b0244584b0" title="Registers the expectation of up to 1 notification in-message whose Msg_which equals which.">expect_msg()</a> and buddy. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02047">2047</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02069">2069</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1392,7 +1393,7 @@ template&lt;typename On_msg_handler &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a160a8d49624f15a2596ee7b0244584b0" title="Registers the expectation of up to 1 notification in-message whose Msg_which equals which.">expect_msg()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02163">2163</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02185">2185</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1436,7 +1437,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01950">1950</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01972">1972</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1476,7 +1477,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01995">1995</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02017">2017</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1497,7 +1498,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p>Access to immutable <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> moved-into <code>*this</code> at construction. </p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02598">2598</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02627">2627</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1526,7 +1527,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000026">Todo:</a></b></dt><dd>Consider adding <code>struc::Channel::auto_ping()</code> and <code>struc::Channel::idle_timer_run()</code> and, for safety, removing <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#af9130e43dc985fca4a41f19581048b51" title="Access to mutable transport::Channel moved-into *this at construction.">struc::Channel::owned_channel_mutable()</a>.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. Not null. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02605">2605</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02634">2634</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1622,7 +1623,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>false</code> if no-op-ing due to one of the following conditions: invoked in logging-in phase as client; invoked in logging-in phase as server but <code>originating_msg_or_null</code> is null; <code>msg</code> with-handle, but <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a4a0188052c15cab70d712f41b0e74ba7" title="Short-hand for the transport::Channel type passed into ctor and returned by owned_channel().">Owned_channel</a> has no handles pipe; an <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> was previously emitted via on-error handler or <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">send()</a> / <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a97506bcb695f22e7ca6b480bae5b2346" title="Identical to send() sends the out-message not as a notification but as a request, registering the exp...">async_request()</a> / <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>; <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab08057edd9832d94ea0e18a17c42200a" title="Operating at the unstructured layer, executes a graceful-close send by forwarding to the async transp...">async_end_sending()</a> has already been called. <code>true</code> otherwise (but some <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> may be emitted due to send failure). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02247">2247</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02269">2269</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1644,7 +1645,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p >Informally: If <code>*this</code> is the session master channel, then: Outside of, perhaps, logging/reporting, it should not be necessary to call this.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. Note: The reference returned is always one of 2: a certain unspecified internal item, or to <a class="el" href="namespaceipc_1_1transport_1_1struc.html#ad556d20a2aa2d52b83c7afb73951d47d" title="A value for which .is_nil() is true.">transport::struc::NULL_SESSION_TOKEN</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02612">2612</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02641">2641</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1685,7 +1686,7 @@ template&lt;typename On_remote_unexpected_response_handler &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success; <code>false</code> due to one of the above conditions. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02558">2558</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02587">2587</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1727,7 +1728,7 @@ template&lt;typename On_unexpected_response_handler &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success; <code>false</code> due to one of the above conditions. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02520">2520</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02549">2549</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1767,7 +1768,7 @@ template&lt;typename Task_err &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success; <code>false</code> if already <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a33b4785c212ad88d8322fcc2f4369351" title="Permanently memorizes the incoming-direction on-error handler, thus authorizing the emission of any i...">start()</a>ed, or if a prior error has hosed the owned <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> (then no-op). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01874">1874</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01896">1896</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1790,7 +1791,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p >Tip: If you lack a <code>*this</code> from which to invoke <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a969bc2021565c542c902fc14ff711c38" title="Returns the (light-weight) Builder_config specified (directly or indirectly) at construction time.">struct_builder_config()</a>, you may be able to cheaply generate a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a346752b515926a2938ed2adb9de92b1e" title="Short-hand for the builder engine type.">Builder_config</a> via <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">session::Session</a> impls' methods (e.g., <a class="el" href="classipc_1_1session_1_1Session__mv.html#a107684fdd5d233549c6daac26a81a542" title="Utility that obtains a heap-based (non-zero-copy) Struct_builder::Config, constructed with the most e...">session::Session_mv::heap_fixed_builder_config()</a>, <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html#a0fbea0563835e852069cdaab506dd92c" title="Identical to session_shm_builder_config() but backed by SHM arena app_shm() instead of session_shm().">session::shm::classic::Session_mv::app_shm_builder_config()</a>, etc.).</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02002">2002</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02024">2024</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1812,7 +1813,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p >See that ctor argument's docs; the arg is also named <code>struct_lender_session</code>.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02010">2010</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02032">2032</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1833,7 +1834,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p>Deserializing counterpart to <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a969bc2021565c542c902fc14ff711c38" title="Returns the (light-weight) Builder_config specified (directly or indirectly) at construction time.">struct_builder_config()</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02018">2018</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02040">2040</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -1884,8 +1885,9 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </ul>
 <p >Further documentation of behavior (except "Thread safety, concurrency") shall assume this no-op condition is not the case.</p>
 <h3>Thread safety, concurrency</h3>
-<p >Per class doc header: yes, you can invoke <code>this-&gt;<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a></code> concurrently to all other <code>*this</code> methods except <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> itself.</p>
+<p >Per class doc header: yes, you can invoke <code>this-&gt;<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a></code> concurrently to all other <code>*this</code> methods including <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> itself. However beware that if you invoke 2 <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a></code>s concurrently 1 will not proceed until the other finishes, even if it must block. (By setting up handlers appropriately ahead of <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> invocations you can ensure in local IPC that these calls will be non-blocking.)</p>
 <p >Furthermore, during the potentially-blocking portion of <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>, wherein it awaits the response or timeout, other API calls shall execute non-blockingly rather than potentially-block waiting for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> to return. For example, a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">send()</a> or <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a97506bcb695f22e7ca6b480bae5b2346" title="Identical to send() sends the out-message not as a notification but as a request, registering the exp...">async_request()</a> will execute immediately.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000027">Todo:</a></b></dt><dd>Improve <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">ipc::transport::struc::Channel::sync_request()</a>, so that 2 such calls on the same <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a></code> can execute without one having to fully block the other. Note this may be seen as a <em>breaking change</em> of sorts for the purposes of release notes (even though it would presumably be seen as an improvement).</dd></dl>
 <h3>Send mechanics</h3>
 <p >As the first step this method invokes essentially <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a97506bcb695f22e7ca6b480bae5b2346" title="Identical to send() sends the out-message not as a notification but as a request, registering the exp...">async_request()</a>. Hence the following notes apply as they do for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a97506bcb695f22e7ca6b480bae5b2346" title="Identical to send() sends the out-message not as a notification but as a request, registering the exp...">async_request()</a>: Long story short, it reports errors similarly to the core <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a776b55ae93e65592b90c3943ca99e948" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">Blob_sender::send_blob()</a> or <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html#ac96b0aa01c286d525f9dcfa6dacc4220" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably/in-order,...">Native_handle_sender::send_native_handle()</a> with the following differences:</p><ul>
 <li>If <code>msg</code> contains a <a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8" title="Convenience alias for the commonly used type util::Native_handle.">Native_handle</a>, but <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a4a0188052c15cab70d712f41b0e74ba7" title="Short-hand for the transport::Channel type passed into ctor and returned by owned_channel().">Owned_channel</a> has no native-handles pipe: no-op, return null with falsy <code>Error_code</code>.</li>
@@ -1923,7 +1925,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Non-null response message on success within timeout; otherwise null. If null, emitted <code>S_TIMEOUT</code> indicates non-fatal timeout; emitted other truthy <code>Error_code</code> indicates either the non-blocking send emitted pipe-hosing error, or during the wait the pipe got hosed. If null, but no <code>Error_code</code> is emitted, then the method was a non-blocking no-op for one of the reasons listed above: invoked in logging-in phase; <code>msg</code> with-handle, but <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a4a0188052c15cab70d712f41b0e74ba7" title="Short-hand for the transport::Channel type passed into ctor and returned by owned_channel().">Owned_channel</a> has no handles pipe; an <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> was previously emitted via on-error handler or <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">send()</a> / <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a97506bcb695f22e7ca6b480bae5b2346" title="Identical to send() sends the out-message not as a notification but as a request, registering the exp...">async_request()</a> / <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>; <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab08057edd9832d94ea0e18a17c42200a" title="Operating at the unstructured layer, executes a graceful-close send by forwarding to the async transp...">async_end_sending()</a> has already been called. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02318">2318</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02340">2340</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297abcfca4c2347f9d377dd2ac41c41dc027">ipc::transport::error::S_TIMEOUT</a>.</p>
 
@@ -1975,7 +1977,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See other <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02255">2255</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02277">2277</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -2007,7 +2009,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02231">2231</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02253">2253</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -2040,7 +2042,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success; <code>false</code> due to one of the above conditions. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02239">2239</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02261">2261</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -2062,7 +2064,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p >No-op and return <code>false</code> if no handler is registered anyway.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02590">2590</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02619">2619</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -2084,7 +2086,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <p >No-op and return <code>false</code> if no handler is registered anyway.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02549">2549</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02578">2578</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -2161,18 +2163,19 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </div><div class="memdoc">
 
 <p>Mutex protecting the in-message/out-message state in <code>*this</code>. </p>
-<p >The concurrency design is summarized in the impl section of our class doc header.</p>
+<dl class="section see"><dt>See also</dt><dd>also <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a0500d7dc635203ec6c32ca4b096a96c6" title="Mutex causing, specifically, any sync_request() (or similar future methods) to execute in series and ...">m_sync_op_mutex</a>.</dd></dl>
+<p>The concurrency design is summarized in the impl section of our class doc header.</p>
 <p >In thread U, we generally forward to <code>m_sync_io.same_thing()</code>; and that <code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code> core may request an async-wait which we execute as a literaly <code>m_worker.async_wait(F)</code>, where <code>F()</code> &ndash; from thread W now &ndash; calls back into <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aefee55a9e754a63ce52766d6c65df92c" title="The core struc::Channel engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> code. (Per <code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code> pattern it's not a literal API call but can be considered one: it is a callback <code>(*on_active_ev_func)()</code> which executes code within <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aefee55a9e754a63ce52766d6c65df92c" title="The core struc::Channel engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>.) Formally speaking <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">sync_io::Channel</a> forbids its APIs (including that quasi-API) being involved concurrently to each other. So we lock <code>m_mutex</code> both in thread U and within the thread-W <code>F()</code>. Informally &ndash; <code>m_sync_io</code> accesses many of the same data structures when within <code>m_sync_io.same_thing()</code> as within the async-wait handler <code>on_active_ev_func</code> it passes to us to async-wait on its behalf. For example <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a160a8d49624f15a2596ee7b0244584b0" title="Registers the expectation of up to 1 notification in-message whose Msg_which equals which.">expect_msg()</a> will register a one-off expectation; whereas receiving an unstructured message that is decoded by <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aefee55a9e754a63ce52766d6c65df92c" title="The core struc::Channel engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> as satisfying that expectation will unregister that one-off expectation in <code>m_sync_io</code>'s internal map.</p>
-<p >Moreover we explicitly allow concurrent calls on the same <code>*this</code> (except <code>.<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a></code> concurrently with itself). All of the above means methods dealing with mutable state shall lock this <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a> around most of the code (with the notable exception of the potentially-blocking wait inside <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>).</p>
+<p >Moreover we explicitly allow concurrent calls on the same <code>*this</code>. All of the above means methods dealing with mutable state shall lock this <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a> around most of the code (with the notable exception of the potentially-blocking wait inside <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> &ndash; which instead has a locked-section before the wait and another after).</p>
 <h3>Perf</h3>
 <p >It's similar to such discussions in <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a> for example. The additional items here are as follows.</p><ul>
 <li>We operate potentially 2 pipes' logic in the same thread. Theoretically all else being equal handling a blob in one could delay handling a blob+possible native handle in the other and thus add latency. However that is not really how the <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a9426e8e562dd4c9ea1bc1f69f47bb99f" title="Useful for generic programming, the sync_io-pattern counterpart to *this type.">Sync_io_obj</a> uses them: they're really doing stuff in parallel vast majority of the time. It uses the native-handle pipe (if any!) only to transmit native handles, basically. I'll skip the pontification about why this is unlikely to create much concurrent traffic &ndash; leaving that as an exercise to the reader.</li>
 <li><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a> allows independent &ndash; concurrent &ndash; operation of the out-pipe versus the in-pipe. E.g., <code>send_blob()</code> can run concurrently to receipt of an in-message due to <code>async_receive_blob()</code>. In our case the <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a9426e8e562dd4c9ea1bc1f69f47bb99f" title="Useful for generic programming, the sync_io-pattern counterpart to *this type.">Sync_io_obj</a> forbids any such thing, and indeed we use just one <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a>. (<a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a> has 2, one per direction: one in Async_adapter_sender, one in Async_adapter_receiver.) We cannot really do otherwise. (Possibly <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">send()</a> &ndash; not <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a97506bcb695f22e7ca6b480bae5b2346" title="Identical to send() sends the out-message not as a notification but as a request, registering the exp...">async_request()</a> &ndash; could be factored out. Maybe look into it. Not an official to-do yet.) Does this create lock contention? It could in limited circumstances: if the user protocol is not of ping-pong fashion but rather involving heavy downloads and uploads concurrently. If this actually presents a problem in practice we could look into allowing more concurrency in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a9426e8e562dd4c9ea1bc1f69f47bb99f" title="Useful for generic programming, the sync_io-pattern counterpart to *this type.">Sync_io_obj</a> and then make use of it in <code>*this</code> by adding more mutexes and more complex logic. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01477">1477</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01494">1494</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01608">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Channel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01630">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Channel()</a>.</p>
 
 </div>
 </div>
@@ -2200,7 +2203,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Analogous to Async_adapter_sender::m_end_sending_on_done_func_or_empty. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01550">1550</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01572">1572</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -2232,9 +2235,40 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <h3>Order subtlety versus <code>m_worker</code></h3>
 <p >When constructing <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aefee55a9e754a63ce52766d6c65df92c" title="The core struc::Channel engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>, we need the <code>Task_engine</code> from <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a2184077da7828589d20d7f92a31a6394" title="Thread W used to (1) fire user-provided handlers and (2) perform any async work requested by m_sync_i...">m_worker</a>. On the other hand tasks operating in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a2184077da7828589d20d7f92a31a6394" title="Thread W used to (1) fire user-provided handlers and (2) perform any async work requested by m_sync_i...">m_worker</a> access <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aefee55a9e754a63ce52766d6c65df92c" title="The core struc::Channel engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>. So in destructor it is important to <code>m_worker.stop()</code> explicitly, so that the latter is no longer a factor. Then when automatic destruction occurs in the opposite order of creation, the fact that <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aefee55a9e754a63ce52766d6c65df92c" title="The core struc::Channel engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> is destroyed before <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a2184077da7828589d20d7f92a31a6394" title="Thread W used to (1) fire user-provided handlers and (2) perform any async work requested by m_sync_i...">m_worker</a> has no bad effect. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01574">1574</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01596">1596</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01608">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Channel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01630">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Channel()</a>.</p>
+
+</div>
+</div>
+<a id="a0500d7dc635203ec6c32ca4b096a96c6" name="a0500d7dc635203ec6c32ca4b096a96c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0500d7dc635203ec6c32ca4b096a96c6">&#9670;&nbsp;</a></span>m_sync_op_mutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Channel_obj , typename Message_body , typename Struct_builder_config , typename Struct_reader_config &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ade399eda73424def3da0dd67596d2cff">Mutex</a> <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">ipc::transport::struc::Channel</a>&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::m_sync_op_mutex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mutex causing, specifically, any <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> (or similar future methods) to execute in series and not concurrently. </p>
+<dl class="section see"><dt>See also</dt><dd>also <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a>.</dd></dl>
+<p>This exists in addition to the more general <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a>, because a <code>sync_*()</code> blocking operation shall allow other (non-blocking) APIs (such as <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">send()</a>) to execute immediately during the potential blocking-wait inside a <code>sync_*()</code>. So the general <code>m_mutex</code> cannot be locked during this way.</p>
+<p >To avoid deadlock <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a0500d7dc635203ec6c32ca4b096a96c6" title="Mutex causing, specifically, any sync_request() (or similar future methods) to execute in series and ...">m_sync_op_mutex</a> must be locked first, <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a> second. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01450">1450</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -2265,8 +2299,9 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 <h3>Design of blocking sync-op mechanism</h3>
 <p >A <code>sync_*()</code> operation is one that synchronously awaits in-traffic of some kind and returns some result based on the contents of this in-traffic, or an error if the pipe got hosed during the wait (in which case that error is <em>not</em> reported to the regular on-error handler, in the same way that non-blocking <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">send()</a> returns a pipe-hosing error). In addition it is subject to a (possibly infinite) user-specified timeout; if neither a successful result or an error appears by that time, then that fact is returned by <code>sync_*()</code>. After <code>sync_*()</code> returns, further in-pipe errors again go to the regular on-error handler until a <code>sync_*()</code> op starts (from thread U/W).</p>
 <p >As of this writing there is only one such op: <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>. In this discussion we discuss that one specifically (while mentally considering how it might be generalized in the future; the mechanism is designed hopefully in such a way as to make it not-too-tough to extend to other <code>sync_*()</code>s; but we don't want to over-engineer this and/or confuse the reader needlessly).</p>
-<p >It is a specific documented requirement that <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> is never invoked concurrently with itself. (Also it is explicitly not to be invoked from thread W (i.e., directly from an on-receive handler), as that would delay other handlers' execution; so it is to be invoked from thread U only.) This means that, broadly, at any point in time for <code>*this</code>, there is either no <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> running, or there is exactly one running &ndash; though other APIs might be &ndash; and moreover <code>*this</code> is safe from being destroyed.</p>
-<p ><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> first performs essentially a normal non-blocking <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a97506bcb695f22e7ca6b480bae5b2346" title="Identical to send() sends the out-message not as a notification but as a request, registering the exp...">async_request()</a>, and if that succeeds the blocking part begins. <code>m_sync_op_state-&gt;m_op_done_signal</code> is initialized to a promise and a future-wait (with timeout) begins in thread U. Meanwhile in the background <code>*this</code> is operating normally, handling all in-traffic. If it gets a successful result (namely a response to the particular message the nb-send sent &ndash; not some other in-traffic, which is handled normally) while such a wait is in progress in thread U, it loads the result into <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a> and tickles thread U to stop waiting via <code>m_sync_op_done</code>. If it gets any pipe-hosing error, it loads that different result and similarly tickles the <code>promise</code>. If the timeout happens first, the promise is destroyed, and more importantly <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a> is reset to steady state.</p>
+<p >It is a specific documented requirement that <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> may be invoked concurrently with itself. (Also it is explicitly <em>not</em> to be invoked from thread W (i.e., directly from an on-receive handler), as that would delay other handlers' execution; so it is to be invoked from thread U only.) Hence we use a dedicated <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a0500d7dc635203ec6c32ca4b096a96c6" title="Mutex causing, specifically, any sync_request() (or similar future methods) to execute in series and ...">m_sync_op_mutex</a> so that, at any point in time for <code>*this</code>, there is either no <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> running, or there is exactly one running &ndash; though other APIs might be &ndash; and moreover <code>*this</code> is safe from being destroyed.</p>
+<dl class="section note"><dt>Note</dt><dd>There is a to-do as of this writing in the <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> doc header to allow for one <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a></code> to not have to block the initiation of another until it fully completes. To achieve this we might have not one <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a> (or zero, via <code>optional</code>) but a set of 0+ of them. The algorithm for each one would remain essentially the same as now. <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a0500d7dc635203ec6c32ca4b096a96c6" title="Mutex causing, specifically, any sync_request() (or similar future methods) to execute in series and ...">m_sync_op_mutex</a> can then go away.</dd></dl>
+<p><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> first performs essentially a normal non-blocking <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a97506bcb695f22e7ca6b480bae5b2346" title="Identical to send() sends the out-message not as a notification but as a request, registering the exp...">async_request()</a>, and if that succeeds the blocking part begins. <code>m_sync_op_state-&gt;m_op_done_signal</code> is initialized to a promise and a future-wait (with timeout) begins in thread U. Meanwhile in the background <code>*this</code> is operating normally, handling all in-traffic. If it gets a successful result (namely a response to the particular message the nb-send sent &ndash; not some other in-traffic, which is handled normally) while such a wait is in progress in thread U, it loads the result into <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a> and tickles thread U to stop waiting via <code>m_sync_op_done</code>. If it gets any pipe-hosing error, it loads that different result and similarly tickles the <code>promise</code>. If the timeout happens first, the promise is destroyed, and more importantly <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a> is reset to steady state.</p>
 <p >(After this, an error is handled normally through on-error handler. More interestingly, suppose a response to the formerly-expecting-response-but-now-timed-out out-message does arrive later. That out-message ID is still registered in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aefee55a9e754a63ce52766d6c65df92c" title="The core struc::Channel engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> as expecting a response due to a sync-op; but our special internal handler for that response detects that there is no longer a sync-request in progress, or if there is it is for a different out-message ID &ndash; so it timed out. So it is just dropped.</p>
 <p >That's broadly how it works. Now specifically here are the states in the state machine. Note this machine is protected by <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a01c90903e715ebcf64d8b5ea0d114bc0" title="Mutex protecting the in-message/out-message state in *this.">m_mutex</a>.</p><ul>
 <li>Null (steady state, no sync-op in progress): <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a> is empty/null. <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a> is not executing, or is running before or after the blocking part.</li>
@@ -2284,7 +2319,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01544">1544</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01566">1566</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -2312,7 +2347,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Next unique ID for <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state.html#ad6f8e016b2abc3654e1915cc8c77c268" title="See id_t; used to check an arriving sync op result as belonging to the currently-waiting sync op.">Sync_op_state::m_id</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01547">1547</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01569">1569</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -2340,9 +2375,9 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 
 <p>Thread W used to (1) fire user-provided handlers and (2) perform any async work requested by <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aefee55a9e754a63ce52766d6c65df92c" title="The core struc::Channel engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01556">1556</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01578">1578</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01608">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Channel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01630">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Channel()</a>.</p>
 
 </div>
 </div>
@@ -2353,7 +2388,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 7 2025 23:56:16 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 8 2025 06:36:17 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

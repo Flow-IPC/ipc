@@ -184,7 +184,7 @@ $(function() {
 <h3>I'm a boost.asio user. Why do I have to <code>post()</code>? Can't I just give your constructor my <code>io_context</code>, and then you'll place the completion handler directly onto it?</h3>
 <p >In other words, why didn't we just make <code>Blob_receiver</code> (among others) a boost.asio I/O-object, like <code>boost::asio::ip::tcp::socket</code>?</p>
 <p >We feel you. We use boost.asio ourselves internally after all! However the first priority was to supply a more general API, so that one does not <em>need</em> to orient their event loop around boost.asio machinery specifically &ndash; but merely have a task-queue and <code>post()</code>-like API available. That said:</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000041">Todo:</a></b></dt><dd>We may supply an alternative API wherein Flow-IPC objects can be boost.asio I/O objects themselves, similarly to <code>boost::asio::ip::tcp::socket</code>.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000042">Todo:</a></b></dt><dd>We may supply an alternative API wherein Flow-IPC objects can be boost.asio I/O objects themselves, similarly to <code>boost::asio::ip::tcp::socket</code>.</dd></dl>
 <p ><a class="anchor" id="sio_pattern_conceptual"></a></p><h2>Alternate approaches: sharing thread U; reactor pattern </h2>
 <p >Let's set aside, for the moment, the stylistic organization of the event loop. Purely in terms of performance, is there any problem with the approach outlined above, where thread(s) like thread W is/are launched by Flow-IPC in the background and then signal thread(s) like thread U when background events occur?</p>
 <p >Yes and no. For most applications the only perf cost is that of (1) context switching between user threads U1, U2, ... versus Flow-IPC internal threads W1, W2, ....; and (2) the signaling necessary for a thread W to inform thread U to wake up. (2) is, essentially, a condition-variable ping and is rather cheap. (1) has a non-zero cost but for most applications, with modern hardware, is usually taken to be negligible.</p>
@@ -299,7 +299,7 @@ $(function() {
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 7 2025 23:56:16 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 8 2025 06:36:16 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

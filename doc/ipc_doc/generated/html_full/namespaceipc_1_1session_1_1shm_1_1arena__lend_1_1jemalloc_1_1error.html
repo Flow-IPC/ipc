@@ -141,11 +141,11 @@ Variables</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9723fe7e789d5d2d670c42d32238f223a9fcf37ffabb8e0b552276e4bcbe5b0e0" name="a9723fe7e789d5d2d670c42d32238f223a9fcf37ffabb8e0b552276e4bcbe5b0e0"></a>S_SHM_ARENA_CREATION_FAILED&#160;</td><td class="fielddoc"><p ><a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> opening: While setting up the session's locally-managed SHM-arena(s) of an arena-lending SHM-provider, an error occurred thus hosing the session before it could be opened. </p>
 <p >Logs may indicate the reason.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000039">Todo:</a></b></dt><dd>If ipc::shm::arena_lend arena-creation API(s) are modified to output an <code>Error_code</code> instead of reporting just success-versus-failure, then ipc::session::error::Code::S_SHM_ARENA_CREATION_FAILED should go away. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000040">Todo:</a></b></dt><dd>If ipc::shm::arena_lend arena-creation API(s) are modified to output an <code>Error_code</code> instead of reporting just success-versus-failure, then ipc::session::error::Code::S_SHM_ARENA_CREATION_FAILED should go away. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a9723fe7e789d5d2d670c42d32238f223a04f63ffadacfeb4386f846615587aa41" name="a9723fe7e789d5d2d670c42d32238f223a04f63ffadacfeb4386f846615587aa41"></a>S_SHM_ARENA_LEND_FAILED&#160;</td><td class="fielddoc"><p ><a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> opening: While registering the session's locally-managed SHM-arena(s) of an arena-lending SHM-provider with the lend/borrow engine, an error occurred thus hosing the session before it could be opened. </p>
 <p >Logs may indicate the reason. Most likely it was an internal-IPC failure when sending arena info.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000040">Todo:</a></b></dt><dd>If ipc::shm::arena_lend arena-lending API(s) are modified to output an <code>Error_code</code> instead of reporting just success-versus-failure and reporting problem through an async callback, then ipc::session::error::Code::S_SHM_ARENA_CREATION_FAILED should go away. See shm::arena_lend::jemalloc::init_shm() body for more discussion. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000041">Todo:</a></b></dt><dd>If ipc::shm::arena_lend arena-lending API(s) are modified to output an <code>Error_code</code> instead of reporting just success-versus-failure and reporting problem through an async callback, then ipc::session::error::Code::S_SHM_ARENA_CREATION_FAILED should go away. See shm::arena_lend::jemalloc::init_shm() body for more discussion. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a9723fe7e789d5d2d670c42d32238f223ade42420a2669dcfe1a31bc410c1fd8b4" name="a9723fe7e789d5d2d670c42d32238f223ade42420a2669dcfe1a31bc410c1fd8b4"></a>S_SERVER_MASTER_SHM_UNEXPECTED_TRANSPORT_ERROR&#160;</td><td class="fielddoc"><p ><a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> opening: While trying to transmit resource for internal-IPC use in an arena-lending SHM-provider, server encountered incoming-direction channel error whose exact nature could not be determined at that exact moment. </p>
 <p >Logs will indicate that exact nature; meanwhile session opening failed. </p>
@@ -312,7 +312,7 @@ Here is the call graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 7 2025 23:56:16 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 8 2025 06:36:16 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
