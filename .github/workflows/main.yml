@@ -1097,10 +1097,10 @@ jobs:
         SRV_PID=$!
         sleep 2 # Let it start.  It's quick but just in case.
         cd ../cli
-        echo 'Running client with zero-copy.''
+        echo 'Running client with zero-copy.'
         $BUILT_CMD_PREFIX \
           ./rpc_demo_cli_$1.exec ../../$OUT_DIR/cli.zc-1.log info > ../../$OUT_DIR/cli.zc-1.console.log
-        echo 'Running client *without* zero-copy."
+        echo 'Running client *without* zero-copy.'
         $BUILT_CMD_PREFIX \
           ./rpc_demo_cli_$1.exec ../../$OUT_DIR/cli.zc-0.log info --no-zc > ../../$OUT_DIR/cli.zc-0.console.log
         kill $SRV_PID # If it had died already or something this will yield 1 else 0.  Good.
