@@ -1071,6 +1071,51 @@ jobs:
         !cancelled()
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_perf_demo.sh shm_jemalloc
 
+    - name: Prepare run script for [rpc_demo] variations below
+      if: |
+        !cancelled()
+      run: |
+        # Prepare run script for [rpc_demo] variations below.
+        cat <<'EOF' > ${{ env.install-dir }}/bin/run_rpc_demo.sh
+        # Script created by pipeline during job.
+        echo "Zero-copy backing type: [$1]."
+        cd ${{ env.install-dir }}/bin
+        OUT_DIR=logs/rpc_demo/$1
+        mkdir -p $OUT_DIR
+        SUPP_DIR_A=${{ github.workspace }}/flow/src
+        SUPP_DIR_B=${{ github.workspace }}/ipc_session/src
+        SUPP_DIR_C=${{ github.workspace }}/ipc_shm_arena_lend/src
+        { cat $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_A/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_B/${{ env.san-suppress-cfg-in-file2 }} \
+              $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file1 }} $SUPP_DIR_C/${{ env.san-suppress-cfg-in-file2 }} \
+            > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
+        ${{ env.setup-tests-env }}
+        ${{ env.setup-run-env }}
+        cd srv
+        $BUILT_CMD_PREFIX \
+          ./rpc_demo_srv_$1.exec ../$OUT_DIR/srv.log info > ../$OUT_DIR/srv.console.log 2>&1 &
+        SRV_PID=$!
+        sleep 2 # Let it start.  It's quick but just in case.
+        cd ../cli
+        echo 'Running client with zero-copy.''
+        $BUILT_CMD_PREFIX \
+          ./rpc_demo_cli_$1.exec ../$OUT_DIR/cli.zc-1.log info > ../$OUT_DIR/cli.zc-1.console.log
+        echo 'Running client *without* zero-copy."
+        $BUILT_CMD_PREFIX \
+          ./rpc_demo_cli_$1.exec ../$OUT_DIR/cli.zc-0.log info --no-zc > ../$OUT_DIR/cli.zc-0.console.log
+        kill $SRV_PID # If it had died already or something this will yield 1 else 0.  Good.
+        EOF
+
+    - name: Run integration test [rpc_demo - SHM-classic mode]
+      if: |
+        !cancelled()
+      run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_rpc_demo.sh shm_classic
+
+    - name: Run integration test [rpc_demo - SHM-jemalloc mode]
+      if: |
+        !cancelled()
+      run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_rpc_demo.sh shm_jemalloc
+
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
     # any failing step is repeated with logging hiked up.  Note that formally (and practically)
     # higher-than-INFO verbosity is allowed to affect performance and thus is *not* right for

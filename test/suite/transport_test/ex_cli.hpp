@@ -330,7 +330,7 @@ CLASS::App_session::App_session(Ex_cli* guy, unsigned int test_idx, Task&& i_am_
   });
 
   m_ses->start_ops([](Asio_waitable_native_handle* hndl_of_interest,
-                          bool ev_of_interest_snd_else_rcv, util::sync_io::Task_ptr&& on_active_ev_func)
+                      bool ev_of_interest_snd_else_rcv, util::sync_io::Task_ptr&& on_active_ev_func)
   {
     // They want us to async-wait.  Oblige.
     ASSERT(hndl_of_interest);
