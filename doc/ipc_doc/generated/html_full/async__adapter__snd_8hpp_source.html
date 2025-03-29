@@ -364,198 +364,202 @@ $(function() {
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a01e5d7e07bd3258ea822c4ad79a7e2d6">  292</a></span><a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a01e5d7e07bd3258ea822c4ad79a7e2d6">Async_adapter_sender&lt;Core_t&gt;::~Async_adapter_sender</a>()</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>{</div>
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  <span class="keyword">using </span>flow::async::Single_thread_task_loop;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="keyword">using </span>flow::util::ostream_op_string;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  <span class="comment">/* Pre-condition: m_worker is stop()ed, and any pending tasks on it have been executed.</span></div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="comment">   * Our promised job is to invoke any pending handlers with operation-aborted.</span></div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment">   * The decision to do it from a one-off thread is explained in transport::Native_socket_stream::Impl::~Impl()</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="comment">   * and used in a few places; so see that.  Let&#39;s just do it.</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="comment">   * @todo It would be cool, I guess, to do it all in one one-off thread instead of potentially starting, like,</span></div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="comment">   * 2 for some of our customers.  Well, whatever.  At least we can avoid it if we know there are no handlers</span></div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="comment">   * to invoke; speaking of which there&#39;s just the one: */</span></div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  <span class="keywordflow">if</span> (!m_end_sending_on_done_func_or_empty.empty())</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  {</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    Single_thread_task_loop one_thread(get_logger(), ostream_op_string(m_log_pfx, <span class="stringliteral">&quot;-snd-temp_deinit&quot;</span>));</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    one_thread.start([&amp;]()</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    {</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>      FLOW_LOG_INFO(m_log_pfx &lt;&lt; <span class="stringliteral">&quot;: In transient snd-finisher thread: &quot;</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                    <span class="stringliteral">&quot;Shall run pending graceful-sends-close completion handler.&quot;</span>);</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>      m_end_sending_on_done_func_or_empty(<a class="code hl_enumvalue" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>);</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>      FLOW_LOG_INFO(<span class="stringliteral">&quot;Transient finisher exiting.&quot;</span>);</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    });</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  } <span class="comment">// if (!m_end_sending_on_done_func_or_empty.empty())</span></div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>} <span class="comment">// Async_adapter_sender::~Async_adapter_sender()</span></div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Core_t&gt;</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5">  319</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5">Async_adapter_sender&lt;Core_t&gt;::send_blob</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a>&amp; blob, <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>* err_code)</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>{</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  <span class="keyword">using </span>flow::util::Lock_guard;</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  <span class="comment">// We are in thread U (or thread W in a completion handler, but not concurrently).</span></div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  <span class="comment">/* See comments in send_native_handle(); we are just a somewhat degraded version of that.</span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment">   * It&#39;s just that send_native_handle() might not even compile, if m_sync_io does not have that method.</span></div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="comment">   * Logic, as pertains to us, is the same though. */</span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  Lock_guard&lt;<span class="keyword">decltype</span>(m_mutex)&gt; lock(m_mutex);</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="preprocessor">#ifndef NDEBUG</span></div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> ok =</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  m_sync_io.send_blob(blob, err_code);</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  assert(ok &amp;&amp; <span class="stringliteral">&quot;We are by definition in PEER state, and ctor starts send-ops; so that should never &quot;</span></div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>                 <span class="stringliteral">&quot;return false.  Bug somewhere?&quot;</span>);</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>}</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Core_t&gt;</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c">  338</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c">Async_adapter_sender&lt;Core_t&gt;::send_native_handle</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> hndl, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a>&amp; meta_blob,</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>                                                      <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>* err_code)</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>{</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  <span class="keyword">using </span>flow::util::Lock_guard;</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  <span class="comment">// We are in thread U (or thread W in a completion handler, but not concurrently).</span></div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span> </div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  <span class="comment">/* This one is particularly simple, as there is no async completion handler to invoke.  So we essentially just</span></div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span><span class="comment">   * forward it to m_sync_io.send_native_handler() with identical signature.  The only subtlety -- and it is</span></div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="comment">   * quite important -- is that we must lock m_mutex.  That might seem odd if one does not remember that</span></div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span><span class="comment">   * m_sync_io send-ops explicit API (.send_native_handler() in this case) must never be invoked concurrently</span></div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span><span class="comment">   * with the start_send_*_ops()-passed Event_wait_func&#39;s `on_active_ev_func()` -- which might call</span></div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="comment">   * on_sync_io_end_sending_done().  So we lock it, and elsewhere we lock it when calling on_active_ev_func().</span></div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="comment">   * Specifically (though formally speaking we are just following the sync_io pattern, and technically the following</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="comment">   * info is about inside the black box that is m_sync_io), m_sync_io at least stores an out-queue of messages</span></div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="comment">   * to send, non-empty in would-block conditions; send_native_handle() pushes items onto that queue, while</span></div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span><span class="comment">   * on_active_ev_func() (on writable socket) pops items off it upon successfully sending them off over socket. */</span></div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  Lock_guard&lt;<span class="keyword">decltype</span>(m_mutex)&gt; lock(m_mutex);</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span><span class="preprocessor">#ifndef NDEBUG</span></div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> ok =</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  m_sync_io.send_native_handle(hndl, meta_blob, err_code);</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>  assert(ok &amp;&amp; <span class="stringliteral">&quot;We are by definition in PEER state, and ctor starts send-ops; so that should never &quot;</span></div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>                 <span class="stringliteral">&quot;return false.  Bug somewhere?&quot;</span>);</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>} <span class="comment">// Async_adapter_sender::send_native_handle()</span></div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> </div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Core_t&gt;</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0">  367</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0">Async_adapter_sender&lt;Core_t&gt;::async_end_sending</a>(flow::async::Task_asio_err&amp;&amp; on_done_func_or_empty)</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>{</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>  <span class="keyword">using </span>flow::util::Lock_guard;</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>  <span class="comment">// We are in thread U (or thread W in a completion handler, but not concurrently).</span></div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span> </div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>  <span class="comment">/* While the same comments about locking m_mutex apply, in addition to that:</span></div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span><span class="comment">   * This is somewhat more complex than the other send-ops, as there is a completion handler. */</span></div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span> </div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  Lock_guard&lt;<span class="keyword">decltype</span>(m_mutex)&gt; lock(m_mutex);</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  <span class="keywordflow">if</span> (on_done_func_or_empty.empty())</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  {</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    <span class="keywordflow">return</span> m_sync_io.end_sending();</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  }</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="comment">// else</span></div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  <span class="keywordflow">if</span> (!m_end_sending_on_done_func_or_empty.empty())</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>  {</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>    FLOW_LOG_WARNING(m_log_pfx &lt;&lt; <span class="stringliteral">&quot;: async_end_sending(F) invoked; but we have a saved &quot;</span></div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>                     <span class="stringliteral">&quot;completion handler -- which has not yet fired -- for it already, so it must be a dupe-call.  &quot;</span></div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>                     <span class="stringliteral">&quot;Ignoring.&quot;</span>);</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>  }</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>  <span class="comment">/* else: It might also be .empty() and still be a dupe call (if it has fired already -- then they called us again).</span></div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span><span class="comment">   *       m_sync_io.async_end_sending() will catch that fine.  For now though: */</span></div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span> </div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  <span class="comment">/* Save it (instead of capturing it in lambda) in case dtor runs before async-end-sending completes;</span></div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span><span class="comment">   * it would then invoke it with operation-aborted code. */</span></div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  m_end_sending_on_done_func_or_empty = std::move(on_done_func_or_empty);</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="keyword">using </span>flow::async::reset_thread_pinning;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <span class="keyword">using </span>flow::util::ostream_op_string;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  <span class="comment">/* Pre-condition: m_worker is stop()ed, and any pending tasks on it have been executed.</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment">   * Our promised job is to invoke any pending handlers with operation-aborted.</span></div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="comment">   * The decision to do it from a one-off thread is explained in transport::Native_socket_stream::Impl::~Impl()</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="comment">   * and used in a few places; so see that.  Let&#39;s just do it.</span></div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="comment">   * @todo It would be cool, I guess, to do it all in one one-off thread instead of potentially starting, like,</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="comment">   * 2 for some of our customers.  Well, whatever.  At least we can avoid it if we know there are no handlers</span></div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment">   * to invoke; speaking of which there&#39;s just the one: */</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  <span class="keywordflow">if</span> (!m_end_sending_on_done_func_or_empty.empty())</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  {</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    Single_thread_task_loop one_thread(get_logger(),</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                                       ostream_op_string(<span class="stringliteral">&quot;ASdDeinit-&quot;</span>, m_log_pfx));</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    one_thread.start([&amp;]()</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    {</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>      reset_thread_pinning(get_logger()); <span class="comment">// Don&#39;t inherit any strange core-affinity.  Float free.</span></div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>      FLOW_LOG_INFO(m_log_pfx &lt;&lt; <span class="stringliteral">&quot;: In transient snd-finisher thread: &quot;</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                    <span class="stringliteral">&quot;Shall run pending graceful-sends-close completion handler.&quot;</span>);</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>      m_end_sending_on_done_func_or_empty(<a class="code hl_enumvalue" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>);</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>      FLOW_LOG_INFO(<span class="stringliteral">&quot;Transient finisher exiting.&quot;</span>);</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    });</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  } <span class="comment">// if (!m_end_sending_on_done_func_or_empty.empty())</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>} <span class="comment">// Async_adapter_sender::~Async_adapter_sender()</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Core_t&gt;</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5">  323</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5">Async_adapter_sender&lt;Core_t&gt;::send_blob</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a>&amp; blob, <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>* err_code)</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>{</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  <span class="keyword">using </span>flow::util::Lock_guard;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <span class="comment">// We are in thread U (or thread W in a completion handler, but not concurrently).</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  <span class="comment">/* See comments in send_native_handle(); we are just a somewhat degraded version of that.</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="comment">   * It&#39;s just that send_native_handle() might not even compile, if m_sync_io does not have that method.</span></div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="comment">   * Logic, as pertains to us, is the same though. */</span></div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  Lock_guard&lt;<span class="keyword">decltype</span>(m_mutex)&gt; lock(m_mutex);</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> ok =</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  m_sync_io.send_blob(blob, err_code);</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  assert(ok &amp;&amp; <span class="stringliteral">&quot;We are by definition in PEER state, and ctor starts send-ops; so that should never &quot;</span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>                 <span class="stringliteral">&quot;return false.  Bug somewhere?&quot;</span>);</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>}</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Core_t&gt;</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c">  342</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c">Async_adapter_sender&lt;Core_t&gt;::send_native_handle</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> hndl, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a>&amp; meta_blob,</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>                                                      <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>* err_code)</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>{</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  <span class="keyword">using </span>flow::util::Lock_guard;</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  <span class="comment">// We are in thread U (or thread W in a completion handler, but not concurrently).</span></div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  <span class="comment">/* This one is particularly simple, as there is no async completion handler to invoke.  So we essentially just</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="comment">   * forward it to m_sync_io.send_native_handler() with identical signature.  The only subtlety -- and it is</span></div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="comment">   * quite important -- is that we must lock m_mutex.  That might seem odd if one does not remember that</span></div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="comment">   * m_sync_io send-ops explicit API (.send_native_handler() in this case) must never be invoked concurrently</span></div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="comment">   * with the start_send_*_ops()-passed Event_wait_func&#39;s `on_active_ev_func()` -- which might call</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="comment">   * on_sync_io_end_sending_done().  So we lock it, and elsewhere we lock it when calling on_active_ev_func().</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span><span class="comment">   * Specifically (though formally speaking we are just following the sync_io pattern, and technically the following</span></div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span><span class="comment">   * info is about inside the black box that is m_sync_io), m_sync_io at least stores an out-queue of messages</span></div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span><span class="comment">   * to send, non-empty in would-block conditions; send_native_handle() pushes items onto that queue, while</span></div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span><span class="comment">   * on_active_ev_func() (on writable socket) pops items off it upon successfully sending them off over socket. */</span></div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  Lock_guard&lt;<span class="keyword">decltype</span>(m_mutex)&gt; lock(m_mutex);</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> ok =</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  m_sync_io.send_native_handle(hndl, meta_blob, err_code);</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  assert(ok &amp;&amp; <span class="stringliteral">&quot;We are by definition in PEER state, and ctor starts send-ops; so that should never &quot;</span></div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>                 <span class="stringliteral">&quot;return false.  Bug somewhere?&quot;</span>);</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>} <span class="comment">// Async_adapter_sender::send_native_handle()</span></div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Core_t&gt;</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0">  371</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0">Async_adapter_sender&lt;Core_t&gt;::async_end_sending</a>(flow::async::Task_asio_err&amp;&amp; on_done_func_or_empty)</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>{</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>  <span class="keyword">using </span>flow::util::Lock_guard;</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span> </div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  <span class="comment">// We are in thread U (or thread W in a completion handler, but not concurrently).</span></div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span> </div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>  <span class="comment">/* While the same comments about locking m_mutex apply, in addition to that:</span></div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span><span class="comment">   * This is somewhat more complex than the other send-ops, as there is a completion handler. */</span></div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  Lock_guard&lt;<span class="keyword">decltype</span>(m_mutex)&gt; lock(m_mutex);</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="keywordflow">if</span> (on_done_func_or_empty.empty())</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  {</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    <span class="keywordflow">return</span> m_sync_io.end_sending();</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>  }</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  <span class="comment">// else</span></div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  <span class="keywordflow">if</span> (!m_end_sending_on_done_func_or_empty.empty())</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>  {</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    FLOW_LOG_WARNING(m_log_pfx &lt;&lt; <span class="stringliteral">&quot;: async_end_sending(F) invoked; but we have a saved &quot;</span></div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>                     <span class="stringliteral">&quot;completion handler -- which has not yet fired -- for it already, so it must be a dupe-call.  &quot;</span></div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>                     <span class="stringliteral">&quot;Ignoring.&quot;</span>);</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  }</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  <span class="comment">/* else: It might also be .empty() and still be a dupe call (if it has fired already -- then they called us again).</span></div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span><span class="comment">   *       m_sync_io.async_end_sending() will catch that fine.  For now though: */</span></div>
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span> </div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> sync_err_code;</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> ok = m_sync_io.async_end_sending(&amp;sync_err_code, [<span class="keyword">this</span>](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  {</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    <span class="comment">/* We are in thread W.  m_mutex is locked (by the handler inside the function inside ctor).</span></div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span><span class="comment">     * This&#39;ll, inside, post the handler onto thread W. */</span></div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    on_sync_io_end_sending_done(err_code);</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  });</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>  <span class="keywordflow">if</span> (!ok)</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>  {</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>    <span class="comment">// False start (dupe call).  It logged enough.</span></div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    m_end_sending_on_done_func_or_empty.clear();</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  }</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  <span class="comment">// else: It either finished synchronously; or it will finish asynchronously.</span></div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span> </div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>  <span class="keywordflow">if</span> (sync_err_code == <a class="code hl_enumvalue" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">error::Code::S_SYNC_IO_WOULD_BLOCK</a>)</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>  {</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    <span class="comment">// Async-wait needed before we can complete.  Live to fight another day.</span></div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  }</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>  <span class="comment">/* else: Completed synchronously.  Since there can be no async-end-sending chains, it&#39;s no big deal</span></div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span><span class="comment">   * to just use on_sync_io_end_sending_done() again. */</span></div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>  FLOW_LOG_INFO(m_log_pfx &lt;&lt; <span class="stringliteral">&quot;: Sync-IO async-end-sending completed immediately.  &quot;</span></div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>                <span class="stringliteral">&quot;Posting handler onto async-worker thread.&quot;</span>);</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span> </div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>  on_sync_io_end_sending_done(sync_err_code);</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span> </div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>  <span class="comment">// Lock_guard&lt;decltype(m_mutex)&gt; lock(m_mutex): unlocks here.</span></div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>} <span class="comment">// Async_adapter_sender::async_end_sending()</span></div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  <span class="comment">/* Save it (instead of capturing it in lambda) in case dtor runs before async-end-sending completes;</span></div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span><span class="comment">   * it would then invoke it with operation-aborted code. */</span></div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  m_end_sending_on_done_func_or_empty = std::move(on_done_func_or_empty);</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span> </div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> sync_err_code;</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> ok = m_sync_io.async_end_sending(&amp;sync_err_code, [<span class="keyword">this</span>](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  {</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    <span class="comment">/* We are in thread W.  m_mutex is locked (by the handler inside the function inside ctor).</span></div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span><span class="comment">     * This&#39;ll, inside, post the handler onto thread W. */</span></div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    on_sync_io_end_sending_done(err_code);</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  });</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span> </div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>  <span class="keywordflow">if</span> (!ok)</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  {</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    <span class="comment">// False start (dupe call).  It logged enough.</span></div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    m_end_sending_on_done_func_or_empty.clear();</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>  }</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>  <span class="comment">// else: It either finished synchronously; or it will finish asynchronously.</span></div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span> </div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  <span class="keywordflow">if</span> (sync_err_code == <a class="code hl_enumvalue" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">error::Code::S_SYNC_IO_WOULD_BLOCK</a>)</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>  {</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>    <span class="comment">// Async-wait needed before we can complete.  Live to fight another day.</span></div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>  }</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>  <span class="comment">/* else: Completed synchronously.  Since there can be no async-end-sending chains, it&#39;s no big deal</span></div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span><span class="comment">   * to just use on_sync_io_end_sending_done() again. */</span></div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  FLOW_LOG_INFO(m_log_pfx &lt;&lt; <span class="stringliteral">&quot;: Sync-IO async-end-sending completed immediately.  &quot;</span></div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>                <span class="stringliteral">&quot;Posting handler onto async-worker thread.&quot;</span>);</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span> </div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>  on_sync_io_end_sending_done(sync_err_code);</div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span> </div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Core_t&gt;</div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a49c641453f4b8eb4a2893677c1a83ab2">  432</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a49c641453f4b8eb4a2893677c1a83ab2">Async_adapter_sender&lt;Core_t&gt;::on_sync_io_end_sending_done</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>{</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>  <span class="keyword">using </span>flow::util::Lock_guard;</div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span> </div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>  <span class="comment">/* We are in thread U or W.  m_mutex is locked (as required for m_end_sending_on_done_func_or_empty</span></div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="comment">   * and m_sync_io access). */</span></div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span> </div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>  assert(err_code != boost::asio::error::operation_aborted);</div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span> </div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>  FLOW_LOG_TRACE(m_log_pfx &lt;&lt; <span class="stringliteral">&quot;:: Earlier async-wait =&gt; event active =&gt; snd-mutex lock =&gt; &quot;</span></div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>                 <span class="stringliteral">&quot;on-active-event-func =&gt; sync_io module =&gt; here (on-end-sending-done handler).  Or else &quot;</span></div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>                 <span class="stringliteral">&quot;snd-mutex lock =&gt; no async-wait needed =&gt; here... (ditto).&quot;</span>);</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>  <span class="comment">// Lock_guard&lt;decltype(m_mutex)&gt; lock(m_mutex): unlocks here.</span></div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>} <span class="comment">// Async_adapter_sender::async_end_sending()</span></div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span> </div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Core_t&gt;</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a49c641453f4b8eb4a2893677c1a83ab2">  436</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a49c641453f4b8eb4a2893677c1a83ab2">Async_adapter_sender&lt;Core_t&gt;::on_sync_io_end_sending_done</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>&amp; err_code)</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>{</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>  <span class="keyword">using </span>flow::util::Lock_guard;</div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span> </div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>  <span class="comment">/* We are in thread U or W.  m_mutex is locked (as required for m_end_sending_on_done_func_or_empty</span></div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span><span class="comment">   * and m_sync_io access). */</span></div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span> </div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>  assert(err_code != boost::asio::error::operation_aborted);</div>
 <div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span> </div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>  <span class="comment">/* Just invoke user completion handler.  post() it onto thread W.  Why post() onto W?</span></div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span><span class="comment">   * - If we are in thread U: It is plainly required, as we promised to invoke completion handlers</span></div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span><span class="comment">   *   from unspecified thread that isn&#39;t U.</span></div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span><span class="comment">   * - If we are in thread W: To avoid recursive mayhem if they choose to call some other API</span></div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span><span class="comment">   *   inside on_done_func(), we queue it onto thread W by itself. */</span></div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>  m_worker.post([<span class="keyword">this</span>, err_code, on_done_func = std::move(m_end_sending_on_done_func_or_empty)]()</div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>  {</div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>    <span class="comment">// We are in thread W.  Nothing is locked.</span></div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    FLOW_LOG_TRACE(m_log_pfx &lt;&lt; <span class="stringliteral">&quot;: Invoking on-end-sending-done handler.&quot;</span>);</div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>    on_done_func(err_code);</div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    FLOW_LOG_TRACE(<span class="stringliteral">&quot;Handler completed.&quot;</span>);</div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>  });</div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span> </div>
-<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>  m_end_sending_on_done_func_or_empty.clear(); <span class="comment">// Just in case move() didn&#39;t do it.</span></div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>} <span class="comment">// Async_adapter_sender::on_sync_io_end_sending_done()</span></div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span> </div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Core_t&gt;</div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183">  462</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183">Async_adapter_sender&lt;Core_t&gt;::auto_ping</a>(<a class="code hl_typedef" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> period)</div>
-<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>{</div>
-<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>  <span class="keyword">using </span>flow::util::Lock_guard;</div>
-<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span> </div>
-<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>  <span class="comment">// Like send_native_handle() and others (keeping comments light).</span></div>
-<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span> </div>
-<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>  Lock_guard&lt;<span class="keyword">decltype</span>(m_mutex)&gt; lock(m_mutex);</div>
-<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>  <span class="keywordflow">return</span> m_sync_io.auto_ping(period);</div>
-<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>}</div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>  FLOW_LOG_TRACE(m_log_pfx &lt;&lt; <span class="stringliteral">&quot;:: Earlier async-wait =&gt; event active =&gt; snd-mutex lock =&gt; &quot;</span></div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>                 <span class="stringliteral">&quot;on-active-event-func =&gt; sync_io module =&gt; here (on-end-sending-done handler).  Or else &quot;</span></div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>                 <span class="stringliteral">&quot;snd-mutex lock =&gt; no async-wait needed =&gt; here... (ditto).&quot;</span>);</div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span> </div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>  <span class="comment">/* Just invoke user completion handler.  post() it onto thread W.  Why post() onto W?</span></div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span><span class="comment">   * - If we are in thread U: It is plainly required, as we promised to invoke completion handlers</span></div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span><span class="comment">   *   from unspecified thread that isn&#39;t U.</span></div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span><span class="comment">   * - If we are in thread W: To avoid recursive mayhem if they choose to call some other API</span></div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="comment">   *   inside on_done_func(), we queue it onto thread W by itself. */</span></div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>  m_worker.post([<span class="keyword">this</span>, err_code, on_done_func = std::move(m_end_sending_on_done_func_or_empty)]()</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>  {</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>    <span class="comment">// We are in thread W.  Nothing is locked.</span></div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    FLOW_LOG_TRACE(m_log_pfx &lt;&lt; <span class="stringliteral">&quot;: Invoking on-end-sending-done handler.&quot;</span>);</div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>    on_done_func(err_code);</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>    FLOW_LOG_TRACE(<span class="stringliteral">&quot;Handler completed.&quot;</span>);</div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>  });</div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span> </div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>  m_end_sending_on_done_func_or_empty.clear(); <span class="comment">// Just in case move() didn&#39;t do it.</span></div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>} <span class="comment">// Async_adapter_sender::on_sync_io_end_sending_done()</span></div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span> </div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Core_t&gt;</div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno"><a class="line" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183">  466</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183">Async_adapter_sender&lt;Core_t&gt;::auto_ping</a>(<a class="code hl_typedef" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> period)</div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>{</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>  <span class="keyword">using </span>flow::util::Lock_guard;</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span> </div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>  <span class="comment">// Like send_native_handle() and others (keeping comments light).</span></div>
 <div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span> </div>
-<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>} <span class="comment">// namespace ipc::transport::sync_io</span></div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>  Lock_guard&lt;<span class="keyword">decltype</span>(m_mutex)&gt; lock(m_mutex);</div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>  <span class="keywordflow">return</span> m_sync_io.auto_ping(period);</div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>}</div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span> </div>
+<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>} <span class="comment">// namespace ipc::transport::sync_io</span></div>
 <div class="ttc" id="aasio__waitable__native__hndl_8hpp_html"><div class="ttname"><a href="asio__waitable__native__hndl_8hpp.html">asio_waitable_native_hndl.hpp</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html">ipc::transport::sync_io::Async_adapter_sender</a></div><div class="ttdoc">Internal-use type that adapts a given PEER-state sync_io::Native_handle_sender or sync_io::Blob_sende...</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00073">async_adapter_snd.hpp:76</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a01e5d7e07bd3258ea822c4ad79a7e2d6"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a01e5d7e07bd3258ea822c4ad79a7e2d6">ipc::transport::sync_io::Async_adapter_sender::~Async_adapter_sender</a></div><div class="ttdeci">~Async_adapter_sender()</div><div class="ttdoc">To be invoked after -&gt;stop()ping *worker (from ctor), as well as flushing any still-queued tasks in i...</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00292">async_adapter_snd.hpp:292</a></div></div>
-<div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a0483d9166a8d19bae7746ae8acc7721c"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c">ipc::transport::sync_io::Async_adapter_sender::send_native_handle</a></div><div class="ttdeci">void send_native_handle(Native_handle hndl_or_null, const util::Blob_const &amp;meta_blob, Error_code *err_code)</div><div class="ttdoc">See Native_handle_sender counterpart.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00338">async_adapter_snd.hpp:338</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a0483d9166a8d19bae7746ae8acc7721c"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c">ipc::transport::sync_io::Async_adapter_sender::send_native_handle</a></div><div class="ttdeci">void send_native_handle(Native_handle hndl_or_null, const util::Blob_const &amp;meta_blob, Error_code *err_code)</div><div class="ttdoc">See Native_handle_sender counterpart.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00342">async_adapter_snd.hpp:342</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a20463c8aca5f365e57ec53a193bebd6f"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a20463c8aca5f365e57ec53a193bebd6f">ipc::transport::sync_io::Async_adapter_sender::m_end_sending_on_done_func_or_empty</a></div><div class="ttdeci">flow::async::Task_asio_err m_end_sending_on_done_func_or_empty</div><div class="ttdoc">The on_done_func argument to async_end_sending(), possibly .empty() if originally user invoked end_se...</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00187">async_adapter_snd.hpp:187</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a4675c9691ca920d6e39586d8a5731c32"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a4675c9691ca920d6e39586d8a5731c32">ipc::transport::sync_io::Async_adapter_sender::Core</a></div><div class="ttdeci">Core_t Core</div><div class="ttdoc">The sync_io::X type being adapted into async-I/O-pattern X.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00081">async_adapter_snd.hpp:81</a></div></div>
-<div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a49c641453f4b8eb4a2893677c1a83ab2"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a49c641453f4b8eb4a2893677c1a83ab2">ipc::transport::sync_io::Async_adapter_sender::on_sync_io_end_sending_done</a></div><div class="ttdeci">void on_sync_io_end_sending_done(const Error_code &amp;err_code)</div><div class="ttdoc">Handles the completion of m_sync_io.async_end_sending() operation whether synchronously or asynchrono...</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00432">async_adapter_snd.hpp:432</a></div></div>
-<div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a61f6229bcef05a266c63d36ab2bd4df0"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0">ipc::transport::sync_io::Async_adapter_sender::async_end_sending</a></div><div class="ttdeci">bool async_end_sending(flow::async::Task_asio_err &amp;&amp;on_done_func_or_empty)</div><div class="ttdoc">See Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for Native_handle_sender...</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00367">async_adapter_snd.hpp:367</a></div></div>
-<div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a6a198ded3921acd7293f3dc7fdfdc3f5"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5">ipc::transport::sync_io::Async_adapter_sender::send_blob</a></div><div class="ttdeci">void send_blob(const util::Blob_const &amp;blob, Error_code *err_code)</div><div class="ttdoc">See Blob_sender counterpart.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00319">async_adapter_snd.hpp:319</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a49c641453f4b8eb4a2893677c1a83ab2"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a49c641453f4b8eb4a2893677c1a83ab2">ipc::transport::sync_io::Async_adapter_sender::on_sync_io_end_sending_done</a></div><div class="ttdeci">void on_sync_io_end_sending_done(const Error_code &amp;err_code)</div><div class="ttdoc">Handles the completion of m_sync_io.async_end_sending() operation whether synchronously or asynchrono...</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00436">async_adapter_snd.hpp:436</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a61f6229bcef05a266c63d36ab2bd4df0"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0">ipc::transport::sync_io::Async_adapter_sender::async_end_sending</a></div><div class="ttdeci">bool async_end_sending(flow::async::Task_asio_err &amp;&amp;on_done_func_or_empty)</div><div class="ttdoc">See Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for Native_handle_sender...</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00371">async_adapter_snd.hpp:371</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a6a198ded3921acd7293f3dc7fdfdc3f5"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5">ipc::transport::sync_io::Async_adapter_sender::send_blob</a></div><div class="ttdeci">void send_blob(const util::Blob_const &amp;blob, Error_code *err_code)</div><div class="ttdoc">See Blob_sender counterpart.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00323">async_adapter_snd.hpp:323</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a801d13765438ce9f2963cf59981cd7c0"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a801d13765438ce9f2963cf59981cd7c0">ipc::transport::sync_io::Async_adapter_sender::m_mutex</a></div><div class="ttdeci">flow::util::Mutex_non_recursive m_mutex</div><div class="ttdoc">Protects m_end_sending_on_done_func_or_empty and, more importantly, send-ops data of m_sync_io.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00198">async_adapter_snd.hpp:198</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a98cf53ba1f6abee1c3d3a4dd7533232d"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a98cf53ba1f6abee1c3d3a4dd7533232d">ipc::transport::sync_io::Async_adapter_sender::m_worker</a></div><div class="ttdeci">flow::async::Single_thread_task_loop &amp; m_worker</div><div class="ttdoc">Single-thread worker pool for all internal async work. Referred to as thread W in comments.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00201">async_adapter_snd.hpp:201</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_a9bc681f5ac954b2ce9e1c62545c6796f"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a9bc681f5ac954b2ce9e1c62545c6796f">ipc::transport::sync_io::Async_adapter_sender::m_sync_io</a></div><div class="ttdeci">Core &amp; m_sync_io</div><div class="ttdoc">The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00213">async_adapter_snd.hpp:213</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_aa6e0c8421b44bc49fff0c7cab706d18d"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa6e0c8421b44bc49fff0c7cab706d18d">ipc::transport::sync_io::Async_adapter_sender::m_log_pfx</a></div><div class="ttdeci">const std::string m_log_pfx</div><div class="ttdoc">See log_pfx arg of ctor.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00175">async_adapter_snd.hpp:175</a></div></div>
-<div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_aa74da44fd22c3517149dfc8250ed3183"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183">ipc::transport::sync_io::Async_adapter_sender::auto_ping</a></div><div class="ttdeci">bool auto_ping(util::Fine_duration period)</div><div class="ttdoc">See Native_handle_sender counterpart.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00462">async_adapter_snd.hpp:462</a></div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_aa74da44fd22c3517149dfc8250ed3183"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183">ipc::transport::sync_io::Async_adapter_sender::auto_ping</a></div><div class="ttdeci">bool auto_ping(util::Fine_duration period)</div><div class="ttdoc">See Native_handle_sender counterpart.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00466">async_adapter_snd.hpp:466</a></div></div>
 <div class="ttc" id="aclassipc_1_1transport_1_1sync__io_1_1Async__adapter__sender_html_adef138fbf95db65f984f9e9670a2ed59"><div class="ttname"><a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#adef138fbf95db65f984f9e9670a2ed59">ipc::transport::sync_io::Async_adapter_sender::Async_adapter_sender</a></div><div class="ttdeci">Async_adapter_sender(flow::log::Logger *logger_ptr, util::String_view log_pfx, flow::async::Single_thread_task_loop *worker, Core *sync_io)</div><div class="ttdoc">Constructs the adapter around sync_io::X object *sync_io.</div><div class="ttdef"><b>Definition:</b> <a href="async__adapter__snd_8hpp_source.html#l00219">async_adapter_snd.hpp:219</a></div></div>
 <div class="ttc" id="aclassipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle_html"><div class="ttname"><a href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html">ipc::util::sync_io::Asio_waitable_native_handle</a></div><div class="ttdoc">Useful if using the sync_io pattern within a user event loop built on boost.asio (optionally with flo...</div><div class="ttdef"><b>Definition:</b> <a href="asio__waitable__native__hndl_8hpp_source.html#l00080">asio_waitable_native_hndl.hpp:81</a></div></div>
 <div class="ttc" id="adetail_2transport__fwd_8hpp_html"><div class="ttname"><a href="detail_2transport__fwd_8hpp.html">transport_fwd.hpp</a></div></div>
@@ -573,7 +577,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 8 2025 06:36:15 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sat Mar 29 2025 01:06:42 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
