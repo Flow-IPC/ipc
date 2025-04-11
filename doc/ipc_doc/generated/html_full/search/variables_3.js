@@ -135,7 +135,7 @@ var searchData=
   ['m_5fpermissions_5flevel_5ffor_5fclient_5fapps_132',['m_permissions_level_for_client_apps',['../structipc_1_1session_1_1Server__app.html#abdcd9e8b0287f914496d45a99848be44',1,'ipc::session::Server_app']]],
   ['m_5fphase_133',['m_phase',['../classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#afca9a3012b2f41d635381a5a13ddd7c1',1,'ipc::transport::struc::sync_io::Channel']]],
   ['m_5fphase_5flog_5fin_5fstarted_134',['m_phase_log_in_started',['../classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#aa14373afb4601567d1640f7b0b3faa45',1,'ipc::transport::struc::sync_io::Channel']]],
-  ['m_5fpool_135',['m_pool',['../classipc_1_1shm_1_1classic_1_1Pool__arena.html#a3a16fc7903eca88464d50fdf2873e37f',1,'ipc::shm::classic::Pool_arena']]],
+  ['m_5fpool_135',['m_pool',['../classipc_1_1shm_1_1classic_1_1Pool__arena.html#a308351dc72f76407cf845af163fa0124',1,'ipc::shm::classic::Pool_arena']]],
   ['m_5fpool_5fname_136',['m_pool_name',['../classipc_1_1shm_1_1classic_1_1Pool__arena.html#a71009bb725b4cd68bea4ac99fa81ee2e',1,'ipc::shm::classic::Pool_arena']]],
   ['m_5fpool_5fsize_5flimit_5fmi_137',['m_pool_size_limit_mi',['../classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html#ae86848eb54eac26e276cee29a0eb030a',1,'ipc::session::shm::classic::Session_server']]],
   ['m_5fpre_5finit_5ferr_5fcode_138',['m_pre_init_err_code',['../classipc_1_1session_1_1Server__session__impl.html#ad9f6932719c1565191da73bfa4a3923f',1,'ipc::session::Server_session_impl']]],

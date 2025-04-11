@@ -176,7 +176,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a814272e555c0592b0caf92b7bc3d64b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a byte via the given pipe reader.  <a href="namespaceipc_1_1util.html#a814272e555c0592b0caf92b7bc3d64b3">More...</a><br /></td></tr>
 <tr class="separator:a814272e555c0592b0caf92b7bc3d64b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cdc0a8d761170faa844c49d37c522ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a1cdc0a8d761170faa844c49d37c522ff">remove_persistent_shm_pool</a> (flow::log::Logger *logger_ptr, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;name, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code)</td></tr>
-<tr class="memdesc:a1cdc0a8d761170faa844c49d37c522ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#aff2327ce7339c1c732ddd4fcd4861ee4" title="Removes the named SHM pool object.">shm::classic::Pool_arena::remove_persistent()</a>.  <a href="namespaceipc_1_1util.html#a1cdc0a8d761170faa844c49d37c522ff">More...</a><br /></td></tr>
+<tr class="memdesc:a1cdc0a8d761170faa844c49d37c522ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9487dcff44fde9a2c12d64b51c16c85e" title="Removes the named SHM pool object.">shm::classic::Pool_arena::remove_persistent()</a>.  <a href="namespaceipc_1_1util.html#a1cdc0a8d761170faa844c49d37c522ff">More...</a><br /></td></tr>
 <tr class="separator:a1cdc0a8d761170faa844c49d37c522ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd43da87aa17031604c7906757c07d46"><td class="memTemplParams" colspan="2">template&lt;typename Func &gt; </td></tr>
 <tr class="memitem:abd43da87aa17031604c7906757c07d46"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#abd43da87aa17031604c7906757c07d46">op_with_possible_bipc_exception</a> (flow::log::Logger *logger_ptr, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code, const <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> &amp;misc_bipc_lib_error, <a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">String_view</a> context, const Func &amp;func)</td></tr>
@@ -882,7 +882,7 @@ template&lt;typename Handle_name_func &gt; </div>
 
 <p class="reference">References <a class="el" href="util_8hpp_source.html#l00090">for_each_persistent_impl()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="bipc__mq__handle_8hpp_source.html#l00620">ipc::transport::Bipc_mq_handle::for_each_persistent()</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00771">ipc::shm::classic::Pool_arena::for_each_persistent()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="bipc__mq__handle_8hpp_source.html#l00620">ipc::transport::Bipc_mq_handle::for_each_persistent()</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00780">ipc::shm::classic::Pool_arena::for_each_persistent()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1028,7 +1028,7 @@ template&lt;typename Func &gt; </div>
 
 <p class="reference">References <a class="el" href="util_8hpp_source.html#l00034">op_with_possible_bipc_exception()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01136">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE, S_GRACEFUL_FINISH_REQUIRED_V &gt;::async_connect()</a>, <a class="el" href="util_8hpp_source.html#l00034">op_with_possible_bipc_exception()</a>, <a class="el" href="pool__arena_8cpp_source.html#l00030">ipc::shm::classic::Pool_arena::Pool_arena()</a>, and <a class="el" href="session__server__impl_8hpp_source.html#l00439">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::Session_server_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l01136">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE, S_GRACEFUL_FINISH_REQUIRED_V &gt;::async_connect()</a>, <a class="el" href="util_8hpp_source.html#l00034">op_with_possible_bipc_exception()</a>, <a class="el" href="pool__arena_8cpp_source.html#l00028">ipc::shm::classic::Pool_arena::Pool_arena()</a>, and <a class="el" href="session__server__impl_8hpp_source.html#l00439">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::Session_server_impl()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2488,7 +2488,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Equivalent to <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#aff2327ce7339c1c732ddd4fcd4861ee4" title="Removes the named SHM pool object.">shm::classic::Pool_arena::remove_persistent()</a>. </p>
+<p>Equivalent to <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9487dcff44fde9a2c12d64b51c16c85e" title="Removes the named SHM pool object.">shm::classic::Pool_arena::remove_persistent()</a>. </p>
 <p >Provided for similar reason to that described in <a class="el" href="namespaceipc_1_1util.html#a74135195ff6c2f840092c21e522f964a" title="Equivalent to shm::classic::Pool_arena::for_each_persistent().">for_each_persistent_shm_pool()</a> doc header nearby.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2503,7 +2503,7 @@ Here is the call graph for this function:</div>
 
 <p class="reference">References <a class="el" href="shared__name_8cpp_source.html#l00145">ipc::util::Shared_name::native_str()</a>, and <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00119">remove_persistent_shm_pool()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00219">ipc::transport::Blob_stream_mq_base_impl&lt; Persistent_mq_handle &gt;::ensure_unique_peer()</a>, <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00164">ipc::transport::Blob_stream_mq_base_impl&lt; Persistent_mq_handle &gt;::remove_persistent()</a>, <a class="el" href="pool__arena_8cpp_source.html#l00164">ipc::shm::classic::Pool_arena::remove_persistent()</a>, and <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00119">remove_persistent_shm_pool()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00219">ipc::transport::Blob_stream_mq_base_impl&lt; Persistent_mq_handle &gt;::ensure_unique_peer()</a>, <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00164">ipc::transport::Blob_stream_mq_base_impl&lt; Persistent_mq_handle &gt;::remove_persistent()</a>, <a class="el" href="pool__arena_8cpp_source.html#l00165">ipc::shm::classic::Pool_arena::remove_persistent()</a>, and <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00119">remove_persistent_shm_pool()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2822,7 +2822,7 @@ Here is the caller graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00031">31</a> of file <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2session_2detail_2shm_2classic_2client__session__impl_8hpp_source.html#l00175">ipc::session::shm::classic::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::async_connect()</a>, <a class="el" href="bipc__mq__handle_8cpp_source.html#l00097">ipc::transport::Bipc_mq_handle::Bipc_mq_handle()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02405">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE, S_GRACEFUL_FINISH_REQUIRED_V &gt;::create_channel_obj()</a>, and <a class="el" href="pool__arena_8cpp_source.html#l00079">ipc::shm::classic::Pool_arena::Pool_arena()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2session_2detail_2shm_2classic_2client__session__impl_8hpp_source.html#l00175">ipc::session::shm::classic::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::async_connect()</a>, <a class="el" href="bipc__mq__handle_8cpp_source.html#l00097">ipc::transport::Bipc_mq_handle::Bipc_mq_handle()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02405">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE, S_GRACEFUL_FINISH_REQUIRED_V &gt;::create_channel_obj()</a>, and <a class="el" href="pool__arena_8cpp_source.html#l00076">ipc::shm::classic::Pool_arena::Pool_arena()</a>.</p>
 
 </div>
 </div>
@@ -2907,7 +2907,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 10 2025 00:48:01 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Fri Apr 11 2025 20:02:27 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

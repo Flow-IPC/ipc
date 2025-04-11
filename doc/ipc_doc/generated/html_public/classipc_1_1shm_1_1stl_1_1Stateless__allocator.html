@@ -160,7 +160,7 @@ class ipc::shm::stl::Stateless_allocator&lt; T, Arena &gt;</div><p >Stateless al
 <div class="line">  Shm_classic_arena_activator arena_ctx(&amp;a);</div>
 <div class="line">  <span class="comment">// call x-&gt; ctors, dtor, methods, operators....</span></div>
 <div class="line">} <span class="comment">// Return the active arena to previous value.</span></div>
-<div class="ttc" id="aclassipc_1_1shm_1_1classic_1_1Pool__arena_html"><div class="ttname"><a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html">ipc::shm::classic::Pool_arena</a></div><div class="ttdoc">A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....</div><div class="ttdef"><b>Definition:</b> pool_arena.hpp:151</div></div>
+<div class="ttc" id="aclassipc_1_1shm_1_1classic_1_1Pool__arena_html"><div class="ttname"><a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html">ipc::shm::classic::Pool_arena</a></div><div class="ttdoc">A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....</div><div class="ttdef"><b>Definition:</b> pool_arena.hpp:153</div></div>
 <div class="ttc" id="aclassipc_1_1shm_1_1stl_1_1Arena__activator_html"><div class="ttname"><a href="classipc_1_1shm_1_1stl_1_1Arena__activator.html">ipc::shm::stl::Arena_activator</a></div><div class="ttdoc">RAII-style class operating a stack-like notion of a the given thread's currently active SHM-aware Are...</div><div class="ttdef"><b>Definition:</b> arena_activator.hpp:41</div></div>
 <div class="ttc" id="aclassipc_1_1shm_1_1stl_1_1Stateless__allocator_html"><div class="ttname"><a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a></div><div class="ttdoc">Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...</div><div class="ttdef"><b>Definition:</b> stateless_allocator.hpp:119</div></div>
 </div><!-- fragment --><p >Note you may nest <a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of a the given thread&#39;s currently active SHM-aware Are...">Arena_activator</a> contexts in stack-like fashion. Note, also, that <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of a the given thread&#39;s currently active SHM-aware Are...">Arena_activator</a>&lt;A1&gt;</code> operates completely independently from <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of a the given thread&#39;s currently active SHM-aware Are...">Arena_activator</a>&lt;A2&gt;</code>, even in the same thread, if <code>A1</code> is not same-as <code>A2</code>. So any "clash" would only occur (1) in a given thread, not across threads; (2) for a given SHM provider type, not across 2+ such types.</p>
@@ -478,7 +478,7 @@ template&lt;typename Arena , typename T1 , typename T2 &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 10 2025 00:47:57 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Fri Apr 11 2025 20:02:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
