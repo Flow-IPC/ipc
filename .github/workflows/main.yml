@@ -1055,7 +1055,7 @@ jobs:
         $BUILT_CMD_PREFIX \
           ./perf_demo_srv_$1.exec 1000 $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
-        sleep 20 # It fills up a large structure before listening, so give it some time (mostly for slow build types).
+        sleep 40 # It fills up a large structure before listening, so give it some time (mostly for slow build types).
         $BUILT_CMD_PREFIX \
           ./perf_demo_cli_$1.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
