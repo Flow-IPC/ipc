@@ -108,6 +108,7 @@ set(SRCS
     ${isal_root}/ipc/shm/arena_lend/test/test_owner_shm_pool_collection.cpp
     ${isal_root}/ipc/shm/arena_lend/test/test_shm_object.cpp
     ${isal_root}/ipc/shm/arena_lend/test/test_shm_pool_collection.cpp
+    ${isal_root}/ipc/shm/test/lend_borrow_test.cpp
     test_main.cpp)
 set(CAPNP_SCHEMAS
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_message.capnp
