@@ -429,14 +429,6 @@ jobs:
         #     be at least reduced.  In the meantime our *SAN coverage is still quite good.
         exclude:
           - build-test-cfg: { id: relwithdebinfo-msan }
-          #XXXno - begin
-          - build-test-cfg: { id: relwithdebinfo }
-          - build-test-cfg: { id: relwithdebinfo-tsan }
-          - build-test-cfg: { id: relwithdebinfo-ubsan }
-          - build-test-cfg: { id: release }
-          - build-test-cfg: { id: minsizerel }
-          - cxx-std: { id: cxx20 }
-          #XXXno - end
           - compiler: { id: gcc-9 }
             build-test-cfg: { id: relwithdebinfo-asan }
           - compiler: { id: gcc-10 }
