@@ -904,7 +904,7 @@ jobs:
         $BUILT_CMD_PREFIX \
           ./ipc_session_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
-        sleep 1
+        sleep 5
         $BUILT_CMD_PREFIX \
           ./ipc_session_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
@@ -928,7 +928,7 @@ jobs:
         $BUILT_CMD_PREFIX \
           ./ipc_shm_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
-        sleep 1
+        sleep 5
         $BUILT_CMD_PREFIX \
           ./ipc_shm_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
@@ -954,7 +954,7 @@ jobs:
         $BUILT_CMD_PREFIX \
           ./ipc_shm_arena_lend_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
-        sleep 1
+        sleep 5
         $BUILT_CMD_PREFIX \
           ./ipc_shm_arena_lend_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
@@ -1107,7 +1107,7 @@ jobs:
           ./transport_test.exec scripted $OUT_DIR/srv.log info $1 \
           < srv-script.txt > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
-        sleep 1
+        sleep 5
         $BUILT_CMD_PREFIX \
           ./transport_test.exec scripted $OUT_DIR/cli.log info $1 \
           < cli-script.txt > $OUT_DIR/cli.console.log 2>&1 &
