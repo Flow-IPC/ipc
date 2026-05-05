@@ -1338,6 +1338,8 @@ jobs:
       uses: actions/checkout@v6
       with:
         submodules: true
+        # Avoids the duplicate-authorization-error in (not-frequently-invoked) doc_check_in step later down.
+        persist-credentials: false
 
     # In our process (and this is typical, though it is also possible to create tag without release) we
     # hit Publish on a new Release in GitHub; and this creates both the Release and tag, by convention both named
