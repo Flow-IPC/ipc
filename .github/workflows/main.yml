@@ -122,7 +122,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout VERSION file and tag history
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           sparse-checkout: VERSION
           fetch-depth: 0 # Get all history regarding tags.  We'll need that for VERSION checking below.
@@ -229,6 +229,7 @@ jobs:
             version: 9
             c-path: /usr/bin/gcc-9
             cpp-path: /usr/bin/g++-9
+            install: True
           - id: gcc-10
             name: gcc
             version: 10
@@ -628,7 +629,7 @@ jobs:
       run: pip install 'conan<2'
 
     - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: true
 
@@ -903,7 +904,7 @@ jobs:
         $BUILT_CMD_PREFIX \
           ./ipc_session_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
-        sleep 1
+        sleep 5
         $BUILT_CMD_PREFIX \
           ./ipc_session_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
@@ -927,7 +928,7 @@ jobs:
         $BUILT_CMD_PREFIX \
           ./ipc_shm_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
-        sleep 1
+        sleep 5
         $BUILT_CMD_PREFIX \
           ./ipc_shm_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
@@ -953,7 +954,7 @@ jobs:
         $BUILT_CMD_PREFIX \
           ./ipc_shm_arena_lend_link_test_srv.exec $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
-        sleep 1
+        sleep 5
         $BUILT_CMD_PREFIX \
           ./ipc_shm_arena_lend_link_test_cli.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
@@ -1054,7 +1055,7 @@ jobs:
         $BUILT_CMD_PREFIX \
           ./perf_demo_srv_$1.exec 1000 $OUT_DIR/srv.log > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
-        sleep 20 # It fills up a large structure before listening, so give it some time (mostly for slow build types).
+        sleep 40 # It fills up a large structure before listening, so give it some time (mostly for slow build types).
         $BUILT_CMD_PREFIX \
           ./perf_demo_cli_$1.exec $OUT_DIR/cli.log > $OUT_DIR/cli.console.log 2>&1
         if wait $SRV_PID; then SRV_EC=0; else SRV_EC=$?; fi
@@ -1106,7 +1107,7 @@ jobs:
           ./transport_test.exec scripted $OUT_DIR/srv.log info $1 \
           < srv-script.txt > $OUT_DIR/srv.console.log 2>&1 &
         SRV_PID=$!
-        sleep 1
+        sleep 5
         $BUILT_CMD_PREFIX \
           ./transport_test.exec scripted $OUT_DIR/cli.log info $1 \
           < cli-script.txt > $OUT_DIR/cli.console.log 2>&1 &
@@ -1282,7 +1283,7 @@ jobs:
     - name: Upload test/demo logs (please inspect if failure(s) seen above)
       if: |
         always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}
         path: ${{ env.install-dir }}/bin/logs.tgz
@@ -1334,9 +1335,11 @@ jobs:
       run: pip install 'conan<2'
 
     - name: Checkout `ipc` repository and submodules (like `flow`)
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: true
+        # Avoids the duplicate-authorization-error in (not-frequently-invoked) doc_check_in step later down.
+        persist-credentials: false
 
     # In our process (and this is typical, though it is also possible to create tag without release) we
     # hit Publish on a new Release in GitHub; and this creates both the Release and tag, by convention both named
@@ -1474,7 +1477,7 @@ jobs:
           ${{ github.workspace }}/build/${{ matrix.build-cfg.conan-profile-build-type }}
 
     - name: Upload documentation tarball
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ipc-doc
         path: ${{ github.workspace }}/doc/ipc_doc.tgz
