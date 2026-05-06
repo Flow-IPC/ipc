@@ -576,7 +576,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Completes the cross-process operation begun by <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#acb300e64f92ab0aa5b70f8313c79a899" title="Adds an owner process to the owner count of the given construct()-created handle, and returns an opaq...">lend_object()</a> that returned <code>serialization</code>; to be invoked in the intended new owner process. </p>
-<p >Returns null if no pool attached to <code>*this</code>.</p>
+<p >Returns null if no pool attached to <code>*this</code>, or if we detect <code>serialization</code> to be invalid (best-effort check).</p>
 <p >Consider the only 2 ways a user may obtain a new <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb" title="Outer handle to a SHM-stored object; really a regular-looking shared_ptr but with custom deleter that...">Handle</a> to a <code>T</code> from <code>*this</code>:</p><ul>
 <li><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36" title="Constructs an object of given type with given ctor args, having allocated space directly in attached ...">construct()</a>: This is allocation by the original/first owner of the <code>T</code>.</li>
 <li><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a>, after <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#acb300e64f92ab0aa5b70f8313c79a899" title="Adds an owner process to the owner count of the given construct()-created handle, and returns an opaq...">lend_object()</a> was called on a previous <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb" title="Outer handle to a SHM-stored object; really a regular-looking shared_ptr but with custom deleter that...">Handle</a> in another process, acquired <em>there</em> however it was acquired:<ul>
@@ -599,7 +599,7 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Non-null on success; <code>null</code> if ctor failed to attach a pool. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Non-null on success; <code>null</code> if ctor failed to attach a pool, or if <code>serialization</code> is invalid (best-effort check). </dd></dl>
 
 </div>
 </div>
@@ -747,11 +747,11 @@ template&lt;typename T &gt; </div>
 <p >Another way of saying that is: if and only if <code>handle</code> may be passed to <code>this-&gt;lend_object&lt;T&gt;()</code>. (The words "came from" mean "was returned by or is a copy/move of one that was," or equivalently "belongs to the `shared_ptr` group of one that was returned by.")</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>An object, or copy/move of an object, returned by <code>construct&lt;T&gt;()</code> or <code>borrow_object&lt;T&gt;()</code> of <em>a</em> <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> (not necessarily <code>*this</code>), while <code>*this</code> was already constructed. </td></tr>
+    <tr><td class="paramname">handle</td><td>An object, or copy/move of an object, returned by <code>construct&lt;T&gt;()</code> or <code>borrow_object&lt;T&gt;()</code> of <em>a</em> <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> (not necessarily <code>*this</code>). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. (Corner case: If ctor failed to attach a pool, we return <code>false</code>.) </dd></dl>
 
 </div>
 </div>
@@ -904,7 +904,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 11 2025 20:02:23 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed May 6 2026 07:10:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

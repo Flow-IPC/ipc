@@ -130,9 +130,9 @@ $(function() {
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keyword">constexpr</span> <span class="keywordtype">char</span> <span class="keyword">const</span> * MODE_STR = std::is_same_v&lt;Mode_tag, util::Create_only&gt;</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                                      ? <span class="stringliteral">&quot;create-only&quot;</span> : <span class="stringliteral">&quot;open-or-create&quot;</span>;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">if</span> (get_logger()-&gt;should_log(Sev::S_TRACE, get_log_component()))</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">if</span> (logger_ptr &amp;&amp; logger_ptr-&gt;should_log(Sev::S_TRACE, get_log_component()))</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  {</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    ios_all_saver saver(*(get_logger()-&gt;this_thread_ostream())); <span class="comment">// Revert std::oct/etc. soon.</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    ios_all_saver saver{*(logger_ptr-&gt;this_thread_ostream())}; <span class="comment">// Revert std::oct/etc. soon.</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    FLOW_LOG_TRACE_WITHOUT_CHECKING</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      (<span class="stringliteral">&quot;Bipc_mq_handle [&quot;</span> &lt;&lt; *<span class="keyword">this</span> &lt;&lt; <span class="stringliteral">&quot;]: Constructing MQ handle to MQ at name [&quot;</span> &lt;&lt; <a class="code hl_function" href="classipc_1_1transport_1_1Bipc__mq__handle.html#a7263ed9ec4f8ed534c0f7907b7accde9">absolute_name</a>() &lt;&lt; <span class="stringliteral">&quot;] in &quot;</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>       <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; MODE_STR &lt;&lt; <span class="stringliteral">&quot;] mode; max msg size [&quot;</span> &lt;&lt; max_msg_sz &lt;&lt; <span class="stringliteral">&quot;] x [&quot;</span> &lt;&lt; max_n_msg &lt;&lt; <span class="stringliteral">&quot;] msgs; &quot;</span></div>
@@ -1169,7 +1169,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 11 2025 20:02:25 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed May 6 2026 07:10:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -189,6 +189,13 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:ade690ffcab383978303f974e889deb54"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ade690ffcab383978303f974e889deb54">handle_deleter_impl</a> (<a class="el" href="structipc_1_1shm_1_1classic_1_1Pool__arena_1_1Handle__in__shm.html">Handle_in_shm</a>&lt; T &gt; *handle_state)</td></tr>
 <tr class="memdesc:ade690ffcab383978303f974e889deb54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical deleter for <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb" title="Outer handle to a SHM-stored object; really a regular-looking shared_ptr but with custom deleter that...">Handle</a> returned by both <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36" title="Constructs an object of given type with given ctor args, having allocated space directly in attached ...">construct()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a>; invoked when a given process's (<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a> caller's) <code>shared_ptr</code> group reaches ref-count 0.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ade690ffcab383978303f974e889deb54">More...</a><br /></td></tr>
 <tr class="separator:ade690ffcab383978303f974e889deb54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88b632d6a9d1248810175a6b65d7f638"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a88b632d6a9d1248810175a6b65d7f638">is_addr_in_arena</a> (const void *p) const</td></tr>
+<tr class="memdesc:a88b632d6a9d1248810175a6b65d7f638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if the byte at <code>p</code> is within the bounds of the pool accessed by <code>*this</code>.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a88b632d6a9d1248810175a6b65d7f638">More...</a><br /></td></tr>
+<tr class="separator:a88b632d6a9d1248810175a6b65d7f638"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45359fe5cbb7ec72a117812c20c35400"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a45359fe5cbb7ec72a117812c20c35400"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a45359fe5cbb7ec72a117812c20c35400">is_obj_in_arena</a> (const T *obj) const</td></tr>
+<tr class="memdesc:a45359fe5cbb7ec72a117812c20c35400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if all <code>sizeof(T)</code> bytes at address <code>obj</code> are within the bounds of the pool accessed by <code>*this</code>.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a45359fe5cbb7ec72a117812c20c35400">More...</a><br /></td></tr>
+<tr class="separator:a45359fe5cbb7ec72a117812c20c35400"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
@@ -257,7 +264,7 @@ Related Functions</h2></td></tr>
 </ul>
 <p ><code>T</code> cannot be a native array; and there is no facility for constructing such. Use <code>std::array</code> or <code>boost::array</code> as <code>T</code> if desired. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00150">150</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00151">151</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a72867ce6e363dbc1ab1666768d8a7a09" name="a72867ce6e363dbc1ab1666768d8a7a09"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a72867ce6e363dbc1ab1666768d8a7a09">&#9670;&nbsp;</a></span>Blob</h2>
@@ -274,7 +281,7 @@ Related Functions</h2></td></tr>
 <p>Alias for a light-weight blob. </p>
 <p >They're little; TRACE-logging of deallocs and copies is of low value; otherwise this can be switched to <code>flow::util::Blob</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00194">194</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00195">195</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
 </div>
 </div>
@@ -306,7 +313,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00188">188</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00189">189</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
 </div>
 </div>
@@ -333,7 +340,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00164">164</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00165">165</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
 </div>
 </div>
@@ -361,7 +368,7 @@ template&lt;typename T &gt; </div>
 <p >It would be possible to parameterize this somewhat further, such as specifying different allocation algorithms or speed up perf in single-thread situations. See class doc header for discussion. It is not a formal to-do yet.</p>
 <p >We <em>do</em> specify it as <code>basic_managed_shared_memory</code> with explicit template-parameters, as opposed to the more common <code>managed_shared_memory</code> alias, as of this writing because we don't need an index (by-name construction and lookup of objects), so we specify <code>null_index</code> to avoid wasting space on it. (So then we must specify the other params explicitly.) </p>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00509">509</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00512">512</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
 </div>
 </div>
@@ -585,7 +592,7 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="pool__arena_8cpp_source.html#l00076">76</a> of file <a class="el" href="pool__arena_8cpp_source.html">pool_arena.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00614">m_pool</a>, <a class="el" href="pool__arena_8hpp_source.html#l00493">m_pool_name</a>, <a class="el" href="shared__name_8cpp_source.html#l00145">ipc::util::Shared_name::native_str()</a>, <a class="el" href="util_8hpp_source.html#l00034">ipc::util::op_with_possible_bipc_exception()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00031">ipc::util::OPEN_ONLY</a>, and <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999ba5640941b8dbafc13ad6f6ef8dec1937f">ipc::shm::classic::error::S_SHM_BIPC_MISC_LIBRARY_ERROR</a>.</p>
+<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00643">m_pool</a>, <a class="el" href="pool__arena_8hpp_source.html#l00496">m_pool_name</a>, <a class="el" href="shared__name_8cpp_source.html#l00145">ipc::util::Shared_name::native_str()</a>, <a class="el" href="util_8hpp_source.html#l00034">ipc::util::op_with_possible_bipc_exception()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00031">ipc::util::OPEN_ONLY</a>, and <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999ba5640941b8dbafc13ad6f6ef8dec1937f">ipc::shm::classic::error::S_SHM_BIPC_MISC_LIBRARY_ERROR</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -698,7 +705,7 @@ template&lt;typename Mode_tag &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="pool__arena_8cpp_source.html#l00028">28</a> of file <a class="el" href="pool__arena_8cpp_source.html">pool_arena.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00614">m_pool</a>, <a class="el" href="pool__arena_8hpp_source.html#l00493">m_pool_name</a>, <a class="el" href="shared__name_8cpp_source.html#l00145">ipc::util::Shared_name::native_str()</a>, <a class="el" href="util_8hpp_source.html#l00034">ipc::util::op_with_possible_bipc_exception()</a>, and <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999ba5640941b8dbafc13ad6f6ef8dec1937f">ipc::shm::classic::error::S_SHM_BIPC_MISC_LIBRARY_ERROR</a>.</p>
+<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00643">m_pool</a>, <a class="el" href="pool__arena_8hpp_source.html#l00496">m_pool_name</a>, <a class="el" href="shared__name_8cpp_source.html#l00145">ipc::util::Shared_name::native_str()</a>, <a class="el" href="util_8hpp_source.html#l00034">ipc::util::op_with_possible_bipc_exception()</a>, and <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999ba5640941b8dbafc13ad6f6ef8dec1937f">ipc::shm::classic::error::S_SHM_BIPC_MISC_LIBRARY_ERROR</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -744,9 +751,9 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="pool__arena_8cpp_source.html#l00103">103</a> of file <a class="el" href="pool__arena_8cpp_source.html">pool_arena.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00614">m_pool</a>.</p>
+<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00643">m_pool</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00630">construct()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00678">construct()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -775,7 +782,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Completes the cross-process operation begun by <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#acb300e64f92ab0aa5b70f8313c79a899" title="Adds an owner process to the owner count of the given construct()-created handle, and returns an opaq...">lend_object()</a> that returned <code>serialization</code>; to be invoked in the intended new owner process. </p>
-<p >Returns null if no pool attached to <code>*this</code>.</p>
+<p >Returns null if no pool attached to <code>*this</code>, or if we detect <code>serialization</code> to be invalid (best-effort check).</p>
 <p >Consider the only 2 ways a user may obtain a new <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb" title="Outer handle to a SHM-stored object; really a regular-looking shared_ptr but with custom deleter that...">Handle</a> to a <code>T</code> from <code>*this</code>:</p><ul>
 <li><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36" title="Constructs an object of given type with given ctor args, having allocated space directly in attached ...">construct()</a>: This is allocation by the original/first owner of the <code>T</code>.</li>
 <li><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a>, after <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#acb300e64f92ab0aa5b70f8313c79a899" title="Adds an owner process to the owner count of the given construct()-created handle, and returns an opaq...">lend_object()</a> was called on a previous <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb" title="Outer handle to a SHM-stored object; really a regular-looking shared_ptr but with custom deleter that...">Handle</a> in another process, acquired <em>there</em> however it was acquired:<ul>
@@ -798,11 +805,17 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Non-null on success; <code>null</code> if ctor failed to attach a pool. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Non-null on success; <code>null</code> if ctor failed to attach a pool, or if <code>serialization</code> is invalid (best-effort check). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00693">693</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00739">739</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00614">m_pool</a>.</p>
+<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00660">is_obj_in_arena()</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00643">m_pool</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1shm_1_1classic_1_1Pool__arena_ad2f2b767d7da42e7e57592cc029386e5_cgraph.svg" width="576" height="59"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
@@ -846,9 +859,9 @@ template&lt;typename T , typename... Ctor_args&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Non-null on success; <code>null</code> if ctor failed to attach a pool. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00630">630</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00678">678</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool__arena_8cpp_source.html#l00103">allocate()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00768">construct_at()</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00614">m_pool</a>.</p>
+<p class="reference">References <a class="el" href="pool__arena_8cpp_source.html#l00103">allocate()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00841">construct_at()</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00643">m_pool</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -910,9 +923,9 @@ template&lt;typename T , typename... Ctor_args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00768">768</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00841">841</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00630">construct()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00678">construct()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -956,9 +969,9 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success; <code>false</code> if ctor failed to attach a pool. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8cpp_source.html#l00133">133</a> of file <a class="el" href="pool__arena_8cpp_source.html">pool_arena.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8cpp_source.html#l00134">134</a> of file <a class="el" href="pool__arena_8cpp_source.html">pool_arena.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00734">handle_deleter_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00807">handle_deleter_impl()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1010,7 +1023,7 @@ template&lt;typename Handle_name_func &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00780">780</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00853">853</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="util_8hpp_source.html#l00131">ipc::util::for_each_persistent_shm_pool()</a>.</p>
 <div class="dynheader">
@@ -1061,13 +1074,61 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00734">734</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00807">807</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool__arena_8cpp_source.html#l00133">deallocate()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00549">ipc::shm::classic::Pool_arena::Handle_in_shm&lt; T &gt;::m_atomic_owner_ct</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00546">ipc::shm::classic::Pool_arena::Handle_in_shm&lt; T &gt;::m_obj</a>.</p>
+<p class="reference">References <a class="el" href="pool__arena_8cpp_source.html#l00134">deallocate()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00552">ipc::shm::classic::Pool_arena::Handle_in_shm&lt; T &gt;::m_atomic_owner_ct</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00549">ipc::shm::classic::Pool_arena::Handle_in_shm&lt; T &gt;::m_obj</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1shm_1_1classic_1_1Pool__arena_ade690ffcab383978303f974e889deb54_cgraph.svg" width="407" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a88b632d6a9d1248810175a6b65d7f638" name="a88b632d6a9d1248810175a6b65d7f638"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88b632d6a9d1248810175a6b65d7f638">&#9670;&nbsp;</a></span>is_addr_in_arena()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::shm::classic::Pool_arena::is_addr_in_arena </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns <code>true</code> if and only if the byte at <code>p</code> is within the bounds of the pool accessed by <code>*this</code>. </p>
+<p >Assumes <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a308351dc72f76407cf845af163fa0124" title="Attached SHM pool. If ctor fails in non-throwing fashion then this remains null. Immutable after ctor...">m_pool</a> is non-null; else undefined behavior.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>An address. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="pool__arena_8cpp_source.html#l00167">167</a> of file <a class="el" href="pool__arena_8cpp_source.html">pool_arena.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00643">m_pool</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00651">is_handle_in_arena()</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00660">is_obj_in_arena()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1shm_1_1classic_1_1Pool__arena_a88b632d6a9d1248810175a6b65d7f638_icgraph.svg" width="576" height="120"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -1095,15 +1156,83 @@ template&lt;typename T &gt; </div>
 <p >Another way of saying that is: if and only if <code>handle</code> may be passed to <code>this-&gt;lend_object&lt;T&gt;()</code>. (The words "came from" mean "was returned by or is a copy/move of one that was," or equivalently "belongs to the `shared_ptr` group of one that was returned by.")</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>An object, or copy/move of an object, returned by <code>construct&lt;T&gt;()</code> or <code>borrow_object&lt;T&gt;()</code> of <em>a</em> <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> (not necessarily <code>*this</code>), while <code>*this</code> was already constructed. </td></tr>
+    <tr><td class="paramname">handle</td><td>An object, or copy/move of an object, returned by <code>construct&lt;T&gt;()</code> or <code>borrow_object&lt;T&gt;()</code> of <em>a</em> <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> (not necessarily <code>*this</code>). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. (Corner case: If ctor failed to attach a pool, we return <code>false</code>.) </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00651">651</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="pool__arena_8cpp_source.html#l00167">is_addr_in_arena()</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00643">m_pool</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1shm_1_1classic_1_1Pool__arena_ad2d54cc87b56613bba32aabd2c52ef13_cgraph.svg" width="331" height="59"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a45359fe5cbb7ec72a117812c20c35400" name="a45359fe5cbb7ec72a117812c20c35400"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45359fe5cbb7ec72a117812c20c35400">&#9670;&nbsp;</a></span>is_obj_in_arena()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::shm::classic::Pool_arena::is_obj_in_arena </td>
+          <td>(</td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns <code>true</code> if and only if all <code>sizeof(T)</code> bytes at address <code>obj</code> are within the bounds of the pool accessed by <code>*this</code>. </p>
+<p >Assumes <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a308351dc72f76407cf845af163fa0124" title="Attached SHM pool. If ctor fails in non-throwing fashion then this remains null. Immutable after ctor...">m_pool</a> is non-null; else undefined behavior.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Object type; <code>sizeof(T)</code> is significant in the calculation, so this is not mere syntactic sugar. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">obj</td><td>An address. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00622">622</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00660">660</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00614">m_pool</a>.</p>
+<p class="reference">References <a class="el" href="pool__arena_8cpp_source.html#l00167">is_addr_in_arena()</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00643">m_pool</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="pool__arena_8hpp_source.html#l00739">borrow_object()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1shm_1_1classic_1_1Pool__arena_a45359fe5cbb7ec72a117812c20c35400_cgraph.svg" width="362" height="59"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1shm_1_1classic_1_1Pool__arena_a45359fe5cbb7ec72a117812c20c35400_icgraph.svg" width="399" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
@@ -1142,9 +1271,9 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. <code>.empty()</code> if and only if ctor failed to attach a pool. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00661">661</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00707">707</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00549">ipc::shm::classic::Pool_arena::Handle_in_shm&lt; T &gt;::m_atomic_owner_ct</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00614">m_pool</a>.</p>
+<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00552">ipc::shm::classic::Pool_arena::Handle_in_shm&lt; T &gt;::m_atomic_owner_ct</a>, and <a class="el" href="pool__arena_8hpp_source.html#l00643">m_pool</a>.</p>
 
 </div>
 </div>
@@ -1203,7 +1332,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8cpp_source.html#l00165">165</a> of file <a class="el" href="pool__arena_8cpp_source.html">pool_arena.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8cpp_source.html#l00179">179</a> of file <a class="el" href="pool__arena_8cpp_source.html">pool_arena.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00119">ipc::util::remove_persistent_shm_pool()</a>.</p>
 <div class="dynheader">
@@ -1260,9 +1389,9 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8cpp_source.html#l00172">172</a> of file <a class="el" href="pool__arena_8cpp_source.html">pool_arena.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8cpp_source.html#l00186">186</a> of file <a class="el" href="pool__arena_8cpp_source.html">pool_arena.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00493">m_pool_name</a>.</p>
+<p class="reference">References <a class="el" href="pool__arena_8hpp_source.html#l00496">m_pool_name</a>.</p>
 
 </div>
 </div>
@@ -1289,9 +1418,9 @@ Here is the call graph for this function:</div>
 
 <p>Attached SHM pool. If ctor fails in non-throwing fashion then this remains null. Immutable after ctor. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00614">614</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00643">643</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool__arena_8cpp_source.html#l00103">allocate()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00693">borrow_object()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00630">construct()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00622">is_handle_in_arena()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00661">lend_object()</a>, and <a class="el" href="pool__arena_8cpp_source.html#l00028">Pool_arena()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool__arena_8cpp_source.html#l00103">allocate()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00739">borrow_object()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00678">construct()</a>, <a class="el" href="pool__arena_8cpp_source.html#l00167">is_addr_in_arena()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00651">is_handle_in_arena()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00660">is_obj_in_arena()</a>, <a class="el" href="pool__arena_8hpp_source.html#l00707">lend_object()</a>, and <a class="el" href="pool__arena_8cpp_source.html#l00028">Pool_arena()</a>.</p>
 
 </div>
 </div>
@@ -1309,9 +1438,9 @@ Here is the call graph for this function:</div>
 
 <p>SHM pool name as set immutably at construction. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00493">493</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool__arena_8hpp_source.html#l00496">496</a> of file <a class="el" href="pool__arena_8hpp_source.html">pool_arena.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool__arena_8cpp_source.html#l00172">operator&lt;&lt;()</a>, and <a class="el" href="pool__arena_8cpp_source.html#l00028">Pool_arena()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool__arena_8cpp_source.html#l00186">operator&lt;&lt;()</a>, and <a class="el" href="pool__arena_8cpp_source.html#l00028">Pool_arena()</a>.</p>
 
 </div>
 </div>
@@ -1323,7 +1452,7 @@ Here is the call graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 11 2025 20:02:26 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed May 6 2026 07:10:57 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

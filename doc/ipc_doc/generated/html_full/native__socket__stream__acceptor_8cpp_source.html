@@ -114,7 +114,7 @@ $(function() {
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  m_worker(get_logger(), <span class="comment">// Start the 1 thread.</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>           <span class="comment">/* (Linux) OS thread name will truncate m_absolute_name to 15-5=10 chars here; high chance that&#39;ll include</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">            * something decently useful; probably not everything though.  It&#39;s a decent attempt. */</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>           flow::util::ostream_op_string(<span class="stringliteral">&quot;NSSA-&quot;</span>, m_absolute_name)),</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>           flow::util::ostream_op_string(<span class="stringliteral">&quot;NSSA-&quot;</span>, m_absolute_name.str())),</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  m_next_peer_socket(*(m_worker.task_engine())) <span class="comment">// Steady state: start it as empty, per doc header.</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">using </span><a class="code hl_typedef" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a154986f10d30d850de86fc3924766e66">asio_local_stream_socket::Acceptor</a>;</div>
@@ -225,7 +225,7 @@ $(function() {
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  FLOW_LOG_INFO(<span class="stringliteral">&quot;Acceptor [&quot;</span> &lt;&lt; *<span class="keyword">this</span> &lt;&lt; <span class="stringliteral">&quot;]: Continuing shutdown.  Next we will run pending handlers from some &quot;</span></div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                <span class="stringliteral">&quot;other thread.  In this user thread we will await those handlers&#39; completion and then return.&quot;</span>);</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  Single_thread_task_loop one_thread(get_logger(), ostream_op_string(<span class="stringliteral">&quot;NSSADeinit-&quot;</span>, <a class="code hl_variable" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#a35785c842d668ee13f556580d0045511">m_absolute_name</a>));</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  Single_thread_task_loop one_thread(get_logger(), ostream_op_string(<span class="stringliteral">&quot;NSSADeinit-&quot;</span>, <a class="code hl_variable" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#a35785c842d668ee13f556580d0045511">m_absolute_name</a>.<a class="code hl_function" href="classipc_1_1util_1_1Shared__name.html#ae89e1e061f87ffe0288514e254837595">str</a>()));</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  one_thread.start([&amp;]()</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  {</div>
@@ -598,7 +598,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 11 2025 20:02:26 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed May 6 2026 07:10:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
