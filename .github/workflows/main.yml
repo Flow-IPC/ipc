@@ -1497,8 +1497,11 @@ jobs:
         # there's no way to configure the default token to be able to do this.
         # TODO: Keep an eye on that in case they provide for a better way:
         #   https://github.com/orgs/community/discussions/25305
+        # `-w 0` to avoid issues due to long tokens.
         git config --local http.https://github.com/.extraheader \
-          "AUTHORIZATION: basic $(echo -n x-access-token:${{ secrets.GIT_BOT_PAT }} | base64)"
+          "AUTHORIZATION: basic $(echo -n x-access-token:${{ secrets.GIT_BOT_PAT }} | base64 -w 0)"
+        # Avoid HTTP/2 network errors.
+        git config --local http.version HTTP/1.1
         cd ${{ github.workspace }}/doc/ipc_doc
         git rm -r --cached generated || echo 'No generated/ currently checked in; no problem.'
         git add generated
