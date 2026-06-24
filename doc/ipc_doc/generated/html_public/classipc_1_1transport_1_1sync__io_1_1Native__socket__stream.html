@@ -196,8 +196,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac645b3e69ee3bfda64c0e9fda62f656a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac645b3e69ee3bfda64c0e9fda62f656a">More...</a><br /></td></tr>
 <tr class="separator:ac645b3e69ee3bfda64c0e9fda62f656a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16b605c316922325415d60aeb0af3c40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a16b605c316922325415d60aeb0af3c40">remote_peer_process_credentials</a> (<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0) const</td></tr>
-<tr class="memdesc:a16b605c316922325415d60aeb0af3c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">OS-reported process credential (PID, etc.) info about the <em>other</em> connected peer's process, at the time that the OS first established (via local-socket-connect or local-socket-connected-pair-generate call) that opposing peer socket.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a16b605c316922325415d60aeb0af3c40">More...</a><br /></td></tr>
+<tr class="memdesc:a16b605c316922325415d60aeb0af3c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a16b605c316922325415d60aeb0af3c40">More...</a><br /></td></tr>
 <tr class="separator:a16b605c316922325415d60aeb0af3c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aeb690bc5e4361fc318ff1ed9743af1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3aeb690bc5e4361fc318ff1ed9743af1">remote_peer_process_credentials</a> (const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a> &amp;creds)</td></tr>
+<tr class="memdesc:a3aeb690bc5e4361fc318ff1ed9743af1"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3aeb690bc5e4361fc318ff1ed9743af1">More...</a><br /></td></tr>
+<tr class="separator:a3aeb690bc5e4361fc318ff1ed9743af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -886,8 +889,35 @@ template&lt;typename Task_err_sz &gt; </div>
 
 </div>
 </div>
+<a id="a3aeb690bc5e4361fc318ff1ed9743af1" name="a3aeb690bc5e4361fc318ff1ed9743af1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3aeb690bc5e4361fc318ff1ed9743af1">&#9670;&nbsp;</a></span>remote_peer_process_credentials() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::transport::sync_io::Native_socket_stream::remote_peer_process_credentials </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a> &amp;&#160;</td>
+          <td class="paramname"><em>creds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">creds</td><td>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </dd></dl>
+
+</div>
+</div>
 <a id="a16b605c316922325415d60aeb0af3c40" name="a16b605c316922325415d60aeb0af3c40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16b605c316922325415d60aeb0af3c40">&#9670;&nbsp;</a></span>remote_peer_process_credentials()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a16b605c316922325415d60aeb0af3c40">&#9670;&nbsp;</a></span>remote_peer_process_credentials() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -902,17 +932,14 @@ template&lt;typename Task_err_sz &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>OS-reported process credential (PID, etc.) info about the <em>other</em> connected peer's process, at the time that the OS first established (via local-socket-connect or local-socket-connected-pair-generate call) that opposing peer socket. </p>
-<p >The value returned, assuming a non-error-emitting execution, shall always be the same for a given <code>*this</code>.</p>
-<p >Informally: To avoid (though, formally, not guarantee) <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297acb14cace6f75d915cd800113c37721e7" title="Unable to access low-level details: an earlier-reported system error had hosed the underlying transpo...">error::Code::S_LOW_LVL_TRANSPORT_HOSED</a>, it is best to call this immediately upon entry of <code>*this</code> to PEER state and/or before invoking any other APIs.</p>
-<p >If invoked outside of PEER state returns <code>Process_credentials()</code> immediately and otherwise does nothing.</p>
-<dl class="section return"><dt>Returns</dt><dd>See above; or <code>Peer_credentials()</code> if invoked outside of PEER state or in case of error. The 2 eventualities can be distinguished by checking <code>*err_code</code> truthiness. Better yet only call <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a16b605c316922325415d60aeb0af3c40" title="OS-reported process credential (PID, etc.) info about the other connected peer&#39;s process,...">remote_peer_process_credentials()</a> in PEER state, as it is otherwise conceptually meaningless.</dd></dl>
+<p>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart doc header. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </dd></dl>
 
 </div>
 </div>
@@ -1403,7 +1430,7 @@ template&lt;typename Event_wait_func_t &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 6 2026 07:10:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -176,8 +176,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1b4ce3ddee39f21e752ec9114ac17bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Native_handle_receiver</a>, <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a> API per contract.  <a href="classipc_1_1transport_1_1Native__socket__stream.html#a1b4ce3ddee39f21e752ec9114ac17bbd">More...</a><br /></td></tr>
 <tr class="separator:a1b4ce3ddee39f21e752ec9114ac17bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af63671c0e30d39d3460331c4dd3742b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#af63671c0e30d39d3460331c4dd3742b2">remote_peer_process_credentials</a> (<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0) const</td></tr>
-<tr class="memdesc:af63671c0e30d39d3460331c4dd3742b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">OS-reported process credential (PID, etc.) info about the <em>other</em> connected peer's process, at the time that the OS first established (via local-socket-connect or local-socket-connected-pair-generate call) that opposing peer socket.  <a href="classipc_1_1transport_1_1Native__socket__stream.html#af63671c0e30d39d3460331c4dd3742b2">More...</a><br /></td></tr>
+<tr class="memdesc:af63671c0e30d39d3460331c4dd3742b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">OS-reported process credential (PID, etc.) info about the <em>other</em> connected peer's process, at the time that the OS first established (via local-socket-connect or local-socket-connected-pair-generate call) that opposing peer socket &ndash; unless overridden via mutator (please read here).  <a href="classipc_1_1transport_1_1Native__socket__stream.html#af63671c0e30d39d3460331c4dd3742b2">More...</a><br /></td></tr>
 <tr class="separator:af63671c0e30d39d3460331c4dd3742b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2d5cd554fa1d98065da40893edecbe7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#ac2d5cd554fa1d98065da40893edecbe7">remote_peer_process_credentials</a> (const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a> &amp;creds)</td></tr>
+<tr class="memdesc:ac2d5cd554fa1d98065da40893edecbe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides what same-named accessor shall return subsequently; useful when a socket-stream endpoint travels to another process relative to where the connection was first established.  <a href="classipc_1_1transport_1_1Native__socket__stream.html#ac2d5cd554fa1d98065da40893edecbe7">More...</a><br /></td></tr>
+<tr class="separator:ac2d5cd554fa1d98065da40893edecbe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -881,8 +884,37 @@ template&lt;typename Task_err_sz &gt; </div>
 
 </div>
 </div>
+<a id="ac2d5cd554fa1d98065da40893edecbe7" name="ac2d5cd554fa1d98065da40893edecbe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2d5cd554fa1d98065da40893edecbe7">&#9670;&nbsp;</a></span>remote_peer_process_credentials() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::transport::Native_socket_stream::remote_peer_process_credentials </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a> &amp;&#160;</td>
+          <td class="paramname"><em>creds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Overrides what same-named accessor shall return subsequently; useful when a socket-stream endpoint travels to another process relative to where the connection was first established. </p>
+<p >After calling this mutator, the same-named accessor shall return a value equal to <code>creds</code>, unless it yields <code>{}</code> (error case).</p>
+<dl class="section see"><dt>See also</dt><dd>doc header for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#af63671c0e30d39d3460331c4dd3742b2" title="OS-reported process credential (PID, etc.) info about the other connected peer&#39;s process,...">remote_peer_process_credentials()</a> accessor for important relevant information.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">creds</td><td>The value to save. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if called in PEER state (<code>creds</code> was saved); <code>false</code> if called in another state (<code>creds</code> was not saved). </dd></dl>
+
+</div>
+</div>
 <a id="af63671c0e30d39d3460331c4dd3742b2" name="af63671c0e30d39d3460331c4dd3742b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af63671c0e30d39d3460331c4dd3742b2">&#9670;&nbsp;</a></span>remote_peer_process_credentials()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af63671c0e30d39d3460331c4dd3742b2">&#9670;&nbsp;</a></span>remote_peer_process_credentials() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -897,14 +929,39 @@ template&lt;typename Task_err_sz &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>OS-reported process credential (PID, etc.) info about the <em>other</em> connected peer's process, at the time that the OS first established (via local-socket-connect or local-socket-connected-pair-generate call) that opposing peer socket. </p>
-<p >The value returned, assuming a non-error-emitting execution, shall always be the same for a given <code>*this</code>.</p>
-<p >Informally: To avoid (though, formally, not guarantee) <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297acb14cace6f75d915cd800113c37721e7" title="Unable to access low-level details: an earlier-reported system error had hosed the underlying transpo...">error::Code::S_LOW_LVL_TRANSPORT_HOSED</a>, it is best to call this immediately upon entry of <code>*this</code> to PEER state and/or before invoking any other APIs.</p>
-<p >If invoked outside of PEER state returns <code>Process_credentials()</code> immediately and otherwise does nothing.</p>
-<dl class="section return"><dt>Returns</dt><dd>See above; or <code>Peer_credentials()</code> if invoked outside of PEER state or in case of error. The 2 eventualities can be distinguished by checking <code>*err_code</code> truthiness. Better yet only call <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#af63671c0e30d39d3460331c4dd3742b2" title="OS-reported process credential (PID, etc.) info about the other connected peer&#39;s process,...">remote_peer_process_credentials()</a> in PEER state, as it is otherwise conceptually meaningless.</dd></dl>
+<p>OS-reported process credential (PID, etc.) info about the <em>other</em> connected peer's process, at the time that the OS first established (via local-socket-connect or local-socket-connected-pair-generate call) that opposing peer socket &ndash; unless overridden via mutator (please read here). </p>
+<h3>Exact semantics</h3>
+<p >If one is not careful, it is possible to get in hard-to-realize trouble with this accessor. Here are the exact semantics; then we'll briefly discuss their implications.</p>
+<ul>
+<li>If called in non-PEER state, returns <code>{}</code> but emits no error.</li>
+<li>If called in PEER state, but incoming/outgoing-direction processing earlier detected that the underlying transport is hosed, returns <code>{}</code> (unless throws) and emits <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297acb14cace6f75d915cd800113c37721e7" title="Unable to access low-level details: an earlier-reported system error had hosed the underlying transpo...">error::Code::S_LOW_LVL_TRANSPORT_HOSED</a>.<ul>
+<li>As of this writing no other errors are possible.</li>
+</ul>
+</li>
+<li>Otherwise (main case):<ul>
+<li>If <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#af63671c0e30d39d3460331c4dd3742b2" title="OS-reported process credential (PID, etc.) info about the other connected peer&#39;s process,...">remote_peer_process_credentials()</a> <em>mutator</em> has been called, returns copy of the value given to that mutator last. Otherwise:</li>
+<li>Returns the values accurate at the time that the connection was originally established. To wit:<ul>
+<li>If <code>*this</code> established connection via <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a89d591db714e83dcb55a52738fed1ebb" title="To be invoked in NULL state only, it synchronously and non-blockingly attempts to connect to an oppos...">sync_connect()</a> (or equivalent such as via native OS-connect): returns the opposing process's info saved at the moment of successful OS-connect.</li>
+<li>If <code>*this</code> established connection via <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#a81426af495ba5a9c832d1ba35fe23ba5" title="Asynchronously awaits for a peer connection to be established and calls on_done_func(),...">Native_socket_stream_acceptor::async_accept()</a> (or equivalent such as via native OS-accept): returns the opposing process's info saved at the moment of successful OS-connect (background-accept op subsequent to native OS-listen).</li>
+<li>If <code>*this</code> established connection via boost.asio <code>connect_pair()</code> (or equivalent such as via native OS <code>socketpair()</code>): returns the info for the process that executed OS-socket-pair, at the time that it was called.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Rationale/implications</h3>
+<p >In the <em>main case</em> path above: All of that is reasonable and as one would expect, with the exception of the very last bullet point, because typically (not always) one would then transmit one of the handles (FDs) returned by OS-socket-pair call to another process (over yet another <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a>) and then communicate over that channel. In particular <code><a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a></code>-created <code><a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a></code>s internally operate that way. In that case one might invoke <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#af63671c0e30d39d3460331c4dd3742b2" title="OS-reported process credential (PID, etc.) info about the other connected peer&#39;s process,...">remote_peer_process_credentials()</a> and expect the PID/etc. of the opposing process; but that will be accurate only for the guy who received the handle/FD; whereas for the guy who sent it this method will return that guy's own PID... unhelpful, usually.</p>
+<p >The following are the key implications/corollaries of that.</p><ul>
+<li>You should be aware of it, instead of assuming "opposing peer" means what you think it means.</li>
+<li>If you'd like to override this behavior, when it is inconvenient, use the mutator <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#af63671c0e30d39d3460331c4dd3742b2" title="OS-reported process credential (PID, etc.) info about the other connected peer&#39;s process,...">remote_peer_process_credentials()</a> (as shown above, those values will then be returned). You would need the correct values to pass to it, but these are usually available from the socket-stream used to transmit the FD. Namely one would perhaps call <em>that</em> guy's <code>.<a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#af63671c0e30d39d3460331c4dd3742b2" title="OS-reported process credential (PID, etc.) info about the other connected peer&#39;s process,...">remote_peer_process_credentials()</a></code>.<ul>
+<li>The <code><a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a></code>s returned by <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> already internally use this mechanism. That is Channel::remote_peer_process_credentials() will yield the actual opposing process's stuff, assuming an <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">ipc::session::Session</a> or variant generated the <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a>. (If you create the <code><a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a></code> yourself, then it is up to you to use the mutator to correct for this yourself.)</li>
+</ul>
+</li>
+</ul>
+<dl class="section return"><dt>Returns</dt><dd>See above; or <code>Peer_credentials{}</code> if invoked outside of PEER state or in case of error. The 2 eventualities can be distinguished by checking <code>*err_code</code> truthiness. Better yet only call <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#af63671c0e30d39d3460331c4dd3742b2" title="OS-reported process credential (PID, etc.) info about the other connected peer&#39;s process,...">remote_peer_process_credentials()</a> in PEER state, as it is otherwise conceptually meaningless.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297acb14cace6f75d915cd800113c37721e7" title="Unable to access low-level details: an earlier-reported system error had hosed the underlying transpo...">error::Code::S_LOW_LVL_TRANSPORT_HOSED</a> (the incoming/outgoing-direction processing detected that the underlying transport is hosed; specific code was logged and can be obtained via <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a266b52821557f2a4fa8f81058290dee2" title="Implements Native_handle_receiver API per contract.">async_receive_native_handle()</a> or similar), system codes (albeit unlikely). </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297acb14cace6f75d915cd800113c37721e7" title="Unable to access low-level details: an earlier-reported system error had hosed the underlying transpo...">error::Code::S_LOW_LVL_TRANSPORT_HOSED</a> (the incoming/outgoing-direction processing detected that the underlying transport is hosed; specific code was logged and can be obtained via <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a266b52821557f2a4fa8f81058290dee2" title="Implements Native_handle_receiver API per contract.">async_receive_native_handle()</a> or similar). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1192,7 +1249,7 @@ template&lt;typename Task_err_sz &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 6 2026 07:10:54 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
