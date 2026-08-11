@@ -340,6 +340,10 @@ jobs:
               LDFLAGS = -fsanitize=undefined
             conan-profile-custom-settings: |
               compiler.sanitizer = undefined
+              # jemalloc's internals feature certain known, benign, upstream UB (int-overflowing shifts et al);
+              # so exempt it -- and only it -- from instrumentation.  (UBSAN is per-translation-unit -- no
+              # TSAN-style all-code-must-be-instrumented requirement -- so this is safe.)
+              jemalloc:compiler.sanitizer = None
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
