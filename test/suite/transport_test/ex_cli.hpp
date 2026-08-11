@@ -250,7 +250,7 @@ void CLASS::client_connect_2()
   m_ses2 = Session(m_ipc_logger, m_cli_apps.find(S_CLI_NAME_2) // <-- Attn.
                                    ->second,
                    m_srv_apps.find(S_SRV_NAME)->second,
-                   [this](auto&&...){});
+                   [](auto&&...){});
 
   auto mdt_cli = m_ses2.mdt_builder();
   mdt_cli->initPayload().setNumChansYouWant(0); // They're gonna verify this contrived thing.

@@ -304,7 +304,7 @@ const util::String_view S_KEYWD_CHAN_BUNDLE_BIPC_AUTO_PING = "CHAN_BUNDLE_BIPC_A
 const util::String_view S_TEST_BLOB_CONTENTS = "<12345678>";
 
 template<typename>
-constexpr bool DEPENDENT_FALSE = false;
+[[maybe_unused]] constexpr bool DEPENDENT_FALSE = false;
 } // namespace (anon)
 
 const Script_interpreter::Keyword_to_interpret_func_map Script_interpreter::S_CMD_TO_HANDLER_MAP =
