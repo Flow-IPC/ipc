@@ -39,6 +39,10 @@ int main(int argc, char** argv)
   using Operation_mode = Test_shm_session_server::Operation_mode;
 
   ipc::test::Test_logger logger(flow::log::Sev::S_INFO);
+  /* Nickname this (server child process') main thread: its log lines interleave with the test process' on
+   * the same console, so this makes them easy to pick out. (Skip renaming the OS thread: for the process'
+   * main thread that would rename the process in `ps` et al.) */
+  flow::log::Logger::this_thread_set_logged_nickname("testSrvMain", &logger, false);
   Test_shm_session_server_executor executor(&logger);
 
   if (argc != 4)
@@ -100,8 +104,8 @@ int main(int argc, char** argv)
       operation_mode = Operation_mode::S_DISCONNECT;
       break;
 
-    case to_underlying(Operation_mode::S_ERROR_HANDLING):
-      operation_mode = Operation_mode::S_ERROR_HANDLING;
+    case to_underlying(Operation_mode::S_CRASH):
+      operation_mode = Operation_mode::S_CRASH;
       break;
 
     default:

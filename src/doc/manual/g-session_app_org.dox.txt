@@ -120,7 +120,7 @@ About what kinds of data are we even speaking?  Answer:
 
 @anchor recs
 ### Organizing your objects: Up to sessions ###
-So, bottom line, you've got `Session` (possibly multiple), possibly a `Session_server`, `Channel`s and/or `struc::Channel`s, and then IPC-shared data (structured messages and/or C++ data structured).  How to organize them in your code on each side?  And, in a strongly related topic, what's the best way to hook up the `Session` error handler?  Our recommendations follow.  Again: it's the communicated principles that matter; the exact code snippets are an informal guide.  Or, perhaps, it can be looked at a *case study* (of a reasonably complex situation) which you can morph for your own needs.
+So, bottom line, you've got `Session` (possibly multiple), possibly a `Session_server`, `Channel`s and/or `struc::Channel`s, and then IPC-shared data (structured messages and/or C++ data structures).  How to organize them in your code on each side?  And, in a strongly related topic, what's the best way to hook up the `Session` error handler?  Our recommendations follow.  Again: it's the communicated principles that matter; the exact code snippets are an informal guide.  Or, perhaps, it can be looked at a *case study* (of a reasonably complex situation) which you can morph for your own needs.
 
 Let's have a (singleton, really) `class Process {}` just to bracket things nicely.  (It's certainly optional but helps to communicate subsequent topics.)  It applies to both the session-server app A and session-client app B.  To do any ipc::session-based IPC, you'll definitely need to set up your `App`s, `Client_app`s, and `Server_app`s -- [IPC universe description](./session_setup.html#universe_desc), exactly as described in that link.  As it says, run the same code at the start of each `Process` lifecycle (perhaps in its constructor).  Store them in the `Process` as data members as needed, namely:
   - Session-client `Process`:
@@ -143,9 +143,9 @@ Now it's time to set up some session(s).  The more difficult task is on the serv
     // ...Your IPC universe description members go here....
 
     // Alias your session-related types here.
-    template<ipc::session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES,
+    template<ipc::session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES,
              typename Mdt_payload = ::capnp::Void>
-    using Session_server_t = ipc::session::shm::classic::Session_server<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+    using Session_server_t = ipc::session::shm::classic::Session_server<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
     using Session_server = Session_server_t<...knobs...>;
     using Session = Session_server::Server_session_obj;
 
@@ -255,9 +255,9 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
     ipc::session::Client_app m_cli_app;
 
     // Alias your session-related types here.
-    template<ipc::session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES,
+    template<ipc::session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES,
              typename Mdt_payload = ::capnp::Void>
-    using Client_session_t = ipc::session::shm::classic::Client_session<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+    using Client_session_t = ipc::session::shm::classic::Client_session<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
     using Session = Client_session_t<...knobs...>;
 
     // Your main loop (a/k/a thread U).  All your code will be post()ed here.
@@ -296,7 +296,7 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
       // When not connecting, m_session is empty.  We are about to connect, so let's get it into shape.
       // Note Session is (efficiently) move()able.
       m_next_session
-        = Session(get_logger(), m_cli_app, m_srv_app,
+        = Session{get_logger(), m_cli_app, m_srv_app,
                   ..., // Possible channel-passive-open handler (discussed elsewhere).
                   [this](const Error_code& err_code)
       {
@@ -308,7 +308,7 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
           // We just forward it; otherwise it's not in the purview of class Process:
           m_active_session->on_session_hosed(err_code);
         });
-      });
+      }};
 
       // It's not doing anything; now we attempt connect.  Don't worry; that forwarding error handler does not
       // matter yet -- only once the sync_connect() succeeds.

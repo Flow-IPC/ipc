@@ -149,4 +149,286 @@ CHAN_BUNDLE_BIPC_RECV 0 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 0 15 ms
 
 # TODO: Moar....
 
+# Sleep for a while just to mark off that a major section is about to start.
+# Forget all objects for a fresh start (names, indices, ...).
+RESET 3 s 0
+
+# Now we test batch-receiving.  Unlike the above, which more comprehensively tests APIs on
+# individual varieties of {Native_handle|Blob}_{sender|receiver} and then also
+# bundling-channels (themselves implementing those concepts), in this case we avoid all that
+# tedium by just using bundling-channels; first a POSIX MQ + socket-stream bundle; then
+# repeat the exact same steps for a bipc MQ + socket-stream bundle.
+
+# So: POSIX MQ is the MQ pipe; and socket-stream is the sockets pipe.  We typically
+# test them in parallel (sometimes we might need to do it in series).  The socket-stream
+# white-boxily (at least if available as in moderm Linux) uses native OS batch-receiving
+# (SOCK_SEQPACKET + recvmmsg() in Linux), while the MQ stream emulates batch-receiving as
+# a series of single-receives.  The black-box behavior is the same, as you'll see.
+# The only exception to this is that an MQ has a small out-buffer (10 msgs) which limits how
+# much stuff we can load onto "the wire" and have the opposing side batch-read all in one go.
+# When this is relevant, we comment on it (as of this writing there's one spot).
+# (Spoiler alert: Just keep in mind: 1 user message = 1 MQ raw message; but 1 PING (or graceful-close)
+# = 2 MQ raw messages.  So, e.g., 5 PINGs in a row would fill the out-queue, and... etc.
+# It's not some catastrophe; it just means a batch might be limited in size, and... etc...
+# so we must have the proper expectations on the receiving side.)
+
+# Give srv side time to begin listening.
+SLEEP 1 s
+SOCK_STREAM_CONNECT _socks_1
+# -> stm 0
+
+# Let it create the MQ (we refer to it next), as it creates its side of the channel.
+# It also makes it so that when we recv/send, the receive will instantly succeed;
+# while when *they* send/recv (before this sleep finishes), the receive will need
+# to await readability first (approx the length of this sleep).
+SLEEP 2 s
+
+CHAN_BUNDLE_POSIX_CREATE _mqd_5 0 0
+# Posix:chan -> 0
+# (Dead: stm 0)
+
+# <cmd> <n-slots> <blob-sz-or-0>
+BATCH_CREATE 4 40404
+# -> batch 0
+# <cmd> <n-slots> <blob-sz>
+BLOB_BATCH_CREATE 4 8192
+# -> b-batch 0
+
+# <cmd> <stm-slot> <batch-slot> <assume-would-block?> <expected-ipc-err-or-success> <N=expected-n-used>
+#       <expected-blob-sz>*N <expected-hndl?>*N <timeout> <timeout-units>
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 0 0 3 20202 30303 0 0 1 1 50 ms
+# -> sock 0, 1
+# <cmd> <stm-slot> <batch-slot> <assume-would-block?> <expected-ipc-err-or-success> <N=expected-n-used>
+#       <expected-blob-sz>*N <timeout> <timeout-units>
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 0 0 0 0 3 5050 8100 1 50 ms
+
+CHAN_BUNDLE_POSIX_SEND 0 -1 1 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 8192 0
+
+# Receive full batch + more.  Reuse batch.
+SLEEP 2 s
+
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 0 0 4 20202 30303 1 40404 0 0 0 0 50 ms
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 0 0 2 22 333 0 0 50 ms
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 0 0 0 0 4 5050 8100 1 8192 50 ms
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 0 0 0 0 2 11 222 50 ms
+
+CHAN_BUNDLE_POSIX_SEND 0 -1 1 0
+
+# Receive more stuff but this time srv will intentionally auto-ping in the middle of other stuff;
+# we should get standard messages and of course not ourselves "see" any auto-ping.
+# TODO: Test auto-ping itself in the sense that we should also test idle-timeout (lack of auto-ping or
+# other traffic => pipe death).  Here we only ensure srv can invoke auto-ping API without something
+# terrible happening; then we assume it's actually happening in the background.  FWIW transport_test
+# exercise-mode does test that stuff though in a less direct way than we would in this to-do.
+SLEEP 4 s
+# srv patterned the sends and auto-pings so that the raw dgrams (in each pipe) look like:
+# PING/665/664/663/PING/662/PING/661.  Since the in-batch structure has 4 slots, the
+# first RECV_...BATCH will result in the following target-list calls and target lengths (in Linux
+# for the Unix-domain-socket pipe) and resulting in-messages:
+#   recvmmsg(4) -> [ping thrown out] 665 664 663 -> full in-batch but space cleared
+#   recvmsg() -> [ping thrown out] -> full in-batch but space cleared
+#   recvmsg() -> 662 -> full in-batch, no space cleared, done
+# Then the second RECV_...BATCH yields
+#   recvmmsg(4) -> [ping thrown out] 661 -> non-full in-batch (+space cleared) => implied would-block, done
+# So not only did we test various combos of [space cleared, or not] x [full, non-full in-batch];
+# but we tested the little optimization where when only 1 slot is available we do recvmsg() instead of
+# recvmmsg(1).
+# Plus the MQ pipe will use batch-receiving emulation, including its own version of the thing where
+# non-user-messages (auto-pings) need throwing out; so we test that alternative algorithm too.
+# Pretty good coverage all in all.
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 0 0 4 665 664 663 662 0 0 0 0 50 ms
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 0 0 0 0 4 1665 1664 1663 1662 50 ms
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 0 0 0 0 1 1661 50 ms
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 0 0 1 661 0 50 ms
+
+# Send it a thing it'll try to read in a couple of ways and eventually succeed; whatever.
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1 0
+# Then send it stuff along the other pipe such that it'll get error ...EXCEEDS... eventually.
+CHAN_BUNDLE_POSIX_SEND 0 -1 111 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 60100 0
+# This one will be too big (by 1 byte) for srv's in-batch.
+CHAN_BUNDLE_POSIX_SEND 0 -1 60101 0
+# Too late for this one: in-pipe is hosed for them (but not our problem, we can still send into aether).
+CHAN_BUNDLE_POSIX_SEND 0 -1 60100 0
+
+# Throw in non-batch receive for fun; but more to the point their out-pipe is not hosed, so receiving
+# shall continue to work.
+CHAN_BUNDLE_POSIX_RECV 0 543 0 0 543 2 s
+
+SLEEP 1 s
+# They send 2 msgs + graceful-close; we receive it as 2 msgs + success; then error (it is deferred).
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 0 0 2 345 3456 0 0 50 ms
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 0 RECEIVES_FINISHED_CANNOT_RECEIVE 0 50 ms
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 0 0 0 0 2 345 3456 50 ms
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 0 0 0 RECEIVES_FINISHED_CANNOT_RECEIVE 0 50 ms
+
+# What's left?  We've covered realistic errors except OS-graceful-close (which isn't really *that*
+# realistic (typically opposing side would issue Flow-IPC-graceful-close via end_sending()), but let's
+# say that is still TODO).  Let's consider how a non-error RECV_...BATCH into N-batch can end-up
+# (where N>1, as N=1 is a degenerate case that simplifies things; let's focus on non-simplified).
+# Consider also that each raw in-message on "the wire" is either a PING or a MSG (user message).
+# (In our context it cannot be an incomplete message: For the Native_socket_stream protocol there's no
+# such thing, as message<=>dgram; for MQ protocol it is possible -- CONTROL message, then would-block --
+# but triggering it without instrumenting the code is ~impossible; but perhaps a TODO to instrument it.)
+# Also for this discussion consider a batch-receive to be "really" just a series of single-receives.
+# (The MQ algorithm will do just that a/k/a batch-receive emulation.  The N_s_s algorithm will use an
+# actual native batch-receive, if available (as in modern Linux), but ultimately that still conceptually
+# performs single-receives albeit in the kernel.  So in our context we can/should still think of it that way
+# and then leave it to Flow-IPC to properly wrangle the native-batch-receive calls; after all that's
+# functional testing.)  So then here are the possible events in a single batch-receive Flow-IPC API call:
+#   - MSG (got user message; but after recording it in batch, 1+ slots remain; must read again);
+#   - MSG-FULL (got user message; but after recording it in batch, 0 slots remain; done);
+#   - PING (got auto-ping; throw it out; must read again);
+#   - BLK (got would-block; done).
+#     (Native batch-receive can yield <N in-dgrams which also implies BLK... but again, we're ignoring
+#     native batch-receiving and are discussing it as what it reduces to: single-receives the last of
+#     which yields BLK.)
+# Now, of these, the exactly one of exactly the following ends any given batch-receive:
+# MSG-FULL, BLK.  Have we covered both of these?  Yes, we have, in some form.  However we should cover
+# varieties of each.  We've covered for sure the following sequences (X+ means X 1 or more times; X* means
+# X 0 or more times) -- not every form of each but good enough probably:
+#   - [MSG*, BLK];
+#   - [MSG+, MSG-FULL];
+#   - [{MSG or PING}*, PING, MSG*, MSG-FULL];
+#   - [{MSG or PING}*, PING, MSG+, BLK].
+# Closer to English: the latter 2 = sequence involving PINGs but a PING is not immediately followed by BLK;
+# the former 2 are vanilla PING-less sequences.
+#
+# So that leaves:
+#   - [{MSG or PING}*, PING, BLK].
+# which can be broken down into:
+#   -1- [PING+, BLK];
+#   -2- [{MSG or PING}+ with at least one MSG in there, PING, BLK].
+# Indeed, white-boxily speaking:
+#   - The native-batch-receive-using algorithm (the sockets pipe in our setup here) has tricky logic about
+#     throwing out PINGs and then potentially trying again, since if the last nb-read filled the batch,
+#     the thrown-out PINGs free-up space to try again.  We've tested it when PING is *not* the last thing
+#     on "the wire," but not if it is; what if the tricky algorithm breaks?  Test it.
+#   - The batch-receive emulation (the MQ pipe in our setup here) is not tricky in that sense, and likely
+#     if PING-not-last sequences work, then so do PING-last ones... but why chance it?  Test it with the
+#     same sequence(s) as for the preceding bullet point.
+# Thus we will now try (for each pipe type as usual) varieties of -1- and -2-.
+
+# We've methodically annihilated chan 0's pipes.  Make chan 1; while we're at it use one of the raw
+# socket-handles we transmitted above someplace.
+
+SOCK_STREAM_CREATE_FROM_HNDL 0
+# -> stm 1
+
+CHAN_BUNDLE_POSIX_CREATE _mqd_6 0 1
+# Posix:chan -> 1
+# (Dead: stm 1)
+
+# See srv comments which roughly correlate the relative time `t` between them and us.
+# t = 1s
+# Should've received 1-2 PINGs and 0 MSGs by now.  So this will do:
+#   nb-receive -> PING BLK -or- PING PING BLK
+#   await readability (500 ms)
+#   nb-receive -> MSG (at `t = 1.5s`)
+CHAN_BUNDLE_POSIX_RECV_BATCH 1 0 0 0 1 345 0 600 ms
+# t = 1.5s
+SLEEP 5 s
+# t = 6.5s
+# Same deal again but should get 4-5 PINGs (at least enough to temporarily white-boxily fill the batch
+# in the native-batch-receive algorithm: good to test that).
+#   nb-receive -> PINGx4+ BLK
+#   await readability (500 ms)
+#   nb-receive -> MSG (at `t = 7s`)
+CHAN_BUNDLE_POSIX_RECV_BATCH 1 0 0 0 1 346 0 600 ms
+# t = 7s
 SLEEP 3 s
+# t = 10s
+#   nb-receive -> PING MSG PING BLK
+# Awesome; that's the thing we were trying to test.
+CHAN_BUNDLE_POSIX_RECV_BATCH 1 0 0 0 1 347 0 100 ms
+# For good measure a couple more things, probably
+# more or less repeating things we've covered elsewhere incidentally:
+#   nb-receive -> BLK
+#   await readability (500 ms)
+#   nb-receive -> PING BLK
+#   await readability (500 ms)
+#   nb-receive -> MSG BLK
+CHAN_BUNDLE_POSIX_RECV_BATCH 1 0 0 0 1 348 0 1100 ms
+# t = 11s
+
+# TODO: We test getting stuff in <T time all over the place; but in places such as the last few
+# tests preceding this we may want to *really* ensure we're getting what we were expecting by also
+# ensuring op repeats in >T' time as well.  In other words ensure completion duration [T', T] instead of
+# merely [0, T].  E.g., the last test would specify probably `1000 ms 1100 ms`.  Should add this
+# feature to test framework and use it in all relevant tests.  So a timeout... plus a timein?
+
+SLEEP 1 s
+# Repeat ~same stuff for the MQ pipe.  We're roughly a whole # of sec after `t = 0`, same as srv, plus 1s;
+# which is similar to when we started above at  `t = 1s`.  (Auto-pings were going every sec along the MQ
+# pipe already.)  So other than the first receive getting N PINGs as opposed to 1-2 of them, it will
+# then all be the same.  (If you check logs, you might expect N=10 roughly, since we start at t=11s;
+# but you'll see N=6 more like.  This is correct in MQ's case: the out-buffer is only 10-msgs long; which
+# is about 5-6 PINGs, as each is really two raw msgs; so it'll hit would-block, while our side isn't
+# issuing any reads; and PINGs are deliberately not queued-up, as 1 PING is no worse than 2+ of them
+# all sent at the same time.  (TODO: We shouldn't be issuing more PINGs, if we know the know the last one
+# is queued by the kernel!  It is somewhat wasteful, ~same as if we'd queued in our user-land queue.
+# File ticket/make sure to handle this both for Blob_stream_mq_sender and Native_socket_stream.  To be clear
+# this would be an actual improvement, not a test improvement.)  It's fine though; not really relevant; just
+# explaining it, in case you get paranoid while checking logs.)
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 1 0 0 0 1 345 600 ms
+SLEEP 5 s
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 1 0 0 0 1 346 600 ms
+SLEEP 3 s
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 1 0 0 0 1 347 100 ms
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 1 0 0 0 1 348 1100 ms
+
+RESET 1 s 1
+# Now simply repeat all of the above for a bipc-MQ-containing channel.  The socket pipe will be the same,
+# so those parts will be redundant, but so what?
+
+SLEEP 1 s
+SOCK_STREAM_CONNECT _socks_1
+SLEEP 2 s
+CHAN_BUNDLE_BIPC_CREATE _mqd_5 0 0
+BATCH_CREATE 4 40404
+BLOB_BATCH_CREATE 4 8192
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 0 0 3 20202 30303 0 0 1 1 50 ms
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 0 0 0 0 3 5050 8100 1 50 ms
+CHAN_BUNDLE_BIPC_SEND 0 -1 1 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 8192 0
+SLEEP 2 s
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 0 0 4 20202 30303 1 40404 0 0 0 0 50 ms
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 0 0 2 22 333 0 0 50 ms
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 0 0 0 0 4 5050 8100 1 8192 50 ms
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 0 0 0 0 2 11 222 50 ms
+CHAN_BUNDLE_BIPC_SEND 0 -1 1 0
+SLEEP 4 s
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 0 0 4 665 664 663 662 0 0 0 0 50 ms
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 0 0 0 0 4 1665 1664 1663 1662 50 ms
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 0 0 0 0 1 1661 50 ms
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 0 0 1 661 0 50 ms
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 111 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 60100 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 60101 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 60100 0
+CHAN_BUNDLE_BIPC_RECV 0 543 0 0 543 2 s
+SLEEP 1 s
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 0 0 2 345 3456 0 0 50 ms
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 0 RECEIVES_FINISHED_CANNOT_RECEIVE 0 50 ms
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 0 0 0 0 2 345 3456 50 ms
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 0 0 0 RECEIVES_FINISHED_CANNOT_RECEIVE 0 50 ms
+SOCK_STREAM_CREATE_FROM_HNDL 0
+CHAN_BUNDLE_BIPC_CREATE _mqd_6 0 1
+CHAN_BUNDLE_BIPC_RECV_BATCH 1 0 0 0 1 345 0 600 ms
+SLEEP 5 s
+CHAN_BUNDLE_BIPC_RECV_BATCH 1 0 0 0 1 346 0 600 ms
+SLEEP 3 s
+CHAN_BUNDLE_BIPC_RECV_BATCH 1 0 0 0 1 347 0 100 ms
+CHAN_BUNDLE_BIPC_RECV_BATCH 1 0 0 0 1 348 0 1100 ms
+SLEEP 1 s
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 1 0 0 0 1 345 600 ms
+SLEEP 5 s
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 1 0 0 0 1 346 600 ms
+SLEEP 3 s
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 1 0 0 0 1 347 100 ms
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 1 0 0 0 1 348 1100 ms
+
+# Lastly, clean up methodically (letting Script_interpreter dtor run would also be fine).
+RESET 1 s 0

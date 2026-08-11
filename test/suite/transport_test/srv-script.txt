@@ -62,7 +62,7 @@ SOCK_STREAM_RECV_BLOB 1 15000 MESSAGE_SIZE_EXCEEDS_USER_STORAGE 15000 50 ms
 # But the outgoing half-pipe is fine.
 SOCK_STREAM_SEND 1 -1 60606 0
 # Use Blob_sender form too.
-# <cmd> <stml-slot> <blob-sz> <expected-ipc-err-or-success>
+# <cmd> <stm-slot> <blob-sz> <expected-ipc-err-or-success>
 SOCK_STREAM_SEND_BLOB 1 60606 0
 
 # Sleep same as cli, so we're about even for the next step.
@@ -182,7 +182,7 @@ SOCK_STREAM_ACC_ACCEPT 0 1 5 s
 # <cmd> <mq-sh-name-prefix> <mq-create-else-open?> <stm-slot>
 CHAN_BUNDLE_POSIX_CREATE _mqd_4 1 2
 # -> Posix:chan 0
-# (Dead: stm 0)
+# (Dead: stm 2)
 # Let's do 3 way handshake again as a quick test.  BTW this a bit illustrates why a Channel by itself
 # is fairly nice (it might seem useless by itself potentially even to me (ygoldfel)): it combines
 # even unidirectional pipes into something that can be used to both send and receive on one peer
@@ -222,4 +222,246 @@ CHAN_BUNDLE_BIPC_SEND_END 0 1 0 15 ms
 
 # TODO: Moar....
 
-SLEEP 3 s
+# Sleep for a while just to mark off that a major section is about to start.
+# Forget all objects for a fresh start (names, indices, ...).
+RESET 3 s 0
+
+# Now we test batch-receiving.  See cli side for more intro info on the topic.
+# Like it says though start with POSIX MQ + socket-stream bundle.
+
+SOCK_STREAM_ACC_LISTEN _socks_1
+# -> acc 0
+
+SOCK_STREAM_ACC_ACCEPT 0 1 10 s
+# -> stm 0
+
+CHAN_BUNDLE_POSIX_CREATE _mqd_5 1 0
+# -> Posix:chan 0
+# (Dead: stm 0)
+
+HNDL_CONNECT_PAIR
+# -> sock 0, 1
+
+CHAN_BUNDLE_POSIX_SEND 0 -1 20202 0
+CHAN_BUNDLE_POSIX_SEND 0 1 30303 0
+CHAN_BUNDLE_POSIX_SEND 0 0 0 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 5050 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 8100 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1 0
+
+# <cmd> <n-slots> <blob-sz-or-0>
+BATCH_CREATE 4 60100
+# -> batch 0
+# <cmd> <n-slots> <blob-sz>
+BLOB_BATCH_CREATE 4 8193
+# -> b-batch 0
+
+# Do assume-would-block=1 for the MQ pipe.
+# <cmd> <stm-slot> <batch-slot> <assume-would-block?> <expected-ipc-err-or-success> <N=expected-n-used>
+#       <expected-blob-sz>*N <timeout> <timeout-units>
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 0 0 1 0 1 8192 2100 ms
+# <cmd> <stm-slot> <batch-slot> <assume-would-block?> <expected-ipc-err-or-success> <N=expected-n-used>
+#       <expected-blob-sz>*N <expected-hndl?>*N <timeout> <timeout-units>
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 0 0 1 1 0 50 ms
+
+CHAN_BUNDLE_POSIX_SEND 0 -1 20202 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 30303 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 1 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 40404 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 22 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 333 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 5050 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 8100 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 8192 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 11 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 222 0
+
+# Do assume-would-block=1 for the other pipe type this time.
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 1 0 1 1 0 2100 ms
+
+# Send ping immediately, then time sends around subsequent auto-pings; cli should receive the actual
+# messages (auto-ping occurs without user knowing).
+#   PING/.5s/<665>/<664>/<663>/1s/PING/.5s/<662>/1s/PING/.5s/<661>
+#   Total time = 3 * .5 + 2 * 1 = 3.5s.
+#
+# Subtlety: Originally we wanted to do a longer, more even thing like
+#   PING/.5s/<665>/1s/PING/.5s/<664>/1s/PING/.5s/<663>/1s/PING/.5s/<662>/1s/PING/.5s/<661>
+# and for the sockets pipe that's totally fine.  For the MQ pipe, though, it creates a race that -- while
+# entirely reasonable for production use -- means which of the 2 situations will actually happen for us;
+# so at least we can't know what to script in cli for this part (in fact: I (ygoldfel) observed that the
+# race shook out one way when cli had TRACE+ logging but another with INFO; the timing made the difference).
+# Specifically: In MQ protocol each user message = 1 raw msg; but each PING = 2 raw msgs (0-length CONTROL
+# msg; then a particular small PING-indicating msg).  So the msgs in range [PING, <662>] above are intended
+# to end up in a single receive-side 4-batch: 665/664/663/662 (with interleaved PINGs getting ignored).
+# But an MQ has an out-buffer max-size of 10 raw msgs; however [PING, <662>] has 4 PINGs (8 raw msgs) and
+# 4 user msgs (4 raw msgs); that's 12 which would cause send-side would-block (our side) with the msgs
+# in excess of 10 getting queued within Flow-IPC user-land.  The race is then on: cli pops a raw msg;
+# srv in background detects it (epoll() for POSIX, special thread + pipe + epoll() for POSIX) and
+# dequeues the previously-enqueued-from-would-block item(s) and sends it or them; whether this is delivered
+# before cli reaches receive-side would-block = the race.  So cli might see a 4-batch as intended; or
+# a 3-batch.  (Please realize that the latter is not a functional bug; how close-together-in-time in-messages
+# get subdivided into in-batches is always a matter of timing.  A proper receiver would simply get the
+# 3-batch and kick-off a new async-receive -- which would simply wake up almost immediately and get the
+# slightly-straggling 1-batch.  However in a test script we have to be precise; can't just give it both
+# possibilities. ...So, to sum up, we cover pretty much the same stuff we intended either way, and in less
+# time this way, and we need not have differing timings/payloads for the sockets pipe versus the MQ pipe.
+
+# <cmd> <stm-slot> <period> <period-units>
+CHAN_BUNDLE_POSIX_AUTO_PING 0 1 s
+SLEEP 500 ms
+CHAN_BUNDLE_POSIX_SEND 0 -1 665 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1665 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 664 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1664 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 663 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1663 0
+SLEEP 1500 ms
+CHAN_BUNDLE_POSIX_SEND 0 -1 662 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1662 0
+SLEEP 1500 ms
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 1661 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 661 0
+
+# We're ~500ms ahead of cli... but we want to do the below reads after cli has done all the writes,
+# so it can all be batched... so let's just sleep 2s to be well behind cli, as we need.  This race
+# of sleeps on two sides is not-great; we have avoided it above... but whatever.  This isn't the Mona Lisa;
+# it is a test script.
+SLEEP 2 s
+
+BLOB_BATCH_CREATE 4 8191
+# -> b-batch 1
+
+# Invalid in-batch: not enough space in each slot; with MQ no read tried, non-pipe-hosing error instead.
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 0 1 0 INVALID_ARGUMENT 0 50 ms
+# However an OK in-batch grabs the stuff fine as usual (pipe was not hosed).
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 0 0 0 0 1 1 2100 ms
+# Socket pipe is different; no such thing as invalid in-batch/INVALID_ARGUMENT; but if a too-big message
+# arrives then the ...EXCEEDS... error results, and the in-direction (cli->srv) half-pipe is hosed; but
+# the out-direction (srv->cli) one continues to work.
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 0 MESSAGE_SIZE_EXCEEDS_USER_STORAGE 0 50 ms
+# An OK-sized dgram was sent after that, to us, but too late (half-pipe hosed, same error forever).
+CHAN_BUNDLE_POSIX_RECV_BATCH 0 0 0 MESSAGE_SIZE_EXCEEDS_USER_STORAGE 0 50 ms
+# ...but sending works fine still.
+CHAN_BUNDLE_POSIX_SEND 0 -1 543 0
+
+CHAN_BUNDLE_POSIX_SEND 0 -1 345 0
+CHAN_BUNDLE_POSIX_SEND 0 -1 3456 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 345 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 3456 0
+CHAN_BUNDLE_POSIX_SEND_END 0 0 0 50 ms
+
+# <cmd> <sock-slot>
+SOCK_STREAM_CREATE_FROM_HNDL 0
+# -> stm 1
+
+CHAN_BUNDLE_POSIX_CREATE _mqd_6 1 1
+# Posix:chan -> 1
+# (Dead: stm 1)
+
+# t = 0
+# Send PING 1, then PING 2 at `t = 1s`.
+CHAN_BUNDLE_POSIX_AUTO_PING 1 1 s
+SLEEP 1500 ms
+# t = 1.5s
+CHAN_BUNDLE_POSIX_SEND 1 -1 345 0
+# Send PINGs 3-7 at `t = 2.5s, 3.5s, 4.5s, 5.5s, 6.5s` and wait another 0.5s after that last one.
+SLEEP 5500 ms
+# t = 7s
+CHAN_BUNDLE_POSIX_SEND 1 -1 346 0
+# Send PING 8 at `t = 8s` and wait another 0.5s after that.
+SLEEP 1500 ms
+# t = 8.5s
+CHAN_BUNDLE_POSIX_SEND 1 -1 347 0
+# Send PINGs 9-10 at `t = 9.5s, 10.5s` and wait another 0.5s after that.
+SLEEP 2500 ms
+# t = 11s
+CHAN_BUNDLE_POSIX_SEND 1 -1 348 0
+
+SLEEP 1500 ms
+CHAN_BUNDLE_POSIX_SEND_BLOB 1 345 0
+SLEEP 5500 ms
+CHAN_BUNDLE_POSIX_SEND_BLOB 1 346 0
+SLEEP 1500 ms
+CHAN_BUNDLE_POSIX_SEND_BLOB 1 347 0
+SLEEP 2500 ms
+CHAN_BUNDLE_POSIX_SEND_BLOB 1 348 0
+
+RESET 1 s 1
+# See cli again: per that stuff: repeat the above exactly but with BIPC instead of POSIX MQ.
+
+SOCK_STREAM_ACC_LISTEN _socks_1
+SOCK_STREAM_ACC_ACCEPT 0 1 10 s
+CHAN_BUNDLE_BIPC_CREATE _mqd_5 1 0
+HNDL_CONNECT_PAIR
+CHAN_BUNDLE_BIPC_SEND 0 -1 20202 0
+CHAN_BUNDLE_BIPC_SEND 0 1 30303 0
+CHAN_BUNDLE_BIPC_SEND 0 0 0 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 5050 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 8100 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1 0
+BATCH_CREATE 4 60100
+BLOB_BATCH_CREATE 4 8193
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 0 0 1 0 1 8192 2100 ms
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 0 0 1 1 0 50 ms
+CHAN_BUNDLE_BIPC_SEND 0 -1 20202 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 30303 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 1 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 40404 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 22 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 333 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 5050 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 8100 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 8192 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 11 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 222 0
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 1 0 1 1 0 2100 ms
+CHAN_BUNDLE_BIPC_AUTO_PING 0 1 s
+SLEEP 500 ms
+CHAN_BUNDLE_BIPC_SEND 0 -1 665 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1665 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 664 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1664 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 663 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1663 0
+SLEEP 1500 ms
+CHAN_BUNDLE_BIPC_SEND 0 -1 662 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1662 0
+SLEEP 1500 ms
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 1661 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 661 0
+SLEEP 2 s
+BLOB_BATCH_CREATE 4 8191
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 0 1 0 INVALID_ARGUMENT 0 50 ms
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 0 0 0 0 1 1 2100 ms
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 0 MESSAGE_SIZE_EXCEEDS_USER_STORAGE 0 50 ms
+CHAN_BUNDLE_BIPC_RECV_BATCH 0 0 0 MESSAGE_SIZE_EXCEEDS_USER_STORAGE 0 50 ms
+CHAN_BUNDLE_BIPC_SEND 0 -1 543 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 345 0
+CHAN_BUNDLE_BIPC_SEND 0 -1 3456 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 345 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 3456 0
+CHAN_BUNDLE_BIPC_SEND_END 0 0 0 50 ms
+SOCK_STREAM_CREATE_FROM_HNDL 0
+CHAN_BUNDLE_BIPC_CREATE _mqd_6 1 1
+CHAN_BUNDLE_BIPC_AUTO_PING 1 1 s
+SLEEP 1500 ms
+CHAN_BUNDLE_BIPC_SEND 1 -1 345 0
+SLEEP 5500 ms
+CHAN_BUNDLE_BIPC_SEND 1 -1 346 0
+SLEEP 1500 ms
+CHAN_BUNDLE_BIPC_SEND 1 -1 347 0
+SLEEP 2500 ms
+CHAN_BUNDLE_BIPC_SEND 1 -1 348 0
+SLEEP 1500 ms
+CHAN_BUNDLE_BIPC_SEND_BLOB 1 345 0
+SLEEP 5500 ms
+CHAN_BUNDLE_BIPC_SEND_BLOB 1 346 0
+SLEEP 1500 ms
+CHAN_BUNDLE_BIPC_SEND_BLOB 1 347 0
+SLEEP 2500 ms
+CHAN_BUNDLE_BIPC_SEND_BLOB 1 348 0
+
+# Lastly, clean up methodically (letting Script_interpreter dtor run would also be fine).
+RESET 1 s 0

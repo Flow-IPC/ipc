@@ -29,6 +29,13 @@ namespace
 {
 // Commands.
 
+/* Clear all object tables (destroy any live things like channels, socket streams, MQs...) and optionally
+ * end transport_test session (act as-if it is end of input).  Optionally sleep some amount of time before the
+ * clearing.  The clearing is helpful between independent sections of a script.  The early-session-end is
+ * useful when debugging/developing a script, perhaps temporarily ignoring an already-working section.
+ *   <cmd> <time> <time-units> <end-processing?> */
+const util::String_view S_KEYWD_RESET = "RESET";
+
 /* Sleep.
  *   <cmd> <time> <time-units> */
 const util::String_view S_KEYWD_SLEEP = "SLEEP";
@@ -190,7 +197,7 @@ const util::String_view S_KEYWD_CHAN_BUNDLE_BIPC_RECV_BLOB = "CHAN_BUNDLE_BIPC_R
 /* Test {Posix_mqs_socket_stream_channel|Bipc_mqs_socket_stream_channel}::ctor (creation).  Really this operation
  * composes a number of things which are more carefully tested by other commands above.  So mostly this is a setup
  * command, so that we can then test send/receive transmission over the Channel which bundles 2 unidirectional
- * MQ pipes and a full-fuplex Native_socket_stream pipe.  In particular it expects to always succeed: failure
+ * MQ pipes and a full-duplex Native_socket_stream pipe.  In particular it expects to always succeed: failure
  * of ctor call shall always fail the test.  As such, to successfully use this, the other side (in this or other
  * invocation of Script_interpreter) shall invoke a similar command:
  *   - Its <mq-sh-name-prefix> must be the same.
@@ -207,18 +214,111 @@ const util::String_view S_KEYWD_CHAN_BUNDLE_BIPC_RECV_BLOB = "CHAN_BUNDLE_BIPC_R
 const util::String_view S_KEYWD_CHAN_BUNDLE_POSIX_CREATE = "CHAN_BUNDLE_POSIX_CREATE";
 const util::String_view S_KEYWD_CHAN_BUNDLE_BIPC_CREATE = "CHAN_BUNDLE_BIPC_CREATE";
 
+/* Creates a Msg_batch_in impl instance suitable for the blobs-and-handles (sockets) pipe of a CHAN_BUNDLE_..._CREATEd
+ * Channel.  It could be used for other Flow-IPC `Native_handle_receiver`s, but as of this writing we've intentionally
+ * limited this type of in-batch testing to that context.  <blob-sz-or-0> can be zero, as an empty meta-blob is allowed,
+ * as long as it is coupled with a native-handle.
+ *  <cmd> <n-slots> <blob-sz-or-0> */
+const util::String_view S_KEYWD_BATCH_CREATE = "BATCH_CREATE";
+/* Creates a Msg_batch_in impl instance suitable for the blobs-only (MQ) pipe of a CHAN_BUNDLE_..._CREATEd
+ * Channel.  It could be used for other Flow-IPC `Blob_receiver`s, but as of this writing we've intentionally
+ * limited this type of in-batch testing to that context.  <blob-sz> cannot be zero, as completely empty
+ * messages are not allowed.
+ *  <cmd> <n-slots> <blob-sz> */
+const util::String_view S_KEYWD_BLOB_BATCH_CREATE = "BLOB_BATCH_CREATE";
+
+/* The following series of commands test Native_handle_receiver::async_receive_native_handle_batch(),
+ * where Native_handle_receiver is a concept and is actually one of the several supported concrete
+ * `Native_handle_receiver`s.  As of this writing the Native_handle_receiver
+ * is always a CHAN_BUNDLE_..._CREATEd Channel, namely its blobs-and-handles (sockets) pipe (we could've tested other
+ * `Native_handle_receiver`s but chose not to for reasons explained elsewhere).
+ *
+ * *::async_receive_native_handle_batch() asynchronously receives into a pre-created in-batch object of the
+ * blobs-and-handles type (see BATCH_CREATE); hence it'll receive up-to <n-slots>, but at least 1, in-message (0
+ * if error).  Each message is, as for ..._RECV, a non-empty blob or a native-handle or both; target info, most notably
+ * <blob-sz-or-0> equivalent, is a property of the in-batch (from BATCH_CREATE).  <N> is the expected number of messages
+ * to receive.  <expected-ipc-err-or-success> is as in SOCK_STREAM_SEND.  <expected-blob-sz> is to be repeated N times,
+ * specifying that value as for ..._RECV for each in-blob in order.  Similarly for <expected-hndl?> following that.
+ * Lastly <assume-would-block?> is a flag which becomes the `assume_would_block` arg to the aforementioned API (details
+ * omitted here; see Native_handle_receiver concept docs).  Oh and: if <expected-ipc-err-or-success> =/= success, then
+ * the other <expected-*> are ignored.
+ *   <cmd> <stm-slot> <batch-slot> <assume-would-block?> <expected-ipc-err-or-success> <N=expected-n-used>
+ *         <expected-blob-sz>*N <expected-hndl?>*N <timeout> <timeout-units> */
+const util::String_view S_KEYWD_CHAN_BUNDLE_POSIX_RECV_BATCH = "CHAN_BUNDLE_POSIX_RECV_BATCH";
+const util::String_view S_KEYWD_CHAN_BUNDLE_BIPC_RECV_BATCH = "CHAN_BUNDLE_BIPC_RECV_BATCH";
+/* The following series of commands test Blob_receiver::async_receive_blob_batch(), where Blob_receiver is a concept
+ * and is actually one of the several supported concrete `Blob_receiver`s.  As of this writing the Blob_receiver
+ * is always a CHAN_BUNDLE_..._CREATEd Channel, namely its blobs-only (MQ) pipe (we could've tested other
+ * `Blob_receiver`s but chose not to for reasons explained elsewhere).
+ *
+ * It is similar but not identical to ..._RECV_BATCH; basically <expected-hndl?> sequence is omitted.  In any case
+ * we document it fully.  To wit:
+ *
+ * *::async_receive_blob_batch() asynchronously receives into a pre-created in-batch object of the blobs-only type
+ * (see BLOB_BATCH_CREATE); hence it'll receive up-to <n-slots>, but at least 1, in-message (0 if error).
+ * Each message is, as for ..._RECV_BLOB, a non-empty blob; target info, most notably <blob-sz> equivalent,
+ * is a property of the in-batch (from BLOB_BATCH_CREATE).  <N> is the expected number of messages to receive.
+ * <expected-ipc-err-or-success> is as in SOCK_STREAM_SEND.  <expected-blob-sz> is to be repeated N times,
+ * specifying that value as for ..._RECV_BLOB for each in-blob in order.  Lastly <assume-would-block?> is a flag
+ * which becomes the `assume_would_block` arg to the aforementioned API (details omitted here; see
+ * Blob_receiver concept docs).  Oh and: if <expected-ipc-err-or-success> =/= success, then the other <expected-*>
+ * are ignored.
+ *   <cmd> <stm-slot> <batch-slot> <assume-would-block?> <expected-ipc-err-or-success> <N=expected-n-used>
+ *         <expected-blob-sz>*N <timeout> <timeout-units> */
+const util::String_view S_KEYWD_CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH = "CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH";
+const util::String_view S_KEYWD_CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH = "CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH";
+
+/* In short... it does Channel::auto_ping(T) on the given CHAN_BUNDLE_..._CREATEd Channel.  This really
+ * is defined as basically Blob_receiver::auto_ping(T) on the blobs-only (MQ) pipe and same on the blobs-and-handles
+ * (sockets) pipe... so they'll both start auto-pinging with the same interval.  (Doesn't mean they'll ping at the
+ * same *times*; as a ping auto-occurs after no out-traffic for period T; and _SEND* can be done separately per
+ * pipe at different times.)  As of this writing we don't apply auto_ping to other `{Blob|Native_handle}_sender`s
+ * individually (but we could).  @todo Should also add access to ..._receiver::idle_timer_run() which would allow
+ * testing of the interplay of the idle-timer and auto-ping feature.  Though, the exercise-mode side of transport_test
+ * does (as of this writing) test that stuff albeit less directly than we would here in scripted-mode-land.
+ *   <cmd> <stm-slot> <period> <period-units> */
+const util::String_view S_KEYWD_CHAN_BUNDLE_POSIX_AUTO_PING = "CHAN_BUNDLE_POSIX_AUTO_PING";
+const util::String_view S_KEYWD_CHAN_BUNDLE_BIPC_AUTO_PING = "CHAN_BUNDLE_BIPC_AUTO_PING";
+
+/* @todo As of this writing compile-time knobs, perhaps most notably in Native_socket_stream_cfg and
+ * within that most notably S_USE_OS_DGRAM_SUPPORT, are set to some values by the build process, or hard-coded,
+ * and that is what is built and therefore what is tested here.  It would be valuable to test the other knob
+ * settings.  At the moment one would manually change the knob, perhaps locally, and run the test.  That in itself
+ * is quite effective; but an automated pipeline (most notably the one in the official open-source project) would
+ * not/does not do that.  Need to think of how to best organize that.  In my (ygoldfel) opinion as I write this,
+ * perhaps it is best to make these knobs tweakable via the build process (CMake script(s)) and arrange some kind
+ * of matrix at the test pipeline layer.  A cool and more maintainable technique might be to actually add these
+ * knobs as template parameters; then we could directly build all types of configs in one executable and run
+ * through a matrix directly inside here.  This could be a non-breaking change, as e.g. Native_socket_stream could
+ * be an alias to Basic_native_socket_stream<default-knob-values> or some-such.  (E.g., boost.container vector<> has
+ * optional compile-time knobs controlling how it operates.  So does, e.g., our own struc::Channel.) */
+
+/* @todo In general there are, potentially in addition to to-dos above (search for @todo), probably code-paths
+ * not being tested at the moment.  Intuitively given how much stuff is currently scripted in cli-script.txt and
+ * srv-script.txt, probably it is corner case stuff and/or things that are impossible to trigger without
+ * instrumentation in the code (e.g. by adding a test-only subclass of Native_socket_stream in test/ relative dir),
+ * but in any case it would require a code analysis to identify coverage.  As of this writing there is a ticket
+ * for this, which covers not just us but other test tools as well, but it's worth mentioning directly here. */
+
 // Each blob generated to be sent, and expected to be received, will be this pattern repeated up-to desired length.
 const util::String_view S_TEST_BLOB_CONTENTS = "<12345678>";
+
+template<typename>
+constexpr bool DEPENDENT_FALSE = false;
 } // namespace (anon)
 
 const Script_interpreter::Keyword_to_interpret_func_map Script_interpreter::S_CMD_TO_HANDLER_MAP =
   {
+    { S_KEYWD_RESET, &Script_interpreter::cmd_reset },
     { S_KEYWD_SLEEP, &Script_interpreter::cmd_sleep },
+
     { S_KEYWD_SOCK_STREAM_CONNECT, &Script_interpreter::cmd_socket_stream_connect },
     { S_KEYWD_SOCK_STREAM_ACCEPTOR_ACCEPT, &Script_interpreter::cmd_socket_stream_acceptor_accept },
     { S_KEYWD_SOCK_STREAM_ACCEPTOR_LISTEN, &Script_interpreter::cmd_socket_stream_acceptor_listen },
     { S_KEYWD_HNDL_CONNECT_PAIR, &Script_interpreter::cmd_handle_connect_pair },
     { S_KEYWD_SOCK_STREAM_CREATE_FROM_HNDL, &Script_interpreter::cmd_socket_stream_create_from_hndl },
+    { S_KEYWD_BATCH_CREATE, &Script_interpreter::cmd_batch_create_impl<Batch> },
+    { S_KEYWD_BLOB_BATCH_CREATE, &Script_interpreter::cmd_batch_create_impl<Blob_batch> },
     { S_KEYWD_SOCK_STREAM_SEND, &Script_interpreter::cmd_socket_stream_send },
     { S_KEYWD_SOCK_STREAM_SEND_BLOB, &Script_interpreter::cmd_socket_stream_send_blob },
     { S_KEYWD_SOCK_STREAM_SEND_END, &Script_interpreter::cmd_socket_stream_send_end },
@@ -277,22 +377,35 @@ const Script_interpreter::Keyword_to_interpret_func_map Script_interpreter::S_CM
       &Script_interpreter::cmd_chan_bundle_recv_blob<Posix_mqs_socket_stream_channel> },
     { S_KEYWD_CHAN_BUNDLE_BIPC_RECV_BLOB,
       &Script_interpreter::cmd_chan_bundle_recv_blob<Bipc_mqs_socket_stream_channel> },
+    { S_KEYWD_CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH,
+      &Script_interpreter::cmd_chan_bundle_recv_batch<Blob_batch, Posix_mqs_socket_stream_channel> },
+    { S_KEYWD_CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH,
+      &Script_interpreter::cmd_chan_bundle_recv_batch<Blob_batch, Bipc_mqs_socket_stream_channel> },
 
     { S_KEYWD_CHAN_BUNDLE_POSIX_RECV,
       &Script_interpreter::cmd_chan_bundle_recv<Posix_mqs_socket_stream_channel> },
     { S_KEYWD_CHAN_BUNDLE_BIPC_RECV,
       &Script_interpreter::cmd_chan_bundle_recv<Bipc_mqs_socket_stream_channel> },
+    { S_KEYWD_CHAN_BUNDLE_POSIX_RECV_BATCH,
+      &Script_interpreter::cmd_chan_bundle_recv_batch<Batch, Posix_mqs_socket_stream_channel> },
+    { S_KEYWD_CHAN_BUNDLE_BIPC_RECV_BATCH,
+      &Script_interpreter::cmd_chan_bundle_recv_batch<Batch, Bipc_mqs_socket_stream_channel> },
 
     { S_KEYWD_CHAN_BUNDLE_POSIX_CREATE,
       &Script_interpreter::cmd_chan_bundle_create<Posix_mqs_socket_stream_channel> },
     { S_KEYWD_CHAN_BUNDLE_BIPC_CREATE,
-      &Script_interpreter::cmd_chan_bundle_create<Bipc_mqs_socket_stream_channel> }
+      &Script_interpreter::cmd_chan_bundle_create<Bipc_mqs_socket_stream_channel> },
+
+    { S_KEYWD_CHAN_BUNDLE_POSIX_AUTO_PING,
+      &Script_interpreter::cmd_chan_bundle_auto_ping<Posix_mqs_socket_stream_channel> },
+    { S_KEYWD_CHAN_BUNDLE_BIPC_AUTO_PING,
+      &Script_interpreter::cmd_chan_bundle_auto_ping<Bipc_mqs_socket_stream_channel> }
   };
 
 Script_interpreter::Ptr Script_interpreter::create(flow::log::Logger* logger_ptr, flow::log::Logger* ipc_logger_ptr,
                                                    std::istream& is) // Static.
 {
-  return Ptr(new Script_interpreter(logger_ptr, ipc_logger_ptr, is));
+  return Ptr{new Script_interpreter{logger_ptr, ipc_logger_ptr, is}};
 }
 
 Script_interpreter::Script_interpreter(flow::log::Logger* logger_ptr, flow::log::Logger* ipc_logger_ptr,
@@ -300,20 +413,12 @@ Script_interpreter::Script_interpreter(flow::log::Logger* logger_ptr, flow::log:
   flow::log::Log_context(logger_ptr),
   m_ipc_logger(ipc_logger_ptr),
   m_is(is),
-  m_cur_line_idx(0),
-  m_test_blob_stream_mq_peers
-    ({ { std::type_index(typeid(Posix_mq_sender)), Mq_peer_list<Posix_mq_sender>() },
-       { std::type_index(typeid(Bipc_mq_sender)), Mq_peer_list<Bipc_mq_sender>() },
-       { std::type_index(typeid(Posix_mq_receiver)), Mq_peer_list<Posix_mq_receiver>() },
-       { std::type_index(typeid(Bipc_mq_receiver)), Mq_peer_list<Bipc_mq_receiver>() } }),
-  m_test_chan_bundles
-    ({ { std::type_index(typeid(Posix_mqs_socket_stream_channel)),
-         Chan_bundle_list<Posix_mqs_socket_stream_channel>() },
-       { std::type_index(typeid(Bipc_mqs_socket_stream_channel)),
-         Chan_bundle_list<Bipc_mqs_socket_stream_channel>() } })
+  m_cur_line_idx(0)
 {
   using std::string;
   using boost::algorithm::trim;
+
+  reset_objs();
 
   FLOW_LOG_TRACE("Interpreter is about to read all lines without tokenizing.");
 
@@ -334,7 +439,7 @@ Script_interpreter::Script_interpreter(flow::log::Logger* logger_ptr, flow::log:
       trim(line);
       if (line.empty() || line.front() == '#')
       {
-        m_lines.push_back("");
+        m_lines.push_back(string{});
         FLOW_LOG_TRACE("Line completed, ignored (blank or comment): [" << line << "], stored as blank.");
         /* Subtlety: We could just not push_back() it at all; but then line counts get messed up resulting in
          * bad error messages.  We could also remember the full line, and the parser would skip them manually;
@@ -365,6 +470,50 @@ Script_interpreter::Script_interpreter(flow::log::Logger* logger_ptr, flow::log:
   FLOW_LOG_INFO("Interpreter finished reading/storing untokenized lines.");
 } // Script_interpreter::Script_interpreter()
 
+void Script_interpreter::reset_objs()
+{
+  using std::type_index;
+  using std::in_place_type;
+
+  /* Reminder: This is invoked at least from ctor (initialize things) and from cmd_reset() (empty things while still
+   * keeping them properly initialized for subsequent use). */
+
+  // In the init (ctor) case: this no-ops harmlessly.  In the reset case: this will destroy objects (as desired).
+  m_test_sock_streams.clear();
+  m_test_sock_stm_acceptors.clear();
+  m_test_native_hndls.clear();
+
+  /* In the init case: These maps-of-variants need explicit initialization to be usable.
+   * In the reset case: each .emplace() will first destroy the existing objects (as desired).
+   * Either way this will do all of the right thing.  @todo Could make less error-prone via generic lambda/something. */
+  m_test_blob_stream_mq_peers[type_index{typeid(Posix_mq_sender)}].emplace<List_of<Posix_mq_sender>>();
+  m_test_blob_stream_mq_peers[type_index{typeid(Bipc_mq_sender)}].emplace<List_of<Bipc_mq_sender>>();
+  m_test_blob_stream_mq_peers[type_index{typeid(Posix_mq_receiver)}].emplace<List_of<Posix_mq_receiver>>();
+  m_test_blob_stream_mq_peers[type_index{typeid(Bipc_mq_receiver)}].emplace<List_of<Bipc_mq_receiver>>();
+  m_test_chan_bundles[type_index{typeid(Posix_mqs_socket_stream_channel)}]
+    .emplace<List_of<Posix_mqs_socket_stream_channel>>();
+  m_test_chan_bundles[type_index{typeid(Bipc_mqs_socket_stream_channel)}]
+    .emplace<List_of<Bipc_mqs_socket_stream_channel>>();
+
+  // Ditto for these; they're just not in any map(s).
+  m_test_batches.emplace<List_of<Batch>>();
+  m_test_blob_batches.emplace<List_of<Blob_batch>>();
+} // void Script_interpreter::reset_objs()
+
+void Script_interpreter::cmd_reset()
+{
+  cmd_sleep();
+
+  FLOW_LOG_INFO("Reset command: Destroying all live objects.");
+  reset_objs();
+
+  if (next_required_typed_value<bool>())
+  {
+    FLOW_LOG_INFO("Reset command: Ending input.");
+    m_cur_line_is.reset();
+  }
+} // Script_interpreter::cmd_reset()
+
 bool Script_interpreter::go()
 {
   using std::istringstream;
@@ -380,7 +529,7 @@ bool Script_interpreter::go()
   // else
 
   assert(m_cur_line_idx == 0);
-  m_cur_line_is.reset(new istringstream(m_lines.front()));
+  m_cur_line_is.reset(new istringstream{m_lines.front()});
   m_cur_line_it = m_lines.begin();
   assert(m_cur_line_is->tellg() == 0);
 
@@ -410,8 +559,9 @@ bool Script_interpreter::next_token(Token* tok_ptr, bool keyword)
 
   if (!m_cur_line_is)
   {
-    FLOW_LOG_TRACE("Requested next token, but we are out of lines; last line was [" << user_line_idx() << "].");
-    m_last_tok = { string(), m_lines.end(), m_cur_line_idx + 1, 0 }; // For a nicer message in failed().
+    FLOW_LOG_TRACE("Requested next token, but we are out of lines or processed a RESET; "
+                   "last line was [" << user_line_idx() << "].");
+    m_last_tok = { string{}, m_lines.end(), m_cur_line_idx + 1, 0 }; // For a nicer message in failed().
     return false;
   }
   // else
@@ -466,7 +616,10 @@ bool Script_interpreter::next_token(Token* tok_ptr, bool keyword)
       }
       if (found_real_line)
       {
-        m_cur_line_is.reset(new istringstream(m_lines[m_cur_line_idx]));
+        const auto& line = m_lines[m_cur_line_idx];
+        FLOW_LOG_TRACE("Found next real line [" << user_line_idx() << "]: [" << line << "].");
+
+        m_cur_line_is.reset(new istringstream{line});
         assert(m_cur_line_is->tellg() == 0); // See up above where we state our post-condition.
       }
       else
@@ -499,6 +652,12 @@ bool Script_interpreter::next_branch(const Keyword_to_interpret_func_map& keywor
   // else
 
   // Got a token; see which keyword it is (or illegal).
+
+  {
+    const auto line_idx = key_tok.m_line_idx;
+    const auto& line = *key_tok.m_line;
+    FLOW_LOG_INFO("=== EXEC LINE [" << user_line_idx(line_idx) << "]: [" << line << "].");
+  }
 
   const auto keys_str = map_keys_str(keyword_to_interpret_func_map);
 
@@ -611,8 +770,8 @@ void Script_interpreter::failed(bool parse_error, util::String_view description,
 
   if (tok.m_line == m_lines.end())
   {
-    throw Runtime_error(err_code,
-                        ostream_op_string(msg, " at <end-of-input>.  Problem: [", description, "]."));
+    throw Runtime_error{err_code,
+                        ostream_op_string(msg, " at <end-of-input>.  Problem: [", description, "].")};
 
   }
   // else
@@ -620,16 +779,16 @@ void Script_interpreter::failed(bool parse_error, util::String_view description,
   const auto line_idx = tok.m_line_idx;
   const auto& line = *tok.m_line;
   const auto col_idx = tok.m_line_pos;
-  String_view before_in_line(line);
-  String_view rest_of_line(line);
+  String_view before_in_line{line};
+  String_view rest_of_line{line};
   rest_of_line.remove_prefix(col_idx);
   before_in_line.remove_suffix(before_in_line.size() - col_idx);
 
-  throw Runtime_error(err_code,
+  throw Runtime_error{err_code,
                       ostream_op_string(msg,
                                         " at [", user_line_idx(line_idx), ':', user_col_idx(col_idx),
                                         "]: line is [[", before_in_line, "]-fail-point->[",
-                                        rest_of_line, "]].  Problem: [", description, "]."));
+                                        rest_of_line, "]].  Problem: [", description, "].")};
 } // Script_interpreter::failed()
 
 void Script_interpreter::test_with_timeout(util::Fine_duration timeout,
@@ -642,7 +801,7 @@ void Script_interpreter::test_with_timeout(util::Fine_duration timeout,
   using boost::chrono::milliseconds;
   using boost::chrono::microseconds;
 
-  Done_promise done_promise(new Done_promise_t);
+  Done_promise done_promise{new Done_promise_t};
 
   FLOW_LOG_INFO("Beginning timed async task with timeout ~[" << round<milliseconds>(timeout) << "].");
 
@@ -688,7 +847,7 @@ void Script_interpreter::cmd_socket_stream_connect()
 
   FLOW_LOG_INFO("Connecting a Native_socket_stream to [" << abs_name << "].");
 
-  Native_socket_stream peer(m_ipc_logger, ostream_op_string("=>", abs_name));
+  Native_socket_stream peer{m_ipc_logger, ostream_op_string("=>", abs_name)};
   Error_code err_code;
   peer.sync_connect(abs_name, &err_code);
 
@@ -698,7 +857,7 @@ void Script_interpreter::cmd_socket_stream_connect()
   }
   // else
 
-  m_test_sock_streams.emplace_back(new Native_socket_stream(std::move(peer)));
+  m_test_sock_streams.emplace_back(new Native_socket_stream{std::move(peer)});
   // Test Native_socket_stream move ctor, while we're at it. --^
 } // Script_interpreter::cmd_socket_stream_connect()
 
@@ -710,13 +869,16 @@ void Script_interpreter::cmd_sleep()
 
   const auto dur = next_required_dur();
 
-  FLOW_LOG_INFO("Sleeping for ~[" << round<milliseconds>(dur) << "].");
-  sleep_for(dur);
-} // Script_interpreter::cmd_socket_stream_connect()
+  if (dur != util::Fine_duration::zero()) // Do not pollute output if no-op.
+  {
+    FLOW_LOG_INFO("Sleeping for ~[" << round<milliseconds>(dur) << "].");
+    sleep_for(dur);
+  }
+} // Script_interpreter::cmd_sleep()
 
 void Script_interpreter::cmd_handle_connect_pair()
 {
-  using Asio_local_peer_socket = asio_local_stream_socket::Peer_socket;
+  using Asio_local_peer_socket = asio_local_stream_socket::Peer_socket<Native_socket_stream_cfg::Protocol>;
   namespace asio_local = asio_local_stream_socket::local_ns;
   using flow::util::Task_engine;
   using flow::util::ostream_op_string;
@@ -725,8 +887,8 @@ void Script_interpreter::cmd_handle_connect_pair()
   /* It's not really used for anything -- we do non-blocking socketpair() thing, and that's it.  Still need one
    * to be able to make Asio_local_peer_socket at all. */
   Task_engine asio_engine;
-  Asio_local_peer_socket asio_sock1(asio_engine);
-  Asio_local_peer_socket asio_sock2(asio_engine);
+  Asio_local_peer_socket asio_sock1{asio_engine};
+  Asio_local_peer_socket asio_sock2{asio_engine};
 
   Error_code sys_err_code;
   asio_local::connect_pair(asio_sock1, asio_sock2, sys_err_code);
@@ -737,7 +899,7 @@ void Script_interpreter::cmd_handle_connect_pair()
   }
   // else
 
-  array<Native_handle, 2> socks = { Native_handle(asio_sock1.release()), Native_handle(asio_sock2.release()) };
+  array<Native_handle, 2> socks = { Native_handle{asio_sock1.release()}, Native_handle{asio_sock2.release()} };
   // asio_* are now irrelevant (and conceptually empty).
 
   FLOW_LOG_INFO("Created 2 pre-mutually-connected local native handles:");
@@ -778,8 +940,8 @@ void Script_interpreter::cmd_socket_stream_create_from_hndl()
 
   m_test_sock_streams.emplace_back
     (new Native_socket_stream
-           (m_ipc_logger, ostream_op_string("namelessTestSock", sock_stream_idx),
-            Native_handle(table_hndl)));
+           {m_ipc_logger, ostream_op_string("namelessTestSock", sock_stream_idx),
+            Native_handle{table_hndl}});
 
   // Opportunistically check behavior of Native_handle copy ctor.  (assert() could do it but let's be nice.)
   if (table_hndl.null())
@@ -793,6 +955,64 @@ void Script_interpreter::cmd_socket_stream_create_from_hndl()
                 "[" << m_test_sock_streams.back()->remote_peer_process_credentials() << "]; "
                 "handle saved at index [" << sock_stream_idx << "].  Source Native_handle: [" << table_hndl << "].");
 } // Script_interpreter::cmd_socket_stream_create_from_hndl()
+
+template<typename Batch_t>
+Script_interpreter::List_of<Batch_t>& Script_interpreter::cmd_batches()
+{
+  using std::get;
+
+  Batch_list_variant* batches;
+  if constexpr(std::is_same_v<Batch_t, Batch>)
+  {
+    batches = &m_test_batches;
+  }
+  else // if Batch_t is Blob_batch
+  {
+    batches = &m_test_blob_batches;
+  }
+
+  return get<List_of<Batch_t>>(*batches);
+}
+
+template<typename Batch_t>
+void Script_interpreter::cmd_batch_create_impl()
+{
+  using flow::util::ostream_op_string;
+  constexpr bool NO_HNDL = std::is_same_v<Batch_t, Blob_batch>;
+
+  const auto n_slots = next_required_typed_value<size_t>();
+  if (n_slots == 0)
+  {
+    failed(true, "Must specify a positive n-slots for batch.");
+  }
+  // else
+
+  const auto blob_sz = next_required_typed_value<size_t>();
+  if (NO_HNDL && (blob_sz == 0))
+  {
+    failed(true,
+           ostream_op_string("Must specify a positive blob-size to apply to each slot in [", n_slots,
+                             "]-batch, since batch-type is `blob-batch` and not `combo-batch`."));
+  }
+  // else
+
+  const auto batch = new Batch_t{n_slots};
+  do
+  {
+    Raw_blob blob{blob_sz};
+    batch->prepare_target_payload(blob.mutable_buffer(), std::move(blob));
+  }
+  while (!batch->initialized());
+
+  auto& batches = cmd_batches<Batch_t>();
+  const auto batch_idx = batches.size();
+  batches.emplace_back(batch);
+
+  FLOW_LOG_INFO("Creation of [" << name_batch<Batch_t>() << "] succeeded "
+                "yielding batch [" << *batch << "]; each of [" << n_slots << "] slots contains "
+                "target buffer sized [" << blob_sz << "]; "
+                "handle saved at index [" << batch_idx << "].");
+} // Script_interpreter::cmd_batch_create_impl()
 
 void Script_interpreter::cmd_socket_stream_send()
 {
@@ -924,15 +1144,15 @@ void Script_interpreter::cmd_blob_sender_send_end_impl(const Peer_list& peers, u
   {
     Error_code m_err_code;
   };
-  boost::shared_ptr<State> state(new State);
+  boost::shared_ptr<State> state{new State};
   auto& err_code = state->m_err_code;
 
   // Do this (potentially) async first.
-  auto async_task = [&](const Done_promise& done_promise)
+  auto async_task = [&](Done_promise done_promise)
   {
-    insta_fail = (!peer->async_end_sending([state, done_promise](const Error_code& async_err_code)
+    insta_fail = (!peer->async_end_sending([&, state, done_promise](const Error_code& async_err_code)
     {
-      state->m_err_code = async_err_code;
+      err_code = async_err_code;
       done_promise->set_value();
     }));
     if (insta_fail)
@@ -1049,24 +1269,24 @@ void Script_interpreter::cmd_socket_stream_receiver_recv_impl(const Peer_list& p
     size_t m_n_rcvd;
     Error_code m_err_code;
   };
-  shared_ptr<State> state(new State);
+  shared_ptr<State> state{new State};
   auto& hndl = state->m_hndl;
   auto& blob = state->m_blob;
   auto& n_rcvd = state->m_n_rcvd;
   auto& err_code = state->m_err_code;
 
-  blob = Blob(m_ipc_logger, blob_n); // .zero() iff blob_n is zero.
+  blob = Blob{m_ipc_logger, blob_n}; // .zero() iff blob_n is zero.
 
   // Do this (potentially) async first.
-  auto async_task = [&](const Done_promise& done_promise)
+  auto async_task = [&](Done_promise done_promise)
   {
     insta_fail
       = (!peer->async_receive_native_handle(&hndl, blob.mutable_buffer(),
-                                            [state, done_promise]
+                                            [&, state, done_promise]
                                               (const Error_code& async_err_code, size_t async_n_rcvd)
     {
-      state->m_err_code = async_err_code;
-      state->m_n_rcvd = async_n_rcvd;
+      err_code = async_err_code;
+      n_rcvd = async_n_rcvd;
       done_promise->set_value();
     }));
     if (insta_fail)
@@ -1177,22 +1397,22 @@ void Script_interpreter::cmd_blob_receiver_recv_blob_impl(const Peer_list& peers
     size_t m_n_rcvd;
     Error_code m_err_code;
   };
-  shared_ptr<State> state(new State);
+  shared_ptr<State> state{new State};
   auto& blob = state->m_blob;
   auto& n_rcvd = state->m_n_rcvd;
   auto& err_code = state->m_err_code;
 
-  blob = Blob(m_ipc_logger, blob_n);
+  blob = Blob{m_ipc_logger, blob_n};
 
   // Do this (potentially) async first.
-  auto async_task = [&](const Done_promise& done_promise)
+  auto async_task = [&](Done_promise done_promise)
   {
     peer->async_receive_blob(blob.mutable_buffer(),
-                             [state, done_promise]
+                             [&, state, done_promise]
                                (const Error_code& async_err_code, size_t async_n_rcvd)
     {
-      state->m_err_code = async_err_code;
-      state->m_n_rcvd = async_n_rcvd;
+      err_code = async_err_code;
+      n_rcvd = async_n_rcvd;
       done_promise->set_value();
     });
   }; // async_task =
@@ -1227,12 +1447,245 @@ void Script_interpreter::cmd_blob_receiver_recv_blob_impl(const Peer_list& peers
     validate_rcvd_blob_contents(blob, exp_blob_n); // Throw on error.
   }); // test_with_timeout()
   /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
-   * which shall destroy m_test_sock_streams which shall shall destroy *sock_stm (hence join its internal thread(s)). */
+   * which shall destroy m_test_* which shall shall destroy *peer (hence join its internal thread(s)). */
 } // Script_interpreter::cmd_blob_receiver_recv_blob_impl()
+
+template<typename Batch_t, typename Chan_bundle>
+void Script_interpreter::cmd_chan_bundle_recv_batch()
+{
+  using util::String_view;
+  using flow::util::ostream_op_string;
+  using boost::shared_ptr;
+  using std::type_index;
+  using std::get;
+  using std::vector;
+  using Chan_bundle_list = List_of<Chan_bundle>;
+  constexpr bool NO_HNDL = std::is_same_v<Batch_t, Blob_batch>;
+
+  /* This is not all that different from cmd_blob_receiver_recv_blob_impl().  It's different enough, of course,
+   * in the same way that async_receive_X_batch() differs from async_receive_X().  Just saying some of the code
+   * is similar and/or hopefully reused. */
+
+  const auto& peers
+    = get<Chan_bundle_list>(m_test_chan_bundles[type_index{typeid(Chan_bundle)}]);
+  const String_view peer_type{name_chan_bundle<Chan_bundle>()};
+
+  auto& batches = cmd_batches<Batch_t>();
+  const auto batch_type = name_batch<Batch_t>();
+
+  const auto peer = next_required_peer(peers, peer_type);
+
+  // @todo This is similar to next_required_peer(); could probably do some code reuse.
+  const auto batch_idx = next_required_typed_value<size_t>();
+  if (batch_idx >= batches.size())
+  {
+    failed(true,
+           ostream_op_string("There is no batch (type [", batch_type, "]) at index [", batch_idx, "]."));
+  }
+  // else
+  const auto batch = batches[batch_idx];
+  FLOW_LOG_INFO("Looked up batch (type [" << batch_type << "]) at index [" << batch_idx << "]: "
+                "[" << *batch << "].");
+
+  if (batch->n_used() != 0)
+  {
+    // This is a nice assert(), really.
+    failed(false, "Batch should have n_used()=0, as in this test we reset it that way each time.  Test bug?");
+
+    // @todo Actually, though such use would be rare, we should test behavior with pre-condition `batch.n_used() != 0`.
+  }
+  // else
+
+  const auto assume_would_block = next_required_typed_value<bool>();
+
+  const auto exp_err_code_or_success = next_required_err_code();
+  const auto exp_n_used = next_required_typed_value<size_t>();
+
+  struct Expect { size_t m_exp_blob_n = 0; bool m_exp_hndl_or_not = false; };
+  vector<Expect> exps(exp_n_used);
+
+  FLOW_LOG_INFO("Attempting batch-receive (assume_would_block? = [" << assume_would_block << "]) via peer; "
+                "expected msg-count [" << exp_n_used << "]; expected result = "
+                "[" << exp_err_code_or_success << "] [" << exp_err_code_or_success.message() << "].");
+
+  for (auto& exp : exps)
+  {
+    exp.m_exp_blob_n = next_required_typed_value<size_t>();
+    FLOW_LOG_INFO("Blob [" << (&exp - &(exps.front())) << "] size expected = [" << exp.m_exp_blob_n << "].");
+  }
+  if constexpr(!NO_HNDL)
+  {
+    for (auto& exp : exps)
+    {
+      exp.m_exp_hndl_or_not = next_required_typed_value<bool>();
+      FLOW_LOG_INFO("Native handle expected? = [" << exp.m_exp_hndl_or_not << "].");
+    }
+  }
+
+  const auto timeout = next_required_dur();
+
+  // Parsed/validated.
+
+  using State = Error_code; // It's just for consistency with other places we do a similar timeout/async thing.
+  shared_ptr<State> state{new State};
+  auto& err_code = *state;
+
+  // Do this (potentially) async first.
+  auto async_task = [&](Done_promise done_promise)
+  {
+    if constexpr(NO_HNDL)
+    {
+      peer->template async_receive_blob_batch<Raw_blob>(batch.get(), assume_would_block,
+                                                        [&, state, done_promise]
+                                                          (const Error_code& async_err_code)
+      {
+        err_code = async_err_code; done_promise->set_value();
+      });
+    }
+    else // if constexpr(!NO_HNDL)
+    {
+      peer->template async_receive_native_handle_batch<Raw_blob>(batch.get(), assume_would_block,
+                                                                 [&, state, done_promise]
+                                                                   (const Error_code& async_err_code)
+      {
+        err_code = async_err_code; done_promise->set_value();
+      });
+    }
+  }; // async_task =
+
+  // If it [a]sync-completes before timeout, then the following will (synchronously) run.
+  test_with_timeout(timeout, async_task, [&]()
+  {
+    FLOW_LOG_INFO("Batch contents post-call = [" << *batch << "].");
+
+    if (err_code != exp_err_code_or_success)
+    {
+      // Subtlety: err_code is printed by failed()... but omitted if it == success; so print it here just in case.
+      failed(false, ostream_op_string("Op result [", err_code, "] [", err_code.message(), "] "
+                                        "was not as expected (see just above)."),
+             err_code);
+    }
+    // else
+
+    if (err_code)
+    {
+      if (batch->n_used() != 0)
+      {
+        failed(false, ostream_op_string("Op returned (expected) failure code with msg-count [", batch->n_used(), "], "
+                                          "but it must be zero on failure.",
+               err_code));
+      }
+      // else
+      return; // Fail (expected) => nothing more to do.
+    }
+    // else if (!err_code)
+
+    for (size_t idx = 0; idx != batch->n_used(); ++idx)
+    {
+      /* @todo Some of the below is similar to the non-batch-receive checking code.  Add code reuse?
+       * Like see cmd_socket_stream_receiver_recv_impl(). */
+
+      FLOW_LOG_INFO("Checking received-slot [" << idx << "].");
+
+      Raw_blob* blob_ptr;
+      const auto n_rcvd = batch->result_payload_blob(idx, &blob_ptr);
+
+      blob_ptr->resize(n_rcvd);
+
+      if (idx < exps.size())
+      {
+        validate_rcvd_blob_contents(*blob_ptr, exps[idx].m_exp_blob_n); // Throw on error.
+
+        if constexpr(!NO_HNDL)
+        {
+          auto hndl = batch->result_payload_hndl(idx);
+          const auto exp_hndl_or_not = exps[idx].m_exp_hndl_or_not;
+          if ((!hndl.null()) != exp_hndl_or_not)if (idx < exps.size())
+          {
+            failed(false, "Op returned success (as expected), with this slot's expected meta-blob contents (if any), "
+                            "but slot's native handle was received but not expected, or vice versa.");
+          }
+          // else
+
+          if (exp_hndl_or_not)
+          {
+            FLOW_LOG_INFO("Received native local handle [" << hndl << "]: "
+                          "saved at index [" << m_test_native_hndls.size() << "].");
+            m_test_native_hndls.emplace_back(std::move(hndl));
+            assert(hndl.null()); // We check this with failed() in another cmd/test; assert() here is fine.
+          }
+        } // if constexpr(!NO_HNDL)
+      } // if (idx < exps.size())
+      else // if (idx >= exps.size())
+      {
+        FLOW_LOG_WARNING("Did not expect this many slots.  Will fail-out soon; but for now continuing.");
+
+        /* We can't compare against exps[idx], obviously, but let's still do the other remaining stuff.  Though
+         * that stuff is fairly pointless as of this writing (we'll fail-out soon anyway), but just for
+         * cleanliness/maintainability let's.
+         *
+         * More importantly however: We'll catch exps.size()-vs->n_used() mismatch below (including in the other
+         * direction, where ->n_used() < exps.size()).  Why not have that check before the present loop, though?
+         * If they don't match we could bail-out before the loop; no `if` required.  Answer: That'd be fine, but
+         * it's nice to show whether the first exps.size() that *did* arrive match expectations.  If they don't,
+         * we'll fail-out in the loop; this will be valuable additional info.  (The batch print-out earlier contains
+         * the ->n_used() value anyway, so it's not lost.)  For example it can be common that we expected
+         * payloads A B C D and did in fact get A B C (payloads as expected) -- but no D, because the sending wasn't
+         * timed as we thought it would.  So this will reasonably-clearly show that -- instead of just saying
+         * "wanted 4, got 3, if you wanna see what was in them have fun digging through logs." */
+      }
+
+      /* We could just reuse the existing blob, but it's more realistic to prepare a new one (one would consume
+       * this one -- move it elsewhere -- typically); plus then it won't have the possibly "correct" received
+       * payload in there for the next test if any. */
+      Raw_blob blob{blob_ptr->capacity()};
+      batch->prepare_target_payload(blob.mutable_buffer(), std::move(blob), idx);
+    } // for (idx in [0, n_used))
+
+    if (batch->n_used() != exps.size())
+    {
+      failed(false, ostream_op_string("Op returned success (as expected), but the msg-count "
+                                        "[", batch->n_used(), "] is not as expected."));
+    }
+
+    batch->clear_used();
+    assert(batch->n_used() == 0);
+  }); // test_with_timeout()
+  /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
+   * which shall destroy m_test_* which shall shall destroy *peer (hence join its internal thread(s)). */
+} // Script_interpreter::cmd_chan_bundle_recv_batch()
+
+template<typename Chan_bundle>
+void Script_interpreter::cmd_chan_bundle_auto_ping()
+{
+  using util::String_view;
+  using flow::util::ostream_op_string;
+  using boost::chrono::round;
+  using boost::chrono::milliseconds;
+  using std::type_index;
+  using std::get;
+  using Chan_bundle_list = List_of<Chan_bundle>;
+
+  const auto& peers
+    = get<Chan_bundle_list>(m_test_chan_bundles[type_index{typeid(Chan_bundle)}]);
+  const String_view peer_type{name_chan_bundle<Chan_bundle>()};
+
+  const auto peer = next_required_peer(peers, peer_type);
+  const auto dur = next_required_dur();
+
+  FLOW_LOG_INFO("Setting auto-ping period to ~[" << round<milliseconds>(dur) << "].  "
+                "A ping auto-occurs ~immediately and then about this long after the last out-traffic of any type, such "
+                "that no other out-traffic occurred since then.");
+
+  if (!peer->auto_ping(dur)) // @todo Should perhaps test it returns false if called 2x for a given thing.
+  {
+    failed(false, "Auto-ping API returned false, which we never expect in our testing.");
+  }
+} // Script_interpreter::cmd_socket_stream_connect()
 
 flow::util::Blob Script_interpreter::test_blob(size_t n) const
 {
-  flow::util::Blob blob(m_ipc_logger, n); // size() = capacity() = blob_n.
+  flow::util::Blob blob{m_ipc_logger, n}; // size() = capacity() = blob_n.
   for (size_t idx = 0; idx != n; ++idx)
   {
     (blob.data())[idx] = S_TEST_BLOB_CONTENTS[idx % S_TEST_BLOB_CONTENTS.size()];
@@ -1240,7 +1693,8 @@ flow::util::Blob Script_interpreter::test_blob(size_t n) const
   return blob;
 }
 
-void Script_interpreter::validate_rcvd_blob_contents(const flow::util::Blob& blob, size_t exp_blob_n)
+template<typename Blob>
+void Script_interpreter::validate_rcvd_blob_contents(const Blob& blob, size_t exp_blob_n)
 {
   using flow::util::buffers_dump_string;
   using flow::util::ostream_op_string;
@@ -1292,7 +1746,6 @@ const typename Peer_list::value_type&
   // This is well-known OK use of const_cast<>.
   return const_cast<Script_interpreter*>(this)->next_required_peer_ref(const_cast<Peer_list&>(peers), peer_type);
 }
-
 
 Error_code Script_interpreter::next_required_err_code()
 {
@@ -1359,7 +1812,7 @@ void Script_interpreter::cmd_socket_stream_acceptor_accept()
   peers.resize(n);
 
   // Do this (potentially) async first.
-  auto async_task = [&](const Done_promise& done_promise)
+  auto async_task = [&](Done_promise done_promise)
   {
     for (decltype(n) idx = 0; idx != n; ++idx)
     {
@@ -1427,7 +1880,7 @@ void Script_interpreter::cmd_socket_stream_acceptor_accept()
     {
       FLOW_LOG_INFO("Saving peer stream [" << peer << "] handle at index [" << m_test_sock_streams.size() << "].");
       // Exercise NSS sync_io-core-adopting ctor = nice.
-      m_test_sock_streams.emplace_back(new Native_socket_stream(std::move(peer)));
+      m_test_sock_streams.emplace_back(new Native_socket_stream{std::move(peer)});
     }
   });
   /* Otherwise it'll throw which shall at some point (assuming our owner is cool) gracefully destroy *this
@@ -1450,7 +1903,7 @@ void Script_interpreter::cmd_socket_stream_acceptor_listen()
 
   Error_code sys_err_code;
   m_test_sock_stm_acceptors[sock_stm_acc_idx]
-    .reset(new Native_socket_stream_acceptor(m_ipc_logger, abs_name, &sys_err_code));
+    .reset(new Native_socket_stream_acceptor{m_ipc_logger, abs_name, &sys_err_code});
 
   if (sys_err_code)
   {
@@ -1494,24 +1947,23 @@ void Script_interpreter::cmd_blob_stream_mq_peer_create()
       failed(true, ostream_op_string("max_msg_sz argument must be positive."));
     }
 
-    FLOW_LOG_INFO("Creating handle/MQ at [" << abs_name << "] (type [" << typeid(Mq_peer).name() << "]) "
+    FLOW_LOG_INFO("Creating handle/MQ at [" << abs_name << "] (type [" << name_mq_peer<Mq_peer>() << "]) "
                   "at max [" << max_n_msg << "] msgs with "
                   "size limit [" << max_msg_sz << "] for each; expecting already-exists? = "
                   "[" << exp_create_fail << "].");
 
-    mq.reset(new Mq(m_ipc_logger, abs_name, util::CREATE_ONLY, max_n_msg, max_msg_sz, util::Permissions(),
-                    &err_code));
+    mq.reset(new Mq{m_ipc_logger, abs_name, util::CREATE_ONLY, max_n_msg, max_msg_sz, {}, &err_code});
   }
   else
   {
-    FLOW_LOG_INFO("Creating handle/opening MQ at [" << abs_name << "] (type [" << typeid(Mq_peer).name() << "]); "
+    FLOW_LOG_INFO("Creating handle/opening MQ at [" << abs_name << "] (type [" << name_mq_peer<Mq_peer>() << "]); "
                   "expecting name-not-found? = [" << exp_create_fail << "].");
-    mq.reset(new Mq(m_ipc_logger, abs_name, util::OPEN_ONLY, &err_code));
+    mq.reset(new Mq{m_ipc_logger, abs_name, util::OPEN_ONLY, &err_code});
   }
 
   if (exp_create_fail)
   {
-    const Error_code exp_err_code(create_else_open ? EEXIST : ENOENT, system_category());
+    const Error_code exp_err_code{create_else_open ? EEXIST : ENOENT, system_category()};
     if (err_code != exp_err_code)
     {
       // Subtlety: err_code is printed by failed()... but omitted if it == success; so print it here just in case.
@@ -1554,9 +2006,9 @@ void Script_interpreter::cmd_blob_stream_mq_peer_create()
   }
   // else
 
-  auto& mq_peer_list = get<Mq_peer_list<Mq_peer>>(m_test_blob_stream_mq_peers[type_index(typeid(Mq_peer))]);
+  auto& mq_peer_list = get<List_of<Mq_peer>>(m_test_blob_stream_mq_peers[type_index{typeid(Mq_peer)}]);
   mq_peer_list.emplace_back(std::move(mq_peer));
-  FLOW_LOG_INFO("Op behaved as expected; saved MQ blob stream (type [" << typeid(Mq_peer).name() << "]) at index "
+  FLOW_LOG_INFO("Op behaved as expected; saved MQ blob stream (type [" << name_mq_peer<Mq_peer>() << "]) at index "
                 "[" << (mq_peer_list.size() - 1) << "] for that type's list.");
 } // Script_interpreter::cmd_blob_stream_mq_peer_create()
 
@@ -1568,8 +2020,8 @@ void Script_interpreter::cmd_blob_stream_mq_peer_destroy()
   using std::type_index;
   using std::get;
 
-  auto& mq_peer_list = get<Mq_peer_list<Mq_peer>>(m_test_blob_stream_mq_peers[type_index(typeid(Mq_peer))]);
-  auto& mq_peer = next_required_peer_ref(mq_peer_list, typeid(Mq_peer).name());
+  auto& mq_peer_list = get<List_of<Mq_peer>>(m_test_blob_stream_mq_peers[type_index{typeid(Mq_peer)}]);
+  auto& mq_peer = next_required_peer_ref(mq_peer_list, name_mq_peer<Mq_peer>());
 
   const auto timeout = next_required_dur();
 
@@ -1582,11 +2034,11 @@ void Script_interpreter::cmd_blob_stream_mq_peer_destroy()
    * for the .reset() task to complete before that thread can be joined.  Not great -- but nothing we can do by
    * definition short of aborting process/thread/whatever. */
 
-  Single_thread_task_loop thread(nullptr, // Skip the spam; null logger.
-                                 "mq_peer_destroy");
+  Single_thread_task_loop thread{nullptr, // Skip the spam; null logger.
+                                 "mq_peer_destroy"};
   thread.start();
 
-  auto async_task = [&](const Done_promise& done_promise)
+  auto async_task = [&](Done_promise done_promise)
   {
     thread.post([mq_peer = std::move(mq_peer), done_promise]() mutable
     {
@@ -1648,21 +2100,21 @@ void Script_interpreter::cmd_chan_bundle_create()
   {
     if (mq_create_else_open)
     {
-      FLOW_LOG_INFO("Creating out-pipe handle/MQ at [" << mq_out_abs_name << "] (type [" << typeid(Mq).name() << "]) "
+      FLOW_LOG_INFO("Creating out-pipe handle/MQ at [" << mq_out_abs_name << "] (type [" << name_mq<Mq>() << "]) "
                     "at generous limit config value; expecting success; else exception thrown => test fails.");
-      mq_out.reset(new Mq(m_ipc_logger, mq_out_abs_name,
-                          util::CREATE_ONLY, MAX_N_MSG, MAX_MSG_SZ, util::Permissions())); // Can throw.
+      mq_out.reset(new Mq{m_ipc_logger, mq_out_abs_name,
+                          util::CREATE_ONLY, MAX_N_MSG, MAX_MSG_SZ, {}}); // Can throw.
       FLOW_LOG_INFO("Done; creating in-pipe handle/MQ at [" << mq_in_abs_name << "]; same deal.");
-      mq_in.reset(new Mq(m_ipc_logger, mq_in_abs_name,
-                         util::CREATE_ONLY, MAX_N_MSG, MAX_MSG_SZ, util::Permissions())); // Can throw.
+      mq_in.reset(new Mq{m_ipc_logger, mq_in_abs_name,
+                         util::CREATE_ONLY, MAX_N_MSG, MAX_MSG_SZ, {}}); // Can throw.
     }
     else
     {
       FLOW_LOG_INFO("Creating out-pipe handle/opening MQ at [" << mq_out_abs_name << "] "
-                    "(type [" << typeid(Mq).name() << "]); expecting success; else exception thrown => test fails.");
-      mq_out.reset(new Mq(m_ipc_logger, mq_out_abs_name, util::OPEN_ONLY));
+                    "(type [" << name_mq<Mq>() << "]); expecting success; else exception thrown => test fails.");
+      mq_out.reset(new Mq{m_ipc_logger, mq_out_abs_name, util::OPEN_ONLY});
       FLOW_LOG_INFO("Done; creating in-pipe handle/opening MQ at [" << mq_in_abs_name << "]; same deal.");
-      mq_in.reset(new Mq(m_ipc_logger, mq_in_abs_name, util::OPEN_ONLY));
+      mq_in.reset(new Mq{m_ipc_logger, mq_in_abs_name, util::OPEN_ONLY});
     }
 
     /* Got here: mq_out, mq_in are ready.  We have sock_stm also.  We can now bundle them all into
@@ -1671,9 +2123,9 @@ void Script_interpreter::cmd_chan_bundle_create()
      * This happens via move-semantics. So the sock_stm in the slot becomes unusable by itself. */
 
     FLOW_LOG_INFO("Wrapping all 3 peers [" << *mq_in << "] [" << *mq_out << "] [" << *sock_stm << "] in a new "
-                  "Channel (type [" << typeid(Chan_bundle).name() << "]).");
+                  "Channel (type [" << name_chan_bundle<Chan_bundle>() << "]).");
 
-    auto& chan_bundle_list = get<Chan_bundle_list<Chan_bundle>>(m_test_chan_bundles[type_index(typeid(Chan_bundle))]);
+    auto& chan_bundle_list = get<List_of<Chan_bundle>>(m_test_chan_bundles[type_index{typeid(Chan_bundle)}]);
     const auto chan_idx = chan_bundle_list.size();
 
     // See Mqs_socket_stream_channel ctor docs in channel.hpp.
@@ -1683,7 +2135,7 @@ void Script_interpreter::cmd_chan_bundle_create()
                           std::move(*mq_out), std::move(*mq_in), std::move(*sock_stm)); // Can throw.
 
     chan_bundle_list.emplace_back(std::move(chan_bundle));
-    FLOW_LOG_INFO("Done; saved Channel (type [" << typeid(Chan_bundle).name() << "]) at index "
+    FLOW_LOG_INFO("Done; saved Channel (type [" << name_chan_bundle<Chan_bundle>() << "]) at index "
                   "[" << chan_idx << "] for that type's list.");
   }
   catch (const Runtime_error& exc)
@@ -1709,8 +2161,8 @@ void Script_interpreter::cmd_blob_stream_mq_peer_send_blob()
   using std::type_index;
   using std::get;
 
-  const auto& mq_peer_list = get<Mq_peer_list<Mq_peer>>(m_test_blob_stream_mq_peers[type_index(typeid(Mq_peer))]);
-  cmd_blob_sender_send_blob_impl<Mq_peer_list<Mq_peer>>(mq_peer_list, typeid(Mq_peer).name());
+  const auto& mq_peer_list = get<List_of<Mq_peer>>(m_test_blob_stream_mq_peers[type_index{typeid(Mq_peer)}]);
+  cmd_blob_sender_send_blob_impl<List_of<Mq_peer>>(mq_peer_list, name_mq_peer<Mq_peer>());
 }
 
 template<typename Chan_bundle>
@@ -1720,8 +2172,8 @@ void Script_interpreter::cmd_chan_bundle_send_blob()
   using std::get;
 
   const auto& chan_bundle_list
-    = get<Chan_bundle_list<Chan_bundle>>(m_test_chan_bundles[type_index(typeid(Chan_bundle))]);
-  cmd_blob_sender_send_blob_impl<Chan_bundle_list<Chan_bundle>>(chan_bundle_list, typeid(Chan_bundle).name());
+    = get<List_of<Chan_bundle>>(m_test_chan_bundles[type_index{typeid(Chan_bundle)}]);
+  cmd_blob_sender_send_blob_impl<List_of<Chan_bundle>>(chan_bundle_list, name_chan_bundle<Chan_bundle>());
 }
 
 template<typename Chan_bundle>
@@ -1731,8 +2183,8 @@ void Script_interpreter::cmd_chan_bundle_send()
   using std::get;
 
   const auto& chan_bundle_list
-    = get<Chan_bundle_list<Chan_bundle>>(m_test_chan_bundles[type_index(typeid(Chan_bundle))]);
-  cmd_socket_stream_sender_send_impl<Chan_bundle_list<Chan_bundle>>(chan_bundle_list, typeid(Chan_bundle).name());
+    = get<List_of<Chan_bundle>>(m_test_chan_bundles[type_index{typeid(Chan_bundle)}]);
+  cmd_socket_stream_sender_send_impl<List_of<Chan_bundle>>(chan_bundle_list, name_chan_bundle<Chan_bundle>());
 }
 
 template<typename Mq_peer>
@@ -1741,8 +2193,8 @@ void Script_interpreter::cmd_blob_stream_mq_peer_send_end()
   using std::type_index;
   using std::get;
 
-  const auto& mq_peer_list = get<Mq_peer_list<Mq_peer>>(m_test_blob_stream_mq_peers[type_index(typeid(Mq_peer))]);
-  cmd_blob_sender_send_end_impl<Mq_peer_list<Mq_peer>>(mq_peer_list, typeid(Mq_peer).name());
+  const auto& mq_peer_list = get<List_of<Mq_peer>>(m_test_blob_stream_mq_peers[type_index{typeid(Mq_peer)}]);
+  cmd_blob_sender_send_end_impl<List_of<Mq_peer>>(mq_peer_list, name_mq_peer<Mq_peer>());
 }
 
 template<typename Chan_bundle>
@@ -1752,8 +2204,8 @@ void Script_interpreter::cmd_chan_bundle_send_end()
   using std::get;
 
   const auto& chan_bundle_list
-    = get<Chan_bundle_list<Chan_bundle>>(m_test_chan_bundles[type_index(typeid(Chan_bundle))]);
-  cmd_blob_sender_send_end_impl<Chan_bundle_list<Chan_bundle>>(chan_bundle_list, typeid(Chan_bundle).name());
+    = get<List_of<Chan_bundle>>(m_test_chan_bundles[type_index{typeid(Chan_bundle)}]);
+  cmd_blob_sender_send_end_impl<List_of<Chan_bundle>>(chan_bundle_list, name_chan_bundle<Chan_bundle>());
 }
 
 template<typename Mq_peer>
@@ -1762,8 +2214,8 @@ void Script_interpreter::cmd_blob_stream_mq_peer_recv_blob()
   using std::type_index;
   using std::get;
 
-  const auto& mq_peer_list = get<Mq_peer_list<Mq_peer>>(m_test_blob_stream_mq_peers[type_index(typeid(Mq_peer))]);
-  cmd_blob_receiver_recv_blob_impl<Mq_peer_list<Mq_peer>>(mq_peer_list, typeid(Mq_peer).name());
+  const auto& mq_peer_list = get<List_of<Mq_peer>>(m_test_blob_stream_mq_peers[type_index{typeid(Mq_peer)}]);
+  cmd_blob_receiver_recv_blob_impl<List_of<Mq_peer>>(mq_peer_list, name_mq_peer<Mq_peer>());
 }
 
 template<typename Chan_bundle>
@@ -1773,8 +2225,8 @@ void Script_interpreter::cmd_chan_bundle_recv_blob()
   using std::get;
 
   const auto& chan_bundle_list
-    = get<Chan_bundle_list<Chan_bundle>>(m_test_chan_bundles[type_index(typeid(Chan_bundle))]);
-  cmd_blob_receiver_recv_blob_impl<Chan_bundle_list<Chan_bundle>>(chan_bundle_list, typeid(Chan_bundle).name());
+    = get<List_of<Chan_bundle>>(m_test_chan_bundles[type_index{typeid(Chan_bundle)}]);
+  cmd_blob_receiver_recv_blob_impl<List_of<Chan_bundle>>(chan_bundle_list, name_chan_bundle<Chan_bundle>());
 }
 
 template<typename Chan_bundle>
@@ -1784,14 +2236,13 @@ void Script_interpreter::cmd_chan_bundle_recv()
   using std::get;
 
   const auto& chan_bundle_list
-    = get<Chan_bundle_list<Chan_bundle>>(m_test_chan_bundles[type_index(typeid(Chan_bundle))]);
-  cmd_socket_stream_receiver_recv_impl<Chan_bundle_list<Chan_bundle>>(chan_bundle_list, typeid(Chan_bundle).name());
+    = get<List_of<Chan_bundle>>(m_test_chan_bundles[type_index{typeid(Chan_bundle)}]);
+  cmd_socket_stream_receiver_recv_impl<List_of<Chan_bundle>>(chan_bundle_list, name_chan_bundle<Chan_bundle>());
 }
 
 template<typename Strings_map>
 std::string Script_interpreter::map_keys_str(const Strings_map& map) // Static.
 {
-  using util::String_view;
   using boost::algorithm::join;
   using std::vector;
   using std::string;
@@ -1817,6 +2268,84 @@ unsigned int Script_interpreter::user_line_idx(size_t line_idx) // Static.
 unsigned int Script_interpreter::user_col_idx(size_t col_idx) // Static.
 {
   return col_idx + 1; // 1-based.
+}
+
+// These are all friendlier replacements for typeid(Obj).name().
+
+template<typename Obj>
+util::String_view Script_interpreter::name_chan_bundle() // Static.
+{
+  if constexpr(std::is_same_v<Obj, Posix_mqs_socket_stream_channel>)
+  {
+    return {"channel-sock+POSIX"};
+  }
+  else if constexpr(std::is_same_v<Obj, Bipc_mqs_socket_stream_channel>)
+  {
+    return {"channel-sock+BIPC"};
+  }
+  else
+  {
+    static_assert(DEPENDENT_FALSE<Obj>, "Missed a spot?");
+  }
+}
+
+template<typename Obj>
+util::String_view Script_interpreter::name_mq_peer() // Static.
+{
+  if constexpr(std::is_same_v<Obj, Posix_mq_sender>)
+  {
+    return {"mq-stream-POSIX-snd"};
+  }
+  else if constexpr(std::is_same_v<Obj, Bipc_mq_sender>)
+  {
+    return {"mq-stream-BIPC-snd"};
+  }
+  else if constexpr(std::is_same_v<Obj, Bipc_mq_receiver>)
+  {
+    return {"mq-stream-BIPC-rcv"};
+  }
+  else if constexpr(std::is_same_v<Obj, Posix_mq_receiver>)
+  {
+    return {"mq-stream-POSIX-rcv"};
+  }
+  else
+  {
+    static_assert(DEPENDENT_FALSE<Obj>, "Missed a spot?");
+  }
+}
+
+template<typename Obj>
+util::String_view Script_interpreter::name_mq() // Static.
+{
+  if constexpr(std::is_same_v<Obj, Posix_mq_handle>)
+  {
+    return {"mq-POSIX"};
+  }
+  else if constexpr(std::is_same_v<Obj, Bipc_mq_handle>)
+  {
+    return {"mq-BIPC"};
+  }
+  else
+  {
+    static_assert(DEPENDENT_FALSE<Obj>, "Missed a spot?");
+  }
+}
+
+template<typename Obj>
+util::String_view Script_interpreter::name_batch() // Static.
+{
+  if constexpr(std::is_same_v<Obj, Batch>)
+  {
+    return {"combo-batch"};
+  }
+  else if constexpr(std::is_same_v<Obj, Blob_batch>)
+  {
+    return {"blob-batch"};
+  }
+  else
+  {
+    static_assert(DEPENDENT_FALSE<Obj>, "Missed a spot?");
+  }
 }
 
 } // namespace ipc::transport::test

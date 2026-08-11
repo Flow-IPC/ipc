@@ -23,6 +23,8 @@
 
 ---
 
+XXXrewrite slightly - do not claim async-I/O is necessarily easier
+
 Before using the most useful aspects of Flow-IPC, we must know how to integrate with an application's event loop.  (Or go back to preceding page: @ref setup.)
 
 At its core Flow-IPC is meant to send messages to a process and receive them in that other process.  As a rule, a given basic *send* API in Flow-IPC is synchronous, non-blocking, and can never return a "would-block" error.  That is:
@@ -35,11 +37,11 @@ However, by their very nature, this is not the case for *receive* APIs (as well 
 
 The topic of event loops, asynchronicity, reactors, proactors, etc., in a C++ program is complex and expansive, and any comprehensive discussion thereof is *well* outside our scope.  We do try to be helpful and skim the topic as needed for our purposes, but ultimately some experience and/or outside research on your part may be necessary for deep understanding.
 
-Your application's event loop versus an Flow-IPC async op
------------------------------------------------------------
+Your application's event loop versus a Flow-IPC async op
+--------------------------------------------------------
 Your application has a main thread used for logic that would make use of the results of IPC receives (and similar **async[hronous] op[eration]s**).  It may use several such IPC-interested worker threads concurrently as well, in which case it is your responsibility to synchronize (guard against concurrency) between them.  For simplicity of exposition we will exclusively discuss the one-thread scenario here; the same discussion can be generalized to multiple threads by the reader.
 
-Let's call this thread, **thread U** (U for user).  (Again -- if you have multiple threads, presumably to make user of multiple processors cores, then the same conversation can be generalized to such threads U1, U2, ....)
+Let's call this thread, **thread U** (U for user).  (Again -- if you have multiple threads, presumably to make use of multiple processors cores, then the same conversation can be generalized to such threads U1, U2, ....)
 
 Now consider a simple example Flow-IPC async-op (the same principles will apply to all others except where noted); we'll use it for further discussion of the topic.  The async op: ipc::transport::Blob_receiver being asked to receive a single message, in the form of a blob, when it becomes available.  While Flow-IPC waits for an incoming blob (conceptually in the *background*), thread U must be usable for other tasks (e.g., sending or receiving HTTP traffic; periodic logging and reporting; who knows); but once a blob does arrive:
   - if thread U is sleeping, it must be woken up and given the resulting blob, which it will handle as it sees fit;
@@ -98,7 +100,7 @@ To use it, a task in the context of an event loop in thread U might be written a
     {
       // We are in thread U.
 
-      m_rcv.async_receive_blob(ipc::util::Blob_mutable(m_buf), // Target buffer starting at m_buf.begin(), length .size() == 8192.
+      m_rcv.async_receive_blob(ipc::util::Blob_mutable{m_buf}, // Target buffer starting at m_buf.begin(), length .size() == 8192.
                                [this](const Error_code& err_code, size_t n_sz)
       {
         // We are in "unspecified Flow-IPC thread" (really, thread W)!  Must post() (unless shutting down anyway).
@@ -148,7 +150,7 @@ The key points:
   - If the async-op targets some kind of user resource (in this case a simple buffer in memory), then that resource must be available until the completion handler is invoked.  Otherwise undefined behavior results.
     - Other techniques beyond maintaining a long-lived data member (like `m_buf` above) exist.  In particular it's common to allocate and lambda-capture a `shared_ptr` to the underlying resource.
 
-To reiterate: In most of the rest of the Manual, we use the above pattern.  **In particular we assume the existence of a `post()` method as shown above** and *use it regularly in example code*.  Note that the exact API your application uses will be spiritually identical to `post(F)` (where `F()` is the task) but specifically different.  In particular/for example:
+To reiterate: In most of the rest of the Manual, we use the above pattern.  **In particular we assume the existence of a `post()` function as shown above** and *use it regularly in example code*.  Note that the exact API your application uses will be spiritually identical to `post(F)` (where `F()` is the task) but specifically different.  In particular/for example:
   - If you are using boost.asio, it'll be `post(E, F)`, where `E` is usually a `boost::asio::io_context` (or `strand`).
   - If you are using `flow::async` (a boost.asio-helper), it'll be `L.post(F)`, where `L` is `Single_thread_task_loop` (1 user worker thread) or `Concurrent_task_loop` (2+ threads).
     - Or a lower-level utility is `asio_exec_ctx(..., E, ..., F)`, which is a variant of boost.asio's `post(E, F)` with certain added options.
@@ -219,7 +221,7 @@ Here is a list of async-I/O-pattern APIs and their `sync_io` counterparts.
   - ipc::transport core layer:
     - Concepts: ipc::transport::Blob_sender, ipc::transport::Native_handle_sender, ipc::transport::Blob_receiver, ipc::transport::Native_handle_receiver.
       - (`sync_io`-pattern) ipc::transport::sync_io::Blob_sender, ipc::transport::sync_io::Native_handle_sender, ipc::transport::sync_io::Blob_receiver, ipc::transport::sync_io::Native_handle_receiver.
-      - Impls: ipc::transport::Native_socket_stream (+), ipc::transport::Blob_stream_mq_sender, ipc::transport::Blob_stream_mq_receiver, ipc::transport::Channel.
+      - Impls: ipc::transport::Native_socket_stream, ipc::transport::Blob_stream_mq_sender, ipc::transport::Blob_stream_mq_receiver, ipc::transport::Channel.
         - (`sync_io`-pattern) ipc::transport::sync_io::Native_socket_stream, ipc::transport::sync_io::Blob_stream_mq_sender, ipc::transport::sync_io::Blob_stream_mq_receiver, ipc::transport::Channel (#).
     - Other: ipc::transport::Native_socket_stream_acceptor (**).
        - (`sync_io`-pattern) ipc::transport::sync_io::Native_socket_stream_acceptor.

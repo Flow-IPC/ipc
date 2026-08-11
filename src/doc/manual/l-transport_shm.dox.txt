@@ -35,14 +35,14 @@ We don't want you to think about it any more than absolutely necessary.  It is a
 Session-client:
 
   ~~~
-  template<ipc::session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES,
+  template<ipc::session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES,
            typename Mdt_payload = ::capnp::Void>
   // Right here --------------------------v-- is where zero-copy (SHM-backed) engine is specified.
-  using Client_session_t = ipc::session::shm::classic::Client_session<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+  using Client_session_t = ipc::session::shm::classic::Client_session<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
   // Alternatively you could have written the following --v-- to specify a different SHM-backed engine.
-  using Client_session_t = ipc::session::shm::arena_lend::jemalloc::Client_session<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+  using Client_session_t = ipc::session::shm::arena_lend::jemalloc::Client_session<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
   // Or if you don't want zero copy: --v
-  using Client_session_t = ipc::session::Client_session<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+  using Client_session_t = ipc::session::Client_session<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
 
   // Now everything will flow from the above, alias to alias to alias... no SHM details being mentioned:
   using Session = Client_session_t<session::schema::MqType::NONE, true>;
@@ -56,13 +56,13 @@ Session-client:
 Session-server:
 
   ~~~
-  template<ipc::session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES,
+  template<ipc::session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES,
            typename Mdt_payload = ::capnp::Void>
-  using Session_server_t = ipc::session::shm::classic::Session_server<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+  using Session_server_t = ipc::session::shm::classic::Session_server<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
   // Alternatively (different SHM-backed engine):
-  using Session_server_t = ipc::session::shm::arena_lend::jemalloc::Session_server<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+  using Session_server_t = ipc::session::shm::arena_lend::jemalloc::Session_server<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
   // Alternatively (no zero-copy/SHM-backing):
-  using Session_server_t = ipc::session::shm::Session_server<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+  using Session_server_t = ipc::session::shm::Session_server<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
 
   // Now everything will flow from the above, alias to alias to alias... no SHM details being mentioned:
   using Session_server = Session_server_t<session::schema::MqType::NONE, true>;
@@ -118,7 +118,7 @@ SHM-backed capabilities become available, like everything else in the ipc::sessi
     - An **app-scope arena** (a/k/a `.app_shm()`), for that specific distinct `Client_app`, is created.  This arena's **lifetime** is *until the `Session_server` is destroyed*.  That is: its lifetime spans all future sessions, not just the one that triggered its creation (in on-demand fashion).
   - If the app-scope arena has already been created, it is not re-created; but it is made equally accessible via `.app_shm()` accessors.
 
-@note With SHM-jemalloc the app-scope arena is accessible (can be allocated in) only on the session-server end.  The `.app_shm()` accesors do not exist on the session-client end.
+@note With SHM-jemalloc the app-scope arena is accessible (can be allocated in) only on the session-server end.  The `.app_shm()` accessors do not exist on the session-client end.
 
 ---
 
@@ -131,7 +131,7 @@ More specifically, with SHM-jemalloc it is simply unlimited for all practical pu
 @par
 With SHM-classic there is as of this writing a hard-coded limit in the *gigabytes* (query ipc::session::shm::classic::Session_server::pool_size_limit_mi() to get the value).  If it proves insufficient, you can increase it via the similarly-named mutator `pool_size_limit_mi()`.  Rest assured that all these gigabytes are *not* taken-away from general OS use from the get-go: Rather a given *page* (default size 4Ki) is taken-away from general use, only once it is "touched" by an allocation or write.
 
-@param
+@par
 Unfortunately, however, at least in Linux there are some kernel parameters governing how much virtual SHM space can be reserved in such a way, even though ~no physical RAM is taken by just creating a pool sized in the gigabytes.  In particular if system-wide active pools exceed a certain parameter `Session_server::async_accept()` can yield "No space left on device" (`ENOSPC`) error.  In this case one can: (1) tweak the kernel parameter(s) as admin; (2) reduce a given `Session_server`s' pool-size via the aforementioned mutator; or (3) use SHM-jemalloc provider which adjusts dynamically and creates/destroys smaller pools internally as needed.
 
 ---
@@ -294,13 +294,13 @@ To make allocating mutators (in this case `.resize()`) work you must **activate 
   auto y = session.app_shm()->construct<Widget>();
 
   {
-    Activator ctx_sess(session.session_shm()); // When modifying Shm_allocator-using things best to do this at the top.
+    Activator ctx_sess{session.session_shm()}; // When modifying Shm_allocator-using things best to do this at the top.
 
     x->m_flag = true; // ctx_sess is active but has zero effect on this (harmless and zero perf impact).
     x->m_str.resize(128); // ctx_sess is active and will cause proper arena to be used for allocation.
 
     {
-      Activator ctx_app(session.app_shm()); // Activators "stack": the latest one to be cted and not dted is active.
+      Activator ctx_app{session.app_shm()}; // Activators "stack": the latest one to be cted and not dted is active.
 
       y->m_str.resize(128); // ctx_app is active and will cause proper arena to be used for allocation.
     }
@@ -426,7 +426,7 @@ Example owner/lender code:
                                                         shm_blob); // Input.
 
   // IPC-transmit it via struc::Channel.
-  cool_channel.send(msg);
+  cool_channel.send(&msg);
   ~~~
 
 And counterpart borrower code:

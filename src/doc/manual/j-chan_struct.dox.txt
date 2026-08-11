@@ -52,7 +52,7 @@ Let's discuss step 2 of this procedure: upgrading a `Channel` to `struc::Channel
 Upgrading `Channel` to `struc::Channel`
 -------------------------------------------
 By the time you've got your unstructured `Channel`, you'd already made decisions as to its underlying low-level transport(s).  (If you used ipc::session, as recommended, you did this using the template knobs of `Session_server` and `Client_session`.)  These details, roughly speaking, will not matter when using the upgraded `struc::Channel`.  There are only a couple of things you must ensure about the underlying transports:
-  - If you intend to ever transmit native handles, naturally ipc::transport::Channel::S_HAS_BLOB_PIPE must be `true`.  (Tweak the ipc::session compile-time knobs as needed (@ref chan_open).  Specifically set the `S_TRANSMIT_NATIVE_HANDLES` template parameter to `true`.)
+  - If you intend to ever transmit native handles, naturally ipc::transport::Channel::S_HAS_BLOB_PIPE must be `true`.  (Tweak the ipc::session compile-time knobs as needed (@ref chan_open).  Specifically set the `TRANSMIT_NATIVE_HANDLES` template parameter to `true`.)
   - If *and only if* for some reason you prefer *not* to use SHM backing for your `struc::Channel`, then the max-blob-size enforced by the `Channel` must be large enough to hold the serialization of any message you choose to send.
     - Our advice here: Don't worry about it for now.  Just use SHM-backing (we'll explain how shortly).  Then size limits won't matter, and you'll get blinding-fast performance automatically.
 
@@ -227,7 +227,7 @@ Lastly, assuming your underlying `Cool_structured_channel::Owned_channel` is cap
   // Beware that `msg`, when destroyed -- or due to a subsequent .store_native_handle_or_null() -- *will* close `some_fd`.
   // If you don't want that, in a POSIX OS you can first dupe it.  For example here we're sending our own
   // standard-output FD in an out-message:
-  msg.store_native_handle_or_null(Native_handle(::dup(STDOUT_FILENO)));
+  msg.store_native_handle_or_null(Native_handle{::dup(STDOUT_FILENO)});
   // Receiving process -- upon receipt -- can write to that FD and cause output to appear in *our* stdout.
   ~~~
 
@@ -252,8 +252,16 @@ Thus @link ipc::transport::struc::Channel::send() .send()@endlink is the simples
   msg.body_root()->setDescription("Hello, world -- demo!");
 
   // .send(): send notification.  No originating_msg_or_null: respond to nothing.
-  const bool ok = cool_channel.send(msg); // Optional arg: const Msg_in* originating_msg_or_null = nullptr.
+  const bool ok = cool_channel.send(&msg); // Optional arg: const Msg_in* originating_msg_or_null = nullptr.
   // (We discuss error handling in a subsequent section of this page.  For now assume success.)
+
+  // Note: The `msg` arg is a non-const pointer; `msg` shall be modified.  However this will not in fact modify the
+  // payload (mutated above) in `msg` but rather merely certain internal-use metadata info co-stored in the
+  // `Msg_out` object for perf reasons.  The reference docs add more detail, but that's essentially all one
+  // needs to know.  It is relevant in case of concurrent access to `msg` (which is arguably somewhat exotic)
+  // but otherwise of little interest to the user.
+  //
+  // This applies equally to .async_request() and .sync_request().
   ~~~
 
 That's it.  A key point: `.send()` -- as well as `.async_request()` --
@@ -299,9 +307,9 @@ Example:
   msg.body_root()->setDescription("(11 - 22 + 33) x -2 = -44");
 
   // .sync_request(): send request; synchronously await reply.  No originating_msg_or_null: respond to nothing.
-  auto rsp = cool_channel.sync_request(msg,
+  auto rsp = cool_channel.sync_request(&msg,
                                        nullptr, // <-- originating_msg_or_null.
-                                       boost::chrono::milliseconds(250)); // Optional timeout arg.
+                                       boost::chrono::milliseconds{250}); // Optional timeout arg.
   assert(rsp && "We discuss error handling in a subsequent section of this page.  For now assume success.");
 
   // The other side had best know how to add stuff and multiply at the end!  Check the in-message.
@@ -320,10 +328,13 @@ As a rare blocking method there are a few things to note about it.
 If a timeout does occur, a late-arriving response (if one indeed occurs) shall be ignored by Flow-IPC (as-if it was never received, modulo some logging).
 
 @par
-`.sync_request()` is not special in terms of thread safety: You may not invoke other methods concurrently on the same `struc::Channel`, until it has returned.
-
-@par
 A request made via `.sync_request()` is by definition **one-off**: If the opposing side sends 2 or more responses, all but the first will be ignored (logging aside), except unexpected-response handler(s) may fire (more on this below).  C/f `.async_request()` which allows one-off and **indefinite-lifetime** requests alike.
+
+@par Thread-safety and concurrency on ipc::transport::struc::Channel
+For a given `struc::Channel` (but not `struc::sync_io::Channel`), it is safe to invoke any 2+ methods concurrently.  Moreover, if a non-blocking method (so, as of this writing, anything but `.sync_request()`) is invoked while a blocking method (as of this writing, `.sync_request()`) is awaiting a response, the non-blocking method (for example a `.send()` or `.async_request()`) shall *not* block.  However, any 2+ `.sync_...()` methods invoked concurrently shall execute in series only.
+
+@par Thread-safety on ipc::transport::struc::sync_io::Channel
+A fundamentally simpler object, a `sync_io`-pattern `Channel` has basically standard concurrency rules for invoking methods simultaneously on the same object.  Aside from certain boring accessors of immutable data, it is not safe to concurrently invoke a non-`const` method with another method.  Incidentally there is no `sync_io::Channel::sync_request()`.
 
 ---
 
@@ -372,7 +383,7 @@ This following code assumes an async-I/O event loop setup introduced [here](./as
 
   Cool_structured_channel::msg_id_out_t req_handle; // Used to be able to remove response expectation later.
 
-  const bool ok = cool_channel.async_request(msg,
+  const bool ok = cool_channel.async_request(&msg,
                                              nullptr, // <-- originating_msg_or_null.
                                              &req_handle, // (Would have used nullptr for one-off request.)
                                              [this, req_handle](Cool_structured_channel::Msg_in_ptr&& rsp)
@@ -488,11 +499,11 @@ One-off example first:
       msg.body_root()->initSumResponse().setResult(sum);
       msg.body_root()->setDescription("the sum you ordered, sir");
 
-      const bool ok = msg.send(msg,
+      const bool ok = msg.send(&msg,
                                req.get()); // <-- originating_msg_or_null.  We are responding.
       assert(ok && "We discuss error handling in a subsequent section of this page.  For now assume success.");
     }); // post()
-  }); // cool_channel.async_request()
+  }); // cool_channel.expect_msg()
   assert(ok && "We discuss error handling in a subsequent section of this page.  For now assume success.");
   ~~~
 
@@ -529,7 +540,7 @@ Indefinite-lifetime variation is essentially similar.  In our example the idea i
 
       // (To keep responding to `req`, `req` needs to be kept around and available for each .send().
       // It's a shared_ptr<>, so it should not be a big deal perf-wise or RAM-wise.)
-      const bool ok = msg.send(msg,
+      const bool ok = msg.send(&msg,
                                req.get()); // <-- originating_msg_or_null.  We are responding.
       assert(ok && "We discuss error handling in a subsequent section of this page.  For now assume success.");
 
@@ -541,7 +552,7 @@ Indefinite-lifetime variation is essentially similar.  In our example the idea i
 
       // ...
     }); // post()
-  }); // cool_channel.async_request()
+  }); // cool_channel.expect_msgs()
   assert(ok && "We discuss error handling in a subsequent section of this page.  For now assume success.");
   ~~~
 
@@ -553,7 +564,7 @@ And that's it!  We have pretty much used the entire essential arsenal now.  That
 An *in-message instance* is represented by, as we've seen, a `struc::Channel::Msg_in_ptr` which is but a `shared_ptr<Msg_in>`; while `Msg_in` is itself an instance of the ipc::transport::struc::Msg_in class template.  Its basic capabilities you've already seen: `.body_root()` to get at the structured data via capnp-generated `Reader`; `ostream <<` to pretty-print a potentially-truncated un-indented version (potentially slow but okay in TRACE-logging and the like); and so on.
 
 @par
-One we have not yet mentioned is: A `Native_handle` stored in the original **message** (`struc::Msg_out` a/k/a `struc::Channel::Msg_out`) can of course be obtained from the in-message instance.  Use ipc::transport::struc::Msg_in::native_handle_or_null().  One subtlety to note here: unlike `Msg_out` destructor, `Msg_in` destructor will *not* close the `Native_handle` if any.  What to do with this native handle (FD in POSIX parlance) is entirely your call.  Do note that in POSIX/Unix/Linux this FD refers to the same resource *description* as the original sent FD from the origin process; but it is *not* the same *descriptor*.  The *description* will itself be released back into the OS's resource pool no earlier than *both* the original sendable-FD and the received-FD have been closed.  So: unless you want that resource to leak, it is your reponsibility to take ownership of it.  Hopefully the task is made easier by the sent-message `Msg_out` (the actual **message**, not merely the **message instance** sent) guaranteeing the closure of the sendable-FD no later than `Msg_out` being destroyed... so the send-side will not be the source of the leak.
+One we have not yet mentioned is: A `Native_handle` stored in the original **message** (`struc::Msg_out` a/k/a `struc::Channel::Msg_out`) can of course be obtained from the in-message instance.  Use ipc::transport::struc::Msg_in::emit_native_handle_or_null().  One subtlety to note here: unlike `Msg_out` destructor, `Msg_in` destructor will *not* close the `Native_handle` if any.  What to do with this native handle (FD in POSIX parlance) is entirely your call.  Do note that in POSIX/Unix/Linux this FD refers to the same resource *description* as the original sent FD from the origin process; but it is *not* the same *descriptor*.  The *description* will itself be released back into the OS's resource pool no earlier than *both* the original sendable-FD and the received-FD have been closed.  So: unless you want that resource to leak, it is your reponsibility to take ownership of it.  Hopefully the task is made easier by the sent-message `Msg_out` (the actual **message**, not merely the **message instance** sent) guaranteeing the closure of the sendable-FD no later than `Msg_out` being destroyed... so the send-side will not be the source of the leak.
 
 @par
 On a related note: A particular `Msg_in` (`struc::Msg_in<...>`) object represents a message *instance*.  That is it represents a message *as sent and received that particular time*.  A `Msg_out` can be re-sent later; and it can even be modified and re-sent (as many times as desired).  We'll cover that in @ref chan_struct_advanced -- but be aware of it even now.  Spoiler alert: If SHM-backing is configured (as we generally recommend), then the original `Msg_out` *and* any `Msg_in` in existence (and there can be multiple) really refer to the same RAM resource.  Hence the RAM is returned for other use no sooner than all those guys have been destroyed (across all processes involved).  If SHM-backing is *not* used, then each `Msg_in` is really a copy of the original, and therefore the `Msg_out` and all derived `Msg_in`s are independent, returning each RAM resource on destruction of that object.
@@ -618,7 +629,7 @@ How is it emitted?  Answer:
       - If you pass-in non-null: The method will set `*err_code` to falsy if no error is emitted; else to truthy `Error_code` being emitted.
   - If triggered by an incoming-op, which can only occur asynchronously, then it shall be asynchronously emitted to the **on-error handler** you have supplied to `.start()` (or `sync_io`-pattern counterpart, `.start_and_poll()`).  It is your responsibility to take the proper steps inside this on-error handler.
 
-This is an important dichotomy to understand.  There's at most one occurrence of a channel-hosing error being emitted, and if it does occur, it will occur through exactly one of the above ways.  Either a send method will emit is synchronously, or some incoming-direction processing (occurring concurrently in the background with async-I/O pattern, or inside `(*on_active_ev_func)()` or `.start_and_poll()` itself with `sync_io` pattern) will emit it to the on-error handler.  Either way you must be ready for it.
+This is an important dichotomy to understand.  There's at most one occurrence of a channel-hosing error being emitted, and if it does occur, it will occur through exactly one of the above ways.  Either a send method will emit it synchronously, or some incoming-direction processing (occurring concurrently in the background with async-I/O pattern, or inside `(*on_active_ev_func)()` or `.start_and_poll()` itself with `sync_io` pattern) will emit it to the on-error handler.  Either way you must be ready for it.
 
 What happens to a hosed channel?  Rest easy: You can still call its APIs; they will not crash/abort/lead to undefined behavior.  They will basically do nothing.  In particular most -- including `.expect_*()`, `.send()`, `.async_request()` -- will return `false`.  One, `.sync_request()`, will return null pointer (instead of the resulting response message pointer) while setting `*err_code` to falsy (nominally success) (or not throwing if `err_code` is null).  It is guaranteed, also, that no handler (except that given to `.async_end_sending()`; see next section) will possibly be called after the channel-hosing error is emitted.
 
@@ -666,7 +677,7 @@ The channel might get hosed *at any time*.  Consider this code:
       // --> DISCUSSION POINT B. <--
 
       Error_code err_code;
-      const bool ok = msg.send(msg,
+      const bool ok = msg.send(&msg,
                                req.get(),
                                &err_code); // Let's not omit, so we need not catch exception on error.
       // --> DISCUSSION POINT C. <--
@@ -677,7 +688,7 @@ The channel might get hosed *at any time*.  Consider this code:
         teardown(err_code);
       }
     }); // post()
-  }); // cool_channel.async_request()
+  }); // cool_channel.expect_msg()
 
   // --> DISCUSSION POINT X. <--
 
@@ -724,6 +735,8 @@ That's it.  (In the `sync_io`-pattern variation of `.async_end_sending()`, same 
 @note What if you don't do this and just destroy the `struc::Channel`?  The aforementioned doc header answers that too.  Short version: In many cases it's probably fine.  However, if the transport out-direction happens to be in would-block state at this time, the opposing side might miss some of the stuff you intended it to receive -- hard to say whether that's important or not; depends on your application/protocol's design.  So all-in-all it's better to flush outgoing payloads instead of leaving it to chance.  This is no different conceptually from properly closing a TCP connection; but truthfully with IPC there's ~zero latency and zero loss, so fewer bad things realistically happen in practice.  Still -- best to code defensively.
 
 @note Last thing (applies to async-I/O pattern only, not `sync_io`): `.async_end_sending()` is a `Channel`-level operation (as opposed to the higher `struc::Channel` layer).  Its completion handler *will* execute, even if you don't wait for that to occur and destroy `struc::Channel` first.  In that case the destructor will invoke it with an operation-aborted code.  If you follow the above recipe, then that won't happen, but defensively-written code should nevertheless do something close to the following in `F()`: `if (err_code == ipc::transport::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER) { return; }`.
+
+XXX Let's add a perf section to manual; cover various minutiae.  Be done with everything we're gonna do in the near future on that topic first (should be close now).
 
 The next page is: @ref chan_struct_advanced.
 

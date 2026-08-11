@@ -39,7 +39,7 @@ As of this writing a *given* `Session`, on both ends, is capable of opening a si
 So let's discuss these `...the_knobs...`.  They are the first two template args in:
 
   ~~~
-  template<ipc::session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES,
+  template<ipc::session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES,
            typename Mdt_payload = ::capnp::Void>
   ~~~
 
@@ -47,11 +47,11 @@ The first question to answer is: Do your channels need to be capable of transmit
 
 The second question to answer is: Do you want to, underneath it all, use **message queues (MQs)** and if so then what kind?  Regardless of the type, enabling MQs in a channel means Flow-IPC shall establish 2 MQs; 1 will be used (exclusively) for A->B traffic, the other for B->A.  (Each MQ *could* support an arbitrary number of reader and writer entities, including separate processes, but in this use case each MQ is strictly limited to one reader and one writer, typically separated by a process boundary.)
   - [POSIX MQ](https://man7.org/linux/man-pages/man7/mq_overview.7.html): High-performance OS feature.  The authors are not as of this time aware of the technical internal implementation of this technique, but it involves a kernel-persistent (i.e., survives program exit until `unlink()`ed; does not survive reboot) shared memory area.
-    - Specify `S_MQ_TYPE_OR_NONE = ipc::session::schema::MqType::POSIX`.
+    - Specify `MQ_TYPE_OR_NONE = ipc::session::schema::MqType::POSIX`.
   - [bipc MQ](https://www.boost.org/doc/libs/1_82_0/doc/html/interprocess/synchronization_mechanisms.html#interprocess.synchronization_mechanisms.message_queue): User-space SHM-backed implementation by boost.interprocess.  (Note that the SHM aspect of this is essentially a black box and is not related to ipc::shm.)  Internally, based on its source code, it maintains a ring buffer and/or priority queue; and mutex/condition variables for signaling (particularly when awaiting a message).
-    - Specify `S_MQ_TYPE_OR_NONE = ipc::session::schema::MqType::BIPC`.
+    - Specify `MQ_TYPE_OR_NONE = ipc::session::schema::MqType::BIPC`.
 
-(Otherwise specify `S_MQ_TYPE_OR_NONE = ipc::session::schema::MqType::NONE`.)
+(Otherwise specify `MQ_TYPE_OR_NONE = ipc::session::schema::MqType::NONE`.)
 
 An ipc:session-generated `Channel` contains *either one or two bidirectional pipes*; if 2 then they can be used independently of each other, one capable of transmitting blobs, the other of blobs and blob/native-handle pairs.  If used directly, sans upgrade to structured messaging, you can use the pipe(s) as desired.  Alternatively if a 2-pipe `Channel` is upgraded to `struc::Channel` in particular, then it will handle the pipe choice internally on your behalf.  For *performance*:
   - `struc::Channel` shall use the the blobs-only pipe for any message that does *not* contain (as specified by the user) a native handle.
@@ -59,10 +59,10 @@ An ipc:session-generated `Channel` contains *either one or two bidirectional pip
   - `struc::Channel` shall never reorder messages (maintaining, internally, a little reassembly queue in the rare case of a race between a handle-bearing and non-handle-bearing message).
 
 All of that said, the bottom line is:
-  - MQ type `NONE` + `S_TRANSMIT_NATIVE_HANDLES=true` => Single pipe: a Unix domain socket stream.
-  - MQ type `NONE` + `S_TRANSMIT_NATIVE_HANDLES=false` => Single pipe: a Unix domain socket stream.
-  - MQ type `POSIX`/`BIPC` + `S_TRANSMIT_NATIVE_HANDLES=false` => Single pipe: 2 MQs of the specified type, facing opposite directions.
-  - MQ type `POSIX`/`BIPC` + `S_TRANSMIT_NATIVE_HANDLES=true` => Two pipes:
+  - MQ type `NONE` + `TRANSMIT_NATIVE_HANDLES=true` => Single pipe: a Unix domain socket stream.
+  - MQ type `NONE` + `TRANSMIT_NATIVE_HANDLES=false` => Single pipe: a Unix domain socket stream.
+  - MQ type `POSIX`/`BIPC` + `TRANSMIT_NATIVE_HANDLES=false` => Single pipe: 2 MQs of the specified type, facing opposite directions.
+  - MQ type `POSIX`/`BIPC` + `TRANSMIT_NATIVE_HANDLES=true` => Two pipes:
     - 2 MQs of the specified type, facing opposite directions (`struc::Channel` uses for non-handle-bearing messages);
     - a Unix domain socket stream (`struc::Channel` uses for handle-bearing messages).
 
@@ -82,8 +82,8 @@ Seriously, how to open channels though?
 
 Both ways optionally make use of a special technique called **channel-open metadata**.  We will discuss it in more detail below as needed.  Essentially it is a *small* piece of structured data transmitted over the *session* API around session-open time and/or around subsequent channel-open time; it is a way to communicate information from process A to process B or vice versa intended to help negotiate channel opening and/or identify channels and/or any other basic information transmissible despite no actual channel being available to transmit it.  It's a bootstrap mechanism for more complex IPC setups.
 
-That said please remember the following limitation:
-  - A given channel-open metadatum, sent from process A to B, must be capnp-serializable in 1+ buffers of length ipc::transport::sync_io::Native_socket_stream::S_MAX_META_BLOB_LENGTH each.  As of this writing that value equals 65,534 bytes.  So as long as your metadatum is expressible in 1+ such memory segments, it'll work.  To not work, your capnp schema must involve a leaf (presumably `Text`, `Data`, or `List`) that exceeds this serialized size at runtime.  If not, ipc::session will emit ipc::transport::struc::error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG.
+That said please remember the following limitation: XXX re-scan this
+  - A given channel-open metadatum, sent from process A to B, must be capnp-serializable in 1+ buffers of length ipc::transport::Native_socket_stream_cfg::S_MAX_META_BLOB_LENGTH each.  As of this writing that value equals 65,534 bytes.  So as long as your metadatum is expressible in 1+ such memory segments, it'll work.  To not work, your capnp schema must involve a leaf (presumably `Text`, `Data`, or `List`) that exceeds this serialized size at runtime.  If not, ipc::session will emit ipc::transport::struc::error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG.XXXor OS error if we're mistaken about it or... re-scan all this
 
 In practice this should be more than sufficient for all but the wildest scenarios (in fact exactly 1 such segment should be plenty), as we'll informally show below.
 
@@ -145,7 +145,7 @@ We are now ready to make the more-complex `sync_connect()` call.  This is a diff
     mdt_root.setNumStructuredChannels(num_structured_channels); // <-- ATTN: runtime config.
 
     // Expected channel-count is specified via the .size() of this vector<Channel>, filled with empty `Channel`s.
-    Session::Channels init_channels(boost::lexical_cast<size_t>(argv[1])); // <-- ATTN: runtime config.
+    Session::Channels init_channels{boost::lexical_cast<size_t>(argv[1])}; // <-- ATTN: runtime config.
 
     Error_code err_code;
     session.sync_connect(mdt, // Client-to-server metadata.
@@ -205,7 +205,6 @@ On the server end, accordingly:
     const size_t num_structured_channels = mdt_for_session_being_opened->getPayload().getNumStructuredChannels();
     mdt_for_session_being_opened.reset(); // Might as well free that RAM.
 
-    boost::lexical_cast<size_t>(argv[2]);
     auto a_session = std::move(session_being_opened);
     auto its_init_channels = std::move(init_channels_for_session_being_opened);
     // session_being_opened and init_channels_for_session_being_opened are now empty again.
@@ -255,7 +254,7 @@ Quick snippets to demonstrate follow.  Here we chose the session-client as the p
 
   ~~~
   // Thread U (probably).
-  Session session(..., ..., ..., ..., // Logger, Client_app, Server_app, on-error handler.
+  Session session{..., ..., ..., ..., // Logger, Client_app, Server_app, on-error handler.
                   [...](Channel&& new_channel,
                         auto&&) // See next Manual section regarding 2nd arg.  In this example we ignore it.
   {
@@ -273,7 +272,7 @@ Quick snippets to demonstrate follow.  Here we chose the session-client as the p
       // Use it.  E.g., upgrade it to struc::Channel, or not, then send/receive stuff.
       go_do_ipc_yay(std::move(new_channel));
     });
-  });
+  }};
   ~~~
 
 And server:
@@ -306,7 +305,7 @@ And server:
 We've covered pretty much every approach for opening channels via ipc::session.  Only one topic remains: channel-open may be *optionally* used when opening a channel on-demand (via `Session::open_channel()`).  Notice the ignored `auto&&` 2nd arg to the passive-open handler in the @ref on_demand "preceding section"?  Instead of ignoring it, you can optionally read information (optionally prepared by the active-opener) that might be used to specify how to handle that particular channel.  For example, suppose @ref chan_open_mdt_ex "here" we had defined in capnp `struct ChannelOpenMdt` the member `doUpgradeToStructuredChannel :Bool` which could perhaps instruct the passive-opener as to whether both sides should operate on the channel as a structured channel as opposed to unstructured-binary style.  This could look like, on the passive-open side:
 
   ~~~
-  Session session(..., ..., ..., ..., // Logger, Client_app, Server_app, on-error handler.
+  Session session{..., ..., ..., ..., // Logger, Client_app, Server_app, on-error handler.
                   [...](Channel&& new_channel,
                         Session::Mdt_reader_ptr&& chan_open_mdt)
   {
@@ -323,10 +322,10 @@ We've covered pretty much every approach for opening channels via ipc::session. 
       // Use it.  E.g., upgrade it to struc::Channel, or not -- based on `do_upgrade_to_struct_chan`.
       go_do_ipc_yay(std::move(new_channel), do_upgrade_to_struct_chan);
     });
-  });
+  }};
   ~~~
 
-On the active-open side it is accomplished as follows: a different overload of `open_channel()` also takes a metadata structure, a blank one first being obtained via `Session::mdt_builder()` and then typically modified with some capnp-generated accessorsno differently fromn the pre-session-open metadata example @ref chan_open_mdt_ex "here."
+On the active-open side it is accomplished as follows: a different overload of `open_channel()` also takes a metadata structure, a blank one first being obtained via `Session::mdt_builder()` and then typically modified with some capnp-generated accessors no differently fromn the pre-session-open metadata example @ref chan_open_mdt_ex "here."
 
   ~~~
   Channel new_channel;
@@ -340,7 +339,7 @@ On the active-open side it is accomplished as follows: a different overload of `
   // but just note we're acting a certain way on new_channel right away, having informed the passive-open side we
   // are expecting it to do the same on its side.
   Session::Structured_channel<Awesome_structured_capnp_schema_of_the_gods_for_our_cool_channels>
-    new_struct_channel(..., std::move(new_channel), ...);
+    new_struct_channel{..., std::move(new_channel), ...};
   // ...
   ~~~
 

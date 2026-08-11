@@ -103,8 +103,9 @@ int main(int argc, char const * const * argv)
 #if JEM_ELSE_CLASSIC
   /* Instructed to do so by ipc::session::shm::arena_lend public docs (short version: this is basically a global,
    * and it would not be cool for ipc::session non-global objects to impose their individual loggers on it). */
-  ipc::session::shm::arena_lend::Borrower_shm_pool_collection_repository_singleton::get_instance()
-    .set_logger(&(*log_logger));
+  ipc::session::shm::arena_lend::Borrower_shm_pool_collection_repository
+    <ipc::shm::arena_lend::jemalloc::Ipc_arena>::get_instance()
+      .set_logger(&(*log_logger));
 #endif
 
   try
@@ -452,7 +453,8 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
 
       // Send a dummy message to synchronize initialization.
       FLOW_LOG_INFO("> Issuing handshake SYN for initialization sync.");
-      m_chan.send(m_chan.create_msg());
+      auto syn = m_chan.create_msg();
+      m_chan.send(&syn);
 
       // Receive a dummy message as a request signal.
       FLOW_LOG_INFO("< Expecting get-cache request.");
@@ -472,7 +474,7 @@ void run_capnp_zero_copy(flow::log::Logger* logger_ptr, Channel_struc* chan_ptr,
       FLOW_LOG_INFO("= Got get-cache request [" << *req << "].");
 
       FLOW_LOG_INFO("> Sending get-cache (quite large) response.");
-      m_chan.send(m_capnp_msg, req.get());
+      m_chan.send(&m_capnp_msg, req.get());
       FLOW_LOG_INFO("= Done.");
       g_asio.stop();
 

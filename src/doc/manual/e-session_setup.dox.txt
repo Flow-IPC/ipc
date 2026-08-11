@@ -147,9 +147,9 @@ Let's now follow the above outline for a session-client's operation, the client 
 We strongly recommend, at this stage, defining an alias template that incorporates the details of your decision, so they need not be mentioned again later in your code:
 
   ~~~
-  template<ipc::session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES,
+  template<ipc::session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES,
            typename Mdt_payload = ::capnp::Void>
-  using Client_session_t = ipc::session::shm::classic::Client_session<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+  using Client_session_t = ipc::session::shm::classic::Client_session<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
   // By the way... for all future mentions of Error_code:
   using Error_code = ipc::Error_code;
   ~~~
@@ -167,10 +167,10 @@ So now we can construct our `Client_session` (which we named just `Session` sinc
 
   ~~~
   Session // Use the alias we have set up.
-    session(..., // Logger.
+    session{..., // Logger.
             APP_B_AS_CLI, // Part of the IPC universe description: Our own info.
             APP_A_AS_SRV, // Part of the IPC universe description: The opposing server's info.
-            ...); // On-error handler (discussed separately).  This is relevant only after sync_connect() success.
+            ...}; // On-error handler (discussed separately).  This is relevant only after sync_connect() success.
   ~~~
 
 Now we can attempt connection via `sync_connect()`.  There are 2 forms, the simple and the advanced.  Ironically, due to its ability to pre-open channels, the advanced form is in most cases the *easier* one to use all-in-all -- it makes it unnecessary to do annoying possibly-async channel-opening later -- but we aren't talking about channel opening yet, so that part is not relevant; hence for now we'll go with the simpler API.  (@ref chan_open gets into all that.)
@@ -210,17 +210,17 @@ In summary then:
   ~~~
   // These parameters and the concrete class have to match, at compile time, the opposing Client_session's.
   // Otherwise the session-open will fail with an error indicating the incompatibility.
-  template<ipc::session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES,
+  template<ipc::session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES,
            typename Mdt_payload = ::capnp::Void>
-  using Session_server_t = ipc::session::shm::classic::Session_server<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+  using Session_server_t = ipc::session::shm::classic::Session_server<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
   using Session_server = Session_server_t<session::schema::MqType::NONE, true>;
   using Session = Session_server::Server_session_obj; // This is the mirror image of the opposing process's Session type.
 
   // Thread U.
   Error_code err;
-  Session_server session_srv(..., // Logger.
+  Session_server session_srv{..., // Logger.
                              APP_A_AS_SRV, // Part of the IPC universe description: Our own info (including allowed client apps).
-                             MASTER_APPS_AS_CLI); // Part of the IPC universe description: All the client apps in existence.
+                             MASTER_APPS_AS_CLI}; // Part of the IPC universe description: All the client apps in existence.
   // We omitted the optional Error_code* arg.  So if it fails it'll throw exception.
   // Looking in ipc::session::shm::classic::Session_server docs we see it lists the following as possible `Error_code`s emitted:
   // "interprocess-mutex-related errors (probably from boost.interprocess) w/r/t writing the CNS (PID file); "

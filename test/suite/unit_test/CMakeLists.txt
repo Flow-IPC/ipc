@@ -24,27 +24,42 @@ find_package(CapnProto CONFIG REQUIRED)
 
 # Test program: unit_test.
 
-# Test program libipc_test_borrower.exec: executed by ipc/shm/arena_lend/jemalloc/test/shm_pool_collection_test.
+# Test program libipc_test_borrower.exec: executed by ipc/shm/arena_lend/jemalloc/test/ipc_arena_test.
 
 # Test program libipc_test_jemalloc_shm_session_server.exec: executed by
-# ipc/shm/arena_lend/jemalloc/test/shm_pool_collection_test.  (TODO: Is that a copy/paste error or accurate?)
+# ipc/shm/arena_lend/jemalloc/test/ipc_arena_test.  (TODO: Is that a copy/paste error or accurate?)
 
 # Make those binaries in very similar ways; call this for each.
-function(handle_binary name_root) # Load SRCS and CAPNP_SCHEMAS before calling.
+# Before calling: Load SRCS; also load CAPNP_SCHEMA_GROUPS (list of group names like "isal struc")
+# and for each group G load CAPNP_SCHEMAS_<G> (list of .capnp files).  Each group's schemas share
+# a common CAPNPC_SRC_PREFIX = ${<G>_root}.  (E.g., group "isal" uses ${isal_root}; "struc" uses ${struc_root}.)
+# CAPNP_SCHEMA_GROUPS may be empty/unset, in which case no schemas are compiled.
+function(handle_binary name_root)
   set(name "${name_root}.exec")
 
-  if(CAPNP_SCHEMAS)
-    set(CAPNPC_SRC_PREFIX ${isal_root})
-    capnp_generate_cpp(capnp_generated_srcs capnp_generated_hdrs ${CAPNP_SCHEMAS})
+  # For each schema group, run capnp_generate_cpp() with the appropriate prefix; accumulate results.
+  set(all_capnp_generated_srcs "")
+  set(all_capnp_generated_hdrs "")
+  foreach(group ${CAPNP_SCHEMA_GROUPS})
+    if(CAPNP_SCHEMAS_${group})
+      set(CAPNPC_SRC_PREFIX ${${group}_root})
+      unset(grp_srcs)
+      unset(grp_hdrs)
+      capnp_generate_cpp(grp_srcs grp_hdrs ${CAPNP_SCHEMAS_${group}})
+      list(APPEND all_capnp_generated_srcs ${grp_srcs})
+      list(APPEND all_capnp_generated_hdrs ${grp_hdrs})
+    endif()
+  endforeach()
 
+  if(all_capnp_generated_srcs)
     # Create a custom target that depends on the generated files.
     add_custom_target(${name_root}_schema_generation
-                      DEPENDS ${capnp_generated_srcs} ${capnp_generated_hdrs})
+                      DEPENDS ${all_capnp_generated_srcs} ${all_capnp_generated_hdrs})
   endif()
 
-  add_executable(${name} ${SRCS} ${capnp_generated_srcs})
+  add_executable(${name} ${SRCS} ${all_capnp_generated_srcs})
 
-  if(CAPNP_SCHEMAS)
+  if(all_capnp_generated_srcs)
     # Add explicit dependency on schema generation; otherwise things tend to go weird with a parallelized build.
     add_dependencies(${name} ${name_root}_schema_generation)
   endif()
@@ -72,37 +87,43 @@ function(handle_binary name_root) # Load SRCS and CAPNP_SCHEMAS before calling.
           RUNTIME DESTINATION bin)
 endfunction()
 
+set(session_root ${FLOW_LIKE_META_ROOT_ipc_session}/src)
 set(isal_root ${FLOW_LIKE_META_ROOT_ipc_shm_arena_lend}/src)
+set(core_root ${FLOW_LIKE_META_ROOT_ipc_core}/src)
+set(shm_root ${FLOW_LIKE_META_ROOT_ipc_shm}/src)
+set(struc_root ${FLOW_LIKE_META_ROOT_ipc_transport_structured}/src)
 
 set(SRCS
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_common_util.cpp
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_file_util.cpp
     ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
+    ${core_root}/ipc/transport/test/blob_transport_stats_test.cpp
+    ${shm_root}/ipc/shm/classic/test/pool_arena_stats_test.cpp
+    ${struc_root}/ipc/transport/struc/test/channel_test.cpp
+    ${struc_root}/ipc/transport/struc/test/channel_stats_test.cpp
+    ${struc_root}/ipc/transport/struc/test/msg_test.cpp
+    ${struc_root}/ipc/transport/struc/test/serializer_stats_test.cpp
+    ${session_root}/ipc/session/test/session_connect_test.cpp
+    ${session_root}/ipc/session/test/session_persistent_cleanup_test.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/shm_session_test.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server_executor.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server_launcher.cpp
-    ${isal_root}/ipc/session/standalone/shm/arena_lend/test/borrower_collection_test.cpp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/test/borrower_shm_pool_collection_repository_test.cpp
-    ${isal_root}/ipc/session/standalone/shm/arena_lend/test/lender_collection_test.cpp
-    ${isal_root}/ipc/session/standalone/shm/arena_lend/test/shm_session_data_test.cpp
-    ${isal_root}/ipc/session/standalone/shm/arena_lend/test/test_shm_session_util.cpp
+    ${isal_root}/ipc/shm/arena_lend/detail/test/lend_tracker_pool_test.cpp
     ${isal_root}/ipc/shm/arena_lend/detail/test/shm_pool_offset_ptr_data_test.cpp
-    ${isal_root}/ipc/shm/arena_lend/jemalloc/test/ipc_arena_test.cpp
+    ${isal_root}/ipc/shm/arena_lend/test/shm_pool_offset_ptr_test.cpp
     ${isal_root}/ipc/shm/arena_lend/jemalloc/test/jemalloc_pages_test.cpp
+    ${isal_root}/ipc/shm/arena_lend/jemalloc/test/ipc_arena_stats_test.cpp
+    ${isal_root}/ipc/shm/arena_lend/jemalloc/test/ipc_arena_test.cpp
     ${isal_root}/ipc/shm/arena_lend/jemalloc/test/memory_manager_test.cpp
-    ${isal_root}/ipc/shm/arena_lend/jemalloc/test/shm_pool_collection_test.cpp
-    ${isal_root}/ipc/shm/arena_lend/jemalloc/test/test_util.cpp
+    ${isal_root}/ipc/shm/arena_lend/jemalloc/test/thread_cache_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/borrower_shm_pool_collection_test.cpp
-    ${isal_root}/ipc/shm/arena_lend/test/borrower_shm_pool_repository_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/divisible_shm_pool_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/memory_manager_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/owner_shm_pool_collection_test.cpp
-    ${isal_root}/ipc/shm/arena_lend/test/owner_shm_pool_listener_for_repository_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/shm_pool_collection_test.cpp
-    ${isal_root}/ipc/shm/arena_lend/test/shm_pool_holder_test.cpp
-    ${isal_root}/ipc/shm/arena_lend/test/shm_pool_offset_ptr_test.cpp
-    ${isal_root}/ipc/shm/arena_lend/test/shm_pool_repository_test.cpp
+    ${isal_root}/ipc/shm/arena_lend/test/owner_shm_pool_repository_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/shm_pool_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/test_borrower.cpp
     ${isal_root}/ipc/shm/arena_lend/test/test_owner_shm_pool_collection.cpp
@@ -110,16 +131,19 @@ set(SRCS
     ${isal_root}/ipc/shm/arena_lend/test/test_shm_pool_collection.cpp
     ${isal_root}/ipc/shm/test/lend_borrow_test.cpp
     test_main.cpp)
-set(CAPNP_SCHEMAS
+set(CAPNP_SCHEMA_GROUPS isal struc)
+set(CAPNP_SCHEMAS_isal
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_message.capnp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_session_metadata.capnp)
+set(CAPNP_SCHEMAS_struc
+    ${struc_root}/ipc/transport/struc/test/test_schema.capnp)
 handle_binary(libipc_unit_test)
 
 set(SRCS
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_common_util.cpp
     ${isal_root}/ipc/shm/arena_lend/test/test_borrower.cpp
     test_borrower_main.cpp)
-unset(CAPNP_SCHEMAS)
+unset(CAPNP_SCHEMA_GROUPS)
 handle_binary(libipc_test_borrower)
 
 set(SRCS
@@ -130,7 +154,8 @@ set(SRCS
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_shm_session_server.cpp
     ${isal_root}/ipc/shm/arena_lend/test/test_shm_object.cpp
     test_jemalloc_shm_session_server_main.cpp)
-set(CAPNP_SCHEMAS
+set(CAPNP_SCHEMA_GROUPS isal)
+set(CAPNP_SCHEMAS_isal
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_message.capnp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_session_metadata.capnp)
 handle_binary(libipc_test_jemalloc_shm_session_server)

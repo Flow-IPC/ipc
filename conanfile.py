@@ -136,7 +136,9 @@ class IpcRecipe(ConanFile):
             flow_version = load_version_from_file("./flow/VERSION")
             self.requires("capnproto/1.0.2")
             self.requires(f"flow/{flow_version}")
-            self.requires("jemalloc/5.2.1")
+            # Absolute min requires 5.2.1 but requires extra CMake flag for Flow-IPC; and Flow-IPC is slightly
+            # degraded then.  5.3.0 (from 2022) is oldest version sans such issues.
+            self.requires("jemalloc/5.3.0")
 
     def build_requirements(self):
         self.tool_requires("cmake/3.26.3")

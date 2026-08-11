@@ -62,17 +62,18 @@ int main(int argc, char const * const * argv)
   FLOW_LOG_SET_CONTEXT(&(*std_logger), Flow_log_component::S_UNCAT);
 
 #if JEM_ELSE_CLASSIC
-  ipc::session::shm::arena_lend::Borrower_shm_pool_collection_repository_singleton::get_instance()
-    .set_logger(&(*log_logger));
+  ipc::session::shm::arena_lend::Borrower_shm_pool_collection_repository
+    <ipc::shm::arena_lend::jemalloc::Ipc_arena>::get_instance()
+      .set_logger(&(*log_logger));
 #endif
 
   try
   {
     ensure_run_env(argv[0], false);
 
-    Session session(&(*log_logger),
+    Session session{&(*log_logger),
                     CLI_APPS.find(CLI_NAME)->second,
-                    SRV_APPS.find(SRV_NAME)->second, [](const Error_code&) {});
+                    SRV_APPS.find(SRV_NAME)->second, [](const Error_code&) {}};
 
     FLOW_LOG_INFO("Session-client attempting to open session against session-server; "
                   "it'll either succeed or fail very soon.");
@@ -393,7 +394,7 @@ void run_capnp_zero_cpy([[maybe_unused]] flow::log::Logger* logger_ptr, Channel_
       FLOW_LOG_INFO("> Issuing get-cache request: [" << req << "].");
       m_timer.emplace(get_logger(), "capnp-flow-ipc-e2e-zero-copy", Timer::real_clock_types(), 100);
 
-      m_chan.async_request(req, nullptr, nullptr,
+      m_chan.async_request(&req, nullptr, nullptr,
                            [&](Channel_struc::Msg_in_ptr&& rsp) { on_complete_response(std::move(rsp)); });
       m_timer->checkpoint("sent request");
     }

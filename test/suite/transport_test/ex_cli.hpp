@@ -25,7 +25,7 @@
 namespace ipc::transport::test
 {
 
-template<typename Session_t, bool S_SHM_ENABLED_V>
+template<typename Session_t, bool SHM_ENABLED>
 class Ex_cli : public Ex_guy
 {
 public:
@@ -45,7 +45,7 @@ private:
 
   static constexpr bool S_SHM_ENABLED = Session::S_SHM_ENABLED;
   // Unused if !S_SHM_ENABLED.
-  static constexpr bool S_CLASSIC_ELSE_JEM = Session::S_SHM_TYPE == session::schema::ShmType::CLASSIC;
+  static constexpr bool S_CLASSIC_ELSE_JEM = Session::S_SHM_TYPE_OR_NONE == session::schema::ShmType::CLASSIC;
 
   /* Attempt at maybe/possibly a realistic in-app class encapsulating a session.  In a client app like this
    * one would only have one of these at a time and store a Client_session<> (Session, we called it).  If
@@ -133,7 +133,7 @@ private:
   void client_connect_two();
   void client_connect_2();
 
-  Session m_ses; // A test Client_session outside of App_session, just to test some quick stuff.
+  Session m_ses2; // A test Client_session outside of App_session, just to test some quick stuff.
   Mdt_reader_ptr m_mdt_srv; // At-session-open metadata filled-out by server.
   typename Session::Channels m_init_chans_cli; // At-session-open channels for a certain quick test.
 
@@ -141,9 +141,9 @@ private:
 }; // class Ex_cli
 
 #define TEMPLATE \
-  template<typename Session_t, bool S_SHM_ENABLED_V>
+  template<typename Session_t, bool SHM_ENABLED>
 #define CLASS \
-  Ex_cli<Session_t, S_SHM_ENABLED_V>
+  Ex_cli<Session_t, SHM_ENABLED>
 
 TEMPLATE
 CLASS::Ex_cli(flow::log::Logger* logger_ptr, flow::log::Logger* ipc_logger_ptr) :
@@ -171,8 +171,8 @@ bool CLASS::run()
 TEMPLATE
 void CLASS::client_connect_one()
 {
-  m_ses = Session(m_ipc_logger, m_cli_apps.find(S_CLI_NAME)->second, m_srv_apps.find(S_SRV_NAME)->second,
-                  [this](const Error_code&)
+  m_ses2 = Session(m_ipc_logger, m_cli_apps.find(S_CLI_NAME)->second, m_srv_apps.find(S_SRV_NAME)->second,
+                   [this](const Error_code&)
   {
     post([this]()
     {
@@ -185,7 +185,7 @@ void CLASS::client_connect_one()
 
   m_init_chans_cli.resize(1); // Expect 1.
   Error_code err_code;
-  const bool ok = m_ses.sync_connect(m_ses.mdt_builder(), &m_init_chans_cli, nullptr, nullptr, &err_code);
+  const bool ok = m_ses2.sync_connect(m_ses2.mdt_builder(), &m_init_chans_cli, nullptr, nullptr, &err_code);
   ASSERT(ok);
   if (!err_code)
   {
@@ -247,25 +247,18 @@ TEMPLATE
 void CLASS::client_connect_2()
 {
   // Replace the Session from client_connect_one() (it did not open OK anyway BTW).
-  m_ses = Session(m_ipc_logger, m_cli_apps.find(S_CLI_NAME_2) // <-- Attn.
-                                  ->second,
-                  m_srv_apps.find(S_SRV_NAME)->second,
-                  [this](const Error_code&)
-  {
-    post([this]()
-    {
-      FLOW_LOG_FATAL("Not expecting opened Client_app [" << S_CLI_NAME_2 << "] session to error-out.");
-      ASSERT(false);
-    });
-  });
+  m_ses2 = Session(m_ipc_logger, m_cli_apps.find(S_CLI_NAME_2) // <-- Attn.
+                                   ->second,
+                   m_srv_apps.find(S_SRV_NAME)->second,
+                   [this](auto&&...){});
 
-  auto mdt_cli = m_ses.mdt_builder();
+  auto mdt_cli = m_ses2.mdt_builder();
   mdt_cli->initPayload().setNumChansYouWant(0); // They're gonna verify this contrived thing.
   Error_code err_code;
-  const bool ok = m_ses.sync_connect(m_ses.mdt_builder(), nullptr, // Open 0 from cli.
-                                     &m_mdt_srv, // Do get some mdt.
-                                     nullptr, // Open 0 from srv (consistent with mdt_cli payload).
-                                     &err_code);
+  const bool ok = m_ses2.sync_connect(mdt_cli, nullptr, // Open 0 from cli.
+                                      &m_mdt_srv, // Do get some mdt.
+                                      nullptr, // Open 0 from srv (consistent with mdt_cli payload).
+                                      &err_code);
   ASSERT(ok);
   if (err_code)
   {
@@ -386,7 +379,8 @@ CLASS::App_session::App_session(Ex_cli* guy, unsigned int test_idx, Task&& i_am_
   }
   // else if (!err_code):
 
-  FLOW_LOG_INFO("App_session [" << this << "]: I am open!  Well, my session::Session [" << *m_ses << "] is open, "
+  FLOW_LOG_INFO("App_session [" << this << "]: I am open!  Well, my session::Session [" << *m_ses << "] is open "
+                "to process [" << m_ses->core()->remote_peer_process_credentials() << "], "
                 "and I have 2 init-channel sets sized "
                 "[" << m_chans_a.size() << ", " << m_chans_b.size() << "] "
                 "pre-opened too.  Also I have some srv->cli mdt.  Let's check some things about it ~all.");
@@ -483,7 +477,6 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
                                                          struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM,
                                                          m_ses->core()));
     }
-    m_struct_chans_a_builder_config = m_ses->core()->session_shm_builder_config();
 
     for (auto& chan : m_chans_b)
     {
@@ -510,14 +503,6 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
       }
       m_struct_chans_b.emplace_back(std::move(ch));
     }
-    if constexpr(S_CLASSIC_ELSE_JEM)
-    {
-      m_struct_chans_b_builder_config = m_ses->core()->app_shm_builder_config(); // Same deal as just above.
-    }
-    else
-    {
-      m_struct_chans_b_builder_config = m_ses->core()->session_shm_builder_config(); // Ditto.
-    }
   } // if constexpr(S_SHM_ENABLED)
   else // if constexpr(!S_SHM_ENABLED)
   {
@@ -527,16 +512,15 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
                                                          struc::Channel_base::S_SERIALIZE_VIA_HEAP,
                                                          m_ses->core()->session_token()));
     }
-    m_struct_chans_a_builder_config = Session::heap_fixed_builder_config(m_guy->m_ipc_logger);
-
     for (auto& chan : m_chans_b)
     {
       m_struct_chans_b.emplace_back(make_uptr<Channel_b>(m_guy->m_ipc_logger, std::move(chan),
                                                          struc::Channel_base::S_SERIALIZE_VIA_HEAP,
                                                          m_ses->core()->session_token()));
     }
-    m_struct_chans_b_builder_config = m_ses->core()->heap_fixed_builder_config(); // For variety use the non-static 1.
   } // else if constexpr(!S_SHM_ENABLED)
+  m_struct_chans_a_builder_config = m_struct_chans_a.front()->struct_builder_config();
+  m_struct_chans_b_builder_config = m_struct_chans_b.front()->struct_builder_config();
 
   m_chans_a.clear();
   m_chans_b.clear();
@@ -572,8 +556,9 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
       m_struct_chans_b[RESERVED_CHAN_IDX]->undo_expect_msgs(capnp::ExBodyB::MSG_TWO);
       expect_pings_and_b(RESERVED_CHAN_IDX, [this]()
       {
+        /* (This count presumes the 2-pipe channel config this test always runs with; see the note atop
+         * the auto-ping sub-test in ex_srv.hpp.) */
         const unsigned int PINGS_EXPECTED = (m_test_idx == 0) ? 1 : 6;
-
         ++m_ping_b_count;
         FLOW_LOG_INFO("App_session [" << this << "]: Special ping # [" << m_ping_b_count << "] received.  Will proceed "
                       "to next big step once that reaches [" << PINGS_EXPECTED << "].");
@@ -645,7 +630,7 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
     {
       m_guy->post([this, next_id, msg_in = std::move(msg_in)]() mutable
       {
-        const Native_handle hndl = msg_in->native_handle_or_null();
+        const Native_handle hndl = msg_in->emit_native_handle_or_null();
         const auto id = msg_in->body_root().getMsgHandle();
 
         FLOW_LOG_INFO("App_session [" << this << "]: Chan A0: Got possibly handle-bearing in-msg; "
@@ -720,8 +705,9 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
             FLOW_LOG_INFO("Chan A[" << chan_idx << "]: Sending ack (didn't even modify default-created msg).");
 
             Error_code err_code;
+            auto ack = m_struct_chans_a[chan_idx]->create_msg();
             const bool ok = m_struct_chans_a[chan_idx]
-                              ->send(m_struct_chans_a[chan_idx]->create_msg(), msg_in.get(), &err_code);
+                              ->send(&ack, msg_in.get(), &err_code);
             ASSERT((ok && (!err_code)) && "Acks in this test are uncontroversial and should themselves work.");
 
             // And invoke task[_else_kill]() which will be calling us again.
@@ -860,7 +846,8 @@ void CLASS::App_session::send_notif_a(size_t chan_idx, util::String_view ctx, bo
      * struc::Msg_out ctor form, where one creates a schema-less MessageBuilder, sets some stuff in it,
      * and then feeds it into the struc::Msg_out ctor.  We'll even further modify it via body_root()
      * as well.  The other side will at least ensure that both fields aren't blank at any rate.
-     * This also lets us use the Session builder-config returner method -- another thing tested.  The
+     * This also lets us use the Session builder-config returner method -- incidentally; its dedicated
+     * coverage is unit_test's (serializer_stats_test.cpp).  The
      * builder-config has already been saved earlier, so we just use it. */
     typename Builder_config::Builder schemaless_msg(m_struct_chans_a_builder_config);
     auto schemaless_msg_builder = schemaless_msg.payload_msg_builder();
@@ -873,19 +860,29 @@ void CLASS::App_session::send_notif_a(size_t chan_idx, util::String_view ctx, bo
   }
   else
   {
-    constexpr size_t STR_SZ = 8;
-    constexpr char FILLER_CH = 'X';
-    constexpr char END_CAP_CH = 'A';
-
-    msg_out = chan.create_msg();
-    msg_out.body_root()->setDescription(std::string(ctx));
-
-    std::string str(STR_SZ, FILLER_CH);
-    str.front() = str.back() = END_CAP_CH;
+    // (Watch out when looking at timings: filling this out is probably slow; not Flow-IPC's fault.
 
     // This many copies of str; so either ~4k chars or ~4M chars; only SHM-backed msg can store the latter.
     [[maybe_unused]] constexpr size_t SMALL_N = 500;
     [[maybe_unused]] constexpr size_t BIG_N = SMALL_N * 1000;
+
+    size_t n;
+    if constexpr(S_SHM_ENABLED) { n = BIG_N; } else { n = SMALL_N; }
+
+    constexpr size_t STR_SZ = 8;
+    constexpr char FILLER_CH = 'X';
+    constexpr char END_CAP_CH = 'A';
+
+    /* Test-out .create_msg() form that takes size estimate.  We will choose a small estimate to stupidly force
+     * a multi-segment message for sure.  At least it should work; can also check logs to see that stuff is
+     * being allocated according to the exp-growth algorithm etc.  @todo Check it more white-boxily automatically? */
+
+    msg_out = chan.create_msg(SMALL_N); // Def not enough for the whole thing to fit into 1 segment.
+
+    msg_out.body_root()->setDescription(std::string(ctx));
+
+    std::string str(STR_SZ, FILLER_CH);
+    str.front() = str.back() = END_CAP_CH;
 
     /* Okay, so normally one builds a message top-down, like:
      *   auto root = msg_out.body_root()->initMsg();
@@ -898,9 +895,6 @@ void CLASS::App_session::send_notif_a(size_t chan_idx, util::String_view ctx, bo
     auto root = orphan.get();
     root.setNumVal(int32_t(1) * 1000 * 1000 * 1000);
 
-    // (Watch out when looking at timings: filling this out is probably slow; not Flow-IPC's fault.
-    size_t n;
-    if constexpr(S_SHM_ENABLED) { n = BIG_N; } else { n = SMALL_N; }
     auto str_list_root = root.initStringList(n);
     for (size_t idx = 0; idx != n; ++idx)
     {
@@ -921,7 +915,7 @@ void CLASS::App_session::send_notif_a(size_t chan_idx, util::String_view ctx, bo
   FLOW_LOG_INFO("App_session [" << this << "]: Chan A[" << chan_idx << "]: Filling done.  Now to send.");
 
   Error_code err_code;
-  bool ok = chan.send(msg_out,
+  bool ok = chan.send(&msg_out,
                       originating_msg_in_or_null.get(), // It might be a response (or not).
                       &err_code);
   ASSERT(ok && "send() yielded false, meaning error emitted earlier by chan.");
@@ -1081,7 +1075,7 @@ void CLASS::App_session::handle_req_b(Msg_in_ptr_b&& msg_in, size_t chan_idx, bo
     msg_out.body_root()->setMsgTwo(123);
 
     Error_code err_code;
-    bool ok = chan.send(msg_out, msg_in.get(), &err_code);
+    bool ok = chan.send(&msg_out, msg_in.get(), &err_code);
     ASSERT(ok && "send() yielded false, meaning error emitted earlier by chan.");
     if (err_code)
     {
@@ -1111,7 +1105,7 @@ void CLASS::App_session::ping_b(size_t chan_idx)
   msg_out.body_root()->setMsgTwo(1776);
 
   Error_code err_code;
-  bool ok = chan.send(msg_out, nullptr, &err_code);
+  bool ok = chan.send(&msg_out, nullptr, &err_code);
   ASSERT(ok && "send() yielded false, meaning error emitted earlier by chan.");
   if (err_code)
   {

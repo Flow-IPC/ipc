@@ -76,25 +76,48 @@ private:
 
   static const Keyword_to_interpret_func_map S_CMD_TO_HANDLER_MAP;
 
+  template<typename T>
+  using List_of = std::vector<boost::shared_ptr<T>>;
+  using Raw_blob = flow::util::Blob_sans_log_context;
+
   // Mq_peer is one of the 4 args to Mq_peer_list inside Mq_peer_list_variant.
-  template<typename Mq_peer>
-  using Mq_peer_list = std::vector<boost::shared_ptr<Mq_peer>>;
   // @todo unique_ptr--^ better but map initializer complains about wanting to use unique_ptr copy ctor (in our ctor).
-  using Mq_peer_list_variant = std::variant<Mq_peer_list<Posix_mq_sender>,
-                                            Mq_peer_list<Bipc_mq_sender>,
-                                            Mq_peer_list<Posix_mq_receiver>,
-                                            Mq_peer_list<Bipc_mq_receiver>>;
+  using Mq_peer_list_variant = std::variant<List_of<Posix_mq_sender>,
+                                            List_of<Bipc_mq_sender>,
+                                            List_of<Posix_mq_receiver>,
+                                            List_of<Bipc_mq_receiver>>;
   /* To get the list of `Mq_peer`s, given an Mq_peer_lists M:
-   * auto& vec = get<Mq_peer_list<Mq_peer>>(M[type_index(typeid(Mq_peer))]);
+   * auto& vec = get<List_of<Mq_peer>>(M[type_index(typeid(Mq_peer))]);
    * vec.push_back(std::move(some_mq_peer_unique_ptr)); // Add a slot. */
   using Mq_peer_lists = std::map<std::type_index, Mq_peer_list_variant>;
 
   // Similar stuff here but simpler; there are only 2 variants: POSIX vs. Bipc; a Chan_bundle is both snder and rcver.
-  template<typename Chan_bundle>
-  using Chan_bundle_list = std::vector<boost::shared_ptr<Chan_bundle>>;
-  using Chan_bundle_list_variant = std::variant<Chan_bundle_list<Posix_mqs_socket_stream_channel>,
-                                                Chan_bundle_list<Bipc_mqs_socket_stream_channel>>;
+  using Chan_bundle_list_variant = std::variant<List_of<Posix_mqs_socket_stream_channel>,
+                                                List_of<Bipc_mqs_socket_stream_channel>>;
   using Chan_bundle_lists = std::map<std::type_index, Chan_bundle_list_variant>;
+
+  /* To avoid certain complexities, which would add little to no additional test coverage but make our code in
+   * Script_interpreter considerably more annoying, we will cover only two in-batch types:
+   *   - The handle-and-blob-bearing in-batch `Batch`: Usable only with
+   *     {Native_socket_stream|Channel}::async_receive_native_handle_batch(), in the latter case really forwarding to
+   *     the former.
+   *   - The blob-only-bearing in-batch `Blob_batch`: Used in our testing only by
+   *     {Blob_stream_mq_receiver|Channel}::async_receive_blob_batch(), in the latter case really forwarding to
+   *     the former.
+   *
+   * In actuality there are other possibilities which we don't necessarily cover:
+   *   - Native_socket_stream::async_receive_blob_batch().
+   *   - Native_socket_stream::async_receive_native_handle_batch() but compiled with different
+   *     Native_socket_stream_cfg::S_USE_OS_DGRAM_BATCH_SUPPORT flag values.
+   *
+   * We don't cover these, and as a result there's a clean dichotomy we can rely on: there are exactly two types;
+   * one support native handles, the other doesn't; one goes through Native_socket_stream or the with-handles pipe
+   * (also an N_s_s), the other through Blob_stream_mq_receiver or the sans-handles pipe (also a B_s_m_r).
+   * This is the case regardless of S_USE_OS_DGRAM_BATCH_SUPPORT value with which we're being built; however
+   * if one were to involve N_s_s::a_r_blob_b(), then it's all muddied and complicated. */
+  using Batch = Native_socket_stream::Native_handle_batch_in<Raw_blob>;
+  using Blob_batch = Blob_stream_mq_receiver_base::Blob_batch_in<Raw_blob>;
+  using Batch_list_variant = std::variant<List_of<Batch>, List_of<Blob_batch>>;
 
   // Used for timeouts at least:
 
@@ -127,7 +150,7 @@ private:
   template<typename Peer_list>
   typename Peer_list::value_type& next_required_peer_ref(Peer_list& peers, util::String_view peer_type);
 
-  void failed(bool parse_error, util::String_view description, const Error_code& err_code = Error_code());
+  void failed(bool parse_error, util::String_view description, const Error_code& err_code = {});
   void test_with_timeout(util::Fine_duration timeout,
                          const Async_task& async_do_and_set_promise_func,
                          const Task& on_done_func);
@@ -139,11 +162,14 @@ private:
   static unsigned int user_col_idx(size_t col_idx);
 
   void cmd_sleep();
+  void cmd_reset();
   void cmd_socket_stream_connect();
   void cmd_socket_stream_acceptor_accept();
   void cmd_socket_stream_acceptor_listen();
   void cmd_handle_connect_pair();
   void cmd_socket_stream_create_from_hndl();
+  template<typename Batch_t>
+  void cmd_batch_create_impl();
   void cmd_socket_stream_send();
   void cmd_socket_stream_send_blob();
   void cmd_socket_stream_send_end();
@@ -169,6 +195,8 @@ private:
   void cmd_chan_bundle_recv_blob();
   template<typename Chan_bundle>
   void cmd_chan_bundle_recv();
+  template<typename Batch_t>
+  List_of<Batch_t>& cmd_batches();
   template<typename Peer_list>
   void cmd_blob_sender_send_blob_impl(const Peer_list& peers, util::String_view peer_type);
   template<typename Peer_list>
@@ -179,11 +207,25 @@ private:
   void cmd_blob_receiver_recv_blob_impl(const Peer_list& peers, util::String_view peer_type);
   template<typename Peer_list>
   void cmd_socket_stream_receiver_recv_impl(const Peer_list& peers, util::String_view peer_type);
+  template<typename Batch_t, typename Chan_bundle>
+  void cmd_chan_bundle_recv_batch();
   template<typename Chan_bundle>
   void cmd_chan_bundle_create();
+  template<typename Chan_bundle>
+  void cmd_chan_bundle_auto_ping();
 
+  void reset_objs();
   flow::util::Blob test_blob(size_t n) const;
-  void validate_rcvd_blob_contents(const flow::util::Blob& blob, size_t exp_blob_n);
+  template<typename Blob>
+  void validate_rcvd_blob_contents(const Blob& blob, size_t exp_blob_n);
+  template<typename Obj>
+  static util::String_view name_chan_bundle();
+  template<typename Obj>
+  static util::String_view name_mq_peer();
+  template<typename Obj>
+  static util::String_view name_mq();
+  template<typename Obj>
+  static util::String_view name_batch();
 
   flow::log::Logger* const m_ipc_logger;
   std::istream& m_is;
@@ -211,6 +253,8 @@ private:
   Mq_peer_lists m_test_blob_stream_mq_peers;
   // Similarly this stores the 2 lists of `{Posix|Bipc}_mqs_socket_stream_channel`s.
   Chan_bundle_lists m_test_chan_bundles;
+  Batch_list_variant m_test_batches; // Stores List_of<Batch>.
+  Batch_list_variant m_test_blob_batches; // Stores List_of<Blob_batch>.
 }; // class Script_interpreter
 
 } // namespace ipc::transport::test

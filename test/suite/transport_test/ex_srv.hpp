@@ -30,7 +30,7 @@
 namespace ipc::transport::test
 {
 
-template<typename Server_t, bool S_SHM_ENABLED_V>
+template<typename Server_t, bool SHM_ENABLED>
 class Ex_srv : public Ex_guy
 {
 public:
@@ -53,7 +53,7 @@ private:
 
   static constexpr bool S_SHM_ENABLED = Session::S_SHM_ENABLED;
   // Unused if !S_SHM_ENABLED.
-  static constexpr bool S_CLASSIC_ELSE_JEM = Session::S_SHM_TYPE == session::schema::ShmType::CLASSIC;
+  static constexpr bool S_CLASSIC_ELSE_JEM = Session::S_SHM_TYPE_OR_NONE == session::schema::ShmType::CLASSIC;
 
   template<typename Body>
   using Structured_channel = typename Session::template Structured_channel<Body>;
@@ -162,9 +162,9 @@ private:
 }; // class Ex_srv
 
 #define TEMPLATE \
-  template<typename Server_t, bool S_SHM_ENABLED_V>
+  template<typename Server_t, bool SHM_ENABLED>
 #define CLASS \
-  Ex_srv<Server_t, S_SHM_ENABLED_V>
+  Ex_srv<Server_t, SHM_ENABLED>
 
 TEMPLATE
 CLASS::Ex_srv(flow::log::Logger* logger_ptr, flow::log::Logger* ipc_logger_ptr) :
@@ -213,6 +213,22 @@ void CLASS::server_listen()
    * Session it generates via .async_accept(). */
 
   m_srv = make_uptr<Server_sio>(m_ipc_logger, m_srv_apps.find(S_SRV_NAME)->second, m_cli_apps);
+
+  if constexpr(Server_sio::Session_obj::Session_obj::S_MQS_ENABLED)
+  {
+    /* Mess with the MQ-msg-size-limit knob; the traffic below then flows through pipes thus configured
+     * (logs will show some bigger segments at TRACE or DATA log-level).  The knob API itself -- default
+     * value, set/get, the round-up-to-alignment-multiple read-back -- is unit-tested
+     * (session_connect_test.cpp, Server_knobs); pushing real traffic through the result is our job here. */
+    constexpr size_t MQ_MSG_SIZE_SML = 1009; // Raised to 1024 (16-multiple).  Default is 512.
+    // In NO_SHM mode we need it to be sizable enough, so we cannot really change it much (8192 is often OS-max).
+    constexpr size_t MQ_MSG_SIZE_LRG = 8191; // "Raised" to 8192 (16-multiple).  Default is 8192.
+    const size_t limit = S_SHM_ENABLED ? MQ_MSG_SIZE_SML : MQ_MSG_SIZE_LRG;
+    FLOW_LOG_INFO("Session_server MQ-msg-size setting is currently (0 = choose default) "
+                  "[" << m_srv->core()->mq_msg_size_limit() << "]; setting to [round_ceil(" << limit << ")].");
+    m_srv->core()->mq_msg_size_limit(limit);
+    FLOW_LOG_INFO("It is now [" << m_srv->core()->mq_msg_size_limit() << "].");
+  }
 
   /* We make a bunch of sessions and have a few apps; the virtual pool sizes (note: not actual physical RAM)
    * can add up and hit kernel limit for active pool vaddr space (in sum).  So we reduce this to about how much
@@ -488,8 +504,8 @@ CLASS::App_session::App_session(Ex_srv* guy, unsigned int test_idx, Task&& i_am_
   };
 
   m_ses->init_handlers(std::move(on_err_func), std::move(on_chan_open_func));
-
-  FLOW_LOG_INFO("Good!  Now let's active-open some type-A channels (and passive-open some type-B ones).");
+  FLOW_LOG_INFO("Good!  Opposing process info: [" << m_ses->core()->remote_peer_process_credentials() << "].  "
+                "Now let's active-open some type-A channels (and passive-open some type-B ones).");
 
   for (size_t idx = 0; idx != S_N_CHANS_A - S_N_INIT_CHANS_A; ++idx)
   {
@@ -1079,8 +1095,8 @@ void CLASS::App_session::use_channels_round_1a()
     Error_code err_code;
     const auto rsp
       = (timeout == Seconds::max())
-          ? chan.sync_request(req, nullptr, &err_code)
-          : chan.sync_request(req, nullptr, timeout, &err_code);
+          ? chan.sync_request(&req, nullptr, &err_code)
+          : chan.sync_request(&req, nullptr, timeout, &err_code);
     ASSERT(rsp || err_code);
 
     if (expect_timeout)
@@ -1176,7 +1192,7 @@ void CLASS::App_session::use_channels_round_1a()
       msg.store_native_handle_or_null(std::move(hndl));
 
       Error_code err_code;
-      bool ok = chan.send(msg, nullptr, &err_code);
+      bool ok = chan.send(&msg, nullptr, &err_code);
       FLOW_LOG_INFO("App_session [" << this << "]: Chan A0: Sent.");
       ASSERT(ok && "send() yielded false, meaning error emitted earlier by chan.");
       if (err_code)
@@ -1285,6 +1301,10 @@ void CLASS::App_session::use_channels_round_2a()
     });
   }
 
+  /* Note: This sub-test's channel/ping accounting (see also PINGS_EXPECTED in ex_cli.hpp) presumes the
+   * 2-pipe channel config this test always runs with (see the SESSION_CFG_* discussion in
+   * transport_test.cpp).  Pipe-config variation (the 1-pipe sorts and so on) is unit-test territory,
+   * not this functional test's. */
   {
     FLOW_LOG_INFO("App_session [" << this << "]: Testing auto-ping/liveness-check.  Opening 2 channels, X with "
                   "auto-pings to us, Y without.  Enabling liveness-check on the in-pipe.");
@@ -1318,7 +1338,7 @@ void CLASS::App_session::use_channels_round_2a()
 
     FLOW_LOG_INFO("Opened.");
 
-    using Dummy = boost::array<uint8_t, 8192>;
+    using Dummy = boost::array<uint8_t, 64 * 1024>;
     Sptr<Dummy> dummy(new Dummy);
     Sptr<Native_handle> dummy2(new Native_handle);
 
@@ -1349,7 +1369,7 @@ void CLASS::App_session::use_channels_round_2a()
     {
       // Mark it now (see above cmnt).
       const auto elapsed = flow::Fine_clock::now() - started_at;
-      m_guy->post([this, TIMEOUT, elapsed, err_code]() mutable
+      m_guy->post([this, y = std::move(y), TIMEOUT, elapsed, err_code]() mutable
       {
         ASSERT((elapsed > (TIMEOUT - Seconds(1))) && "Timeout fired too early?"); // Leave some room.
 
@@ -1358,6 +1378,8 @@ void CLASS::App_session::use_channels_round_2a()
         FLOW_LOG_INFO("Channel Y receive(pipe2) got idle-timeout as expected; timeout = [" << TIMEOUT << "]; "
                       "elapsed = [" << boost::chrono::round<boost::chrono::milliseconds>(elapsed) << "].");
         ping_b(S_RESERVED_CHAN_IDX);
+
+        y.reset();
       }); // post()
     }); // y->async_receive_native_handle()
 
@@ -1548,7 +1570,7 @@ void CLASS::App_session::send_req_b(size_t chan_idx, util::String_view ctx, bool
     FLOW_LOG_INFO("App_session [" << this << "]: Chan B[" << chan_idx << "]: Filling done.  Now to send.");
 
     Error_code err_code;
-    bool ok = chan.async_request(msg_out, nullptr, nullptr /* 1-off rsp exp */,
+    bool ok = chan.async_request(&msg_out, nullptr, nullptr /* 1-off rsp exp */,
                                  [this, chan_idx, on_msg_func = std::move(on_msg_func),
                                   ctx = std::string(ctx)](Msg_in_ptr_b&& msg_in) mutable
     {
@@ -1683,7 +1705,7 @@ void CLASS::App_session::ping_a(size_t chan_idx)
   msg_out.body_root()->setMsgTwo("alt text");
 
   Error_code err_code;
-  bool ok = chan.send(msg_out, nullptr, &err_code);
+  bool ok = chan.send(&msg_out, nullptr, &err_code);
   FLOW_LOG_INFO("App_session [" << this << "]: Chan A[" << chan_idx << "]: Sent.");
   ASSERT(ok && "send() yielded false, meaning error emitted earlier by chan.");
   if (err_code)
@@ -1706,7 +1728,7 @@ void CLASS::App_session::send_req_a(size_t chan_idx, On_msg_handler&& on_msg_fun
   msg_out.body_root()->setMsgTwo("alt text");
 
   Error_code err_code;
-  bool ok = chan.async_request(msg_out, nullptr, &m_saved_req_id_out, // Set so we can undo_expect_responses() later.
+  bool ok = chan.async_request(&msg_out, nullptr, &m_saved_req_id_out, // Set so we can undo_expect_responses() later.
                                [this, on_msg_func = std::move(on_msg_func)](Msg_in_ptr_a&& msg_in) mutable
   {
     m_guy->post([on_msg_func = std::move(on_msg_func), msg_in = std::move(msg_in)]() mutable
@@ -1737,7 +1759,7 @@ void CLASS::App_session::ping_b(size_t chan_idx)
   msg_out.body_root()->setMsgTwo(1776);
 
   Error_code err_code;
-  bool ok = chan.send(msg_out, nullptr, &err_code);
+  bool ok = chan.send(&msg_out, nullptr, &err_code);
   ASSERT(ok && "send() yielded false, meaning error emitted earlier by chan.");
   FLOW_LOG_INFO("App_session [" << this << "]: Chan B[" << chan_idx << "]: Sent.");
   if (err_code)
@@ -1755,7 +1777,7 @@ void CLASS::App_session::expect_ping_and_b(size_t chan_idx, Task&& task)
   m_struct_chans_b[chan_idx]->expect_msg(capnp::ExBodyB::MSG_TWO,
                                          [this, chan_idx, task = std::move(task)](Msg_in_ptr_b&& msg_in) mutable
   {
-    m_guy->post([this, chan_idx, task = std::move(task), msg_in = std::move(msg_in)]()
+    m_guy->post([this, chan_idx, task = std::move(task), msg_in = std::move(msg_in)]() mutable
     {
       const auto& msg = msg_in->body_root();
       const auto desc = msg.getDescription();
@@ -1764,6 +1786,9 @@ void CLASS::App_session::expect_ping_and_b(size_t chan_idx, Task&& task)
       m_guy->check_scalar_set(desc, "b-description");
       ASSERT(msg.isMsgTwo() && "Expected alt-payload top-union-which selector; got something else.");
       m_guy->check_scalar_set(msg.getMsgTwo(), "b-alt-payload");
+
+      // See comment in ex_cli.hpp expect_pings_and_b().
+      msg_in.reset();
 
       task();
     }); // post()
