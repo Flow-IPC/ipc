@@ -848,6 +848,10 @@ jobs:
           mkdir -p "$DST_DIR"
           cp -v "$config_log" "$DST_DIR"
         done
+        # Prune the source/build trees, which Conan retains after building from source; only the
+        # built packages and recipes are needed by this (or later) runs.  Keeps cache size down in next step;
+        # cache is LRU-based but limited enough to matter in practice as of this writing.
+        conan remove '*' --builds --src --force
         [ "$FAILED" != yep ]
 
     # (See comment atop the Restore counterpart above.)  Skipped on an exact-key restore: the cache would be
@@ -1562,7 +1566,10 @@ jobs:
           conan-data-doc-
 
     - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
-      run: conan install . --profile:build conan_profile --profile:host conan_profile --build missing
+      run: |
+        conan install . --profile:build conan_profile --profile:host conan_profile --build missing
+        # (See comment in the build-and-test job's analogous step.)
+        conan remove '*' --builds --src --force
 
     - name: Save Conan package cache
       if: steps.conan-cache-restore.outputs.cache-hit != 'true'
