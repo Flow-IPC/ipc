@@ -870,8 +870,18 @@ jobs:
       run: |
         # Build libraries and demos/tests with Conan.
         ${{ env.setup-run-env }}
+        #XXXtemp-debug!
+        # Sample RAM use in the background, so its output interleaves with the log as we go: post-mortem evidence
+        # regarding sporadic whole-VM kills (runner-shutdown message from GitHub) observed when several jumbo test
+        # TUs compile simultaneously in `-g` configs -- apparent OOM of the 16 GiB runner.
+        ( while true; do echo "[mem-sample] $(free -m | grep Mem:)"; sleep 15; done ) &
+        MEM_SAMPLER_PID=$!
+        #XXXtemp-debug-end
         # At least capnp compiler binary is built with our build-settings, so $BUILD_CMD_PREFIX is required.
         $BUILT_CMD_PREFIX conan build .
+        #XXXtemp-debug!
+        kill $MEM_SAMPLER_PID
+        #XXXtemp-debug-end
 
     - name: Install built targets with Makefile
       if: env.cell-selected == 'true'
