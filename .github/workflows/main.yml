@@ -239,22 +239,31 @@ jobs:
             c-path: /usr/bin/gcc-9
             cpp-path: /usr/bin/g++-9
             install: True
+            # Very-RAM-hungry when generating debug info (see also high-mem-build in build-test-cfg axis; as of this
+            # writing if both are true then some step(s) may tweak some knobs to reduce RAM use).
+            high-mem-build: True
           - id: gcc-10
             name: gcc
             version: 10
             c-path: /usr/bin/gcc-10
             cpp-path: /usr/bin/g++-10
+            # See comment on first occurrence.
+            high-mem-build: True
           - id: gcc-11
             name: gcc
             version: 11
             c-path: /usr/bin/gcc-11
             cpp-path: /usr/bin/g++-11
+            # See comment on first occurrence.
+            high-mem-build: True
           - id: gcc-13
             name: gcc
             version: 13
             c-path: /usr/bin/gcc-13
             cpp-path: /usr/bin/g++-13
             install: True
+            # See comment on first occurrence.
+            high-mem-build: True
           - id: clang-13
             name: clang
             version: 13
@@ -281,6 +290,11 @@ jobs:
           - id: debug
             conan-profile-build-type: Debug
             conan-profile-jemalloc-build-type: Debug
+            # Debug-info generation makes compiles much more RAM-hungry; see the profile-creation step, which
+            # *may* (depending on possibly other cfg such as compiler) react to this flag by, say, reducing build
+            # parallelism.  Other consumers may arise over time.  This is a hint to the consumer steps which
+            # are responsible for the ultimate behavior.
+            high-mem-build: True
             # In any case Debug, at the CMake script (in meta-project ./, and in flow/, ipc_*/) level,
             # means LTO will be ignored (only *Rel* build-types enable LTO, if so instructed).
             # Still keeping this here to make that clear to the reader/maintainer.  Could remove it though.
@@ -292,6 +306,8 @@ jobs:
           - id: relwithdebinfo
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
+            # See comment on first occurrence.
+            high-mem-build: True
             # As of this writing RelWithDebInfo (in CMake, and Conan in our case at least doesn't override it)
             # defaults to -O2 (not -O3), which isn't a super-effective way of deploying LTO.  Plus
             # we can use a test of non-LTO building.
@@ -760,6 +776,24 @@ jobs:
         fi
         if [ '${{ matrix.build-test-cfg.build-type-cflags-override }}' != '' ]; then
           echo 'ipc:build_type_cflags_override = ${{ matrix.build-test-cfg.build-type-cflags-override }}' >> conan_profile
+        fi
+        # high-mem-build config x high-mem-build compiler: several jumbo test
+        # translation units (.cpp files) compiling in parallel, at the default
+        # parallelism (= logical cores), can exceed runner RAM; observed as sporadic whole-VM-OOM
+        # (runner-shutdown) job kills.  So use physical cores instead: measured (via `free` sampling) to leave
+        # ample headroom while costing only the SMT throughput bonus (perhaps 15-25% of the compile phase).
+        # TODO: Splitting up heavy test `.cpp`s into less memory-hungry chunks, such as by instantiating certain
+        # key template groups (<=> ipc::session::Session compile-time config, possibly others) in separate
+        # `.cpp`s, would benefit other environments, including user environments, and be less reliant on fairly
+        # dynamic hardware conditions from GitHub/whomever.  Revisit that; ideally get rid of this as a result.
+        # XXXrevisit soon, if there's time; or delete this line and leave TODO; whatever seems best at the end.
+        if [ '${{ matrix.compiler.high-mem-build }}' != '' ] \
+           && [ '${{ matrix.compiler.high-mem-build }}' != 'false' ] \
+           && [ '${{ matrix.build-test-cfg.high-mem-build }}' != '' ] \
+           && [ '${{ matrix.build-test-cfg.high-mem-build }}' != 'false' ]; then
+          echo "Reducing build parallelism to N-physical-cores [$N_PHYS_CORES]."
+          N_PHYS_CORES=$(lscpu -p=Core,Socket | grep -v '^#' | sort -u | wc -l)
+          echo "tools.build:jobs = $N_PHYS_CORES" >> conan_profile
         fi
 
     # We need to prepare a sanitizer ignore-list in MSAN mode.  Background for this is subtle and annoying:
