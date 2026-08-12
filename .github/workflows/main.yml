@@ -802,7 +802,10 @@ jobs:
            && [ '${{ matrix.build-test-cfg.high-mem-build }}' != 'false' ]; then
           N_PHYS_CORES=$(lscpu -p=Core,Socket | grep -v '^#' | sort -u | wc -l)
           echo "Reducing build parallelism to N-physical-cores [$N_PHYS_CORES]."
-          echo "tools.build:jobs = $N_PHYS_CORES" >> conan_profile
+          # Must land inside the `[conf]` section.  (A plain append would land in `[options]`, the file's
+          # last section, where it would parse as never-matching-any-package option `tools.build:jobs` --
+          # a silent no-op.)
+          sed -i "/^\[conf\]$/a tools.build:jobs = $N_PHYS_CORES" conan_profile
         fi
 
     # We need to prepare a sanitizer ignore-list in MSAN mode.  Background for this is subtle and annoying:
@@ -874,6 +877,13 @@ jobs:
         conan export ./flow/conan/boost/$NON_REMOTE_BOOST_VER boost/$NON_REMOTE_BOOST_VER.0@
         FLOW_VERSION=`cat flow/VERSION`
         conan editable add flow flow/$FLOW_VERSION
+        # In UBSAN config jemalloc must be built with different (sanitizer-less) flags -- but Conan's
+        # package-id ignores flags arriving via [conf]/[buildenv], so a cache restored from an older key
+        # (see restore-keys above) can supply a stale jemalloc binary built with the wrong flags, which
+        # `conan install` will happily reuse.  Evict it; it then rebuilds (quickly) under the current profile.
+        if [ '${{ matrix.build-test-cfg.sanitizer-name }}' = 'ubsan' ]; then
+          conan remove --force 'jemalloc/*' || true
+        fi
         # At least `configure` mini-programs are built with our build-settings, so $BUILT_CMD_PREFIX is required.
         $BUILT_CMD_PREFIX \
           conan install . \
