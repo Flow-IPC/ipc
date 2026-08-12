@@ -601,7 +601,11 @@ jobs:
         elif [ '${{ matrix.build-test-cfg.sanitizer-name }}' = tsan ]; then
           export SAN_SUPP=1
           export SAN_SUPP_CFG=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local/bin/san_suppressions.cfg
-          export TSAN_OPTIONS="disable_coredump=0 second_deadlock_stack=1 suppressions=$SAN_SUPP_CFG"
+          # detect_deadlocks=0: TSAN's lock-order detector caps at 64 simultaneously-held mutexes per thread;
+          # jemalloc (e.g. grabbing all bin/arena mutexes during teardown/stats) exceeds that, upon which the
+          # detector CHECK-fails -- and its failure path hangs the process (observed: a 3-hour unit_test wedge).
+          # Data-race detection (TSAN's main job) is unaffected; lock-inversion detection is the sacrifice.
+          export TSAN_OPTIONS="disable_coredump=0 detect_deadlocks=0 suppressions=$SAN_SUPP_CFG"
           echo "TSAN_OPTIONS = [$TSAN_OPTIONS]."
         fi
         if [ "$SAN_SUPP" != '' ]; then
