@@ -856,6 +856,11 @@ jobs:
     # run.  See explanatory comments atop the analogous steps in Flow workflow counterpart.  We use same
     # techniques (including the restore/save split, with the save placed right after the dep-install step, so
     # even a run whose later steps fail still primes the cache).
+    #
+    # Caution! The restore-keys fallback below can restore binaries built under *different* compile/link
+    # flags than the current profile's -- and Conan cannot detect that (its package-id ignores flags arriving
+    # via [conf]/[buildenv]; only [settings]/[options] are keyed).  The flag-snapshot guard in the dep-install
+    # step below is what makes the fallback safe; if you remove or change one, mind the other.
     - name: Restore Conan package cache
       if: env.cell-selected == 'true'
       id: conan-cache-restore
@@ -871,19 +876,25 @@ jobs:
       run: |
         # Install Flow-IPC dependencies with Conan using the profile.
         ${{ env.setup-run-env }}
+        # Flag-snapshot guard (see conan-cache-restore comment above).  An exact-key restore is
+        # trusted by definition: the key hashes the whole profile.  Otherwise -- fallback restore, or none --
+        # compare the flag-containing profile sections against the snapshot recorded inside the cache (see end of
+        # this step); on mismatch (or no snapshot) evict everything, so dependencies rebuild with current flag values.
+        # (Do this before the `conan export` just below: the eviction would delete its result too.)
+        if [ '${{ steps.conan-cache-restore.outputs.cache-hit }}' != 'true' ]; then
+          flag_sections() { awk '/^\[/{on=0} /^\[(conf|buildenv)\]/{on=1} on' "$1"; }
+          SNAPSHOT=~/.conan/data/.profile-snapshot
+          if [ ! -f $SNAPSHOT ] || ! diff <(flag_sections conan_profile) <(flag_sections $SNAPSHOT); then
+            echo 'Restored cache (if any) lacks a flag-match guarantee; evicting its packages (they will rebuild).'
+            conan remove --force '*' 2> /dev/null || true
+          fi
+        fi
         # Next 3 lines: Must do same as flow's main.yml; see that code.
         # TODO: See the TODO there which applies to these lines.
         NON_REMOTE_BOOST_VER=1.87
         conan export ./flow/conan/boost/$NON_REMOTE_BOOST_VER boost/$NON_REMOTE_BOOST_VER.0@
         FLOW_VERSION=`cat flow/VERSION`
         conan editable add flow flow/$FLOW_VERSION
-        # In UBSAN config jemalloc must be built with different (sanitizer-less) flags -- but Conan's
-        # package-id ignores flags arriving via [conf]/[buildenv], so a cache restored from an older key
-        # (see restore-keys above) can supply a stale jemalloc binary built with the wrong flags, which
-        # `conan install` will happily reuse.  Evict it; it then rebuilds (quickly) under the current profile.
-        if [ '${{ matrix.build-test-cfg.sanitizer-name }}' = 'ubsan' ]; then
-          conan remove --force 'jemalloc/*' || true
-        fi
         # At least `configure` mini-programs are built with our build-settings, so $BUILT_CMD_PREFIX is required.
         $BUILT_CMD_PREFIX \
           conan install . \
@@ -909,6 +920,10 @@ jobs:
         # built packages and recipes are needed by this (or later) runs.  Keeps cache size down in next step;
         # cache is LRU-based but limited enough to matter in practice as of this writing.
         conan remove '*' --builds --src --force
+        if [ "$FAILED" != yep ]; then
+          # Record the flags this cache's contents were built under, for the flag-snapshot guard (see above).
+          cp conan_profile ~/.conan/data/.profile-snapshot
+        fi
         [ "$FAILED" != yep ]
 
     # (See comment atop the Restore counterpart above.)  Skipped on an exact-key restore: the cache would be
@@ -1623,6 +1638,9 @@ jobs:
 
     # Cache Conan-built deps (here: mainly Doxygen).  See comments atop the analogous steps in the
     # build-and-test job; and the longer explanation in Flow workflow counterpart.
+    # (The build-and-test job's flag-snapshot guard is deliberately not replicated here: this profile
+    # carries no meaningful compile/link flags, and the deps are stand-alone tools, so the stale-flags
+    # hazard the guard addresses cannot meaningfully arise.)
     - name: Restore Conan package cache
       id: conan-cache-restore
       uses: actions/cache/restore@v6
