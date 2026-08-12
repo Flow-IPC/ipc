@@ -791,8 +791,8 @@ jobs:
            && [ '${{ matrix.compiler.high-mem-build }}' != 'false' ] \
            && [ '${{ matrix.build-test-cfg.high-mem-build }}' != '' ] \
            && [ '${{ matrix.build-test-cfg.high-mem-build }}' != 'false' ]; then
-          echo "Reducing build parallelism to N-physical-cores [$N_PHYS_CORES]."
           N_PHYS_CORES=$(lscpu -p=Core,Socket | grep -v '^#' | sort -u | wc -l)
+          echo "Reducing build parallelism to N-physical-cores [$N_PHYS_CORES]."
           echo "tools.build:jobs = $N_PHYS_CORES" >> conan_profile
         fi
 
@@ -865,7 +865,7 @@ jobs:
         conan export ./flow/conan/boost/$NON_REMOTE_BOOST_VER boost/$NON_REMOTE_BOOST_VER.0@
         FLOW_VERSION=`cat flow/VERSION`
         conan editable add flow flow/$FLOW_VERSION
-        # At least `configure` mini-programs are built with our build-settings, so $BUILD_CMD_PREFIX is required.
+        # At least `configure` mini-programs are built with our build-settings, so $BUILT_CMD_PREFIX is required.
         $BUILT_CMD_PREFIX \
           conan install . \
           --profile:build conan_profile --profile:host conan_profile --build missing || FAILED=yep
@@ -915,7 +915,7 @@ jobs:
         ( while true; do echo "[mem-sample] $(free -m | grep Mem:)"; sleep 15; done ) &
         MEM_SAMPLER_PID=$!
         #XXXtemp-debug-end
-        # At least capnp compiler binary is built with our build-settings, so $BUILD_CMD_PREFIX is required.
+        # At least capnp compiler binary is built with our build-settings, so $BUILT_CMD_PREFIX is required.
         $BUILT_CMD_PREFIX conan build .
         #XXXtemp-debug!
         kill $MEM_SAMPLER_PID
