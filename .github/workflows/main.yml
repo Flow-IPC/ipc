@@ -350,16 +350,25 @@ jobs:
               tools.build:cxxflags = ["-fsanitize=undefined", "-fno-omit-frame-pointer"]
               tools.build:sharedlinkflags = ["-fsanitize=undefined"]
               tools.build:exelinkflags = ["-fsanitize=undefined"]
+              # jemalloc's internals feature certain known, benign, upstream UB (int-overflowing shifts et al):
+              # so build it -- and only it -- with UBSAN off, by overriding the above flags for that one package.
+              # (UBSAN is per-translation-unit -- no TSAN-style all-code-must-be-instrumented requirement -- so
+              # this is safe.  Syntax note: this section's scoping fnmatches the full `jemalloc/1.2.3`-style
+              # reference -- hence the `*`.)
+              jemalloc*:tools.build:cflags = ["-fno-omit-frame-pointer"]
+              jemalloc*:tools.build:cxxflags = ["-fno-omit-frame-pointer"]
+              jemalloc*:tools.build:sharedlinkflags = []
+              jemalloc*:tools.build:exelinkflags = []
             conan-profile-custom-buildenv: |
               CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=undefined
+              # (Ditto the jemalloc UBSAN-off exemption in the conf section just above.)
+              jemalloc*:CXXFLAGS = -fno-omit-frame-pointer
+              jemalloc*:CFLAGS = -fno-omit-frame-pointer
+              jemalloc*:LDFLAGS =
             conan-profile-custom-settings: |
               compiler.sanitizer = undefined
-              # jemalloc's internals feature certain known, benign, upstream UB (int-overflowing shifts et al);
-              # so exempt it -- and only it -- from instrumentation.  (UBSAN is per-translation-unit -- no
-              # TSAN-style all-code-must-be-instrumented requirement -- so this is safe.)
-              jemalloc:compiler.sanitizer = None
             conan-custom-settings-defs: |
               data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
               data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
