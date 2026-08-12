@@ -537,6 +537,11 @@ jobs:
     # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
     runs-on: ubuntu-22.04
 
+    # A healthy job as of this writing (8/2026) takes at most 1.25 hours; meanwhile certain sanitizer failure modes
+    # (TSAN deadlock-detector issues at least) hang a process indefinitely, and the GitHub default job timeout is
+    # 6 hours.  We bound it for reasonabless and visibility of these hangs, particularly during debug/test cycles.
+    timeout-minutes: 120
+
     name: ${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}
 
     env:
@@ -583,6 +588,13 @@ jobs:
       #
       # second_deadlock_stack=1 for TSAN: TODO: Explain.  Don't see it in clang TSAN docs.
       #
+      # detect_deadlocks=1 for TSAN: This is already default, but for clarity we make it explicit; read on.
+      # It detects deadlocks (lock-order inversion) which is useful.  However there is a potential problem:
+      # The detector has an internal limit of 64 held mutexes; once reached some TSAN-internal assertion fails,
+      # and the program hangs.  When needed -- as of this writing with heavy jemalloc use this tends to happen --
+      # override detect_deadlocks=0 for the duration of the problematic test/demo.  (It's a useful check though;
+      # so this should be done only if unavoidable.)
+      #
       # Caution!  Setting multiple *SAN_OPTIONS (while invoking only 1 sanitizer, as we do)
       # seems like it would be harmless and avoids the `if/elif`s... but is actually a
       # nightmare; there is some interaction in clang (at least 13-17) which causes the
@@ -610,11 +622,7 @@ jobs:
         elif [ '${{ matrix.build-test-cfg.sanitizer-name }}' = tsan ]; then
           export SAN_SUPP=1
           export SAN_SUPP_CFG=${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local/bin/san_suppressions.cfg
-          # detect_deadlocks=0: TSAN's lock-order detector caps at 64 simultaneously-held mutexes per thread;
-          # jemalloc (e.g. grabbing all bin/arena mutexes during teardown/stats) exceeds that, upon which the
-          # detector CHECK-fails -- and its failure path hangs the process (observed: a 3-hour unit_test wedge).
-          # Data-race detection (TSAN's main job) is unaffected; lock-inversion detection is the sacrifice.
-          export TSAN_OPTIONS="disable_coredump=0 detect_deadlocks=0 suppressions=$SAN_SUPP_CFG"
+          export TSAN_OPTIONS="disable_coredump=0 detect_deadlocks=1 second_deadlock_stack=1 suppressions=$SAN_SUPP_CFG"
           if [ '${{ matrix.compiler.id }}' = 'clang-17' ]; then
             # clang-17's llvm-symbolizer-17 crashes ("LLVM ERROR: Sections with relocations should have an
             # address of 0") when symbolizing our binaries' TSAN reports, stalling the reporting thread 10+
@@ -1164,46 +1172,31 @@ jobs:
           # This is what we want to do normally.
           $RUN_IT > $OUT_DIR/console.log 2>&1
         else # if sanitizer-name is tsan:
-          # With TSAN -- which is officially in beta as of even clang-18 (as of this writing we are on 17 at best) --
-          # our tests hit some kind of limitation (possibly bug).  What happens is the console prints a-la
-          #   ThreadSanitizer: CHECK failed: sanitizer_deadlock_detector.h:67
-          #     "((n_all_locks_)) < (((sizeof(all_locks_with_contexts_)/sizeof((all_locks_with_contexts_)[0]))))"
-          #     (0x40, 0x40) (tid=4111122)
-          # and the program hangs indefinitely.  This seems to be saying the # of locks reached 64, so TSAN gave up.
-          # A ticket has been filed to look into this; but in the meantime we work around it.  Namely, we have
-          # observed that:
-          #   - A particular test, even if run by itself, always triggers it.  So we are forced to skip that one.
-          #     - In clang-17 yet another test results in a different problem:
-          #         LLVM ERROR: Sections with relocations should have an address of 0
-          #         ...
-          #       That one is also observed for transport_test exercise mode SHM-jemalloc sub-mode, which as of this
-          #       writing is skipped for that compiler+TSAN for that reason.  We do something similar here in skipping
-          #       that particular test too in that situation.  TODO: It's a test that starts tons of threads.
-          #       Consider other approaches; maybe reduce number of threads or...?  Ticket filed in any case.
-          #     As for the other tests -- the vast majority -- outside of those 1-2:
-          #   - A particular small subset of tests, if involved, triggers it.  However if run separately from the
-          #     the others -- even as a group -- then it is OK.  So we run all but that group; then just that
-          #     group.
-          LOCK_FATAL_TESTS=Ipc_arena_test.Multiprocess
-          if [ '${{ matrix.compiler.id }}' = 'clang-17' ]; then
-            LOCK_FATAL_TESTS=$LOCK_FATAL_TESTS:Ipc_arena_test.Multithread_load
-          fi
-          LOCK_HEAVY_TESTS='Shm_session_test.External_process_array:\
-                            Shm_session_test.External_process_vector_offset_ptr:\
-                            Shm_session_test.External_process_string_offset_ptr:\
-                            Shm_session_test.External_process_list_offset_ptr:\
-                            Shm_session_test.Multisession_external_process:\
-                            Shm_session_test.Disconnected_external_process:\
-                            Borrower_shm_pool_collection_test.Multiprocess:\
-                            Shm_pool_collection_test.Multiprocess'
+          # First please see comment in setup-tests-env regarding detect_deadlocks=1 (the default) and the
+          # potential problem in some conditions.  In short: heavy jemalloc use => d_d=1 trips 64-mutex cap in TSAN
+          # => hang.  As noted in that comment: we keep the default where possible (no heavy [SHM-]jemalloc);
+          # temporarily disable detect_deadlocks otherwise.
+          #
+          # If some future test ends up in the wrong batch, `timeout` causes an explicit failure without waiting
+          # for the whole job to time out.
+          # TODO: Failing to add a test here should already show a timeout... nevertheless this
+          # setup just is a bit flimsy-feeling.  Ideally this list would be auto-generated from some
+          # mandatory-to-maintain list in the (test/) source somewhere; like maybe any "heavy jemalloc user" test
+          # would be marked in some consistent way.
+          SHMJ_TESTS='*Ipc_arena*:*Jemalloc*:*Memory_manager*:*Shm_pool*:*shm_pool*:*Shm_session*:*Lend*:\
+                      *Borrower*:*Owner*:Thread_cache_test.*:Session_persistent_cleanup_test.*:\
+                      *shmJemalloc*:*ShmJemalloc*:*shm_jemalloc*'
           # Get rid of newlines/backslashes....
-          LOCK_HEAVY_TESTS="$(echo "$LOCK_HEAVY_TESTS" | tr -d '[:space:]\\')"
-          if $RUN_IT --gtest_filter=-$LOCK_HEAVY_TESTS:$LOCK_FATAL_TESTS > $OUT_DIR/console.minus-lock-heavy.log 2>&1; \
-            then EC_ALL=0; else EC_ALL=$?; fi
-          if $RUN_IT --gtest_filter=$LOCK_HEAVY_TESTS > $OUT_DIR/console.lock-heavy.log 2>&1; \
-            then EC_LH=0; else EC_LH=$?; fi
-          echo "Exit codes: all-minus-lock-heavy = $EC_ALL; lock-heavy = $EC_LH."
-          [ $EC_ALL -eq 0 ] && [ $EC_LH -eq 0 ]
+          SHMJ_TESTS="$(echo "$SHMJ_TESTS" | tr -d '[:space:]\\')"
+          if timeout 30m $RUN_IT --gtest_filter=-$SHMJ_TESTS > $OUT_DIR/console.minus-shm-j.log 2>&1; \
+            then EC_A=0; else EC_A=$?; fi
+          # (In the sanitizer-flags mini-language a repeated flag = last occurrence wins.)
+          if TSAN_OPTIONS="$TSAN_OPTIONS detect_deadlocks=0" \
+               timeout 30m $RUN_IT --gtest_filter=$SHMJ_TESTS > $OUT_DIR/console.shm-j.log 2>&1; \
+            then EC_B=0; else EC_B=$?; fi
+          echo "Exit codes: all-minus-shm-j = $EC_A; shm-j = $EC_B.  (124 = timeout -- probably a test in the"
+          echo 'wrong batch; see comment above.)'
+          [ $EC_A -eq 0 ] && [ $EC_B -eq 0 ]
         fi
 
     - name: Prepare run script for [perf_demo] variations below
