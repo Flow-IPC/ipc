@@ -344,8 +344,9 @@ jobs:
             conan-profile-custom-settings: |
               compiler.sanitizer = address
             conan-custom-settings-defs: | # Could we not copy/paste these 4x?
-              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
+              data = { 'compiler':
+                          { 'gcc': { 'sanitizer': ['None', 'address', 'thread', 'memory', 'undefined'] },
+                            'clang': { 'sanitizer': ['None', 'address', 'thread', 'memory', 'undefined'] } } }
             sanitizer-name: asan # Used as internal enum of sorts + name of sanitizer-related dirs.
             # At least ASAN with clang + LTO => cryptic link error.
             # Regardless regular RelWithDebInfo already has no-lto=true; so we would follow suit.  Just be aware
@@ -362,25 +363,26 @@ jobs:
               # jemalloc's internals feature certain known, benign, upstream UB (int-overflowing shifts et al):
               # so build it -- and only it -- with UBSAN off, by overriding the above flags for that one package.
               # (UBSAN is per-translation-unit -- no TSAN-style all-code-must-be-instrumented requirement -- so
-              # this is safe.  Syntax note: this section's scoping fnmatches the full `jemalloc/1.2.3`-style
-              # reference -- hence the `*`.)
-              jemalloc*:tools.build:cflags = ["-fno-omit-frame-pointer"]
-              jemalloc*:tools.build:cxxflags = ["-fno-omit-frame-pointer"]
-              jemalloc*:tools.build:sharedlinkflags = []
-              jemalloc*:tools.build:exelinkflags = []
+              # this is safe.  Syntax note: the scoping pattern matches the full `jemalloc/1.2.3`-style
+              # reference -- hence `jemalloc/*`.)
+              jemalloc/*:tools.build:cflags = ["-fno-omit-frame-pointer"]
+              jemalloc/*:tools.build:cxxflags = ["-fno-omit-frame-pointer"]
+              jemalloc/*:tools.build:sharedlinkflags = []
+              jemalloc/*:tools.build:exelinkflags = []
             conan-profile-custom-buildenv: |
               CXXFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               CFLAGS = -fsanitize=undefined -fno-omit-frame-pointer
               LDFLAGS = -fsanitize=undefined
               # (Ditto the jemalloc UBSAN-off exemption in the conf section just above.)
-              jemalloc*:CXXFLAGS = -fno-omit-frame-pointer
-              jemalloc*:CFLAGS = -fno-omit-frame-pointer
-              jemalloc*:LDFLAGS =
+              jemalloc/*:CXXFLAGS = -fno-omit-frame-pointer
+              jemalloc/*:CFLAGS = -fno-omit-frame-pointer
+              jemalloc/*:LDFLAGS =
             conan-profile-custom-settings: |
               compiler.sanitizer = undefined
             conan-custom-settings-defs: |
-              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
+              data = { 'compiler':
+                          { 'gcc': { 'sanitizer': ['None', 'address', 'thread', 'memory', 'undefined'] },
+                            'clang': { 'sanitizer': ['None', 'address', 'thread', 'memory', 'undefined'] } } }
             sanitizer-name: ubsan
             # While UBSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Plus inheriting from regular RelWithDebInfo anyway.
@@ -403,8 +405,9 @@ jobs:
             conan-profile-custom-settings: |
               compiler.sanitizer = thread
             conan-custom-settings-defs: |
-              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
+              data = { 'compiler':
+                          { 'gcc': { 'sanitizer': ['None', 'address', 'thread', 'memory', 'undefined'] },
+                            'clang': { 'sanitizer': ['None', 'address', 'thread', 'memory', 'undefined'] } } }
             sanitizer-name: tsan
             # While TSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Also, for some clangs, there are TSAN WARNINGs at times about too-small symbolizer buffer or something;
@@ -426,8 +429,9 @@ jobs:
             conan-profile-custom-settings: |
               compiler.sanitizer = memory
             conan-custom-settings-defs: |
-              data['compiler']['gcc']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
-              data['compiler']['clang']['sanitizer'] = ['None', 'address', 'thread', 'memory', 'undefined']
+              data = { 'compiler':
+                          { 'gcc': { 'sanitizer': ['None', 'address', 'thread', 'memory', 'undefined'] },
+                            'clang': { 'sanitizer': ['None', 'address', 'thread', 'memory', 'undefined'] } } }
             sanitizer-name: msan
             # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Plus inheriting from regular RelWithDebInfo anyway.
@@ -549,8 +553,6 @@ jobs:
       # Flow workflow counterpart.  We use same techniques.
       cell-selected: ${{ (github.event.inputs.job-filter || '') == '' || contains(format('{0}-{1}-{2}', matrix.compiler.id, matrix.build-test-cfg.id, matrix.cxx-std.id), github.event.inputs.job-filter) }}
       build-dir: ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-profile-build-type }}
-      install-root-dir: ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}
-      # (Unfortunately cannot refer to earlier-assigned `env.` entries within subsequent ones.)
       install-dir: ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local
       # Target file, as read by sanitized executable being invoked.
       san-suppress-cfg-file: ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local/bin/san_suppressions.cfg
@@ -708,22 +710,23 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y gcc-${{ matrix.compiler.version }} g++-${{ matrix.compiler.version }}
 
-    # We get highest 1.x, instead of 2+, because there are certain dependency recipe issues (namely for jemalloc)
-    # with 2+.  TODO: 1, expound more clearly here or elsewhere what those issues are; 2, solve those issues and
-    # thus move to Conan 2+; Conan 1.x is officially on "deprecation path."  This will also help resolve some other
-    # to-dos more easily (targeting different build settings at built product source versus tools used to build it
-    # = prime example).  3, when doing (2): also update the Conan-cache steps below (and in Flow counterpart) --
-    # `path` becomes ~/.conan2/p; bump the key prefixes (conan-data- -> conan2-data-), so stale Conan-1 caches
-    # cannot be restored.
-    - name: Install the latest version of Conan which is less than 2
-      if: env.cell-selected == 'true'
-      run: pip install 'conan<2'
-
     - name: Checkout `ipc` repository and submodules (`flow`, `ipc_*`)
       if: env.cell-selected == 'true'
       uses: actions/checkout@v6
       with:
         submodules: true
+
+    - name: Prepare Python virtual environment containing Conan
+      if: env.cell-selected == 'true'
+      run: |
+        # Prepare Python virtual environment containing Conan.
+        # (See comment in Flow workflow counterpart's analogous step.)
+        pip install virtualenv
+        virtualenv ${{ github.workspace }}/conan_virtual_env
+        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        pip install pip-tools
+        pip-compile ${{ github.workspace }}/.github/workflows/requirements.in
+        pip-sync ${{ github.workspace }}/.github/workflows/requirements.txt
 
     - name: Add custom settings for Conan packages
       if: |
@@ -731,19 +734,15 @@ jobs:
           && matrix.build-test-cfg.conan-custom-settings-defs
       run: |
         # Add custom settings for Conan packages.
-        conan config init
-        pip install PyYAML
-        CONAN_SETTINGS_PATH=$(conan config home)/settings.yml
+        # Conan keeps custom settings in settings_user.yml, an overlay merged onto the built-in settings.yml;
+        # so simply write the overlay dict from our matrix higher-up.
+        # (`conan config home` auto-creates the home dir if needed.)
+        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        CONAN_USER_SETTINGS_PATH=$(conan config home)/settings_user.yml
         python -c "
-
         import yaml
-
-        with open('$CONAN_SETTINGS_PATH', 'r') as file:
-          data = yaml.safe_load(file)
-
         ${{ matrix.build-test-cfg.conan-custom-settings-defs }}
-
-        with open('$CONAN_SETTINGS_PATH', 'w') as file:
+        with open('$CONAN_USER_SETTINGS_PATH', 'w') as file:
           yaml.dump(data, file)
         "
 
@@ -786,12 +785,11 @@ jobs:
         compiler.libcxx = libstdc++11
         arch = x86_64
         os = Linux
-        jemalloc:build_type = ${{ matrix.build-test-cfg.conan-profile-jemalloc-build-type }}
+        jemalloc/*:build_type = ${{ matrix.build-test-cfg.conan-profile-jemalloc-build-type }}
         build_type = ${{ matrix.build-test-cfg.conan-profile-build-type }}
         ${{ matrix.build-test-cfg.conan-profile-custom-settings }}
 
         [conf]
-        tools.env.virtualenv:auto_use = True
         tools.build:compiler_executables = {"c": "${{ matrix.compiler.c-path }}", "cpp": "${{ matrix.compiler.cpp-path }}"}
         ${{ matrix.build-test-cfg.conan-profile-custom-conf }}
 
@@ -803,22 +801,22 @@ jobs:
         [options]
         # TODO: Are the next 2 lines needed, since we are building via `ipc` conanfile.py?
         # I (ygoldfel) am admittedly Conan-ignorant.
-        flow:doc = False
-        flow:build = True
-        ipc:doc = False
-        ipc:build = True
+        flow/*:doc = False
+        flow/*:build = True
+        ipc/*:doc = False
+        ipc/*:build = True
         # `0` here as of this writing would effectively mean `17` too.  Specifying `17` explicitly has the same
         # effect in the end but goes down a slightly different code-path in FlowLikeCodeGenerate.cmake.  It's not
         # a huge deal... but it's a little nice to cover more paths, so let's do the `0` path when applicable.
-        ipc:build_cxx_std = ${{ ((matrix.cxx-std.id == 'cxx20') && '20') || '0' }}
+        ipc/*:build_cxx_std = ${{ ((matrix.cxx-std.id == 'cxx20') && '20') || '0' }}
         EOF
         # (Oddly enough `no-lto: True` and `...: False` do still evaluate as `true` and `false` respectively.
         # Hence why this compares against `false` and not `False`....)
         if [ '${{ matrix.build-test-cfg.no-lto }}' != '' ] && [ '${{ matrix.build-test-cfg.no-lto }}' != 'false' ]; then
-          echo 'ipc:build_no_lto = True' >> conan_profile
+          echo 'ipc/*:build_no_lto = True' >> conan_profile
         fi
         if [ '${{ matrix.build-test-cfg.build-type-cflags-override }}' != '' ]; then
-          echo 'ipc:build_type_cflags_override = ${{ matrix.build-test-cfg.build-type-cflags-override }}' >> conan_profile
+          echo 'ipc/*:build_type_cflags_override = ${{ matrix.build-test-cfg.build-type-cflags-override }}' >> conan_profile
         fi
         # high-mem-build config x high-mem-build compiler: several jumbo test
         # translation units (.cpp files) compiling in parallel, at the default
@@ -904,39 +902,32 @@ jobs:
       id: conan-cache-restore
       uses: actions/cache/restore@v6
       with:
-        path: ~/.conan/data
-        key: conan-data-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}-${{ hashFiles('conan_profile', 'conanfile.py') }}
+        path: ~/.conan2/p
+        key: conan2-data-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}-${{ hashFiles('conan_profile', 'conanfile.py') }}
         restore-keys: |
-          conan-data-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}-
+          conan2-data-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}-
 
     - name: Install Flow-IPC dependencies with Conan using the profile
       if: env.cell-selected == 'true'
       run: |
         # Install Flow-IPC dependencies with Conan using the profile.
+        source ${{ github.workspace }}/conan_virtual_env/bin/activate
         ${{ env.setup-run-env }}
         # Flag-snapshot guard (see conan-cache-restore comment above).  An exact-key restore is
         # trusted by definition: the key hashes the whole profile.  Otherwise -- fallback restore, or none --
         # compare the flag-containing profile sections against the snapshot recorded inside the cache (see end of
         # this step); on mismatch (or no snapshot) evict everything, so dependencies rebuild with current flag values.
-        # (Do this before the `conan export` just below: the eviction would delete its result too.)
         if [ '${{ steps.conan-cache-restore.outputs.cache-hit }}' != 'true' ]; then
           flag_sections() { awk '/^\[/{on=0} /^\[(conf|buildenv)\]/{on=1} on' "$1"; }
-          SNAPSHOT=~/.conan/data/.profile-snapshot
+          SNAPSHOT=~/.conan2/p/.profile-snapshot
           if [ ! -f $SNAPSHOT ] || ! diff <(flag_sections conan_profile) <(flag_sections $SNAPSHOT); then
             echo 'Restored cache (if any) lacks a flag-match guarantee; evicting its packages (they will rebuild).'
-            conan remove --force '*' 2> /dev/null || true
+            conan remove '*' -c 2> /dev/null || true
           fi
         fi
-        # Next 3 lines: Must do same as flow's main.yml; see that code.
-        # TODO: See the TODO there which applies to these lines.
-        NON_REMOTE_BOOST_VER=1.87
-        conan export ./flow/conan/boost/$NON_REMOTE_BOOST_VER boost/$NON_REMOTE_BOOST_VER.0@
-        FLOW_VERSION=`cat flow/VERSION`
-        conan editable add flow flow/$FLOW_VERSION
+        conan editable add flow
         # At least `configure` mini-programs are built with our build-settings, so $BUILT_CMD_PREFIX is required.
-        $BUILT_CMD_PREFIX \
-          conan install . \
-          --profile:build conan_profile --profile:host conan_profile --build missing || FAILED=yep
+        $BUILT_CMD_PREFIX conan install . -pr:a ./conan_profile --build=missing || FAILED=yep
         # Dep build failure is easy to diagnose from stdout/err, unless it happens during a `configure`;
         # then it'll often print something insane like "checking size of void *... 0" and suggest looking at
         # config.log... which will usually reveal the true problem, like a seg-fault or TSAN-triggered problem
@@ -944,7 +935,7 @@ jobs:
         # and put them where later the log artifact tarball will be sourced; recreate the same dir structure as
         # in the Conan dep build area, but include only the `config.log` files.  Note: This is probably only truly
         # useful if indeed the above command fails; but can't hurt to include it regardless.
-        SRC=/home/runner/.conan/data
+        SRC=~/.conan2/p
         DST=${{ env.install-dir }}/bin/logs/dep_build/conan-data
         find $SRC -name config.log | while read -r config_log; do
           # Remove the $SRC part of the path to get a relative path.
@@ -957,10 +948,10 @@ jobs:
         # Prune the source/build trees, which Conan retains after building from source; only the
         # built packages and recipes are needed by this (or later) runs.  Keeps cache size down in next step;
         # cache is LRU-based but limited enough to matter in practice as of this writing.
-        conan remove '*' --builds --src --force
+        conan cache clean '*' --source --build
         if [ "$FAILED" != yep ]; then
           # Record the flags this cache's contents were built under, for the flag-snapshot guard (see above).
-          cp conan_profile ~/.conan/data/.profile-snapshot
+          cp conan_profile ~/.conan2/p/.profile-snapshot
         fi
         [ "$FAILED" != yep ]
 
@@ -972,22 +963,24 @@ jobs:
           && (steps.conan-cache-restore.outputs.cache-hit != 'true')
       uses: actions/cache/save@v6
       with:
-        path: ~/.conan/data
+        path: ~/.conan2/p
         key: ${{ steps.conan-cache-restore.outputs.cache-primary-key }}
 
     - name: Build libraries and demos/tests with Conan
       if: env.cell-selected == 'true'
       run: |
         # Build libraries and demos/tests with Conan.
+        source ${{ github.workspace }}/conan_virtual_env/bin/activate
         ${{ env.setup-run-env }}
         # At least capnp compiler binary is built with our build-settings, so $BUILT_CMD_PREFIX is required.
-        $BUILT_CMD_PREFIX conan build .
+        # (`conan build` recomputes the dep-graph and hence needs the profile, just like `conan install`.)
+        $BUILT_CMD_PREFIX conan build . -pr:a ./conan_profile
 
-    - name: Install built targets with Makefile
+    - name: Install built targets with CMake
       if: env.cell-selected == 'true'
       run: |
-        make install \
-          --directory ${{ env.build-dir }} DESTDIR=${{ env.install-root-dir }}
+        # Install built targets with CMake.
+        cmake --install ${{ env.build-dir }} --prefix ${{ env.install-dir }}
         # Save runner space: blow away build dir after install.
         rm -rf ${{ env.build-dir }}
 
@@ -1506,15 +1499,23 @@ jobs:
     - name: Install Flow-IPC dependencies (like Graphviz) with apt-get
       run: sudo apt-get install -y graphviz
 
-    - name: Install the latest version of Conan which is less than 2
-      run: pip install 'conan<2'
-
     - name: Checkout `ipc` repository and submodules (like `flow`)
       uses: actions/checkout@v6
       with:
         submodules: true
         # Avoids the duplicate-authorization-error in (not-frequently-invoked) doc_check_in step later down.
         persist-credentials: false
+
+    - name: Prepare Python virtual environment containing Conan
+      run: |
+        # Prepare Python virtual environment containing Conan.
+        # (See comment in the build-and-test job's analogous step.)
+        pip install virtualenv
+        virtualenv ${{ github.workspace }}/conan_virtual_env
+        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        pip install pip-tools
+        pip-compile ${{ github.workspace }}/.github/workflows/requirements.in
+        pip-sync ${{ github.workspace }}/.github/workflows/requirements.txt
 
     # In our process (and this is typical, though it is also possible to create tag without release) we
     # hit Publish on a new Release in GitHub; and this creates both the Release and tag, by convention both named
@@ -1634,8 +1635,8 @@ jobs:
         CXX = ${{ matrix.compiler.cpp-path }}
 
         [options]
-        ipc:doc = True
-        ipc:build = False
+        ipc/*:doc = True
+        ipc/*:build = False
         EOF
 
     # Cache Conan-built deps (here: mainly Doxygen).  See comments atop the analogous steps in the
@@ -1647,26 +1648,32 @@ jobs:
       id: conan-cache-restore
       uses: actions/cache/restore@v6
       with:
-        path: ~/.conan/data
-        key: conan-data-doc-${{ hashFiles('conan_profile', 'conanfile.py') }}
+        path: ~/.conan2/p
+        key: conan2-data-doc-${{ hashFiles('conan_profile', 'conanfile.py') }}
         restore-keys: |
-          conan-data-doc-
+          conan2-data-doc-
 
     - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
       run: |
-        conan install . --profile:build conan_profile --profile:host conan_profile --build missing
+        # Install Flow-IPC dependencies (like Doxygen) with Conan using the profile.
+        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        conan install . -pr:a ./conan_profile --build=missing
         # (See comment in the build-and-test job's analogous step.)
-        conan remove '*' --builds --src --force
+        conan cache clean '*' --source --build
 
     - name: Save Conan package cache
       if: steps.conan-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v6
       with:
-        path: ~/.conan/data
+        path: ~/.conan2/p
         key: ${{ steps.conan-cache-restore.outputs.cache-primary-key }}
 
     - name: Generate code documentation using Conan and Doxygen
-      run: conan build .
+      run: |
+        # Generate code documentation using Conan and Doxygen.
+        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        # (`conan build` recomputes the dep-graph and hence needs the profile, just like `conan install`.)
+        conan build . -pr:a ./conan_profile
 
     - name: Create documentation tarball (full docs, API-only docs, landing page)
       run: |
