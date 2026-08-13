@@ -17,6 +17,11 @@
 
 name: Flow-IPC pipeline
 
+# TODO: Code reuse somehow versus Flow workflow counterpart file?  Could apply to major parts of this file.
+# The copy/pasting and "see comment in other file" types of comments are a bit unseemly.
+# (Convention meanwhile: for any comment applicable to both files, the full text lives *here*, with the
+# counterpart referring to it; only short comments are simply repeated verbatim there.)
+
 # Discussion on the philosophy behind the workflow (pipeline) below.  The steps themselves should be easy enough to
 # follow, but what's the bigger picture?  Answer: The pipeline below is an algorithm, as coded below, invoked
 # by GitHub on many runners (machines); and the inputs to this algorithm are:
@@ -104,15 +109,6 @@ on:
           If not blank: only jobs whose name contains this substring shall really run (e.g.:
           "clang-15-relwithdebinfo-asan-cxx17" = 1 cell; "asan" = the ASAN cells; "doc" = the doc job).
           Others complete ~instantly with all steps skipped.
-        required: false
-        default: ''
-        type: string
-      # XXX Temporary validation aid; remove (with its 3 consumers below) when the sanitizer-validation
-      # campaign concludes.  Lets 2 parallel runs split the test load of one cell.
-      test-subset:
-        description: >-
-          If 'u-t-only': the transport_test runs no-op.  If 't-t-only': the unit-tests run no-ops.
-          Blank: everything runs.
         required: false
         default: ''
         type: string
@@ -234,13 +230,43 @@ jobs:
     strategy:
       fail-fast: false
 
-      # Please read notes in similar place in Flow's main.yml regarding the matrix's setup, especially
-      # the bulk of it that discusses how the C++ standard setting (17, 20, etc.) is handled.
-      # We omit that large comment here and related comments inline inside the `matrix`.  Same deal as for Flow.
+      # Our basic matrix is compiler-version x build-test-config.  The latter is the usual possibilities namely
+      # Debug, Release, ..., plus a few runtime-sanitizer-oriented variations.  Generally we want to run the entire
+      # cross-product AxB of possibilities; but for various reasons we exclude some specific combinations from the
+      # matrix. So far, then: specify full matrix, specify certain combos to remove from it.
+      #
+      # There is however another variable: the C++ standard to specify.  In actual practice -- as explained in
+      # FlowLikeCodeGenerate.cmake, but we *very* briefly recap -- the min required standard is 17, and it is indeed
+      # *the* standard we use, never taking advantage (via conditional compilation, etc.) of 20-or-higher.  So,
+      # the main matrix shall be built with std=17.  In addition, though, we *allow* C++20 or higher.  In practice,
+      # 99.999% C++17 code shall build equivalently with C++20 (as for C++23, we haven't looked into it as of this
+      # writing); but not 100%, and indeed for business reasons we found it is worthwhile to *test* with C++20 as
+      # well, so as to ensure code will (at least) build (and thus not mess-over C++20 users; it is now 2025 as of
+      # this writing).  However, loosely speaking, we need only hit a few basic setups likeliest to trigger problems
+      # (usually warnings) which we'd then fix in the code.  Long story short then: in addition to the
+      # aforementioned matrix (w/ 17), minus exclusions, we would *add* a few specific configs with std=20.
+      #
+      # Delightfully that's just how GitHub Actions matrix specs work: The matrix, then remove `exclude`s, then
+      # add `include`s.  ...Unfortunately, nope, the `include`s cannot simply refer to earlier-defined things in
+      # the matrix, so for example all the properties of a given compiler (e.g. gcc-13: name, version, c-path,
+      # cpp-path, install) would need to be copy/pasted (stylistically awful/error-prone).  (TODO: Perhaps there's
+      # some way to predefine each compiler's "stuff" in some earlier variable type thing and then just refer to
+      # it -- maybe something with outputs and fromJSON()... I (ygoldfel) was unable to find clean solid
+      # docs/example(s) thereof, but a real Actions+YAML badass could probably figure it out.  Maybe.  OH!  And
+      # YAML anchors/aliases would be *perfect* for this... but Actions guys have somehow not implemented them;
+      # it is a long-standing request [https://github.com/actions/runner/issues/1182#issuecomment-2317953582].)
+      # Hence, for now, we are forced to express these post-exclude-includes as simply more excludes.  E.g.,
+      # instead of saying "for C++20 do just gcc-13" say "do the full matrix but exclude C++20 + gcc-9,10,11."
+      #
+      # So now do all that.
       matrix:
+        # First axis in basic 3D matrix is the 2 possible C++ standards.
+        # For simplicity the Conan-profile-configuring script step simply keys off the `id` instead of our defining
+        # other properties as for the other 2 more complex axes below (compiler, build config).
         cxx-std:
           - id: cxx17
           - id: cxx20
+        # Second axis = the many compilers (gcc multiple versions, clang multiple versions).
         compiler:
           - id: gcc-9
             name: gcc
@@ -295,6 +321,7 @@ jobs:
             c-path: /usr/bin/clang-17
             cpp-path: /usr/bin/clang++-17
             install: True
+        # Last axis are the many build/test configs.
         build-test-cfg:
           - id: debug
             conan-profile-build-type: Debug
@@ -510,11 +537,34 @@ jobs:
             build-test-cfg: { id: relwithdebinfo-tsan }
           - compiler: { id: clang-13 }
             build-test-cfg: { id: relwithdebinfo-tsan }
-          # The rest of these deal with C++20; again please see Flow's main.yml commentary.
-          # TODO: I am sure there's an overarching TODO somewhere around here to the same effect but... to
-          # reiterate... it's unpleasant so much is copy-pasted from one .yml to the other, and even accepting
-          # that it is odd that for some items the real comment is in A, while B says see A; while for others
-          # it is the opposite.  The info is there, and it's not redundant (only the code is), but still.
+          # Now the exclusions from the C++20 sub-matrix.
+          # The basic strategy is noted in the large-ish comment atop the matrix; but specifically release-oriented
+          # builds tend to go down different paths/produce different warnings vs debug-oriented builds -- so we want
+          # to try both; and as for which compilers to use, on one hand we'll definitely want at least 1 of gcc and
+          # clang each, but beyond that just the highest version of each is sufficient.  TODO: Revisit, especially
+          # if users report C++20 problems in other environments, and therefore we will have had to fix them; hence
+          # test coverage should increase.
+          #
+          # So, we essentially want something like:
+          #   include:
+          #   # gcc-<highest> x (2 build-configs).
+          #   - cxx-std: { id: cxx20 }
+          #     compiler: { id: gcc-13 }
+          #     build-test-cfg: { id: debug }
+          #   - cxx-std: { id: cxx20 }
+          #     compiler: { id: gcc-13 }
+          #     build-test-cfg: { id: relwithdebinfo }
+          #   # clang-<highest> x (2 build-configs).
+          #   - cxx-std: { id: cxx20 }
+          #     compiler: { id: clang-17 }
+          #     build-test-cfg: { id: debug }
+          #   - cxx-std: { id: cxx20 }
+          #     compiler: { id: clang-17 }
+          #     build-test-cfg: { id: relwithdebinfo }
+          # Sadly, as mentioned in the large-ish comment atop the matrix, `include` does not let us refer to
+          # earlier-defined things simply by their `id`s.  So we choose to express the inclusions as exclusions
+          # instead:
+          #   - First, simply exclude all gccs but gcc-13 and all clangs but clang-17.
           - cxx-std: { id: cxx20 }
             compiler: { id: gcc-9 }
           - cxx-std: { id: cxx20 }
@@ -527,6 +577,7 @@ jobs:
             compiler: { id: clang-15 }
           - cxx-std: { id: cxx20 }
             compiler: { id: clang-16 }
+          #   - Second, among the remaining C++20 configs eliminate all but debug and relwithdebinfo ones.
           - cxx-std: { id: cxx20 }
             build-test-cfg: { id: release }
           - cxx-std: { id: cxx20 }
@@ -541,16 +592,17 @@ jobs:
     # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
     runs-on: ubuntu-22.04
 
-    # A healthy job as of this writing (8/2026) takes at most 1.25 hours; meanwhile certain sanitizer failure modes
-    # (TSAN deadlock-detector issues at least) hang a process indefinitely, and the GitHub default job timeout is
-    # 6 hours.  We bound it for reasonabless and visibility of these hangs, particularly during debug/test cycles.
+    # The GitHub default job timeout is 6 hours -- extreme.  Bound it to something reasonable (a healthy job as
+    # of this writing (8/2026) takes at most ~1.25 hours), just in case something hangs.
     timeout-minutes: 120
 
     name: ${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}
 
     env:
-      # Whether this matrix cell shall really run, per the workflow_dispatch job-filter input.  See comments in
-      # Flow workflow counterpart.  We use same techniques.
+      # Whether this matrix cell shall really run, per the workflow_dispatch job-filter input (blank input, or
+      # non-dispatch trigger: all cells run).  Every step below is gated on this; hence a filtered-out cell
+      # completes green in seconds, all steps skipped.  (Why not one job-level `if`?  The `matrix` context is
+      # unavailable there -- but is available here.  The below mirrors this job's `name`.)
       cell-selected: ${{ (github.event.inputs.job-filter || '') == '' || contains(format('{0}-{1}-{2}', matrix.compiler.id, matrix.build-test-cfg.id, matrix.cxx-std.id), github.event.inputs.job-filter) }}
       build-dir: ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-profile-build-type }}
       install-dir: ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local
@@ -603,11 +655,16 @@ jobs:
       # wrong sanitizer reading suppressions from another one => suppression parse error =>
       # none of the demos/tests get anywhere at all.  So set just the right one!
       #
-      # Update: ASAN is somewhat different from the others, as it's really two sanitizers with
-      # separate suppression files -- ASAN (actual safety checks) and LSAN (leak checks).  The "Update" is
-      # adding the LSAN support.  Since it was added to Flow's main.yml first, please see notes in the
-      # similar location in that file.  TODO: Probably should have all *SAN-related comments here or all there,
-      # not most here, some (LSAN) there....
+      # ASAN is somewhat different from the others, as it's really two sanitizers with
+      # separate suppression files -- ASAN (actual safety checks) and LSAN (leak checks).  So far we do *not* need
+      # any suppressed ASAN warnings (ASAN false positives are known to be rare, so that makes sense), but there are
+      # at least a couple minor, intentional mem-leaks, so we *do* need to suppress LSAN warnings at times.
+      # Therefore, until/unless this changes, we will essentially treat LSAN-suppression as *the* suppression for
+      # our ASAN runs, thus only requiring one suppression file type still.  If/when that changes, the below will
+      # need to be made more complicated, so that 2 suppression types per sanitizer are supported as opposed to
+      # just 1.  Until then, it's still simple.  So that's why $ASAN_OPTIONS does not mention suppression, but
+      # $LSAN_OPTIONS does... and it is the suppression file(s) (if any) under various `asan/` dirs in the source
+      # tree(s).
       setup-tests-env: |
         if [ '${{ matrix.build-test-cfg.sanitizer-name }}' = asan ]; then
           export SAN_SUPP=1
@@ -640,6 +697,7 @@ jobs:
           fi
           echo "TSAN_OPTIONS = [$TSAN_OPTIONS]."
         fi
+        # TODO: Add more *SAN here.
         if [ "$SAN_SUPP" != '' ]; then
           echo 'Sanitizer [${{ matrix.build-test-cfg.sanitizer-name }}] suppressions cfg contents:'
           echo '[[[ file--'
@@ -720,7 +778,9 @@ jobs:
       if: env.cell-selected == 'true'
       run: |
         # Prepare Python virtual environment containing Conan.
-        # (See comment in Flow workflow counterpart's analogous step.)
+        # This gets us Conan (plus other Python deps, like PyYAML)
+        # at the versions specified in requirements.in, without touching the runner's global Python setup.
+        # Note: Each subsequent Conan-wrangling step must first source the venv to have `conan` available.
         pip install virtualenv
         virtualenv ${{ github.workspace }}/conan_virtual_env
         source ${{ github.workspace }}/conan_virtual_env/bin/activate
@@ -831,7 +891,6 @@ jobs:
         # heaviest unit_test `.cpp`s per this to-do.  Combined with the below trick (but not without it, notably),
         # 8/2026 GitHub build was OK.  The to-do remains: Ideally split more stuff, so that this can be removed
         # (among other benefits).  transport_test is likely the guy to attack.
-        # XXXrevisit soon, if there's time; or delete this line and leave TODO; whatever seems best at the end.
         if [ '${{ matrix.compiler.high-mem-build }}' != '' ] \
            && [ '${{ matrix.compiler.high-mem-build }}' != 'false' ] \
            && [ '${{ matrix.build-test-cfg.high-mem-build }}' != '' ] \
@@ -888,10 +947,14 @@ jobs:
         echo 'The combined MSAN ignore-list config file follows:'
         cat $${ env.msan-ignore-list-cfg-file }}
 
-    # Cache the Conan-built dependencies (Boost et al): otherwise a fresh runner rebuilds them from source every
-    # run.  See explanatory comments atop the analogous steps in Flow workflow counterpart.  We use same
-    # techniques (including the restore/save split, with the save placed right after the dep-install step, so
-    # even a run whose later steps fail still primes the cache).
+    # Cache the Conan-built dependencies (Boost et al): a fresh runner otherwise rebuilds them from source
+    # every run, which dominates that step's wall clock.  The just-generated conan_profile participates in the
+    # cache key, as it captures everything that determines dep-binary compatibility (compiler, version, cppstd,
+    # build-type, sanitizer); conanfile.py participates, as it names the deps and their versions.  On an exact key
+    # hit the subsequent `conan install` finds every binary present and builds nothing.  On a prefix
+    # (restore-keys) hit -- e.g. after a dep version bump -- it rebuilds only what is missing.  We use the
+    # restore/save split (rather than one `actions/cache` step) with the save placed just after the dep-install
+    # step.  Therefore even a run whose later steps fail still primes the cache for subsequent runs.
     #
     # Caution! The restore-keys fallback below can restore binaries built under *different* compile/link
     # flags than the current profile's -- and Conan cannot detect that (its package-id ignores flags arriving
@@ -1138,8 +1201,6 @@ jobs:
           && (!cancelled())
       run: |
         # Run unit tests.
-        # XXX Temporary; see test-subset input.
-        if [ '${{ github.event.inputs.test-subset }}' = 't-t-only' ]; then echo 'Skipped per test-subset.'; exit 0; fi
         cd ${{ env.install-dir }}/bin
         # Some newline issues with the possible additional args; so need to make a wrapper script
         # and then redirect, as desired, its output.
@@ -1256,8 +1317,6 @@ jobs:
       run: |
         # Prepare run script for [transport_test - Scripted mode] variations below.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_sc.sh
-        # XXX Temporary; see test-subset input.
-        if [ '${{ github.event.inputs.test-subset }}' = 'u-t-only' ]; then echo 'Skipped per test-subset.'; exit 0; fi
         echo "Log level: [$1]."
         cd ${{ env.install-dir }}/bin/transport_test
         OUT_DIR_NAME=log_level_$1
@@ -1323,8 +1382,6 @@ jobs:
         # Prepare run script for [transport_test - Exercise mode] variations below.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_transport_test_ex.sh
         # Script created by pipeline during job.
-        # XXX Temporary; see test-subset input.
-        if [ '${{ github.event.inputs.test-subset }}' = 'u-t-only' ]; then echo 'Skipped per test-subset.'; exit 0; fi
         echo "Log level: [$1]."
         echo "Exercise sub-mode: [$2]."
         echo "Sub-mode snippet (none or '-shm-?'): [$3]."
@@ -1417,6 +1474,7 @@ jobs:
         (env.cell-selected == 'true')
           && (!cancelled()) && (matrix.build-test-cfg.sanitizer-name == 'ubsan')
       run: |
+        # Check test/demo logs for non-fatal sanitizer error(s).
         cd ${{ env.install-dir }}/bin/logs
         # grep returns 0 if 1+ found, 1 if none found, 2+ on error.  So check results explicitly instead of -e.
         # Namely, for us, the only OK result is an empty stdout and empty stderr.
@@ -1639,8 +1697,8 @@ jobs:
         ipc/*:build = False
         EOF
 
-    # Cache Conan-built deps (here: mainly Doxygen).  See comments atop the analogous steps in the
-    # build-and-test job; and the longer explanation in Flow workflow counterpart.
+    # Cache Conan-built deps (here: mainly Doxygen).  See longer explanation atop the analogous steps in the
+    # build-and-test job.
     # (The build-and-test job's flag-snapshot guard is deliberately not replicated here: this profile
     # carries no meaningful compile/link flags, and the deps are stand-alone tools, so the stale-flags
     # hazard the guard addresses cannot meaningfully arise.)
