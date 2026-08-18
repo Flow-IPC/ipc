@@ -152,12 +152,29 @@ set(DOC_INPUT
     ${FLOW_LIKE_META_ROOT_ipc_shm_arena_lend}/src/ipc
     src/doc/manual)
 
-# For now I (ygoldfel) am excluding echan's SHM-jemalloc stuff which *has* been integrated into Flow-IPC
-# at large; I just have not gone over it and polished and eliminated Doxy-warnings and what-not.  echan may have
-# partially; anyway it'll be done soon.
-# TODO: That.
+# Unlike the rest of Flow-IPC, here we exclude certain specific source files from being Doxygen-enabled.
+# Their doc headers, as well as some other stylistic aspects, (1) don't fully follow the coding guide (close though)
+# and (2) have not been run through Doxygen (hence warnings are likely).
+# TODO: Resolve both (1) and (2) and un-exclude these.  To be clear (1) is the core problem here; by getting
+# these relatively small modules into full synergy with the rest of the code, stylistically, we'll get
+# the Doxygen aspect to be shiny too.  At that point (2) will just pick up any little accidental Doxygen-markup
+# problems; and done.  Note also that this list was originally much heftier; so we are getting there.
+#
+# Special case: jemalloc_pages.*: It is a port of jemalloc-internal pages.c and, if it remains
+# essentially that thing, will stay excluded here indefinitely.  There might be a to-do in there to chisel it down
+# to where it's essentially just our code; if we do that, then that stuff won't be a special case anymore either.
+# Again, though, the Doxygen-exclusion per se is not the driver of such work; more of a corollary.
 set(DOC_EXCLUDE_PATTERNS
-    */ipc/session/standalone/shm/arena_lend/* */ipc/shm/arena_lend/*)
+    */ipc/shm/arena_lend/borrower_shm_pool_collection.*
+    */ipc/shm/arena_lend/divisible_shm_pool.*
+    # (The base class; jemalloc/memory_manager.* is up to standard and scanned.)
+    */ipc/shm/arena_lend/memory_manager.*
+    */ipc/shm/arena_lend/owner_shm_pool_collection.*
+    */ipc/shm/arena_lend/owner_shm_pool_listener.hpp
+    */ipc/shm/arena_lend/shm_pool.*
+    */ipc/shm/arena_lend/shm_pool_collection.*
+    */ipc/shm/arena_lend/shm_pool_offset_ptr.hpp
+    */ipc/shm/arena_lend/jemalloc/jemalloc_pages.*)
 
 # Lastly the guided Manual has some images which live here.
 set(DOC_IMAGE_PATH src/doc/manual/assets/img)
