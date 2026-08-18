@@ -127,9 +127,17 @@ int main(int argc, char const * const * argv)
     FLOW_LOG_WARNING("Caught exception: [" << exc.what() << "].");
     FLOW_LOG_WARNING("(Perhaps you did not execute session-server executable in parallel, or "
                      "you executed one or both of us oddly?)");
+#if JEM_ELSE_CLASSIC
+    // Match the startup set_logger(): mute the SHM-jemalloc singletons before our Logger dies with main().
+    ipc::shm::arena_lend::set_logger(nullptr);
+#endif
     return 1;
   }
 
+#if JEM_ELSE_CLASSIC
+  // As above: mute the SHM-jemalloc singletons before our Logger dies with main().
+  ipc::shm::arena_lend::set_logger(nullptr);
+#endif
   return 0;
 } // main()
 

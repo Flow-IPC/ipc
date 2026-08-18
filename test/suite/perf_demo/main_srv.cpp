@@ -220,9 +220,17 @@ int main(int argc, char const * const * argv)
   catch (const exception& exc)
   {
     FLOW_LOG_WARNING("Caught exception: [" << exc.what() << "].");
+#if JEM_ELSE_CLASSIC
+    // Match the startup set_logger(): mute the SHM-jemalloc singletons before our Logger dies with main().
+    ipc::shm::arena_lend::set_logger(nullptr);
+#endif
     return 1;
   }
 
+#if JEM_ELSE_CLASSIC
+  // As above: mute the SHM-jemalloc singletons before our Logger dies with main().
+  ipc::shm::arena_lend::set_logger(nullptr);
+#endif
   return 0;
 } // main()
 
