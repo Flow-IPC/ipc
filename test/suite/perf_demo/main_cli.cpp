@@ -62,9 +62,7 @@ int main(int argc, char const * const * argv)
   FLOW_LOG_SET_CONTEXT(&(*std_logger), Flow_log_component::S_UNCAT);
 
 #if JEM_ELSE_CLASSIC
-  ipc::session::shm::arena_lend::Borrower_shm_pool_collection_repository
-    <ipc::shm::arena_lend::jemalloc::Ipc_arena>::get_instance()
-      .set_logger(&(*log_logger));
+  ipc::shm::arena_lend::set_logger(&(*log_logger));
 #endif
 
   try

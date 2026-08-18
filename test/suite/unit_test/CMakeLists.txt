@@ -122,6 +122,7 @@ set(SRCS
     ${isal_root}/ipc/session/standalone/shm/arena_lend/test/borrower_shm_pool_collection_repository_test.cpp
     ${isal_root}/ipc/shm/arena_lend/detail/test/lend_tracker_pool_test.cpp
     ${isal_root}/ipc/shm/arena_lend/detail/test/shm_pool_offset_ptr_data_test.cpp
+    ${isal_root}/ipc/shm/arena_lend/detail/test/thread_lcl_obj_db_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/shm_pool_offset_ptr_test.cpp
     ${isal_root}/ipc/shm/arena_lend/jemalloc/test/jemalloc_pages_test.cpp
     ${isal_root}/ipc/shm/arena_lend/jemalloc/test/ipc_arena_stats_test.cpp
