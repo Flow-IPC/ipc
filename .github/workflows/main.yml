@@ -339,6 +339,10 @@ jobs:
             conan-profile-build-type: Release
             conan-profile-jemalloc-build-type: Release
             # Leaving no-lto at default (false); full-on-optimized-no-debug is the quentessential LTO use case.
+            # Experiment (this for-me branch only): census of 0-used-as-null-pointer, for the 0 -> nullptr
+            # style sweep (Flow-IPC/ipc#150).  Kept as warnings (not errors) to get the full list in one build.
+            conan-profile-custom-conf: |
+              tools.build:cxxflags = ["-Wzero-as-null-pointer-constant", "-Wno-error=zero-as-null-pointer-constant"]
           - id: relwithdebinfo
             conan-profile-build-type: RelWithDebInfo
             conan-profile-jemalloc-build-type: Release
