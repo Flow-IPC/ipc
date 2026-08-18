@@ -279,7 +279,7 @@ All transport APIs at this layer, as well the structured layer (see below), have
 >
 > // In this case we create a Channel with 2 bidirectional pipes, from 2 `Posix_mq_handle`s like out_q above; and
 > // an already-opened Native_socket_stream.
-> Mqs_socket_stream_channel<false, Posix_mq_handle> // false => async-I/O API; true => sync_io-pattern API.
+> Mqs_socket_stream_channel<false, Posix_mq_handle> // false => async-I/O API; true => `sync_io`-pattern API.
 >   chan{nullptr, "two_pipe_chan_nickname", std::move(out_q), std::move(in_q), std::move(sock)};
 > // Use the blobs pipe to send:
 > chan.send_blob(util::Blob_const{some_byte_vector.data(), some_byte_vector.size()});
