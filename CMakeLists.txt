@@ -152,12 +152,21 @@ set(DOC_INPUT
     ${FLOW_LIKE_META_ROOT_ipc_shm_arena_lend}/src/ipc
     src/doc/manual)
 
-# For now I (ygoldfel) am excluding echan's SHM-jemalloc stuff which *has* been integrated into Flow-IPC
-# at large; I just have not gone over it and polished and eliminated Doxy-warnings and what-not.  echan may have
-# partially; anyway it'll be done soon.
-# TODO: That.
+# ipc_shm_arena_lend is partially Doxygen-enabled: the files listed below -- whose doc headers predate
+# the coding-guide standard -- remain excluded; the plan is to bring each up to standard over time, at which
+# point it simply leaves this list.  jemalloc_pages.* is the exception: it is a port of jemalloc-internal
+# pages.c and stays excluded indefinitely.
 set(DOC_EXCLUDE_PATTERNS
-    */ipc/session/standalone/shm/arena_lend/* */ipc/shm/arena_lend/*)
+    */ipc/shm/arena_lend/borrower_shm_pool_collection.*
+    */ipc/shm/arena_lend/divisible_shm_pool.*
+    # (The base class; jemalloc/memory_manager.* is up to standard and scanned.)
+    */ipc/shm/arena_lend/memory_manager.*
+    */ipc/shm/arena_lend/owner_shm_pool_collection.*
+    */ipc/shm/arena_lend/owner_shm_pool_listener.hpp
+    */ipc/shm/arena_lend/shm_pool.*
+    */ipc/shm/arena_lend/shm_pool_collection.*
+    */ipc/shm/arena_lend/shm_pool_offset_ptr.hpp
+    */ipc/shm/arena_lend/jemalloc/jemalloc_pages.*)
 
 # Lastly the guided Manual has some images which live here.
 set(DOC_IMAGE_PATH src/doc/manual/assets/img)
