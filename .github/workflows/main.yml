@@ -1298,7 +1298,8 @@ jobs:
 
     - name: Prepare run script for [rpc_demo] variations below
       if: |
-        !cancelled()
+        (env.cell-selected == 'true')
+          && (!cancelled())
       run: |
         # Prepare run script for [rpc_demo] variations below.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_rpc_demo.sh
@@ -1333,12 +1334,14 @@ jobs:
 
     - name: Run integration test [rpc_demo - SHM-classic mode]
       if: |
-        !cancelled()
+        (env.cell-selected == 'true')
+          && (!cancelled())
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_rpc_demo.sh shm_classic
 
     - name: Run integration test [rpc_demo - SHM-jemalloc mode]
       if: |
-        !cancelled()
+        (env.cell-selected == 'true')
+          && (!cancelled())
       run: /usr/bin/bash -e ${{ env.install-dir }}/bin/run_rpc_demo.sh shm_jemalloc
 
     # For tests below where on failure it can be very helpful to look at higher-verbosity logs,
