@@ -97,7 +97,11 @@ set(SRCS
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_common_util.cpp
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_file_util.cpp
     ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
+    ${core_root}/ipc/util/test/native_handle_test.cpp
     ${core_root}/ipc/transport/test/blob_transport_stats_test.cpp
+    ${core_root}/ipc/transport/test/native_socket_stream_acceptor_test.cpp
+    ${core_root}/ipc/transport/test/persistent_mq_handle_test_bipc.cpp
+    ${core_root}/ipc/transport/test/persistent_mq_handle_test_posix.cpp
     ${shm_root}/ipc/shm/classic/test/pool_arena_stats_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test_mq_bipc.cpp
