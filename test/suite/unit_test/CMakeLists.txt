@@ -102,6 +102,7 @@ set(SRCS
     ${core_root}/ipc/transport/test/native_socket_stream_acceptor_test.cpp
     ${core_root}/ipc/transport/test/persistent_mq_handle_test_bipc.cpp
     ${core_root}/ipc/transport/test/persistent_mq_handle_test_posix.cpp
+    ${core_root}/ipc/transport/test/protocol_negotiator_test.cpp
     ${shm_root}/ipc/shm/classic/test/pool_arena_stats_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test_mq_bipc.cpp
@@ -109,11 +110,13 @@ set(SRCS
     ${struc_root}/ipc/transport/struc/test/channel_stats_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_stats_test_shm_classic.cpp
     ${struc_root}/ipc/transport/struc/test/channel_stats_test_shm_jemalloc.cpp
+    ${struc_root}/ipc/transport/struc/test/heap_serializer_test.cpp
     ${struc_root}/ipc/transport/struc/test/msg_test.cpp
     ${struc_root}/ipc/transport/struc/test/serializer_stats_test.cpp
     ${struc_root}/ipc/transport/struc/test/serializer_stats_test_shm_classic.cpp
     ${struc_root}/ipc/transport/struc/test/serializer_stats_test_shm_jemalloc.cpp
     ${session_root}/ipc/session/test/session_connect_test.cpp
+    ${session_root}/ipc/session/test/session_graveyard_test.cpp
     ${session_root}/ipc/session/test/session_connect_test_shm_classic.cpp
     ${session_root}/ipc/session/test/session_connect_test_shm_jemalloc.cpp
     ${session_root}/ipc/session/test/session_persistent_cleanup_test.cpp
