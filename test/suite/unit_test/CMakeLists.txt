@@ -100,6 +100,7 @@ set(SRCS
     ${core_root}/ipc/util/test/native_handle_test.cpp
     ${core_root}/ipc/transport/test/blob_transport_stats_test.cpp
     ${core_root}/ipc/transport/test/native_socket_stream_acceptor_test.cpp
+    ${core_root}/ipc/transport/test/native_socket_stream_test.cpp
     ${core_root}/ipc/transport/test/persistent_mq_handle_test_bipc.cpp
     ${core_root}/ipc/transport/test/persistent_mq_handle_test_posix.cpp
     ${core_root}/ipc/transport/test/protocol_negotiator_test.cpp
