@@ -240,6 +240,28 @@ public:
     return kj::READY_NOW;
   }
 
+  // We (Flow-IPC guys) added this part too!  See main_cli.cpp for context.
+  kj::Promise<void> streamList(StreamListContext context) override {
+    // (Streaming calls to a given object are delivered one at a time, in order; so no synchronization needed.)
+    for (const auto val : context.getParams().getChunk()) {
+      m_stream_sum += val;
+    }
+    m_stream_count += context.getParams().getChunk().size();
+    return kj::READY_NOW;
+  }
+
+  kj::Promise<void> streamListDone(StreamListDoneContext context) override {
+    auto results = context.getResults();
+    results.setCount(m_stream_count);
+    results.setSum(m_stream_sum);
+    m_stream_count = m_stream_sum = 0;
+    return kj::READY_NOW;
+  }
+
+private:
+  // Accumulator for streamList() -> streamListDone().
+  uint64_t m_stream_count = 0;
+  uint64_t m_stream_sum = 0;
 };
 
 void calc_test([[maybe_unused]] flow::log::Logger* logger_ptr, flow::log::Logger* std_logger_ptr)
@@ -266,11 +288,10 @@ void calc_test([[maybe_unused]] flow::log::Logger* logger_ptr, flow::log::Logger
   kj::NEVER_DONE.wait(wait_scope);
 } // calc_test()
 
-
-/* Addendum: The source code in this file is based on a small portion of Cap 'n Proto,
+/* Addendum: The source code in this file is based on a small portion of Cap'n Proto,
  * version 1.0.2, namely samples/calculator-server.c++.  We have made key additions,
  * but largely this remains the same.  The code here is a sample application that
- * uses some features of Cap 'n Proto as well as our project here, Flow-IPC.
+ * uses some features of Cap'n Proto as well as our project here, Flow-IPC.
  * The license header from the Cap'n Proto source file follows. */
 
 // Copyright (c) 2013-2014 Sandstorm Development Group, Inc. and contributors

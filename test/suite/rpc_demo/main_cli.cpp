@@ -28,6 +28,11 @@
 using Session = Client_session;
 void calc_test(flow::log::Logger* logger_ptr, flow::log::Logger* std_logger_ptr, bool no_zero_copy);
 
+// See the `-> stream` test case in calc_test().
+constexpr size_t STREAM_N_CHUNKS = 128;
+constexpr size_t STREAM_CHUNK_SZ = 64 * 1024; // Elements (UInt64) per chunk: 512Ki bytes -- about one default window.
+kj::Promise<void> stream_chunks(rpc_demo::schema::Calculator::Client calculator, size_t chunk_idx);
+
 /* ./$0 <log output file> <verbosity: none|warning|info|trace|data> --no-zc
  * Be sure to execute the server program also.
  * All args optional.  --no-zc will cause capnp-RPC to be performed in vanilla mode (no zero-copy).
@@ -128,7 +133,7 @@ void calc_test([[maybe_unused]] flow::log::Logger* logger_ptr, flow::log::Logger
   Calculator::Client calculator = client.get_main<Calculator>();
   auto& waitScope = *(client.get_wait_scope());
 
-  Timer tmr{nullptr, "benchiez", Timer::real_clock_types(), 7};
+  Timer tmr{nullptr, "benchiez", Timer::real_clock_types(), 8};
 
   // Keep an eye on `waitScope`.  Whenever you see it used is a place where we
   // stop and wait for the server to respond.  If a line of code does not use
@@ -488,13 +493,68 @@ void calc_test([[maybe_unused]] flow::log::Logger* logger_ptr, flow::log::Logger
     FLOW_LOG_INFO("PASS");
   }
 
+  // This next part, we also added: the `-> stream` feature.
+
+  {
+    /* A streaming method's send() returns a Promise<void> that resolves not when the call returns but when
+     * the RPC system says the next chunk may be sent: it lets a bounded number of chunks (by total size, versus
+     * a flow-control window) be in-flight and delays the promise otherwise.  (Here in-flight means: allocated in
+     * SHM but not yet consumed server-side.)  So we send chunks in a promise chain (see stream_chunks()), awaiting
+     * each send() before the next.  Then the ordinary call streamListDone(), whose response implies all preceding
+     * chunks have been processed, yields the accumulated result to verify.
+     *
+     * The window is a Session_vat_network knob; we merely report it.  (In --no-zc mode the vanilla
+     * TwoPartyVatNetwork window computation applies instead; the knob has no effect.) */
+
+    FLOW_LOG_INFO("Streaming [" << STREAM_N_CHUNKS << "] chunks x [" << STREAM_CHUNK_SZ << "] elements "
+                  "via `-> stream` method; "
+                  "flow-control window (irrelevant if --no-zc) = "
+                  "[" << client.rpc_context()->vat_network()->streaming_flow_window_ki() << "Ki]....");
+
+    stream_chunks(calculator, 0).wait(waitScope);
+    auto response = calculator.streamListDoneRequest().send().wait(waitScope);
+
+    constexpr uint64_t N = STREAM_N_CHUNKS * STREAM_CHUNK_SZ;
+    KJ_ASSERT(response.getCount() == N);
+    KJ_ASSERT(response.getSum() == (N * (N - 1)) / 2); // We sent 0, 1, ..., N-1.
+
+    tmr.checkpoint("stream list");
+
+    FLOW_LOG_INFO("PASS");
+  }
+
   FLOW_LOG_INFO(tmr);
 }
 
-/* Addendum: The source code in this file is based on a small portion of Cap 'n Proto,
+kj::Promise<void> stream_chunks(rpc_demo::schema::Calculator::Client calculator, size_t chunk_idx)
+{
+  if (chunk_idx == STREAM_N_CHUNKS)
+  {
+    return kj::READY_NOW;
+  }
+  // else
+
+  auto request = calculator.streamListRequest();
+  auto chunk = request.initChunk(STREAM_CHUNK_SZ);
+  const auto base = chunk_idx * STREAM_CHUNK_SZ;
+  for (size_t idx = 0; idx != STREAM_CHUNK_SZ; ++idx)
+  {
+    chunk.set(idx, base + idx);
+  }
+
+  // The chunk is on its way as of send(); the promise merely gates the *next* one.
+  return request.send().then([calculator, chunk_idx]() mutable
+  {
+    /* Recursion without recursion (a-la boost.asio `F() { ...; post(F); }`): each continuation runs from the
+     * KJ event loop, once the preceding send()'s promise resolves; the stack depth never exceeds one frame. */
+    return stream_chunks(kj::mv(calculator), chunk_idx + 1);
+  });
+} // stream_chunks()
+
+/* Addendum: The source code in this file is based on a small portion of Cap'n Proto,
  * version 1.0.2, namely samples/calculator-client.c++.  We have made key additions,
  * but largely this remains the same.  The code here is a sample application that
- * uses some features of Cap 'n Proto as well as our project here, Flow-IPC.
+ * uses some features of Cap'n Proto as well as our project here, Flow-IPC.
  * The license header from the Cap'n Proto source file follows. */
 
 // Copyright (c) 2013-2014 Sandstorm Development Group, Inc. and contributors

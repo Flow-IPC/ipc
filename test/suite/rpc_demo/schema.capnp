@@ -130,12 +130,25 @@ interface Calculator {
   # ### Flow-IPC change here ###
   # Added this for a quickie check of zero-copy functionality: This function takes
   # a list and just returns it.  So call it with a big list and....
+
+  streamList @4 (chunk :List(UInt64)) -> stream;
+  # ### Flow-IPC change here ###
+  # Added this for a quickie check of the `-> stream` feature (flow control) over zero-copy transport:
+  # Each call appends `chunk` to a server-side accumulator (# of elements and their sum).
+  # The client sends many such chunks, awaiting each call's promise before the next -- that promise
+  # resolves when the RPC system's flow-control window has room -- and then calls streamListDone().
+
+  streamListDone @5 () -> (count :UInt64, sum :UInt64);
+  # ### Flow-IPC change here ###
+  # Returns the accumulator filled by preceding streamList() calls; and resets it.
+  # (Being an ordinary call, its response also means every preceding streamList() has been fully processed;
+  # and any error from those would surface here.)
 }
 
-# Addendum: The source code in this file is based on a small portion of Cap 'n Proto,
+# Addendum: The source code in this file is based on a small portion of Cap'n Proto,
 # version 1.0.2, namely samples/calculator.capnp.  We have made small additions,
 # but largely this remains the same.  The code here is a sample application that
-# uses some features of Cap 'n Proto as well as our project here, Flow-IPC.
+# uses some features of Cap'n Proto as well as our project here, Flow-IPC.
 # The license header from the Cap'n Proto source file follows.
 
 # Copyright (c) 2013-2014 Sandstorm Development Group, Inc. and contributors
