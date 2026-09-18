@@ -99,15 +99,18 @@ set(SRCS
     ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
     ${core_root}/ipc/util/test/native_handle_test.cpp
     ${core_root}/ipc/transport/test/blob_transport_stats_test.cpp
+    ${core_root}/ipc/transport/test/channel_test.cpp
     ${core_root}/ipc/transport/test/native_socket_stream_acceptor_test.cpp
     ${core_root}/ipc/transport/test/native_socket_stream_test.cpp
     ${core_root}/ipc/transport/test/persistent_mq_handle_test_bipc.cpp
     ${core_root}/ipc/transport/test/persistent_mq_handle_test_posix.cpp
     ${core_root}/ipc/transport/test/protocol_negotiator_test.cpp
     ${shm_root}/ipc/shm/classic/test/pool_arena_stats_test.cpp
+    ${shm_root}/ipc/transport/struc/shm/rpc/test/rpc_stream_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test_mq_bipc.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test_mq_posix.cpp
+    ${struc_root}/ipc/transport/struc/test/channel_log_in_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_stats_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_stats_test_shm_classic.cpp
     ${struc_root}/ipc/transport/struc/test/channel_stats_test_shm_jemalloc.cpp
@@ -150,12 +153,14 @@ set(SRCS
     ${isal_root}/ipc/shm/arena_lend/test/test_shm_pool_collection.cpp
     ${isal_root}/ipc/shm/test/lend_borrow_test.cpp
     test_main.cpp)
-set(CAPNP_SCHEMA_GROUPS isal struc)
+set(CAPNP_SCHEMA_GROUPS isal struc shm)
 set(CAPNP_SCHEMAS_isal
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_message.capnp
     ${isal_root}/ipc/session/standalone/shm/arena_lend/jemalloc/test/test_session_metadata.capnp)
 set(CAPNP_SCHEMAS_struc
     ${struc_root}/ipc/transport/struc/test/test_schema.capnp)
+set(CAPNP_SCHEMAS_shm
+    ${shm_root}/ipc/transport/struc/shm/rpc/test/rpc_test_schema.capnp)
 handle_binary(libipc_unit_test)
 
 set(SRCS

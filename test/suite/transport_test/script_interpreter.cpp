@@ -1600,7 +1600,7 @@ void Script_interpreter::cmd_chan_bundle_recv_batch()
         {
           auto hndl = batch->result_payload_hndl(idx);
           const auto exp_hndl_or_not = exps[idx].m_exp_hndl_or_not;
-          if ((!hndl.null()) != exp_hndl_or_not)if (idx < exps.size())
+          if ((!hndl.null()) != exp_hndl_or_not)
           {
             failed(false, "Op returned success (as expected), with this slot's expected meta-blob contents (if any), "
                             "but slot's native handle was received but not expected, or vice versa.");

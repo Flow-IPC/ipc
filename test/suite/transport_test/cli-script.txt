@@ -131,6 +131,11 @@ CHAN_BUNDLE_POSIX_SEND 0 1 20202 0
 CHAN_BUNDLE_POSIX_SEND 0 -1 30303 0
 CHAN_BUNDLE_POSIX_RECV_BLOB 0 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 15 ms
 CHAN_BUNDLE_POSIX_RECV 0 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 0 15 ms
+# Having received graceful-close on both pipes: our out-pipes still work, including our own graceful-close.
+# (The socket pipe in particular must not treat the incoming graceful-close as a socket-hosing error.)
+CHAN_BUNDLE_POSIX_SEND 0 -1 88 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 0 99 0
+CHAN_BUNDLE_POSIX_SEND_END 0 0 0 50 ms
 
 # Now bipc instead of POSIX.
 
@@ -146,6 +151,9 @@ CHAN_BUNDLE_BIPC_SEND 0 1 20202 0
 CHAN_BUNDLE_BIPC_SEND 0 -1 30303 0
 CHAN_BUNDLE_BIPC_RECV_BLOB 0 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 15 ms
 CHAN_BUNDLE_BIPC_RECV 0 8192 RECEIVES_FINISHED_CANNOT_RECEIVE 0 0 15 ms
+CHAN_BUNDLE_BIPC_SEND 0 -1 88 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 0 99 0
+CHAN_BUNDLE_BIPC_SEND_END 0 0 0 50 ms
 
 # TODO: Moar....
 
@@ -378,6 +386,15 @@ SLEEP 3 s
 CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 1 0 0 0 1 347 100 ms
 CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 1 0 0 0 1 348 1100 ms
 
+# Graceful-close received via batch-receive (any auto-pings ahead of it get discarded as usual); then, as in the
+# non-batch section earlier, our out-pipes still work, including our own graceful-close.  Chan 1 is healthy in both
+# directions at this point, unlike chan 0 whose socket in-pipe (on srv side) is hosed by the ...EXCEEDS... test above.
+CHAN_BUNDLE_POSIX_RECV_BATCH 1 0 0 RECEIVES_FINISHED_CANNOT_RECEIVE 0 2 s
+CHAN_BUNDLE_POSIX_RECV_BLOB_BATCH 1 0 0 RECEIVES_FINISHED_CANNOT_RECEIVE 0 2 s
+CHAN_BUNDLE_POSIX_SEND 1 -1 88 0
+CHAN_BUNDLE_POSIX_SEND_BLOB 1 99 0
+CHAN_BUNDLE_POSIX_SEND_END 1 0 0 50 ms
+
 RESET 1 s 1
 # Now simply repeat all of the above for a bipc-MQ-containing channel.  The socket pipe will be the same,
 # so those parts will be redundant, but so what?
@@ -429,6 +446,11 @@ CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 1 0 0 0 1 346 600 ms
 SLEEP 3 s
 CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 1 0 0 0 1 347 100 ms
 CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 1 0 0 0 1 348 1100 ms
+CHAN_BUNDLE_BIPC_RECV_BATCH 1 0 0 RECEIVES_FINISHED_CANNOT_RECEIVE 0 2 s
+CHAN_BUNDLE_BIPC_RECV_BLOB_BATCH 1 0 0 RECEIVES_FINISHED_CANNOT_RECEIVE 0 2 s
+CHAN_BUNDLE_BIPC_SEND 1 -1 88 0
+CHAN_BUNDLE_BIPC_SEND_BLOB 1 99 0
+CHAN_BUNDLE_BIPC_SEND_END 1 0 0 50 ms
 
 # Lastly, clean up methodically (letting Script_interpreter dtor run would also be fine).
 RESET 1 s 0
