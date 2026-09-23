@@ -107,7 +107,8 @@ on:
       job-filter:
         description: >-
           If not blank: only jobs whose name contains this substring shall really run (e.g.:
-          "clang-15-relwithdebinfo-asan-cxx17" = 1 cell; "asan" = the ASAN cells; "doc" = the doc job).
+          "clang-15-relwithdebinfo-asan-cxx17" = 1 cell; "asan" = the ASAN cells; "deps-newest" = the
+          newest-dependency-versions cells; "doc" = the doc job).
           Others complete ~instantly with all steps skipped.
         required: false
         default: ''
@@ -257,6 +258,41 @@ jobs:
       # it is a long-standing request [https://github.com/actions/runner/issues/1182#issuecomment-2317953582].)
       # Hence, for now, we are forced to express these post-exclude-includes as simply more excludes.  E.g.,
       # instead of saying "for C++20 do just gcc-13" say "do the full matrix but exclude C++20 + gcc-9,10,11."
+      #
+      # There is one more axis: dependency versions (`deps`).  Our key dependencies
+      #   - Boost,
+      #   - Cap'n Proto (capnp),
+      #   - jemalloc,
+      # are each specified, in the conanfile.py of Flow and of Flow-IPC, as a specific version.  Those
+      # versions are (deliberately) also the *minimum* versions we support, as declared in the CMake scripts; and
+      # the bulk of the matrix tests exactly those versions (`deps: floor`).  That proves we require nothing newer
+      # than we claim.  It proves nothing about whether the *newest* upstream releases -- what a fresh build gets
+      # tomorrow -- still work with our code: an upstream removal, deprecation-turned-error, packaging change, or
+      # behavior change would be discovered by a user before we discover it.  Hence a few cells (`deps: newest`)
+      # build and test against the newest versions conan-center offers (as of this writing; bump them when newer
+      # ones appear).  These are an *early-warning* system: a red `newest` cell means investigate; it does not, by
+      # itself, indicate immediate disaster or necessarily even block a release.  (As time goes by without resolving
+      # it, though, it becomes closer to disaster/blocking more releases.  TODO: Some kind of reminder system to
+      # inform maintainer(s).))  To make this work:
+      #   - How, pt1: In `newest` cells only, the Conan profile gains a `[replace_requires]` section swapping each
+      #     conanfile-specified dependency version for the newest one, Conan-dep-graph-wide (so it covers Boost, which
+      #     reaches us via `flow`).  The conanfiles are untouched; their versions remain the canonical versions (per
+      #     pipeline; usually either exactly equal to the super-canonical min-version in CMake script(s), or close if
+      #     some pragmatic reason justifies a small discrepancy between pipeline/build-scripts).  When
+      #     conan-center lacks a recipe for the newest version (e.g.: jemalloc 5.4.0 as of this writing), the
+      #     cell first `conan export`s a vendored copy of the recipe (conan/jemalloc/; see README.txt there) into
+      #     the local Conan cache.  (Alternatively, if it appears pragmatically appropriate, we might go with
+      #     the conan-center-highest-or-least-broken version instead; e.g., as of this writing Boost-1.91 recipe
+      #     has a bug w/r/t boost_regex exclusion.)
+      #   - How, pt2: `newest` is confined (via `exclude`s below) to gcc-13 and clang-17 (the newest of each), to debug
+      #     and relwithdebinfo, and to C++17: 4 cells.  Thus each `newest` cell varies exactly one thing versus its
+      #     `floor` twin (dependency versions), while each C++20 cell varies exactly one other thing (the language
+      #     standard); a red cell in either sub-matrix has ~one suspect.  (C++20 + `newest` is deliberately not
+      #     covered: least likely to fail uniquely; small `exclude` edit below if we change our minds on that.)
+      #     Sanitizers are not part of `newest` either: they bring their own rabbit holes, and the `floor` cells carry
+      #     the sanitizer load already with plenty of coverage and variation.
+      #   - Cell naming: `newest` cells get the suffix `-deps-newest` (so `job-filter` can target them); `floor`
+      #     cells' names just lack this suffix.
       #
       # So now do all that.
       matrix:
@@ -463,6 +499,27 @@ jobs:
             # While MSAN might work with LTO, I do not want the aggravation/entropy.  Turn it off.
             # Plus inheriting from regular RelWithDebInfo anyway.
             no-lto: True
+        # 4th axis: dependency versions.  See the large-ish comment atop the matrix.  `newest` versions = the newest
+        # available at conan-center as of this writing (jemalloc: the newest release, via the vendored recipe --
+        # see conan/jemalloc/README.txt); bump them when newer ones appear.  Boost is Flow's dependency; its version
+        # is specified in flow/conanfile.py; `[replace_requires]` applies Conan-dependency-graph-wide, so it is
+        # swapped here too.
+        #
+        # Boost 1.90.0 rather than the newer 1.91.0 (as of this writing, 9/2026, newest version is actually 1.92 but
+        # not in conan-center at all yet): The conan-center boost/1.91.0 recipe fails its own
+        # library-consistency check with Flow's option set (see flow's workflow counterpart).
+        deps:
+          - id: floor
+            name-suffix: ''
+          - id: newest
+            name-suffix: -deps-newest
+            conan-profile-replace-requires: |
+              boost/*: boost/1.90.0
+              capnproto/*: capnproto/1.5.0
+              jemalloc/*: jemalloc/5.4.0
+            # Versions to `conan export` from vendored recipes in conan/<name>/ before `conan install` (conan-center
+            # lacks them).  Space-separated `<name>/<version>` entries; blank once conan-center catches up.
+            vendored-recipe-exports: jemalloc/5.4.0
 
         # We concentrate on clang sanitizers; they are newer/nicer; also MSAN is clang-only.  So gcc ones excluded.
         # Attention!  Excluding some sanitizer job(s) (with these reasons):
@@ -588,6 +645,33 @@ jobs:
             build-test-cfg: { id: relwithdebinfo-ubsan }
           - cxx-std: { id: cxx20 }
             build-test-cfg: { id: relwithdebinfo-tsan }
+          # Now the exclusions from the `deps: newest` sub-matrix.  Same idea as for the C++20 sub-matrix just
+          # above (and see the large-ish comment atop the matrix): keep only gcc-13 and clang-17, only debug and
+          # relwithdebinfo, only C++17 -- net 4 cells.
+          - deps: { id: newest }
+            compiler: { id: gcc-9 }
+          - deps: { id: newest }
+            compiler: { id: gcc-10 }
+          - deps: { id: newest }
+            compiler: { id: gcc-11 }
+          - deps: { id: newest }
+            compiler: { id: clang-13 }
+          - deps: { id: newest }
+            compiler: { id: clang-15 }
+          - deps: { id: newest }
+            compiler: { id: clang-16 }
+          - deps: { id: newest }
+            build-test-cfg: { id: release }
+          - deps: { id: newest }
+            build-test-cfg: { id: minsizerel }
+          - deps: { id: newest }
+            build-test-cfg: { id: relwithdebinfo-asan }
+          - deps: { id: newest }
+            build-test-cfg: { id: relwithdebinfo-ubsan }
+          - deps: { id: newest }
+            build-test-cfg: { id: relwithdebinfo-tsan }
+          - deps: { id: newest }
+            cxx-std: { id: cxx20 }
 
     # Not using ubuntu-latest, so as to avoid surprises with OS upgrades and such.
     runs-on: ubuntu-22.04
@@ -596,14 +680,14 @@ jobs:
     # of this writing (8/2026) takes at most ~1.25 hours), just in case something hangs.
     timeout-minutes: 120
 
-    name: ${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}
+    name: ${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}${{ matrix.deps.name-suffix }}
 
     env:
       # Whether this matrix cell shall really run, per the workflow_dispatch job-filter input (blank input, or
       # non-dispatch trigger: all cells run).  Every step below is gated on this; hence a filtered-out cell
       # completes green in seconds, all steps skipped.  (Why not one job-level `if`?  The `matrix` context is
       # unavailable there -- but is available here.  The below mirrors this job's `name`.)
-      cell-selected: ${{ (github.event.inputs.job-filter || '') == '' || contains(format('{0}-{1}-{2}', matrix.compiler.id, matrix.build-test-cfg.id, matrix.cxx-std.id), github.event.inputs.job-filter) }}
+      cell-selected: ${{ ((github.event.inputs.job-filter || '') == '') || contains(format('{0}-{1}-{2}{3}', matrix.compiler.id, matrix.build-test-cfg.id, matrix.cxx-std.id, matrix.deps.name-suffix), github.event.inputs.job-filter) }}
       build-dir: ${{ github.workspace }}/build/${{ matrix.build-test-cfg.conan-profile-build-type }}
       install-dir: ${{ github.workspace }}/install/${{ matrix.build-test-cfg.conan-profile-build-type }}/usr/local
       # Target file, as read by sanitized executable being invoked.
@@ -878,6 +962,15 @@ jobs:
         if [ '${{ matrix.build-test-cfg.build-type-cflags-override }}' != '' ]; then
           echo 'ipc/*:build_type_cflags_override = ${{ matrix.build-test-cfg.build-type-cflags-override }}' >> conan_profile
         fi
+        # `deps: newest` cells only: swap the conanfile.py-specified dependency versions for the newest ones.  See the
+        # large-ish comment atop the matrix.  (Appended conditionally: an empty section is best avoided.)
+        if [ '${{ matrix.deps.id }}' = newest ]; then
+          cat <<'EOF' >> conan_profile
+
+        [replace_requires]
+        ${{ matrix.deps.conan-profile-replace-requires }}
+        EOF
+        fi
         # high-mem-build config x high-mem-build compiler: several jumbo test
         # translation units (.cpp files) compiling in parallel, at the default
         # parallelism (= logical cores), can exceed runner RAM; observed as sporadic whole-VM-OOM
@@ -966,9 +1059,9 @@ jobs:
       uses: actions/cache/restore@v6
       with:
         path: ~/.conan2/p
-        key: conan2-data-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}-${{ hashFiles('conan_profile', 'conanfile.py') }}
+        key: conan2-data-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}${{ matrix.deps.name-suffix }}-${{ hashFiles('conan_profile', 'conanfile.py') }}
         restore-keys: |
-          conan2-data-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}-
+          conan2-data-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}${{ matrix.deps.name-suffix }}-
 
     - name: Install Flow-IPC dependencies with Conan using the profile
       if: env.cell-selected == 'true'
@@ -976,6 +1069,12 @@ jobs:
         # Install Flow-IPC dependencies with Conan using the profile.
         source ${{ github.workspace }}/conan_virtual_env/bin/activate
         ${{ env.setup-run-env }}
+        # `deps: newest` cells only (in practice): export any vendored recipes into the local Conan cache, so that
+        # the subsequent `conan install` finds the versions that conan-center lacks.  See the large-ish comment atop
+        # the matrix, and conan/<name>/README.txt.
+        for name_ver in ${{ matrix.deps.vendored-recipe-exports }}; do
+          conan export conan/${name_ver%/*} --version ${name_ver#*/}
+        done
         # Flag-snapshot guard (see conan-cache-restore comment above).  An exact-key restore is
         # trusted by definition: the key hashes the whole profile.  Otherwise -- fallback restore, or none --
         # compare the flag-containing profile sections against the snapshot recorded inside the cache (see end of
@@ -1555,7 +1654,7 @@ jobs:
           && always()
       uses: actions/upload-artifact@v7
       with:
-        name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}
+        name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}${{ matrix.deps.name-suffix }}
         path: ${{ env.install-dir }}/bin/logs.tgz
 
 # TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
