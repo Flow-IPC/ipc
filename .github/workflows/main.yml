@@ -1065,12 +1065,6 @@ jobs:
         # Install Flow-IPC dependencies with Conan using the profile.
         source ${{ github.workspace }}/conan_virtual_env/bin/activate
         ${{ env.setup-run-env }}
-        # `deps: newest` cells only (in practice): export any vendored recipes into the local Conan cache, so that
-        # the subsequent `conan install` finds the versions that conan-center lacks.  See the large-ish comment atop
-        # the matrix, and conan/<name>/README.txt.
-        for name_ver in ${{ matrix.deps.vendored-recipe-exports }}; do
-          conan export conan/${name_ver%/*} --version ${name_ver#*/}
-        done
         # Flag-snapshot guard (see conan-cache-restore comment above).  An exact-key restore is
         # trusted by definition: the key hashes the whole profile.  Otherwise -- fallback restore, or none --
         # compare the flag-containing profile sections against the snapshot recorded inside the cache (see end of
@@ -1084,6 +1078,13 @@ jobs:
           fi
         fi
         conan editable add flow
+        # `deps: newest` cells only (in practice): export any vendored recipes into the local Conan cache, so that
+        # the `conan install` just below finds the versions that conan-center lacks.  See the large-ish comment atop
+        # the matrix, and conan/<name>/README.txt.  (Must come after the flag-snapshot guard above: its
+        # `conan remove '*'` would evict the just-exported recipe.)
+        for name_ver in ${{ matrix.deps.vendored-recipe-exports }}; do
+          conan export conan/${name_ver%/*} --version ${name_ver#*/}
+        done
         # At least `configure` mini-programs are built with our build-settings, so $BUILT_CMD_PREFIX is required.
         $BUILT_CMD_PREFIX conan install . -pr:a ./conan_profile --build=missing || FAILED=yep
         # Dep build failure is easy to diagnose from stdout/err, unless it happens during a `configure`;
