@@ -503,18 +503,14 @@ jobs:
         # available at conan-center as of this writing (jemalloc: the newest release, via the vendored recipe --
         # see conan/jemalloc/README.txt); bump them when newer ones appear.  Boost is Flow's dependency; its version
         # is specified in flow/conanfile.py; `[replace_requires]` applies Conan-dependency-graph-wide, so it is
-        # swapped here too.
-        #
-        # Boost 1.90.0 rather than the newer 1.91.0 (as of this writing, 9/2026, newest version is actually 1.92 but
-        # not in conan-center at all yet): The conan-center boost/1.91.0 recipe fails its own
-        # library-consistency check with Flow's option set (see flow's workflow counterpart).
+        # swapped here too, identically.
         deps:
           - id: floor
             name-suffix: ''
           - id: newest
             name-suffix: -deps-newest
             conan-profile-replace-requires: |
-              boost/*: boost/1.90.0
+              boost/*: boost/1.91.0
               capnproto/*: capnproto/1.5.0
               jemalloc/*: jemalloc/5.4.0
             # Versions to `conan export` from vendored recipes in conan/<name>/ before `conan install` (conan-center
