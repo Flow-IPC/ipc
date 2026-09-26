@@ -98,6 +98,19 @@ ipc::shm::stl::Stateless_allocator-backed STL-compliant structures (which, inter
 @par
 It is only in the unlikely, and discouraged, case of storing explicit pointers in your C++ structures that the need to allocate/deallocate manually (without GC) might arise.  As long as you avoid writing such code, this risk will not arise.  However, one can do it more conscientiously by writing a custom allocator-compliant container.  (In fact `flow::util::Basic_blob` is exactly that, to give an example.)
 
+### Peer process identity checks at session-open ###
+When a session opens, each side checks the OS-reported identity of the process at the other end of the connection against the [IPC universe description](./session_setup.html#universe_desc) (the `App`s) it was given:
+  - The session-server (ipc::session::Session_server and SHM-enabled `Session_server`s) checks that the connecting process's UID and GID equal the corresponding ipc::session::Client_app values; that its executable path (as invoked) equals ipc::session::App::m_exec_path; that the client application is listed in ipc::session::Server_app::m_allowed_client_apps; perhaps similar such checks.  On mismatch or inability to check the `async_accept()` fails with an appropriate ipc::session::error::Code (or system code), and details are logged (assuming a `Logger` has been hooked up).
+  - The session-client (ipc::session::Client_session and SHM-enabled `Client_session`s) checks similar things about the opposing process.  On mismatch `sync_connect()` fails with an appropriate error code.
+  - Before any of that, the session-server checks the same things about *itself*, at construction: its UID, GID, and executable path (as invoked) must equal the ipc::session::Server_app values.  On mismatch the `Session_server` constructor fails.
+
+Again these are safety checks, not authentication: they catch an IPC universe description that disagrees between the two applications (breaking the rule stated in @ref session_setup), and other likely-unintentional mismatches, including the involvement of an unrelated application.  They rely, among other things, on the OS reporting peer credentials over the low-level IPC transport used internally.  They are not designed to defeat a deliberate impostor.
+
+### Peer channel identity checks at `struc::[sync_io::]Channel` open ###
+When an ipc::session::Session (or SHM-enabled equivalent) opens, a random session-token is generated to be used for all *structured* `Channel`s established in the context of that `Session`.  All structured messages exchanged between the two peers include this session-token.  If an unexpected token value is observed, the struc::Channel or struc::sync_io::Channel self-hoses with the appropriate error code and log message.  This is another safety measure, in this case designed to detect memory corruption, bugs, and misuse that might have led to conversing with a different/unexpected/corrupted peer.
+
+(The lower ipc::transport layer -- unstructured messaging -- lacks such per-message checking.  The aim here is high performance and flexibility; protocols, including the struc::Channel protocol, built on top of the unstructured ipc::transport primitives can implement various safety features if desired.)
+
 ### Permissions; levels of permissions ###
 ipc::session and ipc::transport objects may require writing items into the file system; and those or other objects may need to read them there.  Hence when writing a new item into a directory permissions are set; and various APIs accordingly take ipc::util::Permissions arguments.  These *can* be specified directly in certain ipc::transport and ipc::shm APIs; for example some ipc::transport::Persistent_mq_handle and ipc::shm::classic::Pool_arena constructors.  (Directly would mean, for example, supplying an octal value such as 0644 to the `util::Permissions` constructor.)
 

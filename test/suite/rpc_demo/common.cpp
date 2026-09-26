@@ -53,10 +53,11 @@ const ipc::session::Server_app::Master_set SRV_APPS
               * It's so that on a crash/exception the potential core files don't collide, to be honest.
               * Not that it crashes!  But when trying stuff, it can, and then it's nice to get the core file sans pain.
               *
-              * OK... so the point is, WORK_DIR is either cli/ or srv/; hence the server's location -- to either guy --
-              * can be written as <WORK_DIR>/../srv. */
+              * OK... so the point is, WORK_DIR is either cli/ or srv/; hence the server's run-dir -- to either guy --
+              * can be written as <WORK_DIR>/../srv.  As for the executable path: see the note on CLI_PATH below;
+              * the same applies (the server is invoked as ./<exec name> from within srv/). */
              { { SRV_NAME,
-                 WORK_DIR / ".." / SRV_NAME / (S_EXEC_PREFIX + SRV_NAME + S_EXEC_PRE_POSTFIX + S_EXEC_POSTFIX),
+                 fs::path(".") / (S_EXEC_PREFIX + SRV_NAME + S_EXEC_PRE_POSTFIX + S_EXEC_POSTFIX),
                  ::geteuid(), ::getegid() },
                { CLI_NAME, CLI_NAME_NO_ZC }, // Allowed cli-apps that can open sessions.
                WORK_DIR / ".." / "srv",
