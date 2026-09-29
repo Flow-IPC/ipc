@@ -238,7 +238,7 @@ In summary then:
       return;
     }
 
-    post([..., err_code])() { on_new_session(err_code]); });
+    post([..., err_code]() { on_new_session(err_code); });
   });
 
   void on_new_session(const Error_code& err_code)
@@ -273,7 +273,7 @@ In summary then:
     go_do_ipc_yay(std::move(a_session));
 
     // [...If multiple concurrent sessions allowed: Launch another session_srv.async_accept() here as noted above.]
-  });
+  }
   ~~~
 
 In our example code on each side, `go_do_ipc_yay()` now has an equally-capable `Session` object which represents a shared IPC context through which to, broadly, open channels and (optionally) directly access SHM arena(s).  Via the open channels, in turn, one can send messages (covered later in the Manual when we discuss ipc::transport).  Via the SHM arena(s) one can allocate objects (which can be shared however one wants but most easily via ipc::transport channels as well).

@@ -153,13 +153,15 @@ Now it's time to set up some session(s).  The more difficult task is on the serv
     // Wrapping it in std::optional<> or unique_ptr<> may be helpful, depending on what you need to do first.
     flow::async::Single_thread_task_loop m_worker;
 
-    // The big Kahuna.  m_session_srv->async_accept() will repeatedly give you a `Session`, at which point you will
-    // in thread U kick-off its further handling.
-    std::optional<Session_server> m_session_srv;
-
     // Accessed from thread U only, this is the target of the current m_session_srv->async_accept() of which there
     // is (in our example; and it is generally reasonable) one outstanding at a time.
     Session m_next_session;
+
+    // The big Kahuna.  m_session_srv->async_accept() will repeatedly give you a `Session`, at which point you will
+    // in thread U kick-off its further handling.
+    // (Declared after m_next_session, so that it is destroyed first: destroying it is what ends the outstanding
+    // async_accept() targeting m_next_session.)
+    std::optional<Session_server> m_session_srv;
 
   public:
     Process(...) :
@@ -199,6 +201,13 @@ Now it's time to set up some session(s).  The more difficult task is on the serv
         });
       }); // m_worker.post()
     } // Process()
+
+    ~Process()
+    {
+      // Stop thread U first: our other members are accessed there.  (A post() onto it after this is harmless:
+      // the task never runs.)  Then the members are destroyed in reverse order: m_session_srv first.
+      m_worker.stop();
+    }
 
   private:
     void on_new_session(const Error_code& err_code)
@@ -265,7 +274,7 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
     flow::async::Single_thread_task_loop m_worker;
 
     // Accessed from thread U only, this is -- at a given point in time, not counting non-blocking synchronous
-    // calls into `Client_session::sync_connect() -- either (1) sitting there empty (as-if default-constructed),
+    // calls into `Client_session::sync_connect()` -- either (1) sitting there empty (as-if default-constructed),
     // because *m_active_session is currently open; or (2) sitting there empty (as-if default-constructed), because
     // the last `.sync_connect()` failed (server inactive/not listening), so we're waiting a bit to check again.
     Session m_next_session;
@@ -290,10 +299,17 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
       });
     }
 
+    ~Process()
+    {
+      // Stop thread U first: our other members are accessed there.  (A post() onto it after this is harmless:
+      // the task never runs.)  Then the members are destroyed in reverse order.
+      m_worker.stop();
+    }
+
   private:
     void open_next_session()
     {
-      // When not connecting, m_session is empty.  We are about to connect, so let's get it into shape.
+      // When not connecting, m_next_session is empty.  We are about to connect, so let's get it into shape.
       // Note Session is (efficiently) move()able.
       m_next_session
         = Session{get_logger(), m_cli_app, m_srv_app,
