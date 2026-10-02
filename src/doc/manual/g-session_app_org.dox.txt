@@ -53,7 +53,15 @@ So let's get into the relatively easy topic: the API for closing an open session
 
 If the closing trigger is *local*, then one simply destroys the `Session` object (its destructor getting called), or in the case of the server side potentially 1+ `Session` object(s).  That's it.  Then it can exit the process.
 
-@note When locally-triggered (process is exiting gracefully), a session-server should, also, destroy the `Session_server` object (its destrctuctor getting called).  The order does not matter; for example `Session_server` can be destroyed first.
+When locally-triggered (process is exiting gracefully), a session-server should also destroy the `Session_server` object.  This brings us to the order of destruction.  Here are the lifetime tenets to follow (the Reference doc of @link ipc::session::Session_server Session_server@endlink repeats them):
+  -# **Per-session things before their `Session`.**  Channels, structured messages, SHM handles and objects: destroy them; then the `Session`.  This applies on both sides; the `App_session` class below is built around it.  At a minimum it is the clean order; for SHM-backed items it avoids use-after-free.
+  -# **`Session`s before their `Session_server`.**  Construction goes `Session_server`, then sessions; destruction the reverse.
+  -# **One `Session_server` per `Server_app` at a time.**  A new one may follow an old one -- typically because the session-server process restarted -- but never while any `Session` or channel from the old one still exists: the new `Session_server`'s startup cleanup removes their kernel-persistent names (MQs, SHM pools).
+
+Some departures from the above do work; informally we recommend against relying on them, as doing so tends to indicate a design that will cause pain later.  Namely:
+  - a channel outliving its source `Session` (they are formally independent; though if the session was hosed by the opposing side, the channel usually goes down with it);
+  - a `Server_session` outliving its `Session_server` (it keeps working -- including, with the SHM-enabled variants, its app-scope arena -- and a `Server_session` emitted by a `Session_server` whose destructor is already running, per that destructor's Reference doc, merely needs destroying);
+  - a `Session_server` following another within one process.
 
 If the closing trigger is the peer *partner*, then one... also simply destroys the one, relevant `Session` object.  Then one either attempts to start another session (if a session-client, or server acting equally to a client), or does nothing (if acting as a server that can accept arbitrary number of concurrent sessions anyway).
 
@@ -103,7 +111,7 @@ The key point is that each of your own (IPC-relevant) data structures (and proba
   - **[Per-]session scope**: The datum begins life no earlier than the creation of the (*opened*!) `Session` (A-B process-to-process conversation) and no later than the (opened) `Session`'s destruction.  If the session ends (as earlier noted, when the process exits -- or, far more interestingly, when the *opposing* process exits or dies or gets zombified), then this datum is no longer relevant by definition: The process reponsible for ~half of the algorithm that uses the datum is simply out of commission permanently, at a minimum.
   - **Cross-session scope** a/k/a **app scope**: The datum may be accessed by possibly multiple sessions concurrently; and possibly by sessions that do not yet exist.  For example, an in-memory cache of web objects might be relevant to any processes that might connect later to make use of (and add to) the cache, not to mention any processes currently connected into the IPC-engaged system.
     - Consider a given `Session_server`.  App-scope data, if they even exist in your meta-application at all, do not simply apply to all sessions to start via this `Session_server`.  Instead each cross-section datum must pertain to a particular partner (client) *application* (not process -- that'd be per-session).  For example, if your server Ap supports (as listed in ipc::session::Server_app::m_allowed_client_apps) two possible partner applications Bp and Cp, then a given datum must be classified (by you) to be either per-app-B or per-app-C.
-    - Such a datum begins life no earlier than the *first* session pertaining to the particular `Client_app` becoming open (which can occur only after `Session_server` construction).  Its life ends no later than the `Session_server`'s destruction.
+    - Such a datum begins life no earlier than the *first* session pertaining to the particular `Client_app` becoming open (which can occur only after `Session_server` construction).  Its life ends no later than the `Session_server`'s destruction (or, should a `Server_session` outlive the `Session_server` -- see the lifetime tenets above -- that session's destruction).
     - *Note well: Flow-IPC does NOT allow for IPC-relevant, ipc::session-managed data to persist beyond the lifetime of a session-server process.*  (Certainly such data can be maintained in the meta-application -- but not as part of ipc::session-managed data.)
 
 About what kinds of data are we even speaking?  Answer:

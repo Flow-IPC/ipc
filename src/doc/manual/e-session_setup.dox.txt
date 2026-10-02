@@ -136,6 +136,8 @@ However if your application desires to indeed support multiple *concurrent* sess
   - Engage in IPC off the new session that was just accepted.
 Accordingly, in step 6.b, it should not "go back to step 4" but rather just end the algorithm in the latter bullet point: There is always a session-accept in progress, and 1 *or more* sessions may be operating concurrently as well.  (To be clear by "concurrently" we don't mean necessarily simultaneously in 2+ threads; but rather that an asynchronously-oriented application can conceptually perform 2+ simultaneous algorithms even in one thread.)
 
+When to destroy `S`, `P` and the channels involved, relative to each other, is covered by the lifetime tenets in @ref session_app_org.
+
 `Client_session` setup
 ----------------------
 Let's now follow the above outline for a session-client's operation, the client being application Bp.  We shall skip to step 3, as we've already covered step 2.
