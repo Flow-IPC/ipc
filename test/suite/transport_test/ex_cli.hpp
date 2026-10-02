@@ -192,7 +192,7 @@ void CLASS::client_connect_one()
     FLOW_LOG_WARNING("Expected a sync_connect() error; got success instead.");
     done_and_done(false);
     return;
-    /* By the way, below, we might not always do this kind of "nicer" handling of an unexpected situations;
+    /* By the way, below, we might not always do this kind of "nicer" handling of an unexpected situation;
      * we might just ASSERT().  I guess I just wanted to set up some precedent for how it might look to
      * not simply crash.  I don't know.  It's just tedious to keep doing this all over: this isn't production
      * code. */
