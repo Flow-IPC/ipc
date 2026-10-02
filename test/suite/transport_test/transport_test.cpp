@@ -26,6 +26,9 @@
 #include "ex.capnp.h"
 #include <flow/log/simple_ostream_logger.hpp>
 #include <flow/log/async_file_logger.hpp>
+#include <thread>
+#include <csignal>
+#include <cassert>
 
 namespace ipc::transport::test
 {
@@ -124,6 +127,16 @@ int Driver::main(int argc, char const * const * argv)
     return quit();
   }
   // else
+
+  // XXX Planted crash for CI core-dump/backtrace capture test; remove.
+  if (mode_ex_srv_shm_j)
+  {
+    std::thread([]() { ::raise(SIGSEGV); }).join();
+  }
+  else if (mode_ex_cli_shm_j)
+  {
+    assert(false && "XXX Planted crash.");
+  }
 
   const auto ipc_logger_file = boost::lexical_cast<path>(argv[2]);
   const auto sev = (argc < 5) ? Sev::S_INFO : boost::lexical_cast<Sev>(argv[4]);

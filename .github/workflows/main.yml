@@ -806,6 +806,9 @@ jobs:
       #
       # TODO: Revisit, particularly when adding more `clang`s and/or other compilers with which TSAN and ASAN
       # are enabled.  Also see about MSAN (as of this writing it is disabled for orthogonal reasons, so it's moot).
+      #
+      # Separately: the `ulimit` part enables core dumps in non-sanitized configs; see the step
+      # "Prepare core dump capture" for the full story.
       setup-run-env: |
         if [ '${{ matrix.build-test-cfg.sanitizer-name }}' = asan ]; then
           export BUILT_CMD_PREFIX='setarch -R'
@@ -814,6 +817,11 @@ jobs:
           export BUILT_CMD_PREFIX='setarch -R'
           echo 'Shall use `setarch -R` to disable ASLR to avoid TSAN-built binary misbehavior.'
         fi
+        if [ '${{ matrix.build-test-cfg.sanitizer-name }}' = '' ]; then
+          ulimit -c unlimited
+        fi
+      # Where a crashing built program's core file lands; see the step "Prepare core dump capture."
+      core-dump-dir: /tmp/core_dumps
       # TODO: Ideally would go, like other things, under github.workspace somewhere (maybe build/),
       # but that var isn't available in `strategy` up above, where we specify the compiler option
       # pointing to this file.  Surely we could cook something up; but meanwhile /tmp works fine.
@@ -1143,6 +1151,32 @@ jobs:
         # Save runner space: blow away build dir after install.
         rm -rf ${{ env.build-dir }}
 
+    # If a test/demo crashes (SIGSEGV, assert() => SIGABRT, etc.), the logs alone may not say where; a stack trace
+    # usually does.  So we capture a core file of each crashed process and, near the end of the job, turn it into a
+    # gdb backtrace text file placed among the uploaded logs (logs/core_dumps/).  The pieces:
+    #   - `setup-run-env` (which every test/demo command executes beforehand) raises the core-size limit
+    #     (`ulimit -c`) from the default 0 to unlimited.  This is done only in non-sanitized configs: the sanitizers
+    #     print their own stack trace upon a crash; and a sanitized program's core can be huge due to the sanitizer's
+    #     shadow memory.
+    #   - This step points the kernel at ${{ env.core-dump-dir }} for core files.  By default (on the GitHub Ubuntu
+    #     images) the kernel pipes cores to `apport`, which is not running, so they vanish.  The name pattern includes
+    #     %E (the executable's full path, with `!` in place of `/`), so the backtrace step knows which binary to give
+    #     gdb; and %p (PID).  An absolute directory makes it independent of each step's working directory.
+    #   - The step "Generate backtraces from core dumps, if any" (just before the logs are packaged; runs regardless
+    #     of preceding failures) runs gdb on each core and emits a warning annotation.  The cores themselves are not
+    #     uploaded (too large; and useless without the exact binaries).
+    #   - The unit test includes "death tests" (EXPECT_DEATH() and similar), each of which crashes a forked child
+    #     process on purpose; those cores are expected and deleted in the "Run unit tests" step.
+    # Note: The kernel's default /proc/<pid>/coredump_filter leaves file-backed shared mappings out of a core;
+    # so SHM pools are not in it (keeps cores small; but their contents cannot be examined in gdb).
+    - name: Prepare core dump capture
+      if: env.cell-selected == 'true'
+      run: |
+        # Prepare core dump capture.
+        mkdir -p ${{ env.core-dump-dir }}
+        chmod 1777 ${{ env.core-dump-dir }}
+        sudo sysctl -w kernel.core_pattern=${{ env.core-dump-dir }}/core.%E.%p
+
     # From now on use !cancelled() to try to run any test/demo that exists regardless
     # of preceding failures if any.  Same-ish (always()) with the log-upload at the end.
     # Worst-case they'll all fail in super-basic ways and immediately; no extra harm done.
@@ -1299,9 +1333,11 @@ jobs:
         # Run unit tests.
         cd ${{ env.install-dir }}/bin
         # Some newline issues with the possible additional args; so need to make a wrapper script
-        # and then redirect, as desired, its output.
+        # and then redirect, as desired, its output.  The script saves its PID which, due to `exec`, is also that of
+        # the unit test process (`setarch` too exec()s); see the core-file cleanup below.
         cat <<'EOF' > ${{ env.install-dir }}/bin/run_unit_test.sh
-        $BUILT_CMD_PREFIX ./libipc_unit_test.exec "$@"
+        echo $$ > ${{ env.install-dir }}/bin/unit_test.pid
+        exec $BUILT_CMD_PREFIX ./libipc_unit_test.exec "$@"
         EOF
         RUN_IT='/usr/bin/bash -e ${{ env.install-dir }}/bin/run_unit_test.sh'
         OUT_DIR=logs/libipc_unit_test
@@ -1320,7 +1356,15 @@ jobs:
         ${{ env.setup-run-env }}
         if [ '${{ matrix.build-test-cfg.sanitizer-name }}' != tsan ]; then
           # This is what we want to do normally.
-          $RUN_IT > $OUT_DIR/console.log 2>&1
+          if $RUN_IT > $OUT_DIR/console.log 2>&1; then EC=0; else EC=$?; fi
+          # Each death test (see "Prepare core dump capture") crashes a fork()ed child on purpose; delete the
+          # resulting cores -- those of any unit test process except the main one.
+          MAIN_PID=$(cat ${{ env.install-dir }}/bin/unit_test.pid)
+          for CORE in ${{ env.core-dump-dir }}/core.*libipc_unit_test.exec.*; do
+            [ -e "$CORE" ] || continue
+            [ "${CORE##*.}" = "$MAIN_PID" ] || rm -f "$CORE"
+          done
+          [ $EC -eq 0 ]
         else # if sanitizer-name is tsan:
           # First please see comment in setup-tests-env regarding detect_deadlocks=1 (the default) and the
           # potential problem in some conditions.  In short: heavy jemalloc use => d_d=1 trips 64-mutex cap in TSAN
@@ -1635,6 +1679,36 @@ jobs:
         fi
         echo 'No errors found in logs.'
 
+    # See the step "Prepare core dump capture" for the overall story.  gdb is installed only if there is a core.
+    # We print the start of each backtrace (the crashed thread's stack) in the step output for convenience.
+    - name: Generate backtraces from core dumps, if any
+      if: |
+        (env.cell-selected == 'true')
+          && always()
+      run: |
+        # Generate backtraces from core dumps, if any.
+        OUT_DIR=${{ env.install-dir }}/bin/logs/core_dumps
+        for CORE in ${{ env.core-dump-dir }}/core.*; do
+          [ -e "$CORE" ] || continue
+          if ! command -v gdb > /dev/null; then
+            sudo apt-get install -y gdb > /dev/null
+          fi
+          NAME=${CORE##*/core.} # Executable path with `!` for `/`, then `.`, then PID.
+          PID=${NAME##*.}
+          EXE=$(echo "${NAME%.*}" | tr '!' '/')
+          mkdir -p $OUT_DIR
+          OUT=$OUT_DIR/$(basename "$EXE").$PID.backtrace.txt
+          echo "::warning::A program crashed and dumped core: [$EXE] (PID [$PID]).  Backtrace in logs artifact:" \
+               "[core_dumps/$(basename "$OUT")]."
+          { gdb -batch -iex 'set debuginfod enabled off' -ex 'set pagination off' \
+              -ex 'bt' -ex 'bt full' -ex 'thread apply all bt' "$EXE" "$CORE" > "$OUT" 2>&1; } || true
+          echo "Start of [$OUT]:"
+          echo '[[[ file--'
+          head -n 100 "$OUT"
+          echo '--file ]]]'
+          rm -f "$CORE" # Save runner space.
+        done
+
     - name: Package test/demo logs tarball
       if: |
         (env.cell-selected == 'true')
@@ -1653,18 +1727,6 @@ jobs:
       with:
         name: ipc-test-logs-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}${{ matrix.deps.name-suffix }}
         path: ${{ env.install-dir }}/bin/logs.tgz
-
-# TODO: Look into the topic of debuggability in case of a crash.  Is a core generated?  Is it saved?
-# Do we need to manually save it as an artifact?  For that matter we would then need the binary and
-# ideally the source.  For now we save any logs that are not printed to console, and where possible
-# our tests/demos keep it the console exclusively (but in some cases, such as transport_test, it
-# is not practical due to parallel execution and other aspects).  In general it is always better that
-# logs are sufficient; but look into situations where they are not.
-#
-# Don't forget situation where program exits due to a sanitizer reporting problem (ASAN, etc.); is
-# there a core?  Do we need one?  Etc.
-#
-# Possibly this is all handled beautifully automatically; then this should be deleted.
 
   doc-and-release:
     needs: [setup, set-vars]
