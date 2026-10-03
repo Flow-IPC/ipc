@@ -1344,23 +1344,70 @@ jobs:
             > ${{ env.san-suppress-cfg-file }} 2> /dev/null; } || true
         ${{ env.setup-tests-env }}
         ${{ env.setup-run-env }}
-        # FISHING: only the session-teardown-vs-connect tests, repeated.
+        # FISHING: only the session-teardown-vs-connect tests, repeated -- each repeat its own process, so process-wide
+        # state (e.g., SHM-jemalloc's ever-growing per-arena borrower stats) starts fresh each time; and a short per-repeat
+        # timeout (SIGABRT => core => backtrace) so a hang costs minutes, not the whole step.
         FISH_FILTER='*Session_end_during_connect*:*Server_destroyed_mid_flight*'
         if [ '${{ matrix.build-test-cfg.sanitizer-name }}' = tsan ]; then
-          FISH_REPEAT=10
+          FISH_REPEAT=6
+          REPEAT_TIMEOUT=8m
           export TSAN_OPTIONS="$TSAN_OPTIONS detect_deadlocks=0"
         else
-          FISH_REPEAT=50
+          FISH_REPEAT=20
+          REPEAT_TIMEOUT=4m
         fi
-        if timeout -s ABRT -k 60s 75m $RUN_IT --gtest_filter=$FISH_FILTER --gtest_repeat=$FISH_REPEAT > $OUT_DIR/console.log 2>&1; \
-          then EC=0; else EC=$?; fi
-        echo "Unit test exit code: [$EC] (124 = timeout)."
-        MAIN_PID=$(cat ${{ env.install-dir }}/bin/unit_test.pid)
-        for CORE in ${{ env.core-dump-dir }}/core.*libipc_unit_test.exec.*; do
-          [ -e "$CORE" ] || continue
-          [ "${CORE##*.}" = "$MAIN_PID" ] || rm -f "$CORE"
+        N_FAIL=0
+        for I in $(seq 1 $FISH_REPEAT); do
+          echo "=== Unit-test repeat [$I] of [$FISH_REPEAT] starting at [$(date +%T)]." | tee -a $OUT_DIR/console.log
+          if timeout -s ABRT -k 30s $REPEAT_TIMEOUT $RUN_IT --gtest_filter=$FISH_FILTER >> $OUT_DIR/console.log 2>&1; \
+            then EC=0; else EC=$?; fi
+          if [ $EC -ne 0 ]; then
+            N_FAIL=$((N_FAIL + 1))
+            echo "::warning::Unit-test repeat [$I] failed (exit code [$EC]; 124 = timeout)."
+          fi
         done
-        [ $EC -eq 0 ]
+        echo "Unit-test repeats: [$N_FAIL] of [$FISH_REPEAT] failed."
+        [ $N_FAIL -eq 0 ]
+
+    # FISHING: make the unit-test results (logs + any backtraces) downloadable right away, rather than at job end.
+    - name: FISHING - Generate backtraces from unit-test core dumps, if any
+      if: |
+        (env.cell-selected == 'true')
+          && (!cancelled())
+      run: |
+        OUT_DIR=${{ env.install-dir }}/bin/logs/core_dumps
+        for CORE in ${{ env.core-dump-dir }}/core.*; do
+          [ -e "$CORE" ] || continue
+          if ! command -v gdb > /dev/null; then
+            sudo apt-get install -y gdb > /dev/null
+          fi
+          NAME=${CORE##*/core.}
+          PID=${NAME##*.}
+          EXE=$(echo "${NAME%.*}" | tr '!' '/')
+          mkdir -p $OUT_DIR
+          OUT=$OUT_DIR/$(basename "$EXE").$PID.backtrace.txt
+          echo "::warning::A program crashed and dumped core: [$EXE] (PID [$PID])."
+          { gdb -batch -iex 'set debuginfod enabled off' -ex 'set pagination off' \
+              -ex 'bt' -ex 'bt full' -ex 'thread apply all bt' "$EXE" "$CORE" > "$OUT" 2>&1; } || true
+          rm -f "$CORE"
+        done
+
+    - name: FISHING - Package unit-test logs early
+      if: |
+        (env.cell-selected == 'true')
+          && (!cancelled())
+      run: |
+        cd ${{ env.install-dir }}/bin
+        tar czf ut_logs.tgz logs/libipc_unit_test $(test -d logs/core_dumps && echo logs/core_dumps)
+
+    - name: FISHING - Upload unit-test logs early
+      if: |
+        (env.cell-selected == 'true')
+          && (!cancelled())
+      uses: actions/upload-artifact@v7
+      with:
+        name: ipc-fish-ut-${{ matrix.compiler.id }}-${{ matrix.build-test-cfg.id }}-${{ matrix.cxx-std.id }}${{ matrix.deps.name-suffix }}
+        path: ${{ env.install-dir }}/bin/ut_logs.tgz
 
     - name: Prepare run script for [perf_demo] variations below
       if: false # FISHING: disabled.
@@ -1605,10 +1652,10 @@ jobs:
       run: |
         # FISHING - Run integration test [transport_test - Exercise mode - SHM-jemalloc sub-mode] repeatedly.
         if [ '${{ matrix.build-test-cfg.sanitizer-name }}' = tsan ]; then
-          N=15
+          N=20
           PASS_TIMEOUT=20m
         else
-          N=30
+          N=60
           PASS_TIMEOUT=10m
         fi
         N_FAIL=0
@@ -1624,6 +1671,7 @@ jobs:
             pkill -ABRT -f 'bin/ex_(srv|cli)\.exec' || true # In case of hang: cores of the stragglers.
             sleep 5
             find /dev/shm -maxdepth 1 -user "$(id -u)" -type f -delete || true # Leftovers of the dead run.
+            break # Caught something: stop fishing in this cell so its logs/backtraces upload ASAP.
           fi
           ls ${{ env.core-dump-dir }}
         done
