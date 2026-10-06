@@ -21,6 +21,7 @@
 #include "ex.capnp.h"
 #include "ipc/transport/struc/channel.hpp"
 #include "ipc/session/sync_io/client_session_adapter.hpp"
+#include <boost/weak_ptr.hpp>
 
 namespace ipc::transport::test
 {
@@ -98,6 +99,19 @@ private:
     void handle_req_b(Msg_in_ptr_b&& msg_in, size_t chan_idx, bool alt = false);
     void ping_b(size_t chan_idx);
 
+    // Ex_guy::post(), but `task` is a no-op if `*this` is destroyed by the time it would run.  See #m_alive.
+    template<typename Task>
+    void post(Task&& task);
+    // Ex_guy::delay_and(), but `task` is a no-op if `*this` is destroyed by the time it would run.  See #m_alive.
+    template<typename Task>
+    void delay_and(util::Fine_duration from_now, Task&& task);
+
+    /* Liveness token: post()/delay_and() tasks hold a `weak_ptr` to it and no-op if it has expired (i.e., `*this`
+     * has been destroyed) by the time they run.  E.g., a channel-error task can be queued just ahead of the
+     * Ex_cli task that deletes us; it must not then touch `this`.  (All such tasks, and our destruction, occur in
+     * the one Ex_guy thread, so a plain expired() check suffices.)  Declared first, so it outlives the channels
+     * (whose handlers may post()) during our destruction. */
+    const Sptr<bool> m_alive = make_sptr<bool>(true);
     Ex_cli* const m_guy;
     const unsigned int m_test_idx;
     const flow::async::Task m_i_am_done_func;
@@ -277,6 +291,32 @@ void CLASS::client_connect_2()
 
 TEMPLATE
 template<typename Task>
+void CLASS::App_session::post(Task&& task)
+{
+  m_guy->post([alive = boost::weak_ptr<bool>{m_alive}, task = std::move(task)]() mutable
+  {
+    if (!alive.expired())
+    {
+      task();
+    }
+  });
+}
+
+TEMPLATE
+template<typename Task>
+void CLASS::App_session::delay_and(util::Fine_duration from_now, Task&& task)
+{
+  m_guy->delay_and(from_now, [alive = boost::weak_ptr<bool>{m_alive}, task = std::move(task)]() mutable
+  {
+    if (!alive.expired())
+    {
+      task();
+    }
+  });
+}
+
+TEMPLATE
+template<typename Task>
 CLASS::App_session::App_session(Ex_cli* guy, unsigned int test_idx, Task&& i_am_done_func) :
   flow::log::Log_context(guy->get_logger(), guy->get_log_component()),
   m_guy(guy), m_test_idx(test_idx), m_i_am_done_func(std::move(i_am_done_func))
@@ -290,7 +330,7 @@ CLASS::App_session::App_session(Ex_cli* guy, unsigned int test_idx, Task&& i_am_
 
   auto on_err_func = [this](const Error_code&)
   {
-    m_guy->post([this]()
+    post([this]()
     {
       FLOW_LOG_FATAL("Not expecting opened Client_app [" << S_CLI_NAME << "] session to error-out.");
       ASSERT(false);
@@ -302,7 +342,7 @@ CLASS::App_session::App_session(Ex_cli* guy, unsigned int test_idx, Task&& i_am_
   auto on_chan_open_func = [this]
                              (Channel_obj&& new_chan, Mdt_reader_ptr&& mdt_srv) mutable
   {
-    m_guy->post([this, new_chan_ptr = make_sptr<Channel_obj>(std::move(new_chan)),
+    post([this, new_chan_ptr = make_sptr<Channel_obj>(std::move(new_chan)),
                  mdt_srv = std::move(mdt_srv)]() mutable
                   { on_chan_open(std::move(*new_chan_ptr), mdt_srv, S_N_CHANS_A, S_N_CHANS_B); });
   };
@@ -628,7 +668,7 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
     m_struct_chans_a[0]->expect_msgs(capnp::ExBodyA::MSG_HANDLE,
                                      [this, next_id](Msg_in_ptr_a&& msg_in) mutable
     {
-      m_guy->post([this, next_id, msg_in = std::move(msg_in)]() mutable
+      post([this, next_id, msg_in = std::move(msg_in)]() mutable
       {
         const Native_handle hndl = msg_in->emit_native_handle_or_null();
         const auto id = msg_in->body_root().getMsgHandle();
@@ -662,7 +702,7 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
 
         /* Note!  `wrt` gets destroyed here, hence the FD gets closed.  Server sends us ::dup(writer_fd) though,
          * so our closing it is not for us to worry about; they'll reuse their dup()ee, if they want. */
-      }); // m_guy->post()
+      }); // post()
     }); // m_struct_chans_a[0]->expect_msgs(capnp::ExBodyA::MSG_HANDLE)
 
     /* In test 2 (m_test_idx==1), round 1 (before first ping-B received) we help test sync_request().
@@ -682,7 +722,7 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
                                                                        task_else_kill]
                                                                         (Msg_in_ptr_a&& msg_in) mutable
       {
-        m_guy->post([this, chan_idx, task_else_kill, msg_in = std::move(msg_in),
+        post([this, chan_idx, task_else_kill, msg_in = std::move(msg_in),
                      delay_or_0]()
         {
           FLOW_LOG_INFO("Chan A[" << chan_idx << "]: Got request.  Delaying (or not).");
@@ -720,7 +760,7 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
           }
           else
           {
-            m_guy->delay_and(delay_or_0, std::move(action));
+            delay_and(delay_or_0, std::move(action));
           }
         }); // post()
       }); // m_struct_chans_a[chan_idx]->expect_msg()
@@ -764,7 +804,7 @@ void CLASS::App_session::use_channels_if_ready(size_t n_chans_a, size_t n_chans_
       m_struct_chans_b[chan_idx]->expect_msgs(capnp::ExBodyB::MSG,
                                               [this, chan_idx](Msg_in_ptr_b&& msg_in) mutable
       {
-        m_guy->post([this, chan_idx, msg_in = std::move(msg_in)]() mutable
+        post([this, chan_idx, msg_in = std::move(msg_in)]() mutable
                       { handle_req_b(std::move(msg_in), chan_idx); });
       });
     }
@@ -783,7 +823,7 @@ void CLASS::App_session::use_channels_round_2()
   m_struct_chans_a[0]->set_remote_unexpected_response_handler
     ([this](struc::Channel_base::msg_id_out_t msg_id_bad_boy, std::string&& description) mutable
   {
-    m_guy->post([this, msg_id_bad_boy, description = std::move(description)]() mutable
+    post([this, msg_id_bad_boy, description = std::move(description)]() mutable
     {
       FLOW_LOG_INFO("App_session [" << this << "]: "
                     "Chan A0: remote-unexpected-response handler fired; supposedly because we sent that.  Will "
@@ -808,7 +848,7 @@ void CLASS::App_session::use_channels_round_2()
 
   m_struct_chans_a[0]->expect_msg(capnp::ExBodyA::MSG_TWO, [this](Msg_in_ptr_a&& msg_in) mutable
   {
-    m_guy->post([this, msg_in = std::move(msg_in)]() mutable
+    post([this, msg_in = std::move(msg_in)]() mutable
     {
       send_notif_a(0, "msg 1/3 - multi-rsp test - notif", true);
       send_notif_a(0, "msg 2/3 - multi-rsp test - rsp 1", true, msg_in);
@@ -1119,7 +1159,7 @@ void CLASS::App_session::start_chan_a(size_t chan_idx)
 {
   m_struct_chans_a[chan_idx]->start([this, chan_idx](const Error_code& err_code)
   {
-    m_guy->post([this, chan_idx, err_code]()
+    post([this, chan_idx, err_code]()
                   { on_chan_err(m_struct_chans_a[chan_idx], err_code); });
   });
 }
@@ -1129,7 +1169,7 @@ void CLASS::App_session::start_chan_b(size_t chan_idx)
 {
   m_struct_chans_b[chan_idx]->start([this, chan_idx](const Error_code& err_code)
   {
-    m_guy->post([this, chan_idx, err_code]()
+    post([this, chan_idx, err_code]()
                   { on_chan_err(m_struct_chans_b[chan_idx], err_code); });
   });
 }
@@ -1151,7 +1191,7 @@ void CLASS::App_session::expect_ping_and_a(size_t chan_idx, Task&& task)
   m_struct_chans_a[chan_idx]->expect_msg(capnp::ExBodyA::MSG_TWO,
                                          [this, chan_idx, task = std::move(task)](Msg_in_ptr_a&& msg_in) mutable
   {
-    m_guy->post([this, chan_idx, task = std::move(task), msg_in = std::move(msg_in)]()
+    post([this, chan_idx, task = std::move(task), msg_in = std::move(msg_in)]()
     {
       const auto& msg = msg_in->body_root();
       const auto desc = msg.getDescription();
@@ -1174,7 +1214,7 @@ void CLASS::App_session::expect_pings_and_b(size_t chan_idx, Task&& task)
   m_struct_chans_b[chan_idx]->expect_msgs(capnp::ExBodyB::MSG_TWO,
                                           [this, chan_idx, task = std::move(task)](Msg_in_ptr_b&& msg_in) mutable
   {
-    m_guy->post([this, chan_idx, task /* copy! */, msg_in = std::move(msg_in)]() mutable
+    post([this, chan_idx, task /* copy! */, msg_in = std::move(msg_in)]() mutable
     {
       const auto& msg = msg_in->body_root();
       const auto desc = msg.getDescription();
