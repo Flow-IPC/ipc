@@ -97,6 +97,7 @@ set(SRCS
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_common_util.cpp
     ${FLOW_LIKE_META_ROOT_flow}/src/flow/test/test_file_util.cpp
     ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
+    ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_shm_util.cpp
     ${core_root}/ipc/util/test/native_handle_test.cpp
     ${core_root}/ipc/transport/test/blob_transport_stats_test.cpp
     ${core_root}/ipc/transport/test/channel_test.cpp
@@ -105,7 +106,9 @@ set(SRCS
     ${core_root}/ipc/transport/test/persistent_mq_handle_test_bipc.cpp
     ${core_root}/ipc/transport/test/persistent_mq_handle_test_posix.cpp
     ${core_root}/ipc/transport/test/protocol_negotiator_test.cpp
+    ${shm_root}/ipc/shm/bipc_ext/detail/test/sparse_shm_test.cpp
     ${shm_root}/ipc/shm/classic/test/pool_arena_stats_test.cpp
+    ${shm_root}/ipc/shm/classic/test/pool_arena_test.cpp
     ${shm_root}/ipc/transport/struc/shm/rpc/test/rpc_stream_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test_mq_bipc.cpp
@@ -136,6 +139,7 @@ set(SRCS
     ${isal_root}/ipc/shm/arena_lend/detail/test/thread_lcl_obj_db_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/shm_pool_offset_ptr_test.cpp
     ${isal_root}/ipc/shm/arena_lend/jemalloc/test/jemalloc_pages_test.cpp
+    ${isal_root}/ipc/shm/arena_lend/jemalloc/test/ipc_arena_construct_test.cpp
     ${isal_root}/ipc/shm/arena_lend/jemalloc/test/ipc_arena_stats_test.cpp
     ${isal_root}/ipc/shm/arena_lend/jemalloc/test/ipc_arena_test.cpp
     ${isal_root}/ipc/shm/arena_lend/jemalloc/test/memory_manager_test.cpp

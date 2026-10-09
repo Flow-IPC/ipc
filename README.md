@@ -242,7 +242,7 @@ merely a "black box" of capabilities.  E.g., for advanced users:
     accessed directly.  You can also plug-in your own transports.
     - (Networked channels and sessions are in the works.)
   - By implementing/accessing some of the handful of key C++ concepts, you can customize behaviors at all layers,
-    including serialization-memory backing, additional SHM providers, and C-style native data structures that use raw
+    including serialization-memory backing, additional SHM-providers, and C-style native data structures that use raw
     pointers.
 
 ---
