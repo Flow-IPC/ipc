@@ -109,6 +109,9 @@ set(SRCS
     ${shm_root}/ipc/shm/bipc_ext/detail/test/sparse_shm_test.cpp
     ${shm_root}/ipc/shm/classic/test/pool_arena_stats_test.cpp
     ${shm_root}/ipc/shm/classic/test/pool_arena_test.cpp
+    ${shm_root}/ipc/shm/stl/test/stl_test.cpp
+    ${shm_root}/ipc/shm/stl/test/stl_test_shm_classic.cpp
+    ${shm_root}/ipc/shm/stl/test/stl_test_shm_jemalloc.cpp
     ${shm_root}/ipc/transport/struc/shm/rpc/test/rpc_stream_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test.cpp
     ${struc_root}/ipc/transport/struc/test/channel_test_mq_bipc.cpp
