@@ -198,6 +198,8 @@ So that would definitely be taxing to code.  And indeed, particularly with legac
 
 @warning As a rule `std::` containers are not SHM-friendly, at least in gcc as of gcc-9; they assume raw-pointer-using allocators.  By contrast `boost::container::*` corrected those issues.  `std::vector` happens to be okay in gcc-8 at least, but it's safer to just go with `boost::container`.  E.g., its `std::list` bro is broken in this regard.
 
+@note boost.container (in every Boost release up to and including at least 1.92) has a memory-leak bug: erasing from the middle of a `vector` (or `flat_map` and the like) whose elements are certain boost.container containers -- `basic_string`, `deque`, `stable_vector` -- can leak those elements' memory.  It is not commonly triggered; but in SHM a leak is a leak.  If you use our SHM-allocators (ipc::shm::stl::Stateless_allocator, including the `Allocator` aliases provided by ipc::session SHM-enabled types), you are protected from it automatically.  For details see the `boost::has_trivial_destructor_after_move` specialization in ipc/shm/stl/stl_fwd.hpp.
+
 Once you've chosen your STL-compliant SHM-friendly container type -- or developed your own! -- you must take care to, also, specify (as the `Allocator` template paramater to the container type) the **SHM-allocating allocator** we've provided.  (boost.interprocess provides an allocator template for similar use; but it is stateful, which is a huge pain in the butt -- plus it uses additional RAM to store the allocator pointer.)  Use this allocator:
 
   ~~~
