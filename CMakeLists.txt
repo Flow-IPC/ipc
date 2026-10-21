@@ -167,8 +167,6 @@ set(DOC_INPUT
 set(DOC_EXCLUDE_PATTERNS
     */ipc/shm/arena_lend/borrower_shm_pool_collection.*
     */ipc/shm/arena_lend/divisible_shm_pool.*
-    # (The base class; jemalloc/memory_manager.* is up to standard and scanned.)
-    */ipc/shm/arena_lend/memory_manager.*
     */ipc/shm/arena_lend/owner_shm_pool_collection.*
     */ipc/shm/arena_lend/owner_shm_pool_listener.hpp
     */ipc/shm/arena_lend/shm_pool.*

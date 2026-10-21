@@ -149,7 +149,6 @@ set(SRCS
     ${isal_root}/ipc/shm/arena_lend/jemalloc/test/thread_cache_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/borrower_shm_pool_collection_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/divisible_shm_pool_test.cpp
-    ${isal_root}/ipc/shm/arena_lend/test/memory_manager_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/owner_shm_pool_collection_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/shm_pool_collection_test.cpp
     ${isal_root}/ipc/shm/arena_lend/test/owner_shm_pool_repository_test.cpp
