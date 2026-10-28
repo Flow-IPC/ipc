@@ -99,6 +99,7 @@ set(SRCS
     ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_common_util.cpp
     ${FLOW_LIKE_META_ROOT_ipc_core}/src/ipc/test/test_shm_util.cpp
     ${core_root}/ipc/util/test/native_handle_test.cpp
+    ${core_root}/ipc/util/test/shared_name_test.cpp
     ${core_root}/ipc/transport/test/blob_transport_stats_test.cpp
     ${core_root}/ipc/transport/test/channel_test.cpp
     ${core_root}/ipc/transport/test/native_socket_stream_acceptor_test.cpp
