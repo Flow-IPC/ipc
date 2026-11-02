@@ -219,6 +219,9 @@ The preceding example was chosen for 2 reasons:
 ## So Flow-IPC is for transmitting Cap'n Proto messages?
 
 Yes... but only among other things!
+  - It supports Cap'n Proto's own RPC layer too: *capnp-RPC* (interfaces, capabilities, promise pipelining),
+    zero-copy-enabled.  Flow-IPC supplies a drop-in replacement for capnp's `TwoPartyVatNetwork`, plus counterparts
+    of capnp's connection-setup helpers; the rest of your capnp-RPC code stays the same.
   - It transmits native C++ data structures (including STL-compliant containers and pointers); native handles (FDs);
     and (at a lower layer) binary blobs.  Schema-based data structures are not always an ideal representation for many
     algorithms!

@@ -37,7 +37,7 @@ This concept is simple enough *once the session is open*.  In that state, the ca
 
 Session-client, session-server paradigm
 ---------------------------------------
-For purposes of this tutorial let's deal with the simplest possible situation: application Ap and application Bp want to enage in IPC; this is called an IPC **split**, in that it can be thought of as a *meta-application* ApBp being "split" into two parts.  A given application Xp is either not running at all (**inactive**), or it is running 1 process (a/k/a **instance**) X, or more than 1 process/instance simultaneously (X1, X2, ...).  It is quite common for some applications to only have 1 active instance at a time; but it's not true of all applications.  It is of course completely common for instances to run serially: X1 starts, then exits; then X2 starts, then exits; and of course there can be combinations.
+For purposes of this tutorial let's deal with the simplest possible situation: application Ap and application Bp want to engage in IPC; this is called an IPC **split**, in that it can be thought of as a *meta-application* ApBp being "split" into two parts.  A given application Xp is either not running at all (**inactive**), or it is running 1 process (a/k/a **instance**) X, or more than 1 process/instance simultaneously (X1, X2, ...).  It is quite common for some applications to only have 1 active instance at a time; but it's not true of all applications.  It is of course completely common for instances to run serially: X1 starts, then exits; then X2 starts, then exits; and of course there can be combinations.
 
 It *is* possible (and supported by Flow-IPC) that an application is part of more than 1 split (e.g., Ap-Bp-Cp involves 2 splits).  For this tutorial we will not pursue this possibility (we will cover that topic separately later: @ref universes).
 
@@ -47,10 +47,12 @@ Answer: In a *given* split, the only limitation is: at a given time, there can b
 
 For our purposes let's assume we've chosen application Ap (server) and Bp (client).
 
+@note All processes in an IPC universe must share one PID namespace.  Outside of containers this is automatically the case; with containers it requires a little configuration.  See @ref pid_namespace "this section" of @ref safety_perms.
+
 @anchor universe_desc
 Specifying IPC universe description: ipc::session::App
 ------------------------------------------------------
-Conceptually, Ap and Bp are both **applications**, so each has certain basic properties (such as executable name).  In addition, Ap takes the role of a server in our split, while Bp takes the role of a client; and in that role Ap has certain additional server-only properties (such as a list of client applications that may establish sessions with it -- in our case just Bp).  In order for ipc::session::Session hierarchy to work properly when establishing a session, you must provide all of that information to it.  This is done very straightforwardly by filling out simple `struct`s of types ipc::session::App, @link ipc::session::Client_app Client_app@endlink, and @link ipc::session::Server_app Server_app@endlink.  Together these are are the **IPC universe description**.
+Conceptually, Ap and Bp are both **applications**, so each has certain basic properties (such as executable name).  In addition, Ap takes the role of a server in our split, while Bp takes the role of a client; and in that role Ap has certain additional server-only properties (such as a list of client applications that may establish sessions with it -- in our case just Bp).  In order for ipc::session::Session hierarchy to work properly when establishing a session, you must provide all of that information to it.  This is done very straightforwardly by filling out simple `struct`s of types ipc::session::App, @link ipc::session::Client_app Client_app@endlink, and @link ipc::session::Server_app Server_app@endlink.  Together these are the **IPC universe description**.
 
 To avoid confusion and errors down the line it is important to keep to a simple rule (which is nevertheless tempting to break): The IPC universe description (the `App`s/`Client_app`s/`Server_app`s combined) may be a simple and small thing, but there is conceptually *only one* of it.  So when various little parts of that universe are passed-in to (most notably) `Session_server` and `Client_session` constructors, their values must never conflict; they must be equal on each side.  So if application Ap lives at "/bin/a.exec" and has UID 322, then both application Ap and application Bp must know those property values for application Ap -- as must application Cp, if it's also a part of the universe.  We'll show this more practically below, but just remember this rule.  (It is also enforced, to the extent possible: at session-open time each side checks the opposing process's OS-reported UID, GID, and executable path against these values.  See @ref safety_perms.)
 
@@ -100,6 +102,8 @@ That's it.  That's our IPC universe description: the `App`s, the `Client_app`s (
 
 You should run all 3 steps in each of Ap and Bp, thus ending up with the same data structures.  You are now ready to start some sessions; or at least a session.
 
+@note If you use Flow-IPC's capnp-RPC support (@ref chan_rpc), you'll need this same IPC universe description: the capnp-RPC classes take these same `App` objects.
+
 Lifecycle of process versus lifecycle of session: Overview
 ----------------------------------------------------------
 @note Firstly let us assume, for simplicity of discussion, that each of your applications, through ~100% of its existence and to enable ~100% of its functionality, requires IPC capabilities.  In reality this is of course not a requirement; it may operate degraded before/between/after IPC sessions, or whatever.  We just consider that irrelevant to the discussion, and it is annoying and confusing to keep mentioning the caveat.  Having assumed that:
@@ -125,7 +129,7 @@ The IPC-related lifecycle of a session-server can be more complex.  In the simpl
   -# Construct @link ipc::session::Session_server P@endlink.
   -# Await an opened session via `P.async_accept()` which on success yields `Server_session S`.
      -# If this fails, that's highly unusual.  Just try again.  Normally it will just sit there until a `Client_session` attempts to connect.
-     -# On success:
+     -# On success: proceed to the next step.
   -# Engage in IPC via now-open `Session S` until (gracefully) told to exit (such as via SIGINT/SIGTERM); or:
   -# Is informed by `Session S` on-error handler that the session was closed by the opposing side; therefore:
      -# Destroy `S`.
@@ -134,6 +138,7 @@ The IPC-related lifecycle of a session-server can be more complex.  In the simpl
 However if your application desires to indeed support multiple *concurrent* sessions then it shall act more like an actual server as opposed to just a glorified client.  Namely, the real difference is that upon `P.async_accept()` success, conceptually it should -- as opposed to merely engaging in IPC off the new session -- kick off two algorithms simultaneously:
   - Go back to step 4 in which it again begins an async (possibly quite long-lasting) `P.async_accept()`.
   - Engage in IPC off the new session that was just accepted.
+
 Accordingly, in step 6.b, it should not "go back to step 4" but rather just end the algorithm in the latter bullet point: There is always a session-accept in progress, and 1 *or more* sessions may be operating concurrently as well.  (To be clear by "concurrently" we don't mean necessarily simultaneously in 2+ threads; but rather that an asynchronously-oriented application can conceptually perform 2+ simultaneous algorithms even in one thread.)
 
 When to destroy `S`, `P` and the channels involved, relative to each other, is covered by the lifetime tenets in @ref session_app_org.
@@ -143,9 +148,10 @@ When to destroy `S`, `P` and the channels involved, relative to each other, is c
 Let's now follow the above outline for a session-client's operation, the client being application Bp.  We shall skip to step 3, as we've already covered step 2.
 
 `Client_session` is a class template, not a class, and moreover extensions like `shm::classic::Client_session` exist.  The choice of actual concrete type is quite important.  First of all decide whether you desire to work with SHM-backed channels and/or SHM arenas; and if so what kind.  Simply put our recommendation:
-  - For maximum performance you *should* choose a SHM-backed session type.  Using vanilla `Client_session` is giving away performance for no good reason.
-  - What kind?  That is outside the scope of this page but is discussed elsewhere in the Manual.  You'll get zero-copy performance either way so for now, at least for simplicity:
+  - If you want zero-copy (message size stops mattering, perf-wise) and/or direct SHM arena access, choose a SHM-backed session type.  Otherwise vanilla `Client_session` (heap-backed messages) is fine; for small messages perf is similar either way.
+  - What kind?  That is outside the scope of this page but is discussed elsewhere in the Manual.  You'll get zero-copy either way so for now, at least for simplicity:
     - Let us choose SHM-classic; hence the specific template to use is ipc::session::shm::classic::Client_session.
+
 We strongly recommend, at this stage, defining an alias template that incorporates the details of your decision, so they need not be mentioned again later in your code:
 
   ~~~
@@ -159,7 +165,7 @@ We strongly recommend, at this stage, defining an alias template that incorporat
 Next let's decide on the values for those 3 template parameters.  The first two determine the concrete type of ipc::transport::Channel that shall be opened in this session.  The last template parameter is used for certain advanced purposes around channel-opening.  We'll talk about all of those topics in @ref chan_open.  For now we'll forego the advanced-metadata stuff (leave that arg at default), and we'll choose a sufficiently powerful and performant setting for the former 2 params.  Thus, again, we strongly recommend to define the concrete type in an alias, so that the details need not be repeated subsequently.
 
   ~~~
-  // Each channel shall contain (only) a (bidirectional) Unix domain stream socket, capable of transmitting data and native handles.
+  // Each channel shall contain (only) a (bidirectional) Unix domain socket, capable of transmitting data and native handles.
   // This is sufficient for all purposes in terms of what it can transmit; and can only be potentially improved upon -- likely marginally
   // at best -- in terms of performance by adding POSIX or bipc MQ pipes as well.
   using Session = Client_session_t<ipc::session::schema::MqType::NONE, true>;
@@ -215,21 +221,20 @@ In summary then:
   template<ipc::session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES,
            typename Mdt_payload = ::capnp::Void>
   using Session_server_t = ipc::session::shm::classic::Session_server<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
-  using Session_server = Session_server_t<session::schema::MqType::NONE, true>;
+  using Session_server = Session_server_t<ipc::session::schema::MqType::NONE, true>;
   using Session = Session_server::Server_session_obj; // This is the mirror image of the opposing process's Session type.
 
   // Thread U.
-  Error_code err;
   Session_server session_srv{..., // Logger.
                              APP_A_AS_SRV, // Part of the IPC universe description: Our own info (including allowed client apps).
                              MASTER_APPS_AS_CLI}; // Part of the IPC universe description: All the client apps in existence.
   // We omitted the optional Error_code* arg.  So if it fails it'll throw exception.
   // Looking in ipc::session::shm::classic::Session_server docs we see it lists the following as possible `Error_code`s emitted:
-  // "interprocess-mutex-related errors (probably from boost.interprocess) w/r/t writing the CNS (PID file); "
+  //   "interprocess-mutex-related errors (probably from boost.interprocess) w/r/t writing the CNS (PID file);
   //   file-related system errors w/r/t writing the CNS (PID file) (see class doc header for background);
   //   errors emitted by transport::Native_socket_stream_acceptor ctor (see that ctor's doc header; but note
   //   that they comprise name-too-long and name-conflict errors which ipc::session specifically exists to
-  //   avoid, so you need not worry about even the fact there's an abstract Unix domain socket address involved).""
+  //   avoid, so you need not worry about even the fact there's an abstract Unix domain socket address involved)."
 
   Session session_being_opened; // Empty session object.
 
@@ -253,10 +258,8 @@ In summary then:
 
       // ...
 
-      // If you expect only one A-B session at a time (no multiple simultaneous clients), you'd
-      // launch the next session-srv.async_accept() here without delay.
-      // If you expect 2+ A-B sessions as a possibility, then you'd do so at the end of on_new_session().
-      // Your decision.
+      // Either way (one A-B session at a time, or 2+ concurrently) launch the next
+      // session_srv.async_accept() here, perhaps after a short delay.
       // [...]
       return;
     }
@@ -279,6 +282,25 @@ In summary then:
   ~~~
 
 In our example code on each side, `go_do_ipc_yay()` now has an equally-capable `Session` object which represents a shared IPC context through which to, broadly, open channels and (optionally) directly access SHM arena(s).  Via the open channels, in turn, one can send messages (covered later in the Manual when we discuss ipc::transport).  Via the SHM arena(s) one can allocate objects (which can be shared however one wants but most easily via ipc::transport channels as well).
+
+@par capnp-RPC users: there is a Session there too
+If you use capnp-RPC (@ref chan_rpc), you won't write the above code yourself: ipc::transport::struc::shm::rpc::Client_context::sync_connect() (synchronous, like `Client_session::sync_connect()`) and ipc::transport::struc::shm::rpc::Context_server::accept() (returning a `kj::Promise`) do the equivalent for you.  Yet the result includes a `Session` all the same: a connected `Client_context` or `Server_context` provides it via `.session()`.  Through it you can use the init-channels and SHM arenas as described in the rest of this Manual.  (Opening channels on-demand is not available this way; see the ipc::transport::struc::shm::rpc::Client_context doc header.)
+
+---
+
+@anchor session_setup_stats
+Stats
+-----
+(See @ref api_overview_stats "the stats synopsis" for the general approach.)
+
+Internally, a `Session` uses a *session master channel* -- a `struc::Channel` over a `Native_socket_stream` -- for its own protocol traffic: log-in, opening channels, graceful close, liveness checks.  Its stats are available via ipc::session::Session_mv::info_collector(), which returns an ipc::session::Info_collector:
+  - ipc::session::Info_collector::master_channel_stats(): the structured-channel stats (ipc::transport::struc::stat::Channel_stats; see @ref chan_struct_stats).
+  - ipc::session::Info_collector::master_channel_transport_snd_stats(), ipc::session::Info_collector::master_channel_transport_rcv_stats(): the stats of the underlying transport (ipc::transport::stat::Blob_snd_stats, ipc::transport::stat::Blob_rcv_stats).
+  - A `*_reset()` for each; and `ostream << *session.info_collector()` prints all of them in one shot.
+
+This traffic is normally light: it is substantial only if you open channels at a high rate.  These stats can confirm that; and, in a long-lived process, show how many channels were opened when.
+
+The stats of a SHM-enabled session's SHM arena(s) are covered in @ref transport_shm_stats "the SHM chapter".
 
 Next let's discuss @ref chan_open.
 

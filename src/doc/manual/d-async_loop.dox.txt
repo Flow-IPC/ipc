@@ -23,9 +23,9 @@
 
 ---
 
-XXXrewrite slightly - do not claim async-I/O is necessarily easier
-
 Before using the most useful aspects of Flow-IPC, we must know how to integrate with an application's event loop.  (Or go back to preceding page: @ref setup.)
+
+@note If you will use only Flow-IPC's capnp-RPC support (@ref chan_rpc), this page mostly does not apply: capnp-RPC uses its own KJ event loop, and Flow-IPC's capnp-RPC classes plug into it.  That said, those classes also give access to the rest of Flow-IPC -- the underlying session, its SHM arenas, and any additional channels opened alongside -- and those use the event-loop integration described here.  KJ-based and non-KJ code can coexist in one application; how to arrange that (for example, separate threads) is outside our scope.
 
 At its core Flow-IPC is meant to send messages to a process and receive them in that other process.  As a rule, a given basic *send* API in Flow-IPC is synchronous, non-blocking, and can never return a "would-block" error.  That is:
   - It will return quickly.
@@ -41,7 +41,7 @@ Your application's event loop versus a Flow-IPC async op
 --------------------------------------------------------
 Your application has a main thread used for logic that would make use of the results of IPC receives (and similar **async[hronous] op[eration]s**).  It may use several such IPC-interested worker threads concurrently as well, in which case it is your responsibility to synchronize (guard against concurrency) between them.  For simplicity of exposition we will exclusively discuss the one-thread scenario here; the same discussion can be generalized to multiple threads by the reader.
 
-Let's call this thread, **thread U** (U for user).  (Again -- if you have multiple threads, presumably to make use of multiple processors cores, then the same conversation can be generalized to such threads U1, U2, ....)
+Let's call this thread, **thread U** (U for user).  (Again -- if you have multiple threads, presumably to make use of multiple processor cores, then the same conversation can be generalized to such threads U1, U2, ....)
 
 Now consider a simple example Flow-IPC async-op (the same principles will apply to all others except where noted); we'll use it for further discussion of the topic.  The async op: ipc::transport::Blob_receiver being asked to receive a single message, in the form of a blob, when it becomes available.  While Flow-IPC waits for an incoming blob (conceptually in the *background*), thread U must be usable for other tasks (e.g., sending or receiving HTTP traffic; periodic logging and reporting; who knows); but once a blob does arrive:
   - if thread U is sleeping, it must be woken up and given the resulting blob, which it will handle as it sees fit;
@@ -60,11 +60,11 @@ Flow-IPC supports both ways of structuring your application.  Moreover, there ar
 Furthermore, in the rest of the manual, for reasons of clarity and brevity, we have to mostly choose *one* event-loop-integration approach.  We expect the reader will tailor their understanding to the other event-loop-integration approaches if and as needed.  That said let's discuss these various approaches.
 
 @anchor aio_pattern
-Async-I/O pattern (default approach): Proactor pattern with separate Flow-IPC worker thread(s)
-------------------------------------------------------------------------------------------------
+Async-I/O pattern: Proactor pattern with separate Flow-IPC worker thread(s)
+---------------------------------------------------------------------------
 This pattern is the one used in most of this Manual, except when specifically discussing event loop integration approach alternatives.  I.e., this is the aforementioned *one event-loop-integration approach* referred-to just above.
 
-Regular users of [boost.asio](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_asio.html) (on-track for the C++ standard), will be familiar with this pattern/approach.  In it, thread U invokes a central `run()` method in which the entire event loop runs, until the decision is made to exit the loop (usually permanently).  (`run()` can also be called in each of multiple threads U1, U2, ....)  This method maintains an internal queue of **tasks** (basically, `void` functions); when the queue is empty it sleeps until a task is pushed onto it which it detects and immediately executes (and pops).  Once that task exits, it executes any more tasks that may have been pushed onto the queue in the meantime -- whether by 1+ of those tasks themselves, or other concurrent threads (spoiler alert: such as our thread W).  Once there are no more tasks, it sleeps again.
+Regular users of [boost.asio](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_asio.html) will be familiar with this pattern/approach.  In it, thread U invokes a central `run()` method in which the entire event loop runs, until the decision is made to exit the loop (usually permanently).  (`run()` can also be called in each of multiple threads U1, U2, ....)  This method maintains an internal queue of **tasks** (basically, `void` functions); when the queue is empty it sleeps until a task is pushed onto it which it detects and immediately executes (and pops).  Once that task exits, it executes any more tasks that may have been pushed onto the queue in the meantime -- whether by 1+ of those tasks themselves, or other concurrent threads (spoiler alert: such as our thread W).  Once there are no more tasks, it sleeps again.
 
 @note Furthermore this sleep-until-tasks-queued-then-wake operation inside `run()` is integrated with OS-level events: If some part of the application wants to do something once TCP socket X, or Unix domain socket Y, receives data, then the kernel can be told to wake up the `run()`'s special "sleep" the moment 1+ of those sockets are readable.  (Internally this is accomplished via `select()`, `poll()`, `epoll_wait()`, etc., which can be told to sleep until 1+ native handles have an active event.)  Because of this there is not always a need to start a separate blocking thread W that would enqueue items onto the `run()` task-queue; instead the kernel has "special privileges" due to being integrated, at a low level, with the `poll()`/whatever OS-call.
 
@@ -75,7 +75,7 @@ That **note** aside: The most basic operation of interest to us has the followin
   void post(Task&& task);
   ~~~
 
-This operation, invokable both from within an already-executing task on thread U, or from any other thread, enqueues `std::move(task)` onto the task-queue, so that `run()` either wakes up thread U (if currently sleeping) and executes `task()` (no args), or else it'll get invoked once ongoing tasks have been executed and popped.  `post()` itself does not synchronously invoke `task()`; but if invoked from within a task (i.e., from thread U, i.e., from `run()` itself), then `run()` will possibly invoke the moment the current (posting) task returns.
+This operation, invokable both from within an already-executing task on thread U, or from any other thread, enqueues `std::move(task)` onto the task-queue, so that `run()` either wakes up thread U (if currently sleeping) and executes `task()` (no args), or else it'll get invoked once ongoing tasks have been executed and popped.  `post()` itself does not synchronously invoke `task()`; but if invoked from within a task (i.e., from thread U, i.e., from `run()` itself), then `run()` will possibly invoke it the moment the current (posting) task returns.
 
 @note `post()` is thread-safe, in that it takes care of any synchronization of the internally-kept task-queue, itself.
 
@@ -127,7 +127,7 @@ To use it, a task in the context of an event loop in thread U might be written a
           }
           // else: All good.  Result blob is at m_buf.begin(), is n_sz long.
           on_receive(n_sz);
-        }
+        });
       });
     }
 
@@ -162,14 +162,14 @@ In other words, why didn't we just make `Blob_receiver` (among others) a boost.a
 
 We feel you.  We use boost.asio ourselves internally after all!  However the first priority was to supply a more general API, so that one does not *need* to orient their event loop around boost.asio machinery specifically -- but merely have a task-queue and `post()`-like API available.  That said:
 
-@todo We may supply an alternative API wherein Flow-IPC objects can be boost.asio I/O objects themselves, similarly to `boost::asio::ip::tcp::socket`.
+@todo We may supply an alternative API wherein Flow-IPC objects can be boost.asio I/O objects themselves, similarly to `boost::asio::ip::tcp::socket`.  Similarly, async-ops could be made available as C++26 `std::execution` senders.  (The `sync_io` cores would make either adapter fairly natural to build.)
 
 @anchor sio_pattern_conceptual
 Alternate approaches: sharing thread U; reactor pattern
 -------------------------------------------------------
 Let's set aside, for the moment, the stylistic organization of the event loop.  Purely in terms of performance, is there any problem with the approach outlined above, where thread(s) like thread W is/are launched by Flow-IPC in the background and then signal thread(s) like thread U when background events occur?
 
-Yes and no.  For most applications the only perf cost is that of (1) context switching between user threads U1, U2, ... versus Flow-IPC internal threads W1, W2, ....; and (2) the signaling necessary for a thread W to inform thread U to wake up.  (2) is, essentially, a condition-variable ping and is rather cheap.  (1) has a non-zero cost but for most applications, with modern hardware, is usually taken to be negligible.
+Yes and no.  For most applications the only perf cost is that of (1) context switching between user threads U1, U2, ... versus Flow-IPC internal threads W1, W2, ...; and (2) the signaling necessary for a thread W to inform thread U to wake up.  (2) is, essentially, a condition-variable ping and is rather cheap.  (1) has a non-zero cost but for most applications, with modern hardware, is usually taken to be negligible.
 
 However that is not an absolute truth.  Some applications are extremely latency-sensitive and don't want to add even single microseconds of delay, if they can be avoided.  Hence there is a non-zero market for, after all, having Flow-IPC and the application share thread U (or U1, U2, ...) -- based on fine performance needs.
 
@@ -183,9 +183,9 @@ Let's discuss what one might do to share thread U instead while using Flow-IPC.
 
 @anchor shared_proactor
 ### Proactor pattern while sharing thread U ###
-Suppose we wanted to use Flow-IPC in a way as closely resembling the proactor approach outlined above (`Blob_receiver::async_receive_blob()` for example) as possible -- but keep the work in thread U; that is avoiding the `post()`-onto-thread-U step in the handler passed-to `async_receive_blob()`.  This might be the best of both worlds: fewer threads/context switching; code that is similar to the above already-reasonable-simple pattern -- but even simpler still.  Sounds good!
+Suppose we wanted to use Flow-IPC in a way as closely resembling the proactor approach outlined above (`Blob_receiver::async_receive_blob()` for example) as possible -- but keep the work in thread U; that is avoiding the `post()`-onto-thread-U step in the handler passed-to `async_receive_blob()`.  That would mean fewer threads and less context switching, with code that remains similar to the above.
 
-The best and de-facto-standard C++ proactor event-loop API is boost.asio.  The authors are not aware of any better or more general way to discuss proactor-style event loops.  (`flow::async` makes it easier to work with boost.asio, but it is still in essence working with boost.asio.)  Therefore the problem of using proactor pattern, but with thread U alone, reduces to using boost.asio but with thread U alone.
+The de-facto-standard C++ proactor event-loop API is boost.asio.  It is a natural way to discuss proactor-style event loops.  (`flow::async` makes it easier to work with boost.asio, but it is still in essence working with boost.asio.)  Therefore the problem of using proactor pattern, but with thread U alone, reduces to using boost.asio but with thread U alone.
 
 @anchor shared_reactor
 ### Reactor (`poll()`-y) pattern while sharing thread U ###
@@ -199,20 +199,20 @@ Both alternate approaches described above are possible by using the following Fl
 `sync_io` pattern (alternate approach)
 --------------------------------------
 For every conceptual object type in Flow-IPC that conceptually performs asynchronous (long-running, blocking, not-non-blocking, annoying -- take your pick) operations, there are indeed 2 mutually exclusive APIs available.  So for each conceptual "thing," there are 2 similarly named classes or class templates.  They are:
-  - The (@ref aio_pattern "recommended by default") async-I/O-pattern API.  Let's say it's called `"N::X"`, where `N` is a namespace, while `X` is a class or class template (or alias to it).
+  - The @ref aio_pattern "async-I/O-pattern" API.  Let's say it's called `"N::X"`, where `N` is a namespace, while `X` is a class or class template (or alias to it).
     - Again: this is the one we use in almost all discussion and examples in this Manual elsewhere.
-  - The (@ref sio_pattern_conceptual "alternate, advanced") `sync_io`-pattern API.  It shall typically be called `"N::sync_io::X"`.  (At any rate, it shall *always* live in a sub-namespace named `sync_io`.)
+  - The (@ref sio_pattern_conceptual "alternate") `sync_io`-pattern API.  It shall typically be called `"N::sync_io::X"`.  (At any rate, it shall *always* live in a sub-namespace named `sync_io`.)
 
 In actual fact, for perf-sensitive `X`es, usually the `sync_io::X` is a lighter-weight *core* with the nitty-gritty logic of dealing with whatever it is that an `X` represents (Unix domain socket, MQ, channel...).  Then "plain" `X` -- the async-I/O variety -- is built *around* such a `sync_io` core.  In these cases, an `X` can *always* be constructed from an `std::move(sync_io::X)` at low computational cost.  This might be counterintuitive at first, but it actually makes sense:
-  - The `sync_io` core allows for great flexibility on the user's part, but is (all else being equal) harder to use.
-  - The async-I/O adapter of that core adds more "stuff" to make it work on top of that core; but it is easier for the user to use.
-    - In fact such an async-I/O adapter is eating our own dog food: it is always a use case of how a `sync_io::X` can be effectively leveraged in a 2+-thread situation (user thread U, worker thread W).  *If* this use case is itself not sufficient for *your* application, then you can use the core directly yourself.
+  - The `sync_io` core does its work only in your thread(s), when you call into it; it avoids starting threads of its own, at least wherever that could matter for performance (details in the ipc::util::sync_io doc header).  You decide what runs in what thread.  Completion handlers are invoked synchronously, from within your calls into the core -- so, by itself, it imposes no cross-thread synchronization on you.  (If your application is multi-threaded anyway, you will synchronize regardless, just in places of your choosing.)  The API is similar but somewhat larger: some setup per object (telling it how to request async-waits from your event loop); and a given async-op may complete synchronously or later, so your code handles both paths.
+  - The async-I/O adapter of that core adds the background thread(s) and does the waiting for you.  Its completion handlers run in an unspecified Flow-IPC thread; so typically you `post()` the real handling onto your own thread (as shown earlier on this page).
+    - In fact such an async-I/O adapter is eating our own dog food: it is always a use case of how a `sync_io::X` can be effectively leveraged in a 2+-thread situation (user thread U, worker thread W).
 
-So we'd like you to use the async-I/O `X` when possible, otherwise `sync_io::X` when that is insufficient.
+Which to choose depends on your situation.  If you are comfortable with Flow-IPC running its own threads, and with handing results over to your thread(s) (`post()` or similar): use `X`.  If you need to own the threading model -- a fixed set of threads; an existing reactor-pattern loop; tight control over context switching: use `sync_io::X`.
 
 How does a `sync_io`-pattern API work?  We won't restate it here, or indeed (as of this writing) feature a Manual page for it.  It is an advanced topic and is fully covered in the reference documentation.  Namely find it here: ipc::util::sync_io doc header.  Loosely speaking it supplies an API analogous to OpenSSL's `SSL_read()` sometimes issuing `SSL_ERROR_WANT_READ` or `SSL_ERROR_WANT_WRITE`.
 
-That said a quick note w/r/t to how one might use the ipc::util::sync_io APIs to implement the (1) "sharing thread U" and (2) "reactor pattern" possibilities mentioned above:
+That said a quick note w/r/t how one might use the ipc::util::sync_io APIs to implement the (1) "sharing thread U" and (2) "reactor pattern" possibilities mentioned above:
   - @ref shared_proactor "Sharing thread U": Use the "Integrating with boost.asio" technique discussed in the ipc::util::sync_io::Event_wait_func doc header.
   - @ref shared_reactor "Reactor pattern": Use the "Integrating with reactor-pattern `poll()` and similar" technique discussed in the same doc header.
 
@@ -235,7 +235,7 @@ Here is a list of async-I/O-pattern APIs and their `sync_io` counterparts.
     - Other: ipc::session::Session_server, ipc::session::shm::classic::Session_server, ipc::session::shm::arena_lend::jemalloc::Session_server.
       - (`sync_io`-pattern) ipc::session::sync_io::Session_server_adapter (*).
 
-In all cases, with the following exceptions, the object type is considered perf-sensitive, and therefore is indeed arranged as follows: `sync_io::X` core; `X` adapts such a core and be constructed from one cheaply.
+In all cases, with the following exceptions, the object type is considered perf-sensitive, and therefore is indeed arranged as follows: `sync_io::X` core; `X` adapts such a core and can be constructed from one cheaply.
 
 The exceptions:
   - (#) ipc::transport::Channel is a *bundling* template, essentially combining `..._sender` and `..._receiver` peer-objects in one object.  It bundles either `X`es *or* `sync_io::X`es, but the same template handles both duties.  It contains little logic: mainly just bundling.  Hence it can pull it off without issue.  Hence there's no `sync_io::Channel`.
@@ -247,7 +247,7 @@ Lastly: for generic programming each relevant type features a couple of alias me
   - `Sync_io_obj`: In an `X`: this is `sync_io::X`.  In a `sync_io::X`: this is empty type `Null_peer`.
   - `Async_io_obj`: Conversely in a `sync_io::X`: this is `X`.  In an `X`: this is empty type `Null_peer`.
 
-E.g., `Blob_stream_mq_sender<Posix_mq_handle>::Sync_obj` is `sync_io::Blob_stream_mq_sender<Posix_mq_handle>` and conversely via `"::Async_obj"`.
+E.g., `Blob_stream_mq_sender<Posix_mq_handle>::Sync_io_obj` is `sync_io::Blob_stream_mq_sender<Posix_mq_handle>` and conversely via `"::Async_io_obj"`.
 
 ---
 
@@ -272,7 +272,9 @@ Recap
 -----
 The simplest event-loop integration approach is the proactor-pattern-with-Flow-IPC-internally-starting-threads-as-needed: the **async-I/O pattern**.  How to use this API style is explained @ref proactor_ex "here".  Most of the rest of the Manual uses this approach in examples and discussion.  In particular we'll routinely use `post()` as described there.
 
-We do this (1) for simplicity of exposition; and (2) because, in the absence of compelling objections, we feel it is the best approach to use.  However such objections may, indeed, sometimes apply; namely in the presence of (1) a legacy reactor loop; and/or (2) very stringent perf restrictions sensitive even to context switching.  In that case, whether merging Flow-IPC worker thread(s) into your own or integrating with a `*poll()`-y loop, use the alternate `sync_io` **pattern**, per: ipc::util::sync_io doc header.
+We do this for simplicity of exposition.  The `sync_io` pattern is the alternative when you want control over threads; e.g., in the presence of (1) a legacy reactor loop; and/or (2) very stringent perf restrictions sensitive even to context switching.  In that case, whether merging Flow-IPC worker thread(s) into your own or integrating with a `*poll()`-y loop, use the alternate `sync_io` **pattern**, per: ipc::util::sync_io doc header.
+
+(The exception is capnp-RPC, if you use it: it runs on the KJ event loop.  See @ref chan_rpc.)
 
 We're now ready to make Flow-IPC actually do something.  Let's move on to @ref session_setup.
 

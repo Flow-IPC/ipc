@@ -1221,9 +1221,9 @@ void CLASS::App_session::use_channels_round_1a()
       {
         /* Subtlety: We are reusing the same handle-writer again and again, but the other side doesn't know that;
          * it just receives an FD, writes through it, and closes it.  This would widow the pipe and make it unusable
-         * at best.  By sending a ::dup() we raise the ref-count of FDs referring to the writer and keep said writer
+         * at best.  By sending a dup() we raise the ref-count of FDs referring to the writer and keep said writer
          * alive and the pipe un-widowed. */
-        hndl = Native_handle(::dup(wrt.native_handle()));
+        hndl = Native_handle(wrt.native_handle()).dup();
         ASSERT((hndl.m_native_handle != -1) && "Ran out of FDs or something?!");
 
         exp_back_ids.push_back(id);

@@ -19,17 +19,17 @@
 
 @page transport_shm Shared Memory: Direct Allocation, Transport
 
-<center>**MANUAL NAVIGATION:** @ref chan_struct_advanced "Preceding Page" - @ref transport_core "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
+<center>**MANUAL NAVIGATION:** @ref chan_rpc "Preceding Page" - @ref transport_core "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 ---
 
-Here we discuss the direct use of SHM arenas for allocation of C++ data structures; and how to share such structures between processes via ipc::transport.  (Or go back to the prerequisite preceding page: @ref chan_struct_advanced.)
+Here we discuss the direct use of SHM arenas for allocation of C++ data structures; and how to share such structures between processes via ipc::transport.  (Or go back to preceding page: @ref chan_rpc.  @ref chan_struct_advanced is the prerequisite for the current page.)
 
 How shared memory (SHM) fits into Flow-IPC
 --------------------------------------------
 If you've been reading this Manual sequentially to this point, you've seen **shared memory (SHM)** mentioned many times already.  Nevertheless our philosophy on how much the user -- you -- should have to think about SHM is as follows.
 
-We don't want you to think about it any more than absolutely necessary.  It is a means to an end: generally speaking avoiding copying data shared among processes, for performance and algorithmic ease.  As such much of the work with Flow-IPC should proceed without code mentioning SHM at all.  Case in point: `struc::Channel` allows one to transmit messages with zero-copy performance, which means SHM is *internally* used, but you, the *user*, get that benefit automatically: All you have to do, essentially, is say in code, "I want zero-copy performance."  To do that, ultimately, all you do is (on each side): when setting up your IPC session(s), specify a certain `Session` or `Session_server` base type which will enable SHM-backed performance with no further references to that fact in the rest of your code.  To recap the recipes given in @ref session_setup and @ref chan_struct --
+We don't want you to think about it any more than absolutely necessary.  It is a means to an end: generally speaking avoiding copying data shared among processes, for performance and algorithmic ease.  As such much of the work with Flow-IPC should proceed without code mentioning SHM at all.  Case in point: `struc::Channel` allows one to transmit messages zero-copy, which means SHM is *internally* used, but you, the *user*, get that benefit automatically: All you have to do, essentially, is say in code, "I want zero-copy."  To do that, ultimately, all you do is (on each side): when setting up your IPC session(s), specify a certain `Session` or `Session_server` base type which will enable SHM backing with no further references to that fact in the rest of your code.  To recap the recipes given in @ref session_setup and @ref chan_struct --
 
 @anchor transport_shm_setup
 Session-client:
@@ -45,7 +45,7 @@ Session-client:
   using Client_session_t = ipc::session::Client_session<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
 
   // Now everything will flow from the above, alias to alias to alias... no SHM details being mentioned:
-  using Session = Client_session_t<session::schema::MqType::NONE, true>;
+  using Session = Client_session_t<ipc::session::schema::MqType::NONE, true>;
   template<typename Message_body>
   using Structured_channel_t = Session::Structured_channel<Message_body>;
 
@@ -62,10 +62,10 @@ Session-server:
   // Alternatively (different SHM-backed engine):
   using Session_server_t = ipc::session::shm::arena_lend::jemalloc::Session_server<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
   // Alternatively (no zero-copy/SHM-backing):
-  using Session_server_t = ipc::session::shm::Session_server<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+  using Session_server_t = ipc::session::Session_server<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
 
   // Now everything will flow from the above, alias to alias to alias... no SHM details being mentioned:
-  using Session_server = Session_server_t<session::schema::MqType::NONE, true>;
+  using Session_server = Session_server_t<ipc::session::schema::MqType::NONE, true>;
   using Session = Session_server::Server_session_obj;
   template<typename Message_body>
   using Structured_channel_t = Session::Structured_channel<Message_body>;
@@ -76,22 +76,22 @@ Session-server:
 
 Then it just works.  Now, naturally, when working with structured data in, e.g., our example `Cool_structured_channel`, we may want to think beyond mere messaging and treat messages as shared data structures, in which case you *will* need to think about shared memory somewhat -- but in a limited way.  We went over that in @ref chan_struct_advanced.  Even there, though, SHM-related thinking is limited to algorithmic decisions: when is a given `Msg_out` in existence; when does its lifetime end; which side should write; how to prevent concurrent non-read-only access (synchronization).  You still don't need to think about SHM pools or SHM arenas.  Notably, annoying and difficult things involving SHM pool naming and cleanup, including in case of crash, are performed invisibly and without your participation.
 
-As pointed out in @ref chan_struct_advanced, however, working on shared data structures living *directly and exclusively* inside capnp-generated trees may be insufficient for some use cases.  To recap possible ways in which it may be insufficient:
+As pointed out in @ref chan_struct_advanced, however, working on shared data structures living *directly and exclusively* inside capnp-generated trees may be insufficient for many use cases.  To recap possible ways in which it may be insufficient:
   - A capnp tree *can* express almost any data structure, as it supports various scalars, `struct`s, `union`s, and dynamic-length lists... *But*: high-performance structures such as sorted trees and hash tables would require at least an entire layer of code to conveniently treat a capnp-`struct` substrate in that fashion.  Plus the way capnp allocates space inside its segments, when a data structure is modified is not space-efficient or necessarily fast: It's not even *trying* to replicate a high-performance heap allocation algorithm.  (The simplest example is what happens when a `List` size increases: capnp does *not* as of this writing allow the old-sized list's space to be reused subsequently *at all*; yet it continues taking RAM.)
-  - As of this writing a received message instance (`Msg_in`) is a read-only view of the original out-message (even if, as we recommend, you use SHM-backing, and therefore it's really "viewing" the original structure directly where it was originally written).  (As noted in @ref chan_struct_advanced this could be changed in the foreseeable future; but not as of this writing.)  What if you'd like the recipient to write to the data structure?
+  - As of this writing a received message instance (`Msg_in`) is a read-only view of the original out-message (even if you use SHM-backing, and therefore it's really "viewing" the original structure directly where it was originally written).  (As noted elsewhere: this could be changed in the foreseeable future; but not as of this writing.)  What if you'd like the recipient to write to the data structure?
 
 All that said, perhaps the best way to look at it is not: what can't you do with `struc::Channel` message directly?  Rather look at it affirmatively: When two threads in a monolithic process want to participate in an algorithm on data structure X, how is that written?  Well, one thread or the other creates on the heap and writes it initially; then a pointer is passed to the other thread; and then both of them simply access X *collaboratively*: reading, writing, synchronizing via mutex if necessary; and so on.  So `struc::Msg_out` and `struc::Msg_in` are all well and good, but what if you simply want two threads *in two different processes* to *collaborate* in working on a given C++ data structure?
 
 In that case you will want to *use SHM directly*.
 
-Flow-IPC provides this ability and goes significantly further than known other SHM-access libraries, including the delightful boost.interprocess, in hiding pain from you.  You won't have to worry about creating SHM pools, cleanup, naming.  Perhaps most notably you won't have to write your own STL allocators or else forego the use of STL-compliant data structures due to their default code making them unsuitable for use with SHM.  Flow-IPC provides a workflow to enable STL-compliant containers to be used directly in SHM.  Manual/intrusive data structures, such as home-grown linked lists, are also supported.  (boost.interprocess tries to do all this too, but using it involves painful stateful allocators and various other limitations.  Certainly it does not leverage a commercial-grade memory manager like jemalloc; but we do.  This is not actually a criticism of boost.interprocess; what it provides is very useful, and we leverage it ourselves.  Just its ambition is lesser than ours: we build on it.  Even excluding SHM-jemalloc and staying with SHM-classic we provide a powerful layer of usability on top of boost.interprocess.)
+Flow-IPC provides this ability and goes significantly further than known other SHM-access libraries, including the delightful boost.interprocess, in hiding pain from you.  You won't have to worry about creating SHM pools, cleanup, naming.  Perhaps most notably you won't have to write your own STL allocators or else forego the use of STL-compliant data structures due to their default code making them unsuitable for use with SHM.  Flow-IPC provides a workflow to enable STL-compliant containers to be used directly in SHM.  Manual/intrusive data structures, such as home-grown linked lists, are also supported.  (boost.interprocess tries to do all this too, but using it involves painful stateful allocators and various other limitations.  Certainly it does not leverage a commercial-grade memory manager like jemalloc; but we do.  This is not actually a criticism of boost.interprocess; what it provides is very useful, and we leverage it ourselves.  Just its ambition is lesser than ours in this context: we build on it.  Even excluding SHM-jemalloc and staying with SHM-classic we provide a powerful layer of usability on top of boost.interprocess.)
 
 ### ipc::session and SHM ###
 As you'll soon see, to allocate something in SHM and then share it with another process (where it can further access that "something," including modifying it if desired), one needs a **SHM arena** in which to allocate in the first place.  Where do you get this arena, and how long will it keep existing?  Generally there are 2 mutually exclusive answers to this question:
   - (With ipc::session) You can get it through the ipc::session paradigm.  You start an ipc::session::Session (@ref session_setup); and that object has 2 SHM-arenas explicitly available; most notably `session.session_shm()` returns a pointer to a SHM-arena object.  You can allocate via that, and off you go.
   - (Without ipc::session) You can create it manually by using something in ipc::shm.  E.g., you could manually construct an ipc::shm::classic::Pool_arena.
 
-In this page we limit discussion to way 1 (with ipc::session).  For way 2: documentation is available in the Reference -- see various items, starting at sub-namespaces, under ipc::shm.  For example see ipc::shm::classic::Pool_arena docs.
+In this page we limit discussion to way 1 (with ipc::session).  For way 2: documentation is available in the Reference -- see various items, starting at sub-namespaces, under ipc::shm.  For example see ipc::shm::classic::Pool_arena docs.  The API Overview page has a short @ref api_overview_shm_standalone "synopsis of SHM-classic standalone use".
 
 @anchor shm_choice
 ### Choice of SHM-provider ###
@@ -112,7 +112,7 @@ Direct use of SHM: How-to
 The first step is to select SHM-backed sessions at compile-time; everything flows from that decision.  See @ref transport_shm_setup "above" for recipe.
 
 ### The 1-2 arenas available upon session-establishment ###
-SHM-backed capabilities become available, like everything else in the ipc::session paradigm, once a session has been established in PEER state (@ref session_setup).  Internally during the session-opening procedure the following occurs.  (It occurs invisibly, and without ipc::session you'd have to create relevant arena(s) yourself which is very different between the 2 SHM-providers and much more difficult with SHM-jemalloc, though even with SHM-classic very annoying naming decisions would need to be made; not to mention subsequent cleanup headaches.)
+SHM-backed capabilities become available, like everything else in the ipc::session paradigm, once a session has been established in PEER state (@ref session_setup).  Internally during the session-opening procedure the following occurs.  (It occurs invisibly, and without ipc::session you'd have to create relevant arena(s) yourself which is very different between the 2 SHM-providers and much more difficult with SHM-jemalloc, though even with SHM-classic very annoying naming decisions would need to be made; not to mention subsequent cleanup headaches, especially on crash.)
   - A **session-scope arena** (a/k/a `.session_shm()`) is created.  This arena's **lifetime** (and therefore the max lifetime of any objects allocated by either side within it) is *until the end of the session*.
   - If and only if this has not yet occurred earlier for the distinct ipc::session::Client_app involved in this session:
     - An **app-scope arena** (a/k/a `.app_shm()`), for that specific distinct `Client_app`, is created.  This arena's **lifetime** is *until the `Session_server` is destroyed* (strictly speaking: until it, and every session it produced for that `Client_app`, are destroyed -- see the lifetime tenets in @ref session_app_org).  That is: its lifetime spans all future sessions, not just the one that triggered its creation (in on-demand fashion).
@@ -123,16 +123,39 @@ SHM-backed capabilities become available, like everything else in the ipc::sessi
 ---
 
 @par SHM-arena capacity
-How much "stuff" is it possible to allocate in each arena?  The answer is: it is essentially unlimited.
+How much "stuff" is it possible to allocate in each arena?  The answer is: it is essentially unlimited, except for certain OS limits.  (These limits are discussed separately immediately below; please assume they're not a factor for the moment.)  Then:
 
 @par
-More specifically, with SHM-jemalloc it is simply unlimited for all practical purposes.
+More specifically, with SHM-jemalloc an arena's size is unlimited.
 
 @par
-With SHM-classic there is as of this writing a default limit in the *gigabytes* (query ipc::session::shm::classic::Session_server::pool_size_limit_mi() to get the value).  If it proves insufficient, you can increase it via the similarly-named mutator `pool_size_limit_mi()`.  Rest assured that all these gigabytes are *not* taken-away from general OS use from the get-go: Rather a given *page* (default size 4Ki) is taken-away from general use, only once it is "touched" by an allocation or write.
+With SHM-classic there is as of this writing a default limit in the *gigabytes* (query ipc::session::shm::classic::Session_server::pool_size_limit_mi() to get the value).  If it proves insufficient, you can increase it via the similarly-named mutator `pool_size_limit_mi()`.  Rest assured that all this potentially massive space is *not* taken-away from general OS use (**committed**) from the get-go: Rather a given *page* (default size 4Ki) is committed, only once at least 1 byte is touched.  In that sense the vaddr space use, in a SHM-classic arena is *sparse*.
 
 @par
-Unfortunately, however, at least in Linux there are some kernel parameters governing how much virtual SHM space can be reserved in such a way, even though ~no physical RAM is taken by just creating a pool sized in the gigabytes.  In particular if system-wide active pools exceed a certain parameter `Session_server::async_accept()` can yield "No space left on device" (`ENOSPC`) error.  In this case one can: (1) tweak the kernel parameter(s) as admin; (2) reduce a given `Session_server`s' pool-size via the aforementioned mutator; or (3) use SHM-jemalloc provider which adjusts dynamically and creates/destroys smaller pools internally as needed.
+It is possible, in the case of a SHM-classic arena, to intentionally *commit* the entire arena -- thus making its full size no longer sparse.  We discuss that just below, as it fits better with the idea of those OS-induced limits.
+
+---
+
+@par OS limits on SHM use
+We currently target Linux, so this information is Linux-specific.  (Once ported to other platforms, we can discuss their relevant properties nearby.)
+
+@par
+Firstly there is no limit, for practical purposes, on *sparse* vaddr space use as mapped to SHM.  So, in particular, a SHM-classic arena can be sized (via shm::classic::Session_server::pool_size_limit_mi() knob) as truly enormous -- say, a terabyte; since it starts out sparse, it won't initially be committed RAM.  (We assume no per-process address-space limit -- `ulimit -v` -- is set; by default there is none.)
+
+@par
+There is however (in Linux) a *system-wide OS limit on tmpfs /dev/shm size* which corresponds to the totality, across the system, of *committed* pages mapped to SHM.  So, in simple terms, this limit is a system-wide ceiling on "really used" SHM.  It is a hard, immediate limit (but more on that shortly).  By default in regular machines the limit is half the physical RAM, which is pretty generous; but in containers it can be surprisingly low -- 64Mi bytes for example.  It is even easily possible to see current non-sparse use with `df /dev/shm`; whereas `ls -l` shows named pools' full sizes, *sparse parts included*.
+
+@par
+There is, here, an important subtlety.  The question: what *actually happens* upon trying to exceed this limit?  The answer: it depends on what action would exceed the limit.  It actually makes plenty of sense, though in practice it can be surprisingly brutal.  To wit: If the limit is exceeded by a non-OS-call operation that commits that extra page that breaks through the limit -- for example, writing a single byte or allocating a small buffer during regular operation -- then *the process immediately aborts with SIGBUS (bus error)*.  This makes sense, as there's no OS-call through which to emit some civilized error. / However, if one commits page(s) using an intentional OS-call, then the OS has the chance to fail gracefully: that OS-call will not commit anything but will emit error-code ENOSPC (no space left on device; the "device" in this case being tmpfs /dev/shm).
+
+@par
+This applies straightforwardly to SHM-classic.  That is: by default, a new arena (as from each of `Session::session_shm()`, `Session::app_shm()`) will be sparse regardless of configured size and will barely charge against the limit.  Whether then or, ~more likely, later on upon actual use of either SHM-arena for actual allocations and read/writes -- an operation that would exceed the OS-limit will crash with SIGBUS as described.  This is the price of doing business, if you want to use high-ceiling sparse classic SHM-arenas; hitting that limit will not be graceful.  But!  If, instead, you'd *prefer* to give up sparseness (hence, take real RAM up-front per arena) for getting a civilized error on hitting the limit: you can.  Call `commit()` on the relevant arena(s); for example: `session.session_shm()->commit()`.  This API (ipc::shm::classic::Pool_arena::commit()) will either succeed or emit (via exception or error-code out-arg, your choice as usual) the civilized error (no-space-left as discussed, probably).
+
+@par
+As for SHM-jemalloc: There is no equivalent of SHM-classic's up-front commit API.  jemalloc manages sparseness or lack thereof (but generally it doesn't want to unnecessarily commit memory); and if some operation happens to hit the system-wide OS-limit, then the process will crash as described.
+
+@par
+An aside, in case you use boost.interprocess SHM directly elsewhere: Since Boost-1.76, in Linux, `bipc::managed_shared_memory` (and anything built on `bipc::shared_memory_object::truncate()`) commits the entire pool up-front, quietly.  So it is never sparse: it behaves as if `commit()` had been called upon creation.  (This gives the graceful no-space error early; but a huge-but-mostly-unused pool size is no longer viable.)  SHM-classic does not inherit this behavior: as described above, its arenas start sparse, and you choose whether to `commit()`.
 
 ---
 
@@ -147,46 +170,50 @@ First step is specify the arena.  To do so use a `.session_shm()` or `.app_shm()
   // Alternative way to access this, in case a specific `session` is not easily available.  Returns null, if no session with Client_app a_client_app has yet opened.
   auto app_shm = session_server.app_shm(a_client_app);
 
-  auto cool_obj = session_shm.construct<Cool_obj>(...); // And off we go allocating in an arena.
+  auto cool_obj = session_shm->construct<Cool_obj>(...); // And off we go allocating in an arena.
   ~~~
 
-Second step is to construct something within it.  While certain lower-level capabilities exist, we omit them here and with rare advanced exceptions recommend against their use.  As far as we are concerned, to allocate, you must use: `x = arena->construct<T>(...)`, where `...` are constructor args to `T` (possibly none); it returns `Arena::Handle<T>` which is, simply, `shared_ptr<T>`.  (Whether it's `boost::shared_ptr` or `std::shared_ptr` is formally unspecified; but they have equivalent semantics.)
+Second step is to construct something within it.  While certain lower-level capabilities exist, we omit them here and with rare advanced exceptions recommend against their use.  As far as we are concerned, to allocate, you must use: `x = arena->construct<T>(...)`, where `...` are constructor args to `T` (possibly none); it returns `Arena::Handle<T>` which is, simply, `shared_ptr<T>`.  (Whether it's `boost::shared_ptr` or `std::shared_ptr` is formally unspecified -- can be either depending on SHM-provider; but they have equivalent semantics.)
 
-To distinguish between it and other things, the returned thing from `.construct<T>()` -- `x` above -- is called a **first-class SHM handle** (or just **SHM handle** or **handle**).  It *is* a `shared_ptr<T>`, but this *particular* shared-pointer has an important property that is not otherwise obvious given its apparent type.  Namely it is fitted (invisibly) with a *custom deleter* supplied by Flow-IPC.  Equally importantly, the *handle* is the entity that can be transmitted (**lent**) to another process.  That is the main reason it is a *first class* item.  Certainly *subordinate* allocations occur *under* that handle in the future -- for example a `vector` allocating its buffer -- but these are not themselves transmitted (lent) between processes.  Only the *first-class handle* is.
+To distinguish between it and other things, the returned thing from `.construct<T>()` -- `x` above -- is called a **first-class SHM handle** (or just **SHM handle** or **handle**).  It *is* a `shared_ptr<T>`, but this *particular* shared-pointer has an important property that is not otherwise obvious given its apparent type.  Namely it is auto-fitted with a *custom deleter* supplied by Flow-IPC.  Equally importantly the *handle* is the entity that can be transmitted (**lent**) to another process.  That is the main reason it is a *first class* item.  Certainly *subordinate* allocations can occur *under* that handle in the future -- for example a `vector` allocating its buffer, resulting usually in far more actual RAM use than the first-class `sizeof(vector<...>)` -- but these are not themselves individually transmitted (lent) between processes.  Only the *first-class handle* is.
 
 ---
 
 @par Garbage-collection of SHM-allocated objects
-A key feature and convention is that a SHM-handle, as returned by `.construct<>()`, is such that the underlying RAM is deallocated automatically.  (Goes without saying possibly but do not try to manually `delete x.get()` or save an `x.get()` beyond `x` lifetime, or anything like that.  Once a `shared_ptr`, always a `shared_ptr`.)  Deallocation means return at least for further allocations in the same arena.  (Internally it *might* also lead to return of RAM for general OS use in some situations.  That's a hairy optimization detail that depends on the SHM-provider.  Generally SHM-jemalloc is into such things, while SHM-classic less so.)
+A key feature and convention is that a SHM-handle, as returned by `.construct<>()`, is such that the underlying RAM is deallocated automatically.  (Goes without saying possibly but: do not try to manually `delete x.get()` or save an `x.get()` beyond `x` lifetime, or anything like that.  Once a `shared_ptr`, always a `shared_ptr`.)  Deallocation means return at least for further allocations in the same arena.  (Internally it *might* also lead to return of RAM for general OS use in some situations.  That's an optimization detail that depends on the SHM-provider.  SHM-jemalloc can do so: when jemalloc decides to purge no-longer-used pages, they are released to the OS, while the SHM-pool itself remains.  SHM-classic does not: once a page is committed, it remains so until the SHM-pool is removed.)
 
 @par
 A very important point is that the auto-deallocation occurs *on a cross-process basis*.  If one never transmits (lends) `x` via IPC, then it acts like any other `shared_ptr`: ref-count-zero is reached; so the resource is returned (albeit to SHM-arena as opposed to the general heap).  If one transmits it via IPC N (N >= 1) times, however, then: The underlying data structure is deallocated once *all* first-class handles have reached ref-count-zero in their respective processes.  That includes:
   - The `shared_ptr` group of the original `x = ....construct<T>(...)` call.
-  - For each `x_borrowed = ....borrow<T>(...)` upon receipt of `x` by a process over IPC: The `shared_ptr` group of that `x_borrowed`.
+  - For each `x_borrowed = ....borrow_object<T>(...)` upon receipt of `x` by a process over IPC: The `shared_ptr` group of that `x_borrowed`.
 
 @par
 Perhaps in plainer English (?): The original constructed handle `shared_ptr`, plus each similarly-functioning `shared_ptr` obtained by a receiving process upon IPC transmission of the original, together form a multi-process meta-shared-pointer group; and the underlying memory is deallocated no earlier than that entire meta-shared-pointer group's ref-count reaches zero.  (To-do: a diagram would help here.)
 
+@note With SHM-jemalloc, "no earlier than" can mean "somewhat later than."  If the last reference is dropped in a thread (or process) other than the one that constructed the object, the deallocation is performed by the constructing thread: opportunistically, during its subsequent SHM-jemalloc activity (or at its exit).  Normally this is invisible.  However, if that thread goes idle (does no SHM-jemalloc work) for a while, the deallocation waits for it.  If that matters to you, have that thread call ipc::shm::arena_lend::jemalloc::Ipc_arena::this_thread_gc(), as it goes idle; its doc header has details.
+
 ---
 
-A super-important topic is what `T` can be.  Without any complications, it can at least be a pointer-free plain-old data-type (POD) of arbitrary (but known at compile-time) depth/complexity:
+A key topic is what `T` can be.  Without any complications, it can at least be a pointer-free plain-old data-type (POD) of arbitrary (but known at compile-time) depth/complexity:
   - Integers, floating-point numbers, Booleans.
   - `struct`, `union`, `class` aggregating any of the above (including themselves -- meaning multi-level `struct`s et al).
   - Native, fixed-size arrays collecting any of the above (including themselves).
+
+(We use "POD" loosely here, meaning a fixed-size type with no pointers inside -- not the formal C++ definition.  For example a `class` with a user-defined constructor is fine; but one with `virtual` functions is not, as that implies a hidden pointer.)
 
 @note An `array<..., N>` is allowed in a POD: it is a `class` or `struct` containing a native fixed-size array of `...`s.  `N` is a constant known at compile time.  Informally we recommend the use of `array<T, N> x` over `T x[N]`: there is literally no downside (including perf).
 
 @note Raw pointers are not allowed in a POD in this context (nor are they, generally, allowed in the larger context of what can go into SHM-stored `T`).
 
-That's pretty good.  Yet it is not good enough for a huge-range of algorithms.  Ultimately that's because a POD can't have pointers (or another way of saying it: dynamically-sized arrays).  Support for pointers/dynamically-sized arrays is required, among other things, to be able to store STL-compliant containers.  For that matter intrusive/manual data structures (such as explicit linked lists or trees) also require pointers.  Fortunately:
+That's pretty good.  Yet it is not good enough for a huge range of algorithms.  Ultimately that's because a POD in this context can't have dynamically-sized arrays (pointers thereto).  Support for pointers/dynamically-sized arrays is required, among other things, to be able to store STL-compliant containers.  For that matter intrusive/manual data structures (such as explicit linked lists or trees, expressed as raw nodes) also require pointers.  Fortunately:
 
-### Allocating non-PODs (data structures with pointers, dynamically-sized items, and/or STL-compliant containers) ###
+### Allocating non-PODs (data structures with pointers/dynamically-sized items, and/or STL-compliant containers) ###
 Flow-IPC provides extensive support for SHM-stored pointers and, by extension, STL-compliant containers (and intrusive/manual data structures).
 
-At its formal core, in order for such a `T` (one involving pointers) to be `.construct<T>()`ible, a pointer field `m_x` inside (directly or indirectly via more such pointers) `T` must be as follows.  Suppose the pointee's type is `P`.
+At its formal core, in order for such a `T` (one involving pointers) to be `.construct<T>()`ible, a pointer field `m_p` inside (directly or indirectly via more such pointers) `T` must be as follows.  Suppose the pointee's type is `P`.
   - Its type must not be `P*` (raw pointer) but rather: `Arena::Pointer<P>`, where `Arena::construct<T>()` was the method used to construct.
-    - `Pointer<P>` is called a **fancy pointer** (yes, actual technical name in C++-world; no, it is not the same as smart pointer) to `P`.  (For the curious: With SHM-classic it is `boost::interprocess::offset_ptr<P>`.  With SHM-jemalloc it is a custom type written by us, internally storing a SHM pool ID and offset within the IDed pool.)
-  - `m_p` (of type `Pointer<P>`) must have been obtained as follows: `m_p = Pointer<P>(static_cast<P*>(arena.allocate(sizeof(P)))`.
+    - `Pointer<P>` is called a **fancy pointer** (yes, actual technical name in C++-world; no, it is completely different from a smart pointer) to `P`.  (For the curious: With SHM-classic it is `boost::interprocess::offset_ptr<P>`.  With SHM-jemalloc it is a custom type written by us, internally storing a SHM pool ID and offset within the IDed pool.)
+  - `m_p` (of type `Pointer<P>`) must have been obtained as follows: `m_p = Pointer<P>{static_cast<P*>(arena.allocate(sizeof(P)))}`.
   - If `T::~T()` is invoked, it must ensure that the following occurs: `arena.deallocate(static_cast<void*>(m_p.get()))`.
 
 Indeed, if your plan is to store actual pointer-like fields in the data structure rooted in `T` (context: `.construct<T>()`) -- meaning `T` is an intrusive/manual data structure -- then you must ensure all that somewhat-hairy stuff.  Whereas when working with the regular heap you'd just:
@@ -200,7 +227,7 @@ So that would definitely be taxing to code.  And indeed, particularly with legac
 
 @note boost.container (in every Boost release up to and including at least 1.92) has a memory-leak bug: erasing from the middle of a `vector` (or `flat_map` and the like) whose elements are certain boost.container containers -- `basic_string`, `deque`, `stable_vector` -- can leak those elements' memory.  It is not commonly triggered; but in SHM a leak is a leak.  If you use our SHM-allocators (ipc::shm::stl::Stateless_allocator, including the `Allocator` aliases provided by ipc::session SHM-enabled types), you are protected from it automatically.  For details see the `boost::has_trivial_destructor_after_move` specialization in ipc/shm/stl/stl_fwd.hpp.
 
-Once you've chosen your STL-compliant SHM-friendly container type -- or developed your own! -- you must take care to, also, specify (as the `Allocator` template paramater to the container type) the **SHM-allocating allocator** we've provided.  (boost.interprocess provides an allocator template for similar use; but it is stateful, which is a huge pain in the butt -- plus it uses additional RAM to store the allocator pointer.)  Use this allocator:
+Once you've chosen your STL-compliant SHM-friendly container type -- or developed your own! -- you must take care to, also, specify (as the `Allocator` template parameter to the container type) the **SHM-allocating allocator** we've provided.  (boost.interprocess provides an allocator template for similar use; but it is stateful, which is a huge pain in the butt; among other pains it uses additional RAM to store the allocator pointer.)  Use this allocator:
 
   ~~~
   template<typename T>
@@ -263,7 +290,7 @@ If you intend to transmit (lend) a `T`-typed object via IPC, then of course you 
 However a `T` can also be used for other purposes and yet still be held partially in SHM.  For example you might build up a `T = Widget::String` from the example above and then `move()` or copy it onto `x->m_str`, where `x = arena.construct<Widget>()`, such that you intend to actually IPC-transmit first-class SHM-handle `x`.  In that case you can still `construct<T>()` the intermediate `Widget::String` -- no problem -- and use it in whatever way you need, even if you aren't going to transmit that guy but just use it locally and then let it be deallocated.
 
 @par
-However in such situations it would make your code less verbose and potentially faster -- by avoiding unnecessary SHM use -- to place the `T` on the stack (among other things; could be heap too).  E.g.: `x = session.session_shm()->construct<Widget>(); Widget::String temp_str; ...mutate temp_str...; x->m_str = std::move(temp_str);`.  Note `temp_str` did not need to be itself `construct<>()` ed.  The `String` *itself* (the outer fixed-size thing of size `sizeof(String)`) is on the stack; but whatever it needed to actually allocate on its own behalf it would have used SHM for (due to the allocator properly being configured as part of the `String` alias).
+However in such situations it would make your code less verbose and potentially faster -- by avoiding unnecessary SHM use -- to place the `T` on the stack (among other possibilities; could be heap too at least).  E.g.: `x = session.session_shm()->construct<Widget>(); Widget::String temp_str; ...mutate temp_str...; x->m_str = std::move(temp_str);`.  Note `temp_str` did not need to be itself `construct<>()`ed.  The `String` *itself* (the outer fixed-size thing of size `sizeof(String)`) is on the stack; but whatever it needed to actually allocate on its own behalf it would have used SHM for (due to the allocator properly being configured as part of the `String` alias).
 
 @par
 If you are familiar with C++ allocators, then this is perhaps no surprise.
@@ -278,19 +305,19 @@ So you've constructed it.  How do you fill it out further?  Well, if `T` is a PO
   x->m_str[0] = 'X'; // Assumes, of course, that by this point: x->m_str.size() > 0.  Else this would be undefined behavior/buffer overflow.
   ~~~
 
-If, however, what you're doing will require some part of `T` to *allocate* on its behalf, then it'll need to use its allocator.  But wait... why won't that just work?  After all we've specified the `Allocator` template param so nicely in our `Widget` declaration!  Answer: We've declared the allocator *type* to use, yes, and that is critical.  However, the container code needs to know which arena to actually allocate-in.  `arena->construct<T>()` is Flow-IPC code, and it knows it's being invoked on `*arena`, so it does (internally) what's needed.  However consider this:
+If, however, what you're doing will require some part of `T` to *allocate* on its behalf, then it'll need to use its allocator.  But wait... why won't that just work?  After all we've specified the `Allocator` template param so nicely in our `Widget` declaration!  Answer: We've declared the allocator *type* to use, yes, and that is critical.  However, the container code needs to know which arena to actually allocate-in.  `arena->construct<T>()` is Flow-IPC code, and it knows it's being invoked on `*arena`, so it does (internally) know what's needed.  However consider this:
 
   ~~~
   assert(x->m_str.empty());
   x->m_str.resize(128); // This should make x->m_str contain 128 NUL characters.
   ~~~
 
-`basic_string::resize()`, internally, will invoke its "stored" allocator of type `Shm_allocator` to allocate at least a 128-buffer.  But `Shm_allocator = Stateless_allocator<...>` is a **stateless allocator**.  That means the allocator object "stored" inside the container outer structure has size 0: it takes no space and has no state.  So the container code can't "know" from what `Arena` to allocate space!
+`basic_string::resize()`, internally, will invoke its "stored" allocator of type `Shm_allocator` to allocate at least a 128-buffer.  But `Shm_allocator = Stateless_allocator<...>` is a **stateless allocator**.  That means the allocator object "stored" inside the container outer structure has `std::is_empty_v<...> == true`: it takes ~no space and has no state.  So the container code can't "know" from what `Arena` to allocate space!
 
 To make allocating mutators (in this case `.resize()`) work you must **activate the arena**.  This is done in thread-local fashion by using a RAII-style object, an ipc::shm::stl::Arena_activator:
 
   ~~~
-  using Activator = ipc::shm::stl::Arena_activator<Session::Arena>;
+  using Activator = Session::Arena::Activator; // Or: ipc::shm::stl::Arena_activator<Session::Arena>.
 
   auto x = session.session_shm()->construct<Widget>();
   auto y = session.app_shm()->construct<Widget>();
@@ -321,12 +348,12 @@ Note well: `Arena_activator`s stack as shown.  So you can work with multiple are
 
 ---
 
-@par When MUST/SHOULD you activate an arena?
+@par When must (or should) you activate an arena?
 We've answered this already: whenever you're modifying a data structure living in SHM, such that it is of a type fitted with `Allocator` template parameter equal to `Stateless_allocator<something>`, and that operation might want to allocate or deallocate (via its `Allocator`).  In typical use of STL-compliant containers we don't usually have to think about such technicalities; most people don't really know or care about STL-allocators at all.  Hence knowing when specifically you *must* do it is arguably a somewhat tall order.  Possibly.
 
 @par
 So, informally, a better question might be: what are convenient rules of thumb that'll ensure you do the right thing, without worrying too much about allocator technicalities?  We suggest these:
-  - If your code block is `const` in nature -- you're not modifying your `T` at all -- then it is *never* necessary.  (In point of fact, with SHM-jemalloc not only is it not necessary, it is also *impossible* on the receiving side of an IPC-transmission of a SHM-handle.  There *is* simply no arena to activate in that situation.  And as of this writing, writing on the receiving side is disallowed at the kernel level anyway.  With SHM-classic, though, both allocation and writing *is* possible.  Nevertheless even then: if your receiving-side algorithm is read-only w/r/t a SHM-stored `T`, then you need not -- and should not -- activate any arena.)
+  - If your code block is `const` in nature -- you're not modifying your `T` at all -- then it is *never* necessary.  (In point of fact, with SHM-jemalloc not only is it not necessary, it is also *impossible* on the receiving side of an IPC-transmission of a SHM-handle.  There *is* simply no arena to activate in that situation.  And as of this writing, writing on the receiving side is disallowed at the kernel level anyway.  With SHM-classic, though, both allocation and writing *are* possible.  Nevertheless even then: if your receiving-side algorithm is read-only w/r/t a SHM-stored `T`, then you need not -- and should not -- activate any arena.)
   - If your code block is non-`const` in nature -- you are making *some* modifications to `T` within it:
     - Generally you should just activate the arena at the top of the code block: better safe than sorry.  Those statements that don't touch an allocator won't be affected; but those that do will just work nicely.  And you needn't worry about the details of which is which, if it's active at the top.
     - However, if you're extremely perf-conscious, and some code paths don't touch anything allocator-related, then you could be somewhat conditional about it, activating the arena in smaller sub-blocks of your overall non-`const` block.
@@ -346,7 +373,7 @@ It's all well and good to construct and modify a thing in SHM, but it's not usef
 
 These are the steps in sharing a **first-class SHM-handle** `x = some_arena.construct<T>(...)`.  Note that only a first-class handle can be shared: you can't share "just" `x->m_str` or something.  And recall that `x` is `shared_ptr<T>` (which is also aliased from `Arena::Handle<T>` for stylistic purposes).  The original creator of the handle -- the guy to call `construct()` -- is called the handle's **owner** or **owner process**.  The owner can transmit a handle to another process, called the **borrower (process)**.  When doing so the owner is called the **lender (process)**.
   - Lender process (has `x`): It prepares `x` for transmission by calling: `const auto lend_blob = session.lend_object(x)`.  `lend_blob` is a *small* encoding of certain information (a few bytes).  It needs to be copied into/out of a transport: which is far superior to doing that to the entirety of the actual object!
-  - Lender process + borrower process in tandem: Transmit `lend_blob` to the former from the latter, via any IPC technique whatsoever.
+  - Lender process + borrower process in tandem: Transmit `lend_blob` from the former to the latter, via any IPC technique whatsoever.
   - Borrower process (wants its own `x_borrowed`, like `x`): It obtains `x_borrowed` by calling: `auto x_borrowed = session.borrow_object<T>(lend_blob)`.
 
 Et voilà!  You've got yourself a guy just like `x` but in another process.  `x_borrowed` is, also, a `shared_ptr<T>`.  One thing to note here is that the *arena* is *not* a part of this procedure.  The session is; and the session in and of itself determines who's the recipient.  Another thing to note is that the borrower code of yours must know the type `T`; if it does not match then behavior is undefined.
@@ -369,14 +396,14 @@ Yes and no.  Depends.  First if `T` is a POD (as defined earlier in this Manual 
   - If it intends to specifically work with (and use specific features/properties of) SHM-jemalloc: Use `Session::Borrower_allocator`.
 
 @par
-To recap: if it's a POD, same `T` on all sides.  If it uses STL-compliant/pointer stuff, then the most generic way it to use `Session::Allocator` in owner code; `Session::Borrower_allocator` in borrower code.  And if targeting SHM-classic specifically, it is *okay* -- for conciseness though not genericness -- to just use the same type `T` on both sides, period.
+To recap: if it's a POD, same `T` on all sides.  If it uses STL-compliant/pointer stuff, then the most generic way is to use `Session::Allocator` in owner code; `Session::Borrower_allocator` in borrower code.  And if targeting SHM-classic specifically, it is *okay* -- for conciseness though not genericness -- to just use the same type `T` on both sides, period.
 
 @par
-What's going on here, you ask?  We'd rather not get into it here; we've provided the recipe.  But various docs inside ipc::shm explain all the subleties.  Long story short: SHM-classic is highly symmetric and (relatively) simple, so the borrower and owner are really internally operating on the same SHM-pool.  In SHM-jemalloc only the owner even *has* the arena per se; the borrower has only a read-only view into parts of it -- so it needs a special, degenerate "borrower" allocator which is used not to *allocate* but to only interpret pointers properly.  (Whereas on the owner side it is used for that *and* allocation code.)
+What's going on here, you ask?  We'd rather not get into it here; we've provided the recipe.  But various docs inside ipc::shm explain all the subtleties.  Long story short: SHM-classic is highly symmetric and (relatively) simple, so the borrower and owner are really internally operating on the same SHM-pool.  In SHM-jemalloc only the owner even *has* the arena per se; the borrower has only a read-only view into parts of it, internally -- so it needs a special, degenerate "borrower" allocator which is used not to *allocate* but to only interpret pointers properly.  (Whereas on the owner side it is used for that *and* allocation code.)
 
 ---
 
-To close the loop: how to, in fact, IPC-transmit `lend_blob` -- the thing returned by `lend_object()` and fed to `borrow_object()`?  Well, it's just a little blob, so you can do it however you want.  However, if you're using `struc::Channel` (@ref chan_struct) -- or for some odd reason capnp but without `struc::Channel` -- then we've made a couple of utilities to reduce your boiler-plate.  Here's how to use it:
+To close the loop: how to, in fact, IPC-transmit `lend_blob` -- the thing returned by `lend_object()` and fed to `borrow_object()`?  Well, it's just a little blob, so you can do it however you want.  However, if you're using `struc::Channel` (@ref chan_struct) or @ref chan_rpc "capnp-RPC w/ zero-copy" (or vanilla capnp-RPC even) -- or for some odd reason capnp but without any of those -- then we've made a couple of utilities to reduce your boiler-plate.  Here's how to use them:
 
 Example schema:
 
@@ -417,7 +444,7 @@ Example owner/lender code:
 
   // Perform the lend_object() step and load the result into the out-message.
 
-  const auto hndl_blob = session.lend_object(x);
+  const auto shm_blob = session.lend_object(x);
   // ATTENTION! SHM-jemalloc-backed lend_object() can fail, if right then the session got hosed (opposing process down).
   if (shm_blob.empty())
   {
@@ -451,7 +478,7 @@ Simple!  That said we opportunistically note: The borrower-side is using `Widget
 
 @note Regarding `session.lend_object()` and `session.borrow_object()` failing: As you can see above, your code should be ready for these to return an empty blob and null, respectively, indicating an error.  In practice, assuming you're using them with proper inputs, this will not happen with SHM-classic, but it absolutely can happen with SHM-jemalloc; and SHM-provider-agnostic code should therefore assume the latter.  What does it mean?  Answer: It means, at least, that no further lending/borrowing shall work in this session.  In practice you should assume it means the entire session is hosed in general (the opposing process is probably down).  This *will* be (shortly) emitted as an error by the `Session` via its on-error handler you had to register (via ctor or `.init_handlers()`, on client and server sides respectively).  Almost certainly each not-yet-hosed PEER-state `Channel` from that session shall report similarly.  The safest course of action is to react to any of these signals -- including lend/borrow methods returning empty/null -- in a common way (abandon session ASAP in orderly fashion).  That topic is discussed in-depth in @ref session_app_org.
 
-### What can you do with a borrowed (received) data structured in SHM? ###
+### What can you do with a borrowed (received) data structure in SHM? ###
 The answer to this is sprinkled throughout the above.  Nevertheless it seemed prudent to put a fine point on the answer as well as perhaps provide some algorithmic tips.
 
 Firstly, in every case, you can access it in read-only fashion.  The syntax is just C++ syntax.
@@ -470,11 +497,40 @@ Either way: Your code then *shall not write to a borrowed in-SHM data structure*
 
 Again: You're not giving away those abilities of SHM-classic by choosing SHM-jemalloc *for free*.  You get goodies in return: safety goodies and allocation-perf goodies.  See @ref shm_choice "back here".
 
+---
+
+@anchor transport_shm_stats
+Stats
+-----
+(See @ref api_overview_stats "the stats synopsis" for the general approach.)
+
+Both SHM-providers keep extensive stats: objects allocated, lent, borrowed, and live (counts and sizes); SHM-pools; and provider-specific internals.  With ipc::session you reach the arenas via `session.session_shm()` and `app_shm()`; but the APIs are those of the arena classes themselves.  For each provider an `info_dump()` grabs everything into one printable bundle.
+
+**SHM-classic**: ipc::shm::classic::Pool_arena; stat-sets in ipc::shm::classic::stat.
+  - @link ipc::shm::classic::stat::Arena_stats Arena_stats@endlink, via @link ipc::shm::classic::Pool_arena::arena_stats() arena_stats()@endlink: the underlying in-SHM pool, which is shared by all processes attached to it.  It lives in SHM and can outlive any given `Pool_arena`.
+  - @link ipc::shm::classic::stat::Local_stats Local_stats@endlink, via @link ipc::shm::classic::Pool_arena::local_stats() local_stats()@endlink: this `Pool_arena` object specifically: owner-, lender-, borrower-side activity.
+  - Bundle: @link ipc::shm::classic::Pool_arena::info_dump() info_dump()@endlink into @link ipc::shm::classic::stat::Arena_info_dump Arena_info_dump@endlink.
+
+**SHM-jemalloc**: stat-sets in ipc::shm::arena_lend::stat; bundles in ipc::shm::arena_lend::jemalloc::stat.
+  - Owner (lender) side: ipc::shm::arena_lend::jemalloc::Ipc_arena.
+    - Per arena:
+      - @link ipc::shm::arena_lend::stat::Sharded_stats Sharded_stats@endlink, via @link ipc::shm::arena_lend::jemalloc::Ipc_arena::sharded_stats() sharded_stats()@endlink: object-level activity in this arena: owner, lender, live objects, deallocation internals.
+      - @link ipc::shm::arena_lend::stat::Pool_stats Pool_stats@endlink, via @link ipc::shm::arena_lend::jemalloc::Ipc_arena::pool_stats() pool_stats()@endlink: this arena's SHM-pools.
+      - @link ipc::shm::arena_lend::stat::Memory_manager_stats Memory_manager_stats@endlink, via @link ipc::shm::arena_lend::jemalloc::Ipc_arena::memory_manager_stats() memory_manager_stats()@endlink: jemalloc's own view (`Vaddr`: mapped, resident, active, and so on; `Alloc`: allocation counts and sizes).
+        - These are a curated, documented selection of jemalloc's native stats, consumable as a stat-set; jemalloc's own full stats output is enormous and not straightforward to consume safely.
+        - Consume them at most every second or so.  ipc::session already does so periodically for the arenas it sets up, to keep the high-water marks meaningful.
+    - Process-wide: @link ipc::shm::arena_lend::jemalloc::Ipc_arena::owner_pool_lookup_global_stats() owner_pool_lookup_global_stats()@endlink, @link ipc::shm::arena_lend::jemalloc::Ipc_arena::obj_db_aux_pool_global_stats() obj_db_aux_pool_global_stats()@endlink; reset both via @link ipc::shm::arena_lend::jemalloc::Ipc_arena::global_stats_reset() global_stats_reset()@endlink.
+    - Bundle: @link ipc::shm::arena_lend::jemalloc::Ipc_arena::info_dump() info_dump()@endlink into @link ipc::shm::arena_lend::jemalloc::stat::Arena_info_dump Arena_info_dump@endlink.  `m_fmt.m_verbose` controls whether it includes jemalloc's (huge) native stats dump.
+  - Borrower side: ipc::session::shm::arena_lend::jemalloc::Shm_session.  With ipc::session reach it via `session.shm_session()`.
+    - Per session: @link ipc::shm::arena_lend::stat::Borrower_pool_stats Borrower_pool_stats@endlink, via @link ipc::session::shm::arena_lend::jemalloc::Shm_session::borrower_pool_stats() borrower_pool_stats()@endlink.
+    - Process-wide: @link ipc::session::shm::arena_lend::jemalloc::Shm_session::borrower_pool_lookup_global_stats() borrower_pool_lookup_global_stats()@endlink; reset via @link ipc::session::shm::arena_lend::jemalloc::Shm_session::global_stats_reset() global_stats_reset()@endlink.
+    - Bundle: @link ipc::session::shm::arena_lend::jemalloc::Shm_session::info_dump() info_dump()@endlink into @link ipc::shm::arena_lend::jemalloc::stat::Shm_session_info_dump Shm_session_info_dump@endlink.
+
 The next page is: @ref transport_core.
 
 ---
 
-<center>**MANUAL NAVIGATION:** @ref chan_struct_advanced "Preceding Page" - @ref transport_core "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
+<center>**MANUAL NAVIGATION:** @ref chan_rpc "Preceding Page" - @ref transport_core "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
 */
 
@@ -486,9 +542,24 @@ The next page is: @ref transport_core.
 
 ---
 
-This page is under construction; it is referred-to but not yet written.  However:
-  - The @ref api_overview_transport_synopsis "synopsis in API Overview" page of this Manual helps.
-  - The @link ::ipc::transport relevant Reference section@endlink documents each individual thing in detail.
+Overall, the ipc::transport namespace can be divided into two parts:
+  - Lower layer (**unstructured transport**): ipc::transport, excluding ipc::transport::struc sub-namespace.
+  - Higher layer (**structured transport**): ipc::transport::struc.
+
+W/r/t these: This guided Manual has, so far, focused in-depth on the higher layer (@ref chan_struct, @ref chan_struct_advanced, @ref chan_rpc, @ref transport_shm).  Many users, we suspect, would prefer to transmit data through that layer.  It is natural to transmit structured data; ipc::transport::struc::Channel (@ref chan_struct) is a relatively simple request-response-mux-demux approach to this, while capnp-RPC (@ref chan_rpc) lets one use powerful RPC semantics.
+
+Deciding to work exclusively with such structured data -- in our case, necessarily expressed through Cap'n Proto (capnp) schemas -- is not universal.  Whether for performance, simplicity, or other reasons, it can make sense to work at the lower layer.  For example, perhaps you'd like to just exchange simple messages over a Unix domain socket or a POSIX message queue (MQ).  Or perhaps you'd like to add structured-data support that is not capnp-based.
+
+The @ref api_overview_transport_synopsis "synopsis in API Overview" page of this Manual contains a reasonable map, with representative code snippets, of this unstructured-transport layer.
+
+The @link ::ipc::transport relevant Reference section@endlink documents each individual thing in detail.  The class and method doc headers for the concepts ipc::transport::Native_handle_sender and ipc::transport::Native_handle_receiver are of interest, including some foundational design decisions and rationale.  (Their simpler siblings `Blob_sender` and `Blob_receiver` are basically a subset: similar capabilities, just without transmission of native handles -- only data blobs.)  These are concepts; of their concrete implementations ipc::transport::Native_socket_stream may be of particular interest, as it implements all 4 concepts and provides access to the popular Unix-domain (local) socket IPC-transport.
+
+@note Reminder: there are ipc::transport::sync_io counterparts to these concepts and relevant impls; one may choose either type for one's application/event loop.  (E.g., there is transport::Native_socket_stream and its `sync_io`-core counterpart transport::sync_io::Native_socket_stream.)  See @ref async_loop for background on event loop integration, including discussion of async-I/O-pattern APIs (directly in `ipc::transport` here) versus `sync_io`-pattern APIs (in `ipc::transport::sync_io` here).
+
+@par Stats
+Each unstructured transport keeps stats per direction: ipc::transport::stat::Blob_snd_stats and ipc::transport::stat::Blob_rcv_stats, via `blob_send_stats()`, `blob_receive_stats()`, `native_handle_send_stats()`, `native_handle_receive_stats()` (each with a `*_reset()`); ipc::transport::Channel forwards these.  (See @ref api_overview_stats "the stats synopsis" for the general approach.)
+
+At this time we feel the above-linked, directly or indirectly, resources are sufficient documentation for this lower-level set of APIs.  Thus we forego a step-by-step tutorial here.
 
 ---
 

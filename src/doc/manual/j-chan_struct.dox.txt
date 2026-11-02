@@ -17,7 +17,7 @@
 
 /**
 
-@page chan_struct Structured Message Transport
+@page chan_struct Structured Message Transport (`struc::Channel`)
 
 <center>**MANUAL NAVIGATION:** @ref universes "Preceding Page" - @ref chan_struct_advanced "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
 
@@ -35,14 +35,16 @@ Put more abstractly, however, a channel is, well, a channel of reliable bidirect
 
 Each message contains either exactly one blob (whose size is limited by the compile-time-chosen low-level transport), exactly one native handle, or both.
 
-Handles aside, typically it is not convenient to manually represent logical data as binary blobs.  The size is limited and transport-dependent for one; but that aside it is simply inconvenient and potentially slow to pack data in this fashion.  For this reason **serialization frameworks** exist, and we certainly had no desire to reinvent the wheel.  We simply chose the best one -- [capnp (Cap'n Proto)](https://capnproto.org) -- and built around its API.  The result is: ipc::transport::struc::Channel (and/or its `sync_io` counterpart `struc::sync_io::Channel`).
+Handles aside, often it is not convenient to manually represent logical data as binary blobs.  The size is limited and transport-dependent for one; but that aside it can be simply inconvenient and potentially even slow to pack data in this fashion.  For this reason **serialization frameworks** exist, and we certainly had no desire to reinvent the wheel.  We chose a well-established one -- [capnp (Cap'n Proto)](https://capnproto.org) -- and built around its API.  The result is: ipc::transport::struc::Channel (and/or its `sync_io` counterpart `struc::sync_io::Channel`).
+
+(capnp also has a Remote Procedure Call layer.  Flow-IPC supports that too, as an alternative to `struc::Channel`; see @ref chan_rpc.)
 
 The steps to work with a `struc::Channel` are as follows.
-  -# Open an *unstructured* `Channel`.  This is explained in-depth in @ref chan_open.  (One can also open a channel manually without ipc::session.  We will discuss this, typically advanced or optional ability, in later pages of this Manual.)  The result shall be an object whose type is an instance of ipc::transport::Channel class template, or possibly a sub-class thereof.  (In the latter case the sub-class adds *no* data on top of the `Channel` -- only a small convenience API whose significance is low in our context here.)
+  -# Open an *unstructured* `Channel`.  This is explained in-depth in @ref chan_open.  (One can also open a channel manually without ipc::session.)  The result shall be an object whose type is an instance of ipc::transport::Channel class template, or possibly a sub-class thereof.  (In the latter case the sub-class adds *no* data on top of the `Channel` -- only a small convenience API of low significance in our context here.)
   -# Without directly using this `Channel`, *upgrade* it to a `struc::Channel` object.  This is done via C++ move semantics: The new `struc::Channel` constructor takes a `Channel&&` reference, thus taking over the guts of the unstructured `Channel`, while the original `Channel` object becomes blank -- as-if default-constructed.
   -# Use the new `struc::Channel`.
-     - The subsumed unstructured `Channel` is still available for limited needs, most notably ipc::transport::Channel::auto_ping() and ipc::transport::Channel::idle_timer_run().
-     - However, in the main, one uses the `struc::Channel` API directly, exclusively.
+     - The subsumed unstructured `Channel` is still (thread-safely) available, most notably ipc::transport::Channel::auto_ping() and ipc::transport::Channel::idle_timer_run().
+     - However, in the main, one uses the `struc::Channel` (or `struc::sync_io::Channel`) API directly, exclusively.
   -# When done with it, destroy it.
 
 Each side of the conversation follows the above procedure.
@@ -50,22 +52,22 @@ Each side of the conversation follows the above procedure.
 Let's discuss step 2 of this procedure: upgrading a `Channel` to `struc::Channel`.
 
 Upgrading `Channel` to `struc::Channel`
--------------------------------------------
-By the time you've got your unstructured `Channel`, you'd already made decisions as to its underlying low-level transport(s).  (If you used ipc::session, as recommended, you did this using the template knobs of `Session_server` and `Client_session`.)  These details, roughly speaking, will not matter when using the upgraded `struc::Channel`.  There are only a couple of things you must ensure about the underlying transports:
-  - If you intend to ever transmit native handles, naturally ipc::transport::Channel::S_HAS_BLOB_PIPE must be `true`.  (Tweak the ipc::session compile-time knobs as needed (@ref chan_open).  Specifically set the `TRANSMIT_NATIVE_HANDLES` template parameter to `true`.)
-  - If *and only if* for some reason you prefer *not* to use SHM backing for your `struc::Channel`, then the max-blob-size enforced by the `Channel` must be large enough to hold the serialization of any message you choose to send.
-    - Our advice here: Don't worry about it for now.  Just use SHM-backing (we'll explain how shortly).  Then size limits won't matter, and you'll get blinding-fast performance automatically.
+---------------------------------------
+By the time you've got your unstructured `Channel`, you'd already made decisions as to its underlying low-level transport(s).  (If you used ipc::session, as recommended, you did this using the template knobs of `Session_server` and `Client_session`.)  These details, roughly speaking, will not matter when using the upgraded `struc::Channel`.  There is only one thing you must ensure about the underlying transports:
+  - If you intend to ever transmit native handles, naturally ipc::transport::Channel::S_HAS_NATIVE_HANDLE_PIPE must be `true`.  (Tweak the ipc::session compile-time knobs as needed (@ref chan_open).  Specifically set the `TRANSMIT_NATIVE_HANDLES` template parameter to `true`.)
 
-So let's say you have your `Channel` named `unstructured_channel`, most easily obtained via ipc::session.  (If you're the type of person to mind the details -- such a channel from ipc::session will always be `sync_io`-core-bearing, meaning it won't have started background threads and is generally lighter-weight.)  Do not mutate it in any way.  Instead feed it to a constructor of your new `struc::Channel`.
+You may notice we do not mention message size.  It does not matter: whether or not you choose SHM backing for your `struc::Channel` messages -- we explain that choice shortly -- a large message is transmitted fine.  Without SHM backing it is copied, with any oversized pieces (namely from large capnp leaves: `List`, `Data`, `Text`) split up for transmission and reassembled automatically.  With SHM backing nothing is copied, so message size ceases to be a perf consideration.  For small messages perf is similar either way.  (Planned: an adaptive serializer combining the two approaches; see [this ticket](https://github.com/Flow-IPC/ipc/issues/160).)
 
-That's easy enough in and of itself, but you'll need to make a couple of decisions first as to the type of this `struc::Channel`: it is, also, a *template*.  In this page we're going with the highest-performance, most-mainstream scenario, so we can skip explaining various complexities (leave it to @ref chan_struct_advanced).  All ipc::session::Session concept impls supply a `using struc::Channel` alias.  Thus, as shown in @ref session_setup, you'll have a `Session` type alias ready.  Then:
+So let's say you have your `Channel` named `unstructured_channel`, most easily obtained via ipc::session.  (Such a channel from ipc::session will always be `sync_io`-core-bearing, meaning it won't have started background threads and is generally lighter-weight.  This is required for upgrading: formally it must have `Channel::S_IS_SYNC_IO_OBJ == true`.)  Do not mutate it.  Instead feed it to a constructor of your new `struc::Channel`.
+
+That's easy enough in and of itself, but you'll need to make a couple of decisions first as to the type of this `struc::Channel`: it is, also, a *template*.  In this page we're going with a high-performance, mainstream scenario, so we can skip explaining various complexities (leave it to @ref chan_struct_advanced).  All ipc::session::Session concept impls supply a `Structured_channel` alias template (yielding the proper `struc::Channel` type).  Thus, as shown in @ref session_setup, you'll have a `Session` type alias ready.  Then:
 
   ~~~
   template<typename Message_body>
   using Structured_channel_t = Session::Structured_channel<Message_body>;
   ~~~
 
-A *very* central decision is the choice of `Message_body`.  This is the **schema** of the messages (native handles aside) you intend to transmit back and forth.  (Each side must use the same `Message_body`, or ones that are bit-compatible per capnp requirements.)  The design of the schema and the generation of the required header and source-code files are well outside our scope: please see [capnp schema docs](https://capnproto.org/language.html) and [capnp tool docs](https://capnproto.org/capnp-tool.html).  We shall assume a straightforward schema like this for our example:
+A *very* central decision is the choice of `Message_body`.  This is the **schema** of the messages (native handles aside) you intend to transmit back and forth.  (Each side must use the same `Message_body`, or at least ones that are bit-compatible per capnp requirements.)  The design of the schema and the generation of the required header and source-code files are well outside our scope: please see [capnp schema docs](https://capnproto.org/language.html) and [capnp tool docs](https://capnproto.org/capnp-tool.html).  We shall take a straightforward schema like this for our example:
 
   ~~~{.capnp}
   @0xa780a4869d13f307;
@@ -100,7 +102,7 @@ A *very* central decision is the choice of `Message_body`.  This is the **schema
       # This one we'll use to demonstrate indefinite-lifetime request...
 
       myBestShot @4 :MyBestShot;
-      # ...together with thise one.
+      # ...together with this one.
     }
 
     description @5 :Text;
@@ -118,27 +120,29 @@ A *very* central decision is the choice of `Message_body`.  This is the **schema
 
 Once you've run this through `capnp`, you'll have a `class my_meta_app::capnp::CoolMsg` available -- notably with nested classes `CoolMsg::Reader` and `CoolMsg::Builder`, for reading and mutating such messages respectively.  (Please refer to [capnp C++ docs](https://capnproto.org/cxx.html) for details.)
 
-  Therefore your specific `struc::Channel` type is easiest to express as follows:
+Therefore your specific `struc::Channel` type is easiest to express as follows:
 
   ~~~
   using Cool_structured_channel = Structured_channel_t<my_meta_app::capnp::CoolMsg>;
   ~~~
 
-You've got the type; and you've got the (so-far-unused) unstructured `Channel unstructured_channel`; and you've got the ipc::session::Session used to open that `unstructured_channel`.  Now it's time to upgrade it into a `Cool_structured_channel`.  Continuing our mainstream-oriented example here's how:
+You've got the type; and you've got the (so-far-unused) unstructured `Channel unstructured_channel`; and you've got the ipc::session::Session used to open that `unstructured_channel`.  Now it's time to upgrade it into a `Cool_structured_channel`.  Continuing our mainstream-oriented example, here's how:
 
   ~~~
-  Cool_structured_channel cool_channel(..., // Logger.
+  Cool_structured_channel cool_channel{..., // Logger.
                                        std::move(unstructured_channel), // Eat it!
                                        ipc::transport::struc::Channel_base::S_SERIALIZE_VIA_SESSION_SHM,
-                                       &session);
-  // unstructured_channel is now empty.  cool_channel is however the new hotness.
+                                       &session};
+  // unstructured_channel is now empty.  cool_channel is however ready to go.
   ~~~
 
 The main thing happening here is that 2nd constructor arg: `cool_channel` empties `unstructured_channel` and takes over its previous contents.  From now on you will be controlling the underlying channel by operating its subsuming `struc::Channel`.  As for the other arguments:
-  - `&session` is straightforward enough: That's the session used to open the channel.  Internally it's used for SHM-backing setup and a certain safety mechanism.  Bottom line is you need not worry about it.  (@ref chan_struct_advanced gets into all that.)
+  - `&session` is straightforward: That's the session used to open the channel.  Internally it's used for serialization setup and a certain safety mechanism.  Bottom line is you need not worry about it.  (@ref chan_struct_advanced gets into all that.)
   - `S_SERIALIZE_VIA_SESSION_SHM` has to do with the lifetime of the SHM-backing for messages.  For now don't worry about it.  Just know that, as written, a given message object cannot survive the end of `session`.  (There are ways to exceed it; once again that's covered in @ref chan_struct_advanced.)
 
-Before we get to sending/receiving messages there's one more -- optional -- thing you may (or may not) wish to get out of the way.  The mutually-complementary auto-ping and idle-timer features of `Channel` are available at this stage.  These are discussed in detail in @ref transport_core, but the short version is: You may wish for your channel to self-destruct if the other side does not send a message with at least a certain frequency: **idle timer**.  You may, further, wish for (invisible) messages (called **auto-pings**) to be sent as a form of keep-alive.  (ipc::session leverages both features, so that if the other side appears dead due to not even sending auto-pings, the ipc::session::Session will report an error, at which point you could close all your related channels.  Therefore, if you're using ipc::session, auto-pinging via your own channels may be of little use.  However the idle-timer may still be useful by itself depending on your protocol.)  Long story short, here is how to do it:
+(This example assumes a SHM-enabled `Session`, as in @ref session_setup.  With a vanilla, non-SHM `Session`, use `S_SERIALIZE_VIA_HEAP` and pass `session.session_token()` instead of `&session`.  @ref chan_struct_advanced discusses these choices.)
+
+Before we get to sending/receiving messages there's one more -- optional -- thing you may (or may not) wish to get out of the way.  The mutually-complementary auto-ping and idle-timer features of `Channel` are available at this stage.  These are documented in detail in ipc::transport::Channel::auto_ping() and ipc::transport::Channel::idle_timer_run() (and the concept docs they point to), but the short version is: You may wish for your channel to self-hose, if the other side does not send a message with at least a certain frequency: **idle timer**.  You may, further, wish for (invisible) messages (called **auto-pings**) to be sent as a form of keep-alive.  (ipc::session leverages both features, so that if the other side appears dead due to not even sending auto-pings, the ipc::session::Session will report an error, at which point you could close all your related channels.  Therefore, if you're using ipc::session, auto-pinging via your own channels may be redundant.  However the idle-timer may still be useful by itself depending on your protocol.)  Long story short, here is how to do it:
 
   ~~~
   Cool_structured_channel cool_channel(...); // See above.
@@ -150,7 +154,7 @@ Before we get to sending/receiving messages there's one more -- optional -- thin
   cool_channel.owned_channel_mutable()->idle_timer_run();
 
   // Use cool_channel directly from now on, generally speaking.  (`const` access via
-  // cool_channel.owned_channel() is okay however.)
+  // cool_channel.owned_channel() is fine however.)
   ~~~
 
 ---
@@ -197,7 +201,7 @@ Assuming you are familiar with the capnp-generated API, it is straightforward to
 You should really read all of capnp docs at its web site.  They are very useful and well written and not overly formal despite being quite comprehensive.  That said a couple of gotchas/tips (taken from @link ipc::transport::struc::Msg_out::body_root() body_root() doc header@endlink):
 
 @par
-_Tip_: On a `Builder`, `.getX()` and `.setX()` are lightning-fast, like accessing `struct` members directly -- but only when `X` is of a scalar type.  Compound types, where `.getX()` returns not a native type but another `Builder`, need to perform some pointer checking and are slower.  Therefore, if you plan to `.getX()` and then `.setA()` and `.setB()` (and similar) on that `X`, you should save the result (`auto x = ....getX();`); then mutate via the saved result (`x.setA(...); x.setB(...)`).
+_Tip_: On a `Builder`, `.getX()` and `.setX()` are fast, like accessing `struct` members directly -- but only when `X` is of a scalar type.  Compound types, where `.getX()` returns not a native type but another `Builder`, need to perform some pointer checking and are slower.  Therefore, if you plan to `.getX()` and then `.setA()` and `.setB()` (and similar) on that `X`, you should save the result (`auto x = ....getX();`); then mutate via the saved result (`x.setA(...); x.setB(...)`).
 
 @par
 _Tip_: Let `X` be a compound field, particularly `List`, `Text` (string/list-of-characters), `Data` (list-of-bytes).  It is usually, to begin, null; you must perform `.initX(size_t n)` or equivalent to initialize it (fill it with `n` zeroes).  However, suppose you are mutating a message, such as a previously-sent message, and wish to *modify* the `X`.  If the new value might have the same length (which is common), the correct thing to do is: check `.hasX()`; if `true`, modify `.getX()`; but if `false` then `.initX(n)` (as `X` was null after all).  Performing `.initX()` on an already-`.initX()`ed value works but has a nasty invisible effect: the existing datum continues taking space in the serialization; the new datum takes a new chunk of the serialization segments (and might even cause the allocation of a new segment if needed).  As of this writing capnp does not reuse such orphaned space.  If the new `n` equals the old `n`, this is a straight waste of RAM; and can lead to pathologically growing memory leaks if done many times.
@@ -206,28 +210,28 @@ _Tip_: Let `X` be a compound field, particularly `List`, `Text` (string/list-of-
 (However, if the new `n` is different from the preceding, then there is no choice but to re-`.initX()`.  A list/blob/string's size cannot be modified in capnp.  It is best to avoid any situation where the `n` would change; try to design your protocol differently.)
 
 @par
-_Tip_: Use `ostream <<` to pretty-print a `struc::Msg_out`, without newlines/indentation and truncated as needed to a reasonable length; or alternatively `os << ipc::transport::struc::ostreamable_capnp_brief(msg.body_root()->asReader())`.  For fully indented pretty-printing you may use `os << ipc::transport::struc::ostreamable_capnp_full(msg.body_root()->asReader())`.  Naturally you can also use these utilities with any capnp `Builder` (or `Reader`), without our `Msg_*` wrappers.  (Be wary of the perf cost of such an operation, especially for large messages.  Though if done within a `FLOW_LOG_*()` no evaluation occurs, unless the the log-level check passes.)
+_Tip_: Use `ostream <<` to pretty-print a `struc::Msg_out`, without newlines/indentation and truncated as needed to a reasonable length; or alternatively `os << ipc::transport::struc::ostreamable_capnp_brief(msg.body_root()->asReader())`.  For fully indented pretty-printing you may use `os << ipc::transport::struc::ostreamable_capnp_full(msg.body_root()->asReader())`.  Naturally you can also use these utilities with any capnp `Builder` (or `Reader`), without our `Msg_*` wrappers.  (Be wary of the perf cost of such an operation, especially for large messages.  Though if done within a `FLOW_LOG_*()` no evaluation occurs, unless the log-level check passes.)
 
 ---
 
 More advanced capnp-leveraging operations are possible.  We omit detailed discussion here.  Briefly:
   - You can obtain an `Orphanage` via `msg.orphanage()` (see ipc::transport::struc::Msg_out::orphanage()).  With this you can make objects of any type(s) whatsoever and then `adopt...()` them in a bottom-up fashion into the ultimate `msg.body_root()` (which is, rigidly, a `CoolMsg::Builder`).  See capnp docs.
-  - You can go even more capnp-crazy and create a separate `capnp::MessageBuilder` -- without any particular set root schema -- and then later load it into a `struc::Msg_out` by using an alternate constructor form.  In other words one can use a `capnp::MessageBuilder` as a heap for arbitrary work.  Just ensure that what you're *ultimately* loading into the `struc::Msg_out` has most recently been `.initRoot<M>()`ed, where `M` matches the `Message_body` type of your `struc::Channel`.  (So in our example `M` is `CoolMsg`.)
+  - You can go even more capnp-crazy and create a separate `capnp::MessageBuilder` -- without any particular set root schema -- and then later load it into a `struc::Msg_out` by using an alternate constructor form.  One can even use a `capnp::MessageBuilder` as a heap for arbitrary work.  Just ensure that what you're *ultimately* loading into the `struc::Msg_out` has most recently been `.initRoot<M>()`ed, where `M` matches the `Message_body` type of your `struc::Channel`.  (So in our example `M` is `CoolMsg`.)
 
 Lastly, assuming your underlying `Cool_structured_channel::Owned_channel` is capable of it, any out-message may be paired with a native handle like this:
 
   ~~~
   using ipc::util::Native_handle;
 
-  Native_handle hndl(some_fd);
+  Native_handle hndl{some_fd};
   // ...
   msg.store_native_handle_or_null(std::move(hndl));
-  // some_fd is now owned by `msg`.  It will be ::close()d sooner or later.
+  // some_fd is now owned by `msg`.  It will be closed sooner or later.
 
   // Beware that `msg`, when destroyed -- or due to a subsequent .store_native_handle_or_null() -- *will* close `some_fd`.
   // If you don't want that, in a POSIX OS you can first dupe it.  For example here we're sending our own
   // standard-output FD in an out-message:
-  msg.store_native_handle_or_null(Native_handle{::dup(STDOUT_FILENO)});
+  msg.store_native_handle_or_null(Native_handle{STDOUT_FILENO}.dup());
   // Receiving process -- upon receipt -- can write to that FD and cause output to appear in *our* stdout.
   ~~~
 
@@ -240,8 +244,8 @@ A message is a message; but a message *instance* is one of 2 things:
   - A **request** message instance is one sent with the expectation that responses to it may arrive in the opposite direction.
     - ipc::transport::struc::Channel::async_request() or ipc::transport::struc::Channel::sync_request() classifies the message instance as a request.
 
-Either type of message -- whether notification or response -- can itself be in response to an earlier-received in-message, or not in response to anything.
-  - One specifies this via an arg to  `.send()` or `.*sync_request()`.
+Either type of message -- whether notification or request -- can itself be in response to an earlier-received in-message, or not in response to anything.
+  - One specifies this via an arg to `.send()` or `.[a]sync_request()`.
   - The act of responding to a notification in-message (instance) is not, in and of itself, an error.  Flow-IPC does not check this: you *can* respond to any message.  However, *receiving* such a message is a (non-fatal) error on the receiver side.  More on this shortly.  (However, coding reasonably carefully, one can avoid having to worry about it: Only respond to requests when designing your protocol; and cleanly separate requests from notifications when designing your schema, even though Flow-IPC does not force you to do so.)
 
 Thus @link ipc::transport::struc::Channel::send() .send()@endlink is the simplest method to demonstrate:
@@ -269,12 +273,12 @@ That's it.  A key point: `.send()` -- as well as `.async_request()` --
   - *Always* finishes synchronously.
   - *Never* refuses to send due to a *would-block* condition.  (Only a fatal channel-hosing error could occur -- or success.)
 
-That last point is unusual but intentionally nice.  You *never* need to worry about a send failing due to a clogged-up low-level transport.  (How this is accomplished is discussed in @ref transport_core -- but it's an advanced topic, and you can usually just take it for granted.)
+That last point is unusual but intentionally nice.  You *never* need to worry about a send failing due to a clogged-up low-level transport.  (How this is accomplished -- internal queueing, but only when the low-level transport would block -- is explained, with rationale, in the ipc::transport::Native_handle_sender concept doc header.  It's an advanced topic though, and you can usually just take it for granted.)  The flip side: if the opposing side stops reading (or falls far behind), outgoing traffic accumulates in memory on the sending side.  As long as both sides keep up, this stays small.
 
 ### Sending request messages / handling responses ###
 To send a request use @link ipc::transport::struc::Channel::async_request() .async_request()@endlink or @link ipc::transport::struc::Channel::sync_request() .sync_request()@endlink.  The latter blocks until the response arrives and returns the response on success, synchronously.
 
-@note `.sync_request()` is, indeed, a rare blocking method in Flow-IPC.  However in many (certainly not all) situations one can be reasonably assured that a properly behaving opposing process is currently expecting a message of a certain type and will choose to immediately `.send()` (et al) a response.  IPC is meant to be, and is, low-latency -- therefore in such a setup one can reasonably expect a response to arrive with an RTT (round-trip time) of microseconds.  Therefore, to simplify code, a `.sync_request()` *can and should* be used where possible as a "non-blocking blocking" call.  (For worried souls, an optional timeout argument is available.)  Otherwise use `.async_request()` (explained a bit further below).
+@note `.sync_request()` is, indeed, a rare blocking method in Flow-IPC.  However in many (not all) situations one can be reasonably assured that a properly behaving opposing process is currently expecting a message of a certain type and will choose to immediately `.send()` (et al) a response.  IPC is meant to be, and is, low-latency -- therefore in such a setup one can reasonably expect a response to arrive with an RTT (round-trip time) of microseconds.  Therefore, to simplify code, a `.sync_request()` *can and should* be used where possible as a "non-blocking blocking" call.  (For worried souls, an optional timeout argument is available.)  Otherwise use `.async_request()` (explained a bit further below).
 
 Example:
 
@@ -309,7 +313,8 @@ Example:
   // .sync_request(): send request; synchronously await reply.  No originating_msg_or_null: respond to nothing.
   auto rsp = cool_channel.sync_request(&msg,
                                        nullptr, // <-- originating_msg_or_null.
-                                       boost::chrono::milliseconds{250}); // Optional timeout arg.
+                                       boost::chrono::milliseconds{250}, // Optional timeout arg.
+                                       nullptr); // Error_code*: null => throw on error.  (Required in this overload.)
   assert(rsp && "We discuss error handling in a subsequent section of this page.  For now assume success.");
 
   // The other side had best know how to add stuff and multiply at the end!  Check the in-message.
@@ -328,13 +333,16 @@ As a rare blocking method there are a few things to note about it.
 If a timeout does occur, a late-arriving response (if one indeed occurs) shall be ignored by Flow-IPC (as-if it was never received, modulo some logging).
 
 @par
-A request made via `.sync_request()` is by definition **one-off**: If the opposing side sends 2 or more responses, all but the first will be ignored (logging aside), except unexpected-response handler(s) may fire (more on this below).  C/f `.async_request()` which allows one-off and **indefinite-lifetime** requests alike.
+A tip: Instead of (or in addition to) a timeout on each `.sync_request()`, consider the idle timer, with the opposing side's auto-pings enabled (see above).  If the opposing side then stops responding entirely -- auto-pings included -- the channel hoses itself, and any `.sync_request()` in progress is interrupted with that error.  That bounds every blocking call at once, often more simply than choosing a per-call timeout.  This matters particularly if a blocking call is made while holding a lock that other threads need.
+
+@par
+A request made via `.sync_request()` is by definition **one-off**: If the opposing side sends 2 or more responses, all but the first will be ignored (logging aside), except unexpected-response handler(s) may fire (more on this below).  Cf. `.async_request()` which allows one-off and **indefinite-lifetime** requests alike.
 
 @par Thread-safety and concurrency on ipc::transport::struc::Channel
-For a given `struc::Channel` (but not `struc::sync_io::Channel`), it is safe to invoke any 2+ methods concurrently.  Moreover, if a non-blocking method (so, as of this writing, anything but `.sync_request()`) is invoked while a blocking method (as of this writing, `.sync_request()`) is awaiting a response, the non-blocking method (for example a `.send()` or `.async_request()`) shall *not* block.  However, any 2+ `.sync_...()` methods invoked concurrently shall execute in series only.
+For a given `struc::Channel` (but not `struc::sync_io::Channel`), it is safe to invoke any 2+ methods concurrently.  Moreover, if a non-blocking method (so anything but `.sync_...()`) is invoked while a blocking method (as of this writing, `.sync_...()`) is awaiting a response, the non-blocking method (for example a `.send()` or `.async_request()`) shall *not* block.  However, any 2+ `.sync_...()` methods invoked concurrently shall execute in series only.
 
 @par Thread-safety on ipc::transport::struc::sync_io::Channel
-A fundamentally simpler object, a `sync_io`-pattern `Channel` has basically standard concurrency rules for invoking methods simultaneously on the same object.  Aside from certain boring accessors of immutable data, it is not safe to concurrently invoke a non-`const` method with another method.  Incidentally there is no `sync_io::Channel::sync_request()`.
+A fundamentally simpler object, a `sync_io`-pattern `Channel` has basically standard concurrency rules for invoking methods simultaneously on the same object.  Aside from certain boring accessors of immutable data, it is not safe to concurrently invoke a non-`const` method with another method.  Incidentally there is no `struc::sync_io::Channel::sync_request()`.
 
 ---
 
@@ -342,7 +350,7 @@ That brings us to `.async_request()`, the other way of sending a message (turnin
   - One sends a message, simultaneously registering a **response handler** which, if invoked, shall be given the resulting in-message as an argument.
   - At the same time, using an argument to `.async_request()`, one specifies whether:
     - the response expectation is **one-off** (once response does arrive, the expectation is automatically removed, and the handler is forgotten); or
-    - the response expectation is **indefinite-lifetime** (multiple response may arrive, each time firing the handler; the response expectation may be removed manually using ipc::transport::struc::Channel::undo_expect_responses()).
+    - the response expectation is **indefinite-lifetime** (multiple responses may arrive, each time firing the handler; the response expectation may be removed manually using ipc::transport::struc::Channel::undo_expect_responses()).
 
 In any case, if the opposing side sends a response that is not expected at a given time, it is ignored (logging aside), except unexpected-response handler(s) may fire (more on this below).
 
@@ -369,10 +377,10 @@ We've already demonstrated (more or less) dealing with a one-off request, so for
   }
   ~~~
 
-This following code assumes an async-I/O event loop setup introduced [here](./async_loop.html#aio_pattern) -- in this case a single thread called thread W, onto which further tasks may be posted using a `post()` function.
+This following code assumes an async-I/O event loop setup introduced [here](./async_loop.html#aio_pattern) -- in this case a single thread called thread U, onto which further tasks may be posted using a `post()` function.
 
   ~~~
-  // Sender side: Your async-I/O loop's main thread W.
+  // Sender side: Your async-I/O loop's main thread U.
 
   auto msg = cool_channel.create_msg();
   auto root = msg.body_root()->initHitMeWithYourBestShot();
@@ -381,27 +389,29 @@ This following code assumes an async-I/O event loop setup introduced [here](./as
 
   // .async_request(): send request; asynchronously await reply.  No originating_msg_or_null: respond to nothing.
 
-  Cool_structured_channel::msg_id_out_t req_handle; // Used to be able to remove response expectation later.
+  // Used to be able to remove response expectation later.  It is a data member (Cool_structured_channel::msg_id_out_t
+  // m_req_id), not a local: async_request() fills it in only after the handler below (and its captures) is created;
+  // and the handler may run long after this code returns.
 
   const bool ok = cool_channel.async_request(&msg,
                                              nullptr, // <-- originating_msg_or_null.
-                                             &req_handle, // (Would have used nullptr for one-off request.)
-                                             [this, req_handle](Cool_structured_channel::Msg_in_ptr&& rsp)
+                                             &m_req_id, // (Would have used nullptr for one-off request.)
+                                             [this](Cool_structured_channel::Msg_in_ptr&& rsp)
                                                // Note: In some cases you may need `mutable` keyword here.
   {
-    // We are unspecified thread (async-I/O pattern).  Offload true handling back onto your thread W.
+    // We are unspecified thread (async-I/O pattern).  Offload true handling back onto your thread U.
     //
     // Caution!  This is *not* a one-off request, hence the present code may run 2+ times.  If you captured
-    // something more than `this` and `req_handle` here, you need to be careful when using std::move() in your
+    // something more than `this` here, you need to be careful when using std::move() in your
     // capture.  In a one-off request it is fine; but otherwise a destructive move()ing capture may cause a nasty
     // surprise on 2nd, 3rd, ... response: Whatever you move()d the 1st time may have been emptied/otherwise messed
     // over for the subsequent times.  You may need to copy whatever it is.  If the copy is too expensive:
     // use a shared_ptr<> wrapper (shared_ptr copies are pretty cheap).
-    post([this, req_handle,
+    post([this,
           // For a perf boost use move() here to avoid ref-counting overhead.  `rsp` is a shared_ptr<Msg_in>.
           rsp = std::move(rsp)]()
     {
-      // We are back in: Your async-I/O loop's main thread W.
+      // We are back in: Your async-I/O loop's main thread U.
 
       const bool more_coming = rsp->body_root().getMyBestShot().getMoreComing();
 
@@ -411,7 +421,7 @@ This following code assumes an async-I/O event loop setup introduced [here](./as
 
       if (!more_coming)
       {
-        const bool ok = cool_channel.undo_expect_responses(req_handle);
+        const bool ok = cool_channel.undo_expect_responses(m_req_id);
         assert(ok && "We discuss error handling in a subsequent section of this page.  For now assume success.");
       }
     }); // post()
@@ -431,11 +441,11 @@ Accordingly there wouldn't be the intermediate `post()` step inside the handler 
 Since it is impossible for a response to already be synchronously available at the time of the `.async_request()`, there is no need to worry about that possibility: The response always arrives later on an active event that your own code would have detected (e.g., via `epoll_wait()` or boost.asio `.async_wait()`).  Contrast this with `.expect_msg()` (et al), discussed below.
 
 @par
-All in all this sidebar is here essentially because, chronologically speaking, it is the first time we've gone into event handling in ipc::transport in this Manual.  Upon practice/familiarity with async-I/O and/or `sync_io` patterns, these things will hopefully become second-nature.  I.e., none of this is really "special" or particularly applicable to `.async_request()` or even `struc::Channel` specifically.  We are just trying to be reader-friendly for first-time users.
+All in all this sidebar is here essentially because, chronologically speaking, it is the first time we've gone into event handling in ipc::transport in this Manual.  Upon practice/familiarity with async-I/O and/or `sync_io` patterns, these things will hopefully become second-nature.  I.e., none of this is really "special" or particularly applicable to `.async_request()` or even `struc::Channel` specifically.
 
 ---
 
-That was quite a lot of stuff; and indeed we've covered at least 50% of the `struc::Channel` experience, so to speak.  That said we've intentionally only demonstrated the sender side of this thing, venturing into in-message analysis only tangentially when it concerned dealing with responses to requests.  Now let's jump into the opposing side of these examples, as it is a convenient way to explore expecting notifications and requests in the first place.  An analogy: if we'd been discussing how an HTTP GET request works, so far we've covered the client side of it -- issuing the GET request among others.  Now to discuss the server side -- expecting a GET and replying to it.
+That was quite a lot of stuff; and indeed we've covered at least 50% of the `struc::Channel` experience, so to speak.  That said we've intentionally only demonstrated the sender side of things, venturing into in-message analysis only tangentially when it concerned dealing with responses to requests.  Now let's jump into the opposing side of these examples, as it is a convenient way to explore expecting notifications and requests in the first place.  An analogy: if we'd been discussing how an HTTP GET request works, so far we've covered the client side of it -- issuing the GET request among others.  Now to discuss the server side -- expecting a GET and replying to it.
 
 ### Expecting notifications and requests; responding to requests ###
 You might recall from earlier in this page that Flow-IPC imposes a single restriction on the schema `Message_body` of `struc::Channel<Message_body>` (in our case `Message_body` is `CoolMsg`).  That restriction is `Message_body` must have an anonymous capnp-`union` at the root.  The reason is, specifically, how the @link ipc::transport::struc::Channel::expect_msg() .expect_msg()@endlink and @link ipc::transport::struc::Channel::expect_msgs() .expect_msgs()@endlink APIs work.  Each takes two main arguments:
@@ -457,14 +467,14 @@ So suppose an in-message arrives, and it is a response.  Then: either there's a 
 Conversely if an in-message arrives, and it is *not* a response, then it goes down the unsolicited-message code path discussed below.  Spoiler alert: If an `expect_msg*()` is active, then it is immediately emitted to you, the user; if not, then it is cached inside the `struc::Channel` and may be emitted later once (and if) an `expect_msg*()` happens to get called by you.
 
 @par
-In the spirit of flexibility and tolerance Flow-IPC allows one to `expect_*()` messages that may also be issued as responses.  That is, in the schema, there is no formal way to classify a union-which (message type) as either a response or an unsolicited message; any message can be either.  Informally, though, we recommend that you clearly *do* classify each message as exactly one or the other.  (A convention like an `Rsp` postfix for responses might be a decent idea.)  In HTTP, you'd *expect* an *unsolicited* GET; but you'd never *expect* an unsolicited GET-response.  We recommend following the same principle in your meta-application and schema.  Otherwise it's an avoidable mess.
+In the spirit of flexibility and tolerance Flow-IPC allows one to `expect_*()` messages that may also be issued as responses.  That is, in the schema, there is no formal way to classify a union-which (message type) as either a response or an unsolicited message; any message can be either.  Informally, though, we recommend that you clearly *do* classify each message as exactly one or the other.  (A convention like an `Rsp` postfix for responses might be a decent idea.)  In HTTP, you'd *expect* an *unsolicited* GET; but you'd never *expect* an unsolicited GET-response.  We recommend following the same principle in your meta-application and schema.  Otherwise it's arguably an avoidable mess.
 
 ---
 
 @note To put a fine point on it: A message instance is either unsolicited or a response; and *orthogonally* it is either a request or a notification.  Hence, e.g., a message instance can be both a response and a request (like a single ping-pong exchange).  The latter is expressed by the choice of send-API called (`.send()` or `.*_request()`); the former by the value of `originating_msg_or_null` arg to the send-API.
 
-That said/understood, the `.expect_msg*()` APIs are fairly similar to `.async_request()` -- the differences being:
-  - There's no message instance sent as a way to solicit the in-message(s) (hence the term *unsolicited* in-message).
+Given that, the `.expect_msg*()` APIs are fairly similar to `.async_request()` -- the differences being:
+  - There's no message instance (request) sent as a way to solicit the in-message(s) (hence the term *unsolicited* in-message).
   - There are two separate methods for **one-off** versus **indefinite-lifetime** modes instead of an argument: @link ipc::transport::struc::Channel::expect_msg() .expect_msg()@endlink and @link ipc::transport::struc::Channel::expect_msgs() .expect_msgs()@endlink respectively.
     - To remove the expectation registered by `.expect_msgs()` one uses @link ipc::transport::struc::Channel::undo_expect_msgs() .undo_expect_msgs()@endlink which is analogous to `.undo_expect_responses()`.  No particular generated ID is necessary: one simply supplies the same union-which value as earlier given to `.expect_msgs()`.
 
@@ -473,17 +483,17 @@ We can now demonstrate both `.expect_msg*()` methods by completing the other sid
 One-off example first:
 
   ~~~
-  // Receiver side: Your async-I/O loop's main thread W.
+  // Receiver side: Your async-I/O loop's main thread U.
 
   const bool ok = cool_channel.expect_msg(Cool_structured_channel::Msg_which::SUM_REQUEST, // <=> sumRequest union field.
                                           [this](Cool_structured_channel::Msg_in_ptr&& req)
   {
-    // We are unspecified thread (async-I/O pattern).  Offload true handling back onto your thread W.
+    // We are unspecified thread (async-I/O pattern).  Offload true handling back onto your thread U.
     post([this,
           // For a perf boost use move() here to avoid ref-counting overhead.  `req` is a shared_ptr<Msg_in>.
           req = std::move(req)]()
     {
-      // We are back in: Your async-I/O loop's main thread W.
+      // We are back in: Your async-I/O loop's main thread U.
 
       int64_t sum = 0;
       const auto sum_func = [&](int64_t val) { sum += val; };
@@ -499,8 +509,8 @@ One-off example first:
       msg.body_root()->initSumResponse().setResult(sum);
       msg.body_root()->setDescription("the sum you ordered, sir");
 
-      const bool ok = msg.send(&msg,
-                               req.get()); // <-- originating_msg_or_null.  We are responding.
+      const bool ok = cool_channel.send(&msg,
+                                        req.get()); // <-- originating_msg_or_null.  We are responding.
       assert(ok && "We discuss error handling in a subsequent section of this page.  For now assume success.");
     }); // post()
   }); // cool_channel.expect_msg()
@@ -510,45 +520,46 @@ One-off example first:
 Indefinite-lifetime variation is essentially similar.  In our example the idea is to send responses at various times, not necessarily immediately upon receiving request, so the example code will be somewhat hand-wavy (we are confident you can fill in the blanks).
 
   ~~~
-  // Receiver side: Your async-I/O loop's main thread W.
+  // Receiver side: Your async-I/O loop's main thread U.
 
   const bool ok = cool_channel.expect_msgs(Cool_structured_channel::Msg_which::HIT_ME_WITH_YOUR_BEST_SHOT,
                                            [this](Cool_structured_channel::Msg_in_ptr&& req)
                                                // Note: In some cases you may need `mutable` keyword here.
   {
-    // We are unspecified thread (async-I/O pattern).  Offload true handling back onto your thread W.
+    // We are unspecified thread (async-I/O pattern).  Offload true handling back onto your thread U.
     //
     // Caution!  This is *not* a one-off expectation, hence the present code may run 2+ times.  If you captured
     // something more than `this` here, you need to be careful when using std::move() in your
-    // capture.  In a one-off request it is fine; but otherwise a destructive move()ing capture may cause a nasty
-    // surprise on 2nd, 3rd, ... response: Whatever you move()d the 1st time may have been emptied/otherwise messed
+    // capture.  In a one-off expectation it is fine; but otherwise a destructive move()ing capture may cause a nasty
+    // surprise on 2nd, 3rd, ... in-message: Whatever you move()d the 1st time may have been emptied/otherwise messed
     // over for the subsequent times.  You may need to copy whatever it is.  If the copy is too expensive:
     // use a shared_ptr<> wrapper (shared_ptr copies are pretty cheap).
     post([this,
           // For a perf boost use move() here to avoid ref-counting overhead.  `req` is a shared_ptr<Msg_in>.
           req = std::move(req)]()
     {
-      // We are back in: Your async-I/O loop's main thread W.
+      // We are back in: Your async-I/O loop's main thread U.
 
       // ...Check out `req`; set up whatever logic needed to subsequently/asynchronously send 0+ responses....
       // ...For example when sending the last response we would send to this request, we would do:
 
       auto msg = cool_channel.create_msg();
       // ...
-      msg.body_root()->setMoreExpected(false);
+      msg.body_root()->initMyBestShot().setMoreComing(false);
       msg.body_root()->setDescription("last response to request");
 
       // (To keep responding to `req`, `req` needs to be kept around and available for each .send().
       // It's a shared_ptr<>, so it should not be a big deal perf-wise or RAM-wise.)
-      const bool ok = msg.send(&msg,
-                               req.get()); // <-- originating_msg_or_null.  We are responding.
+      const bool ok = cool_channel.send(&msg,
+                                        req.get()); // <-- originating_msg_or_null.  We are responding.
       assert(ok && "We discuss error handling in a subsequent section of this page.  For now assume success.");
 
-      // Moreover, perhaps we only take such a request only once at most.  In which case:
+      // Moreover, perhaps we take such a request only once at most.  In which case:
 
       // Note we remove expectation by using the same Msg_which union-which value as .expect_msgs().
-      ok  = cool_channel.undo_expect_response(Cool_structured_channel::Msg_which::HIT_ME_WITH_YOUR_BEST_SHOT);
-      assert(ok && "We discuss error handling in a subsequent section of this page.  For now assume success.");
+      const bool undo_ok
+        = cool_channel.undo_expect_msgs(Cool_structured_channel::Msg_which::HIT_ME_WITH_YOUR_BEST_SHOT);
+      assert(undo_ok && "We discuss error handling in a subsequent section of this page.  For now assume success.");
 
       // ...
     }); // post()
@@ -564,10 +575,13 @@ And that's it!  We have pretty much used the entire essential arsenal now.  That
 An *in-message instance* is represented by, as we've seen, a `struc::Channel::Msg_in_ptr` which is but a `shared_ptr<Msg_in>`; while `Msg_in` is itself an instance of the ipc::transport::struc::Msg_in class template.  Its basic capabilities you've already seen: `.body_root()` to get at the structured data via capnp-generated `Reader`; `ostream <<` to pretty-print a potentially-truncated un-indented version (potentially slow but okay in TRACE-logging and the like); and so on.
 
 @par
-One we have not yet mentioned is: A `Native_handle` stored in the original **message** (`struc::Msg_out` a/k/a `struc::Channel::Msg_out`) can of course be obtained from the in-message instance.  Use ipc::transport::struc::Msg_in::emit_native_handle_or_null().  One subtlety to note here: unlike `Msg_out` destructor, `Msg_in` destructor will *not* close the `Native_handle` if any.  What to do with this native handle (FD in POSIX parlance) is entirely your call.  Do note that in POSIX/Unix/Linux this FD refers to the same resource *description* as the original sent FD from the origin process; but it is *not* the same *descriptor*.  The *description* will itself be released back into the OS's resource pool no earlier than *both* the original sendable-FD and the received-FD have been closed.  So: unless you want that resource to leak, it is your reponsibility to take ownership of it.  Hopefully the task is made easier by the sent-message `Msg_out` (the actual **message**, not merely the **message instance** sent) guaranteeing the closure of the sendable-FD no later than `Msg_out` being destroyed... so the send-side will not be the source of the leak.
+One we have not yet mentioned is: A `Native_handle` stored in the original **message** (`struc::Msg_out` a/k/a `struc::Channel::Msg_out`) can of course be obtained from the in-message instance.  Use ipc::transport::struc::Msg_in::emit_native_handle_or_null().  Do note that in POSIX/Unix/Linux this FD refers to the same resource *description* as the original sent FD from the origin process; but it is *not* the same *descriptor*.  The *description* will itself be released back into the OS's resource pool no earlier than both the original sendable-FD and the received-FD have been closed.
 
 @par
-On a related note: A particular `Msg_in` (`struc::Msg_in<...>`) object represents a message *instance*.  That is it represents a message *as sent and received that particular time*.  A `Msg_out` can be re-sent later; and it can even be modified and re-sent (as many times as desired).  We'll cover that in @ref chan_struct_advanced -- but be aware of it even now.  Spoiler alert: If SHM-backing is configured (as we generally recommend), then the original `Msg_out` *and* any `Msg_in` in existence (and there can be multiple) really refer to the same RAM resource.  Hence the RAM is returned for other use no sooner than all those guys have been destroyed (across all processes involved).  If SHM-backing is *not* used, then each `Msg_in` is really a copy of the original, and therefore the `Msg_out` and all derived `Msg_in`s are independent, returning each RAM resource on destruction of that object.
+`struc::Msg_in` destructor shall close (return to the OS) any `Native_handle` (descriptor) that has not yet been emitted via `Msg_in::emit_native_handle_or_null()`.  Once emitted you own it.
+
+@par
+On a related note: A particular `Msg_in` (`struc::Msg_in<...>`) object represents a message *instance*.  That is it represents a message *as sent and received that particular time*.  A `Msg_out` can be re-sent later; and it can even be modified and re-sent (as many times as desired).  We'll cover that in @ref chan_struct_advanced -- but be aware of it even now.  Spoiler alert: If SHM-backing is configured (as required for zero-copy), then the original `Msg_out` *and* any `Msg_in` in existence (and there can be multiple) really refer to the same RAM resource.  Hence the RAM is returned for other use no sooner than all those guys have been destroyed (across all processes involved).  If SHM-backing is *not* used, then each `Msg_in` is really a copy of the original, and therefore the `Msg_out` and all derived `Msg_in`s are independent, returning each RAM resource on destruction of that object.
 
 @par
 However that applies only to the structured data.  The `Native_handle`s are always, conceptually speaking, copies of the original one(s) (if any) in `Msg_out`.  Again we'll get into all this in @ref chan_struct_advanced -- so consider these paragraphs a brief intro to that stuff.
@@ -576,7 +590,7 @@ However that applies only to the structured data.  The `Native_handle`s are alwa
 A few times we've now mentioned the possibility of an in-message (instance) arriving, when an expectation for it was not registered in the receiving `struc::Channel`.
 
 @par
-To recap: If an *unsolicited* in-message arrives, and it's not `expect_*()`ed, it is cached.  A subsequent `expect_msg*()` may therefore be immediately satisfied by a cached such in-message instance.  This is in no way an error.  In fact it is an important property: It means no unsolicited message is ever dropped or lost due to not been expected "in time."  Also important: any cached messages are emitted to the user -- when officially expected and no earlier -- in the same order as they were sent.  They will not be reordered among each other!  The only way to reorder the handling of in-messages is by expecting message type B before message type A, causing the latter to be cached and not emitted in the meantime.  E.g., if one `expect_msgs()` GETs a second after `expect_msgs()` POSTs, some GETs may be sent before some POSTs but get cached until the somewhat-delayed `expect_msgs(GET)`.  However, all those GETs *will* get emitted to you in a burst and strictly in the order they were sent.
+To recap: If an *unsolicited* in-message arrives, and it's not `expect_*()`ed, it is cached.  A subsequent `expect_msg*()` may therefore be immediately satisfied by a cached such in-message instance.  This is in no way an error.  In fact it is an important property: It means no unsolicited message is ever dropped or lost due to not being expected "in time."  Also important: any cached messages are emitted to the user -- when officially expected and no earlier -- in the same order as they were sent.  They will not be reordered among each other!  The only way to reorder the handling of in-messages is by expecting message type B before message type A, causing the latter to be cached and not emitted in the meantime.  E.g., if one `expect_msgs()` GETs a second after `expect_msgs()` POSTs, some GETs may be sent before some POSTs but get cached until the somewhat-delayed `expect_msgs(GET)`.  However, all those GETs *will* get emitted to you in a burst and strictly in the order they were sent.
 
 @par
 One thing to watch out for here is simply that cached in-messages take up RAM/resources.  This is usually fine; but generally speaking you'll want to `expect_*()` stuff as early as possible to prevent pathological RAM use.
@@ -585,10 +599,10 @@ One thing to watch out for here is simply that cached in-messages take up RAM/re
 Now then: That's about unsolicited messages.  *Responses* are different.  Receiving a response, when no applicable response expectation has been registered via `.async_request()` or `.sync_request()`, is an error condition but *not* a channel-hosing one.  (A response to `.sync_request()` received after that call timed out is just dropped; that's it.  This is not what we are discussing here.)  All such situations -- a response to a non-request; a response to a one-off request that has already been satisfied; a response after `.undo_expect_responses()` -- result in the following steps.  The response is dropped.  *If* ipc::transport::struc::Channel::set_unexpected_response_handler() is in effect, then that handler is invoked informing you of the unexpected response.  Furthermore, via an internal mechanism, the sender-side of the bad response is informed of this situation as well.  On *that* side: *If* ipc::transport::struc::Channel::set_remote_unexpected_response_handler() is in effect, then that handler is invoked informing you of the unexpected response sent *by you*.
 
 @par
-That feature -- the local and "remote" unexpected-reponse notification -- may be useful.  Informally, though, we would suggest designing a protocol in robust enough fashion to where these guys firing would be impossible.  It should really, usually, be possible to lock down your protocol to avoid races or corner cases of that nature.  Though, who knows?  It's conceivable that it's not always so easy.  Just saying: try to keep it simple.
+That feature -- the local and "remote" unexpected-response notification -- may be useful.  Informally, though, we would suggest designing a protocol in robust enough fashion to where these guys firing would be impossible.  It should really, usually, be possible to lock down your protocol to avoid races or corner cases of that nature.  Though, who knows?  It's conceivable that it's not always so easy.  Just saying: try to keep it simple.
 
 @par `sync_io`-pattern and expect-message(s)
-The doc header for ipc::transport::struc::sync_io::Channel::expect_msg() and @link ipc::transport::struc::sync_io::Channel::expect_msgs() .expect_msgs()@endlink explains the deal.  For your convenience here, though, spoiler alert: As noted above, async-I/O `.expect_msg*()` may trigger a "burst" of cached in-message(s) being emitted via the very handler that was just given to that method; but with `sync_io` pattern this situation creates a dichotomy: An in-message being available immediately is not quite the same as one being available asynchronously later.  Therefore the `sync_io`-pattern `.expect_msg*()` API features an extra out-argument.  If message(s) is/are available synchronously, it/they is/are synchronously output right into that argument.  (`.expect_msg()`, natually, emits up to 1 in-message, and if 1 was indeed emitted does not register an expectation for more -- and forgets the handler, never invoking it.  `.expect_msgs()` can emit multiple in-messages synchronously into a user-supplied sequence container, and even if it does so, it remembers the handler in case more arrive later.)
+The doc header for ipc::transport::struc::sync_io::Channel::expect_msg() and @link ipc::transport::struc::sync_io::Channel::expect_msgs() .expect_msgs()@endlink explains the deal.  For your convenience here, though, spoiler alert: As noted above, async-I/O `.expect_msg*()` may trigger a "burst" of cached in-message(s) being emitted via the very handler that was just given to that method; but with `sync_io` pattern this situation creates a dichotomy: An in-message being available immediately is not quite the same as one being available asynchronously later.  Therefore the `sync_io`-pattern `.expect_msg*()` API features an extra out-argument.  If message(s) is/are available synchronously, it/they is/are synchronously output right into that argument.  (`.expect_msg()`, naturally, emits up to 1 in-message, and if 1 was indeed emitted does not register an expectation for more -- and forgets the handler, never invoking it.  `.expect_msgs()` can emit multiple in-messages synchronously into a user-supplied sequence container, and even if it does so, it remembers the handler in case more arrive later.)
 
 ---
 
@@ -596,7 +610,7 @@ Starting channel; errors; channel destruction
 ---------------------------------------------
 While above we covered all the fun stuff -- actual transmission APIs -- we glossed over certain less-enjoyable aspects which are nevertheless critical to understand to use `struc::Channel`.  These concern beginning work on a given channel; what errors might occur and how they are emitted; and destroying the `struc::Channel` properly.
 
-The first thing to grok is that channel operations are divided into 2 categories: **incoming-direction** ops and **outgoing-direction** ops.  Outgoing-direction ops are simply: `.send()` and the synchronous work performed by `.async_request()` and `.sync_request()`.  (`.sync_request()` is entirely synchronous; `.async_request()` has a synchronous part as well as the potential response(s) arriving later; only the former part of `.async_request()` is classified as *outgoing-direction*.)  Incoming-direction ops are everything else and comprise the receipt of unsolicited messages (emission-to-user of which is controlled by `expect_*()`) and responses (emission-to-user of which is controlled by `.async_request()`).
+The first thing to grok is that channel (traffic) operations are divided into 2 categories: **incoming-direction** ops and **outgoing-direction** ops.  Outgoing-direction ops are simply: `.send()` and the synchronous work performed by `.async_request()` and `.sync_request()`.  (`.sync_request()` is entirely synchronous; `.async_request()` has a synchronous part as well as the potential response(s) arriving later; only the former part of `.async_request()` is classified as *outgoing-direction*.)  Incoming-direction ops are everything else and comprise the receipt of unsolicited messages (emission-to-user of which is controlled by `expect_*()`) and responses (emission-to-user of which is controlled by `.async_request()`).
 
 ### Starting channel ###
 Obviously first you need to construct the `struc::Channel`.  We've covered that.  (If using `sync_io`-pattern `struc::Channel`, you'll need to also call ipc::transport::struc::sync_io::Channel::start_ops() and possibly @link ipc::transport::struc::sync_io::Channel::replace_event_wait_handles() .replace_event_wait_handles()@endlink.)
@@ -609,7 +623,7 @@ You can also call *incoming-direction* APIs including `.expect_*()`, but no rele
 
 As this returns, in-traffic may be received and emitted to your handlers (or the special-case blocking op `.sync_request()` which is unavailable with the `sync_io`-pattern variant).  (These handlers can be registered -- after *or before* the start method -- via `expect_*()`, `async_request()`, `set_*unexpected_response_handler()`.  Un-register via `undo_*()` and `unset_*()`.)
 
-The idea of calling a start method is presumably simple enough, but a key input to that method is the **on-error handler** function you'll need to supply.  That guy in and of itself is straightforward enough: it takes a `const Error_code&`, and Flow-IPC shall set this to some truthy value indicating the error that occurred.  However the topic of errors is somewhat subtle.  Let's discuss.
+Calling a start method is simple, but a key input to that method is the **on-error handler** function you'll need to supply.  That guy in and of itself is straightforward: it takes a `const Error_code&`, and Flow-IPC shall set this to some truthy value indicating the error that occurred.  However the topic of errors is somewhat subtle.  Let's discuss.
 
 ### Errors ###
 One class of error we should get out of the way is the **non-fatal a/k/a non-channel-hosing error** type.  As of this writing there is only one: ipc::transport::error::Code::S_TIMEOUT; it is emitted by `.sync_request()` if and only if the one expected response does not arrive within the (optional) timeout value given to the method.  This is considered a user error, and it does not have any ill consequences as far as Flow-IPC is concerned.  (You are of course free to explode everything, if it is appropriate.)  If other such error eventualities arise over time, they are documented explicitly.  So from this point forward we only discuss **fatal a/k/a channel-hosing errors**.
@@ -631,7 +645,7 @@ How is it emitted?  Answer:
 
 This is an important dichotomy to understand.  There's at most one occurrence of a channel-hosing error being emitted, and if it does occur, it will occur through exactly one of the above ways.  Either a send method will emit it synchronously, or some incoming-direction processing (occurring concurrently in the background with async-I/O pattern, or inside `(*on_active_ev_func)()` or `.start_and_poll()` itself with `sync_io` pattern) will emit it to the on-error handler.  Either way you must be ready for it.
 
-What happens to a hosed channel?  Rest easy: You can still call its APIs; they will not crash/abort/lead to undefined behavior.  They will basically do nothing.  In particular most -- including `.expect_*()`, `.send()`, `.async_request()` -- will return `false`.  One, `.sync_request()`, will return null pointer (instead of the resulting response message pointer) while setting `*err_code` to falsy (nominally success) (or not throwing if `err_code` is null).  It is guaranteed, also, that no handler (except that given to `.async_end_sending()`; see next section) will possibly be called after the channel-hosing error is emitted.
+What happens to a hosed channel?  Rest easy: You can still call its APIs; they will not crash/abort/lead to undefined behavior.  They will basically do nothing.  In particular most -- including `.expect_*()`, `.send()`, `.async_request()` -- will return `false`.  One, `.sync_request()`, will return null pointer (instead of the resulting response message pointer) while setting `*err_code` to falsy (nominally success) (or not throwing if `err_code` is null).  It is guaranteed, also, that no handler (except that given to the lower-layer `.async_end_sending()` method; see next section) will possibly be called after the channel-hosing error is emitted.
 
 The more salient question is, perhaps, what *should* you do once you've detected a channel-hosing error (again, either via `.send()` et al synchronously, or via on-error handler)?  Answer: You should stop using the channel; instead you should destroy it (see next section of this page).
 
@@ -640,11 +654,11 @@ You might be thinking to yourself: Well, that's no problem.  Channel hosed?  Don
 The channel might get hosed *at any time*.  Consider this code:
 
   ~~~
-  // Receiver side: Your async-I/O loop's main thread W.
+  // Receiver side: Your async-I/O loop's main thread U.
 
   cool_channel.start([this](const Error_code& err_code)
   {
-    // We are unspecified thread (async-I/O pattern).  Offload true handling back onto your thread W.
+    // We are unspecified thread (async-I/O pattern).  Offload true handling back onto your thread U.
     post([this, err_code]()
     {
       // --> DISCUSSION POINT Y. <--
@@ -655,11 +669,11 @@ The channel might get hosed *at any time*.  Consider this code:
   const bool ok = cool_channel.expect_msg(Cool_structured_channel::Msg_which::SUM_REQUEST,
                                           [this](Cool_structured_channel::Msg_in_ptr&& req)
   {
-    // We are unspecified thread (async-I/O pattern).  Offload true handling back onto your thread W.
+    // We are unspecified thread (async-I/O pattern).  Offload true handling back onto your thread U.
     post([this,
           req = std::move(req)]()
     {
-      // We are back in: Your async-I/O loop's main thread W.
+      // We are back in: Your async-I/O loop's main thread U.
 
       // --> DISCUSSION POINT A. <--
 
@@ -677,9 +691,9 @@ The channel might get hosed *at any time*.  Consider this code:
       // --> DISCUSSION POINT B. <--
 
       Error_code err_code;
-      const bool ok = msg.send(&msg,
-                               req.get(),
-                               &err_code); // Let's not omit, so we need not catch exception on error.
+      const bool ok = cool_channel.send(&msg,
+                                        req.get(),
+                                        &err_code); // Let's not omit, so we need not catch exception on error.
       // --> DISCUSSION POINT C. <--
 
       if (err_code)
@@ -704,18 +718,18 @@ The channel might get hosed *at any time*.  Consider this code:
 
 Chronologically:
   -# Point X: We've called `.expect_msg()`.  Say it returned `true` which means the channel is *not* hosed at that exact point in time.  It, itself, lacks an `err_code` arg in its signature, so it cannot itself emit a new error.
-  -# Point A: Apparently a message has arrived.  So at that exact point the channel is *not* hosed either.  Even if it is, `.create_msg()` has nothing to do with transmitting anything, and certainyl all the message-reading and -filling logic is orthogonal to the channel itself.  No problem.
+  -# Point A: Apparently a message has arrived.  So at that exact point the channel is *not* hosed either.  Even if it is, `.create_msg()` has nothing to do with transmitting anything, and certainly all the message-reading and -filling logic is orthogonal to the channel itself.  No problem.
   -# Point B: Here we `.send()`.  That's a transmission-related API, and moreover it can itself emit a (new) error.  Anyway, we don't know if the channel is hosed or not per se, and there's only one way to find out: call it.
   -# Point C: Now there are 2 error-related outputs: `ok` (return value) and `err_code` (out-arg).  (We could have passed-in null or omitted arg -- same thing -- in which case we'd need to be ready to catch resulting exception.)
     - Suppose `ok == true`, but `err_code` is truthy.  That would indicate *new channel-hosing error* being emitted.  Hence we call `teardown()` which will stop work on this channel -- deinitialize whatever, etc.
     - Suppose `ok == false`.  What does it mean?  Answer: Something came into the channel *in the background concurrently* between the start of our in-message handler (when everything was OK) and the point where we decided to send the response.  So what should we do?  It depends.  Informally speaking:
       - If we wouldn't be doing anything further in the handler anyway, then just don't.  One could simply ignore `ok`.  Flow-IPC would log sufficiently; trust me.
       - However, if there were more logic at that point beyond what is shown in this example, then we might check for `ok == false` and return before doing anything else.  After all the channel is hosed.  *In fact this means, with 100% certainty, that the code at Point Y will execute soon.*  We might as well put all the deinit stuff we want to do, there.
-  -# Point Y: Suppose, indeed, `.send()` returned `ok == false`.  Then this code shall ASAP.  Presumably something happened on the channel's background in-traffic processing that constitutes the channel being hosed.  Usually it's a graceful-close or `EPIPE` or the like.  So we call `teardown()`, where we centrally handle the deinit of the channel.
+  -# Point Y: Suppose, indeed, `.send()` returned `ok == false`.  Then this code shall execute ASAP.  Presumably something happened on the channel's background in-traffic processing that constitutes the channel being hosed.  Usually it's a graceful-close or `EPIPE` or the like.  So we call `teardown()`, where we centrally handle the deinit of the channel.
 
-If one is used to progamming in this async-I/O model -- most commonly in our world using boost.asio -- this will be familiar.  It is a little odd to think of flow control this way at first, but one gets used to it.  There are certainly major positives, but this "inverted flow control" could be considered a negative (which people fight in various ways -- e.g. by using micro-threads/fibers, though that has its own complexity costs).
+If one is used to programming in this async-I/O model -- most commonly in our world using boost.asio -- this will be familiar.  It is a little odd to think of flow control this way at first, but one gets used to it.  There are certainly major positives, but this "inverted flow control" could be considered a negative (which people fight in various ways -- e.g. by using micro-threads/fibers, though that has its own complexity costs).
 
-That said, if you're using `sync_io`-pattern `struc::Channel`, these considerations go away.  Nothing happens concurrently in the background, unless your own code makes it so.  Yes, there is still the on-error handler; yes, `.send()` can still emit an error -- or return `false`.  However there is no need to worry about the channel being fine at Point A but at Point C `.send()` returning `false`.  One would "just" not get to Point B, if earlier your own on-async-wait call `(*on_active_ev_func)()` triggered the on-error handler (synchronously).  Flow control becomes linear, and things don't happen suddenly in the background.  Hence properly written code should be able to `assert(ok)` at Point C without fear.
+That said, if you're using `sync_io`-pattern `struc::sync_io::Channel`, these considerations go away.  Nothing happens concurrently in the background, unless your own code makes it so.  Yes, there is still the on-error handler; yes, `.send()` can still emit an error -- or return `false`.  However there is no need to worry about the channel being fine at Point A but at Point C `.send()` returning `false`.  One would just not get to Point B, if earlier your own on-async-wait call `(*on_active_ev_func)()` triggered the on-error handler (synchronously).  Flow control becomes linear, and things don't happen suddenly in the background.  Hence properly written code should be able to `assert(ok)` at Point C without fear.
 
 At any rate, with the async-I/O pattern, the above gives a pretty good idea of how to structure error handling and the associated flow control.  Basically:
   - Centralize handling channel-hosing errors in a function like `teardown()`, called either from on-error handler or upon detecting truthy `Error_code` from a send-op.
@@ -732,11 +746,26 @@ That's it.  (In the `sync_io`-pattern variation of `.async_end_sending()`, same 
 
 @note We didn't explain why here.  See @link ipc::transport::struc::Channel::async_end_sending() .async_end_sending()@endlink doc header if interested.  Short version: If no error, this will ensure any internally queued-due-to-would-block outgoing traffic (which is unlikely but possible to exist) will get flushed out before you destroy the channel.  That could make things run smoother on the opposing side.  And if an error does occur or has occurred, it'll just complete immediately -- no harm done.
 
-@note What if you don't do this and just destroy the `struc::Channel`?  The aforementioned doc header answers that too.  Short version: In many cases it's probably fine.  However, if the transport out-direction happens to be in would-block state at this time, the opposing side might miss some of the stuff you intended it to receive -- hard to say whether that's important or not; depends on your application/protocol's design.  So all-in-all it's better to flush outgoing payloads instead of leaving it to chance.  This is no different conceptually from properly closing a TCP connection; but truthfully with IPC there's ~zero latency and zero loss, so fewer bad things realistically happen in practice.  Still -- best to code defensively.
+@note What if you don't do this and just destroy the `struc::Channel`?  The aforementioned doc header answers that too.  Short version: In many cases it's fine.  However, if the transport out-direction happens to be in would-block state at this time, the opposing side might miss some of the stuff you intended it to receive -- hard to say whether that's important or not; depends on your application/protocol's design.  So all-in-all it's better to flush outgoing payloads instead of leaving it to chance.  This is no different conceptually from properly closing a TCP connection; but truthfully with IPC there's ~zero latency and zero loss, so fewer bad things realistically happen in practice.  Still -- best to code defensively.
 
 @note Last thing (applies to async-I/O pattern only, not `sync_io`): `.async_end_sending()` is a `Channel`-level operation (as opposed to the higher `struc::Channel` layer).  Its completion handler *will* execute, even if you don't wait for that to occur and destroy `struc::Channel` first.  In that case the destructor will invoke it with an operation-aborted code.  If you follow the above recipe, then that won't happen, but defensively-written code should nevertheless do something close to the following in `F()`: `if (err_code == ipc::transport::error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER) { return; }`.
 
-XXX Let's add a perf section to manual; cover various minutiae.  Be done with everything we're gonna do in the near future on that topic first (should be close now).
+---
+
+@anchor chan_struct_stats
+Stats
+-----
+(See @ref api_overview_stats "the stats synopsis" for the general approach.)
+
+A `struc::Channel` keeps extensive stats: message counts and sizes by type (notification, request, response, internal), capnp-segment details, `expect_msg[s]()` bookkeeping, request-response correlation and RTTs, and more.
+  - ipc::transport::struc::stat::Channel_stats: from ipc::transport::struc::Channel::stats(); reset via `stats_reset()`.  It is made of two parts:
+    - ipc::transport::struc::sync_io::stat::Channel_stats (`m_core`), with directional sub-sets `Snd` and `Rcv` (each containing a `Msg`).  This is the bulk of it.  If you use `struc::sync_io::Channel`, this is what its `stats()` returns directly.
+    - ipc::transport::struc::stat::Channel_sync_req_stats (`m_sync_req`): `sync_request()` counts, latencies, timeouts, late responses.  This one is async-I/O-pattern-only, as `sync_request()` is.
+  - Histogram bucket configs have sensible defaults.  To change them, before `start()`: ipc::transport::struc::Channel::stats_configure_rcv_one_off_request_rtt_histogram(), ipc::transport::struc::Channel::stats_configure_sync_req_latency_histogram().
+
+The stats of the underlying unstructured transport (ipc::transport::stat::Blob_snd_stats, ipc::transport::stat::Blob_rcv_stats) are available via the owned `Channel`: e.g., `cool_channel.owned_channel()->blob_send_stats()`.
+
+Serializer stats (sizes, capnp-segment allocation, and more, at the serialization layer) are process-wide rather than per-channel; see @ref chan_struct_advanced_stats "Stats in the next chapter".
 
 The next page is: @ref chan_struct_advanced.
 
