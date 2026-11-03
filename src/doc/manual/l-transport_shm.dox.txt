@@ -506,12 +506,12 @@ Stats
 
 Both SHM-providers keep extensive stats: objects allocated, lent, borrowed, and live (counts and sizes); SHM-pools; and provider-specific internals.  With ipc::session you reach the arenas via `session.session_shm()` and `app_shm()`; but the APIs are those of the arena classes themselves.  For each provider an `info_dump()` grabs everything into one printable bundle.
 
-**SHM-classic**: ipc::shm::classic::Pool_arena; stat-sets in ipc::shm::classic::stat.
+For **SHM-classic**: ipc::shm::classic::Pool_arena; stat-sets in ipc::shm::classic::stat.
   - @link ipc::shm::classic::stat::Arena_stats Arena_stats@endlink, via @link ipc::shm::classic::Pool_arena::arena_stats() arena_stats()@endlink: the underlying in-SHM pool, which is shared by all processes attached to it.  It lives in SHM and can outlive any given `Pool_arena`.
   - @link ipc::shm::classic::stat::Local_stats Local_stats@endlink, via @link ipc::shm::classic::Pool_arena::local_stats() local_stats()@endlink: this `Pool_arena` object specifically: owner-, lender-, borrower-side activity.
   - Bundle: @link ipc::shm::classic::Pool_arena::info_dump() info_dump()@endlink into @link ipc::shm::classic::stat::Arena_info_dump Arena_info_dump@endlink.
 
-**SHM-jemalloc**: stat-sets in ipc::shm::arena_lend::stat; bundles in ipc::shm::arena_lend::jemalloc::stat.
+For **SHM-jemalloc**: stat-sets in ipc::shm::arena_lend::stat; bundles in ipc::shm::arena_lend::jemalloc::stat.
   - Owner (lender) side: ipc::shm::arena_lend::jemalloc::Ipc_arena.
     - Per arena:
       - @link ipc::shm::arena_lend::stat::Sharded_stats Sharded_stats@endlink, via @link ipc::shm::arena_lend::jemalloc::Ipc_arena::sharded_stats() sharded_stats()@endlink: object-level activity in this arena: owner, lender, live objects, deallocation internals.

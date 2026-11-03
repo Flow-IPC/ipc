@@ -181,7 +181,7 @@ App-scope `Msg_out`s on the session-server side can be transmitted over any chan
 @anchor chan_struct_advanced_stats
 Stats: serializers
 ------------------
-(See @ref api_overview_stats "the stats synopsis" for the general approach; and @ref chan_struct_stats "the `struc::Channel` stats" for per-channel stats.)
+(See @ref api_overview_stats "the stats synopsis" for the general approach; and @ref chan_struct_stats "the struc::Channel stats" for per-channel stats.)
 
 Serialization -- building a `Msg_out` and reading a `Msg_in` -- keeps stats too: messages built and outstanding, capnp-segment allocation (sizes and counts), oversized leaves, and more.  Since a message is decoupled from any channel, these are not per-channel: they are process-wide, kept in `flow::util::stat::Global_stats` singletons.  Each is an ipc::transport::struc::stat::Serializer_stats (with `m_snd` and `m_rcv` parts); its doc header explains what is tracked and the variants listed below.
   - Heap-backed messages: ipc::transport::struc::stat::Heap_serializer_stats.  Grab a snapshot via ipc::transport::struc::stat::heap_serializer_info_dump().
