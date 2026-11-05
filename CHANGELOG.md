@@ -18,8 +18,8 @@
   * Issue affected only sessions backed by SHM-jemalloc (`ipc::session::shm::arena_lend::jemalloc`).
   * Sessions backed by SHM-classic (`ipc::session::shm::classic`) and non-zero-copy sessions (`ipc::session`) were not affected.
 * Fix `ipc_shm_arena_lend` CMake build-break bug when one specified no (empty) jemalloc API prefix when building jemalloc (dependency). Also nearby:
-  * `ipc_shm_arena_lend` CMake-build knob `JEMALLOC_PREFIX`: rename to `FLOW_IPC_JEMALLOC_PREFIX` to avoid collision with same-named variable elsewhere.
-  * `ipc_shm_arena_lend` CMake-build knobs `JEMALLOC_LIB` and `JEMALLOC_INCLUDE_PATH`: rename to `JEMALLOC_LIBRARIES` and `JEMALLOC_INCLUDEDIR`, respectively, because these names are already used by the default auto-searcher.
+  * `ipc_shm_arena_lend` CMake-build knob `JEMALLOC_PREFIX`: Rename to `FLOW_IPC_JEMALLOC_PREFIX` to avoid collision with same-named variable elsewhere.
+  * `ipc_shm_arena_lend` CMake-build knobs `JEMALLOC_LIB` and `JEMALLOC_INCLUDE_PATH`: Rename to `JEMALLOC_LIBRARIES` and `JEMALLOC_INCLUDEDIR`, respectively, because these names are already used by the default auto-searcher.
   * Internally improve build script when searching for jemalloc install.
 * Bug fix in `Bipc_mq_handle` wait-based APIs exception-throwing form.
   * Only direct use of some of these APIs by user (currently unlikely) was affected. Indirect use via other APIs was not affected.
@@ -39,8 +39,8 @@
 
 ## API notes
 * New APIs:
-  * `ipc::shm::arena_lend::jemalloc::Ipc_arena::construct_thread_cached()`: replaces removed `construct(true, ...)`.
-  * `ipc::shm::arena_lend::jemalloc::Shm_pool_collection::construct_maybe_thread_cached()`: replaces removed `construct()`.
+  * `ipc::shm::arena_lend::jemalloc::Ipc_arena::construct_thread_cached()`: Replaces removed `construct(true, ...)`.
+  * `ipc::shm::arena_lend::jemalloc::Shm_pool_collection::construct_maybe_thread_cached()`: Replaces removed `construct()`.
   * Error codes: `ipc::transport::struc::shm::error::S_SERIALIZE_FAILED_SESSION_HOSED` and `S_DESERIALIZE_FAILED_SESSION_HOSED`, when working with `ipc::transport::struc` APIs in SHM-jemalloc-backed channel.
 * Breaking changes:
   * Removed `ipc::shm::arena_lend::jemalloc::Ipc_arena::construct(bool use_cache)`.
