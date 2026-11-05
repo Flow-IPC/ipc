@@ -78,6 +78,9 @@ All of that said, simple as it is, it doesn't answer questions that naturally ar
 Actually there is no trick.  Got a `Msg_out`?  You can send it over any `struc::Channel` you've got, as long as the template parameters match (most notably `Message_body`, the schema); or it won't compile.  It doesn't matter which one's `.create_msg()` you used, or whether you used one at all (it can be @ref msg_ct "explicitly constructed instead").
 
 @par
+One rule: do not send a given `Msg_out` concurrently, even over different channels.  Each send modifies internal-use metadata stored in the `Msg_out`.  Sending it repeatedly, one send at a time, is fine.
+
+@par
 However this opens up further questions; like, "Is it safe?"  The answer is slightly tricky.  Hopefully we will reveal all in the next couple of sections of this Manual page.
 
 ---
