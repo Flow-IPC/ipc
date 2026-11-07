@@ -117,7 +117,7 @@ Again these are safety checks, not authentication: they catch an IPC universe de
 ### One PID namespace ###
 Flow-IPC identifies processes by their process IDs (PIDs).  Hence all processes in an IPC universe must share one PID namespace; that is, each must see every other one under the same PID.  On a typical machine (physical or virtual) this is automatically the case.  Containers, however, typically each get their own PID namespace; so with them it requires attention.  For example, with Docker, use `--pid=container:<name>` (or `--pid=host`); with Kubernetes, place the applications in one pod with `shareProcessNamespace: true`.  If this rule is broken, sessions will fail to open (the checks described just above will fail).
 
-(Containers must similarly share the other OS resources Flow-IPC uses, such as /dev/shm and the kernel-persistent runtime directory discussed below.)
+(Containers must similarly share the other OS resources Flow-IPC uses, such as `/dev/shm` and the kernel-persistent runtime directory discussed below.)
 
 ### Peer channel identity checks at `struc::[sync_io::]Channel` open ###
 When an ipc::session::Session (or SHM-enabled equivalent) opens, a random session-token is generated to be used for all *structured* `Channel`s established in the context of that `Session`.  All structured messages exchanged between the two peers include this session-token.  If an unexpected token value is observed, the struc::Channel or struc::sync_io::Channel self-hoses with the appropriate error code and log message.  This is another safety measure, in this case designed to detect memory corruption, bugs, and misuse that might have led to conversing with a different/unexpected/corrupted peer.
@@ -135,11 +135,11 @@ All that aside, if using ipc::session as recommended, then you will need to worr
 
 ---
 
-@par Kernel-persistent runtime directory (/var/run)
-Flow-IPC's ipc::session places some important non-temporary files into /var/run (in Linux); most notably PID files written by session-server applications and read by others.  This is a sensible default in a production server environment.  However it usually requires admin privilege on the session-server's part and thus may fail due to a permissions error (which is why we mention it in this Manual page).  For test/debug purposes, and possibly other purposes, it may be useful to place these files in another location; for example the author uses $HOME/tmp/var/run (where $HOME is the user's home directory a/k/a ~).
+@par Kernel-persistent runtime directory (`/var/run`)
+Flow-IPC's ipc::session places some important non-temporary files into `/var/run` (in Linux); most notably PID files written by session-server applications and read by others.  This is a sensible default in a production server environment.  However it usually requires admin privilege on the session-server's part and thus may fail due to a permissions error (which is why we mention it in this Manual page).  For test/debug purposes, and possibly other purposes, it may be useful to place these files in another location; for example the author uses `$HOME/tmp/var/run` (where $HOME is the user's home directory a/k/a ~).
 
 @par
-To do so, when [defining the `Server_app`](./session_setup.html#universe_desc), set ipc::session::Server_app::m_kernel_persistent_run_dir_override to the absolute path.  If not set the default (/var/run in Linux) shall be used.  To be clear, shell things like literally "$HOME" or "~" may not be used inside this data member.
+To do so, when [defining the `Server_app`](./session_setup.html#universe_desc), set ipc::session::Server_app::m_kernel_persistent_run_dir_override to the absolute path.  If not set the default (`/var/run` in Linux) shall be used.  To be clear, shell things like literally "$HOME" or "~" may not be used inside this data member.
 
 ---
 

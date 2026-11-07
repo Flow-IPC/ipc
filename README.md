@@ -1,8 +1,9 @@
 # Flow-IPC: Modern C++ toolkit for fast inter-process communication (IPC)
 
-In this context, IPC means the sharing or transmission of a *data structure* from *one process to another*.
-In C++ systems programing, this is a common activity with significant impact on system performance.  E.g.,
-it is used heavily in microservices.
+In this context, IPC means the sharing or transmission of a *data structure* from *one process to another* on the
+same machine.  In C++ systems programming, this is a common activity with significant impact on system performance.
+E.g., it is central when a large application is split into multiple processes, or when co-located services
+communicate.
 
 In serious C++ applications, high-performance IPC code tends to be difficult to develop and reuse,
 and the most obvious and effective technique to combat latency -- avoiding copying -- further increases the difficulty

@@ -23,7 +23,7 @@
 
 ---
 
-This page explains how to use Cap'n Proto's Remote Procedure Call layer (**capnp-RPC**) with Flow-IPC's help.  capnp-RPC is an optional, advanced layer of Cap'n Proto; with Flow-IPC you can use this feature while adding zero-copy.  (Or go back to preceding page: @ref chan_struct_advanced.  @ref session_setup is the one true prerequisite for the current page; @ref chan_struct is useful context but not required.)
+This page explains how to use Cap'n Proto's Remote Procedure Call layer (**capnp-RPC**) with Flow-IPC's help.  capnp-RPC is an optional, advanced layer of Cap'n Proto; with Flow-IPC you can use this feature while adding zero-copy.  (Or go back to preceding page: @ref chan_struct_advanced.  @ref universe_desc "IPC universe description" is the one true prerequisite for the current page; @ref chan_struct is useful context but not required.)
 
 What it is; why you might want it
 ---------------------------------
@@ -47,7 +47,7 @@ With Flow-IPC each of these has a direct counterpart:
 
 | Vanilla capnp-RPC | Flow-IPC zero-copy capnp-RPC |
 |---|---|
-| `EzRpcClient`, `EzRpcServer` | ipc::transport::struc::shm::rpc::Ez_rpc_client, ipc::transport::struc::shm::rpc::Ez_rpc_server |
+| `EzRpcClient`, `EzRpcServer` | ipc::transport::struc::shm::rpc::Ez_rpc_client, @link ipc::transport::struc::shm::rpc::Ez_rpc_server Ez_rpc_server@endlink |
 | Connect a socket; wrap it in a `TwoPartyVatNetwork` | ipc::transport::struc::shm::rpc::Client_context: `.sync_connect()`; then `.vat_network()` |
 | Listen; `accept()` a socket; wrap it in a `TwoPartyVatNetwork` | ipc::transport::struc::shm::rpc::Context_server: `.accept()`, yielding a `Server_context`; then `.vat_network()` |
 | The connection: socket + `TwoPartyVatNetwork` | A connected `Client_context` or `Server_context`: Flow-IPC session (+ SHM resources) + `Session_vat_network` |
@@ -58,7 +58,7 @@ Throughout, the addresses (host and port, socket path) are replaced by the `App`
 
 ---
 
-@par Relationship between Flow-IPC's capnp-RPC API and ipc::transport::struc::Channel
+@par Relationship between Flow-IPC's capnp-RPC API and `ipc::transport::struc::Channel`
 They are cousins.  Both carry capnp-encoded data between processes with SHM-enabled zero-copy; they differ in programming model.  `struc::Channel` transmits a stream of your own capnp messages (plus, optionally, native handles), adding message-type demultiplexing and request/response; it is simple to set up and can be slotted into nearly any event loop (see @ref async_loop).  capnp-RPC is semantically far more powerful, but one must use (or integrate with) KJ, capnp's promise-based single-threaded event loop.  Both are viable; the ipc::transport::struc::shm::rpc namespace doc header and the ipc::transport::struc::Channel doc header each discuss the trade-off.
 
 ---
@@ -69,12 +69,12 @@ What you need
 -------------
 As with vanilla capnp-RPC, there are a couple of approaches, but you'll need some things either way.
 
-  - **An IPC universe description.**  Exactly as in @ref universe_desc "this section" of @ref session_setup -- an ipc::session::Server_app for the server application, an ipc::session::Client_app for each client application, and the master sets thereof.  The roles matter only for connecting: the session-client application connects to the session-server application.  Once connected, either side can implement and/or call interfaces.  (If your universe comprises more than one split, see @ref universes.  And note the rule in @ref pid_namespace "this section" of @ref safety_perms.)
+  - **An IPC universe description.**  Exactly as in @ref universe_desc "this section" of @ref session_setup -- an ipc::session::Server_app for the server application, an ipc::session::Client_app for each client application, and the master sets thereof.  The roles matter only for connecting: the session-client application connects to the session-server application.  Once connected, either side can implement and/or call interfaces.  (If your universe comprises more than one split, see @ref universes.  Also note the rule in @ref pid_namespace "this section" of @ref safety_perms.)
   - **A choice of SHM-provider.**  This is a compile-time choice made via a type alias:
-    - SHM-classic: ipc::session::shm::classic::rpc::Client_session and ipc::session::shm::classic::rpc::Session_server.
-    - SHM-jemalloc: ipc::session::shm::arena_lend::jemalloc::rpc::Client_session and ipc::session::shm::arena_lend::jemalloc::rpc::Session_server.
+    - SHM-classic: ipc::session::shm::classic::rpc::Client_session and @link ipc::session::shm::classic::rpc::Session_server Session_server@endlink.
+    - SHM-jemalloc: ipc::session::shm::arena_lend::jemalloc::rpc::Client_session and @link ipc::session::shm::arena_lend::jemalloc::rpc::Session_server Session_server@endlink.
 
-    For RPC purposes either works the same.  (To choose: see @ref shm_choice "this section" of @ref transport_shm; and @ref shm_safety "this one" of @ref safety_perms.)  Each side must use the same SHM-provider.
+    For RPC purposes either works.  (To choose: see @ref shm_choice "this section" of @ref transport_shm; and @ref shm_safety "this one" of @ref safety_perms.)  Each side must use the same SHM-provider.
   - **Your schema and capnp-RPC code**, written the usual capnp way.
 
 @note Incidentally you'd need these same things if using `transport::struc::Channel`.
@@ -85,7 +85,7 @@ The easy way: `Ez_rpc_client`, `Ez_rpc_server`
 ----------------------------------------------
 capnp provides `capnp::EzRpcClient` and `capnp::EzRpcServer` to get one up and running quickly: they set up the KJ event loop and the connection, leaving you to just implement and call interfaces.  Flow-IPC provides the counterparts ipc::transport::struc::shm::rpc::Ez_rpc_client and ipc::transport::struc::shm::rpc::Ez_rpc_server.  The only real difference in use is how one specifies the opposing side: via `App`s instead of a network address.
 
-We will use capnp's well-known Calculator sample (`c++/samples/calculator-*` in the capnp source).  Flow-IPC's own `test/suite/rpc_demo` program is a port of it (plus a couple of additions); look there for complete, working code.  The schema and the interface implementations (`CalculatorImpl` et al) are unchanged from capnp's sample, so we skip them.
+We will use capnp's well-known [Calculator sample](https://github.com/capnproto/capnproto/tree/v2/c++/samples) (`c++/samples/calculator-*` in the capnp source).  Flow-IPC's own `test/suite/rpc_demo` program is a port of it (plus a couple of additions); look there for complete, working code.  The schema and the interface implementations (`CalculatorImpl` et al) are unchanged from capnp's sample, so we skip them.
 
 First, on both sides, the IPC universe description and the SHM-provider choice; e.g., in a header shared by both applications:
 
@@ -197,7 +197,7 @@ If you use capnp-RPC's [streaming feature](https://capnproto.org/news/2020-04-23
 
 Stats
 -----
-Flow-IPC's capnp-RPC integration module has no (Flow-IPC) stats of its own.  Those of the underlying ipc::session::Session (@ref session_setup_stats) and its SHM arenas (@ref transport_shm_stats) are available via `.session()` as described above.  (See @ref api_overview_stats "the stats synopsis" for the general approach.)
+Flow-IPC's capnp-RPC integration module has no (Flow-IPC) stats of its own.  Those of the underlying ipc::session::Session (@ref session_setup_stats "see here") and its SHM arenas (@ref transport_shm_stats "see here") are available via `.session()` as described above.  (See @ref api_overview_stats "the stats synopsis" for the general approach.)
 
 The next page is: @ref transport_shm.
 
