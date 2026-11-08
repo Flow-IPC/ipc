@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -66,52 +66,64 @@ $(function() {
 &#160;
 
 <h3><a id="index_a" name="index_a"></a>- a -</h3><ul>
-<li>async_read_interruptible()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#ae811e863245b8226af4c40d373ed9a73">ipc::transport::asio_local_stream_socket</a></li>
-<li>async_read_with_target_func()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#acf7bdf0c727cbf0c5297125c762e1001">ipc::transport::asio_local_stream_socket</a></li>
-<li>async_write_with_native_handle()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a68071e53f4a048084f8ad26ff3ac6711">ipc::transport::asio_local_stream_socket</a></li>
+<li>async_receive_batch_emulation()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#ac8e1b28112a507fa3373a5b5dcce640d">ipc::transport::sync_io</a></li>
 </ul>
 
 
 <h3><a id="index_b" name="index_b"></a>- b -</h3><ul>
 <li>blob_data()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a2bb38cee29dacbe56de5182221b45941">ipc::util</a></li>
+<li>blob_rcv_stats()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1stat.html#a2ddc1faccb5d5f9d63503863a163396b">ipc::transport::stat</a></li>
+<li>blob_rcv_stats_mutable()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1stat.html#af7c5bf077b85df5656134d2a582d5eb2">ipc::transport::stat</a></li>
+<li>blob_snd_stats()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1stat.html#ad50da9da15631037e9e9310d13287c61">ipc::transport::stat</a></li>
+<li>blob_snd_stats_mutable()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1stat.html#a81ba79a275189021c4625ec065fc8093">ipc::transport::stat</a></li>
 </ul>
 
 
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
-<li>capnp_get_shm_handle_to_borrow()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#adb38fe88cfd5e758ef52c482d2902669">ipc::transport::struc::shm</a></li>
-<li>capnp_set_lent_shm_handle()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ab592ce6eddbe24c57dc71f34018fb042">ipc::transport::struc::shm</a></li>
+<li>capnp_get_shm_handle_to_borrow()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#acbc05e8ca5794bf7842c0889b2216c5f">ipc::transport::struc::shm</a></li>
+<li>capnp_set_lent_shm_handle()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#aecfa04ebba91d82f48a91dcc746c02ed">ipc::transport::struc::shm</a></li>
+</ul>
+
+
+<h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
+<li>declare_stats()&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1stat.html#a73c579a6280e4100e80d864f789a2134">ipc::shm::arena_lend::stat</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1stat.html#a1155947f2d34f7867a64f8f42fb52121">ipc::shm::classic::stat</a>, <a class="el" href="namespaceipc_1_1shm_1_1stat.html#a2378856a3e0d1acf084fc4b0115a99f8">ipc::shm::stat</a>, <a class="el" href="namespaceipc_1_1transport_1_1stat.html#a2d176d46afc19243c08c98287af9375a">ipc::transport::stat</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1stat.html#a1c670773be7e8c1e3aa73f60274ca769">ipc::transport::struc::stat</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io_1_1stat.html#a550ffa572e19655c822be54469532cc5">ipc::transport::struc::sync_io::stat</a></li>
+<li>disowned_native_handle()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a29b19e2440d200540619eb8c9c7239bb">ipc::util</a></li>
+<li>duped_native_handle()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a55b346b1c8839776351242a3974d3345">ipc::util</a></li>
 </ul>
 
 
 <h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
-<li>ensure_resource_owner_is_app()&#160;:&#160;<a class="el" href="namespaceipc_1_1session.html#a0eac87b284d50832334d819a8877cbaa">ipc::session</a></li>
+<li>ensure_resource_owner_is_app()&#160;:&#160;<a class="el" href="namespaceipc_1_1session.html#aa2cb8885cd801c96c7ed107f489f7d0c">ipc::session</a></li>
 </ul>
 
 
 <h3><a id="index_h" name="index_h"></a>- h -</h3><ul>
-<li>hash_value()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#ad3883df3081441d71a9a989073264b04">ipc::util</a></li>
+<li>hash_value()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a956b1b739e02118cb8b6c0f3bcbee6ae">ipc::util</a></li>
+<li>heap_serializer_info_dump()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1stat.html#add4b17d99d693903301e19ccb721e11c">ipc::transport::struc::stat</a></li>
 </ul>
 
 
 <h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
-<li>make_error_code()&#160;:&#160;<a class="el" href="namespaceipc_1_1session_1_1error.html#a9056f277d3ebf2778d06a2bb1f337c28">ipc::session::error</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1error.html#a497c3dfeca665afc16709df5f088f008">ipc::session::shm::arena_lend::jemalloc::error</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#a1912c719fef62337844569554ac02050">ipc::shm::classic::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#aa825718d46992654588588b09a0f1be6">ipc::transport::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a6ff229c55381b37a1ad8eeb92574c5b4">ipc::transport::struc::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#a94348b6fdbf76ebd0984971dfb537c0b">ipc::transport::struc::shm::error</a></li>
+<li>make_error_code()&#160;:&#160;<a class="el" href="namespaceipc_1_1session_1_1error.html#a9056f277d3ebf2778d06a2bb1f337c28">ipc::session::error</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1error.html#a497c3dfeca665afc16709df5f088f008">ipc::session::shm::arena_lend::jemalloc::error</a>, <a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1error.html#a8fe1aba7cb7c4647dd90e9f9ddcea4e7">ipc::shm::arena_lend::error</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#a1912c719fef62337844569554ac02050">ipc::shm::classic::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#aa825718d46992654588588b09a0f1be6">ipc::transport::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a6ff229c55381b37a1ad8eeb92574c5b4">ipc::transport::struc::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#a94348b6fdbf76ebd0984971dfb537c0b">ipc::transport::struc::shm::error</a></li>
 </ul>
 
 
 <h3><a id="index_n" name="index_n"></a>- n -</h3><ul>
-<li>nb_read_some_with_native_handle()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a9ae82b2a234b218704c62fb616d6fcc5">ipc::transport::asio_local_stream_socket</a></li>
-<li>nb_write_some_with_native_handle()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a1022dfd42e9a0d6eab8384b0352decb0">ipc::transport::asio_local_stream_socket</a></li>
+<li>nb_read_some_with_native_handle()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a3a937dfef9e3c9be3fc4cfb39857058e">ipc::transport::asio_local_stream_socket</a></li>
+<li>nb_write_some_with_native_handle()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#ac7230d22d042f0a7c65345798a497de4">ipc::transport::asio_local_stream_socket</a></li>
 </ul>
 
 
 <h3><a id="index_o" name="index_o"></a>- o -</h3><ul>
-<li>operator!=()&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1stl.html#ab1b059d00a9cbdc54a917e051c1aecdf">ipc::shm::stl</a>, <a class="el" href="namespaceipc_1_1util.html#aaf94b5903f4e0aa2f2699867dd8971ef">ipc::util</a></li>
-<li>operator+()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#af61b02fd66b67aeed5a803ca47e52973">ipc::util</a></li>
+<li>operator!=()&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1stl.html#a7a207db5c3896924801f5bae1455fffe">ipc::shm::stl</a>, <a class="el" href="namespaceipc_1_1util.html#aaf94b5903f4e0aa2f2699867dd8971ef">ipc::util</a></li>
+<li>operator+()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a54dc5077333284fda9e8d2df8b0e9b91">ipc::util</a></li>
 <li>operator/()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a15ea67c1855a678f7e948b24ccf2c1cd">ipc::util</a></li>
-<li>operator&lt;()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">ipc::util</a></li>
-<li>operator&lt;&lt;()&#160;:&#160;<a class="el" href="namespacecapnp.html#a8ce2ee1369a8ff7c8bd2ea75ca8af067">capnp</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#ad52f227f6cd73969ba6a898028264413">ipc::session::error</a>, <a class="el" href="namespaceipc_1_1session.html#addd131b7a844d2a22a7436ed0c8597bc">ipc::session</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1error.html#a25d956001c8c80dddfdb02b71fc3d29e">ipc::session::shm::arena_lend::jemalloc::error</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a2807e550ca32e2b8ba2ec850ef6c8c08">ipc::session::shm::arena_lend::jemalloc</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic.html#ac3881cc1cc01f875f706abcc58646394">ipc::session::shm::classic</a>, <a class="el" href="namespaceipc_1_1session_1_1sync__io.html#a7a5d486cecb349cd298b07d53b9872d7">ipc::session::sync_io</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ac9e2291b4d5ea84a759e0a5a6dc239ff">ipc::shm::classic::error</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic.html#a6df4cc12979524345f2bc6f98ad926f4">ipc::shm::classic</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#a4686a04e7ab89d4be42548cbb5b37975">ipc::transport::error</a>, <a class="el" href="namespaceipc_1_1transport.html#a8fb9256b66ad3dfdf742de66223466d7">ipc::transport</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a48c47152561dfe3c8d7d94f5f1ba1136">ipc::transport::struc::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc.html#aad52996a4d66f74e21e4f2e74c93c763">ipc::transport::struc</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#aa84c6b9adf1a8053a0128de3d86f7bad">ipc::transport::struc::shm::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ac4969b49016844f884240b81ee1ab180">ipc::transport::struc::shm</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html#a0351bb14f40312b30e6cae4927f3373b">ipc::transport::struc::sync_io</a>, <a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#acb29aca9de166fd1f24a09d08afe2fcc">ipc::transport::sync_io</a>, <a class="el" href="namespaceipc_1_1util.html#a28030c32e9c66f5c2862cbc6998885c7">ipc::util</a></li>
-<li>operator==()&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1stl.html#a96ccf3e4cf39d59d0a80e9026507b206">ipc::shm::stl</a>, <a class="el" href="namespaceipc_1_1util.html#a97a7c8e6330909a1371134a7bdcea788">ipc::util</a></li>
-<li>operator&gt;&gt;()&#160;:&#160;<a class="el" href="namespaceipc_1_1session_1_1error.html#a6041e74db4e17a75d8eed2541dc026f6">ipc::session::error</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1error.html#ae4648058e0704f5c1c1dbac3c1364b09">ipc::session::shm::arena_lend::jemalloc::error</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#affc3eb235917a58a91f92c94660f09e6">ipc::shm::classic::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#a64595c41a5810937c39733230628c499">ipc::transport::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#aed7cb279b20df34d1829ee729859e575">ipc::transport::struc::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#ae148011ac071fbd34a4198b396b2e7ac">ipc::transport::struc::shm::error</a>, <a class="el" href="namespaceipc_1_1util.html#adfd8805e0d37556102cad7b191fee9a3">ipc::util</a></li>
+<li>operator&lt;()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a6c7772aad20217f29f5ae6c6a3511975">ipc::util</a></li>
+<li>operator&lt;&lt;()&#160;:&#160;<a class="el" href="namespacecapnp.html#a8ce2ee1369a8ff7c8bd2ea75ca8af067">capnp</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#ad52f227f6cd73969ba6a898028264413">ipc::session::error</a>, <a class="el" href="namespaceipc_1_1session.html#a5267d55280365f57787839c08941f6ca">ipc::session</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1error.html#a25d956001c8c80dddfdb02b71fc3d29e">ipc::session::shm::arena_lend::jemalloc::error</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#aa2f65ce39202932ce594b4d0c0038ff4">ipc::session::shm::arena_lend::jemalloc</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic.html#a7dfbfda8994e07168e87e15492a74c7d">ipc::session::shm::classic</a>, <a class="el" href="namespaceipc_1_1session_1_1sync__io.html#a7a5d486cecb349cd298b07d53b9872d7">ipc::session::sync_io</a>, <a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1error.html#ab43ddcae78bfc652540b69e4e4f7d6c7">ipc::shm::arena_lend::error</a>, <a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1jemalloc.html#a1efa7d6966cb7e1c0a75ff4f1d6971ea">ipc::shm::arena_lend::jemalloc</a>, <a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1stat.html#ab9874d62ac152797efd1147e5ae4f19d">ipc::shm::arena_lend::jemalloc::stat</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ac9e2291b4d5ea84a759e0a5a6dc239ff">ipc::shm::classic::error</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic.html#a6df4cc12979524345f2bc6f98ad926f4">ipc::shm::classic</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1stat.html#a95f9ac1ba9ad69277b703ffbfb5667d8">ipc::shm::classic::stat</a>, <a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a4ef76b16be92ad2d7ec1a0938e8365c9">ipc::transport::asio_local_stream_socket</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#a4686a04e7ab89d4be42548cbb5b37975">ipc::transport::error</a>, <a class="el" href="namespaceipc_1_1transport.html#a8fb9256b66ad3dfdf742de66223466d7">ipc::transport</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a48c47152561dfe3c8d7d94f5f1ba1136">ipc::transport::struc::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a949bd239aa536f1a8a78afa045900f01">ipc::transport::struc</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#aa84c6b9adf1a8053a0128de3d86f7bad">ipc::transport::struc::shm::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ac4969b49016844f884240b81ee1ab180">ipc::transport::struc::shm</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1rpc.html#af1192c8577978af5ee85c78d2f68ec35">ipc::transport::struc::shm::rpc</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1stat.html#aa016ac1202b563ca65c26321cfb4122b">ipc::transport::struc::shm::stat</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1stat.html#a1438344feb738b4086a6df9c9e818f40">ipc::transport::struc::stat</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html#a4c1f7c929b2b3b9c372bc4d9c2542a82">ipc::transport::struc::sync_io</a>, <a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#a65a95c466144d63ce3f7f11f554a335c">ipc::transport::sync_io</a>, <a class="el" href="namespaceipc_1_1util.html#a28030c32e9c66f5c2862cbc6998885c7">ipc::util</a></li>
+<li>operator==()&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1stl.html#a73ed547acbf63463f0dbd89ccbe38fb4">ipc::shm::stl</a>, <a class="el" href="namespaceipc_1_1util.html#af6fe80f5ff9f4ebf56650a66bf1b6a1f">ipc::util</a></li>
+<li>operator&gt;&gt;()&#160;:&#160;<a class="el" href="namespaceipc_1_1session_1_1error.html#a6041e74db4e17a75d8eed2541dc026f6">ipc::session::error</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1error.html#ae4648058e0704f5c1c1dbac3c1364b09">ipc::session::shm::arena_lend::jemalloc::error</a>, <a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1error.html#a4aa1768d14deada9475b1f39a54a5dba">ipc::shm::arena_lend::error</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#affc3eb235917a58a91f92c94660f09e6">ipc::shm::classic::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#a64595c41a5810937c39733230628c499">ipc::transport::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#aed7cb279b20df34d1829ee729859e575">ipc::transport::struc::error</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#ae148011ac071fbd34a4198b396b2e7ac">ipc::transport::struc::shm::error</a>, <a class="el" href="namespaceipc_1_1util.html#adfd8805e0d37556102cad7b191fee9a3">ipc::util</a></li>
+<li>ostreamable_capnp_brief()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a0f3c9a5b93c17e4fbf73606fa7b84282">ipc::transport::struc</a></li>
+<li>ostreamable_capnp_full()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a310bc581d00d0a2b57280929cdb7a64a">ipc::transport::struc</a></li>
 </ul>
 
 
@@ -121,21 +133,22 @@ $(function() {
 
 
 <h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
-<li>release_native_peer_socket()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#af0833f160dffd7f1c6921d27883a186b">ipc::transport::asio_local_stream_socket</a></li>
 <li>remove_each_persistent_if()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37">ipc::util</a></li>
 <li>remove_each_persistent_with_name_prefix()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#ad6be904bf1b0fe6659a11dec0fabbf6b">ipc::util</a></li>
 </ul>
 
 
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
-<li>set_resource_permissions()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435">ipc::util</a></li>
+<li>serializer_info_dump()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1stat.html#a1b5dd52ede2d44300cb23d2343c278ad">ipc::transport::struc::shm::stat</a></li>
+<li>set_logger()&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend.html#a6b7f2fb2cad33ab170dd55965f7db1cc">ipc::shm::arena_lend</a></li>
+<li>set_resource_permissions()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#ac5bcdc841a80102c6a3f035d3d6a5d51">ipc::util</a></li>
 <li>shared_resource_permissions()&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#abda2ce5bcdbc26ca63d667b87818439c">ipc::util</a></li>
-<li>swap()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport.html#af0610dff5efd418a8ff393f0ad9dd5c2">ipc::transport</a>, <a class="el" href="namespaceipc_1_1util.html#a9ea22a64cfbc6de66181c278ff5f6975">ipc::util</a></li>
+<li>swap()&#160;:&#160;<a class="el" href="namespaceipc_1_1transport.html#af0610dff5efd418a8ff393f0ad9dd5c2">ipc::transport</a>, <a class="el" href="namespaceipc_1_1util.html#ab1f5535316175110d2cbe40ce57c2cb2">ipc::util</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

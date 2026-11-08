@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -80,31 +80,28 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespaceipc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performance communication between processes. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1util"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html">ipc::util</a></td></tr>
-<tr class="memdesc:namespaceipc_1_1util"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module containing miscellaneous general-use facilities that ubiquitously used by ~all Flow-IPC modules and/or do not fit into any other Flow-IPC module. <br /></td></tr>
+<tr class="memdesc:namespaceipc_1_1util"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module containing miscellaneous general-use facilities that are ubiquitously used by ~all Flow-IPC modules and/or do not fit into any other Flow-IPC module. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a29b19e2440d200540619eb8c9c7239bb"><td class="memItemLeft" align="right" valign="top">Native_handle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a29b19e2440d200540619eb8c9c7239bb">ipc::util::disowned_native_handle</a> (Own_native_handle &amp;&amp;src) noexcept</td></tr>
+<tr class="memdesc:a29b19e2440d200540619eb8c9c7239bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> constructed by relieving an existing auto-closing <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a> of its ownership of a particular raw handle and storing it, sans auto-closing protection, in that <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>.  <a href="namespaceipc_1_1util.html#a29b19e2440d200540619eb8c9c7239bb">More...</a><br /></td></tr>
+<tr class="separator:a29b19e2440d200540619eb8c9c7239bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55b346b1c8839776351242a3974d3345"><td class="memItemLeft" align="right" valign="top">Own_native_handle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a55b346b1c8839776351242a3974d3345">ipc::util::duped_native_handle</a> (Native_handle src, Error_code *err_code=nullptr)</td></tr>
+<tr class="memdesc:a55b346b1c8839776351242a3974d3345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>Own_native_handle{src.dup(err_code)}</code>: an auto-closing duplicate of <code>src</code>; on error the result is <code>.get().null()</code>.  <a href="namespaceipc_1_1util.html#a55b346b1c8839776351242a3974d3345">More...</a><br /></td></tr>
+<tr class="separator:a55b346b1c8839776351242a3974d3345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a956b1b739e02118cb8b6c0f3bcbee6ae"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a956b1b739e02118cb8b6c0f3bcbee6ae">ipc::util::hash_value</a> (Native_handle val) noexcept</td></tr>
+<tr class="memdesc:a956b1b739e02118cb8b6c0f3bcbee6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hasher of <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> for boost.unordered et al.  <a href="namespaceipc_1_1util.html#a956b1b739e02118cb8b6c0f3bcbee6ae">More...</a><br /></td></tr>
+<tr class="separator:a956b1b739e02118cb8b6c0f3bcbee6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28030c32e9c66f5c2862cbc6998885c7"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a28030c32e9c66f5c2862cbc6998885c7">ipc::util::operator&lt;&lt;</a> (std::ostream &amp;os, const Native_handle &amp;val)</td></tr>
 <tr class="memdesc:a28030c32e9c66f5c2862cbc6998885c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1util.html#a28030c32e9c66f5c2862cbc6998885c7">More...</a><br /></td></tr>
 <tr class="separator:a28030c32e9c66f5c2862cbc6998885c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4b4126f841ef060cdae15998e48691c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ae4b4126f841ef060cdae15998e48691c">ipc::util::operator==</a> (Native_handle val1, Native_handle val2)</td></tr>
-<tr class="memdesc:ae4b4126f841ef060cdae15998e48691c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if the two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects are the same underlying handle.  <a href="namespaceipc_1_1util.html#ae4b4126f841ef060cdae15998e48691c">More...</a><br /></td></tr>
-<tr class="separator:ae4b4126f841ef060cdae15998e48691c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacbd7ee43d4912a8790a228dc7cf682d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#aacbd7ee43d4912a8790a228dc7cf682d">ipc::util::operator!=</a> (Native_handle val1, Native_handle val2)</td></tr>
-<tr class="memdesc:aacbd7ee43d4912a8790a228dc7cf682d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="namespaceipc_1_1util.html#aacbd7ee43d4912a8790a228dc7cf682d">More...</a><br /></td></tr>
-<tr class="separator:aacbd7ee43d4912a8790a228dc7cf682d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3883df3081441d71a9a989073264b04"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ad3883df3081441d71a9a989073264b04">ipc::util::hash_value</a> (Native_handle val)</td></tr>
-<tr class="memdesc:ad3883df3081441d71a9a989073264b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hasher of <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> for boost.unordered et al.  <a href="namespaceipc_1_1util.html#ad3883df3081441d71a9a989073264b04">More...</a><br /></td></tr>
-<tr class="separator:ad3883df3081441d71a9a989073264b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ff4b35d8fbbe2eb6266f3a7b0f07c49"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">ipc::util::operator&lt;</a> (Native_handle val1, Native_handle val2)</td></tr>
-<tr class="memdesc:a6ff4b35d8fbbe2eb6266f3a7b0f07c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a less-than comparison of two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects, with the usual total ordering guarantees.  <a href="namespaceipc_1_1util.html#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">More...</a><br /></td></tr>
-<tr class="separator:a6ff4b35d8fbbe2eb6266f3a7b0f07c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:40 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

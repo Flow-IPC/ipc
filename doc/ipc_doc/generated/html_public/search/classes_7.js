@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['native_5fhandle_0',['Native_handle',['../structipc_1_1util_1_1Native__handle.html',1,'ipc::util']]],
-  ['native_5fhandle_5freceiver_1',['Native_handle_receiver',['../classipc_1_1transport_1_1Native__handle__receiver.html',1,'ipc::transport::Native_handle_receiver'],['../classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html',1,'ipc::transport::sync_io::Native_handle_receiver']]],
-  ['native_5fhandle_5fsender_2',['Native_handle_sender',['../classipc_1_1transport_1_1Native__handle__sender.html',1,'ipc::transport::Native_handle_sender'],['../classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html',1,'ipc::transport::sync_io::Native_handle_sender']]],
-  ['native_5fsocket_5fstream_3',['Native_socket_stream',['../classipc_1_1transport_1_1Native__socket__stream.html',1,'ipc::transport::Native_socket_stream'],['../classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html',1,'ipc::transport::sync_io::Native_socket_stream']]],
-  ['native_5fsocket_5fstream_5facceptor_4',['Native_socket_stream_acceptor',['../classipc_1_1transport_1_1Native__socket__stream__acceptor.html',1,'ipc::transport::Native_socket_stream_acceptor'],['../classipc_1_1transport_1_1sync__io_1_1Native__socket__stream__acceptor.html',1,'ipc::transport::sync_io::Native_socket_stream_acceptor']]],
-  ['null_5fpeer_5',['Null_peer',['../classipc_1_1transport_1_1Null__peer.html',1,'ipc::transport']]],
-  ['null_5fsession_6',['Null_session',['../structipc_1_1transport_1_1struc_1_1Null__session.html',1,'ipc::transport::struc']]]
+  ['lender_5fobj_5fstats_0',['Lender_obj_stats',['../structipc_1_1shm_1_1stat_1_1Lender__obj__stats.html',1,'ipc::shm::stat']]],
+  ['live_5fobj_5fstats_1',['Live_obj_stats',['../structipc_1_1shm_1_1stat_1_1Live__obj__stats.html',1,'ipc::shm::stat']]],
+  ['local_5fstats_2',['Local_stats',['../structipc_1_1shm_1_1classic_1_1stat_1_1Local__stats.html',1,'ipc::shm::classic::stat']]]
 ];

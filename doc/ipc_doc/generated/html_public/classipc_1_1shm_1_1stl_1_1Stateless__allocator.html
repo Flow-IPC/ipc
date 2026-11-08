@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Flow-IPC: ipc::shm::stl::Stateless_allocator&lt; T, Arena &gt; Class Template Reference</title>
+<title>Flow-IPC: ipc::shm::stl::Stateless_allocator&lt; T, Arena_t &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -72,7 +72,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#related">Related Functions</a> &#124;
 <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">ipc::shm::stl::Stateless_allocator&lt; T, Arena &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">ipc::shm::stl::Stateless_allocator&lt; T, Arena_t &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -83,119 +83,149 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a8bf26ee2ae30dfbe4d64fbcad3ac8368"><td class="memItemLeft" align="right" valign="top"><a id="a8bf26ee2ae30dfbe4d64fbcad3ac8368" name="a8bf26ee2ae30dfbe4d64fbcad3ac8368"></a>
+<tr class="memitem:ad98ad03a8f0648c177ef3e37dcf19bb7"><td class="memItemLeft" align="right" valign="top"><a id="ad98ad03a8f0648c177ef3e37dcf19bb7" name="ad98ad03a8f0648c177ef3e37dcf19bb7"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>Value</b> = T</td></tr>
-<tr class="memdesc:a8bf26ee2ae30dfbe4d64fbcad3ac8368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <code>T</code>. <br /></td></tr>
-<tr class="separator:a8bf26ee2ae30dfbe4d64fbcad3ac8368"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8733c1237be93ee28664e4b983d535c"><td class="memItemLeft" align="right" valign="top"><a id="ab8733c1237be93ee28664e4b983d535c" name="ab8733c1237be93ee28664e4b983d535c"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>Arena_obj</b> = Arena</td></tr>
-<tr class="memdesc:ab8733c1237be93ee28664e4b983d535c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for the <code>Arena</code> type this uses for allocation/deallocation/pointer semantics. <br /></td></tr>
-<tr class="separator:ab8733c1237be93ee28664e4b983d535c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2ed725ef3e8128a35f6ef429fb1fdcb"><td class="memItemLeft" align="right" valign="top"><a id="ab2ed725ef3e8128a35f6ef429fb1fdcb" name="ab2ed725ef3e8128a35f6ef429fb1fdcb"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>Pointer</b> = typename Arena_obj::template <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab2ed725ef3e8128a35f6ef429fb1fdcb">Pointer</a>&lt; <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a8bf26ee2ae30dfbe4d64fbcad3ac8368">Value</a> &gt;</td></tr>
-<tr class="memdesc:ab2ed725ef3e8128a35f6ef429fb1fdcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The required pointer-like type. See also <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ae1fc58777e7e727af17fbf0cdaf850bf" title="Alias to Pointer for compatibility with STL-compliant machinery (traits, etc.).">pointer</a>. <br /></td></tr>
-<tr class="separator:ab2ed725ef3e8128a35f6ef429fb1fdcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1fc58777e7e727af17fbf0cdaf850bf"><td class="memItemLeft" align="right" valign="top"><a id="ae1fc58777e7e727af17fbf0cdaf850bf" name="ae1fc58777e7e727af17fbf0cdaf850bf"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>pointer</b> = <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab2ed725ef3e8128a35f6ef429fb1fdcb">Pointer</a></td></tr>
-<tr class="memdesc:ae1fc58777e7e727af17fbf0cdaf850bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab2ed725ef3e8128a35f6ef429fb1fdcb" title="The required pointer-like type. See also pointer.">Pointer</a> for compatibility with STL-compliant machinery (traits, etc.). <br /></td></tr>
-<tr class="separator:ae1fc58777e7e727af17fbf0cdaf850bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa85349670ddd8da1eb0386a2556f753"><td class="memItemLeft" align="right" valign="top"><a id="afa85349670ddd8da1eb0386a2556f753" name="afa85349670ddd8da1eb0386a2556f753"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a8bf26ee2ae30dfbe4d64fbcad3ac8368">Value</a></td></tr>
-<tr class="memdesc:afa85349670ddd8da1eb0386a2556f753"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a8bf26ee2ae30dfbe4d64fbcad3ac8368" title="Short-hand for T.">Value</a> for compatibility with STL-compliant machinery (traits, etc.). <br /></td></tr>
-<tr class="separator:afa85349670ddd8da1eb0386a2556f753"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ad98ad03a8f0648c177ef3e37dcf19bb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for <code>T</code>. <br /></td></tr>
+<tr class="separator:ad98ad03a8f0648c177ef3e37dcf19bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3eddbef44d845c7ec642b6904a81fed9"><td class="memItemLeft" align="right" valign="top"><a id="a3eddbef44d845c7ec642b6904a81fed9" name="a3eddbef44d845c7ec642b6904a81fed9"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Arena</b> = Arena_t</td></tr>
+<tr class="memdesc:a3eddbef44d845c7ec642b6904a81fed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for the <code>Arena_t</code> type this uses for allocation/deallocation/pointer semantics. <br /></td></tr>
+<tr class="separator:a3eddbef44d845c7ec642b6904a81fed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc25b1b706ac6af3f320d5318e951110"><td class="memItemLeft" align="right" valign="top"><a id="adc25b1b706ac6af3f320d5318e951110" name="adc25b1b706ac6af3f320d5318e951110"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Pointer</b> = typename Arena::template <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110">Pointer</a>&lt; <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ad98ad03a8f0648c177ef3e37dcf19bb7">Value</a> &gt;</td></tr>
+<tr class="memdesc:adc25b1b706ac6af3f320d5318e951110"><td class="mdescLeft">&#160;</td><td class="mdescRight">The required pointer-like type. See also <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a125f5577dfb56892d0c72c0d0e918e5b" title="Alias to Pointer for compatibility with STL-compliant machinery (traits, etc.).">pointer</a>. <br /></td></tr>
+<tr class="separator:adc25b1b706ac6af3f320d5318e951110"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a125f5577dfb56892d0c72c0d0e918e5b"><td class="memItemLeft" align="right" valign="top"><a id="a125f5577dfb56892d0c72c0d0e918e5b" name="a125f5577dfb56892d0c72c0d0e918e5b"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>pointer</b> = <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110">Pointer</a></td></tr>
+<tr class="memdesc:a125f5577dfb56892d0c72c0d0e918e5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110" title="The required pointer-like type. See also pointer.">Pointer</a> for compatibility with STL-compliant machinery (traits, etc.). <br /></td></tr>
+<tr class="separator:a125f5577dfb56892d0c72c0d0e918e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a00cfc6aca6b4a2d79155d93a08cee7"><td class="memItemLeft" align="right" valign="top"><a id="a5a00cfc6aca6b4a2d79155d93a08cee7" name="a5a00cfc6aca6b4a2d79155d93a08cee7"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ad98ad03a8f0648c177ef3e37dcf19bb7">Value</a></td></tr>
+<tr class="memdesc:a5a00cfc6aca6b4a2d79155d93a08cee7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ad98ad03a8f0648c177ef3e37dcf19bb7" title="Alias for T.">Value</a> for compatibility with STL-compliant machinery (traits, etc.). <br /></td></tr>
+<tr class="separator:a5a00cfc6aca6b4a2d79155d93a08cee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedee0902dc74eebef7983e0b160fd9d6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#aedee0902dc74eebef7983e0b160fd9d6">difference_type</a> = typename std::pointer_traits&lt; <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110">Pointer</a> &gt;::difference_type</td></tr>
+<tr class="memdesc:aedee0902dc74eebef7983e0b160fd9d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signed type for differences between <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110" title="The required pointer-like type. See also pointer.">Pointer</a> values, for compatibility with STL-compliant machinery (traits, etc.).  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#aedee0902dc74eebef7983e0b160fd9d6">More...</a><br /></td></tr>
+<tr class="separator:aedee0902dc74eebef7983e0b160fd9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a998991ba8599086155cf313abed410e5"><td class="memItemLeft" align="right" valign="top"><a id="a998991ba8599086155cf313abed410e5" name="a998991ba8599086155cf313abed410e5"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = std::make_unsigned_t&lt; <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#aedee0902dc74eebef7983e0b160fd9d6">difference_type</a> &gt;</td></tr>
+<tr class="memdesc:a998991ba8599086155cf313abed410e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsigned counterpart of <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#aedee0902dc74eebef7983e0b160fd9d6" title="Signed type for differences between Pointer values, for compatibility with STL-compliant machinery (t...">difference_type</a>, for compatibility with STL-compliant machinery; see <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#aedee0902dc74eebef7983e0b160fd9d6" title="Signed type for differences between Pointer values, for compatibility with STL-compliant machinery (t...">difference_type</a>. <br /></td></tr>
+<tr class="separator:a998991ba8599086155cf313abed410e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5ee014d337762aef9c2fbac0585cdfd1"><td class="memItemLeft" align="right" valign="top"><a id="a5ee014d337762aef9c2fbac0585cdfd1" name="a5ee014d337762aef9c2fbac0585cdfd1"></a>
+<tr class="memitem:a2701472b919413d2b290cd5f4671cde4"><td class="memItemLeft" align="right" valign="top"><a id="a2701472b919413d2b290cd5f4671cde4" name="a2701472b919413d2b290cd5f4671cde4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Stateless_allocator</b> ()</td></tr>
-<tr class="memdesc:a5ee014d337762aef9c2fbac0585cdfd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator concept requirement for default-ctor: no-op since it's a stateless allocator. <br /></td></tr>
-<tr class="separator:a5ee014d337762aef9c2fbac0585cdfd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07b30ebd16bf82a87186c7baffc9bf85"><td class="memTemplParams" colspan="2">template&lt;typename U &gt; </td></tr>
-<tr class="memitem:a07b30ebd16bf82a87186c7baffc9bf85"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a07b30ebd16bf82a87186c7baffc9bf85">Stateless_allocator</a> (const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; U, Arena &gt; &amp;src_ignored)</td></tr>
-<tr class="memdesc:a07b30ebd16bf82a87186c7baffc9bf85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator concept requirement for copy-ctor from allocator-to-another-type: no-op since it's a stateless allocator.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a07b30ebd16bf82a87186c7baffc9bf85">More...</a><br /></td></tr>
-<tr class="separator:a07b30ebd16bf82a87186c7baffc9bf85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff55fe717e40aca873192819bf1afc15"><td class="memTemplParams" colspan="2">template&lt;typename U &gt; </td></tr>
-<tr class="memitem:aff55fe717e40aca873192819bf1afc15"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#aff55fe717e40aca873192819bf1afc15">Stateless_allocator</a> (<a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; U, Arena &gt; &amp;&amp;src_ignored)</td></tr>
-<tr class="memdesc:aff55fe717e40aca873192819bf1afc15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator concept requirement for move-ctor from allocator-to-another-type: no-op since it's a stateless allocator.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#aff55fe717e40aca873192819bf1afc15">More...</a><br /></td></tr>
-<tr class="separator:aff55fe717e40aca873192819bf1afc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8609f6d096e59799d249403905a0953"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab2ed725ef3e8128a35f6ef429fb1fdcb">Pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8609f6d096e59799d249403905a0953">allocate</a> (size_t n) const</td></tr>
-<tr class="memdesc:ab8609f6d096e59799d249403905a0953"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates an uninitialized buffer of given size, or throws exception if <code>Arena_obj::allocate()</code> does; satisfies formal requirements of STL-compliant <code>Allocator</code> concept.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8609f6d096e59799d249403905a0953">More...</a><br /></td></tr>
-<tr class="separator:ab8609f6d096e59799d249403905a0953"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6531b5bdb3b299e0780fc5b892bd70c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ac6531b5bdb3b299e0780fc5b892bd70c">deallocate</a> (<a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab2ed725ef3e8128a35f6ef429fb1fdcb">Pointer</a> p, size_t n_ignored=0) const noexcept</td></tr>
-<tr class="memdesc:ac6531b5bdb3b299e0780fc5b892bd70c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deallocates buffer in SHM previously allocated via <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8609f6d096e59799d249403905a0953" title="Allocates an uninitialized buffer of given size, or throws exception if Arena_obj::allocate() does; s...">allocate()</a> in this or other (if <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Arena_obj</a> supports this) process, as long as <code>p</code> refers to the beginning of the buffer returned by that <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8609f6d096e59799d249403905a0953" title="Allocates an uninitialized buffer of given size, or throws exception if Arena_obj::allocate() does; s...">allocate()</a>; satisfies formal requirement of STL-compliant <code>Allocator</code> concept.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ac6531b5bdb3b299e0780fc5b892bd70c">More...</a><br /></td></tr>
-<tr class="separator:ac6531b5bdb3b299e0780fc5b892bd70c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a2701472b919413d2b290cd5f4671cde4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator concept requirement for default-ctor: no-op since it's a stateless allocator. <br /></td></tr>
+<tr class="separator:a2701472b919413d2b290cd5f4671cde4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad63b07d9781edf8d33afc9905ead7a6"><td class="memTemplParams" colspan="2">template&lt;typename U &gt; </td></tr>
+<tr class="memitem:aad63b07d9781edf8d33afc9905ead7a6"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#aad63b07d9781edf8d33afc9905ead7a6">Stateless_allocator</a> (const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; U, <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9">Arena</a> &gt; &amp;src_ignored)</td></tr>
+<tr class="memdesc:aad63b07d9781edf8d33afc9905ead7a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator concept requirement for copy-ctor from allocator-to-another-type: no-op since it's a stateless allocator.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#aad63b07d9781edf8d33afc9905ead7a6">More...</a><br /></td></tr>
+<tr class="separator:aad63b07d9781edf8d33afc9905ead7a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae191e372db5aa87c710cfcd4525831e2"><td class="memTemplParams" colspan="2">template&lt;typename U &gt; </td></tr>
+<tr class="memitem:ae191e372db5aa87c710cfcd4525831e2"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ae191e372db5aa87c710cfcd4525831e2">Stateless_allocator</a> (<a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; U, <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9">Arena</a> &gt; &amp;&amp;src_ignored)</td></tr>
+<tr class="memdesc:ae191e372db5aa87c710cfcd4525831e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator concept requirement for move-ctor from allocator-to-another-type: no-op since it's a stateless allocator.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ae191e372db5aa87c710cfcd4525831e2">More...</a><br /></td></tr>
+<tr class="separator:ae191e372db5aa87c710cfcd4525831e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27a65a5cb0a75cbad6a322e3a0d4a3ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110">Pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a27a65a5cb0a75cbad6a322e3a0d4a3ae">allocate</a> (size_t n) const</td></tr>
+<tr class="memdesc:a27a65a5cb0a75cbad6a322e3a0d4a3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates an uninitialized buffer of given size, or throws exception if <code>Arena::allocate()</code> does; satisfies formal requirements of STL-compliant <code>Allocator</code> concept.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a27a65a5cb0a75cbad6a322e3a0d4a3ae">More...</a><br /></td></tr>
+<tr class="separator:a27a65a5cb0a75cbad6a322e3a0d4a3ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a1ad08472a34f1aec553931f7177e87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a7a1ad08472a34f1aec553931f7177e87">deallocate</a> (<a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110">Pointer</a> p, size_t n_ignored=0) const noexcept</td></tr>
+<tr class="memdesc:a7a1ad08472a34f1aec553931f7177e87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deallocates buffer in SHM previously allocated via <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a27a65a5cb0a75cbad6a322e3a0d4a3ae" title="Allocates an uninitialized buffer of given size, or throws exception if Arena::allocate() does; satis...">allocate()</a> or equivalent in this or other (if <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Arena</a> supports this) process, as long as <code>p</code> refers to the beginning of the buffer returned by that <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a27a65a5cb0a75cbad6a322e3a0d4a3ae" title="Allocates an uninitialized buffer of given size, or throws exception if Arena::allocate() does; satis...">allocate()</a></code>; satisfies formal requirement of STL-compliant <code>Allocator</code> concept.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a7a1ad08472a34f1aec553931f7177e87">More...</a><br /></td></tr>
+<tr class="separator:a7a1ad08472a34f1aec553931f7177e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="related" name="related"></a>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p >(Note that these are not member functions.) </p>
 </td></tr>
-<tr class="memitem:a96ccf3e4cf39d59d0a80e9026507b206"><td class="memTemplParams" colspan="2">template&lt;typename Arena , typename T1 , typename T2 &gt; </td></tr>
-<tr class="memitem:a96ccf3e4cf39d59d0a80e9026507b206"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a96ccf3e4cf39d59d0a80e9026507b206">operator==</a> (const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T1, Arena &gt; &amp;val1, const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T2, Arena &gt; &amp;val2)</td></tr>
-<tr class="memdesc:a96ccf3e4cf39d59d0a80e9026507b206"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena_obj</a>.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a96ccf3e4cf39d59d0a80e9026507b206">More...</a><br /></td></tr>
-<tr class="separator:a96ccf3e4cf39d59d0a80e9026507b206"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1b059d00a9cbdc54a917e051c1aecdf"><td class="memTemplParams" colspan="2">template&lt;typename Arena , typename T1 , typename T2 &gt; </td></tr>
-<tr class="memitem:ab1b059d00a9cbdc54a917e051c1aecdf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab1b059d00a9cbdc54a917e051c1aecdf">operator!=</a> (const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T1, Arena &gt; &amp;val1, const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T2, Arena &gt; &amp;val2)</td></tr>
-<tr class="memdesc:ab1b059d00a9cbdc54a917e051c1aecdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>false</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena_obj</a>.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab1b059d00a9cbdc54a917e051c1aecdf">More...</a><br /></td></tr>
-<tr class="separator:ab1b059d00a9cbdc54a917e051c1aecdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73ed547acbf63463f0dbd89ccbe38fb4"><td class="memTemplParams" colspan="2">template&lt;typename Arena_t , typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:a73ed547acbf63463f0dbd89ccbe38fb4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a73ed547acbf63463f0dbd89ccbe38fb4">operator==</a> (const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T1, Arena_t &gt; &amp;val1, const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T2, Arena_t &gt; &amp;val2)</td></tr>
+<tr class="memdesc:a73ed547acbf63463f0dbd89ccbe38fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena</a>.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a73ed547acbf63463f0dbd89ccbe38fb4">More...</a><br /></td></tr>
+<tr class="separator:a73ed547acbf63463f0dbd89ccbe38fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a207db5c3896924801f5bae1455fffe"><td class="memTemplParams" colspan="2">template&lt;typename Arena_t , typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:a7a207db5c3896924801f5bae1455fffe"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a7a207db5c3896924801f5bae1455fffe">operator!=</a> (const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T1, Arena_t &gt; &amp;val1, const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T2, Arena_t &gt; &amp;val2)</td></tr>
+<tr class="memdesc:a7a207db5c3896924801f5bae1455fffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>false</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena</a>.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a7a207db5c3896924801f5bae1455fffe">More...</a><br /></td></tr>
+<tr class="separator:a7a207db5c3896924801f5bae1455fffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, typename Arena&gt;<br />
-class ipc::shm::stl::Stateless_allocator&lt; T, Arena &gt;</div><p >Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in SHM in a given SHM-aware <code>Arena</code>. </p>
-<p >Please read background in <a class="el" href="namespaceipc_1_1shm_1_1stl.html" title="ipc::shm sub-module providing integration between STL-compliant components (including containers) and...">shm::stl</a> namespace doc header (shm_stl_fwd.hpp).</p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, typename Arena_t&gt;<br />
+class ipc::shm::stl::Stateless_allocator&lt; T, Arena_t &gt;</div><p >Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in SHM in a given SHM-aware <code>Arena</code>. </p>
+<p >Please read background in <a class="el" href="namespaceipc_1_1shm_1_1stl.html" title="ipc::shm sub-module providing integration between STL-compliant components (including containers) and...">shm::stl</a> namespace doc header (<a class="el" href="stl__fwd_8hpp.html">stl_fwd.hpp</a>).</p>
 <h3>How to use</h3>
-<p >Suppose <code>T</code> is a container type with <code>Allocator</code> template param given as <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>&lt;E&gt;</code>, as well as any nested element types that are also containers also specifying <code>Allocator</code> as <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>&lt;...&gt;</code>. Suppose you want to work with a <code>T* t</code>, such that <code>t</code> points to <code>sizeof(T)</code> bytes in SHM inside some <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Arena_obj</a> <code>A</code>. In order to perform any work on the <code>*t</code> &ndash; including construction, destruction, and any other operations that require internal alloc/dealloc/ptr-deref also inside <code>A</code> &ndash; activate <code>&amp;A</code> in the relevant thread using an <a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of a the given thread&#39;s currently active SHM-aware Are...">Arena_activator</a>. For example:</p>
+<p >Suppose <code>T</code> is a container type with <code>Allocator</code> template param given as <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>&lt;E&gt;</code>, as well as any nested element types that are also containers also specifying <code>Allocator</code> as <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>&lt;...&gt;</code>. Suppose you want to work with a <code>T* t</code>, such that <code>t</code> points to <code>sizeof(T)</code> bytes in SHM inside some <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Arena</a> <code>A</code>. In order to perform any work on the <code>*t</code> &ndash; including construction, destruction, and any other operations that require internal alloc/dealloc/ptr-deref also inside <code>A</code> &ndash; activate <code>&amp;A</code> in the relevant thread using an <a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of the given thread&#39;s currently active SHM-aware Arena...">Arena_activator</a>. For example:</p>
 <div class="fragment"><div class="line"><span class="keyword">using </span>Shm_classic_arena = <a class="code hl_class" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html">classic::Pool_arena</a>;</div>
 <div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><span class="keyword">using </span>Shm_classic_allocator = <a class="code hl_class" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator&lt;T, Shm_classic_arena&gt;</a>;</div>
-<div class="line"><span class="keyword">using </span>Shm_classic_arena_activator = <a class="code hl_class" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html">Arena_activator&lt;Shm_classic_arena&gt;</a>;</div>
+<div class="line"><span class="keyword">using </span>Shm_classic_allocator = <a class="code hl_class" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator&lt;T, Shm_classic_arena&gt;</a>; <span class="comment">// Or use Shm_classic_arena::Allocator.</span></div>
+<div class="line"><span class="keyword">using </span>Shm_classic_arena_activator = <a class="code hl_class" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html">Arena_activator&lt;Shm_classic_arena&gt;</a>; <span class="comment">// Or use Shm_classic_arena::Activator.</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">struct </span>Widget { m_float m_a; m_int m_b; }</div>
+<div class="line"><span class="keyword">struct </span>Widget { <span class="keywordtype">float</span> m_a; <span class="keywordtype">int</span> m_b; };</div>
 <div class="line"><span class="keyword">using </span>Widget_list = list&lt;Widget, Shm_classic_allocator&lt;Widget&gt;&gt;;</div>
 <div class="line"><span class="keyword">using </span>Widget_list_vec = vector&lt;Widget_list, Shm_classic_allocator&lt;Widget_list&gt;&gt;;</div>
 <div class="line"> </div>
-<div class="line">Shm_classic_arena a(...); <span class="comment">// Let `a` be a SHM-classic arena storing *x among other things.</span></div>
+<div class="line">Shm_classic_arena a{...}; <span class="comment">// Let `a` be a SHM-classic arena storing *x among other things.</span></div>
 <div class="line"> </div>
 <div class="line">Widget_list_vec* x = <span class="comment">// ...obtain pointer x to SHM-stored space for the Widget_list_vec in question.</span></div>
 <div class="line">{</div>
-<div class="line">  Shm_classic_arena_activator arena_ctx(&amp;a);</div>
+<div class="line">  Shm_classic_arena_activator arena_ctx{&amp;a};</div>
 <div class="line">  <span class="comment">// call x-&gt; ctors, dtor, methods, operators....</span></div>
 <div class="line">} <span class="comment">// Return the active arena to previous value.</span></div>
-<div class="ttc" id="aclassipc_1_1shm_1_1classic_1_1Pool__arena_html"><div class="ttname"><a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html">ipc::shm::classic::Pool_arena</a></div><div class="ttdoc">A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....</div><div class="ttdef"><b>Definition:</b> pool_arena.hpp:154</div></div>
-<div class="ttc" id="aclassipc_1_1shm_1_1stl_1_1Arena__activator_html"><div class="ttname"><a href="classipc_1_1shm_1_1stl_1_1Arena__activator.html">ipc::shm::stl::Arena_activator</a></div><div class="ttdoc">RAII-style class operating a stack-like notion of a the given thread's currently active SHM-aware Are...</div><div class="ttdef"><b>Definition:</b> arena_activator.hpp:41</div></div>
-<div class="ttc" id="aclassipc_1_1shm_1_1stl_1_1Stateless__allocator_html"><div class="ttname"><a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a></div><div class="ttdoc">Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...</div><div class="ttdef"><b>Definition:</b> stateless_allocator.hpp:119</div></div>
-</div><!-- fragment --><p >Note you may nest <a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of a the given thread&#39;s currently active SHM-aware Are...">Arena_activator</a> contexts in stack-like fashion. Note, also, that <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of a the given thread&#39;s currently active SHM-aware Are...">Arena_activator</a>&lt;A1&gt;</code> operates completely independently from <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of a the given thread&#39;s currently active SHM-aware Are...">Arena_activator</a>&lt;A2&gt;</code>, even in the same thread, if <code>A1</code> is not same-as <code>A2</code>. So any "clash" would only occur (1) in a given thread, not across threads; (2) for a given SHM provider type, not across 2+ such types.</p>
-<p >The allocator is <em>stateless</em>. It takes no space within any container that uses it; and it is always default-cted by the container code itself &ndash; never by the user. That is the reason <a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of a the given thread&#39;s currently active SHM-aware Are...">Arena_activator</a> is necessary (when allocating/deallocating).</p>
+<div class="ttc" id="aclassipc_1_1shm_1_1classic_1_1Pool__arena_html"><div class="ttname"><a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html">ipc::shm::classic::Pool_arena</a></div><div class="ttdoc">A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....</div><div class="ttdef"><b>Definition:</b> pool_arena.hpp:225</div></div>
+<div class="ttc" id="aclassipc_1_1shm_1_1stl_1_1Arena__activator_html"><div class="ttname"><a href="classipc_1_1shm_1_1stl_1_1Arena__activator.html">ipc::shm::stl::Arena_activator</a></div><div class="ttdoc">RAII-style class operating a stack-like notion of the given thread's currently active SHM-aware Arena...</div><div class="ttdef"><b>Definition:</b> arena_activator.hpp:42</div></div>
+<div class="ttc" id="aclassipc_1_1shm_1_1stl_1_1Stateless__allocator_html"><div class="ttname"><a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a></div><div class="ttdoc">Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...</div><div class="ttdef"><b>Definition:</b> stateless_allocator.hpp:129</div></div>
+</div><!-- fragment --><p >Note you may nest <a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of the given thread&#39;s currently active SHM-aware Arena...">Arena_activator</a> contexts in stack-like fashion. Note, also, that <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of the given thread&#39;s currently active SHM-aware Arena...">Arena_activator</a>&lt;A1&gt;</code> operates completely independently from <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of the given thread&#39;s currently active SHM-aware Arena...">Arena_activator</a>&lt;A2&gt;</code>, even in the same thread, if <code>A1</code> is not same-as <code>A2</code>. So any "clash" would only occur (1) in a given thread, not across threads; (2) for a given SHM-provider type, not across 2+ such types.</p>
+<p >The allocator is <em>stateless</em>. It takes no space within any container that uses it; and it is always default-cted by the container code itself &ndash; never by the user. That is the reason <a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of the given thread&#39;s currently active SHM-aware Arena...">Arena_activator</a> is necessary (when allocating/deallocating).</p>
 <h3><code>Arena</code> type requirements (for full capabilities)</h3>
 <p >For write+allocate+deallocate capabilities of <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>: an <code>Arena</code> must have the following members:</p><ul>
-<li><code>void* allocate(size_t n);</code>: Allocate uninitialized buffer of <code>n</code> bytes in this SHM arena; return locally-dereferenceable pointer to that buffer. Throw exception if ran out of resources. (Some providers try hard to avoid this.)</li>
-<li><code>void deallocate(void* p)</code>: Undo <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8609f6d096e59799d249403905a0953" title="Allocates an uninitialized buffer of given size, or throws exception if Arena_obj::allocate() does; s...">allocate()</a></code> that returned <code>p</code>; or the equivalent operation if the SHM provider allows process 2 to deallocate something that was allocated by process 1 (and <code>p</code> indeed was <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8609f6d096e59799d249403905a0953" title="Allocates an uninitialized buffer of given size, or throws exception if Arena_obj::allocate() does; s...">allocate()</a></code>ed in a different process but transmitted to the current process; and was properly made locally-dereferenceable before passing it to this method).</li>
+<li><code>void* allocate(size_t n);</code>: Allocate uninitialized buffer of <code>n</code> bytes in this SHM arena; return locally-dereferenceable pointer to that buffer. Throw exception if ran out of resources. (Some providers try hard to avoid this.) Must not return null: <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a> uses the result unchecked. The buffer must be aligned at least as <code>std::max_align_t</code> (like <code>malloc()</code>'s result). (Corollary: value types with stricter alignment requirements are not supported; <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a27a65a5cb0a75cbad6a322e3a0d4a3ae" title="Allocates an uninitialized buffer of given size, or throws exception if Arena::allocate() does; satis...">Stateless_allocator::allocate()</a> <code>static_assert()</code>s this.)</li>
+<li><code>void deallocate(void* p)</code>: Undo <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a27a65a5cb0a75cbad6a322e3a0d4a3ae" title="Allocates an uninitialized buffer of given size, or throws exception if Arena::allocate() does; satis...">allocate()</a></code> that returned <code>p</code>; or the equivalent operation if the SHM-provider allows process 2 to deallocate something that was allocated by process 1 (and <code>p</code> indeed was <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a27a65a5cb0a75cbad6a322e3a0d4a3ae" title="Allocates an uninitialized buffer of given size, or throws exception if Arena::allocate() does; satis...">allocate()</a></code>ed in a different process but transmitted to the current process; and was properly made locally-dereferenceable before passing it to this method). Must not throw. <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a7a1ad08472a34f1aec553931f7177e87" title="Deallocates buffer in SHM previously allocated via allocate() or equivalent in this or other (if Aren...">Stateless_allocator::deallocate()</a> is <code>noexcept</code> (as STL-compliant allocators' deallocation must be, as it runs during destruction and stack unwinding); so a throw here would <code>std::terminate()</code>.</li>
 <li><code>template&lt;typename T&gt; class Pointer</code>: <code>Pointer&lt;T&gt;</code> must, informally speaking, mimic <code>T*</code>; formally being a <em>fancy pointer</em> in the STL sense. The locally-dereferenceable <code>T*</code> it yields must point to the same underlying area in SHM regardless of in which <code>Arena</code>-aware process the deref API is invoked.<ul>
 <li>The <code>class</code> keyword is for exposition only; it can also be <code>using</code>, <code>typedef</code>, or anything else, provided it mimics <code>T*</code> as described.</li>
-<li>For example, if <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Arena_obj</a> is <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">classic::Pool_arena</a>, then <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a07fec7ff0ba494dca0f0a010270cc35f" title="SHM-storable fancy-pointer.">classic::Pool_arena::Pointer</a> might be <code>bipc::offset_ptr</code>, which internally stores merely an offset within the same SHM-pool versus its own <code>this</code>; this works great as long indeed the <code>Pointer</code> <em>itself</em> is located inside the SHM-pool as the thing to which it points.</li>
+<li>For example, if <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Arena</a> is <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">classic::Pool_arena</a>, then <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a07fec7ff0ba494dca0f0a010270cc35f" title="SHM-storable fancy-pointer.">classic::Pool_arena::Pointer</a> might be <code>bipc::offset_ptr</code>, which internally stores merely an offset within the same SHM-pool versus its own <code>this</code>; this works great as long as indeed the <code>Pointer</code> <em>itself</em> is located inside the same SHM-pool as the thing to which it points.</li>
 </ul>
 </li>
 </ul>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000024">Todo:</a></b></dt><dd>Currently <code>Arena::Pointer</code> shall be a fancy-pointer, but we could support raw pointers also. Suppose <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Arena_obj</a> is set up in such a way as to map all processes' locally-dereferenceable pointers to the same SHM location to the same numeric value (by specifying each pool's start as some predetermined numerical value in the huge 64-bit vaddr space &ndash; in all processes sharing that SHM pool. Now no address translation is needed, and <code>Arena::Pointer</code> could be simply <code>T*</code>. As of this writing some inner impl details suppose it being a fancy-pointer, and it's the only active need we have; but that could be tweaked with a bit of effort.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000030">Todo:</a></b></dt><dd>Currently <code>Arena::Pointer</code> shall be a fancy-pointer, but we could support raw pointers also. Suppose <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Arena</a> is set up in such a way as to map all processes' locally-dereferenceable pointers to the same SHM location to the same numeric value (by specifying each pool's start as some predetermined numerical value in the huge 64-bit vaddr space) in all processes sharing that SHM pool. Now no address translation is needed, and <code>Arena::Pointer</code> could be simply <code>T*</code>. As of this writing some inner impl details assume it being a fancy-pointer, and it's the only active need we have; but that could be tweaked with a bit of effort.</dd></dl>
 <h3>Use in read-only borrowing mode</h3>
-<p >Taken as an example, SHM-classic (<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">shm::classic::Pool_arena</a>) <code>Arena</code>s can always both read and write, allocate and deallocate. By contrast, shm::arena_lend has allocate/write-capable <code>Arena</code> and, on the borrower side, read-only borrower-quasi-<code>Arena</code>. If one needs to merely <em>read</em> a SHM-stored STL-compliant structure with such an <code>Arena</code>, then <b>only the <code>Pointer</code> type requirement above applies</b>.</p><ul>
-<li><code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8609f6d096e59799d249403905a0953" title="Allocates an uninitialized buffer of given size, or throws exception if Arena_obj::allocate() does; s...">allocate()</a></code> and <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ac6531b5bdb3b299e0780fc5b892bd70c" title="Deallocates buffer in SHM previously allocated via allocate() in this or other (if Arena_obj supports...">deallocate()</a></code> shall not be used by (nor need to be present at compile-time for) <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>.</li>
+<p >Taken as an example, SHM-classic (<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">shm::classic::Pool_arena</a>) <code>Arena</code>s can always both read and write, allocate and deallocate. By contrast, <a class="el" href="namespaceipc_1_1shm_1_1arena__lend.html" title="ipc::shm sub-module providing the SHM-provider family based on the arena-lending paradigm: each proce...">shm::arena_lend</a> has allocate/write-capable <code>Arena</code> and, on the borrower side, read-only borrower-quasi-<code>Arena</code>. If one needs to merely <em>read</em> a SHM-stored STL-compliant structure with such an <code>Arena</code>, then <b>only the <code>Pointer</code> type requirement above applies</b>.</p><ul>
+<li><code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a27a65a5cb0a75cbad6a322e3a0d4a3ae" title="Allocates an uninitialized buffer of given size, or throws exception if Arena::allocate() does; satis...">allocate()</a></code> and <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a7a1ad08472a34f1aec553931f7177e87" title="Deallocates buffer in SHM previously allocated via allocate() or equivalent in this or other (if Aren...">deallocate()</a></code> shall not be used by (nor need to be present at compile-time for) <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>.</li>
 <li>No activator &ndash; in fact, no <code>Arena</code> <em>object</em> &ndash; only the <em>type</em>! &ndash; shall be used by <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>.</li>
 </ul>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>Pointed-to type for the allocator. See standard C++ <code>Allocator</code> concept. </td></tr>
-    <tr><td class="paramname">Arena</td><td>See above. </td></tr>
+    <tr><td class="paramname">Arena_t</td><td>See above + <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Arena</a>. </td></tr>
   </table>
   </dd>
 </dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a07b30ebd16bf82a87186c7baffc9bf85" name="a07b30ebd16bf82a87186c7baffc9bf85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07b30ebd16bf82a87186c7baffc9bf85">&#9670;&nbsp;</a></span>Stateless_allocator() <span class="overload">[1/2]</span></h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="aedee0902dc74eebef7983e0b160fd9d6" name="aedee0902dc74eebef7983e0b160fd9d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedee0902dc74eebef7983e0b160fd9d6">&#9670;&nbsp;</a></span>difference_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Arena &gt; </div>
+template&lt;typename T , typename Arena_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a>&lt; T, Arena_t &gt;::difference_type =  typename std::pointer_traits&lt;<a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110">Pointer</a>&gt;::difference_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Signed type for differences between <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110" title="The required pointer-like type. See also pointer.">Pointer</a> values, for compatibility with STL-compliant machinery (traits, etc.). </p>
+<p >This is the default <code>std::allocator_traits</code> would use anyway, if this alias were not here.</p>
+<h3>Rationale</h3>
+<p >Why define it (and <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a998991ba8599086155cf313abed410e5" title="Unsigned counterpart of difference_type, for compatibility with STL-compliant machinery; see differen...">size_type</a>) then? 1, is it dangerous + 2, why do it regardless? Answer 1: Not dangerous: as <code>allocator_traits</code> would choose it anyway as noted. Answer 2: Doing it because some real-life container types, due to slightly not-quite-following standard requirements, will refuse as of this writing to compile when using us as the allocator with <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Arena</a> = <code>Ipc_arena</code> from SHM-jemalloc. Specifically: <code>boost::container::allocator_traits</code> does not follow the standard defaults: if the allocator lacks these aliases, it uses <code>std::ptrdiff_t</code> and <code>std::size_t</code>, regardless of <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110" title="The required pointer-like type. See also pointer.">Pointer</a>. Meanwhile some boost.container code (e.g., <code>deque</code> internals) as of this writing also uses the <code>Pointer</code>-derived types, mixing the two. So if <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110" title="The required pointer-like type. See also pointer.">Pointer</a> <code>difference_type</code> is narrower than <code>std::ptrdiff_t</code> &ndash; as with SHM-jemalloc's <code>Shm_pool_offset_ptr</code> &ndash; such code can fail to compile (ambiguous overloads). Defining these two aliases keeps both sources consistent.</p>
+<p >So do not remove these as seemingly redundant. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aad63b07d9781edf8d33afc9905ead7a6" name="aad63b07d9781edf8d33afc9905ead7a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad63b07d9781edf8d33afc9905ead7a6">&#9670;&nbsp;</a></span>Stateless_allocator() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Arena_t &gt; </div>
 <div class="memtemplate">
 template&lt;typename U &gt; </div>
 <table class="mlabels">
@@ -203,9 +233,9 @@ template&lt;typename U &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a>&lt; T, Arena &gt;::Stateless_allocator </td>
+          <td class="memname"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a>&lt; T, Arena_t &gt;::Stateless_allocator </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; U, Arena &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; U, <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9">Arena</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>src_ignored</em></td><td>)</td>
           <td></td>
         </tr>
@@ -220,7 +250,7 @@ template&lt;typename U &gt; </div>
 <p>Allocator concept requirement for copy-ctor from allocator-to-another-type: no-op since it's a stateless allocator. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">U</td><td>Like <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a8bf26ee2ae30dfbe4d64fbcad3ac8368" title="Short-hand for T.">Value</a>. </td></tr>
+    <tr><td class="paramname">U</td><td>Like <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ad98ad03a8f0648c177ef3e37dcf19bb7" title="Alias for T.">Value</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -233,13 +263,13 @@ template&lt;typename U &gt; </div>
 
 </div>
 </div>
-<a id="aff55fe717e40aca873192819bf1afc15" name="aff55fe717e40aca873192819bf1afc15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff55fe717e40aca873192819bf1afc15">&#9670;&nbsp;</a></span>Stateless_allocator() <span class="overload">[2/2]</span></h2>
+<a id="ae191e372db5aa87c710cfcd4525831e2" name="ae191e372db5aa87c710cfcd4525831e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae191e372db5aa87c710cfcd4525831e2">&#9670;&nbsp;</a></span>Stateless_allocator() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Arena &gt; </div>
+template&lt;typename T , typename Arena_t &gt; </div>
 <div class="memtemplate">
 template&lt;typename U &gt; </div>
 <table class="mlabels">
@@ -247,9 +277,9 @@ template&lt;typename U &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a>&lt; T, Arena &gt;::Stateless_allocator </td>
+          <td class="memname"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a>&lt; T, Arena_t &gt;::Stateless_allocator </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; U, Arena &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; U, <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9">Arena</a> &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>src_ignored</em></td><td>)</td>
           <td></td>
         </tr>
@@ -264,7 +294,7 @@ template&lt;typename U &gt; </div>
 <p>Allocator concept requirement for move-ctor from allocator-to-another-type: no-op since it's a stateless allocator. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">U</td><td>Like <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a8bf26ee2ae30dfbe4d64fbcad3ac8368" title="Short-hand for T.">Value</a>. </td></tr>
+    <tr><td class="paramname">U</td><td>Like <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ad98ad03a8f0648c177ef3e37dcf19bb7" title="Alias for T.">Value</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -278,16 +308,16 @@ template&lt;typename U &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab8609f6d096e59799d249403905a0953" name="ab8609f6d096e59799d249403905a0953"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8609f6d096e59799d249403905a0953">&#9670;&nbsp;</a></span>allocate()</h2>
+<a id="a27a65a5cb0a75cbad6a322e3a0d4a3ae" name="a27a65a5cb0a75cbad6a322e3a0d4a3ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27a65a5cb0a75cbad6a322e3a0d4a3ae">&#9670;&nbsp;</a></span>allocate()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Arena &gt; </div>
+template&lt;typename T , typename Arena_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T, Arena &gt;<a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab2ed725ef3e8128a35f6ef429fb1fdcb">::Pointer</a> <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a>&lt; T, Arena &gt;::allocate </td>
+          <td class="memname"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T, Arena_t &gt;<a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110">::Pointer</a> <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a>&lt; T, Arena_t &gt;::allocate </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -296,33 +326,33 @@ template&lt;typename T , typename Arena &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Allocates an uninitialized buffer of given size, or throws exception if <code>Arena_obj::allocate()</code> does; satisfies formal requirements of STL-compliant <code>Allocator</code> concept. </p>
+<p>Allocates an uninitialized buffer of given size, or throws exception if <code>Arena::allocate()</code> does; satisfies formal requirements of STL-compliant <code>Allocator</code> concept. </p>
 <p >See cppreference.com for those formal requirements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">n</td><td>The buffer allocated shall be <code>n * sizeof(Value)</code>. Note: This is a <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a8bf26ee2ae30dfbe4d64fbcad3ac8368" title="Short-hand for T.">Value</a> count; not a byte count. </td></tr>
+    <tr><td class="paramname">n</td><td>The buffer allocated shall be sized <code>n * sizeof(Value)</code> bytes. Note: <code>n</code> is a <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ad98ad03a8f0648c177ef3e37dcf19bb7" title="Alias for T.">Value</a> count; not a byte count. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Locally-dereferenceable pointer to the SHM-allocated buffer. The buffer is <em>not</em> initialized. E.g., depending on the nature of <code>T</code> you may want to placement-ct it at this address subsequently. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Locally-dereferenceable pointer to the SHM-allocated buffer. The buffer is <em>not</em> initialized. E.g., depending on the nature of <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ad98ad03a8f0648c177ef3e37dcf19bb7" title="Alias for T.">Value</a> you may want to placement-ct it (<code>construct_at()</code>) at this address subsequently. </dd></dl>
 
 </div>
 </div>
-<a id="ac6531b5bdb3b299e0780fc5b892bd70c" name="ac6531b5bdb3b299e0780fc5b892bd70c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6531b5bdb3b299e0780fc5b892bd70c">&#9670;&nbsp;</a></span>deallocate()</h2>
+<a id="a7a1ad08472a34f1aec553931f7177e87" name="a7a1ad08472a34f1aec553931f7177e87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a1ad08472a34f1aec553931f7177e87">&#9670;&nbsp;</a></span>deallocate()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Arena &gt; </div>
+template&lt;typename T , typename Arena_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a>&lt; T, Arena &gt;::deallocate </td>
+          <td class="memname">void <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator</a>&lt; T, Arena_t &gt;::deallocate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab2ed725ef3e8128a35f6ef429fb1fdcb">Pointer</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#adc25b1b706ac6af3f320d5318e951110">Pointer</a>&#160;</td>
           <td class="paramname"><em>p</em>, </td>
         </tr>
         <tr>
@@ -344,7 +374,7 @@ template&lt;typename T , typename Arena &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Deallocates buffer in SHM previously allocated via <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8609f6d096e59799d249403905a0953" title="Allocates an uninitialized buffer of given size, or throws exception if Arena_obj::allocate() does; s...">allocate()</a> in this or other (if <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Arena_obj</a> supports this) process, as long as <code>p</code> refers to the beginning of the buffer returned by that <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8609f6d096e59799d249403905a0953" title="Allocates an uninitialized buffer of given size, or throws exception if Arena_obj::allocate() does; s...">allocate()</a>; satisfies formal requirement of STL-compliant <code>Allocator</code> concept. </p>
+<p>Deallocates buffer in SHM previously allocated via <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a27a65a5cb0a75cbad6a322e3a0d4a3ae" title="Allocates an uninitialized buffer of given size, or throws exception if Arena::allocate() does; satis...">allocate()</a> or equivalent in this or other (if <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Arena</a> supports this) process, as long as <code>p</code> refers to the beginning of the buffer returned by that <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a27a65a5cb0a75cbad6a322e3a0d4a3ae" title="Allocates an uninitialized buffer of given size, or throws exception if Arena::allocate() does; satis...">allocate()</a></code>; satisfies formal requirement of STL-compliant <code>Allocator</code> concept. </p>
 <p >See cppreference.com for those formal requirements. Does not throw (as required).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -357,13 +387,13 @@ template&lt;typename T , typename Arena &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="ab1b059d00a9cbdc54a917e051c1aecdf" name="ab1b059d00a9cbdc54a917e051c1aecdf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1b059d00a9cbdc54a917e051c1aecdf">&#9670;&nbsp;</a></span>operator!=()</h2>
+<a id="a7a207db5c3896924801f5bae1455fffe" name="a7a207db5c3896924801f5bae1455fffe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a207db5c3896924801f5bae1455fffe">&#9670;&nbsp;</a></span>operator!=()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Arena , typename T1 , typename T2 &gt; </div>
+template&lt;typename Arena_t , typename T1 , typename T2 &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -371,13 +401,13 @@ template&lt;typename Arena , typename T1 , typename T2 &gt; </div>
         <tr>
           <td class="memname">bool operator!= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T1, Arena &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T1, Arena_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T2, Arena &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T2, Arena_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>val2</em>&#160;</td>
         </tr>
         <tr>
@@ -393,11 +423,11 @@ template&lt;typename Arena , typename T1 , typename T2 &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns <code>false</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena_obj</a>. </p>
+<p>Returns <code>false</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena</a>. </p>
 <p >This satisfies formal requirements of STL-compliant <code>Allocator</code> concept. See cppreference.com for those formal requirements. Since it's a stateless allocator, this always returns <code>false</code>.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Arena</td><td>See <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>. </td></tr>
+    <tr><td class="paramname">Arena_t</td><td>See <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>. </td></tr>
     <tr><td class="paramname">T1</td><td>See <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>. </td></tr>
     <tr><td class="paramname">T2</td><td>See <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>. </td></tr>
   </table>
@@ -410,17 +440,17 @@ template&lt;typename Arena , typename T1 , typename T2 &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>false</code>. </dd></dl>
 
 </div>
 </div>
-<a id="a96ccf3e4cf39d59d0a80e9026507b206" name="a96ccf3e4cf39d59d0a80e9026507b206"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96ccf3e4cf39d59d0a80e9026507b206">&#9670;&nbsp;</a></span>operator==()</h2>
+<a id="a73ed547acbf63463f0dbd89ccbe38fb4" name="a73ed547acbf63463f0dbd89ccbe38fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73ed547acbf63463f0dbd89ccbe38fb4">&#9670;&nbsp;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Arena , typename T1 , typename T2 &gt; </div>
+template&lt;typename Arena_t , typename T1 , typename T2 &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -428,13 +458,13 @@ template&lt;typename Arena , typename T1 , typename T2 &gt; </div>
         <tr>
           <td class="memname">bool operator== </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T1, Arena &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T1, Arena_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T2, Arena &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">Stateless_allocator</a>&lt; T2, Arena_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>val2</em>&#160;</td>
         </tr>
         <tr>
@@ -450,11 +480,11 @@ template&lt;typename Arena , typename T1 , typename T2 &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns <code>true</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena_obj</a>. </p>
+<p>Returns <code>true</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena</a>. </p>
 <p >This satisfies formal requirements of STL-compliant <code>Allocator</code> concept. See cppreference.com for those formal requirements. Since it's a stateless allocator, this always returns <code>true</code>.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Arena</td><td>See <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>. </td></tr>
+    <tr><td class="paramname">Arena_t</td><td>See <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>. </td></tr>
     <tr><td class="paramname">T1</td><td>See <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>. </td></tr>
     <tr><td class="paramname">T2</td><td>See <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a>. </td></tr>
   </table>
@@ -467,7 +497,7 @@ template&lt;typename Arena , typename T1 , typename T2 &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code>. </dd></dl>
 
 </div>
 </div>
@@ -478,7 +508,7 @@ template&lt;typename Arena , typename T1 , typename T2 &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

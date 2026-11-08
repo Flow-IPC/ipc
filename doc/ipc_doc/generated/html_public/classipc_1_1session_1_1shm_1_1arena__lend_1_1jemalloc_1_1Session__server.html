@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Flow-IPC: ipc::session::shm::arena_lend::jemalloc::Session_server&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; Class Template Reference</title>
+<title>Flow-IPC: ipc::session::shm::arena_lend::jemalloc::Session_server&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -72,118 +72,128 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#related">Related Functions</a> &#124;
 <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">ipc::session::shm::arena_lend::jemalloc::Session_server&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">ipc::session::shm::arena_lend::jemalloc::Session_server&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is to vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a> what <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a> is to vanilla <a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc" title="A vanilla Server_session with no optional capabilities.">Server_session</a>: it is the session-server type that starts SHM-enabled sessions with SHM-jemalloc provider (ipc::shm::arena_lend::jemalloc).  
+<p>This is to vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a> what <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a> is to vanilla <a class="el" href="namespaceipc_1_1session.html#a961e318f69fac2b45e55346591ea46e1" title="A vanilla Server_session with no optional capabilities.">Server_session</a>: it is the session-server type that starts SHM-enabled sessions with SHM-jemalloc provider (<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1jemalloc.html" title="ipc::shm sub-module with the SHM-jemalloc SHM-provider. See ipc::shm doc header for introduction.">ipc::shm::arena_lend::jemalloc</a>).  
  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#details">More...</a></p>
 
 <p><code>#include &lt;session_server.hpp&gt;</code></p>
 
-<p>Inherits Session_server_impl&lt; Session_server&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;, Server_session&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &gt;.</p>
+<p>Inherits Session_server_impl&lt; Session_server&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;, Server_session&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &gt;.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ad4d812cdb1a017fb603c16b3a386d433"><td class="memItemLeft" align="right" valign="top"><a id="ad4d812cdb1a017fb603c16b3a386d433" name="ad4d812cdb1a017fb603c16b3a386d433"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>Server_session_obj</b> = <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html">shm::arena_lend::jemalloc::Server_session</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;</td></tr>
-<tr class="memdesc:ad4d812cdb1a017fb603c16b3a386d433"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for the concrete <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">Server_session</a></code>-like type emitted by <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a>. <br /></td></tr>
-<tr class="separator:ad4d812cdb1a017fb603c16b3a386d433"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa846158c320f2870c77043b6270bb503"><td class="memItemLeft" align="right" valign="top"><a id="aa846158c320f2870c77043b6270bb503" name="aa846158c320f2870c77043b6270bb503"></a>
+<tr class="memitem:a3406554891ff12dd4d2eb70cd6d1db87"><td class="memItemLeft" align="right" valign="top"><a id="a3406554891ff12dd4d2eb70cd6d1db87" name="a3406554891ff12dd4d2eb70cd6d1db87"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Server_session_obj</b> = <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html">shm::arena_lend::jemalloc::Server_session</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;</td></tr>
+<tr class="memdesc:a3406554891ff12dd4d2eb70cd6d1db87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for the concrete <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">Server_session</a></code>-like type emitted by <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a>. <br /></td></tr>
+<tr class="separator:a3406554891ff12dd4d2eb70cd6d1db87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe725ac9264193d30f2572f4922feffd"><td class="memItemLeft" align="right" valign="top"><a id="afe725ac9264193d30f2572f4922feffd" name="afe725ac9264193d30f2572f4922feffd"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>Mdt_reader_ptr</b> = typename Impl::Mdt_reader_ptr</td></tr>
-<tr class="memdesc:aa846158c320f2870c77043b6270bb503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1Session__mv.html#a2b1215fb0c9738b9fcfbb337d23c43df" title="Implements Session API per contract.">Session_mv::Mdt_reader_ptr</a>. <br /></td></tr>
-<tr class="separator:aa846158c320f2870c77043b6270bb503"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0a96fec25d9deea4000ddf72046f379"><td class="memItemLeft" align="right" valign="top"><a id="ae0a96fec25d9deea4000ddf72046f379" name="ae0a96fec25d9deea4000ddf72046f379"></a>
+<tr class="memdesc:afe725ac9264193d30f2572f4922feffd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1Session__mv.html#a2b1215fb0c9738b9fcfbb337d23c43df" title="Implements Session API per contract.">Session_mv::Mdt_reader_ptr</a>. <br /></td></tr>
+<tr class="separator:afe725ac9264193d30f2572f4922feffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a144a95382b85f36365d688d54ce03ebf"><td class="memItemLeft" align="right" valign="top"><a id="a144a95382b85f36365d688d54ce03ebf" name="a144a95382b85f36365d688d54ce03ebf"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>Mdt_builder</b> = typename <a class="el" href="classipc_1_1session_1_1Session__mv.html#af10f452e602e4ea7389c6a77dd9a0f88">Server_session_obj::Mdt_builder</a></td></tr>
-<tr class="memdesc:ae0a96fec25d9deea4000ddf72046f379"><td class="mdescLeft">&#160;</td><td class="mdescRight">Metadata builder type passed to <code>mdt_load_func()</code> in advanced <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a> overload. <br /></td></tr>
-<tr class="separator:ae0a96fec25d9deea4000ddf72046f379"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95e9d47a5bd9c32b3d3970ed3af0db01"><td class="memItemLeft" align="right" valign="top"><a id="a95e9d47a5bd9c32b3d3970ed3af0db01" name="a95e9d47a5bd9c32b3d3970ed3af0db01"></a>
+<tr class="memdesc:a144a95382b85f36365d688d54ce03ebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Metadata builder type passed to <code>mdt_load_func()</code> in advanced <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a> overload. <br /></td></tr>
+<tr class="separator:a144a95382b85f36365d688d54ce03ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab22f5bdf95a29016c364c14cc60d1af8"><td class="memItemLeft" align="right" valign="top"><a id="ab22f5bdf95a29016c364c14cc60d1af8" name="ab22f5bdf95a29016c364c14cc60d1af8"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>Channels</b> = typename Impl::Channels</td></tr>
-<tr class="memdesc:a95e9d47a5bd9c32b3d3970ed3af0db01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f" title="Container (vector&lt;&gt;) of Channel_obj.">Session_mv::Channels</a>. <br /></td></tr>
-<tr class="separator:a95e9d47a5bd9c32b3d3970ed3af0db01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e47c282616158733240d3b7bd808036"><td class="memItemLeft" align="right" valign="top"><a id="a1e47c282616158733240d3b7bd808036" name="a1e47c282616158733240d3b7bd808036"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>Arena</b> = typename <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html#a988281add5dc4a31202cfba47f458e5a">Server_session_obj::Base::Arena</a></td></tr>
-<tr class="memdesc:a1e47c282616158733240d3b7bd808036"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html#ae30ae4b65cd4178fa26eed660688829f" title="The arena object on which one may call construct&lt;T&gt;(ctor_args...), where ctor_args are arguments to t...">shm::arena_lend::jemalloc::Session_mv::Arena</a>. See <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a> in particular. <br /></td></tr>
-<tr class="separator:a1e47c282616158733240d3b7bd808036"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d22e6f00d6b8b92fe99198837bce3b9"><td class="memItemLeft" align="right" valign="top"><a id="a4d22e6f00d6b8b92fe99198837bce3b9" name="a4d22e6f00d6b8b92fe99198837bce3b9"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>Structured_msg_builder_config</b> = typename <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html#a7de5ec3e9331c46664a493e060edb6f6">Server_session_obj::Base::Structured_msg_builder_config</a></td></tr>
-<tr class="memdesc:a4d22e6f00d6b8b92fe99198837bce3b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html#aaf1b1ad45b96d49c4c86e234a656f01b" title="Implements Session API per contract.">shm::arena_lend::jemalloc::Session_mv::Structured_msg_builder_config</a>. <br /></td></tr>
-<tr class="separator:a4d22e6f00d6b8b92fe99198837bce3b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b167219307d2016e46490b82138c553"><td class="memItemLeft" align="right" valign="top"><a id="a0b167219307d2016e46490b82138c553" name="a0b167219307d2016e46490b82138c553"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>Structured_msg_reader_config</b> = typename <a class="el" href="classipc_1_1session_1_1Session__mv.html#a335c3585402cc9430f8c909e8c7e55f4">Server_session_obj::Base::Structured_msg_reader_config</a></td></tr>
-<tr class="memdesc:a0b167219307d2016e46490b82138c553"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html#a50304d6dba4a332952aee67dc37598d0" title="Implements Session API per contract.">shm::arena_lend::jemalloc::Session_mv::Structured_msg_reader_config</a>. <br /></td></tr>
-<tr class="separator:a0b167219307d2016e46490b82138c553"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ab22f5bdf95a29016c364c14cc60d1af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f" title="Container (vector&lt;&gt;) of Channel_obj.">Session_mv::Channels</a>. <br /></td></tr>
+<tr class="separator:ab22f5bdf95a29016c364c14cc60d1af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af19c61cd0297091a18caf009f87d5b84"><td class="memItemLeft" align="right" valign="top"><a id="af19c61cd0297091a18caf009f87d5b84" name="af19c61cd0297091a18caf009f87d5b84"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Arena</b> = typename <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html#a78243ad1d5d1ffc0760148119ef70981">Server_session_obj::Base::Arena</a></td></tr>
+<tr class="memdesc:af19c61cd0297091a18caf009f87d5b84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html#ae30ae4b65cd4178fa26eed660688829f" title="The arena object on which one may call construct&lt;T&gt;(ctor_args...), where ctor_args are arguments to t...">shm::arena_lend::jemalloc::Session_mv::Arena</a>. See <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this, and every shm::arena_le...">app_shm()</a> in particular. <br /></td></tr>
+<tr class="separator:af19c61cd0297091a18caf009f87d5b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ae8fa8dd99983a79c74f221781ebcca"><td class="memItemLeft" align="right" valign="top"><a id="a6ae8fa8dd99983a79c74f221781ebcca" name="a6ae8fa8dd99983a79c74f221781ebcca"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Structured_msg_builder_config</b> = typename <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html#a340d6b741fc6d5a62a77acf3f0a794c8">Server_session_obj::Base::Structured_msg_builder_config</a></td></tr>
+<tr class="memdesc:a6ae8fa8dd99983a79c74f221781ebcca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html#aaf1b1ad45b96d49c4c86e234a656f01b" title="Implements Session API per contract.">shm::arena_lend::jemalloc::Session_mv::Structured_msg_builder_config</a>. <br /></td></tr>
+<tr class="separator:a6ae8fa8dd99983a79c74f221781ebcca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed46412cba31778509dc9713c5e55331"><td class="memItemLeft" align="right" valign="top"><a id="aed46412cba31778509dc9713c5e55331" name="aed46412cba31778509dc9713c5e55331"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Structured_msg_reader_config</b> = typename <a class="el" href="classipc_1_1session_1_1Session__mv.html#a74acfd37c4371a842e01e555c7e752e2">Server_session_obj::Base::Structured_msg_reader_config</a></td></tr>
+<tr class="memdesc:aed46412cba31778509dc9713c5e55331"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html#a50304d6dba4a332952aee67dc37598d0" title="Implements Session API per contract.">shm::arena_lend::jemalloc::Session_mv::Structured_msg_reader_config</a>. <br /></td></tr>
+<tr class="separator:aed46412cba31778509dc9713c5e55331"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad957e71af51636a89bdd09a39761bf35"><td class="memItemLeft" align="right" valign="top"><a id="ad957e71af51636a89bdd09a39761bf35" name="ad957e71af51636a89bdd09a39761bf35"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Async_io_obj</b> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">transport::Null_peer</a></td></tr>
+<tr class="memdesc:ad957e71af51636a89bdd09a39761bf35"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
+<tr class="separator:ad957e71af51636a89bdd09a39761bf35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a251e16804610e66ba5afc5f3951f3cb2"><td class="memItemLeft" align="right" valign="top"><a id="a251e16804610e66ba5afc5f3951f3cb2" name="a251e16804610e66ba5afc5f3951f3cb2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Sync_io_obj</b> = <a class="el" href="classipc_1_1session_1_1sync__io_1_1Session__server__adapter.html">sync_io::Session_server_adapter</a>&lt; <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a> &gt;</td></tr>
+<tr class="memdesc:a251e16804610e66ba5afc5f3951f3cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Useful for generic programming, the <code><a class="el" href="namespaceipc_1_1session_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::session.">sync_io</a></code>-pattern counterpart to <code>*this</code> type. <br /></td></tr>
+<tr class="separator:a251e16804610e66ba5afc5f3951f3cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5cfd3651a06380b877738c6b5fc353a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a5cfd3651a06380b877738c6b5fc353a9">Session_server</a> (flow::log::Logger *logger_ptr, const <a class="el" href="structipc_1_1session_1_1Server__app.html">Server_app</a> &amp;srv_app_ref, const <a class="el" href="structipc_1_1session_1_1Client__app.html#add718cbf6aa1d2abb26fbadcc974a7bd">Client_app::Master_set</a> &amp;cli_app_master_set_ref, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0)</td></tr>
-<tr class="memdesc:a5cfd3651a06380b877738c6b5fc353a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: identical to <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">session::Session_server</a> ctor.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a5cfd3651a06380b877738c6b5fc353a9">More...</a><br /></td></tr>
-<tr class="separator:a5cfd3651a06380b877738c6b5fc353a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b451906ee2b46d230df5f252bbb64ed"><td class="memTemplParams" colspan="2">template&lt;typename Task_err &gt; </td></tr>
-<tr class="memitem:a4b451906ee2b46d230df5f252bbb64ed"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed">async_accept</a> (<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ad4d812cdb1a017fb603c16b3a386d433">Server_session_obj</a> *target_session, Task_err &amp;&amp;on_done_func)</td></tr>
-<tr class="memdesc:a4b451906ee2b46d230df5f252bbb64ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contract identical to simpler <a class="el" href="classipc_1_1session_1_1Session__server.html#a13887cd64912bb5f5675e2817ff8435f" title="Asynchronously awaits for an opposing Client_session to request session establishment and calls on_do...">session::Session_server::async_accept()</a> overload; but internally ensures that the appropriate SHM-jemalloc arenas are available for use in the emitted <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ad4d812cdb1a017fb603c16b3a386d433" title="Short-hand for the concrete Server_session-like type emitted by async_accept().">Server_session_obj</a>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed">More...</a><br /></td></tr>
-<tr class="separator:a4b451906ee2b46d230df5f252bbb64ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76037239acb4b0082023dbe7e7dafb0b"><td class="memTemplParams" colspan="2">template&lt;typename Task_err , typename N_init_channels_by_srv_req_func , typename Mdt_load_func &gt; </td></tr>
-<tr class="memitem:a76037239acb4b0082023dbe7e7dafb0b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76037239acb4b0082023dbe7e7dafb0b">async_accept</a> (<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ad4d812cdb1a017fb603c16b3a386d433">Server_session_obj</a> *target_session, <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a95e9d47a5bd9c32b3d3970ed3af0db01">Channels</a> *init_channels_by_srv_req, <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa846158c320f2870c77043b6270bb503">Mdt_reader_ptr</a> *mdt_from_cli_or_null, <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a95e9d47a5bd9c32b3d3970ed3af0db01">Channels</a> *init_channels_by_cli_req, N_init_channels_by_srv_req_func &amp;&amp;n_init_channels_by_srv_req_func, Mdt_load_func &amp;&amp;mdt_load_func, Task_err &amp;&amp;on_done_func)</td></tr>
-<tr class="memdesc:a76037239acb4b0082023dbe7e7dafb0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contract identical to advanced <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">Session_server::async_accept()</a> overload; but internally ensures that the appropriate SHM-jemalloc arenas are available for use in the emitted <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ad4d812cdb1a017fb603c16b3a386d433" title="Short-hand for the concrete Server_session-like type emitted by async_accept().">Server_session_obj</a>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76037239acb4b0082023dbe7e7dafb0b">More...</a><br /></td></tr>
-<tr class="separator:a76037239acb4b0082023dbe7e7dafb0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d11292ef977d04acb9260036100c605"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a1e47c282616158733240d3b7bd808036">Arena</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605">app_shm</a> (const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;app)</td></tr>
-<tr class="memdesc:a8d11292ef977d04acb9260036100c605"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointer to the per-<code>app</code> SHM-arena, whose lifetime extends until <code>*this</code> is destroyed; or null if the given <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> has not yet opened at least 1 <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a> via <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605">More...</a><br /></td></tr>
-<tr class="separator:a8d11292ef977d04acb9260036100c605"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa56818050f1bd25b26fc51690a6afbf8"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a1e47c282616158733240d3b7bd808036">Arena</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa56818050f1bd25b26fc51690a6afbf8">app_shm_ptr</a> (const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;app)</td></tr>
-<tr class="memdesc:aa56818050f1bd25b26fc51690a6afbf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a> but returns that via a <code>shared_ptr</code>-handle as required for work directly within ipc::shm::arena_lend::jemalloc APIs.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa56818050f1bd25b26fc51690a6afbf8">More...</a><br /></td></tr>
-<tr class="separator:aa56818050f1bd25b26fc51690a6afbf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa548c3379d4b8a8f0b9d618b0c1da7ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4d22e6f00d6b8b92fe99198837bce3b9">Structured_msg_builder_config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa548c3379d4b8a8f0b9d618b0c1da7ba">app_shm_builder_config</a> (const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;app)</td></tr>
-<tr class="memdesc:aa548c3379d4b8a8f0b9d618b0c1da7ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns builder config suitable for capnp-serializing out-messages in SHM arena <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a> for the same <code><a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> app</code>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa548c3379d4b8a8f0b9d618b0c1da7ba">More...</a><br /></td></tr>
-<tr class="separator:aa548c3379d4b8a8f0b9d618b0c1da7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1039d8bd2d4461085f3eeb5d24e40799"><td class="memItemLeft" align="right" valign="top">Structured_msg_builder_config::Builder::Session&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a1039d8bd2d4461085f3eeb5d24e40799">app_shm_lender_session</a> (const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;app)</td></tr>
-<tr class="memdesc:a1039d8bd2d4461085f3eeb5d24e40799"><td class="mdescLeft">&#160;</td><td class="mdescRight">In short, what <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa548c3379d4b8a8f0b9d618b0c1da7ba" title="Returns builder config suitable for capnp-serializing out-messages in SHM arena app_shm() for the sam...">app_shm_builder_config()</a> is to shm::arena_lend::jemalloc::Session_mv::app_shm_builder_config(), this is to shm::arena_lend::jemalloc::app_shm_lender_session().  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a1039d8bd2d4461085f3eeb5d24e40799">More...</a><br /></td></tr>
-<tr class="separator:a1039d8bd2d4461085f3eeb5d24e40799"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96cce95ab7dccc577815b907c94b8f7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a0b167219307d2016e46490b82138c553">Structured_msg_reader_config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a96cce95ab7dccc577815b907c94b8f7e">app_shm_reader_config</a> (const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;app)</td></tr>
-<tr class="memdesc:a96cce95ab7dccc577815b907c94b8f7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reader config counterpart to <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa548c3379d4b8a8f0b9d618b0c1da7ba" title="Returns builder config suitable for capnp-serializing out-messages in SHM arena app_shm() for the sam...">app_shm_builder_config()</a> for a given <code><a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> app</code>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a96cce95ab7dccc577815b907c94b8f7e">More...</a><br /></td></tr>
-<tr class="separator:a96cce95ab7dccc577815b907c94b8f7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2c6ecf04a16b5aba00bdede17aa52e1"><td class="memItemLeft" align="right" valign="top">ipc::shm::arena_lend::Owner_shm_pool_listener_for_repository *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ac2c6ecf04a16b5aba00bdede17aa52e1">shm_arena_pool_listener</a> ()</td></tr>
-<tr class="memdesc:ac2c6ecf04a16b5aba00bdede17aa52e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the arena-pool listener maintained throughout <code>*this</code> <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a>'s life.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ac2c6ecf04a16b5aba00bdede17aa52e1">More...</a><br /></td></tr>
-<tr class="separator:ac2c6ecf04a16b5aba00bdede17aa52e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a522c28128981264487a7e35dd9ea3ef8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a522c28128981264487a7e35dd9ea3ef8">to_ostream</a> (std::ostream *os) const</td></tr>
-<tr class="memdesc:a522c28128981264487a7e35dd9ea3ef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation to the given <code>ostream</code>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a522c28128981264487a7e35dd9ea3ef8">More...</a><br /></td></tr>
-<tr class="separator:a522c28128981264487a7e35dd9ea3ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac24a571566ec08cd4f99537b5e4c771a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ac24a571566ec08cd4f99537b5e4c771a">Session_server</a> (flow::log::Logger *logger_ptr, const <a class="el" href="structipc_1_1session_1_1Server__app.html">Server_app</a> &amp;srv_app_ref, const <a class="el" href="structipc_1_1session_1_1Client__app.html#add718cbf6aa1d2abb26fbadcc974a7bd">Client_app::Master_set</a> &amp;cli_app_master_set_ref, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:ac24a571566ec08cd4f99537b5e4c771a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: identical to <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">session::Session_server</a> ctor.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ac24a571566ec08cd4f99537b5e4c771a">More...</a><br /></td></tr>
+<tr class="separator:ac24a571566ec08cd4f99537b5e4c771a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a433d8d96f77e2d0e1dbf702c4019fe73"><td class="memItemLeft" align="right" valign="top"><a id="a433d8d96f77e2d0e1dbf702c4019fe73" name="a433d8d96f77e2d0e1dbf702c4019fe73"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~Session_server</b> ()</td></tr>
+<tr class="memdesc:a433d8d96f77e2d0e1dbf702c4019fe73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor: contract is identical to <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">session::Session_server</a> dtor. <br /></td></tr>
+<tr class="separator:a433d8d96f77e2d0e1dbf702c4019fe73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76129da012645ee49827634b53a8861a"><td class="memTemplParams" colspan="2">template&lt;typename Task_err &gt; </td></tr>
+<tr class="memitem:a76129da012645ee49827634b53a8861a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a">async_accept</a> (<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a3406554891ff12dd4d2eb70cd6d1db87">Server_session_obj</a> *target_session, Task_err &amp;&amp;on_done_func)</td></tr>
+<tr class="memdesc:a76129da012645ee49827634b53a8861a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contract identical to simpler <a class="el" href="classipc_1_1session_1_1Session__server.html#ab59f4a3b8bbf66c5f8f594cd661d315c" title="Asynchronously awaits for an opposing Client_session to request session establishment and calls on_do...">session::Session_server::async_accept()</a> overload; but internally ensures that the appropriate SHM-jemalloc arenas are available for use in the emitted <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a3406554891ff12dd4d2eb70cd6d1db87" title="Short-hand for the concrete Server_session-like type emitted by async_accept().">Server_session_obj</a>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a">More...</a><br /></td></tr>
+<tr class="separator:a76129da012645ee49827634b53a8861a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc8247ddab4a772dd8f4e062e6649d2d"><td class="memTemplParams" colspan="2">template&lt;typename Task_err , typename N_init_channels_by_srv_req_func , typename Mdt_load_func &gt; </td></tr>
+<tr class="memitem:abc8247ddab4a772dd8f4e062e6649d2d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#abc8247ddab4a772dd8f4e062e6649d2d">async_accept</a> (<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a3406554891ff12dd4d2eb70cd6d1db87">Server_session_obj</a> *target_session, <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ab22f5bdf95a29016c364c14cc60d1af8">Channels</a> *init_channels_by_srv_req, <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#afe725ac9264193d30f2572f4922feffd">Mdt_reader_ptr</a> *mdt_from_cli_or_null, <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ab22f5bdf95a29016c364c14cc60d1af8">Channels</a> *init_channels_by_cli_req, N_init_channels_by_srv_req_func &amp;&amp;n_init_channels_by_srv_req_func, Mdt_load_func &amp;&amp;mdt_load_func, Task_err &amp;&amp;on_done_func)</td></tr>
+<tr class="memdesc:abc8247ddab4a772dd8f4e062e6649d2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contract identical to advanced <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">Session_server::async_accept()</a> overload; but internally ensures that the appropriate SHM-jemalloc arenas are available for use in the emitted <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a3406554891ff12dd4d2eb70cd6d1db87" title="Short-hand for the concrete Server_session-like type emitted by async_accept().">Server_session_obj</a>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#abc8247ddab4a772dd8f4e062e6649d2d">More...</a><br /></td></tr>
+<tr class="separator:abc8247ddab4a772dd8f4e062e6649d2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c43e766e5c91bd981583bcd2b99dab9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a5c43e766e5c91bd981583bcd2b99dab9">mq_msg_size_limit</a> () const</td></tr>
+<tr class="memdesc:a5c43e766e5c91bd981583bcd2b99dab9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to eponymous accessor in <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">session::Session_server</a>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a5c43e766e5c91bd981583bcd2b99dab9">More...</a><br /></td></tr>
+<tr class="separator:a5c43e766e5c91bd981583bcd2b99dab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49d18a8d8a93847b8cb9b871a5feac1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a49d18a8d8a93847b8cb9b871a5feac1f">mq_msg_size_limit</a> (size_t limit)</td></tr>
+<tr class="memdesc:a49d18a8d8a93847b8cb9b871a5feac1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to eponymous mutator in <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">session::Session_server</a>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a49d18a8d8a93847b8cb9b871a5feac1f">More...</a><br /></td></tr>
+<tr class="separator:a49d18a8d8a93847b8cb9b871a5feac1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fdbc321ae99852513886d93baa4f55b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#af19c61cd0297091a18caf009f87d5b84">Arena</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b">app_shm</a> (const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;app)</td></tr>
+<tr class="memdesc:a7fdbc321ae99852513886d93baa4f55b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointer to the per-<code>app</code> SHM-arena, whose lifetime extends until <code>*this</code>, and every <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a> of <code>app</code> from <code>*this</code>, are destroyed; or null if that arena has not yet been successfully created (which is attempted during the log-in of the first client of <code>app</code> to reach <code>*this</code> via <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a>).  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b">More...</a><br /></td></tr>
+<tr class="separator:a7fdbc321ae99852513886d93baa4f55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52b0e5ce859d4a066eaa58c8249b964f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#af19c61cd0297091a18caf009f87d5b84">Arena</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a52b0e5ce859d4a066eaa58c8249b964f">app_shm_ptr</a> (const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;app)</td></tr>
+<tr class="memdesc:a52b0e5ce859d4a066eaa58c8249b964f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this, and every shm::arena_le...">app_shm()</a> but returns that via a <code>shared_ptr</code>-handle as required for work directly within <a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1jemalloc.html" title="ipc::shm sub-module with the SHM-jemalloc SHM-provider. See ipc::shm doc header for introduction.">ipc::shm::arena_lend::jemalloc</a> APIs.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a52b0e5ce859d4a066eaa58c8249b964f">More...</a><br /></td></tr>
+<tr class="separator:a52b0e5ce859d4a066eaa58c8249b964f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbd9f168276be2f6afd66f5c99c0ea62"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a6ae8fa8dd99983a79c74f221781ebcca">Structured_msg_builder_config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#abbd9f168276be2f6afd66f5c99c0ea62">app_shm_builder_config</a> (const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;app, size_t segment1_sz=sizeof(::capnp::word) *::capnp::SUGGESTED_FIRST_SEGMENT_WORDS)</td></tr>
+<tr class="memdesc:abbd9f168276be2f6afd66f5c99c0ea62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns builder config suitable for capnp-serializing out-messages in SHM arena <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this, and every shm::arena_le...">app_shm()</a> for the same <code><a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> app</code>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#abbd9f168276be2f6afd66f5c99c0ea62">More...</a><br /></td></tr>
+<tr class="separator:abbd9f168276be2f6afd66f5c99c0ea62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accc79abcf955ed563abdc947ec7211fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#accc79abcf955ed563abdc947ec7211fa">to_ostream</a> (std::ostream *os) const</td></tr>
+<tr class="memdesc:accc79abcf955ed563abdc947ec7211fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation to the given <code>ostream</code>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#accc79abcf955ed563abdc947ec7211fa">More...</a><br /></td></tr>
+<tr class="separator:accc79abcf955ed563abdc947ec7211fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="related" name="related"></a>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p >(Note that these are not member functions.) </p>
 </td></tr>
-<tr class="memitem:a4556b229bf2bfc3c9eb51af13c47de3d"><td class="memTemplParams" colspan="2">template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </td></tr>
-<tr class="memitem:a4556b229bf2bfc3c9eb51af13c47de3d"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4556b229bf2bfc3c9eb51af13c47de3d">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &amp;val)</td></tr>
-<tr class="memdesc:a4556b229bf2bfc3c9eb51af13c47de3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a></code> to the given <code>ostream</code>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4556b229bf2bfc3c9eb51af13c47de3d">More...</a><br /></td></tr>
-<tr class="separator:a4556b229bf2bfc3c9eb51af13c47de3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86d6edb0d8995be67473c0f25b5aec00"><td class="memTemplParams" colspan="2">template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </td></tr>
+<tr class="memitem:a86d6edb0d8995be67473c0f25b5aec00"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a86d6edb0d8995be67473c0f25b5aec00">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &amp;val)</td></tr>
+<tr class="memdesc:a86d6edb0d8995be67473c0f25b5aec00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a></code> to the given <code>ostream</code>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a86d6edb0d8995be67473c0f25b5aec00">More...</a><br /></td></tr>
+<tr class="separator:a86d6edb0d8995be67473c0f25b5aec00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;<br />
-class ipc::session::shm::arena_lend::jemalloc::Session_server&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;</div><p >This is to vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a> what <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a> is to vanilla <a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc" title="A vanilla Server_session with no optional capabilities.">Server_session</a>: it is the session-server type that starts SHM-enabled sessions with SHM-jemalloc provider (ipc::shm::arena_lend::jemalloc). </p>
-<p >Its API is identical to that of <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a>, except that it emits <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ad4d812cdb1a017fb603c16b3a386d433" title="Short-hand for the concrete Server_session-like type emitted by async_accept().">Server_session_obj</a> that are <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a> and not vanilla <a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc" title="A vanilla Server_session with no optional capabilities.">Server_session</a>.</p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;<br />
+class ipc::session::shm::arena_lend::jemalloc::Session_server&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;</div><p >This is to vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a> what <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a> is to vanilla <a class="el" href="namespaceipc_1_1session.html#a961e318f69fac2b45e55346591ea46e1" title="A vanilla Server_session with no optional capabilities.">Server_session</a>: it is the session-server type that starts SHM-enabled sessions with SHM-jemalloc provider (<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1jemalloc.html" title="ipc::shm sub-module with the SHM-jemalloc SHM-provider. See ipc::shm doc header for introduction.">ipc::shm::arena_lend::jemalloc</a>). </p>
+<p >Its API is identical to that of <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a>, except that it emits <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a3406554891ff12dd4d2eb70cd6d1db87" title="Short-hand for the concrete Server_session-like type emitted by async_accept().">Server_session_obj</a> that are <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a> and not vanilla <a class="el" href="namespaceipc_1_1session.html#a961e318f69fac2b45e55346591ea46e1" title="A vanilla Server_session with no optional capabilities.">Server_session</a>.</p>
+<dl class="section note"><dt>Note</dt><dd>Lifetime recommendations and requirements &ndash; the destruction order among <code>*this</code>, its sessions and their channels; how long the <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this, and every shm::arena_le...">app_shm()</a> arenas live &ndash; are in the same-named section of <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">session::Session_server</a> doc header.</dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">S_MQ_TYPE_OR_NONE</td><td>See vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a5cfd3651a06380b877738c6b5fc353a9" title="Constructor: identical to session::Session_server ctor.">Session_server</a>. </td></tr>
-    <tr><td class="paramname">S_TRANSMIT_NATIVE_HANDLES</td><td>See vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a5cfd3651a06380b877738c6b5fc353a9" title="Constructor: identical to session::Session_server ctor.">Session_server</a>. </td></tr>
-    <tr><td class="paramname">Mdt_payload</td><td>See vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a5cfd3651a06380b877738c6b5fc353a9" title="Constructor: identical to session::Session_server ctor.">Session_server</a>. </td></tr>
+    <tr><td class="paramname">MQ_TYPE_OR_NONE</td><td>See vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ac24a571566ec08cd4f99537b5e4c771a" title="Constructor: identical to session::Session_server ctor.">Session_server</a>. </td></tr>
+    <tr><td class="paramname">TRANSMIT_NATIVE_HANDLES</td><td>See vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ac24a571566ec08cd4f99537b5e4c771a" title="Constructor: identical to session::Session_server ctor.">Session_server</a>. </td></tr>
+    <tr><td class="paramname">Mdt_payload</td><td>See vanilla <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ac24a571566ec08cd4f99537b5e4c771a" title="Constructor: identical to session::Session_server ctor.">Session_server</a>. </td></tr>
   </table>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5cfd3651a06380b877738c6b5fc353a9" name="a5cfd3651a06380b877738c6b5fc353a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5cfd3651a06380b877738c6b5fc353a9">&#9670;&nbsp;</a></span>Session_server()</h2>
+<a id="ac24a571566ec08cd4f99537b5e4c771a" name="ac24a571566ec08cd4f99537b5e4c771a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac24a571566ec08cd4f99537b5e4c771a">&#9670;&nbsp;</a></span>Session_server()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
+template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::Session_server </td>
+          <td class="memname"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::Session_server </td>
           <td>(</td>
           <td class="paramtype">flow::log::Logger *&#160;</td>
           <td class="paramname"><em>logger_ptr</em>, </td>
@@ -204,7 +214,7 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -221,6 +231,7 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
 
 <p>Constructor: identical to <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">session::Session_server</a> ctor. </p>
 <p >See its doc header.</p>
+<dl class="section warning"><dt>Warning</dt><dd>See same-named section of <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">session::Session_server</a> ctor doc header. In short: <code>srv_app_ref</code> and <code>cli_app_master_set_ref</code> (and its <code><a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a></code>s) must outlive <code>*this</code> and any yielded <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">Server_session</a></code>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>See above. </td></tr>
@@ -234,16 +245,16 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8d11292ef977d04acb9260036100c605" name="a8d11292ef977d04acb9260036100c605"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d11292ef977d04acb9260036100c605">&#9670;&nbsp;</a></span>app_shm()</h2>
+<a id="a7fdbc321ae99852513886d93baa4f55b" name="a7fdbc321ae99852513886d93baa4f55b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fdbc321ae99852513886d93baa4f55b">&#9670;&nbsp;</a></span>app_shm()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
+template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a1e47c282616158733240d3b7bd808036">::Arena</a> * <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm </td>
+          <td class="memname"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#af19c61cd0297091a18caf009f87d5b84">::Arena</a> * <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;&#160;</td>
           <td class="paramname"><em>app</em></td><td>)</td>
@@ -252,13 +263,13 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
       </table>
 </div><div class="memdoc">
 
-<p>Returns pointer to the per-<code>app</code> SHM-arena, whose lifetime extends until <code>*this</code> is destroyed; or null if the given <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> has not yet opened at least 1 <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a> via <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a>. </p>
-<p >Alternatively you may use shm::arena_lend::jemalloc::Session_mv::app_shm() off any session object filled-out by <code>*this</code> <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a>, as long as its <a class="el" href="classipc_1_1session_1_1Server__session__mv.html#ac873543383b7a6da94d4353231f34ec2" title="The opposing application is described by a Client_app; this is that description.">Server_session_mv::client_app()</a> equals <code>app</code> (by <a class="el" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd" title="Brief application name, readable to humans and unique across all other applications&#39; names; used both...">App::m_name</a> equality).</p>
+<p>Returns pointer to the per-<code>app</code> SHM-arena, whose lifetime extends until <code>*this</code>, and every <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a> of <code>app</code> from <code>*this</code>, are destroyed; or null if that arena has not yet been successfully created (which is attempted during the log-in of the first client of <code>app</code> to reach <code>*this</code> via <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a>). </p>
+<p >Alternatively you may use <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html#a4c68a03d2da19eb99716f9deec49d5cf" title="Returns SHM Arena with per-app scope, meaning its pool shall be accessible potentially beyond the lif...">shm::arena_lend::jemalloc::Server_session::app_shm()</a> off any session object filled-out by <code>*this</code> <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a>, as long as its <a class="el" href="classipc_1_1session_1_1Server__session__mv.html#ac873543383b7a6da94d4353231f34ec2" title="The opposing application is described by a Client_app; this is that description.">Server_session_mv::client_app()</a> equals <code>app</code> (by <a class="el" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd" title="Brief application name, readable to humans and unique across all other applications&#39; names; used both...">App::m_name</a> equality).</p>
 <p >If non-null is returned, then the same pointer value shall be returned for all subsequent calls with the same (by <a class="el" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd" title="Brief application name, readable to humans and unique across all other applications&#39; names; used both...">App::m_name</a> equality) <code>app</code>. The non-null pointers returned for any 2 calls, where <code>app</code> is different (by <a class="el" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd" title="Brief application name, readable to humans and unique across all other applications&#39; names; used both...">App::m_name</a> equality) among them, shall always differ.</p>
-<p >See <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html#ae30ae4b65cd4178fa26eed660688829f" title="The arena object on which one may call construct&lt;T&gt;(ctor_args...), where ctor_args are arguments to t...">shm::arena_lend::jemalloc::Session_mv::Arena</a> doc header for useful instructions on working with <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a1e47c282616158733240d3b7bd808036" title="Short-hand for shm::arena_lend::jemalloc::Session_mv::Arena. See app_shm() in particular.">Arena</a>, <code>lend_object()</code>, and <code>borrow_object()</code>.</p>
+<p >See <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html#ae30ae4b65cd4178fa26eed660688829f" title="The arena object on which one may call construct&lt;T&gt;(ctor_args...), where ctor_args are arguments to t...">shm::arena_lend::jemalloc::Session_mv::Arena</a> doc header for useful instructions on working with <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#af19c61cd0297091a18caf009f87d5b84" title="Short-hand for shm::arena_lend::jemalloc::Session_mv::Arena. See app_shm() in particular.">Arena</a>, <code>lend_object()</code>, and <code>borrow_object()</code>.</p>
 <h3>Perf</h3>
-<p >Given the choice between Server_session_mv::app_shm() and the present method, the latter is somewhat slower; internally it involves a mutex-protected map lookup, while the former simply returns a cached pointer as of this writing.</p>
-<p >Generally it is also quite fast for the user to save any non-null value returned by either <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a></code>; the pointer returned shall always be the same after all.</p>
+<p >Given the choice between <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html#a4c68a03d2da19eb99716f9deec49d5cf" title="Returns SHM Arena with per-app scope, meaning its pool shall be accessible potentially beyond the lif...">Server_session::app_shm()</a> and the present method, the latter is somewhat slower; internally it involves a mutex-protected map lookup, while the former simply returns a cached pointer as of this writing.</p>
+<p >Generally it is also fine, and fastest, for the user to save any non-null value returned by either <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this, and every shm::arena_le...">app_shm()</a></code>; the pointer returned shall always be the same after all.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">app</td><td><a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> whose segregated SHM-arena to return, if a session for a client of the app has been opened prior to this call. </td></tr>
@@ -269,33 +280,44 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
 
 </div>
 </div>
-<a id="aa548c3379d4b8a8f0b9d618b0c1da7ba" name="aa548c3379d4b8a8f0b9d618b0c1da7ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa548c3379d4b8a8f0b9d618b0c1da7ba">&#9670;&nbsp;</a></span>app_shm_builder_config()</h2>
+<a id="abbd9f168276be2f6afd66f5c99c0ea62" name="abbd9f168276be2f6afd66f5c99c0ea62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbd9f168276be2f6afd66f5c99c0ea62">&#9670;&nbsp;</a></span>app_shm_builder_config()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
+template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4d22e6f00d6b8b92fe99198837bce3b9">::Structured_msg_builder_config</a> <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm_builder_config </td>
+          <td class="memname"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a6ae8fa8dd99983a79c74f221781ebcca">::Structured_msg_builder_config</a> <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm_builder_config </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;&#160;</td>
-          <td class="paramname"><em>app</em></td><td>)</td>
+          <td class="paramname"><em>app</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>segment1_sz</em> = <code>sizeof(::capnp::word)&#160;*&#160;::capnp::SUGGESTED_FIRST_SEGMENT_WORDS</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns builder config suitable for capnp-serializing out-messages in SHM arena <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a> for the same <code><a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> app</code>. </p>
-<p >Alternatively you may use shm::arena_lend::jemalloc::Session_mv::app_shm_builder_config() off any session object filled-out by <code>*this</code> <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a>, as long as its <a class="el" href="classipc_1_1session_1_1Server__session__mv.html#ac873543383b7a6da94d4353231f34ec2" title="The opposing application is described by a Client_app; this is that description.">Server_session_mv::client_app()</a> equals <code>app</code> (by <a class="el" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd" title="Brief application name, readable to humans and unique across all other applications&#39; names; used both...">App::m_name</a> equality).</p>
-<p >Unlike <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a> this method does not allow the case where <code>app_shm(app)</code> would have returned null. In that case the present method yields undefined behavior (assertion may trip).</p>
+<p>Returns builder config suitable for capnp-serializing out-messages in SHM arena <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this, and every shm::arena_le...">app_shm()</a> for the same <code><a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> app</code>. </p>
+<p >Alternatively you may use <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html#a12b93155110ac0750dd5096056a0b723" title="Returns builder config suitable for capnp-serializing out-messages in SHM arena app_shm().">shm::arena_lend::jemalloc::Server_session::app_shm_builder_config()</a> off any session object filled-out by <code>*this</code> <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a>, as long as its <a class="el" href="classipc_1_1session_1_1Server__session__mv.html#ac873543383b7a6da94d4353231f34ec2" title="The opposing application is described by a Client_app; this is that description.">Server_session_mv::client_app()</a> equals <code>app</code> (by <a class="el" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd" title="Brief application name, readable to humans and unique across all other applications&#39; names; used both...">App::m_name</a> equality).</p>
+<p >Unlike <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this, and every shm::arena_le...">app_shm()</a> this method does not allow the case where <code>app_shm(app)</code> would have returned null. In that case the present method yields undefined behavior (assertion may trip).</p>
 <h3>Perf</h3>
-<p >Given the choice between Server_session_mv::app_shm_builder_config() and the present method, the latter is somewhat slower (reason: same as listed in <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a> doc header).</p>
-<p >Generally it is also quite fast for the user to save any value returned by either <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa548c3379d4b8a8f0b9d618b0c1da7ba" title="Returns builder config suitable for capnp-serializing out-messages in SHM arena app_shm() for the sam...">app_shm_builder_config()</a></code>, as an equal-by-value <code>Config</code> object shall be returned for the same (by <a class="el" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd" title="Brief application name, readable to humans and unique across all other applications&#39; names; used both...">App::m_name</a> equality) <code>app</code>.</p>
+<p >Given the choice between <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html#a12b93155110ac0750dd5096056a0b723" title="Returns builder config suitable for capnp-serializing out-messages in SHM arena app_shm().">Server_session::app_shm_builder_config()</a> and the present method, the latter is somewhat slower (reason: same as listed in <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this, and every shm::arena_le...">app_shm()</a> doc header).</p>
+<p >Generally it is also fine, and fastest, for the user to save any value returned by either <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#abbd9f168276be2f6afd66f5c99c0ea62" title="Returns builder config suitable for capnp-serializing out-messages in SHM arena app_shm() for the sam...">app_shm_builder_config()</a></code>, as an equal-by-value <code>Config</code> object shall be returned for the same (by <a class="el" href="structipc_1_1session_1_1App.html#a8e67b57829fe43a122a23c699b5de8fd" title="Brief application name, readable to humans and unique across all other applications&#39; names; used both...">App::m_name</a> equality) <code>app</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">app</td><td>See <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a>. </td></tr>
+    <tr><td class="paramname">app</td><td>See <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this, and every shm::arena_le...">app_shm()</a>. </td></tr>
+    <tr><td class="paramname">segment1_sz</td><td>See eponymous arg to, say, <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">transport::struc::sync_io::Channel</a> ctor with <code>Serialize_via_app_shm</code> tag. </td></tr>
   </table>
   </dd>
 </dl>
@@ -303,16 +325,16 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
 
 </div>
 </div>
-<a id="a1039d8bd2d4461085f3eeb5d24e40799" name="a1039d8bd2d4461085f3eeb5d24e40799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1039d8bd2d4461085f3eeb5d24e40799">&#9670;&nbsp;</a></span>app_shm_lender_session()</h2>
+<a id="a52b0e5ce859d4a066eaa58c8249b964f" name="a52b0e5ce859d4a066eaa58c8249b964f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b0e5ce859d4a066eaa58c8249b964f">&#9670;&nbsp;</a></span>app_shm_ptr()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
+template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">Structured_msg_builder_config::Builder::Session <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm_lender_session </td>
+          <td class="memname">std::shared_ptr&lt; typename <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#af19c61cd0297091a18caf009f87d5b84">::Arena</a> &gt; <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm_ptr </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;&#160;</td>
           <td class="paramname"><em>app</em></td><td>)</td>
@@ -321,37 +343,7 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
       </table>
 </div><div class="memdoc">
 
-<p>In short, what <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa548c3379d4b8a8f0b9d618b0c1da7ba" title="Returns builder config suitable for capnp-serializing out-messages in SHM arena app_shm() for the sam...">app_shm_builder_config()</a> is to shm::arena_lend::jemalloc::Session_mv::app_shm_builder_config(), this is to shm::arena_lend::jemalloc::app_shm_lender_session(). </p>
-<p >Notes in <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa548c3379d4b8a8f0b9d618b0c1da7ba" title="Returns builder config suitable for capnp-serializing out-messages in SHM arena app_shm() for the sam...">app_shm_builder_config()</a> doc header apply here.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">app</td><td>See <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a>. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
-
-</div>
-</div>
-<a id="aa56818050f1bd25b26fc51690a6afbf8" name="aa56818050f1bd25b26fc51690a6afbf8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa56818050f1bd25b26fc51690a6afbf8">&#9670;&nbsp;</a></span>app_shm_ptr()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; typename <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a1e47c282616158733240d3b7bd808036">::Arena</a> &gt; <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm_ptr </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;&#160;</td>
-          <td class="paramname"><em>app</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Identical to <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a> but returns that via a <code>shared_ptr</code>-handle as required for work directly within ipc::shm::arena_lend::jemalloc APIs. </p>
+<p>Identical to <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a7fdbc321ae99852513886d93baa4f55b" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this, and every shm::arena_le...">app_shm()</a> but returns that via a <code>shared_ptr</code>-handle as required for work directly within <a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1jemalloc.html" title="ipc::shm sub-module with the SHM-jemalloc SHM-provider. See ipc::shm doc header for introduction.">ipc::shm::arena_lend::jemalloc</a> APIs. </p>
 <p >Note this is a quirk of that particular API and, in particular, has no equivalent in <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic.html" title="Support for SHM-backed ipc::session sessions and session-servers with the SHM-classic (ipc::shm::clas...">ipc::session::shm::classic</a> <code><a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a></code> and <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a></code> counterparts. It should not be necessary to use except when going beyond <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> for your SHM-arena needs.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -363,67 +355,38 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
 
 </div>
 </div>
-<a id="a96cce95ab7dccc577815b907c94b8f7e" name="a96cce95ab7dccc577815b907c94b8f7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96cce95ab7dccc577815b907c94b8f7e">&#9670;&nbsp;</a></span>app_shm_reader_config()</h2>
+<a id="abc8247ddab4a772dd8f4e062e6649d2d" name="abc8247ddab4a772dd8f4e062e6649d2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc8247ddab4a772dd8f4e062e6649d2d">&#9670;&nbsp;</a></span>async_accept() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a0b167219307d2016e46490b82138c553">::Structured_msg_reader_config</a> <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm_reader_config </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a> &amp;&#160;</td>
-          <td class="paramname"><em>app</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns reader config counterpart to <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa548c3379d4b8a8f0b9d618b0c1da7ba" title="Returns builder config suitable for capnp-serializing out-messages in SHM arena app_shm() for the sam...">app_shm_builder_config()</a> for a given <code><a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> app</code>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">app</td><td>See <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a>. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
-
-</div>
-</div>
-<a id="a76037239acb4b0082023dbe7e7dafb0b" name="a76037239acb4b0082023dbe7e7dafb0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76037239acb4b0082023dbe7e7dafb0b">&#9670;&nbsp;</a></span>async_accept() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
+template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
 <div class="memtemplate">
 template&lt;typename Task_err , typename N_init_channels_by_srv_req_func , typename Mdt_load_func &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::async_accept </td>
+          <td class="memname">void <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::async_accept </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ad4d812cdb1a017fb603c16b3a386d433">Server_session_obj</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a3406554891ff12dd4d2eb70cd6d1db87">Server_session_obj</a> *&#160;</td>
           <td class="paramname"><em>target_session</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a95e9d47a5bd9c32b3d3970ed3af0db01">Channels</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ab22f5bdf95a29016c364c14cc60d1af8">Channels</a> *&#160;</td>
           <td class="paramname"><em>init_channels_by_srv_req</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#aa846158c320f2870c77043b6270bb503">Mdt_reader_ptr</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#afe725ac9264193d30f2572f4922feffd">Mdt_reader_ptr</a> *&#160;</td>
           <td class="paramname"><em>mdt_from_cli_or_null</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a95e9d47a5bd9c32b3d3970ed3af0db01">Channels</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ab22f5bdf95a29016c364c14cc60d1af8">Channels</a> *&#160;</td>
           <td class="paramname"><em>init_channels_by_cli_req</em>, </td>
         </tr>
         <tr>
@@ -452,8 +415,8 @@ template&lt;typename Task_err , typename N_init_channels_by_srv_req_func , typen
       </table>
 </div><div class="memdoc">
 
-<p>Contract identical to advanced <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">Session_server::async_accept()</a> overload; but internally ensures that the appropriate SHM-jemalloc arenas are available for use in the emitted <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ad4d812cdb1a017fb603c16b3a386d433" title="Short-hand for the concrete Server_session-like type emitted by async_accept().">Server_session_obj</a>. </p>
-<p >See doc header for <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">Session_server::async_accept()</a> advanced overload. However additional <code>Error_code</code>s may be emitted on error.</p>
+<p>Contract identical to advanced <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">Session_server::async_accept()</a> overload; but internally ensures that the appropriate SHM-jemalloc arenas are available for use in the emitted <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a3406554891ff12dd4d2eb70cd6d1db87" title="Short-hand for the concrete Server_session-like type emitted by async_accept().">Server_session_obj</a>. </p>
+<p >See doc header for <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">Session_server::async_accept()</a> advanced overload. However additional <code>Error_code</code>s may be emitted on error.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Task_err</td><td>See above. </td></tr>
@@ -464,7 +427,7 @@ template&lt;typename Task_err , typename N_init_channels_by_srv_req_func , typen
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target_session</td><td>See other <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a> overload. </td></tr>
+    <tr><td class="paramname">target_session</td><td>See other <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">async_accept()</a> overload. </td></tr>
     <tr><td class="paramname">init_channels_by_srv_req</td><td>See above. </td></tr>
     <tr><td class="paramname">mdt_from_cli_or_null</td><td>See above. </td></tr>
     <tr><td class="paramname">init_channels_by_cli_req</td><td>See above. </td></tr>
@@ -477,20 +440,20 @@ template&lt;typename Task_err , typename N_init_channels_by_srv_req_func , typen
 
 </div>
 </div>
-<a id="a4b451906ee2b46d230df5f252bbb64ed" name="a4b451906ee2b46d230df5f252bbb64ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b451906ee2b46d230df5f252bbb64ed">&#9670;&nbsp;</a></span>async_accept() <span class="overload">[2/2]</span></h2>
+<a id="a76129da012645ee49827634b53a8861a" name="a76129da012645ee49827634b53a8861a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76129da012645ee49827634b53a8861a">&#9670;&nbsp;</a></span>async_accept() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
+template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
 <div class="memtemplate">
 template&lt;typename Task_err &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::async_accept </td>
+          <td class="memname">void <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::async_accept </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ad4d812cdb1a017fb603c16b3a386d433">Server_session_obj</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a3406554891ff12dd4d2eb70cd6d1db87">Server_session_obj</a> *&#160;</td>
           <td class="paramname"><em>target_session</em>, </td>
         </tr>
         <tr>
@@ -507,8 +470,8 @@ template&lt;typename Task_err &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Contract identical to simpler <a class="el" href="classipc_1_1session_1_1Session__server.html#a13887cd64912bb5f5675e2817ff8435f" title="Asynchronously awaits for an opposing Client_session to request session establishment and calls on_do...">session::Session_server::async_accept()</a> overload; but internally ensures that the appropriate SHM-jemalloc arenas are available for use in the emitted <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#ad4d812cdb1a017fb603c16b3a386d433" title="Short-hand for the concrete Server_session-like type emitted by async_accept().">Server_session_obj</a>. </p>
-<p >See doc header for <a class="el" href="classipc_1_1session_1_1Session__server.html#a13887cd64912bb5f5675e2817ff8435f" title="Asynchronously awaits for an opposing Client_session to request session establishment and calls on_do...">session::Session_server::async_accept()</a> simple overload. However additional <code>Error_code</code>s may be emitted on error.</p>
+<p>Contract identical to simpler <a class="el" href="classipc_1_1session_1_1Session__server.html#ab59f4a3b8bbf66c5f8f594cd661d315c" title="Asynchronously awaits for an opposing Client_session to request session establishment and calls on_do...">session::Session_server::async_accept()</a> overload; but internally ensures that the appropriate SHM-jemalloc arenas are available for use in the emitted <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a3406554891ff12dd4d2eb70cd6d1db87" title="Short-hand for the concrete Server_session-like type emitted by async_accept().">Server_session_obj</a>. </p>
+<p >See doc header for <a class="el" href="classipc_1_1session_1_1Session__server.html#ab59f4a3b8bbf66c5f8f594cd661d315c" title="Asynchronously awaits for an opposing Client_session to request session establishment and calls on_do...">session::Session_server::async_accept()</a> simple overload. However additional <code>Error_code</code>s may be emitted on error.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Task_err</td><td>See above. </td></tr>
@@ -517,7 +480,7 @@ template&lt;typename Task_err &gt; </div>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target_session</td><td>See above. Reminder (though this is enforced at compile-time): the type of <code>*target_session</code> for <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a4b451906ee2b46d230df5f252bbb64ed" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">Session_server::async_accept()</a> is <a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc" title="A vanilla Server_session with no optional capabilities.">Server_session</a>; whereas here it is <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a>. </td></tr>
+    <tr><td class="paramname">target_session</td><td>See above. Reminder (though this is enforced at compile-time): the type of <code>*target_session</code> for <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a76129da012645ee49827634b53a8861a" title="Contract identical to simpler session::Session_server::async_accept() overload; but internally ensure...">Session_server::async_accept()</a> is <a class="el" href="namespaceipc_1_1session.html#a961e318f69fac2b45e55346591ea46e1" title="A vanilla Server_session with no optional capabilities.">Server_session</a>; whereas here it is <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::arena_lend::jemalloc::Server_session</a>. </td></tr>
     <tr><td class="paramname">on_done_func</td><td>See above. </td></tr>
   </table>
   </dd>
@@ -525,36 +488,63 @@ template&lt;typename Task_err &gt; </div>
 
 </div>
 </div>
-<a id="ac2c6ecf04a16b5aba00bdede17aa52e1" name="ac2c6ecf04a16b5aba00bdede17aa52e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2c6ecf04a16b5aba00bdede17aa52e1">&#9670;&nbsp;</a></span>shm_arena_pool_listener()</h2>
+<a id="a5c43e766e5c91bd981583bcd2b99dab9" name="a5c43e766e5c91bd981583bcd2b99dab9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c43e766e5c91bd981583bcd2b99dab9">&#9670;&nbsp;</a></span>mq_msg_size_limit() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
+template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">ipc::shm::arena_lend::Owner_shm_pool_listener_for_repository * <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::shm_arena_pool_listener</td>
+          <td class="memname">size_t <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::mq_msg_size_limit</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the arena-pool listener maintained throughout <code>*this</code> <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a>'s life. </p>
-<p >One must register it with any arena <code>A</code>, if one wants to do <code>A.construct&lt;T&gt;()</code>, where <code>T</code> is an allocator-compliant data structure type with <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">shm::stl::Stateless_allocator</a>. (<a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html" title="This is to vanilla Session_server what shm::arena_lend::jemalloc::Server_session is to vanilla Server...">Session_server</a> does so automatically for any <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a1e47c282616158733240d3b7bd808036" title="Short-hand for shm::arena_lend::jemalloc::Session_mv::Arena. See app_shm() in particular.">Arena</a> it maintains out of the box, namely <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__mv.html#a361c867d10a255ff62cdb19b75fc0a18" title="Returns SHM Arena with per-session scope, meaning it shall be accessible only during the lifetime of ...">Session_mv::session_shm()</a> and the ones returned by <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a8d11292ef977d04acb9260036100c605" title="Returns pointer to the per-app SHM-arena, whose lifetime extends until *this is destroyed; or null if...">app_shm()</a>.) This may be useful if creating your own custom-purpose <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html#a1e47c282616158733240d3b7bd808036" title="Short-hand for shm::arena_lend::jemalloc::Session_mv::Arena. See app_shm() in particular.">Arena</a>; instead you can create your own <code>Owner_shm_pool_listener_for_repository</code>, but it is generally encouraged to not do so unnecessarily.</p>
+<p>Identical to eponymous accessor in <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">session::Session_server</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
-<a id="a522c28128981264487a7e35dd9ea3ef8" name="a522c28128981264487a7e35dd9ea3ef8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a522c28128981264487a7e35dd9ea3ef8">&#9670;&nbsp;</a></span>to_ostream()</h2>
+<a id="a49d18a8d8a93847b8cb9b871a5feac1f" name="a49d18a8d8a93847b8cb9b871a5feac1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49d18a8d8a93847b8cb9b871a5feac1f">&#9670;&nbsp;</a></span>mq_msg_size_limit() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
+template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::to_ostream </td>
+          <td class="memname">void <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::mq_msg_size_limit </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>limit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Identical to eponymous mutator in <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">session::Session_server</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">limit</td><td>See above. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="accc79abcf955ed563abdc947ec7211fa" name="accc79abcf955ed563abdc947ec7211fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accc79abcf955ed563abdc947ec7211fa">&#9670;&nbsp;</a></span>to_ostream()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">ipc::session::shm::arena_lend::jemalloc::Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::to_ostream </td>
           <td>(</td>
           <td class="paramtype">std::ostream *&#160;</td>
           <td class="paramname"><em>os</em></td><td>)</td>
@@ -574,13 +564,13 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="a4556b229bf2bfc3c9eb51af13c47de3d" name="a4556b229bf2bfc3c9eb51af13c47de3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4556b229bf2bfc3c9eb51af13c47de3d">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
+<a id="a86d6edb0d8995be67473c0f25b5aec00" name="a86d6edb0d8995be67473c0f25b5aec00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86d6edb0d8995be67473c0f25b5aec00">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
+template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -594,7 +584,7 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Session__server.html">Session_server</a>&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &amp;&#160;</td>
           <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
@@ -629,7 +619,7 @@ template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HA
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

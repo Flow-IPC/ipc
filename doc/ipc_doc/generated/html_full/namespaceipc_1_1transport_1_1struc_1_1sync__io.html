@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -68,6 +68,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">ipc::transport::struc::sync_io Namespace Reference</div></div>
@@ -77,6 +78,12 @@ $(function() {
 <p><code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code>-pattern counterparts to async-I/O-pattern object types in parent namespace <a class="el" href="namespaceipc_1_1transport_1_1struc.html" title="Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...">ipc::transport::struc</a>.  
 <a href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceipc_1_1transport_1_1struc_1_1sync__io_1_1stat"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io_1_1stat.html">stat</a></td></tr>
+<tr class="memdesc:namespaceipc_1_1transport_1_1struc_1_1sync__io_1_1stat"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stats-related sub-namespace, for ADL segregation and general organization. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">Channel</a></td></tr>
@@ -85,23 +92,23 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0351bb14f40312b30e6cae4927f3373b"><td class="memTemplParams" colspan="2">template&lt;typename Channel_obj , typename Message_body , typename Struct_builder_config , typename Struct_reader_config &gt; </td></tr>
-<tr class="memitem:a0351bb14f40312b30e6cae4927f3373b"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html#a0351bb14f40312b30e6cae4927f3373b">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">Channel</a>&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt; &amp;val)</td></tr>
-<tr class="memdesc:a0351bb14f40312b30e6cae4927f3373b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html#a0351bb14f40312b30e6cae4927f3373b">More...</a><br /></td></tr>
-<tr class="separator:a0351bb14f40312b30e6cae4927f3373b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c1f7c929b2b3b9c372bc4d9c2542a82"><td class="memTemplParams" colspan="2">template&lt;typename Owned_channel_t , typename Msg_body_t , typename Builder_config_t , typename Reader_config_t &gt; </td></tr>
+<tr class="memitem:a4c1f7c929b2b3b9c372bc4d9c2542a82"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html#a4c1f7c929b2b3b9c372bc4d9c2542a82">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">Channel</a>&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt; &amp;val)</td></tr>
+<tr class="memdesc:a4c1f7c929b2b3b9c372bc4d9c2542a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html#a4c1f7c929b2b3b9c372bc4d9c2542a82">More...</a><br /></td></tr>
+<tr class="separator:a4c1f7c929b2b3b9c372bc4d9c2542a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code>-pattern counterparts to async-I/O-pattern object types in parent namespace <a class="el" href="namespaceipc_1_1transport_1_1struc.html" title="Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...">ipc::transport::struc</a>. </p>
 <p >Namely <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">transport::struc::sync_io::Channel</a> &lt;=&gt; <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">transport::struc::Channel</a>.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">util::sync_io</a> doc header &ndash; describes the general <code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code> pattern we are following. </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a0351bb14f40312b30e6cae4927f3373b" name="a0351bb14f40312b30e6cae4927f3373b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0351bb14f40312b30e6cae4927f3373b">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
+<a id="a4c1f7c929b2b3b9c372bc4d9c2542a82" name="a4c1f7c929b2b3b9c372bc4d9c2542a82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c1f7c929b2b3b9c372bc4d9c2542a82">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Channel_obj , typename Message_body , typename Struct_builder_config , typename Struct_reader_config &gt; </div>
+template&lt;typename Owned_channel_t , typename Msg_body_t , typename Builder_config_t , typename Reader_config_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
@@ -112,7 +119,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">Channel</a>&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">Channel</a>&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
@@ -138,7 +145,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

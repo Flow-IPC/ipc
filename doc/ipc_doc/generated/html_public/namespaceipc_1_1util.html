@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -78,20 +78,20 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Flow-IPC module containing miscellaneous general-use facilities that ubiquitously used by ~all Flow-IPC modules and/or do not fit into any other Flow-IPC module.  
+<p>Flow-IPC module containing miscellaneous general-use facilities that are ubiquitously used by ~all Flow-IPC modules and/or do not fit into any other Flow-IPC module.  
 <a href="namespaceipc_1_1util.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
+<tr class="memitem:namespaceipc_1_1util_1_1stat"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util_1_1stat.html">stat</a></td></tr>
+<tr class="memdesc:namespaceipc_1_1util_1_1stat"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stats-related sub-namespace of <a class="el" href="namespaceipc_1_1util.html" title="Flow-IPC module containing miscellaneous general-use facilities that are ubiquitously used by ~all Fl...">ipc::util</a>, for general organization (and ADL segregation if needed). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1util_1_1sync__io"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util_1_1sync__io.html">sync_io</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1util_1_1sync__io"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains common code, as well as important explanatory documentation in the following text, for the <code><a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">sync_io</a></code> pattern used in <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> and <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> to provide fine-tuned control over integrating asynchronous Flow-IPC activities into the user's event loop. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1util_1_1Default__init__allocator.html">Default_init_allocator</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator adaptor (useful for, e.g., <code>vector</code> that skips zero-filling) that turns a value-initialization <code>T()</code> into a default-initialization for those types, namely PoDs, for which default-initialization is a no-op.  <a href="classipc_1_1util_1_1Default__init__allocator.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.  <a href="structipc_1_1util_1_1Native__handle.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -101,12 +101,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity from all others in the system, or a fragment of such a name.  <a href="classipc_1_1util_1_1Shared__name.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1util_1_1Use__counted__object.html">Use_counted_object</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple counter that manually tracks utilization. It is not thread-safe.  <a href="classipc_1_1util_1_1Use__counted__object.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:aeabf2feb5c96b0a90acc026b964d4c40"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a> = boost::scope::unique_resource&lt; <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>, <a class="el" href="structipc_1_1util_1_1Native__handle.html#a2072797b16646cc28a5bd35d323e12aa">Native_handle::Closer</a>, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &gt;</td></tr>
+<tr class="memdesc:aeabf2feb5c96b0a90acc026b964d4c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>unique_resource</code> wrapper for <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> useful to avoid descriptor leaks and double-closing; can be thought of as a <code>unique_ptr&lt;<a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>&gt;</code> except involves no heap allocation, and nullness is determined by <a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">Native_handle::null()</a>.  <a href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">More...</a><br /></td></tr>
+<tr class="separator:aeabf2feb5c96b0a90acc026b964d4c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6ac47812a90d1287c61e0b7de7bc4f5"><td class="memItemLeft" align="right" valign="top"><a id="ae6ac47812a90d1287c61e0b7de7bc4f5" name="ae6ac47812a90d1287c61e0b7de7bc4f5"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>String_view</b> = flow::util::String_view</td></tr>
 <tr class="memdesc:ae6ac47812a90d1287c61e0b7de7bc4f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for Flow's <code>String_view</code>. <br /></td></tr>
@@ -127,7 +127,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>Task</b> = flow::asy
 <tr class="memdesc:ae0be7edba7e30ffa3f8b742af621f2ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for an immutable blob somewhere in memory, stored as exactly a <code>void const *</code> and a <code>size_t</code>.  <a href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">More...</a><br /></td></tr>
 <tr class="separator:ae0be7edba7e30ffa3f8b742af621f2ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cb62ae434900f3a8915b33ec5d61a96"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">Blob_mutable</a> = boost::asio::mutable_buffer</td></tr>
-<tr class="memdesc:a6cb62ae434900f3a8915b33ec5d61a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for an mutable blob somewhere in memory, stored as exactly a <code>void*</code> and a <code>size_t</code>.  <a href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">More...</a><br /></td></tr>
+<tr class="memdesc:a6cb62ae434900f3a8915b33ec5d61a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for a mutable blob somewhere in memory, stored as exactly a <code>void*</code> and a <code>size_t</code>.  <a href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">More...</a><br /></td></tr>
 <tr class="separator:a6cb62ae434900f3a8915b33ec5d61a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c44028a45451ebf21f6af8e806b2682"><td class="memItemLeft" align="right" valign="top"><a id="a0c44028a45451ebf21f6af8e806b2682" name="a0c44028a45451ebf21f6af8e806b2682"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>process_id_t</b> = ::pid_t</td></tr>
@@ -171,21 +171,30 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a29b19e2440d200540619eb8c9c7239bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a29b19e2440d200540619eb8c9c7239bb">disowned_native_handle</a> (<a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a> &amp;&amp;src) noexcept</td></tr>
+<tr class="memdesc:a29b19e2440d200540619eb8c9c7239bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> constructed by relieving an existing auto-closing <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a> of its ownership of a particular raw handle and storing it, sans auto-closing protection, in that <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>.  <a href="namespaceipc_1_1util.html#a29b19e2440d200540619eb8c9c7239bb">More...</a><br /></td></tr>
+<tr class="separator:a29b19e2440d200540619eb8c9c7239bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55b346b1c8839776351242a3974d3345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a55b346b1c8839776351242a3974d3345">duped_native_handle</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> src, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:a55b346b1c8839776351242a3974d3345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>Own_native_handle{src.dup(err_code)}</code>: an auto-closing duplicate of <code>src</code>; on error the result is <code>.get().null()</code>.  <a href="namespaceipc_1_1util.html#a55b346b1c8839776351242a3974d3345">More...</a><br /></td></tr>
+<tr class="separator:a55b346b1c8839776351242a3974d3345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a956b1b739e02118cb8b6c0f3bcbee6ae"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a956b1b739e02118cb8b6c0f3bcbee6ae">hash_value</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val) noexcept</td></tr>
+<tr class="memdesc:a956b1b739e02118cb8b6c0f3bcbee6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hasher of <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> for boost.unordered et al.  <a href="namespaceipc_1_1util.html#a956b1b739e02118cb8b6c0f3bcbee6ae">More...</a><br /></td></tr>
+<tr class="separator:a956b1b739e02118cb8b6c0f3bcbee6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28030c32e9c66f5c2862cbc6998885c7"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a28030c32e9c66f5c2862cbc6998885c7">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;val)</td></tr>
 <tr class="memdesc:a28030c32e9c66f5c2862cbc6998885c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1util.html#a28030c32e9c66f5c2862cbc6998885c7">More...</a><br /></td></tr>
 <tr class="separator:a28030c32e9c66f5c2862cbc6998885c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4b4126f841ef060cdae15998e48691c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ae4b4126f841ef060cdae15998e48691c">operator==</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2)</td></tr>
-<tr class="memdesc:ae4b4126f841ef060cdae15998e48691c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if the two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects are the same underlying handle.  <a href="namespaceipc_1_1util.html#ae4b4126f841ef060cdae15998e48691c">More...</a><br /></td></tr>
-<tr class="separator:ae4b4126f841ef060cdae15998e48691c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacbd7ee43d4912a8790a228dc7cf682d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#aacbd7ee43d4912a8790a228dc7cf682d">operator!=</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2)</td></tr>
-<tr class="memdesc:aacbd7ee43d4912a8790a228dc7cf682d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="namespaceipc_1_1util.html#aacbd7ee43d4912a8790a228dc7cf682d">More...</a><br /></td></tr>
-<tr class="separator:aacbd7ee43d4912a8790a228dc7cf682d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3883df3081441d71a9a989073264b04"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ad3883df3081441d71a9a989073264b04">hash_value</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val)</td></tr>
-<tr class="memdesc:ad3883df3081441d71a9a989073264b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hasher of <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> for boost.unordered et al.  <a href="namespaceipc_1_1util.html#ad3883df3081441d71a9a989073264b04">More...</a><br /></td></tr>
-<tr class="separator:ad3883df3081441d71a9a989073264b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ff4b35d8fbbe2eb6266f3a7b0f07c49"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">operator&lt;</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2)</td></tr>
-<tr class="memdesc:a6ff4b35d8fbbe2eb6266f3a7b0f07c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a less-than comparison of two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects, with the usual total ordering guarantees.  <a href="namespaceipc_1_1util.html#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">More...</a><br /></td></tr>
-<tr class="separator:a6ff4b35d8fbbe2eb6266f3a7b0f07c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6fe80f5ff9f4ebf56650a66bf1b6a1f"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#af6fe80f5ff9f4ebf56650a66bf1b6a1f">operator==</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) noexcept</td></tr>
+<tr class="memdesc:af6fe80f5ff9f4ebf56650a66bf1b6a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if the two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects are the same underlying handle.  <a href="namespaceipc_1_1util.html#af6fe80f5ff9f4ebf56650a66bf1b6a1f">More...</a><br /></td></tr>
+<tr class="separator:af6fe80f5ff9f4ebf56650a66bf1b6a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad36870faa5b60483ad929e0340d22d0e"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ad36870faa5b60483ad929e0340d22d0e">operator!=</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) noexcept</td></tr>
+<tr class="memdesc:ad36870faa5b60483ad929e0340d22d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="namespaceipc_1_1util.html#ad36870faa5b60483ad929e0340d22d0e">More...</a><br /></td></tr>
+<tr class="separator:ad36870faa5b60483ad929e0340d22d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c7772aad20217f29f5ae6c6a3511975"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a6c7772aad20217f29f5ae6c6a3511975">operator&lt;</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) noexcept</td></tr>
+<tr class="memdesc:a6c7772aad20217f29f5ae6c6a3511975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a less-than comparison of two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects, with the usual total ordering guarantees.  <a href="namespaceipc_1_1util.html#a6c7772aad20217f29f5ae6c6a3511975">More...</a><br /></td></tr>
+<tr class="separator:a6c7772aad20217f29f5ae6c6a3511975"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1f5535316175110d2cbe40ce57c2cb2"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ab1f5535316175110d2cbe40ce57c2cb2">swap</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;val2) noexcept</td></tr>
+<tr class="memdesc:ab1f5535316175110d2cbe40ce57c2cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard swap.  <a href="namespaceipc_1_1util.html#ab1f5535316175110d2cbe40ce57c2cb2">More...</a><br /></td></tr>
+<tr class="separator:ab1f5535316175110d2cbe40ce57c2cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ccdab04a79159f82d7ade8136a2eeb2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a4ccdab04a79159f82d7ade8136a2eeb2">operator==</a> (const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">Process_credentials</a> &amp;val1, const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">Process_credentials</a> &amp;val2)</td></tr>
 <tr class="memdesc:a4ccdab04a79159f82d7ade8136a2eeb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks for by-value equality between two <a class="el" href="classipc_1_1util_1_1Process__credentials.html" title="A process&#39;s credentials (PID, UID, GID as of this writing).">Process_credentials</a> objects.  <a href="namespaceipc_1_1util.html#a4ccdab04a79159f82d7ade8136a2eeb2">More...</a><br /></td></tr>
 <tr class="separator:a4ccdab04a79159f82d7ade8136a2eeb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,21 +204,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a9da92514406dc1fc61f5a561c9b5aee9"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a9da92514406dc1fc61f5a561c9b5aee9">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">Process_credentials</a> &amp;val)</td></tr>
 <tr class="memdesc:a9da92514406dc1fc61f5a561c9b5aee9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1util_1_1Process__credentials.html" title="A process&#39;s credentials (PID, UID, GID as of this writing).">util::Process_credentials</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1util.html#a9da92514406dc1fc61f5a561c9b5aee9">More...</a><br /></td></tr>
 <tr class="separator:a9da92514406dc1fc61f5a561c9b5aee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af61b02fd66b67aeed5a803ca47e52973"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#af61b02fd66b67aeed5a803ca47e52973">operator+</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;src1, const char *raw_src2)</td></tr>
-<tr class="memdesc:af61b02fd66b67aeed5a803ca47e52973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns new object equal to <code>Shared_name(src1) += raw_src2</code>.  <a href="namespaceipc_1_1util.html#af61b02fd66b67aeed5a803ca47e52973">More...</a><br /></td></tr>
-<tr class="separator:af61b02fd66b67aeed5a803ca47e52973"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a096c71dede7bd5528215ac01a380a189"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a096c71dede7bd5528215ac01a380a189">operator+</a> (const char *raw_src1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;src2)</td></tr>
-<tr class="memdesc:a096c71dede7bd5528215ac01a380a189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns new object equal to <code>Shared_name(src2)</code> with <code>raw_src1</code> pre-pended to it.  <a href="namespaceipc_1_1util.html#a096c71dede7bd5528215ac01a380a189">More...</a><br /></td></tr>
-<tr class="separator:a096c71dede7bd5528215ac01a380a189"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54dc5077333284fda9e8d2df8b0e9b91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a54dc5077333284fda9e8d2df8b0e9b91">operator+</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;src1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;src2)</td></tr>
 <tr class="memdesc:a54dc5077333284fda9e8d2df8b0e9b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns new object equal to <code>Shared_name(src1) += src2</code>.  <a href="namespaceipc_1_1util.html#a54dc5077333284fda9e8d2df8b0e9b91">More...</a><br /></td></tr>
 <tr class="separator:a54dc5077333284fda9e8d2df8b0e9b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa61c6b31c5c4e241c97f06a4d38c76c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#aa61c6b31c5c4e241c97f06a4d38c76c4">operator/</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;src1, const char *raw_src2)</td></tr>
-<tr class="memdesc:aa61c6b31c5c4e241c97f06a4d38c76c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns new object equal to <code>Shared_name(src1) /= raw_src2</code>.  <a href="namespaceipc_1_1util.html#aa61c6b31c5c4e241c97f06a4d38c76c4">More...</a><br /></td></tr>
-<tr class="separator:aa61c6b31c5c4e241c97f06a4d38c76c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f2bead5935309c2f760645fe46ddd71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a7f2bead5935309c2f760645fe46ddd71">operator/</a> (const char *raw_src1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;src2)</td></tr>
-<tr class="memdesc:a7f2bead5935309c2f760645fe46ddd71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns new object equal to <code>Shared_name(raw_src1) /= src2</code>.  <a href="namespaceipc_1_1util.html#a7f2bead5935309c2f760645fe46ddd71">More...</a><br /></td></tr>
-<tr class="separator:a7f2bead5935309c2f760645fe46ddd71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15ea67c1855a678f7e948b24ccf2c1cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a15ea67c1855a678f7e948b24ccf2c1cd">operator/</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;src1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;src2)</td></tr>
 <tr class="memdesc:a15ea67c1855a678f7e948b24ccf2c1cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns new object equal to <code>Shared_name(src1) /= src2</code>.  <a href="namespaceipc_1_1util.html#a15ea67c1855a678f7e948b24ccf2c1cd">More...</a><br /></td></tr>
 <tr class="separator:a15ea67c1855a678f7e948b24ccf2c1cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -219,27 +216,27 @@ Functions</h2></td></tr>
 <tr class="memitem:adfd8805e0d37556102cad7b191fee9a3"><td class="memItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#adfd8805e0d37556102cad7b191fee9a3">operator&gt;&gt;</a> (std::istream &amp;is, <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val)</td></tr>
 <tr class="memdesc:adfd8805e0d37556102cad7b191fee9a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> from the given <code>istream</code>; equivalent to reading <code>string</code> into <a class="el" href="classipc_1_1util_1_1Shared__name.html#ae89e1e061f87ffe0288514e254837595" title="Returns (sans copying) ref to immutable entire wrapped name string, suitable to pass into sys calls w...">Shared_name::str()</a>.  <a href="namespaceipc_1_1util.html#adfd8805e0d37556102cad7b191fee9a3">More...</a><br /></td></tr>
 <tr class="separator:adfd8805e0d37556102cad7b191fee9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adad98b6935e58bdc92dfcf57bf60345e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#adad98b6935e58bdc92dfcf57bf60345e">operator==</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val2)</td></tr>
-<tr class="memdesc:adad98b6935e58bdc92dfcf57bf60345e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <code>val1.str() == val2.str()</code>.  <a href="namespaceipc_1_1util.html#adad98b6935e58bdc92dfcf57bf60345e">More...</a><br /></td></tr>
-<tr class="separator:adad98b6935e58bdc92dfcf57bf60345e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec185fc5e2e88206d1366de8ce42f732"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#aec185fc5e2e88206d1366de8ce42f732">operator!=</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val2)</td></tr>
-<tr class="memdesc:aec185fc5e2e88206d1366de8ce42f732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="namespaceipc_1_1util.html#aec185fc5e2e88206d1366de8ce42f732">More...</a><br /></td></tr>
-<tr class="separator:aec185fc5e2e88206d1366de8ce42f732"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5023285f7dd8a117686f0ee986e685cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a5023285f7dd8a117686f0ee986e685cb">operator==</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val1, <a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> val2)</td></tr>
-<tr class="memdesc:a5023285f7dd8a117686f0ee986e685cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <code>val1.str() == string(val2)</code>.  <a href="namespaceipc_1_1util.html#a5023285f7dd8a117686f0ee986e685cb">More...</a><br /></td></tr>
-<tr class="separator:a5023285f7dd8a117686f0ee986e685cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d9b586ec40d9dc3bc14915ef6d24cb7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a0d9b586ec40d9dc3bc14915ef6d24cb7">operator!=</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val1, <a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> val2)</td></tr>
-<tr class="memdesc:a0d9b586ec40d9dc3bc14915ef6d24cb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="namespaceipc_1_1util.html#a0d9b586ec40d9dc3bc14915ef6d24cb7">More...</a><br /></td></tr>
-<tr class="separator:a0d9b586ec40d9dc3bc14915ef6d24cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97a7c8e6330909a1371134a7bdcea788"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a97a7c8e6330909a1371134a7bdcea788">operator==</a> (<a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> val1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val2)</td></tr>
-<tr class="memdesc:a97a7c8e6330909a1371134a7bdcea788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <code>string(val1) == val2.str()</code>.  <a href="namespaceipc_1_1util.html#a97a7c8e6330909a1371134a7bdcea788">More...</a><br /></td></tr>
-<tr class="separator:a97a7c8e6330909a1371134a7bdcea788"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988ac1702279bd2b958464cd8ee7e81f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a988ac1702279bd2b958464cd8ee7e81f">operator!=</a> (<a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> val1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val2)</td></tr>
-<tr class="memdesc:a988ac1702279bd2b958464cd8ee7e81f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="namespaceipc_1_1util.html#a988ac1702279bd2b958464cd8ee7e81f">More...</a><br /></td></tr>
-<tr class="separator:a988ac1702279bd2b958464cd8ee7e81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea456ff91117633e731804a894aa94da"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#aea456ff91117633e731804a894aa94da">operator&lt;</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val2)</td></tr>
-<tr class="memdesc:aea456ff91117633e731804a894aa94da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <code>val1.str() &lt; val2.str()</code>.  <a href="namespaceipc_1_1util.html#aea456ff91117633e731804a894aa94da">More...</a><br /></td></tr>
-<tr class="separator:aea456ff91117633e731804a894aa94da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a076f9b7dc5c4431a5a133d8af2e03ca0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a076f9b7dc5c4431a5a133d8af2e03ca0">operator==</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val2)</td></tr>
+<tr class="memdesc:a076f9b7dc5c4431a5a133d8af2e03ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <code>val1.str() == val2.str()</code>.  <a href="namespaceipc_1_1util.html#a076f9b7dc5c4431a5a133d8af2e03ca0">More...</a><br /></td></tr>
+<tr class="separator:a076f9b7dc5c4431a5a133d8af2e03ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e2b70da63e2788dc93cea7199b5e4d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a6e2b70da63e2788dc93cea7199b5e4d4">operator!=</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val2)</td></tr>
+<tr class="memdesc:a6e2b70da63e2788dc93cea7199b5e4d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="namespaceipc_1_1util.html#a6e2b70da63e2788dc93cea7199b5e4d4">More...</a><br /></td></tr>
+<tr class="separator:a6e2b70da63e2788dc93cea7199b5e4d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad30f73c5d79eb7a38b1eecd48f7674ac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ad30f73c5d79eb7a38b1eecd48f7674ac">operator==</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val1, <a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> val2)</td></tr>
+<tr class="memdesc:ad30f73c5d79eb7a38b1eecd48f7674ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <code>val1.str() == string(val2)</code>.  <a href="namespaceipc_1_1util.html#ad30f73c5d79eb7a38b1eecd48f7674ac">More...</a><br /></td></tr>
+<tr class="separator:ad30f73c5d79eb7a38b1eecd48f7674ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c5ab5d9c34e7076cb1960a90496f5f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a4c5ab5d9c34e7076cb1960a90496f5f0">operator!=</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val1, <a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> val2)</td></tr>
+<tr class="memdesc:a4c5ab5d9c34e7076cb1960a90496f5f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="namespaceipc_1_1util.html#a4c5ab5d9c34e7076cb1960a90496f5f0">More...</a><br /></td></tr>
+<tr class="separator:a4c5ab5d9c34e7076cb1960a90496f5f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abddef9f345453974899ac56d5e3590d2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#abddef9f345453974899ac56d5e3590d2">operator==</a> (<a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> val1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val2)</td></tr>
+<tr class="memdesc:abddef9f345453974899ac56d5e3590d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <code>string(val1) == val2.str()</code>.  <a href="namespaceipc_1_1util.html#abddef9f345453974899ac56d5e3590d2">More...</a><br /></td></tr>
+<tr class="separator:abddef9f345453974899ac56d5e3590d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae11a9905a8775e696055940e3a88110f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ae11a9905a8775e696055940e3a88110f">operator!=</a> (<a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a> val1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val2)</td></tr>
+<tr class="memdesc:ae11a9905a8775e696055940e3a88110f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="namespaceipc_1_1util.html#ae11a9905a8775e696055940e3a88110f">More...</a><br /></td></tr>
+<tr class="separator:ae11a9905a8775e696055940e3a88110f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa403258106050f6519103d914c3e0c52"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#aa403258106050f6519103d914c3e0c52">operator&lt;</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val1, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val2)</td></tr>
+<tr class="memdesc:aa403258106050f6519103d914c3e0c52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <code>val1.str() &lt; val2.str()</code>.  <a href="namespaceipc_1_1util.html#aa403258106050f6519103d914c3e0c52">More...</a><br /></td></tr>
+<tr class="separator:aa403258106050f6519103d914c3e0c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba4ae811264cbb7e664ce126b591cbc7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#aba4ae811264cbb7e664ce126b591cbc7">hash_value</a> (const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;val)</td></tr>
 <tr class="memdesc:aba4ae811264cbb7e664ce126b591cbc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hasher of <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> for boost.unordered et al.  <a href="namespaceipc_1_1util.html#aba4ae811264cbb7e664ce126b591cbc7">More...</a><br /></td></tr>
 <tr class="separator:aba4ae811264cbb7e664ce126b591cbc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,21 +261,21 @@ Functions</h2></td></tr>
 <tr class="separator:a462b81d34ba23c968f63d9805fa74538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a150051ee7e308ba7c9269b2d1e2c6c37"><td class="memTemplParams" colspan="2">template&lt;typename Persistent_object , typename Filter_func &gt; </td></tr>
 <tr class="memitem:a150051ee7e308ba7c9269b2d1e2c6c37"><td class="memTemplItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37">remove_each_persistent_if</a> (flow::log::Logger *logger_ptr, const Filter_func &amp;filter_func)</td></tr>
-<tr class="memdesc:a150051ee7e308ba7c9269b2d1e2c6c37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that invokes <code>Persistent_object::for_each_persistent(name_prefix_or_empty)</code> and synchronously invokes <code>Persistent_object::remove_persistent()</code> on each resulting item that passes the given filter, where <code>Persistent_object</code> is a type that handles objects &ndash; such as SHM pools or POSIX MQs &ndash; with kernel-persistent semantics.  <a href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37">More...</a><br /></td></tr>
+<tr class="memdesc:a150051ee7e308ba7c9269b2d1e2c6c37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that invokes <code>Persistent_object::for_each_persistent()</code> and synchronously invokes <code>Persistent_object::remove_persistent()</code> on each resulting item that passes the given filter, where <code>Persistent_object</code> is a type that handles objects &ndash; such as SHM pools or POSIX MQs &ndash; with kernel-persistent semantics.  <a href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37">More...</a><br /></td></tr>
 <tr class="separator:a150051ee7e308ba7c9269b2d1e2c6c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6be904bf1b0fe6659a11dec0fabbf6b"><td class="memTemplParams" colspan="2">template&lt;typename Persistent_object &gt; </td></tr>
 <tr class="memitem:ad6be904bf1b0fe6659a11dec0fabbf6b"><td class="memTemplItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ad6be904bf1b0fe6659a11dec0fabbf6b">remove_each_persistent_with_name_prefix</a> (flow::log::Logger *logger_ptr, const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;name_prefix_or_empty)</td></tr>
-<tr class="memdesc:ad6be904bf1b0fe6659a11dec0fabbf6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that invokes <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent(name_prefix_or_empty) and synchronously i...">remove_each_persistent_if()</a> with the filter that returns <code>true</code> (yes, remove) if and only if the item's name optionally matches a given <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> prefix.  <a href="namespaceipc_1_1util.html#ad6be904bf1b0fe6659a11dec0fabbf6b">More...</a><br /></td></tr>
+<tr class="memdesc:ad6be904bf1b0fe6659a11dec0fabbf6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that invokes <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent() and synchronously invokes Persistent_ob...">remove_each_persistent_if()</a> with the filter that returns <code>true</code> (yes, remove) if and only if the item's name optionally matches a given <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> prefix.  <a href="namespaceipc_1_1util.html#ad6be904bf1b0fe6659a11dec0fabbf6b">More...</a><br /></td></tr>
 <tr class="separator:ad6be904bf1b0fe6659a11dec0fabbf6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abda2ce5bcdbc26ca63d667b87818439c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">Permissions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#abda2ce5bcdbc26ca63d667b87818439c">shared_resource_permissions</a> (<a class="el" href="namespaceipc_1_1util.html#a2ec0bfdddb41a1ef0403e4bb8967705d">Permissions_level</a> permissions_lvl)</td></tr>
 <tr class="memdesc:abda2ce5bcdbc26ca63d667b87818439c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps general Permissions_level specifier to low-level <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152" title="Short-hand for Unix (POSIX) permissions class.">Permissions</a> value, when the underlying resource is in the file-system and is either accessible (read-write in terms of file system) or inaccessible.  <a href="namespaceipc_1_1util.html#abda2ce5bcdbc26ca63d667b87818439c">More...</a><br /></td></tr>
 <tr class="separator:abda2ce5bcdbc26ca63d667b87818439c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbba79fcaee378f433e7ce3093e5c435"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435">set_resource_permissions</a> (flow::log::Logger *logger_ptr, const fs::path &amp;path, const <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">Permissions</a> &amp;perms, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0)</td></tr>
-<tr class="memdesc:abbba79fcaee378f433e7ce3093e5c435"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that sets the permissions of the given resource (at the supplied file system path) to specified POSIX value.  <a href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435">More...</a><br /></td></tr>
-<tr class="separator:abbba79fcaee378f433e7ce3093e5c435"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8b2f5a0cd9fe9db4511c9a3e685b6ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#af8b2f5a0cd9fe9db4511c9a3e685b6ae">set_resource_permissions</a> (flow::log::Logger *logger_ptr, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> handle, const <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">Permissions</a> &amp;perms, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0)</td></tr>
-<tr class="memdesc:af8b2f5a0cd9fe9db4511c9a3e685b6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to the other <a class="el" href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435" title="Utility that sets the permissions of the given resource (at the supplied file system path) to specifi...">set_resource_permissions()</a> overload but operates on a pre-opened <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> (a/k/a handle, socket, file descriptor) to the resource in question.  <a href="namespaceipc_1_1util.html#af8b2f5a0cd9fe9db4511c9a3e685b6ae">More...</a><br /></td></tr>
-<tr class="separator:af8b2f5a0cd9fe9db4511c9a3e685b6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5bcdc841a80102c6a3f035d3d6a5d51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ac5bcdc841a80102c6a3f035d3d6a5d51">set_resource_permissions</a> (flow::log::Logger *logger_ptr, const fs::path &amp;path, const <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">Permissions</a> &amp;perms, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:ac5bcdc841a80102c6a3f035d3d6a5d51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that sets the permissions of the given resource (at the supplied file system path) to specified POSIX value.  <a href="namespaceipc_1_1util.html#ac5bcdc841a80102c6a3f035d3d6a5d51">More...</a><br /></td></tr>
+<tr class="separator:ac5bcdc841a80102c6a3f035d3d6a5d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a941459cff197f5cae7ada334c15c1eb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a941459cff197f5cae7ada334c15c1eb2">set_resource_permissions</a> (flow::log::Logger *logger_ptr, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> handle, const <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">Permissions</a> &amp;perms, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:a941459cff197f5cae7ada334c15c1eb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to the other <a class="el" href="namespaceipc_1_1util.html#ac5bcdc841a80102c6a3f035d3d6a5d51" title="Utility that sets the permissions of the given resource (at the supplied file system path) to specifi...">set_resource_permissions()</a> overload but operates on a pre-opened <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> (a/k/a handle, socket, file descriptor) to the resource in question.  <a href="namespaceipc_1_1util.html#a941459cff197f5cae7ada334c15c1eb2">More...</a><br /></td></tr>
+<tr class="separator:a941459cff197f5cae7ada334c15c1eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a924cd56daf7eeaa0b07edb352367f9ec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a924cd56daf7eeaa0b07edb352367f9ec">process_running</a> (<a class="el" href="namespaceipc_1_1util.html#a0c44028a45451ebf21f6af8e806b2682">process_id_t</a> process_id)</td></tr>
 <tr class="memdesc:a924cd56daf7eeaa0b07edb352367f9ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if the given process (by PID) is reported as running by the OS.  <a href="namespaceipc_1_1util.html#a924cd56daf7eeaa0b07edb352367f9ec">More...</a><br /></td></tr>
 <tr class="separator:a924cd56daf7eeaa0b07edb352367f9ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,6 +288,10 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:ab80f060d9b61b87d1d47c2892653a905"><td class="memItemLeft" align="right" valign="top"><a id="ab80f060d9b61b87d1d47c2892653a905" name="ab80f060d9b61b87d1d47c2892653a905"></a>
+const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">Process_credentials</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NULL_PROCESS_CREDENTIALS</b></td></tr>
+<tr class="memdesc:ab80f060d9b61b87d1d47c2892653a905"><td class="mdescLeft">&#160;</td><td class="mdescRight">A (default-cted) <a class="el" href="classipc_1_1util_1_1Process__credentials.html" title="A process&#39;s credentials (PID, UID, GID as of this writing).">Process_credentials</a>. May be useful for functions returning <code>const <a class="el" href="classipc_1_1util_1_1Process__credentials.html" title="A process&#39;s credentials (PID, UID, GID as of this writing).">Process_credentials</a>&amp;</code>. <br /></td></tr>
+<tr class="separator:ab80f060d9b61b87d1d47c2892653a905"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5664539b3d75d6d10cdfebf6eac5382d"><td class="memItemLeft" align="right" valign="top"><a id="a5664539b3d75d6d10cdfebf6eac5382d" name="a5664539b3d75d6d10cdfebf6eac5382d"></a>
 const <a class="el" href="namespaceipc_1_1util.html#a9571de958538d7a4a8649bbfecfac0b9">Open_or_create</a>&#160;</td><td class="memItemRight" valign="bottom"><b>OPEN_OR_CREATE</b></td></tr>
 <tr class="memdesc:a5664539b3d75d6d10cdfebf6eac5382d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag value indicating an open-if-exists-else-create operation. <br /></td></tr>
@@ -309,10 +310,10 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 <tr class="separator:aca6ca223759ca3e11d5834a323454afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Flow-IPC module containing miscellaneous general-use facilities that ubiquitously used by ~all Flow-IPC modules and/or do not fit into any other Flow-IPC module. </p>
+<div class="textblock"><p >Flow-IPC module containing miscellaneous general-use facilities that are ubiquitously used by ~all Flow-IPC modules and/or do not fit into any other Flow-IPC module. </p>
 <p >Each symbol therein is typically used by at least 1 other Flow-IPC module; but all public symbols (except ones under a detail/ subdirectory) are intended for use by Flow-IPC user as well. Some particulars to note:</p>
 <p ><a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">ipc::util::Shared_name</a> is a universally used shared-resource name class, conceptually similar to <code>boost::filesystem::path</code>. It is used in <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> APIs &ndash; namely to name endpoints when establishing channels, and more &ndash; but also in other Flow-IPC modules. For example <code><a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a></code> is used to name certain SHM entities in <a class="el" href="namespaceipc_1_1shm.html" title="Modules for SHared Memory (SHM) support.">ipc::shm</a> and in <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> when connecting to conversation partner process(es).</p>
-<p ><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">ipc::util::Native_handle</a> is a commonly used native-handle (FD in POSIX parlance) wrapper (so thin it doesn't add a single bit on top of the actul FD). These are ~always passed around by value (copied), as they are very small in practice.</p>
+<p ><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">ipc::util::Native_handle</a> is a commonly used native-handle (FD in POSIX parlance) wrapper (so thin it doesn't add a single bit on top of the actual FD). These are ~always passed around by value (copied), as they are very small in practice.</p>
 <p >There are of course various other things; just check them out as they are referenced, or just look around. Note there are free functions providing various niceties; and more types including classes and scoped <code>enum</code>s. </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="ae0be7edba7e30ffa3f8b742af621f2ab" name="ae0be7edba7e30ffa3f8b742af621f2ab"></a>
@@ -329,7 +330,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 <p>Short-hand for an immutable blob somewhere in memory, stored as exactly a <code>void const *</code> and a <code>size_t</code>. </p>
 <h3>How to use</h3>
-<p >We provide this alias as a stylistic short-hand, as it better suits various interfaces especially in <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>. Nevertheless it's not meant to more than that; it's an attempt to abstract it away.</p>
+<p >We provide this alias as a stylistic short-hand, as it better suits various interfaces especially in <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>. Nevertheless it's not meant to be more than that; it's not an attempt to abstract it away.</p>
 <p >That is to say, to work with these (create them, access them, etc.), do use the highly convenient boost.asio buffer APIs which are well documented in boost.asio's docs. </p>
 
 </div>
@@ -346,7 +347,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
       </table>
 </div><div class="memdoc">
 
-<p>Short-hand for an mutable blob somewhere in memory, stored as exactly a <code>void*</code> and a <code>size_t</code>. </p>
+<p>Short-hand for a mutable blob somewhere in memory, stored as exactly a <code>void*</code> and a <code>size_t</code>. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab" title="Short-hand for an immutable blob somewhere in memory, stored as exactly a void const * and a size_t.">ipc::util::Blob_const</a>; usability notes in that doc header apply similarly here. </dd></dl>
 
 </div>
@@ -402,6 +403,24 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 </div>
 </div>
+<a id="aeabf2feb5c96b0a90acc026b964d4c40" name="aeabf2feb5c96b0a90acc026b964d4c40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeabf2feb5c96b0a90acc026b964d4c40">&#9670;&nbsp;</a></span>Own_native_handle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">ipc::util::Own_native_handle</a> = typedef boost::scope::unique_resource&lt;<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>, <a class="el" href="structipc_1_1util_1_1Native__handle.html#a2072797b16646cc28a5bd35d323e12aa">Native_handle::Closer</a>, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A <code>unique_resource</code> wrapper for <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> useful to avoid descriptor leaks and double-closing; can be thought of as a <code>unique_ptr&lt;<a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>&gt;</code> except involves no heap allocation, and nullness is determined by <a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">Native_handle::null()</a>. </p>
+<p >For a bit more background on rationale and usage: see <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> doc header Ownership section.</p>
+<p >Reminder: if/when ready to get a raw, non-auto-closing <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> back: use <code>.release()</code>. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a2ec0bfdddb41a1ef0403e4bb8967705d" name="a2ec0bfdddb41a1ef0403e4bb8967705d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2ec0bfdddb41a1ef0403e4bb8967705d">&#9670;&nbsp;</a></span>Permissions_level</h2>
@@ -425,7 +444,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 <p>Simple specifier of desired access permissions, usually but not necessarily translated into a <code>Permissions</code> value (though even then different value in different contexts). </p>
 <p >May be used to map, say, from a Permissions_level to a <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152" title="Short-hand for Unix (POSIX) permissions class.">Permissions</a> value in an <code>array&lt;Permissions, size_t(Permissions_level::S_END_SENTINEL)&gt;</code>.</p>
-<p >While, unlike <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152" title="Short-hand for Unix (POSIX) permissions class.">Permissions</a>, this <code>enum</code> intends not be overtly based on a POSIX RWXRWXRWX model, it does still assume the 3 user groupings are "user themselves," "user's group," and "everyone." The 1st and 3rd are likely universal, but the 2nd may not apply to all OS &ndash; through probably all POSIX/Unix ones &ndash; and even for something like Linux there could be different groupings such as ones based on OS ACL. As of this writing it's fine, as this is a POSIX-targeted library at least (in fact, Linux, as of this writing, but that could change to include, say, macOS/similar). </p>
+<p >While, unlike <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152" title="Short-hand for Unix (POSIX) permissions class.">Permissions</a>, this <code>enum</code> intends not to be overtly based on a POSIX RWXRWXRWX model, it does still assume the 3 user groupings are "user themselves," "user's group," and "everyone." The 1st and 3rd are likely universal, but the 2nd may not apply to all OS &ndash; though probably all POSIX/Unix ones &ndash; and even for something like Linux there could be different groupings such as ones based on OS ACL. As of this writing it's fine, as this is a POSIX-targeted library at least (in fact Linux as of this writing, but that could change to include, say, macOS/similar). </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2ec0bfdddb41a1ef0403e4bb8967705dac43e9194d6c0e9803ecabbf3cb4c97fa" name="a2ec0bfdddb41a1ef0403e4bb8967705dac43e9194d6c0e9803ecabbf3cb4c97fa"></a>S_NO_ACCESS&#160;</td><td class="fielddoc"><p >Forbids all access, even by the creator's user. Most likely this would be useful for testing or debugging. </p>
 </td></tr>
@@ -497,6 +516,86 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 </div>
 </div>
+<a id="a29b19e2440d200540619eb8c9c7239bb" name="a29b19e2440d200540619eb8c9c7239bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29b19e2440d200540619eb8c9c7239bb">&#9670;&nbsp;</a></span>disowned_native_handle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> disowned_native_handle </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> constructed by relieving an existing auto-closing <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a> of its ownership of a particular raw handle and storing it, sans auto-closing protection, in that <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>. </p>
+<p >That is, it is equal to:</p>
+<div class="fragment"><div class="line"><span class="comment">// src is Own_native_handle.</span></div>
+<div class="line"><a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> ret{src.get()};</div>
+<div class="line">src.release();</div>
+<div class="line"><span class="keywordflow">return</span> ret;</div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html">ipc::util::Native_handle</a></div><div class="ttdoc">A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.</div><div class="ttdef"><b>Definition:</b> native_handle.hpp:66</div></div>
+</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Source object; post-condition is <code>src.get().null() == true</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
+<a id="a55b346b1c8839776351242a3974d3345" name="a55b346b1c8839776351242a3974d3345"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55b346b1c8839776351242a3974d3345">&#9670;&nbsp;</a></span>duped_native_handle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a> duped_native_handle </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns <code>Own_native_handle{src.dup(err_code)}</code>: an auto-closing duplicate of <code>src</code>; on error the result is <code>.get().null()</code>. </p>
+<p >See <a class="el" href="structipc_1_1util_1_1Native__handle.html#aceb716d03f3e7882706f40a8d5e3ee5b" title="Returns a new handle referring to the same underlying OS-level open resource as *this,...">Native_handle::dup()</a> for details.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Handle to duplicate; it is unaffected. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <a class="el" href="structipc_1_1util_1_1Native__handle.html#aceb716d03f3e7882706f40a8d5e3ee5b" title="Returns a new handle referring to the same underlying OS-level open resource as *this,...">Native_handle::dup()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
 <a id="aba4ae811264cbb7e664ce126b591cbc7" name="aba4ae811264cbb7e664ce126b591cbc7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba4ae811264cbb7e664ce126b591cbc7">&#9670;&nbsp;</a></span>hash_value() <span class="overload">[1/2]</span></h2>
 
@@ -524,11 +623,14 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 </div>
 </div>
-<a id="ad3883df3081441d71a9a989073264b04" name="ad3883df3081441d71a9a989073264b04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3883df3081441d71a9a989073264b04">&#9670;&nbsp;</a></span>hash_value() <span class="overload">[2/2]</span></h2>
+<a id="a956b1b739e02118cb8b6c0f3bcbee6ae" name="a956b1b739e02118cb8b6c0f3bcbee6ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a956b1b739e02118cb8b6c0f3bcbee6ae">&#9670;&nbsp;</a></span>hash_value() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">size_t hash_value </td>
@@ -538,6 +640,11 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Hasher of <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> for boost.unordered et al. </p>
@@ -590,14 +697,14 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 </div>
 </div>
-<a id="aec185fc5e2e88206d1366de8ce42f732" name="aec185fc5e2e88206d1366de8ce42f732"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec185fc5e2e88206d1366de8ce42f732">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/5]</span></h2>
+<a id="a6e2b70da63e2788dc93cea7199b5e4d4" name="a6e2b70da63e2788dc93cea7199b5e4d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e2b70da63e2788dc93cea7199b5e4d4">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool ipc::util::operator!= </td>
+          <td class="memname">bool operator!= </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -628,14 +735,14 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 </div>
 </div>
-<a id="a0d9b586ec40d9dc3bc14915ef6d24cb7" name="a0d9b586ec40d9dc3bc14915ef6d24cb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d9b586ec40d9dc3bc14915ef6d24cb7">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[3/5]</span></h2>
+<a id="a4c5ab5d9c34e7076cb1960a90496f5f0" name="a4c5ab5d9c34e7076cb1960a90496f5f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c5ab5d9c34e7076cb1960a90496f5f0">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool ipc::util::operator!= </td>
+          <td class="memname">bool operator!= </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -666,14 +773,17 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 </div>
 </div>
-<a id="aacbd7ee43d4912a8790a228dc7cf682d" name="aacbd7ee43d4912a8790a228dc7cf682d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacbd7ee43d4912a8790a228dc7cf682d">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[4/5]</span></h2>
+<a id="ad36870faa5b60483ad929e0340d22d0e" name="ad36870faa5b60483ad929e0340d22d0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad36870faa5b60483ad929e0340d22d0e">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool operator!= </td>
+          <td class="memname">constexpr bool ipc::util::operator!= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -690,6 +800,11 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Negation of similar <code>==</code>. </p>
@@ -704,14 +819,14 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 </div>
 </div>
-<a id="a988ac1702279bd2b958464cd8ee7e81f" name="a988ac1702279bd2b958464cd8ee7e81f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a988ac1702279bd2b958464cd8ee7e81f">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[5/5]</span></h2>
+<a id="ae11a9905a8775e696055940e3a88110f" name="ae11a9905a8775e696055940e3a88110f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae11a9905a8775e696055940e3a88110f">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool ipc::util::operator!= </td>
+          <td class="memname">bool operator!= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a>&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -742,84 +857,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 
 </div>
 </div>
-<a id="a096c71dede7bd5528215ac01a380a189" name="a096c71dede7bd5528215ac01a380a189"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a096c71dede7bd5528215ac01a380a189">&#9670;&nbsp;</a></span>operator+() <span class="overload">[1/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> operator+ </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>raw_src1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;&#160;</td>
-          <td class="paramname"><em>src2</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns new object equal to <code>Shared_name(src2)</code> with <code>raw_src1</code> pre-pended to it. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">raw_src1</td><td>String to precede the appended <code>src2</code>. </td></tr>
-    <tr><td class="paramname">src2</td><td>Object to append. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
-
-</div>
-</div>
-<a id="af61b02fd66b67aeed5a803ca47e52973" name="af61b02fd66b67aeed5a803ca47e52973"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af61b02fd66b67aeed5a803ca47e52973">&#9670;&nbsp;</a></span>operator+() <span class="overload">[2/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> operator+ </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;&#160;</td>
-          <td class="paramname"><em>src1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>raw_src2</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns new object equal to <code>Shared_name(src1) += raw_src2</code>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src1</td><td>Object to precede the appended <code>raw_src2</code>. </td></tr>
-    <tr><td class="paramname">raw_src2</td><td>String to append. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
-
-</div>
-</div>
 <a id="a54dc5077333284fda9e8d2df8b0e9b91" name="a54dc5077333284fda9e8d2df8b0e9b91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54dc5077333284fda9e8d2df8b0e9b91">&#9670;&nbsp;</a></span>operator+() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a54dc5077333284fda9e8d2df8b0e9b91">&#9670;&nbsp;</a></span>operator+() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -857,7 +896,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ST
 </div>
 </div>
 <a id="a52b2ba03d5ace7389991bb5d31b9fa59" name="a52b2ba03d5ace7389991bb5d31b9fa59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52b2ba03d5ace7389991bb5d31b9fa59">&#9670;&nbsp;</a></span>operator+() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b2ba03d5ace7389991bb5d31b9fa59">&#9670;&nbsp;</a></span>operator+() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -903,7 +942,7 @@ template&lt;typename Source &gt; </div>
 </div>
 </div>
 <a id="a1f1a40877cc08b287f8f3c7e7f663782" name="a1f1a40877cc08b287f8f3c7e7f663782"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f1a40877cc08b287f8f3c7e7f663782">&#9670;&nbsp;</a></span>operator+() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f1a40877cc08b287f8f3c7e7f663782">&#9670;&nbsp;</a></span>operator+() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -948,84 +987,8 @@ template&lt;typename Source &gt; </div>
 
 </div>
 </div>
-<a id="a7f2bead5935309c2f760645fe46ddd71" name="a7f2bead5935309c2f760645fe46ddd71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f2bead5935309c2f760645fe46ddd71">&#9670;&nbsp;</a></span>operator/() <span class="overload">[1/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> operator/ </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>raw_src1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;&#160;</td>
-          <td class="paramname"><em>src2</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns new object equal to <code>Shared_name(raw_src1) /= src2</code>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">raw_src1</td><td>String to precede the appended separator and <code>src2</code>. </td></tr>
-    <tr><td class="paramname">src2</td><td>Object to append after separator. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
-
-</div>
-</div>
-<a id="aa61c6b31c5c4e241c97f06a4d38c76c4" name="aa61c6b31c5c4e241c97f06a4d38c76c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa61c6b31c5c4e241c97f06a4d38c76c4">&#9670;&nbsp;</a></span>operator/() <span class="overload">[2/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> operator/ </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;&#160;</td>
-          <td class="paramname"><em>src1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>raw_src2</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns new object equal to <code>Shared_name(src1) /= raw_src2</code>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src1</td><td>Object to precede the appended separator and <code>raw_src2</code>. </td></tr>
-    <tr><td class="paramname">raw_src2</td><td>String to append after separator. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
-
-</div>
-</div>
 <a id="a15ea67c1855a678f7e948b24ccf2c1cd" name="a15ea67c1855a678f7e948b24ccf2c1cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15ea67c1855a678f7e948b24ccf2c1cd">&#9670;&nbsp;</a></span>operator/() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a15ea67c1855a678f7e948b24ccf2c1cd">&#9670;&nbsp;</a></span>operator/() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1063,7 +1026,7 @@ template&lt;typename Source &gt; </div>
 </div>
 </div>
 <a id="a910207a2da57b61cee4a22899e239dc2" name="a910207a2da57b61cee4a22899e239dc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a910207a2da57b61cee4a22899e239dc2">&#9670;&nbsp;</a></span>operator/() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a910207a2da57b61cee4a22899e239dc2">&#9670;&nbsp;</a></span>operator/() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1109,7 +1072,7 @@ template&lt;typename Source &gt; </div>
 </div>
 </div>
 <a id="a462b81d34ba23c968f63d9805fa74538" name="a462b81d34ba23c968f63d9805fa74538"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a462b81d34ba23c968f63d9805fa74538">&#9670;&nbsp;</a></span>operator/() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a462b81d34ba23c968f63d9805fa74538">&#9670;&nbsp;</a></span>operator/() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1154,14 +1117,14 @@ template&lt;typename Source &gt; </div>
 
 </div>
 </div>
-<a id="aea456ff91117633e731804a894aa94da" name="aea456ff91117633e731804a894aa94da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea456ff91117633e731804a894aa94da">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[1/2]</span></h2>
+<a id="aa403258106050f6519103d914c3e0c52" name="aa403258106050f6519103d914c3e0c52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa403258106050f6519103d914c3e0c52">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool ipc::util::operator&lt; </td>
+          <td class="memname">bool operator&lt; </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -1193,14 +1156,17 @@ template&lt;typename Source &gt; </div>
 
 </div>
 </div>
-<a id="a6ff4b35d8fbbe2eb6266f3a7b0f07c49" name="a6ff4b35d8fbbe2eb6266f3a7b0f07c49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[2/2]</span></h2>
+<a id="a6c7772aad20217f29f5ae6c6a3511975" name="a6c7772aad20217f29f5ae6c6a3511975"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c7772aad20217f29f5ae6c6a3511975">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool operator&lt; </td>
+          <td class="memname">constexpr bool ipc::util::operator&lt; </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -1217,6 +1183,11 @@ template&lt;typename Source &gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Returns a less-than comparison of two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects, with the usual total ordering guarantees. </p>
@@ -1335,8 +1306,8 @@ template&lt;typename Source &gt; </div>
 </div><div class="memdoc">
 
 <p>Prints embellished string representation of the given <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> to the given <code>ostream</code>. </p>
-<dl class="section warning"><dt>Warning</dt><dd>This is <em>not</em> equivalent to writing <a class="el" href="classipc_1_1util_1_1Shared__name.html#ae89e1e061f87ffe0288514e254837595" title="Returns (sans copying) ref to immutable entire wrapped name string, suitable to pass into sys calls w...">Shared_name::str()</a>; as of this writing it includes not just <code>str()</code> but also the number of characters in it as a decimal and a separator, for convenience in test/debug, to visually detect names approaching certain length limits. If you wish to output <code>val.str()</code>, then output... well... <code>val.str()</code>.</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Does <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> <code>operator&gt;&gt;</code> and <code>operator&lt;&lt;</code> being asymmetrical get one into trouble when using <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> with boost.program_options (or <code>flow::cfg</code> which is built on top of it)? Look into it. It may be necessary to make <code>operator&lt;&lt;</code> equal to that of <code>ostream &lt;&lt; string</code> after all; though the added niceties of the current <code>&lt;&lt;</code> semantics may still at least be available via some explicit accessor.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This is <em>not</em> equivalent to writing <a class="el" href="classipc_1_1util_1_1Shared__name.html#ae89e1e061f87ffe0288514e254837595" title="Returns (sans copying) ref to immutable entire wrapped name string, suitable to pass into sys calls w...">Shared_name::str()</a>; as of this writing it includes not just <code>str()</code> but also the number of characters in it as a decimal and a separator, for convenience in test/debug, to visually detect names approaching certain length limits. (An empty() name prints as <code>null</code>.) If you wish to output <code>val.str()</code>, then output... well... <code>val.str()</code>.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Does <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> <code>operator&gt;&gt;</code> and <code>operator&lt;&lt;</code> being asymmetrical get one into trouble when using <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> with boost.program_options (or <code>flow::cfg</code> which is built on top of it)? Look into it. It may be necessary to make <code>operator&lt;&lt;</code> equal to that of <code>ostream &lt;&lt; string</code> after all; though the added niceties of the current <code>&lt;&lt;</code> semantics may still at least be available via some explicit accessor.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
@@ -1387,14 +1358,14 @@ template&lt;typename Source &gt; </div>
 
 </div>
 </div>
-<a id="adad98b6935e58bdc92dfcf57bf60345e" name="adad98b6935e58bdc92dfcf57bf60345e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adad98b6935e58bdc92dfcf57bf60345e">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/5]</span></h2>
+<a id="a076f9b7dc5c4431a5a133d8af2e03ca0" name="a076f9b7dc5c4431a5a133d8af2e03ca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a076f9b7dc5c4431a5a133d8af2e03ca0">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool ipc::util::operator== </td>
+          <td class="memname">bool operator== </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -1426,14 +1397,14 @@ template&lt;typename Source &gt; </div>
 
 </div>
 </div>
-<a id="a5023285f7dd8a117686f0ee986e685cb" name="a5023285f7dd8a117686f0ee986e685cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5023285f7dd8a117686f0ee986e685cb">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/5]</span></h2>
+<a id="ad30f73c5d79eb7a38b1eecd48f7674ac" name="ad30f73c5d79eb7a38b1eecd48f7674ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad30f73c5d79eb7a38b1eecd48f7674ac">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool ipc::util::operator== </td>
+          <td class="memname">bool operator== </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classipc_1_1util_1_1Shared__name.html">Shared_name</a> &amp;&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -1465,14 +1436,17 @@ template&lt;typename Source &gt; </div>
 
 </div>
 </div>
-<a id="ae4b4126f841ef060cdae15998e48691c" name="ae4b4126f841ef060cdae15998e48691c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4b4126f841ef060cdae15998e48691c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/5]</span></h2>
+<a id="af6fe80f5ff9f4ebf56650a66bf1b6a1f" name="af6fe80f5ff9f4ebf56650a66bf1b6a1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6fe80f5ff9f4ebf56650a66bf1b6a1f">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool operator== </td>
+          <td class="memname">constexpr bool ipc::util::operator== </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -1489,6 +1463,11 @@ template&lt;typename Source &gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Returns <code>true</code> if and only if the two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects are the same underlying handle. </p>
@@ -1503,14 +1482,14 @@ template&lt;typename Source &gt; </div>
 
 </div>
 </div>
-<a id="a97a7c8e6330909a1371134a7bdcea788" name="a97a7c8e6330909a1371134a7bdcea788"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97a7c8e6330909a1371134a7bdcea788">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/5]</span></h2>
+<a id="abddef9f345453974899ac56d5e3590d2" name="abddef9f345453974899ac56d5e3590d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abddef9f345453974899ac56d5e3590d2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool ipc::util::operator== </td>
+          <td class="memname">bool operator== </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">util::String_view</a>&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -1598,10 +1577,11 @@ template&lt;typename Source &gt; </div>
 
 <p>Returns <code>true</code> if and only if the given process (by PID) is reported as running by the OS. </p>
 <p >Caution: It may be running, but it may be a zombie; and/or it may be running now but dead shortly after this function returns. Use defensively.</p>
-<p >Implementation: It invokes POSIX <code>kill()</code> with the fake zero signal; this indicates the process <em>can</em> be signaled and therefore exists.</p>
+<dl class="section note"><dt>Note</dt><dd>PID recycling is also possible. In most contexts this happens on a much larger time scale than is practically relevant, but we advise verifying your exact situation.</dd></dl>
+<p>Implementation (normally avoided in contract docs, but we'd like to be as useful as we can here): It invokes POSIX <code>kill()</code> with the fake zero "signal"; success or failure-due-to-identity/permissions indicates the process <em>can</em> be signaled (by someone with proper identity/permissions anyway) and therefore exists. Otherwise it does not exist.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">process_id</td><td>The process ID of the process in question. </td></tr>
+    <tr><td class="paramname">process_id</td><td>The process ID of the process in question. If it is not positive, then <code>false</code> is returned (no single process can have such a PID). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1637,9 +1617,10 @@ template&lt;typename Persistent_object , typename Filter_func &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Utility that invokes <code>Persistent_object::for_each_persistent(name_prefix_or_empty)</code> and synchronously invokes <code>Persistent_object::remove_persistent()</code> on each resulting item that passes the given filter, where <code>Persistent_object</code> is a type that handles objects &ndash; such as SHM pools or POSIX MQs &ndash; with kernel-persistent semantics. </p>
+<p>Utility that invokes <code>Persistent_object::for_each_persistent()</code> and synchronously invokes <code>Persistent_object::remove_persistent()</code> on each resulting item that passes the given filter, where <code>Persistent_object</code> is a type that handles objects &ndash; such as SHM pools or POSIX MQs &ndash; with kernel-persistent semantics. </p>
 <p >The number of items removed (without any error) is returned. The nature of any error(s) encountered by individual <code>remove_persistent()</code> calls is ignored (not returned in any way) except for logging.</p>
 <p >This "forgiving" error emission behavior is sufficient in many cases. If you require finer control over this please use <code>Persistent_object::for_each_persistent()</code> and <code>Persistent_object::remove_persistent()</code> plus your own handling of the failure thereof in your custom <code>handle_name_func()</code>.</p>
+<p >If <code>filter_func()</code> throws, this function does not go through any remaining entries; the exception is not caught.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Persistent_object</td><td>See above. It must have <code>static</code> methods <code>for_each_persistent()</code> and <code>remove_persistent()</code> with semantics identical to, e.g., <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">shm::classic::Pool_arena</a> versions of these methods. As of this writing this includes: <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">shm::classic::Pool_arena</a>, <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">transport::Persistent_mq_handle</a> (concept), <a class="el" href="classipc_1_1transport_1_1Posix__mq__handle.html" title="Implements the Persistent_mq_handle concept by wrapping the POSIX message queue API (see man mq_overv...">transport::Posix_mq_handle</a>, <a class="el" href="classipc_1_1transport_1_1Bipc__mq__handle.html" title="Implements the Persistent_mq_handle concept by thinly wrapping bipc::message_queue,...">transport::Bipc_mq_handle</a> (its impls). </td></tr>
@@ -1686,27 +1667,27 @@ template&lt;typename Persistent_object &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Utility that invokes <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent(name_prefix_or_empty) and synchronously i...">remove_each_persistent_if()</a> with the filter that returns <code>true</code> (yes, remove) if and only if the item's name optionally matches a given <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> prefix. </p>
+<p>Utility that invokes <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent() and synchronously invokes Persistent_ob...">remove_each_persistent_if()</a> with the filter that returns <code>true</code> (yes, remove) if and only if the item's name optionally matches a given <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> prefix. </p>
 <p >(Optional in that supplying an <code>.empty()</code> prefix deletes all items.)</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Persistent_object</td><td>See <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent(name_prefix_or_empty) and synchronously i...">remove_each_persistent_if()</a>. </td></tr>
+    <tr><td class="paramname">Persistent_object</td><td>See <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent() and synchronously invokes Persistent_ob...">remove_each_persistent_if()</a>. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">logger_ptr</td><td>See <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent(name_prefix_or_empty) and synchronously i...">remove_each_persistent_if()</a>. </td></tr>
-    <tr><td class="paramname">name_prefix_or_empty</td><td>An object is removed only if its name starts with this value. This filter is skipped if the value is <code>.empty()</code>. </td></tr>
+    <tr><td class="paramname">logger_ptr</td><td>See <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent() and synchronously invokes Persistent_ob...">remove_each_persistent_if()</a>. </td></tr>
+    <tr><td class="paramname">name_prefix_or_empty</td><td>An object is removed only if its name starts with this fragment. This filter is skipped if the value is <code>.empty()</code>. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent(name_prefix_or_empty) and synchronously i...">remove_each_persistent_if()</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent() and synchronously invokes Persistent_ob...">remove_each_persistent_if()</a>. </dd></dl>
 
 </div>
 </div>
-<a id="abbba79fcaee378f433e7ce3093e5c435" name="abbba79fcaee378f433e7ce3093e5c435"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbba79fcaee378f433e7ce3093e5c435">&#9670;&nbsp;</a></span>set_resource_permissions() <span class="overload">[1/2]</span></h2>
+<a id="ac5bcdc841a80102c6a3f035d3d6a5d51" name="ac5bcdc841a80102c6a3f035d3d6a5d51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5bcdc841a80102c6a3f035d3d6a5d51">&#9670;&nbsp;</a></span>set_resource_permissions() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1733,7 +1714,7 @@ template&lt;typename Persistent_object &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1744,16 +1725,17 @@ template&lt;typename Persistent_object &gt; </div>
 </div><div class="memdoc">
 
 <p>Utility that sets the permissions of the given resource (at the supplied file system path) to specified POSIX value. </p>
-<p >If the resource cannot be accessed (not found, permissions...) that system Error_code shall be emitted.</p>
+<p >If the resource cannot be accessed (not found, permissions...), that system Error_code shall be emitted.</p>
 <h3>Rationale</h3>
-<p >It may seem unnecessary, particularly given that it sometimes (in our internal code, but I mention it publicly for exposition purposes) is placed right after the creation of the resource (file, SHM pool, POSIX MQ, shared mutex, etc.) &ndash; where the same <code>perms</code> is supplied to the creation-API, whichever is applicable. The reason is that those APIs tend to make the corresponding OS call (e.g., <code>open()</code>) which is bound by the "process umask" in POSIX/Linux; so for example if it's set to the typical 022 (octal), then it's impossible to make the resource group- or all-writable, regardless of <code>perms</code>. <a class="el" href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435" title="Utility that sets the permissions of the given resource (at the supplied file system path) to specifi...">set_resource_permissions()</a> uses a technique that bypasses the umask thing. Note that it does not make any calls to change the umask to accomplish this.</p>
+<p >It may seem unnecessary, particularly given that it sometimes (in our internal code, but I mention it publicly for exposition purposes) is placed right after the creation of the resource (file, SHM pool, POSIX MQ, shared mutex, etc.) &ndash; where the same <code>perms</code> is supplied to the creation-API, whichever is applicable. The reason is that those APIs tend to make the corresponding OS call (e.g., <code>open()</code>) which is bound by the "process umask" in POSIX/Linux; so for example if it's set to the typical 022 (octal), then it's impossible to make the resource group- or all-writable, regardless of <code>perms</code>. <a class="el" href="namespaceipc_1_1util.html#ac5bcdc841a80102c6a3f035d3d6a5d51" title="Utility that sets the permissions of the given resource (at the supplied file system path) to specifi...">set_resource_permissions()</a> uses a technique that bypasses the umask thing. Note that it does not make any calls to change the umask to accomplish this.</p>
 <p >Note 1: Sometimes there is not even the creation-API argument for <code>perms</code>; in which case the rationale is even more straightforward.</p>
 <p >Note 2: Sometimes there <em>is</em> that API... and (namely in boost.ipc at least) they actually took care to do this (what we do here) themselves (via <code>fchmod()</code> and such)... so we don't need to; in fact I (ygoldfel) treated it as valuable confirmation of the correctness of this maneuver.</p>
+<dl class="section note"><dt>Note</dt><dd>The resource must be readable by the calling process: this overload opens it (read-only) to obtain a descriptor and then acts as the other overload. So, e.g., an owner cannot use it to loosen the permissions of a resource it has made unreadable to itself; in that case open it yourself by other means (if possible) and use the other overload.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>Logger to use for logging (WARNING, on error only). Caller can themselves log further info if desired. </td></tr>
     <tr><td class="paramname">path</td><td>Path to resource. Symlinks are followed, and the target is the resource in question (not the symlink). </td></tr>
-    <tr><td class="paramname">perms</td><td>See other overload. </td></tr>
+    <tr><td class="paramname">perms</td><td>The permissions to set. </td></tr>
     <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: see other overload; note that in addition file-not-found and the like are possible errors (in fact arguably the likeliest). </td></tr>
   </table>
   </dd>
@@ -1761,8 +1743,8 @@ template&lt;typename Persistent_object &gt; </div>
 
 </div>
 </div>
-<a id="af8b2f5a0cd9fe9db4511c9a3e685b6ae" name="af8b2f5a0cd9fe9db4511c9a3e685b6ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8b2f5a0cd9fe9db4511c9a3e685b6ae">&#9670;&nbsp;</a></span>set_resource_permissions() <span class="overload">[2/2]</span></h2>
+<a id="a941459cff197f5cae7ada334c15c1eb2" name="a941459cff197f5cae7ada334c15c1eb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a941459cff197f5cae7ada334c15c1eb2">&#9670;&nbsp;</a></span>set_resource_permissions() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1789,7 +1771,7 @@ template&lt;typename Persistent_object &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1799,7 +1781,7 @@ template&lt;typename Persistent_object &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Identical to the other <a class="el" href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435" title="Utility that sets the permissions of the given resource (at the supplied file system path) to specifi...">set_resource_permissions()</a> overload but operates on a pre-opened <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> (a/k/a handle, socket, file descriptor) to the resource in question. </p>
+<p>Identical to the other <a class="el" href="namespaceipc_1_1util.html#ac5bcdc841a80102c6a3f035d3d6a5d51" title="Utility that sets the permissions of the given resource (at the supplied file system path) to specifi...">set_resource_permissions()</a> overload but operates on a pre-opened <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> (a/k/a handle, socket, file descriptor) to the resource in question. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>See other overload. </td></tr>
@@ -1841,8 +1823,56 @@ template&lt;typename Persistent_object &gt; </div>
 
 </div>
 </div>
+<a id="ab1f5535316175110d2cbe40ce57c2cb2" name="ab1f5535316175110d2cbe40ce57c2cb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1f5535316175110d2cbe40ce57c2cb2">&#9670;&nbsp;</a></span>swap() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void ipc::util::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td>
+          <td class="paramname"><em>val1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td>
+          <td class="paramname"><em>val2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Standard swap. </p>
+<p >(Proper pattern is <code>using std::swap;</code> and then <code><a class="el" href="namespaceipc_1_1util.html#ab1f5535316175110d2cbe40ce57c2cb2" title="Standard swap.">swap()</a></code> in any using function.)</p>
+<h3>Rationale for existence</h3>
+<p ><code><a class="el" href="namespaceipc_1_1util.html#ab1f5535316175110d2cbe40ce57c2cb2" title="Standard swap.">std::swap()</a></code> would perform 3 move-assigns; <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> move-assignment/construction involves nullifying the source <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">Native_handle::m_native_handle</a>; that's not necessary in a swap and wastes cycles.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">val1</td><td>Object to swap. </td></tr>
+    <tr><td class="paramname">val2</td><td>Object to swap. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a9ea22a64cfbc6de66181c278ff5f6975" name="a9ea22a64cfbc6de66181c278ff5f6975"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ea22a64cfbc6de66181c278ff5f6975">&#9670;&nbsp;</a></span>swap()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ea22a64cfbc6de66181c278ff5f6975">&#9670;&nbsp;</a></span>swap() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1882,7 +1912,7 @@ template&lt;typename Persistent_object &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -66,14 +66,20 @@ $(function() {
 &#160;
 
 <h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
-<li>Reader&#160;:&#160;<a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html#a415a47dc47b8115093c8a42734f9602c">ipc::transport::struc::Heap_reader::Config</a>, <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html#ad2fd47038e8a8c06aa00661a8e1e9289">ipc::transport::struc::Msg_in&lt; Message_body, Struct_reader_config &gt;</a>, <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Reader_1_1Config.html#a0fd6d8b923d8748d7c956f6bf6bd7a75">ipc::transport::struc::shm::Reader&lt; Shm_arena &gt;::Config</a>, <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__reader_1_1Config.html#a8b31bcbb6f8db3370aa664eb95cddfb8">ipc::transport::struc::Struct_reader::Config</a></li>
-<li>Reader_config&#160;:&#160;<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ad3ff78f00b7f230562d713ec6cf8499c">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;</a>, <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html#af8c335ada1b33fcc732047283e60177b">ipc::transport::struc::Msg_in&lt; Message_body, Struct_reader_config &gt;</a>, <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a14a7166b2f8c117ce6ddafe943d036fa">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;</a></li>
-<li>Reassembly_q&#160;:&#160;<a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a26594894094e4fa03b3c1dacd2e0f351">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;</a></li>
+<li>Raw_ptr_rep&#160;:&#160;<a class="el" href="classipc_1_1shm_1_1arena__lend_1_1detail_1_1Shm__pool__offset__ptr__data.html#a8de85991a717b44c7e4ae7f3160f11f8">ipc::shm::arena_lend::detail::Shm_pool_offset_ptr_data&lt; Repository_type, CAN_STORE_RAW_PTR &gt;</a></li>
+<li>Rcv_batch_func&#160;:&#160;<a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__batch.html#a90190d4215fa7d55396266c6b506bcc9">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::User_request_batch</a></li>
+<li>Reader&#160;:&#160;<a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html#a415a47dc47b8115093c8a42734f9602c">ipc::transport::struc::Heap_reader::Config</a>, <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html#a541f3a834eb26d386ff399958e63d46b">ipc::transport::struc::Msg_in&lt; Body_t, Reader_config_t &gt;</a>, <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Reader_1_1Config.html#a0fd6d8b923d8748d7c956f6bf6bd7a75">ipc::transport::struc::shm::Reader&lt; Shm_arena &gt;::Config</a>, <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__reader_1_1Config.html#a8b31bcbb6f8db3370aa664eb95cddfb8">ipc::transport::struc::Struct_reader::Config</a></li>
+<li>Reader_config&#160;:&#160;<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a80a0acd50eaff82c40343b3a466b9396">ipc::transport::struc::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;</a>, <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html#ad511c349cb6003b1af37ba0b727132fb">ipc::transport::struc::Msg_in&lt; Body_t, Reader_config_t &gt;</a>, <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a8c15f32d24c13d633a28ab4af783a716">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;</a></li>
+<li>Reassembly_q&#160;:&#160;<a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#af00ea6dc3d7833de161da54673fc1ded">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;</a></li>
+<li>Region&#160;:&#160;<a class="el" href="classipc_1_1shm_1_1bipc__ext_1_1Sparse__managed__shm.html#aa8e72dca1c653196dc8114075af91d66">ipc::shm::bipc_ext::Sparse_managed_shm&lt; Mem_algo, Index &gt;</a></li>
+<li>rep_t&#160;:&#160;<a class="el" href="classipc_1_1shm_1_1arena__lend_1_1detail_1_1Shm__pool__offset__ptr__data.html#a282119a88ce0912080116ab28edc1cc7">ipc::shm::arena_lend::detail::Shm_pool_offset_ptr_data&lt; Repository_type, CAN_STORE_RAW_PTR &gt;</a>, <a class="el" href="classipc_1_1shm_1_1arena__lend_1_1detail_1_1Shm__pool__offset__ptr__data__base.html#ac7e6552c9974b9417c4a41c8f0cd6294">ipc::shm::arena_lend::detail::Shm_pool_offset_ptr_data_base</a></li>
+<li>Repository&#160;:&#160;<a class="el" href="classipc_1_1shm_1_1arena__lend_1_1detail_1_1Shm__pool__offset__ptr__data.html#a5adbc56070c4231255ce81c810d3b394">ipc::shm::arena_lend::detail::Shm_pool_offset_ptr_data&lt; Repository_type, CAN_STORE_RAW_PTR &gt;</a>, <a class="el" href="classipc_1_1shm_1_1arena__lend_1_1detail_1_1Shm__pool__repo__lookup__core__rev.html#af1feb2a56473cf4b7bc6c74574abd92c">ipc::shm::arena_lend::detail::Shm_pool_repo_lookup_core_rev&lt; Repository_t, LOOKUP_CAN_FAIL, Shm_arena_t &gt;</a>, <a class="el" href="classipc_1_1shm_1_1arena__lend_1_1detail_1_1Thread__local__pool__lookup__fwd.html#a0167871dc22162fd51df9fddde3c9c8f">ipc::shm::arena_lend::detail::Thread_local_pool_lookup_fwd&lt; Repository_t, Shm_arena_t &gt;</a>, <a class="el" href="classipc_1_1shm_1_1arena__lend_1_1detail_1_1Thread__local__pool__lookup__rev.html#af73fc102f6361791f8185af9023989f6">ipc::shm::arena_lend::detail::Thread_local_pool_lookup_rev&lt; Repository_t, LOOKUP_CAN_FAIL, Shm_arena_t &gt;</a></li>
+<li>Representation&#160;:&#160;<a class="el" href="classipc_1_1shm_1_1arena__lend_1_1detail_1_1Shm__pool__offset__ptr__data.html#a5255d67fa51018620e21a530436c9f17">ipc::shm::arena_lend::detail::Shm_pool_offset_ptr_data&lt; Repository_type, CAN_STORE_RAW_PTR &gt;</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

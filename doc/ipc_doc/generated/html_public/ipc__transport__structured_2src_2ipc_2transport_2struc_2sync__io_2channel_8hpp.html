@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -77,8 +77,17 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code>-pattern counterpart to async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">transport::struc::Channel</a>.  <a href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Message.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Handlers::Message</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executor for handler indicating receipt of a message (an expected response as via <code><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#ac45cb425caf6ccabbfbf8d60c01dc175" title="See Async_io_obj counterpart; though naturally on_rsp_func() is invoked in the sync_io-pattern fashio...">async_request()</a></code>, an expected notification as via <code>expect_*()</code>, or an unexpected response as via <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#af17115c0dd164f481f49bd91e5a40182" title="See Async_io_obj counterpart; though naturally on_func() is invoked in the sync_io-pattern fashion.">set_unexpected_response_handler()</a>).  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Message.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Remote__unexpected__response.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Handlers::Remote_unexpected_response</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executor for handler indicating being informed by opposing side that <em>it</em> received a response to a message that was not issued as a response-expecting request (as via <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a41f2b1338b4d70d8b1e0cbdf4c0bb402" title="See Async_io_obj counterpart; though naturally on_func() is invoked in the sync_io-pattern fashion.">set_remote_unexpected_response_handler()</a>).  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Remote__unexpected__response.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Error.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Handlers::Error</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executor for handler indicating <code><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">Channel</a></code> error (as via <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a4d023db82fd4b5af62b5ea1297d57d35" title="Permanently memorizes the incoming-direction on-error handler, thus authorizing the emission of any i...">start_and_poll()</a> arg). Empty (<code>daddy</code> arg is enough).  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Error.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -103,14 +112,14 @@ Macros</h2></td></tr>
 <tr class="memdesc:a50e1bb663274c68c760263342ddfdcbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in ../structured_channel.hpp). <br /></td></tr>
 <tr class="separator:a50e1bb663274c68c760263342ddfdcbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefc68934c89912e7b5d0706bdb2be6e5"><td class="memItemLeft" align="right" valign="top"><a id="aefc68934c89912e7b5d0706bdb2be6e5" name="aefc68934c89912e7b5d0706bdb2be6e5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLASS_SIO_STRUCT_CHANNEL</b>&#160;&#160;&#160;  Channel&lt;Channel_obj, Message_body, Struct_builder_config, Struct_reader_config&gt;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLASS_SIO_STRUCT_CHANNEL</b>&#160;&#160;&#160;  Channel&lt;Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t&gt;</td></tr>
 <tr class="memdesc:aefc68934c89912e7b5d0706bdb2be6e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in ../structured_channel.hpp). <br /></td></tr>
 <tr class="separator:aefc68934c89912e7b5d0706bdb2be6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:40 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -79,6 +79,12 @@ $(function() {
  <a href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html#details">More...</a></p>
 
 <p><code>#include &lt;heap_serializer.hpp&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for ipc::transport::struc::Heap_reader::Config:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config__coll__graph.svg" width="180" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -94,8 +100,11 @@ flow::log::Logger *&#160;</td><td class="memItemRight" valign="bottom"><b>m_logg
 <tr class="memdesc:a7c2548263f04d8c37b846b534a874917"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logger to use for logging subsequently. <br /></td></tr>
 <tr class="separator:a7c2548263f04d8c37b846b534a874917"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad4ca0248c1ac0c869ab6033d1d43bed"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html#aad4ca0248c1ac0c869ab6033d1d43bed">m_n_segments_est</a></td></tr>
-<tr class="memdesc:aad4ca0248c1ac0c869ab6033d1d43bed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Best guess for how many times you expect to call <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html#aafa83559c9f91eabd128271c58cf2832" title="Implements concept API.">add_serialization_segment()</a>; or 0 if you have no guess.  <a href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html#aad4ca0248c1ac0c869ab6033d1d43bed">More...</a><br /></td></tr>
+<tr class="memdesc:aad4ca0248c1ac0c869ab6033d1d43bed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Best guess for how many times you expect to call <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html#ae3953b33d09dba28f04145f351a8aeb0" title="Implements concept API.">add_serialization_segment()</a>; or 0 if you have no guess.  <a href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html#aad4ca0248c1ac0c869ab6033d1d43bed">More...</a><br /></td></tr>
 <tr class="separator:aad4ca0248c1ac0c869ab6033d1d43bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69413b7ef538f28520ca6fbda12c2fc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1struc_1_1stat_1_1Serializer__stats_1_1Rcv.html">stat::Serializer_stats::Rcv</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html#a69413b7ef538f28520ca6fbda12c2fc4">m_stats</a></td></tr>
+<tr class="memdesc:a69413b7ef538f28520ca6fbda12c2fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__reader_1_1Config.html" title="Analogous to Struct_builder::Config but for deserialization.">Struct_reader::Config</a> concept.  <a href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html#a69413b7ef538f28520ca6fbda12c2fc4">More...</a><br /></td></tr>
+<tr class="separator:a69413b7ef538f28520ca6fbda12c2fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Implements <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__reader_1_1Config.html" title="Analogous to Struct_builder::Config but for deserialization.">Struct_reader::Config</a> sub-concept. </p>
@@ -112,8 +121,25 @@ flow::log::Logger *&#160;</td><td class="memItemRight" valign="bottom"><b>m_logg
       </table>
 </div><div class="memdoc">
 
-<p>Best guess for how many times you expect to call <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html#aafa83559c9f91eabd128271c58cf2832" title="Implements concept API.">add_serialization_segment()</a>; or 0 if you have no guess. </p>
+<p>Best guess for how many times you expect to call <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html#ae3953b33d09dba28f04145f351a8aeb0" title="Implements concept API.">add_serialization_segment()</a>; or 0 if you have no guess. </p>
 <p >This is a (fairly minor as of this writing) optimization opportunity; an internal container may be <code>reserve()</code>d preventing future reallocs. </p>
+
+</div>
+</div>
+<a id="a69413b7ef538f28520ca6fbda12c2fc4" name="a69413b7ef538f28520ca6fbda12c2fc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69413b7ef538f28520ca6fbda12c2fc4">&#9670;&nbsp;</a></span>m_stats</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1struc_1_1stat_1_1Serializer__stats_1_1Rcv.html">stat::Serializer_stats::Rcv</a>* ipc::transport::struc::Heap_reader::Config::m_stats</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__reader_1_1Config.html" title="Analogous to Struct_builder::Config but for deserialization.">Struct_reader::Config</a> concept. </p>
+<p >Pointee (null OK = no stats kept) for cumulative rcv-stats; must outlive each <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html" title="Implements Struct_reader concept by straightforwardly interpreting a serialization by Heap_fixed_buil...">Heap_reader</a> built with <code>*this</code> (the gauge decrements happen in <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html" title="Implements Struct_reader concept by straightforwardly interpreting a serialization by Heap_fixed_buil...">Heap_reader</a> dtor). </p>
 
 </div>
 </div>
@@ -123,7 +149,7 @@ flow::log::Logger *&#160;</td><td class="memItemRight" valign="bottom"><b>m_logg
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

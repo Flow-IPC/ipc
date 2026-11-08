@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -75,8 +75,7 @@ $(function() {
   <div class="headertitle"><div class="title">client_session_impl.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;ipc/shm/arena_lend/owner_shm_pool_listener_for_repository.hpp&quot;</code><br />
-<code>#include &quot;<a class="el" href="pool__arena_8hpp_source.html">ipc/shm/classic/pool_arena.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="pool__arena_8hpp_source.html">ipc/shm/classic/pool_arena.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2session__impl_8hpp_source.html">ipc/session/detail/shm/arena_lend/jemalloc/session_impl.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">ipc/session/detail/client_session_impl.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__session_2src_2ipc_2session_2error_8hpp_source.html">ipc/session/error.hpp</a>&quot;</code><br />
@@ -85,8 +84,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Client__session__impl.html">ipc::session::shm::arena_lend::jemalloc::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Core internally-used implementation of <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a837b4566cb2a734eb0ba58f285d084fe" title="This is to session::Client_session what shm::arena_lend::jemalloc::Server_session is to session::Serv...">shm::arena_lend::jemalloc::Client_session</a>: it is to the latter what its <code>public</code> super-class <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Client__session__impl.html" title="Core internally-used implementation of shm::arena_lend::jemalloc::Client_session: it is to the latter...">Client_session_impl</a> is to <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a837b4566cb2a734eb0ba58f285d084fe" title="This is to session::Client_session what shm::arena_lend::jemalloc::Server_session is to session::Serv...">Client_session</a>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Client__session__impl.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Client__session__impl.html">ipc::session::shm::arena_lend::jemalloc::Client_session_impl&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Core internally-used implementation of <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a90e935790e426087f28dd886d2d62f94" title="This is to session::Client_session what shm::arena_lend::jemalloc::Server_session is to session::Serv...">shm::arena_lend::jemalloc::Client_session</a>: it is to the latter what its <code>public</code> super-class <a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Client__session__impl.html" title="Core internally-used implementation of shm::arena_lend::jemalloc::Client_session: it is to the latter...">Client_session_impl</a> is to <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a90e935790e426087f28dd886d2d62f94" title="This is to session::Client_session what shm::arena_lend::jemalloc::Server_session is to session::Serv...">Client_session</a>.  <a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Client__session__impl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -98,30 +97,30 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespaceipc_1_1session"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module providing the broad lifecycle and shared-resource organization &ndash; via the <em>session</em> concept &ndash; in such a way as to make it possible for a given pair of processes A and B to set up <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> structured- or unstructured-message channels for general IPC, as well as to share data in SHared Memory (SHM). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1session_1_1shm"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session_1_1shm.html">ipc::session::shm</a></td></tr>
-<tr class="memdesc:namespaceipc_1_1session_1_1shm"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> sub-namespace that groups together facilities for SHM-backed sessions, particularly augmenting <a class="el" href="namespaceipc_1_1session.html#a77d8fda00e1e17f595a6a5d4c44375e7" title="A vanilla Client_session with no optional capabilities.">Client_session</a>, <a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc" title="A vanilla Server_session with no optional capabilities.">Server_session</a>, and <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> classes by providing SHM-backed zero-copy functionality. <br /></td></tr>
+<tr class="memdesc:namespaceipc_1_1session_1_1shm"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> sub-namespace that groups together facilities for SHM-backed sessions, particularly augmenting <a class="el" href="namespaceipc_1_1session.html#a1e6a18310889666975a0a8464a9c561a" title="A vanilla Client_session with no optional capabilities.">Client_session</a>, <a class="el" href="namespaceipc_1_1session.html#a961e318f69fac2b45e55346591ea46e1" title="A vanilla Server_session with no optional capabilities.">Server_session</a>, and <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> classes by providing SHM-backed zero-copy functionality. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1session_1_1shm_1_1arena__lend"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend.html">ipc::session::shm::arena_lend</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1session_1_1shm_1_1arena__lend"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bundles <a class="el" href="namespaceipc_1_1session_1_1shm.html" title="ipc::session sub-namespace that groups together facilities for SHM-backed sessions,...">ipc::session::shm</a> support for the various arena-lend-style SHM-providers, as of this writing at least <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html" title="Support for SHM-backed ipc::session sessions and session-servers with the SHM-jemalloc (ipc::shm::are...">ipc::session::shm::arena_lend::jemalloc</a>. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html">ipc::session::shm::arena_lend::jemalloc</a></td></tr>
-<tr class="memdesc:namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Support for SHM-backed <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> sessions and session-servers with the SHM-jemalloc (ipc::shm::arena_lend::jemalloc) provider. <br /></td></tr>
+<tr class="memdesc:namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Support for SHM-backed <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> sessions and session-servers with the SHM-jemalloc (<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1jemalloc.html" title="ipc::shm sub-module with the SHM-jemalloc SHM-provider. See ipc::shm doc header for introduction.">ipc::shm::arena_lend::jemalloc</a>) provider. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a0ca3a1342aaa6f74f392bd17a3ecee74"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp.html#a0ca3a1342aaa6f74f392bd17a3ecee74">TEMPLATE_JEM_CLI_SESSION_IMPL</a>&#160;&#160;&#160;  template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;</td></tr>
+<tr class="memitem:a0ca3a1342aaa6f74f392bd17a3ecee74"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp.html#a0ca3a1342aaa6f74f392bd17a3ecee74">TEMPLATE_JEM_CLI_SESSION_IMPL</a>&#160;&#160;&#160;  template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;</td></tr>
 <tr class="memdesc:a0ca3a1342aaa6f74f392bd17a3ecee74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp.html#a0ca3a1342aaa6f74f392bd17a3ecee74">More...</a><br /></td></tr>
 <tr class="separator:a0ca3a1342aaa6f74f392bd17a3ecee74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4efb0e9050646fc5f3e2c55871d9e2c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp.html#ad4efb0e9050646fc5f3e2c55871d9e2c">CLASS_JEM_CLI_SESSION_IMPL</a>&#160;&#160;&#160;  Client_session_impl&lt;S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;</td></tr>
+<tr class="memitem:ad4efb0e9050646fc5f3e2c55871d9e2c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp.html#ad4efb0e9050646fc5f3e2c55871d9e2c">CLASS_JEM_CLI_SESSION_IMPL</a>&#160;&#160;&#160;  Client_session_impl&lt;MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;</td></tr>
 <tr class="memdesc:ad4efb0e9050646fc5f3e2c55871d9e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp.html#ad4efb0e9050646fc5f3e2c55871d9e2c">More...</a><br /></td></tr>
 <tr class="separator:ad4efb0e9050646fc5f3e2c55871d9e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5044ac385b12210816fc95ca1d5408b6"><td class="memTemplParams" colspan="2">template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </td></tr>
-<tr class="memitem:a5044ac385b12210816fc95ca1d5408b6"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a5044ac385b12210816fc95ca1d5408b6">ipc::session::shm::arena_lend::jemalloc::operator&lt;&lt;</a> (std::ostream &amp;os, const Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &amp;val)</td></tr>
-<tr class="memdesc:a5044ac385b12210816fc95ca1d5408b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Client__session__impl.html" title="Core internally-used implementation of shm::arena_lend::jemalloc::Client_session: it is to the latter...">Client_session_impl</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a5044ac385b12210816fc95ca1d5408b6">More...</a><br /></td></tr>
-<tr class="separator:a5044ac385b12210816fc95ca1d5408b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a559486d899b3511980995dcc7999f7b1"><td class="memTemplParams" colspan="2">template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </td></tr>
+<tr class="memitem:a559486d899b3511980995dcc7999f7b1"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a559486d899b3511980995dcc7999f7b1">ipc::session::shm::arena_lend::jemalloc::operator&lt;&lt;</a> (std::ostream &amp;os, const Client_session_impl&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &amp;val)</td></tr>
+<tr class="memdesc:a559486d899b3511980995dcc7999f7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Client__session__impl.html" title="Core internally-used implementation of shm::arena_lend::jemalloc::Client_session: it is to the latter...">Client_session_impl</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a559486d899b3511980995dcc7999f7b1">More...</a><br /></td></tr>
+<tr class="separator:a559486d899b3511980995dcc7999f7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ad4efb0e9050646fc5f3e2c55871d9e2c" name="ad4efb0e9050646fc5f3e2c55871d9e2c"></a>
@@ -131,14 +130,14 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CLASS_JEM_CLI_SESSION_IMPL&#160;&#160;&#160;  Client_session_impl&lt;S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;</td>
+          <td class="memname">#define CLASS_JEM_CLI_SESSION_IMPL&#160;&#160;&#160;  Client_session_impl&lt;MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html#l00217">217</a> of file <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html#l00200">200</a> of file <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -149,21 +148,21 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TEMPLATE_JEM_CLI_SESSION_IMPL&#160;&#160;&#160;  template&lt;session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;</td>
+          <td class="memname">#define TEMPLATE_JEM_CLI_SESSION_IMPL&#160;&#160;&#160;  template&lt;session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html#l00214">214</a> of file <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html#l00197">197</a> of file <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2client__session__impl_8hpp_source.html">client_session_impl.hpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

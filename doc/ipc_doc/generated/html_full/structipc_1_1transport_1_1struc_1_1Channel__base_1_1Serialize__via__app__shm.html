@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -78,7 +78,7 @@ $(function() {
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Similar to <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel__base_1_1Serialize__via__session__shm.html" title="Tag type for ctor selection: Backing RAM for serialization comes from a given session::Session&#39;s SHM ...">Serialize_via_session_shm</a> but assumes per-app-scope SHM-arena (as opposed to per-session-scope) at compile time. </p>
 <p >More specifically: The source arena for our serialization comes from the <code>Session</code> impl supplied nearby in the ctor call; specifically its <code>.app_shm()</code> arena. As for deserialization on our end: we will be able to handle any objects sent from the other side, period.</p>
-<p ><code>Session</code> must be specifically <em>not</em> of the <code>"ipc::session::shm::arena_lend::*::Server_session"</code> variety; <code>"ipc::session::shm::arena_lend::*::Client_session"</code> cannot be used (any attempt will not compile). This is because the latter lacks <code>.app_shm()</code> due to the nature of arena-lending SHM providers, where each process allocates from an arena it maintains for itself (and from which the other process can only borrow objects). Some more notes on this are below in this doc header.</p>
+<p ><code>Session</code> must be specifically <em>not</em> of the <code>"ipc::session::shm::arena_lend::*::Server_session"</code> variety; <code>"ipc::session::shm::arena_lend::*::Client_session"</code> cannot be used (any attempt will not compile). This is because the latter lacks <code>.app_shm()</code> due to the nature of arena-lending SHM-providers, where each process allocates from an arena it maintains for itself (and from which the other process can only borrow objects). Some more notes on this are below in this doc header.</p>
 <p >For concision, and to compile successfully, use the <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> alias class template: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1classic.html#ac543b500a85f556564e592cbbefb6185" title="Convenience alias: Use this when constructing a struc::Channel with tag Channel_base::S_SERIALIZE_VIA...">shm::classic::Channel</a> or <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1arena__lend_1_1jemalloc.html#ab68a69ad42d97d754f4e77c8cadd3a5e" title="Convenience alias: Use this when constructing a struc::Channel with tag Channel_base::S_SERIALIZE_VIA...">shm::arena_lend::jemalloc::Channel</a>.</p>
 <h2>Relative benefits/limitations </h2>
 <h3>As compared to <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel__base_1_1Serialize__via__heap.html" title="Tag type for ctor selection: Backing memory for serialization comes from fixed-size segment allocatio...">Serialize_via_heap</a></h3>
@@ -87,20 +87,20 @@ $(function() {
 <p >See <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel__base_1_1Serialize__via__session__shm.html" title="Tag type for ctor selection: Backing RAM for serialization comes from a given session::Session&#39;s SHM ...">Serialize_via_session_shm</a>.</p>
 <p >In addition there is a <em>possibly</em> crucial difference in capabilities, depending on one's app needs (it is mentioned above in this doc header):</p><ul>
 <li>With SHM-jemalloc (via <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1arena__lend_1_1jemalloc.html#ab68a69ad42d97d754f4e77c8cadd3a5e" title="Convenience alias: Use this when constructing a struc::Channel with tag Channel_base::S_SERIALIZE_VIA...">shm::arena_lend::jemalloc::Channel</a>), it is <em>not</em> possible to use this per-app-scope mode on the client side; only per-session scope is available (this is a consequence of its asymmetrical, safety-oriented design as of this writing). On the <code>Server_session</code> end it is possible to create out-messages in either scope however.<ul>
-<li>An attempt to use this per-app-scope mode with a <code><a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a837b4566cb2a734eb0ba58f285d084fe" title="This is to session::Client_session what shm::arena_lend::jemalloc::Server_session is to session::Serv...">session::shm::arena_lend::jemalloc::Client_session</a></code> will be caught at compile time (it... won't compile).</li>
+<li>An attempt to use this per-app-scope mode with a <code><a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a90e935790e426087f28dd886d2d62f94" title="This is to session::Client_session what shm::arena_lend::jemalloc::Server_session is to session::Serv...">session::shm::arena_lend::jemalloc::Client_session</a></code> will be caught at compile time (it... won't compile).</li>
 <li>Specifically, then, with SHM-jemalloc, in session-server use either <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel__base_1_1Serialize__via__app__shm.html" title="Similar to Serialize_via_session_shm but assumes per-app-scope SHM-arena (as opposed to per-session-s...">Serialize_via_app_shm</a> or <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel__base_1_1Serialize__via__session__shm.html" title="Tag type for ctor selection: Backing RAM for serialization comes from a given session::Session&#39;s SHM ...">Serialize_via_session_shm</a>; in the opposing session-client use the latter only. Deserialization will work on both sides; but serialization (building/sending) will work only for session-scope resources (again, attempt to do otherwise will not compile). </li>
 </ul>
 </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="channel__base_8hpp_source.html#l00152">152</a> of file <a class="el" href="channel__base_8hpp_source.html">channel_base.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="channel__base_8hpp_source.html#l00154">154</a> of file <a class="el" href="channel__base_8hpp_source.html">channel_base.hpp</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>transport/struc/<a class="el" href="channel__base_8hpp_source.html">channel_base.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -88,9 +88,9 @@ Public Types</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename Arena&gt;<br />
 struct ipc::shm::Arena_to_borrower_allocator_arena&lt; Arena &gt;</div><p >Implementation of <a class="el" href="namespaceipc_1_1shm.html#a6c8474d5b7dda220ed1f6693fc2e3c89" title="Alias that, given an Arena type (with Arena::construct&lt;T&gt;() which allocates/constructs a T),...">Arena_to_borrower_allocator_arena_t</a>. </p>
-<p >See specializations which actually contain the mapping for specific <code>Arena</code> types; for example: <code>Arena_to_shm_session&lt;<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">classic::Pool_arena</a>&gt;</code>, <code>Arena_to_shm_session&lt;arena_lend::jemalloc::Ipc_arena&gt;</code>. </p>
+<p >See specializations which actually contain the mapping for specific <code>Arena</code> types; for example: <code><a class="el" href="structipc_1_1shm_1_1Arena__to__borrower__allocator__arena.html" title="Implementation of Arena_to_borrower_allocator_arena_t.">Arena_to_borrower_allocator_arena</a>&lt;<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">classic::Pool_arena</a>&gt;</code>, <code><a class="el" href="structipc_1_1shm_1_1Arena__to__borrower__allocator__arena.html" title="Implementation of Arena_to_borrower_allocator_arena_t.">Arena_to_borrower_allocator_arena</a>&lt;<a class="el" href="classipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena.html" title="Represents/manages a segregated collection of in-SHM (shared memory) objects and buffers allocated us...">arena_lend::jemalloc::Ipc_arena</a>&gt;</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="shm_2shm_8hpp_source.html#l00033">33</a> of file <a class="el" href="shm_2shm_8hpp_source.html">shm.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shm_2shm_8hpp_source.html#l00035">35</a> of file <a class="el" href="shm_2shm_8hpp_source.html">shm.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a07db04e58910f1ed18349b4006e6be1b" name="a07db04e58910f1ed18349b4006e6be1b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07db04e58910f1ed18349b4006e6be1b">&#9670;&nbsp;</a></span>Type</h2>
@@ -108,7 +108,7 @@ template&lt;typename Arena &gt; </div>
 
 <p>Implementation of <a class="el" href="namespaceipc_1_1shm.html#a6c8474d5b7dda220ed1f6693fc2e3c89" title="Alias that, given an Arena type (with Arena::construct&lt;T&gt;() which allocates/constructs a T),...">Arena_to_borrower_allocator_arena_t</a>. There is no default mapping; see specializations. </p>
 
-<p class="definition">Definition at line <a class="el" href="shm_2shm_8hpp_source.html#l00036">36</a> of file <a class="el" href="shm_2shm_8hpp_source.html">shm.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shm_2shm_8hpp_source.html#l00038">38</a> of file <a class="el" href="shm_2shm_8hpp_source.html">shm.hpp</a>.</p>
 
 </div>
 </div>
@@ -118,7 +118,7 @@ template&lt;typename Arena &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

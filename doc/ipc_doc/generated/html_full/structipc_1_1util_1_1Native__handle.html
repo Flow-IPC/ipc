@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -70,6 +70,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#related">Related Functions</a> &#124;
@@ -85,7 +86,7 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for ipc::util::Native_handle:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle__coll__graph.svg" width="276" height="119"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle__coll__graph.svg" width="288" height="119"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -94,69 +95,121 @@ Public Types</h2></td></tr>
 <tr class="memitem:a7194e8aaf9fc0109aad80222ae4ecb25"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> = int</td></tr>
 <tr class="memdesc:a7194e8aaf9fc0109aad80222ae4ecb25"><td class="mdescLeft">&#160;</td><td class="mdescRight">The native handle type. Much logic relies on this type being light-weight (fast to copy).  <a href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">More...</a><br /></td></tr>
 <tr class="separator:a7194e8aaf9fc0109aad80222ae4ecb25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2072797b16646cc28a5bd35d323e12aa"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a2072797b16646cc28a5bd35d323e12aa">Closer</a> = boost::core::functor&lt; <a class="el" href="structipc_1_1util_1_1Native__handle.html#a8074ac584216ccc6e5e387384ce46674">static_close</a> &gt;</td></tr>
+<tr class="memdesc:a2072797b16646cc28a5bd35d323e12aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function object type (storing no data), suitable for <code>unique_resource</code>, whose <code>(<a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>&amp; hndl)</code> operator invokes <a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc" title="Little utility that returns m_native_handle to the OS.">Native_handle::close()</a> on <code>hndl</code>.  <a href="structipc_1_1util_1_1Native__handle.html#a2072797b16646cc28a5bd35d323e12aa">More...</a><br /></td></tr>
+<tr class="separator:a2072797b16646cc28a5bd35d323e12aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a54a6ce76ea4ce5aa68da13d7a677ca9f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a54a6ce76ea4ce5aa68da13d7a677ca9f">Native_handle</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> native_handle=<a class="el" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a">S_NULL_HANDLE</a>)</td></tr>
-<tr class="memdesc:a54a6ce76ea4ce5aa68da13d7a677ca9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs with given payload; also subsumes no-args construction to mean constructing an object with <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>.  <a href="structipc_1_1util_1_1Native__handle.html#a54a6ce76ea4ce5aa68da13d7a677ca9f">More...</a><br /></td></tr>
-<tr class="separator:a54a6ce76ea4ce5aa68da13d7a677ca9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7176d013b1f8e0e09ba45d6fe7a81bb5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a7176d013b1f8e0e09ba45d6fe7a81bb5">Native_handle</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&amp;src)</td></tr>
-<tr class="memdesc:a7176d013b1f8e0e09ba45d6fe7a81bb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs object equal to <code>src</code>, while making <code>src == <a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a></code>.  <a href="structipc_1_1util_1_1Native__handle.html#a7176d013b1f8e0e09ba45d6fe7a81bb5">More...</a><br /></td></tr>
-<tr class="separator:a7176d013b1f8e0e09ba45d6fe7a81bb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45ae7a5b093b5419a524cf30b07921c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a45ae7a5b093b5419a524cf30b07921c4">Native_handle</a> (const <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;src)</td></tr>
-<tr class="memdesc:a45ae7a5b093b5419a524cf30b07921c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="structipc_1_1util_1_1Native__handle.html#a45ae7a5b093b5419a524cf30b07921c4">More...</a><br /></td></tr>
-<tr class="separator:a45ae7a5b093b5419a524cf30b07921c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e321b8cc4628d56cc903beae13c6438"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a6e321b8cc4628d56cc903beae13c6438">operator=</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&amp;src)</td></tr>
-<tr class="memdesc:a6e321b8cc4628d56cc903beae13c6438"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment; acts similarly to move ctor; but no-op if <code>*this == src</code>.  <a href="structipc_1_1util_1_1Native__handle.html#a6e321b8cc4628d56cc903beae13c6438">More...</a><br /></td></tr>
-<tr class="separator:a6e321b8cc4628d56cc903beae13c6438"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1d01d9b502f65c6fe0d8d4a1488cec4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#ad1d01d9b502f65c6fe0d8d4a1488cec4">operator=</a> (const <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;src)</td></tr>
-<tr class="memdesc:ad1d01d9b502f65c6fe0d8d4a1488cec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment; acts similarly to copy ctor.  <a href="structipc_1_1util_1_1Native__handle.html#ad1d01d9b502f65c6fe0d8d4a1488cec4">More...</a><br /></td></tr>
-<tr class="separator:ad1d01d9b502f65c6fe0d8d4a1488cec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11bd62ce0a7bef4bdfe666201c26d4dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc">null</a> () const</td></tr>
-<tr class="memdesc:a11bd62ce0a7bef4bdfe666201c26d4dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> equals <a class="el" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a" title="The value for m_native_handle such that null() == true; else it is false.">S_NULL_HANDLE</a>.  <a href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc">More...</a><br /></td></tr>
-<tr class="separator:a11bd62ce0a7bef4bdfe666201c26d4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45e74a5bc83ed72130fabe8e93d8d82e"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a45e74a5bc83ed72130fabe8e93d8d82e">Native_handle</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> native_handle=<a class="el" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">S_NULL_HANDLE</a>) noexcept</td></tr>
+<tr class="memdesc:a45e74a5bc83ed72130fabe8e93d8d82e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs with given payload; also subsumes no-args construction to mean constructing an object with <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>.  <a href="structipc_1_1util_1_1Native__handle.html#a45e74a5bc83ed72130fabe8e93d8d82e">More...</a><br /></td></tr>
+<tr class="separator:a45e74a5bc83ed72130fabe8e93d8d82e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33928d3671fdca4f3eb6b997b19b1cf9"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a33928d3671fdca4f3eb6b997b19b1cf9">Native_handle</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&amp;src) noexcept</td></tr>
+<tr class="memdesc:a33928d3671fdca4f3eb6b997b19b1cf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs object equal to <code>src</code>, while making <code>src.null() == true</code>.  <a href="structipc_1_1util_1_1Native__handle.html#a33928d3671fdca4f3eb6b997b19b1cf9">More...</a><br /></td></tr>
+<tr class="separator:a33928d3671fdca4f3eb6b997b19b1cf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f97bb51efd784fed1b1257caae76419"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a2f97bb51efd784fed1b1257caae76419">Native_handle</a> (const <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;src) noexcept</td></tr>
+<tr class="memdesc:a2f97bb51efd784fed1b1257caae76419"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="structipc_1_1util_1_1Native__handle.html#a2f97bb51efd784fed1b1257caae76419">More...</a><br /></td></tr>
+<tr class="separator:a2f97bb51efd784fed1b1257caae76419"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a512d71649fa27312d2f447580a73e728"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a512d71649fa27312d2f447580a73e728">operator=</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&amp;src) noexcept</td></tr>
+<tr class="memdesc:a512d71649fa27312d2f447580a73e728"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment; acts similarly to move ctor; but no-op if <code>this == &amp;src</code>.  <a href="structipc_1_1util_1_1Native__handle.html#a512d71649fa27312d2f447580a73e728">More...</a><br /></td></tr>
+<tr class="separator:a512d71649fa27312d2f447580a73e728"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08c258105bc038414d2013e5fe589105"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a08c258105bc038414d2013e5fe589105">operator=</a> (const <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;src) noexcept</td></tr>
+<tr class="memdesc:a08c258105bc038414d2013e5fe589105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment; acts similarly to copy ctor.  <a href="structipc_1_1util_1_1Native__handle.html#a08c258105bc038414d2013e5fe589105">More...</a><br /></td></tr>
+<tr class="separator:a08c258105bc038414d2013e5fe589105"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a290ac28f142c84ee7033932f4ee53c29"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29">null</a> () const noexcept</td></tr>
+<tr class="memdesc:a290ac28f142c84ee7033932f4ee53c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> equals <a class="el" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95" title="The value for m_native_handle such that null() == true; else it is false.">S_NULL_HANDLE</a>.  <a href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29">More...</a><br /></td></tr>
+<tr class="separator:a290ac28f142c84ee7033932f4ee53c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ea6048351bfd92d7d50f92138dfe5cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc">close</a> () noexcept</td></tr>
+<tr class="memdesc:a6ea6048351bfd92d7d50f92138dfe5cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Little utility that returns <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> to the OS.  <a href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc">More...</a><br /></td></tr>
+<tr class="separator:a6ea6048351bfd92d7d50f92138dfe5cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04cda130f65576866261d38dc8e9fd4a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a04cda130f65576866261d38dc8e9fd4a">is_open</a> () const noexcept</td></tr>
+<tr class="memdesc:a04cda130f65576866261d38dc8e9fd4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> is currently an open descriptor in this process; <code>false</code> if <a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a>.  <a href="structipc_1_1util_1_1Native__handle.html#a04cda130f65576866261d38dc8e9fd4a">More...</a><br /></td></tr>
+<tr class="separator:a04cda130f65576866261d38dc8e9fd4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceb716d03f3e7882706f40a8d5e3ee5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#aceb716d03f3e7882706f40a8d5e3ee5b">dup</a> (<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr) const</td></tr>
+<tr class="memdesc:aceb716d03f3e7882706f40a8d5e3ee5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new handle referring to the same underlying OS-level open resource as <code>*this</code>, a-la POSIX <code>"::dup()"</code> (in POSIX parlance: a new descript*or* to the same open file descript*ion*).  <a href="structipc_1_1util_1_1Native__handle.html#aceb716d03f3e7882706f40a8d5e3ee5b">More...</a><br /></td></tr>
+<tr class="separator:aceb716d03f3e7882706f40a8d5e3ee5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a8074ac584216ccc6e5e387384ce46674"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a8074ac584216ccc6e5e387384ce46674">static_close</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;hndl) noexcept</td></tr>
+<tr class="memdesc:a8074ac584216ccc6e5e387384ce46674"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simply calls <code>hndl.close()</code>; helpful for things like <code>boost::core::functor&lt;static_close&gt;</code>.  <a href="structipc_1_1util_1_1Native__handle.html#a8074ac584216ccc6e5e387384ce46674">More...</a><br /></td></tr>
+<tr class="separator:a8074ac584216ccc6e5e387384ce46674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0163d9407105e1b0f7988609731508db"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a0163d9407105e1b0f7988609731508db">make_default</a> () noexcept</td></tr>
+<tr class="memdesc:a0163d9407105e1b0f7988609731508db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simply returns <code><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>{}</code>, a null handle.  <a href="structipc_1_1util_1_1Native__handle.html#a0163d9407105e1b0f7988609731508db">More...</a><br /></td></tr>
+<tr class="separator:a0163d9407105e1b0f7988609731508db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac300500076b676a77b5bfe52cb38de5b"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#ac300500076b676a77b5bfe52cb38de5b">is_allocated</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> hndl) noexcept</td></tr>
+<tr class="memdesc:ac300500076b676a77b5bfe52cb38de5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simply returns <code>!hndl.<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a></code>.  <a href="structipc_1_1util_1_1Native__handle.html#ac300500076b676a77b5bfe52cb38de5b">More...</a><br /></td></tr>
+<tr class="separator:ac300500076b676a77b5bfe52cb38de5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab2f496740139c5752a25a30cf3325d86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">m_native_handle</a></td></tr>
-<tr class="memdesc:ab2f496740139c5752a25a30cf3325d86"><td class="mdescLeft">&#160;</td><td class="mdescRight">The native handle (possibly equal to <a class="el" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a" title="The value for m_native_handle such that null() == true; else it is false.">S_NULL_HANDLE</a>), the exact payload of this <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>.  <a href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">More...</a><br /></td></tr>
+<tr class="memdesc:ab2f496740139c5752a25a30cf3325d86"><td class="mdescLeft">&#160;</td><td class="mdescRight">The native handle (possibly equal to <a class="el" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95" title="The value for m_native_handle such that null() == true; else it is false.">S_NULL_HANDLE</a>), the exact payload of this <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>.  <a href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">More...</a><br /></td></tr>
 <tr class="separator:ab2f496740139c5752a25a30cf3325d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a68e693929170523d58b541d466bac03a"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a">S_NULL_HANDLE</a> = -1</td></tr>
-<tr class="memdesc:a68e693929170523d58b541d466bac03a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value for <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> such that <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>; else it is <code>false</code>.  <a href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a">More...</a><br /></td></tr>
-<tr class="separator:a68e693929170523d58b541d466bac03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19da06dc81aacb0c35917e3ecd9ddd95"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">S_NULL_HANDLE</a> = -1</td></tr>
+<tr class="memdesc:a19da06dc81aacb0c35917e3ecd9ddd95"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value for <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> such that <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>; else it is <code>false</code>.  <a href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">More...</a><br /></td></tr>
+<tr class="separator:a19da06dc81aacb0c35917e3ecd9ddd95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="related" name="related"></a>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p >(Note that these are not member functions.) </p>
 </td></tr>
-<tr class="memitem:ae4b4126f841ef060cdae15998e48691c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#ae4b4126f841ef060cdae15998e48691c">operator==</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2)</td></tr>
-<tr class="memdesc:ae4b4126f841ef060cdae15998e48691c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if the two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects are the same underlying handle.  <a href="structipc_1_1util_1_1Native__handle.html#ae4b4126f841ef060cdae15998e48691c">More...</a><br /></td></tr>
-<tr class="separator:ae4b4126f841ef060cdae15998e48691c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacbd7ee43d4912a8790a228dc7cf682d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#aacbd7ee43d4912a8790a228dc7cf682d">operator!=</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2)</td></tr>
-<tr class="memdesc:aacbd7ee43d4912a8790a228dc7cf682d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="structipc_1_1util_1_1Native__handle.html#aacbd7ee43d4912a8790a228dc7cf682d">More...</a><br /></td></tr>
-<tr class="separator:aacbd7ee43d4912a8790a228dc7cf682d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ff4b35d8fbbe2eb6266f3a7b0f07c49"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">operator&lt;</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2)</td></tr>
-<tr class="memdesc:a6ff4b35d8fbbe2eb6266f3a7b0f07c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a less-than comparison of two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects, with the usual total ordering guarantees.  <a href="structipc_1_1util_1_1Native__handle.html#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">More...</a><br /></td></tr>
-<tr class="separator:a6ff4b35d8fbbe2eb6266f3a7b0f07c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3883df3081441d71a9a989073264b04"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#ad3883df3081441d71a9a989073264b04">hash_value</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val)</td></tr>
-<tr class="memdesc:ad3883df3081441d71a9a989073264b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hasher of <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> for boost.unordered et al.  <a href="structipc_1_1util_1_1Native__handle.html#ad3883df3081441d71a9a989073264b04">More...</a><br /></td></tr>
-<tr class="separator:ad3883df3081441d71a9a989073264b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29b19e2440d200540619eb8c9c7239bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a29b19e2440d200540619eb8c9c7239bb">disowned_native_handle</a> (<a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a> &amp;&amp;src) noexcept</td></tr>
+<tr class="memdesc:a29b19e2440d200540619eb8c9c7239bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> constructed by relieving an existing auto-closing <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a> of its ownership of a particular raw handle and storing it, sans auto-closing protection, in that <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>.  <a href="structipc_1_1util_1_1Native__handle.html#a29b19e2440d200540619eb8c9c7239bb">More...</a><br /></td></tr>
+<tr class="separator:a29b19e2440d200540619eb8c9c7239bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55b346b1c8839776351242a3974d3345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a55b346b1c8839776351242a3974d3345">duped_native_handle</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> src, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:a55b346b1c8839776351242a3974d3345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>Own_native_handle{src.dup(err_code)}</code>: an auto-closing duplicate of <code>src</code>; on error the result is <code>.get().<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a></code>.  <a href="structipc_1_1util_1_1Native__handle.html#a55b346b1c8839776351242a3974d3345">More...</a><br /></td></tr>
+<tr class="separator:a55b346b1c8839776351242a3974d3345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9568a0f5ce8c7386c44f8da23b368bc6"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a9568a0f5ce8c7386c44f8da23b368bc6">operator==</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) noexcept</td></tr>
+<tr class="memdesc:a9568a0f5ce8c7386c44f8da23b368bc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if the two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects are the same underlying handle.  <a href="structipc_1_1util_1_1Native__handle.html#a9568a0f5ce8c7386c44f8da23b368bc6">More...</a><br /></td></tr>
+<tr class="separator:a9568a0f5ce8c7386c44f8da23b368bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac80858a49a824d88303ac7174a051b86"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#ac80858a49a824d88303ac7174a051b86">operator!=</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) noexcept</td></tr>
+<tr class="memdesc:ac80858a49a824d88303ac7174a051b86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation of similar <code>==</code>.  <a href="structipc_1_1util_1_1Native__handle.html#ac80858a49a824d88303ac7174a051b86">More...</a><br /></td></tr>
+<tr class="separator:ac80858a49a824d88303ac7174a051b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94a973e272e5dc44bbaa3931d2241b52"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a94a973e272e5dc44bbaa3931d2241b52">operator&lt;</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) noexcept</td></tr>
+<tr class="memdesc:a94a973e272e5dc44bbaa3931d2241b52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a less-than comparison of two <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> objects, with the usual total ordering guarantees.  <a href="structipc_1_1util_1_1Native__handle.html#a94a973e272e5dc44bbaa3931d2241b52">More...</a><br /></td></tr>
+<tr class="separator:a94a973e272e5dc44bbaa3931d2241b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a956b1b739e02118cb8b6c0f3bcbee6ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a956b1b739e02118cb8b6c0f3bcbee6ae">hash_value</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val) noexcept</td></tr>
+<tr class="memdesc:a956b1b739e02118cb8b6c0f3bcbee6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hasher of <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> for boost.unordered et al.  <a href="structipc_1_1util_1_1Native__handle.html#a956b1b739e02118cb8b6c0f3bcbee6ae">More...</a><br /></td></tr>
+<tr class="separator:a956b1b739e02118cb8b6c0f3bcbee6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a542d0d7cd95408ec289df9e3cc15cc71"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a542d0d7cd95408ec289df9e3cc15cc71">swap</a> (<a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;val1, <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;val2) noexcept</td></tr>
+<tr class="memdesc:a542d0d7cd95408ec289df9e3cc15cc71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard swap.  <a href="structipc_1_1util_1_1Native__handle.html#a542d0d7cd95408ec289df9e3cc15cc71">More...</a><br /></td></tr>
+<tr class="separator:a542d0d7cd95408ec289df9e3cc15cc71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28030c32e9c66f5c2862cbc6998885c7"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a28030c32e9c66f5c2862cbc6998885c7">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;val)</td></tr>
 <tr class="memdesc:a28030c32e9c66f5c2862cbc6998885c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> to the given <code>ostream</code>.  <a href="structipc_1_1util_1_1Native__handle.html#a28030c32e9c66f5c2862cbc6998885c7">More...</a><br /></td></tr>
 <tr class="separator:a28030c32e9c66f5c2862cbc6998885c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD. </p>
-<p >It would have been acceptable to simply use an alias to the native handle type (in POSIX, <code>int</code>), but this way is better stylistically with exactly zero performance overhead. Initialize it, e.g., <code><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> hndl(some_fd);</code>, where <code>some_fd</code> might be some POSIX-y FD (network socket, Unix domain socket, file descriptor, etc.). Or initialize via no-arg construction which results in an <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code> object. Copy construction, assignment, equality, total ordering, and hashing all work as one would expect and essentially the same as on the underlying native handles.</p>
-<p >It is either <a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> or stores a native handle. In the former case, <a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> being <code>true</code> means explicitly that <code>m_native_handle == <a class="el" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a" title="The value for m_native_handle such that null() == true; else it is false.">Native_handle::S_NULL_HANDLE</a></code>.</p>
-<h3>Rationale</h3>
-<p >Originally we tried to make it aggregate-initializable, like <code><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> hndl = {some_fd}</code>; for example see standard <code>array&lt;&gt;</code>. This is reassuring perf-wise; and it involves less (i.e., no) code to boot. However, it really is just one light-weight scalar, and there's 0% chance explicit construction is any slower. So, perf isn't an issue. Still, why not make it aggregate-initializable though? I (ygoldfel) gave up, eventually, because I wanted <em>some</em> non-default-behavior constructors to be available, namely no-args (<code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a54a6ce76ea4ce5aa68da13d7a677ca9f" title="Constructs with given payload; also subsumes no-args construction to mean constructing an object with...">Native_handle()</a></code> that makes an <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code> one) and move (<code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a7176d013b1f8e0e09ba45d6fe7a81bb5" title="Constructs object equal to src, while making src == null().">Native_handle(Native_handle&amp;&amp;)</a></code> that nullifies the source object). This isn't allowed in aggregate-initializable classes; so then I made some <code>static</code> "constructors" instead; but those aren't sufficient for containers... and on it went. This way, though verbose, just works out better for the API. </p>
+<p >It would have been acceptable to simply use an alias to the native handle type (in POSIX, <code>int</code>), but this way is better stylistically with exactly zero performance overhead. Initialize it, e.g., <code><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> hndl{some_fd};</code>, where <code>some_fd</code> might be some POSIX-y FD (network socket, Unix domain socket, file descriptor, etc.). Or initialize via no-arg construction which results in a <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code> object. Copy construction, assignment, equality, total ordering, and hashing all work as one would expect and essentially the same as on the underlying native handles.</p>
+<p >It is either <a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> or stores a native handle. In the former case, <a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> being <code>true</code> means explicitly that <code>m_native_handle == <a class="el" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95" title="The value for m_native_handle such that null() == true; else it is false.">Native_handle::S_NULL_HANDLE</a></code>.</p>
+<h3>Ownership</h3>
+<p ><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> is extremely simple. Other than providing move semantics, where the moved-from guy becomes <code>.<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a></code>, and an always-manual <a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc" title="Little utility that returns m_native_handle to the OS.">close()</a> API, it does not add ownership semantics. You're free to, e.g., assign a non-null socket value, then make a copy, then (e.g.) <code>.<a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc" title="Little utility that returns m_native_handle to the OS.">close()</a></code> them both &ndash; the second one being an erroneous double-close. However, if you need added cleverness to avoid such things:</p>
+<dl class="section see"><dt>See also</dt><dd>Helper type <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a>: It adds auto-<code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc" title="Little utility that returns m_native_handle to the OS.">close()</a></code> behavior, on destruction and being moved-to. (To get at the <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> itself, given an <code><a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a> x</code>: Call <code>x.get()</code>. The full API is similar to <code>unique_ptr</code>'s basic API: <code>.reset()</code>, <code>.release()</code>, and so on.) This can be quite useful when one is juggling <code><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a></code>s in some operation and, e.g., does not want to leak the OS-handles (descriptors) on early <code>return</code> due to error conditions. If ultimately a raw <code><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a></code> is required, one can always get it out via <code>.release()</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00062">62</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00065">65</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a2072797b16646cc28a5bd35d323e12aa" name="a2072797b16646cc28a5bd35d323e12aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2072797b16646cc28a5bd35d323e12aa">&#9670;&nbsp;</a></span>Closer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structipc_1_1util_1_1Native__handle.html#a2072797b16646cc28a5bd35d323e12aa">ipc::util::Native_handle::Closer</a> =  boost::core::functor&lt;<a class="el" href="structipc_1_1util_1_1Native__handle.html#a8074ac584216ccc6e5e387384ce46674">static_close</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function object type (storing no data), suitable for <code>unique_resource</code>, whose <code>(<a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>&amp; hndl)</code> operator invokes <a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc" title="Little utility that returns m_native_handle to the OS.">Native_handle::close()</a> on <code>hndl</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00086">86</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a7194e8aaf9fc0109aad80222ae4ecb25" name="a7194e8aaf9fc0109aad80222ae4ecb25"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7194e8aaf9fc0109aad80222ae4ecb25">&#9670;&nbsp;</a></span>handle_t</h2>
 
@@ -171,79 +224,13 @@ Related Functions</h2></td></tr>
 
 <p>The native handle type. Much logic relies on this type being light-weight (fast to copy). </p>
 
-<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00067">67</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00080">80</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a54a6ce76ea4ce5aa68da13d7a677ca9f" name="a54a6ce76ea4ce5aa68da13d7a677ca9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54a6ce76ea4ce5aa68da13d7a677ca9f">&#9670;&nbsp;</a></span>Native_handle() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ipc::util::Native_handle::Native_handle </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a>&#160;</td>
-          <td class="paramname"><em>native_handle</em> = <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a">S_NULL_HANDLE</a></code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Constructs with given payload; also subsumes no-args construction to mean constructing an object with <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">native_handle</td><td>Payload. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00033">33</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a7176d013b1f8e0e09ba45d6fe7a81bb5" name="a7176d013b1f8e0e09ba45d6fe7a81bb5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7176d013b1f8e0e09ba45d6fe7a81bb5">&#9670;&nbsp;</a></span>Native_handle() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ipc::util::Native_handle::Native_handle </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>src</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Constructs object equal to <code>src</code>, while making <code>src == <a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a></code>. </p>
-<h3>Rationale</h3>
-<p >This is move construction, but it's not about performance at all (as this is all quite cheap anyway); more to allow for the pattern of making an object from another object without propagating more copies of the underlying handle. Won't the default move ctor take care of it? No, because it'll just copy the handle and not nullify it.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>Source object which will be made <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00039">39</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="native__handle_8cpp_source.html#l00047">operator=()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_a7176d013b1f8e0e09ba45d6fe7a81bb5_cgraph.svg" width="539" height="83"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
-
-</div>
-</div>
-<a id="a45ae7a5b093b5419a524cf30b07921c4" name="a45ae7a5b093b5419a524cf30b07921c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45ae7a5b093b5419a524cf30b07921c4">&#9670;&nbsp;</a></span>Native_handle() <span class="overload">[3/3]</span></h2>
+<a id="a45e74a5bc83ed72130fabe8e93d8d82e" name="a45e74a5bc83ed72130fabe8e93d8d82e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45e74a5bc83ed72130fabe8e93d8d82e">&#9670;&nbsp;</a></span>Native_handle() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,7 +239,84 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">ipc::util::Native_handle::Native_handle </td>
+          <td class="memname">constexpr ipc::util::Native_handle::Native_handle </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a>&#160;</td>
+          <td class="paramname"><em>native_handle</em> = <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">S_NULL_HANDLE</a></code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs with given payload; also subsumes no-args construction to mean constructing an object with <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">native_handle</td><td>Payload. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00395">395</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a33928d3671fdca4f3eb6b997b19b1cf9" name="a33928d3671fdca4f3eb6b997b19b1cf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33928d3671fdca4f3eb6b997b19b1cf9">&#9670;&nbsp;</a></span>Native_handle() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr ipc::util::Native_handle::Native_handle </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs object equal to <code>src</code>, while making <code>src.null() == true</code>. </p>
+<h3>Rationale</h3>
+<p >This is move construction, but it's not about performance at all (as this is all quite cheap anyway); more to allow for the pattern of making an object from another object without propagating more copies of the underlying handle. Wouldn't the auto-generated move ctor take care of it? No, because it'd just copy the handle and not nullify the source.</p>
+<p >However: this is not a replacement for <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Source object which will be made <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00401">401</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00094">S_NULL_HANDLE</a>.</p>
+
+</div>
+</div>
+<a id="a2f97bb51efd784fed1b1257caae76419" name="a2f97bb51efd784fed1b1257caae76419"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f97bb51efd784fed1b1257caae76419">&#9670;&nbsp;</a></span>Native_handle() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr ipc::util::Native_handle::Native_handle </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em></td><td>)</td>
@@ -261,7 +325,7 @@ Here is the call graph for this function:</div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -277,40 +341,8 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a11bd62ce0a7bef4bdfe666201c26d4dc" name="a11bd62ce0a7bef4bdfe666201c26d4dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11bd62ce0a7bef4bdfe666201c26d4dc">&#9670;&nbsp;</a></span>null()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ipc::util::Native_handle::null </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns <code>true</code> if and only if <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> equals <a class="el" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a" title="The value for m_native_handle such that null() == true; else it is false.">S_NULL_HANDLE</a>. </p>
-<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00061">61</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00085">m_native_handle</a>, and <a class="el" href="native__handle_8hpp_source.html#l00075">S_NULL_HANDLE</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="posix__mq__handle_8cpp_source.html#l01122">ipc::transport::Posix_mq_handle::allow_impl()</a>, <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00027">ipc::util::sync_io::Asio_waitable_native_handle::Asio_waitable_native_handle()</a>, <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00065">ipc::util::sync_io::Asio_waitable_native_handle::assign()</a>, <a class="el" href="asio__local__stream__socket_8hpp_source.html#l00171">ipc::transport::asio_local_stream_socket::async_write_with_native_handle()</a>, <a class="el" href="app_8cpp_source.html#l00080">ipc::session::ensure_resource_owner_is_app()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l01083">ipc::transport::Posix_mq_handle::interrupt_impl()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00620">ipc::transport::Posix_mq_handle::max_msg_size()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00645">ipc::transport::Posix_mq_handle::max_n_msgs()</a>, <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00192">ipc::transport::Native_socket_stream_acceptor::on_next_peer_socket_or_error()</a>, <a class="el" href="native__handle_8cpp_source.html#l00066">operator&lt;&lt;()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00060">ipc::transport::Posix_mq_handle::Posix_mq_handle()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l02744">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_async_read_lead_or_continuation_msg()</a>, <a class="el" href="native__socket__stream__impl__rcv_8cpp_source.html#l00683">ipc::transport::sync_io::Native_socket_stream::Impl::rcv_nb_read_low_lvl_payload()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03068">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_on_async_read_continuation_msg()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l02924">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_on_async_read_lead_msg()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03248">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_on_async_read_proto_neg_msg()</a>, <a class="el" href="native__socket__stream__impl__rcv_8cpp_source.html#l00348">ipc::transport::sync_io::Native_socket_stream::Impl::rcv_on_handle_finalized()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00930">ipc::transport::Posix_mq_handle::receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00732">ipc::transport::Posix_mq_handle::send()</a>, <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00094">ipc::transport::sync_io::Native_socket_stream::Impl::send_native_handle()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00098">ipc::util::set_resource_permissions()</a>, <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00739">ipc::transport::sync_io::Native_socket_stream::Impl::snd_nb_write_low_lvl_payload()</a>, <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00605">ipc::transport::sync_io::Native_socket_stream::Impl::snd_sync_write_or_q_payload()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00998">ipc::transport::Posix_mq_handle::timed_receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00800">ipc::transport::Posix_mq_handle::timed_send()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00884">ipc::transport::Posix_mq_handle::try_receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00682">ipc::transport::Posix_mq_handle::try_send()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l01182">ipc::transport::Posix_mq_handle::wait_impl()</a>, and <a class="el" href="posix__mq__handle_8cpp_source.html#l00505">ipc::transport::Posix_mq_handle::~Posix_mq_handle()</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_a11bd62ce0a7bef4bdfe666201c26d4dc_icgraph.svg" width="935" height="2174"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
-
-</div>
-</div>
-<a id="ad1d01d9b502f65c6fe0d8d4a1488cec4" name="ad1d01d9b502f65c6fe0d8d4a1488cec4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1d01d9b502f65c6fe0d8d4a1488cec4">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<a id="a6ea6048351bfd92d7d50f92138dfe5cc" name="a6ea6048351bfd92d7d50f92138dfe5cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ea6048351bfd92d7d50f92138dfe5cc">&#9670;&nbsp;</a></span>close()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -319,7 +351,261 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp; ipc::util::Native_handle::operator= </td>
+          <td class="memname">void ipc::util::Native_handle::close </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Little utility that returns <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> to the OS. </p>
+<p >This is helpful to close, without invoking a native API (<code>"::close()"</code> really), a value returned by <code>transport::asio_local_stream_socket::Peer_socket::release()</code> or, perhaps, received over a <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a></code>.</p>
+<p ><code>*this</code> is nullified (<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> shall return <code>true</code>). No-op if already so at entry.</p>
+<p >Nothing is logged; no errors are emitted. This is intended for no-questions-asked cleanup.</p>
+<dl class="section note"><dt>Note</dt><dd>The <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> destructor, such as it is, absolutely does not <a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc" title="Little utility that returns m_native_handle to the OS.">close()</a> or anything similar. Similarly move ctor/assignment does not either. In fact nothing else in <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> does. If you want to do it, you must call <a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc" title="Little utility that returns m_native_handle to the OS.">close()</a> yourself. It is a utility; and <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> as a whole intentionally features minimal intelligence; it is merely an object wrapper around a raw handle. Move ctor/assignment nullifying the source object is as "intelligent" as we get.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>However: <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a> adds auto-<code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc" title="Little utility that returns m_native_handle to the OS.">close()</a></code> behavior, on destruction and being moved-to. This can be quite useful when one is juggling <code><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a></code>s and, e.g., does not want to leak the OS-handle (descriptor) on early <code>return</code> due to error conditions. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00032">32</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="native__handle_8cpp_source.html#l00032">close()</a>, <a class="el" href="native__handle_8hpp_source.html#l00102">m_native_handle</a>, <a class="el" href="native__handle_8hpp_source.html#l00422">null()</a>, and <a class="el" href="native__handle_8hpp_source.html#l00410">operator=()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="native__handle_8cpp_source.html#l00032">close()</a>, <a class="el" href="native__socket__stream__batch_8hpp_source.html#l00556">ipc::transport::Native_socket_stream_msg_batch_in&lt; Msg_resource_t &gt;::nb_read()</a>, <a class="el" href="asio__local__stream__socket_8hpp_source.html#l01113">ipc::transport::asio_local_stream_socket::Msg_batch_in&lt; Mutable_buffer_sequence_t, Msg_resource_t &gt;::nb_read()</a>, and <a class="el" href="client__context_8hpp_source.html#l00556">ipc::transport::struc::shm::rpc::Client_context&lt; Client_session_t &gt;::sync_connect_impl()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_a6ea6048351bfd92d7d50f92138dfe5cc_cgraph.svg" width="358" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_a6ea6048351bfd92d7d50f92138dfe5cc_icgraph.svg" width="379" height="227"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="aceb716d03f3e7882706f40a8d5e3ee5b" name="aceb716d03f3e7882706f40a8d5e3ee5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aceb716d03f3e7882706f40a8d5e3ee5b">&#9670;&nbsp;</a></span>dup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> ipc::util::Native_handle::dup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a new handle referring to the same underlying OS-level open resource as <code>*this</code>, a-la POSIX <code>"::dup()"</code> (in POSIX parlance: a new descript*or* to the same open file descript*ion*). </p>
+<p >The result is independent of <code>*this</code>: closing either leaves the other valid.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structipc_1_1util_1_1Native__handle.html#a55b346b1c8839776351242a3974d3345" title="Returns Own_native_handle{src.dup(err_code)}: an auto-closing duplicate of src; on error the result i...">duped_native_handle()</a> to obtain the same in the auto-closing <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a> form.</dd></dl>
+<p>An error is possible but generally indicates a truly exceptional situation, probably classifiable in one of these:</p><ul>
+<li>User error: <a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> is <code>true</code>.</li>
+<li>User error: The stored <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> is invalid/corrupt.</li>
+<li>Environment is hosed: Ran out of descriptors in the OS table/reached a configured limit/etc.</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>For all applicable OS: close-on-exec is set on the returned handle.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ac416e988563e44bf15fc6a81743eef53" title="User called an API with 1 or more arguments against the API spec.">transport::error::Code::S_INVALID_ARGUMENT</a> if <code>*this</code> is <code>.<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a></code>, system error (likely culprits estimated above). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>On success a non-<code>.<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a></code> <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>; on failure a <code>.<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code> one. (Per usual Flow semantics: on failure: if <code>!err_code</code>, exception is thrown instead.) </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00087">87</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="native__handle_8cpp_source.html#l00087">dup()</a>, <a class="el" href="native__handle_8hpp_source.html#l00102">m_native_handle</a>, <a class="el" href="native__handle_8hpp_source.html#l00422">null()</a>, and <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ac416e988563e44bf15fc6a81743eef53">ipc::transport::error::S_INVALID_ARGUMENT</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="native__handle_8cpp_source.html#l00087">dup()</a>, and <a class="el" href="native__handle_8cpp_source.html#l00126">duped_native_handle()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_aceb716d03f3e7882706f40a8d5e3ee5b_cgraph.svg" width="387" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_aceb716d03f3e7882706f40a8d5e3ee5b_icgraph.svg" width="387" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="ac300500076b676a77b5bfe52cb38de5b" name="ac300500076b676a77b5bfe52cb38de5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac300500076b676a77b5bfe52cb38de5b">&#9670;&nbsp;</a></span>is_allocated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool ipc::util::Native_handle::is_allocated </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td>
+          <td class="paramname"><em>hndl</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Simply returns <code>!hndl.<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a></code>. </p>
+<p >Rationale for existence: same as <a class="el" href="structipc_1_1util_1_1Native__handle.html#a0163d9407105e1b0f7988609731508db" title="Simply returns Native_handle{}, a null handle.">make_default()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hndl</td><td>See above. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00432">432</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00422">null()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_ac300500076b676a77b5bfe52cb38de5b_cgraph.svg" width="358" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a04cda130f65576866261d38dc8e9fd4a" name="a04cda130f65576866261d38dc8e9fd4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04cda130f65576866261d38dc8e9fd4a">&#9670;&nbsp;</a></span>is_open()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::util::Native_handle::is_open </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns whether <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> is currently an open descriptor in this process; <code>false</code> if <a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a>. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Caveats due to the nature of what <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> stores: 1, <a class="el" href="structipc_1_1util_1_1Native__handle.html#a04cda130f65576866261d38dc8e9fd4a" title="Returns whether m_native_handle is currently an open descriptor in this process; false if null().">is_open()</a> is a point-in-time answer (nothing prevents a close immediately after). 2, returning <code>true</code> means <em>some</em> descriptor identified by <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> is open &ndash; a stale value whose value has since been recycled answers <code>true</code>. So, watch out, particularly when there is asynchronicity and/or concurrency.</dd></dl>
+<p>Nothing is logged; no errors are emitted.</p>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00079">79</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00102">m_native_handle</a>.</p>
+
+</div>
+</div>
+<a id="a0163d9407105e1b0f7988609731508db" name="a0163d9407105e1b0f7988609731508db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0163d9407105e1b0f7988609731508db">&#9670;&nbsp;</a></span>make_default()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> ipc::util::Native_handle::make_default </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Simply returns <code><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>{}</code>, a null handle. </p>
+<h3>Rationale for existence</h3>
+<p >It is so that <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> can be used as its own traits class in <code>unique_resource&lt;<a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>&gt;</code>. You probably need not worry about it: just use <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a> when you need those capabilities.</p>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00427">427</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a290ac28f142c84ee7033932f4ee53c29" name="a290ac28f142c84ee7033932f4ee53c29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a290ac28f142c84ee7033932f4ee53c29">&#9670;&nbsp;</a></span>null()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool ipc::util::Native_handle::null </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns <code>true</code> if and only if <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> equals <a class="el" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95" title="The value for m_native_handle such that null() == true; else it is false.">S_NULL_HANDLE</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00422">422</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00102">m_native_handle</a>, and <a class="el" href="native__handle_8hpp_source.html#l00094">S_NULL_HANDLE</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="posix__mq__handle_8cpp_source.html#l01152">ipc::transport::Posix_mq_handle::allow_impl()</a>, <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00029">ipc::util::sync_io::Asio_waitable_native_handle::Asio_waitable_native_handle()</a>, <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00068">ipc::util::sync_io::Asio_waitable_native_handle::assign()</a>, <a class="el" href="native__handle_8cpp_source.html#l00032">close()</a>, <a class="el" href="native__handle_8cpp_source.html#l00087">dup()</a>, <a class="el" href="app_8cpp_source.html#l00085">ipc::session::ensure_resource_owner_is_app()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l01113">ipc::transport::Posix_mq_handle::interrupt_impl()</a>, <a class="el" href="native__handle_8hpp_source.html#l00432">is_allocated()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00652">ipc::transport::Posix_mq_handle::max_msg_size()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00677">ipc::transport::Posix_mq_handle::max_n_msgs()</a>, <a class="el" href="native__socket__stream__batch_8hpp_source.html#l00556">ipc::transport::Native_socket_stream_msg_batch_in&lt; Msg_resource_t &gt;::nb_read()</a>, <a class="el" href="native__handle_8cpp_source.html#l00138">operator&lt;&lt;()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00544">ipc::transport::Posix_mq_handle::operator=()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00961">ipc::transport::Posix_mq_handle::receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00764">ipc::transport::Posix_mq_handle::send()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l05650">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::send_core()</a>, <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00105">ipc::transport::sync_io::Native_socket_stream_impl::send_native_handle()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00104">ipc::util::set_resource_permissions()</a>, <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00887">ipc::transport::sync_io::Native_socket_stream_impl::snd_nb_write_low_lvl_payload()</a>, <a class="el" href="native__socket__stream__impl__snd_8cpp_source.html#l00670">ipc::transport::sync_io::Native_socket_stream_impl::snd_sync_write_or_q_payload()</a>, <a class="el" href="client__context_8hpp_source.html#l00556">ipc::transport::struc::shm::rpc::Client_context&lt; Client_session_t &gt;::sync_connect_impl()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l01029">ipc::transport::Posix_mq_handle::timed_receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00832">ipc::transport::Posix_mq_handle::timed_send()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00915">ipc::transport::Posix_mq_handle::try_receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00714">ipc::transport::Posix_mq_handle::try_send()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l01213">ipc::transport::Posix_mq_handle::wait_impl()</a>, and <a class="el" href="posix__mq__handle_8cpp_source.html#l00520">ipc::transport::Posix_mq_handle::~Posix_mq_handle()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_a290ac28f142c84ee7033932f4ee53c29_icgraph.svg" width="1518" height="2248"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a08c258105bc038414d2013e5fe589105" name="a08c258105bc038414d2013e5fe589105"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08c258105bc038414d2013e5fe589105">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp; ipc::util::Native_handle::operator= </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em></td><td>)</td>
@@ -328,7 +614,7 @@ Here is the caller graph for this function:</div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -344,54 +630,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a6e321b8cc4628d56cc903beae13c6438" name="a6e321b8cc4628d56cc903beae13c6438"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e321b8cc4628d56cc903beae13c6438">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp; ipc::util::Native_handle::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>src</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Move assignment; acts similarly to move ctor; but no-op if <code>*this == src</code>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>Source object which will be made <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>, unles <code>*this == src</code>. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>*this</code>. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00047">47</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00085">m_native_handle</a>, <a class="el" href="native__handle_8hpp_source.html#l00075">S_NULL_HANDLE</a>, <a class="el" href="bipc__mq__handle_8cpp_source.html#l00130">ipc::transport::swap()</a>, and <a class="el" href="shared__name_8cpp_source.html#l00420">ipc::util::swap()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="native__handle_8cpp_source.html#l00039">Native_handle()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_a6e321b8cc4628d56cc903beae13c6438_cgraph.svg" width="342" height="83"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_a6e321b8cc4628d56cc903beae13c6438_icgraph.svg" width="358" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
-
-</div>
-</div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="ad3883df3081441d71a9a989073264b04" name="ad3883df3081441d71a9a989073264b04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3883df3081441d71a9a989073264b04">&#9670;&nbsp;</a></span>hash_value()</h2>
+<a id="a512d71649fa27312d2f447580a73e728" name="a512d71649fa27312d2f447580a73e728"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a512d71649fa27312d2f447580a73e728">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -400,7 +640,191 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t hash_value </td>
+          <td class="memname">constexpr <a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp; ipc::util::Native_handle::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Move assignment; acts similarly to move ctor; but no-op if <code>this == &amp;src</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Source object which will be made <code>.<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>, unless <code>this == &amp;src</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>*this</code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00410">410</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00102">m_native_handle</a>, and <a class="el" href="native__handle_8hpp_source.html#l00094">S_NULL_HANDLE</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="native__handle_8cpp_source.html#l00032">close()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_a512d71649fa27312d2f447580a73e728_icgraph.svg" width="576" height="227"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a8074ac584216ccc6e5e387384ce46674" name="a8074ac584216ccc6e5e387384ce46674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8074ac584216ccc6e5e387384ce46674">&#9670;&nbsp;</a></span>static_close()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ipc::util::Native_handle::static_close </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td>
+          <td class="paramname"><em>hndl</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Simply calls <code>hndl.close()</code>; helpful for things like <code>boost::core::functor&lt;static_close&gt;</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hndl</td><td>See above. It can be <code>.<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a></code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00074">74</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a29b19e2440d200540619eb8c9c7239bb" name="a29b19e2440d200540619eb8c9c7239bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29b19e2440d200540619eb8c9c7239bb">&#9670;&nbsp;</a></span>disowned_native_handle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> disowned_native_handle </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> constructed by relieving an existing auto-closing <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">Own_native_handle</a> of its ownership of a particular raw handle and storing it, sans auto-closing protection, in that <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>. </p>
+<p >That is, it is equal to:</p>
+<div class="fragment"><div class="line"><span class="comment">// src is Own_native_handle.</span></div>
+<div class="line"><a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> ret{src.get()};</div>
+<div class="line">src.release();</div>
+<div class="line"><span class="keywordflow">return</span> ret;</div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html">ipc::util::Native_handle</a></div><div class="ttdoc">A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00065">native_handle.hpp:66</a></div></div>
+</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Source object; post-condition is <code>src.get().<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00119">119</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a55b346b1c8839776351242a3974d3345" name="a55b346b1c8839776351242a3974d3345"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55b346b1c8839776351242a3974d3345">&#9670;&nbsp;</a></span>duped_native_handle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a> duped_native_handle </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns <code>Own_native_handle{src.dup(err_code)}</code>: an auto-closing duplicate of <code>src</code>; on error the result is <code>.get().<a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a></code>. </p>
+<p >See <a class="el" href="structipc_1_1util_1_1Native__handle.html#aceb716d03f3e7882706f40a8d5e3ee5b" title="Returns a new handle referring to the same underlying OS-level open resource as *this,...">Native_handle::dup()</a> for details.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>Handle to duplicate; it is unaffected. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <a class="el" href="structipc_1_1util_1_1Native__handle.html#aceb716d03f3e7882706f40a8d5e3ee5b" title="Returns a new handle referring to the same underlying OS-level open resource as *this,...">Native_handle::dup()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00126">126</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="native__handle_8cpp_source.html#l00087">dup()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_a55b346b1c8839776351242a3974d3345_cgraph.svg" width="584" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a956b1b739e02118cb8b6c0f3bcbee6ae" name="a956b1b739e02118cb8b6c0f3bcbee6ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a956b1b739e02118cb8b6c0f3bcbee6ae">&#9670;&nbsp;</a></span>hash_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classsize__t.html">size_t</a> hash_value </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td>
           <td class="paramname"><em>val</em></td><td>)</td>
@@ -423,14 +847,12 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00090">90</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00085">m_native_handle</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00131">131</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aacbd7ee43d4912a8790a228dc7cf682d" name="aacbd7ee43d4912a8790a228dc7cf682d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacbd7ee43d4912a8790a228dc7cf682d">&#9670;&nbsp;</a></span>operator!=()</h2>
+<a id="ac80858a49a824d88303ac7174a051b86" name="ac80858a49a824d88303ac7174a051b86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac80858a49a824d88303ac7174a051b86">&#9670;&nbsp;</a></span>operator!=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -439,7 +861,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool operator!= </td>
+          <td class="memname">constexpr bool operator!= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -473,20 +895,20 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00085">85</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00442">442</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__handle_8cpp_source.html#l00080">ipc::util::operator==()</a>.</p>
+<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00437">operator==()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_aacbd7ee43d4912a8790a228dc7cf682d_cgraph.svg" width="344" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_ac80858a49a824d88303ac7174a051b86_cgraph.svg" width="358" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
 </div>
 </div>
-<a id="a6ff4b35d8fbbe2eb6266f3a7b0f07c49" name="a6ff4b35d8fbbe2eb6266f3a7b0f07c49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">&#9670;&nbsp;</a></span>operator&lt;()</h2>
+<a id="a94a973e272e5dc44bbaa3931d2241b52" name="a94a973e272e5dc44bbaa3931d2241b52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94a973e272e5dc44bbaa3931d2241b52">&#9670;&nbsp;</a></span>operator&lt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -495,7 +917,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool operator&lt; </td>
+          <td class="memname">constexpr bool operator&lt; </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -529,9 +951,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether left side is considered strictly less-than right side. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00097">97</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00085">m_native_handle</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00457">457</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
 
 </div>
 </div>
@@ -579,9 +999,9 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00066">66</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00138">138</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00085">m_native_handle</a>, and <a class="el" href="native__handle_8cpp_source.html#l00061">null()</a>.</p>
+<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00102">m_native_handle</a>, and <a class="el" href="native__handle_8hpp_source.html#l00422">null()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -591,8 +1011,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="ae4b4126f841ef060cdae15998e48691c" name="ae4b4126f841ef060cdae15998e48691c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4b4126f841ef060cdae15998e48691c">&#9670;&nbsp;</a></span>operator==()</h2>
+<a id="a9568a0f5ce8c7386c44f8da23b368bc6" name="a9568a0f5ce8c7386c44f8da23b368bc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9568a0f5ce8c7386c44f8da23b368bc6">&#9670;&nbsp;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -601,7 +1021,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool operator== </td>
+          <td class="memname">constexpr bool operator== </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&#160;</td>
           <td class="paramname"><em>val1</em>, </td>
@@ -635,9 +1055,65 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__handle_8cpp_source.html#l00080">80</a> of file <a class="el" href="native__handle_8cpp_source.html">native_handle.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00437">437</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00085">m_native_handle</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__handle_8hpp_source.html#l00442">operator!=()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1util_1_1Native__handle_a9568a0f5ce8c7386c44f8da23b368bc6_icgraph.svg" width="358" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a542d0d7cd95408ec289df9e3cc15cc71" name="a542d0d7cd95408ec289df9e3cc15cc71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a542d0d7cd95408ec289df9e3cc15cc71">&#9670;&nbsp;</a></span>swap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td>
+          <td class="paramname"><em>val1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> &amp;&#160;</td>
+          <td class="paramname"><em>val2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Standard swap. </p>
+<p >(Proper pattern is <code>using std::swap;</code> and then <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a542d0d7cd95408ec289df9e3cc15cc71" title="Standard swap.">swap()</a></code> in any using function.)</p>
+<h3>Rationale for existence</h3>
+<p ><code><a class="el" href="namespaceipc_1_1util.html#ab1f5535316175110d2cbe40ce57c2cb2" title="Standard swap.">std::swap()</a></code> would perform 3 move-assigns; <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> move-assignment/construction involves nullifying the source <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">Native_handle::m_native_handle</a>; that's not necessary in a swap and wastes cycles.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">val1</td><td>Object to swap. </td></tr>
+    <tr><td class="paramname">val2</td><td>Object to swap. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00447">447</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
 
 </div>
 </div>
@@ -654,17 +1130,17 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>The native handle (possibly equal to <a class="el" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a" title="The value for m_native_handle such that null() == true; else it is false.">S_NULL_HANDLE</a>), the exact payload of this <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>. </p>
-<p >It can, of course, be assigned and accessed explicitly. The best way to initialize a new <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> is, therefore: <code><a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>{some_native_handle}</code>. You may also use the <a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> "constructor" to create a <a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> handle. </p>
+<p>The native handle (possibly equal to <a class="el" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95" title="The value for m_native_handle such that null() == true; else it is false.">S_NULL_HANDLE</a>), the exact payload of this <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>. </p>
+<p >It can, of course, be assigned and accessed explicitly. </p>
 
-<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00085">85</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00102">102</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00065">ipc::util::sync_io::Asio_waitable_native_handle::assign()</a>, <a class="el" href="app_8cpp_source.html#l00080">ipc::session::ensure_resource_owner_is_app()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00408">ipc::transport::Posix_mq_handle::epoll_setup()</a>, <a class="el" href="native__handle_8cpp_source.html#l00090">hash_value()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00620">ipc::transport::Posix_mq_handle::max_msg_size()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00645">ipc::transport::Posix_mq_handle::max_n_msgs()</a>, <a class="el" href="asio__local__stream__socket_8cpp_source.html#l00036">ipc::transport::asio_local_stream_socket::nb_write_some_with_native_handle()</a>, <a class="el" href="native__handle_8cpp_source.html#l00061">null()</a>, <a class="el" href="native__handle_8cpp_source.html#l00097">operator&lt;()</a>, <a class="el" href="native__handle_8cpp_source.html#l00066">operator&lt;&lt;()</a>, <a class="el" href="native__handle_8cpp_source.html#l00047">operator=()</a>, <a class="el" href="native__handle_8cpp_source.html#l00080">operator==()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00060">ipc::transport::Posix_mq_handle::Posix_mq_handle()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00930">ipc::transport::Posix_mq_handle::receive()</a>, <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00612">ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::replace_event_wait_handles()</a>, <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00789">ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_handle &gt;::replace_event_wait_handles()</a>, <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8cpp_source.html#l00461">ipc::transport::sync_io::Native_socket_stream::Impl::replace_event_wait_handles()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00732">ipc::transport::Posix_mq_handle::send()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00664">ipc::transport::Posix_mq_handle::set_non_blocking()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00098">ipc::util::set_resource_permissions()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00998">ipc::transport::Posix_mq_handle::timed_receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00800">ipc::transport::Posix_mq_handle::timed_send()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00884">ipc::transport::Posix_mq_handle::try_receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00682">ipc::transport::Posix_mq_handle::try_send()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l01182">ipc::transport::Posix_mq_handle::wait_impl()</a>, and <a class="el" href="posix__mq__handle_8cpp_source.html#l00505">ipc::transport::Posix_mq_handle::~Posix_mq_handle()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00068">ipc::util::sync_io::Asio_waitable_native_handle::assign()</a>, <a class="el" href="native__handle_8cpp_source.html#l00032">close()</a>, <a class="el" href="native__handle_8cpp_source.html#l00087">dup()</a>, <a class="el" href="app_8cpp_source.html#l00085">ipc::session::ensure_resource_owner_is_app()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00454">ipc::transport::Posix_mq_handle::epoll_setup()</a>, <a class="el" href="native__handle_8cpp_source.html#l00079">is_open()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00652">ipc::transport::Posix_mq_handle::max_msg_size()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00677">ipc::transport::Posix_mq_handle::max_n_msgs()</a>, <a class="el" href="asio__local__stream__socket_8hpp_source.html#l01113">ipc::transport::asio_local_stream_socket::Msg_batch_in&lt; Mutable_buffer_sequence_t, Msg_resource_t &gt;::nb_read()</a>, <a class="el" href="asio__local__stream__socket_8hpp_source.html#l01621">ipc::transport::asio_local_stream_socket::nb_write_some_with_native_handle()</a>, <a class="el" href="native__handle_8hpp_source.html#l00422">null()</a>, <a class="el" href="native__handle_8cpp_source.html#l00138">operator&lt;&lt;()</a>, <a class="el" href="native__handle_8hpp_source.html#l00410">operator=()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00544">ipc::transport::Posix_mq_handle::operator=()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00070">ipc::transport::Posix_mq_handle::Posix_mq_handle()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00961">ipc::transport::Posix_mq_handle::receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00764">ipc::transport::Posix_mq_handle::send()</a>, <a class="el" href="session__vat__network_8hpp_source.html#l01449">ipc::transport::struc::shm::rpc::Session_vat_network&lt; Shm_lender_borrower_t, Shm_arena_t &gt;::Session_vat_network()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00696">ipc::transport::Posix_mq_handle::set_non_blocking()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00104">ipc::util::set_resource_permissions()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l01029">ipc::transport::Posix_mq_handle::timed_receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00832">ipc::transport::Posix_mq_handle::timed_send()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00915">ipc::transport::Posix_mq_handle::try_receive()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l00714">ipc::transport::Posix_mq_handle::try_send()</a>, <a class="el" href="posix__mq__handle_8cpp_source.html#l01213">ipc::transport::Posix_mq_handle::wait_impl()</a>, and <a class="el" href="posix__mq__handle_8cpp_source.html#l00520">ipc::transport::Posix_mq_handle::~Posix_mq_handle()</a>.</p>
 
 </div>
 </div>
-<a id="a68e693929170523d58b541d466bac03a" name="a68e693929170523d58b541d466bac03a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68e693929170523d58b541d466bac03a">&#9670;&nbsp;</a></span>S_NULL_HANDLE</h2>
+<a id="a19da06dc81aacb0c35917e3ecd9ddd95" name="a19da06dc81aacb0c35917e3ecd9ddd95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19da06dc81aacb0c35917e3ecd9ddd95">&#9670;&nbsp;</a></span>S_NULL_HANDLE</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -673,22 +1149,22 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">Native_handle::handle_t</a> ipc::util::Native_handle::S_NULL_HANDLE = -1</td>
+          <td class="memname">constexpr <a class="el" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> ipc::util::Native_handle::S_NULL_HANDLE = -1</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>The value for <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> such that <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>; else it is <code>false</code>. </p>
+<p>The value for <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">m_native_handle</a> such that <code><a class="el" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29" title="Returns true if and only if m_native_handle equals S_NULL_HANDLE.">null()</a> == true</code>; else it is <code>false</code>. </p>
 <p >No valid handle ever equals this. </p>
 
-<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00075">75</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__handle_8hpp_source.html#l00094">94</a> of file <a class="el" href="native__handle_8hpp_source.html">native_handle.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__handle_8cpp_source.html#l00061">null()</a>, and <a class="el" href="native__handle_8cpp_source.html#l00047">operator=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="native__handle_8hpp_source.html#l00401">Native_handle()</a>, <a class="el" href="native__handle_8hpp_source.html#l00422">null()</a>, and <a class="el" href="native__handle_8hpp_source.html#l00410">operator=()</a>.</p>
 
 </div>
 </div>
@@ -699,7 +1175,7 @@ Here is the call graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

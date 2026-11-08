@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -70,7 +70,6 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">serializer.hpp File Reference</div></div>
 </div><!--header-->
@@ -78,6 +77,8 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="heap__serializer_8hpp_source.html">ipc/transport/struc/heap_serializer.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2error_8hpp_source.html">ipc/transport/struc/shm/error.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="capnp__msg__builder_8hpp_source.html">ipc/transport/struc/shm/capnp_msg_builder.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer__stats_8hpp_source.html">ipc/transport/struc/shm/serializer_stats.hpp</a>&quot;</code><br />
+<code>#include &quot;ipc/transport/struc/shm/schema/detail/serialization.capnp.h&quot;</code><br />
 <code>#include &lt;flow/error/error.hpp&gt;</code><br />
 <code>#include &lt;boost/move/make_unique.hpp&gt;</code><br />
 </div>
@@ -89,7 +90,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">shm::Builder</a> base that contains non-parameterized <code>public</code> items such as tag types and constants.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept with maximal zero-copy perf by (1) storing the actual user-schema-controlled message using the SHM provider of choice, in SHM, and (2) straightforwardly allocating 1 segment in regular heap and placing the SHM handle there for transmission over IPC.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept with maximal zero-copy perf by (1) storing the actual user-schema-controlled message using the SHM-provider of choice, in SHM, and (2) straightforwardly allocating 1 segment in regular heap and placing the SHM handle there for transmission over IPC.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Config</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> sub-concept.  <a href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#details">More...</a><br /></td></tr>
@@ -116,25 +117,10 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespaceipc_1_1transport_1_1struc_1_1shm"><td class="mdescLeft">&#160;</td><td class="mdescRight">Segregates zero-copy/SHM implementations of concepts residing in parent namespace <a class="el" href="namespaceipc_1_1transport_1_1struc.html" title="Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...">ipc::transport::struc</a> proper &ndash; most notably the concepts <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">ipc::transport::struc::Struct_builder</a> and <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">ipc::transport::struc::Struct_reader</a> &ndash; and items related to them. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a0a2bd7de6f7becc91a76aae897d6821d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#a0a2bd7de6f7becc91a76aae897d6821d">TEMPLATE_SHM_BUILDER</a>&#160;&#160;&#160;  template&lt;typename Shm_arena&gt;</td></tr>
-<tr class="memdesc:a0a2bd7de6f7becc91a76aae897d6821d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#a0a2bd7de6f7becc91a76aae897d6821d">More...</a><br /></td></tr>
-<tr class="separator:a0a2bd7de6f7becc91a76aae897d6821d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c1d27726471c6aa66a98b8b6b26331c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#a6c1d27726471c6aa66a98b8b6b26331c">CLASS_SHM_BUILDER</a>&#160;&#160;&#160;  <a class="el" href="classStruct__builder__config_1_1Builder.html">Builder</a>&lt;Shm_arena&gt;</td></tr>
-<tr class="memdesc:a6c1d27726471c6aa66a98b8b6b26331c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#a6c1d27726471c6aa66a98b8b6b26331c">More...</a><br /></td></tr>
-<tr class="separator:a6c1d27726471c6aa66a98b8b6b26331c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1f45b4161ee9cad33108b8f94f981f5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#aa1f45b4161ee9cad33108b8f94f981f5">TEMPLATE_SHM_READER</a>&#160;&#160;&#160;  template&lt;typename Shm_arena&gt;</td></tr>
-<tr class="memdesc:aa1f45b4161ee9cad33108b8f94f981f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#aa1f45b4161ee9cad33108b8f94f981f5">More...</a><br /></td></tr>
-<tr class="separator:aa1f45b4161ee9cad33108b8f94f981f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5a44fbd142148023f896d8a16898887"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#aa5a44fbd142148023f896d8a16898887">CLASS_SHM_READER</a>&#160;&#160;&#160;  Reader&lt;Shm_arena&gt;</td></tr>
-<tr class="memdesc:aa5a44fbd142148023f896d8a16898887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#aa5a44fbd142148023f896d8a16898887">More...</a><br /></td></tr>
-<tr class="separator:aa5a44fbd142148023f896d8a16898887"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a705eab4975089bdd7c6d961b079a2252"><td class="memTemplParams" colspan="2">template&lt;typename Shm_arena &gt; </td></tr>
-<tr class="memitem:a705eab4975089bdd7c6d961b079a2252"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#a705eab4975089bdd7c6d961b079a2252">ipc::transport::struc::shm::operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classStruct__builder__config_1_1Builder.html">Builder</a>&lt; Shm_arena &gt; &amp;val)</td></tr>
+<tr class="memitem:a705eab4975089bdd7c6d961b079a2252"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#a705eab4975089bdd7c6d961b079a2252">ipc::transport::struc::shm::operator&lt;&lt;</a> (std::ostream &amp;os, const Builder&lt; Shm_arena &gt; &amp;val)</td></tr>
 <tr class="memdesc:a705eab4975089bdd7c6d961b079a2252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">Builder</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#a705eab4975089bdd7c6d961b079a2252">More...</a><br /></td></tr>
 <tr class="separator:a705eab4975089bdd7c6d961b079a2252"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6aed71b2ab83f2a087d66562ea2962b9"><td class="memTemplParams" colspan="2">template&lt;typename Shm_arena &gt; </td></tr>
@@ -142,83 +128,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:a6aed71b2ab83f2a087d66562ea2962b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html" title="Implements Struct_reader concept by interpreting a serialization by shm::Builder with the same templa...">Reader</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#a6aed71b2ab83f2a087d66562ea2962b9">More...</a><br /></td></tr>
 <tr class="separator:a6aed71b2ab83f2a087d66562ea2962b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a6c1d27726471c6aa66a98b8b6b26331c" name="a6c1d27726471c6aa66a98b8b6b26331c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c1d27726471c6aa66a98b8b6b26331c">&#9670;&nbsp;</a></span>CLASS_SHM_BUILDER</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CLASS_SHM_BUILDER&#160;&#160;&#160;  <a class="el" href="classStruct__builder__config_1_1Builder.html">Builder</a>&lt;Shm_arena&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
-
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00513">513</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
-
-</div>
-</div>
-<a id="aa5a44fbd142148023f896d8a16898887" name="aa5a44fbd142148023f896d8a16898887"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5a44fbd142148023f896d8a16898887">&#9670;&nbsp;</a></span>CLASS_SHM_READER</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CLASS_SHM_READER&#160;&#160;&#160;  Reader&lt;Shm_arena&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
-
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00519">519</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a0a2bd7de6f7becc91a76aae897d6821d" name="a0a2bd7de6f7becc91a76aae897d6821d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a2bd7de6f7becc91a76aae897d6821d">&#9670;&nbsp;</a></span>TEMPLATE_SHM_BUILDER</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TEMPLATE_SHM_BUILDER&#160;&#160;&#160;  template&lt;typename Shm_arena&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
-
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00510">510</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
-
-</div>
-</div>
-<a id="aa1f45b4161ee9cad33108b8f94f981f5" name="aa1f45b4161ee9cad33108b8f94f981f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1f45b4161ee9cad33108b8f94f981f5">&#9670;&nbsp;</a></span>TEMPLATE_SHM_READER</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TEMPLATE_SHM_READER&#160;&#160;&#160;  template&lt;typename Shm_arena&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
-
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00516">516</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

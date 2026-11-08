@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -77,7 +77,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Internal-use type that adapts a given PEER-state <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a> <em>core</em> into the async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a>.  
+<p>Type that adapts a given PEER-state <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a> <em>core</em> into the async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a>.  
  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>&gt;</code></p>
@@ -109,17 +109,29 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a01e5d7e07bd3258ea822c4ad79a7e2d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be invoked after <code>-&gt;stop()</code>ping <code>*worker</code> (from ctor), as well as flushing any still-queued tasks in its <code>Task_engine</code> (via <code>.restart()</code> and <code>.poll()</code>), this satisfies the customer adapter dtor's contract which is to invoke any not-yet-fired completion handlers with special operation-aborted error code.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a01e5d7e07bd3258ea822c4ad79a7e2d6">More...</a><br /></td></tr>
 <tr class="separator:a01e5d7e07bd3258ea822c4ad79a7e2d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0483d9166a8d19bae7746ae8acc7721c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c">send_native_handle</a> (<a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">Native_handle</a> hndl_or_null, const <a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a> &amp;meta_blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code)</td></tr>
-<tr class="memdesc:a0483d9166a8d19bae7746ae8acc7721c"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c">More...</a><br /></td></tr>
+<tr class="memdesc:a0483d9166a8d19bae7746ae8acc7721c"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Native_handle_sender</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c">More...</a><br /></td></tr>
 <tr class="separator:a0483d9166a8d19bae7746ae8acc7721c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a198ded3921acd7293f3dc7fdfdc3f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5">send_blob</a> (const <a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a> &amp;blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code)</td></tr>
-<tr class="memdesc:a6a198ded3921acd7293f3dc7fdfdc3f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5">More...</a><br /></td></tr>
+<tr class="memdesc:a6a198ded3921acd7293f3dc7fdfdc3f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Blob_sender</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5">More...</a><br /></td></tr>
 <tr class="separator:a6a198ded3921acd7293f3dc7fdfdc3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61f6229bcef05a266c63d36ab2bd4df0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0">async_end_sending</a> (flow::async::Task_asio_err &amp;&amp;on_done_func_or_empty)</td></tr>
-<tr class="memdesc:a61f6229bcef05a266c63d36ab2bd4df0"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart; or leave <code>on_done_func_or_empty.empty()</code> for <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#a8c60142c23bf70bc3722d557ad309d58" title="Equivalent to async_end_sending(&amp;E, F) wherein F() does nothing, and E is some Error_code &quot;sink&quot; igno...">Native_handle_sender::end_sending()</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0">More...</a><br /></td></tr>
+<tr class="memdesc:a61f6229bcef05a266c63d36ab2bd4df0"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Native_handle_sender</a> counterpart; or leave <code>on_done_func_or_empty.empty()</code> for <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html#aa3c2953f7f8a48b8a0cbf49652fb6d41" title="Equivalent to async_end_sending(F) wherein F() does nothing.">transport::Native_handle_sender::end_sending()</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0">More...</a><br /></td></tr>
 <tr class="separator:a61f6229bcef05a266c63d36ab2bd4df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa74da44fd22c3517149dfc8250ed3183"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183">auto_ping</a> (<a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> period)</td></tr>
-<tr class="memdesc:aa74da44fd22c3517149dfc8250ed3183"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183">More...</a><br /></td></tr>
+<tr class="memdesc:aa74da44fd22c3517149dfc8250ed3183"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Native_handle_sender</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183">More...</a><br /></td></tr>
 <tr class="separator:aa74da44fd22c3517149dfc8250ed3183"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30207efc53f9859a6ca7582bef8bcccc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html">stat::Blob_snd_stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a30207efc53f9859a6ca7582bef8bcccc">blob_send_stats</a> () const</td></tr>
+<tr class="memdesc:a30207efc53f9859a6ca7582bef8bcccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a30207efc53f9859a6ca7582bef8bcccc">More...</a><br /></td></tr>
+<tr class="separator:a30207efc53f9859a6ca7582bef8bcccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a417e7c8e17515295a7a614bb3959a444"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a417e7c8e17515295a7a614bb3959a444">blob_send_stats_reset</a> ()</td></tr>
+<tr class="memdesc:a417e7c8e17515295a7a614bb3959a444"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a417e7c8e17515295a7a614bb3959a444">More...</a><br /></td></tr>
+<tr class="separator:a417e7c8e17515295a7a614bb3959a444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af953d71eff4e5638e0584797bc9ea386"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html">stat::Blob_snd_stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#af953d71eff4e5638e0584797bc9ea386">native_handle_send_stats</a> () const</td></tr>
+<tr class="memdesc:af953d71eff4e5638e0584797bc9ea386"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#af953d71eff4e5638e0584797bc9ea386">More...</a><br /></td></tr>
+<tr class="separator:af953d71eff4e5638e0584797bc9ea386"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d3e9023a3c00834e6b015e2ea86a0d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a5d3e9023a3c00834e6b015e2ea86a0d7">native_handle_send_stats_reset</a> ()</td></tr>
+<tr class="memdesc:a5d3e9023a3c00834e6b015e2ea86a0d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a5d3e9023a3c00834e6b015e2ea86a0d7">More...</a><br /></td></tr>
+<tr class="separator:a5d3e9023a3c00834e6b015e2ea86a0d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -133,7 +145,7 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:aa6e0c8421b44bc49fff0c7cab706d18d"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <code>log_pfx</code> arg of ctor.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa6e0c8421b44bc49fff0c7cab706d18d">More...</a><br /></td></tr>
 <tr class="separator:aa6e0c8421b44bc49fff0c7cab706d18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20463c8aca5f365e57ec53a193bebd6f"><td class="memItemLeft" align="right" valign="top">flow::async::Task_asio_err&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a20463c8aca5f365e57ec53a193bebd6f">m_end_sending_on_done_func_or_empty</a></td></tr>
-<tr class="memdesc:a20463c8aca5f365e57ec53a193bebd6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code>on_done_func</code> argument to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for Native_handle_sender...">async_end_sending()</a>, possibly <code>.empty()</code> if originally user invoked <code>end_sending()</code>, or if neither was used, or if it has fired.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a20463c8aca5f365e57ec53a193bebd6f">More...</a><br /></td></tr>
+<tr class="memdesc:a20463c8aca5f365e57ec53a193bebd6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code>on_done_func</code> argument to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See transport::Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for transport...">async_end_sending()</a>, possibly <code>.empty()</code> if originally user invoked <code>end_sending()</code>, or if neither was used, or if it has fired.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a20463c8aca5f365e57ec53a193bebd6f">More...</a><br /></td></tr>
 <tr class="separator:a20463c8aca5f365e57ec53a193bebd6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a801d13765438ce9f2963cf59981cd7c0"><td class="memItemLeft" align="right" valign="top">flow::util::Mutex_non_recursive&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a801d13765438ce9f2963cf59981cd7c0">m_mutex</a></td></tr>
 <tr class="memdesc:a801d13765438ce9f2963cf59981cd7c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protects <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a20463c8aca5f365e57ec53a193bebd6f" title="The on_done_func argument to async_end_sending(), possibly .empty() if originally user invoked end_se...">m_end_sending_on_done_func_or_empty</a> and, more importantly, send-ops data of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a9bc681f5ac954b2ce9e1c62545c6796f" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a801d13765438ce9f2963cf59981cd7c0">More...</a><br /></td></tr>
@@ -147,22 +159,29 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename Core_t&gt;<br />
-class ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;</div><p >Internal-use type that adapts a given PEER-state <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a> <em>core</em> into the async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a>. </p>
+class ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;</div><p >Type that adapts a given PEER-state <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a> <em>core</em> into the async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a>. </p>
 <p >State-mutating logic of the latter is forwarded to a <code>*this</code>; while trivial <code>const</code> (in PEER state) things like <code>.send_blob_max_size()</code> are forwarded directly to the core <code>sync_io::X</code>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of Native_socket_stream class.">transport::Native_socket_stream::Impl</a> uses this for 99% of its outgoing-direction (PEER-state by definition) logic. </dd>
+<p >Flow-IPC uses a <code>*this</code> to implement each of <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> (out-direction) and <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html" title="Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...">transport::Blob_stream_mq_sender</a>; but this is a public API, as one can implement any custom <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Blob_sender</a> (et al) in terms of the corresponding custom <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a> (et al) impl. It would be an advanced task but nevertheless fully supported/intended.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html" title="Internal, non-movable pImpl-lite implementation of Native_socket_stream class.">transport::Native_socket_stream_impl</a> uses this for 99% of its outgoing-direction (PEER-state by definition) logic. </dd>
 <dd>
-<a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_sender class template.">transport::Blob_stream_mq_sender_impl</a> uses this for 99% of its logic.</dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html" title="Internal-use type that adapts a given PEER-state sync_io::Native_handle_receiver or sync_io::Blob_rec...">Async_adapter_receiver</a> for the opposite-direction thing. E.g., <a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of Native_socket_stream class.">transport::Native_socket_stream::Impl</a> uses that for 99% of its incoming-direction logic.</dd></dl>
+<a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_sender class template.">transport::Blob_stream_mq_sender_impl</a> uses this for 99% of its logic. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html" title="Type that adapts a given PEER-state sync_io::Native_handle_receiver or sync_io::Blob_receiver core in...">Async_adapter_receiver</a> for the opposite-direction thing. E.g., <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html" title="Internal, non-movable pImpl-lite implementation of Native_socket_stream class.">transport::Native_socket_stream_impl</a> uses that for 99% of its incoming-direction logic.</dd></dl>
+<h2>Impl </h2>
 <h3>Threads and thread nomenclature; locking</h3>
-<p >Thread U, thread W... locking... just see those sections in <a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of Native_socket_stream class.">transport::Native_socket_stream::Impl</a> class doc header. We adopt that nomenclature and logic. However, as we are concerned with only one direction (op-type), we only deal with code in either thread U or W concerned with that. The other-direction code &ndash; if applicable (e.g., applicable for <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> which deals with both over 1 socket connection; N/A for <code>Blob_stream_mq_*</code> which uses separate objects entirely) &ndash; simply co-exists in the same thread W and "thread" U. (If <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> wanted to, it could even parallelize stuff in thread W by using separate worker threads Ws and Wr. As of this writing it does not, but it could &ndash; nothing in <code>*this</code> would change.)</p>
-<p >Note, again, that we have our own <code>m_mutex</code>. If there is an opposing-direction counterpart <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html" title="Internal-use type that adapts a given PEER-state sync_io::Native_handle_receiver or sync_io::Blob_rec...">Async_adapter_receiver</a>, then it has its own <code>m_mutex</code>; hence things can proceed concurrently.</p>
+<p >Thread U, thread W... locking... just see those sections in <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html" title="Internal, non-movable pImpl-lite implementation of Native_socket_stream class.">transport::Native_socket_stream_impl</a> class doc header. We adopt that nomenclature and logic. However, as we are concerned with only one direction (op-type), we only deal with code in either thread U or W concerned with that. The other-direction code &ndash; if applicable (e.g., applicable for <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> which deals with both over 1 socket connection; N/A for <code>Blob_stream_mq_*</code> which uses separate objects entirely) &ndash; simply co-exists in the same thread W and "thread" U. (If <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> wanted to, it could even parallelize stuff in thread W by using separate worker threads Ws and Wr. As of this writing it does not, but it could &ndash; nothing in <code>*this</code> would change.)</p>
+<p >Note, again, that we have our own <code>m_mutex</code>. If there is an opposing-direction counterpart <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html" title="Type that adapts a given PEER-state sync_io::Native_handle_receiver or sync_io::Blob_receiver core in...">Async_adapter_receiver</a>, then it has its own <code>m_mutex</code>; hence things can proceed concurrently.</p>
 <h3>Impl design</h3>
-<p >This is almost entirely subsumed by our <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> core, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a4675c9691ca920d6e39586d8a5731c32" title="The sync_io::X type being adapted into async-I/O-pattern X.">Async_adapter_sender::Core</a>, an instance of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a>. It has a send op-type (possibly among others), so we invoke its <code>"sync_io::*_sender:start_send_blob_ops()"</code> during our initialization. After that:</p>
-<p >The main method, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c" title="See Native_handle_sender counterpart.">send_native_handle()</a> (and its degenerate version <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5" title="See Blob_sender counterpart.">send_blob()</a>) lacks a completion handler and hence can be forwarded to <code>Core m_sync_io</code>... that's it. <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183" title="See Native_handle_sender counterpart.">auto_ping()</a> &ndash; same deal.</p>
-<p ><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for Native_handle_sender...">async_end_sending()</a> takes a completion handler, however. Simple enough &ndash; we could just capture this <code>on_done_func</code> (from the user arg) in a lambda, then when <code>m_sync_io</code> calls our internal handler (synchronously), we <code>post(on_done_func)</code> onto thread W, and that's it. However, that's not sufficient, as if they call our dtor before that can complete, then we are to invoke <code>on_done_func(E)</code> where E = operation-aborted (by our contract). So we save <code>on_done_func</code> into <code>m_end_sending_on_done_func_or_empty</code> instead of capturing it. </p>
+<p >This is almost entirely subsumed by our <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> core, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a4675c9691ca920d6e39586d8a5731c32" title="The sync_io::X type being adapted into async-I/O-pattern X.">Async_adapter_sender::Core</a>, an instance of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a>. It has a send op-type (possibly among others), so we invoke its <code>"sync_io::*_sender::start_send_blob_ops()"</code> during our initialization. After that:</p>
+<p >The main method, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a0483d9166a8d19bae7746ae8acc7721c" title="See transport::Native_handle_sender counterpart.">send_native_handle()</a> (and its degenerate version <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a6a198ded3921acd7293f3dc7fdfdc3f5" title="See transport::Blob_sender counterpart.">send_blob()</a>) lacks a completion handler and hence can be forwarded to <code>Core m_sync_io</code>... that's it. <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#aa74da44fd22c3517149dfc8250ed3183" title="See transport::Native_handle_sender counterpart.">auto_ping()</a> &ndash; same deal.</p>
+<p ><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See transport::Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for transport...">async_end_sending()</a> takes a completion handler, however. Simple enough &ndash; we could just capture this <code>on_done_func</code> (from the user arg) in a lambda, then when <code>m_sync_io</code> calls our internal handler (synchronously), we <code>post(on_done_func)</code> onto thread W, and that's it. However, that's not sufficient, as if they call our dtor before that can complete, then we are to invoke <code>on_done_func(E)</code> where E = operation-aborted (by our contract). So we save <code>on_done_func</code> into <code>m_end_sending_on_done_func_or_empty</code> instead of capturing it. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Core_t</td><td>The <code>sync_io::X</code> type being adapted into async-I/O-pattern <code>X</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00073">73</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00092">92</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a4675c9691ca920d6e39586d8a5731c32" name="a4675c9691ca920d6e39586d8a5731c32"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4675c9691ca920d6e39586d8a5731c32">&#9670;&nbsp;</a></span>Core</h2>
@@ -180,7 +199,7 @@ template&lt;typename Core_t &gt; </div>
 
 <p>The <code>sync_io::X</code> type being adapted into async-I/O-pattern <code>X</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00081">81</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00100">100</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
 </div>
 </div>
@@ -230,15 +249,15 @@ template&lt;typename Core_t &gt; </div>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>Logger to use for logging subsequently. </td></tr>
     <tr><td class="paramname">log_pfx</td><td>String that shall precede ~all logged messages (e.g., <code>lexical_cast&lt;string&gt;(x)</code>, where <code>x</code> is an <code>X</code>.) </td></tr>
-    <tr><td class="paramname">worker</td><td>The worker thread loop of <code>X</code>. Background work, as needed, will be posted onto this "thread W." Note that <code>X</code> may (or may not) share this thread with unrelated tasks; for example <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> uses it for both a <code>*this</code> (outgoing-direction) and an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html" title="Internal-use type that adapts a given PEER-state sync_io::Native_handle_receiver or sync_io::Blob_rec...">Async_adapter_receiver</a> (incoming-direction). <code>*worker* must already be</code>-&gt;start()`ed. </td></tr>
+    <tr><td class="paramname">worker</td><td>The worker thread loop of <code>X</code>. Background work, as needed, will be posted onto this "thread W." Note that <code>X</code> may (or may not) share this thread with unrelated tasks; for example <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> uses it for both a <code>*this</code> (outgoing-direction) and an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html" title="Type that adapts a given PEER-state sync_io::Native_handle_receiver or sync_io::Blob_receiver core in...">Async_adapter_receiver</a> (incoming-direction). <code>worker</code> must already be <code>-&gt;start()</code>ed. </td></tr>
     <tr><td class="paramname"><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></td><td>The core object of <code>X</code>. It should have just (irreversibly) entered state PEER. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00219">219</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00256">256</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="async__adapter__snd_8hpp_source.html#l00175">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::m_log_pfx</a>, <a class="el" href="async__adapter__snd_8hpp_source.html#l00198">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::m_mutex</a>, and <a class="el" href="async__adapter__snd_8hpp_source.html#l00213">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::m_sync_io</a>.</p>
+<p class="reference">References <a class="el" href="async__adapter__snd_8hpp_source.html#l00212">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::m_log_pfx</a>, <a class="el" href="async__adapter__snd_8hpp_source.html#l00235">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::m_mutex</a>, and <a class="el" href="async__adapter__snd_8hpp_source.html#l00250">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::m_sync_io</a>.</p>
 
 </div>
 </div>
@@ -257,9 +276,9 @@ template&lt;typename Core_t &gt; </div>
 </div><div class="memdoc">
 
 <p>To be invoked after <code>-&gt;stop()</code>ping <code>*worker</code> (from ctor), as well as flushing any still-queued tasks in its <code>Task_engine</code> (via <code>.restart()</code> and <code>.poll()</code>), this satisfies the customer adapter dtor's contract which is to invoke any not-yet-fired completion handlers with special operation-aborted error code. </p>
-<p >In our case that is either nothing or 1 <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for Native_handle_sender...">async_end_sending()</a></code> completion handler. If applicable the dtor returns once that handler has completed in an unspecified thread that is not the calling thread. </p>
+<p >In our case that is either nothing or 1 <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See transport::Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for transport...">async_end_sending()</a></code> completion handler. If applicable the dtor returns once that handler has completed in an unspecified thread that is not the calling thread. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00292">292</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00329">329</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">ipc::transport::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>.</p>
 
@@ -284,16 +303,16 @@ template&lt;typename Core_t &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart; or leave <code>on_done_func_or_empty.empty()</code> for <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#a8c60142c23bf70bc3722d557ad309d58" title="Equivalent to async_end_sending(&amp;E, F) wherein F() does nothing, and E is some Error_code &quot;sink&quot; igno...">Native_handle_sender::end_sending()</a>. </p>
+<p>See <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Native_handle_sender</a> counterpart; or leave <code>on_done_func_or_empty.empty()</code> for <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html#aa3c2953f7f8a48b8a0cbf49652fb6d41" title="Equivalent to async_end_sending(F) wherein F() does nothing.">transport::Native_handle_sender::end_sending()</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">on_done_func_or_empty</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. See above. </td></tr>
+    <tr><td class="paramname">on_done_func_or_empty</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00371">371</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00408">408</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
 
@@ -317,16 +336,98 @@ template&lt;typename Core_t &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </p>
+<p>See <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Native_handle_sender</a> counterpart. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">period</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </td></tr>
+    <tr><td class="paramname">period</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00466">466</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00503">503</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a30207efc53f9859a6ca7582bef8bcccc" name="a30207efc53f9859a6ca7582bef8bcccc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30207efc53f9859a6ca7582bef8bcccc">&#9670;&nbsp;</a></span>blob_send_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html">stat::Blob_snd_stats</a> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html">ipc::transport::sync_io::Async_adapter_sender</a>&lt; Core_t &gt;::blob_send_stats</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </p>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00514">514</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a417e7c8e17515295a7a614bb3959a444" name="a417e7c8e17515295a7a614bb3959a444"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a417e7c8e17515295a7a614bb3959a444">&#9670;&nbsp;</a></span>blob_send_stats_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html">ipc::transport::sync_io::Async_adapter_sender</a>&lt; Core_t &gt;::blob_send_stats_reset</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </p>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00523">523</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+
+</div>
+</div>
+<a id="af953d71eff4e5638e0584797bc9ea386" name="af953d71eff4e5638e0584797bc9ea386"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af953d71eff4e5638e0584797bc9ea386">&#9670;&nbsp;</a></span>native_handle_send_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html">stat::Blob_snd_stats</a> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html">ipc::transport::sync_io::Async_adapter_sender</a>&lt; Core_t &gt;::native_handle_send_stats</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </p>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00532">532</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a5d3e9023a3c00834e6b015e2ea86a0d7" name="a5d3e9023a3c00834e6b015e2ea86a0d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d3e9023a3c00834e6b015e2ea86a0d7">&#9670;&nbsp;</a></span>native_handle_send_stats_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html">ipc::transport::sync_io::Async_adapter_sender</a>&lt; Core_t &gt;::native_handle_send_stats_reset</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </p>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00541">541</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
 </div>
 </div>
@@ -365,7 +466,7 @@ template&lt;typename Core_t &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00436">436</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00473">473</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
 </div>
 </div>
@@ -397,17 +498,17 @@ template&lt;typename Core_t &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> counterpart. </p>
+<p>See <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Blob_sender</a> counterpart. </p>
 <p >However, this one is <code>void</code>, as there is no way <code>*this</code> is not in PEER state (by definition).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">blob</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> counterpart. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> counterpart. </td></tr>
+    <tr><td class="paramname">blob</td><td>See above. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00323">323</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00360">360</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
 </div>
 </div>
@@ -445,18 +546,18 @@ template&lt;typename Core_t &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </p>
+<p>See <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Native_handle_sender</a> counterpart. </p>
 <p >However, this one is <code>void</code>, as there is no way <code>*this</code> is not in PEER state (by definition).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">hndl_or_null</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </td></tr>
-    <tr><td class="paramname">meta_blob</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </td></tr>
+    <tr><td class="paramname">hndl_or_null</td><td>See above. </td></tr>
+    <tr><td class="paramname">meta_blob</td><td>See above. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00342">342</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00379">379</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
 </div>
 </div>
@@ -483,12 +584,12 @@ template&lt;typename Core_t &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>The <code>on_done_func</code> argument to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for Native_handle_sender...">async_end_sending()</a>, possibly <code>.empty()</code> if originally user invoked <code>end_sending()</code>, or if neither was used, or if it has fired. </p>
-<p >Note that if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for Native_handle_sender...">async_end_sending()</a> does not complete before dtor executes, dtor will invoke the handler (unless <code>.empty()</code>) with operation-aborted code.</p>
-<p >It would not need to be a member &ndash; could just be captured in lambdas while <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for Native_handle_sender...">async_end_sending()</a> is outstanding &ndash; except for the need to still invoke it with operation-aborted from dtor in the aforementioned case.</p>
+<p>The <code>on_done_func</code> argument to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See transport::Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for transport...">async_end_sending()</a>, possibly <code>.empty()</code> if originally user invoked <code>end_sending()</code>, or if neither was used, or if it has fired. </p>
+<p >Note that if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See transport::Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for transport...">async_end_sending()</a> does not complete before dtor executes, dtor will invoke the handler (unless <code>.empty()</code>) with operation-aborted code.</p>
+<p >It would not need to be a member &ndash; could just be captured in lambdas while <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a61f6229bcef05a266c63d36ab2bd4df0" title="See transport::Native_handle_sender counterpart; or leave on_done_func_or_empty.empty() for transport...">async_end_sending()</a> is outstanding &ndash; except for the need to still invoke it with operation-aborted from dtor in the aforementioned case.</p>
 <p >Protected by <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a801d13765438ce9f2963cf59981cd7c0" title="Protects m_end_sending_on_done_func_or_empty and, more importantly, send-ops data of m_sync_io.">m_mutex</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00187">187</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00224">224</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
 </div>
 </div>
@@ -516,9 +617,9 @@ template&lt;typename Core_t &gt; </div>
 
 <p>See <code>log_pfx</code> arg of ctor. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00175">175</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00212">212</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="async__adapter__snd_8hpp_source.html#l00219">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::Async_adapter_sender()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="async__adapter__snd_8hpp_source.html#l00256">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::Async_adapter_sender()</a>.</p>
 
 </div>
 </div>
@@ -547,9 +648,9 @@ template&lt;typename Core_t &gt; </div>
 <p>Protects <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a20463c8aca5f365e57ec53a193bebd6f" title="The on_done_func argument to async_end_sending(), possibly .empty() if originally user invoked end_se...">m_end_sending_on_done_func_or_empty</a> and, more importantly, send-ops data of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a9bc681f5ac954b2ce9e1c62545c6796f" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>. </p>
 <p >For example <code>send_*()</code> engages <code>Core::send_*()</code> in thread U which might add messages to its internal pending-out-messages-during-would-block queue; while a <a class="el" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24" title="In sync_io pattern, concrete type storing user-supplied function invoked by pattern-implementing ipc:...">util::sync_io::Event_wait_func</a> <code>on_active_ev_func()</code> invocation (on writable transport) as requested by <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a9bc681f5ac954b2ce9e1c62545c6796f" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> will invoke logic inside the latter, which might pop items from that queue and send them off &ndash; all in thread W. (This information is provided for context, as formally it's a black box inside <code>m_sync_io</code>.) </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00198">198</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00235">235</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="async__adapter__snd_8hpp_source.html#l00219">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::Async_adapter_sender()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="async__adapter__snd_8hpp_source.html#l00256">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::Async_adapter_sender()</a>.</p>
 
 </div>
 </div>
@@ -579,9 +680,9 @@ template&lt;typename Core_t &gt; </div>
 <p >See our class doc header for overview of how we use it (the aforementioned <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> doc header talks about the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> pattern generally).</p>
 <p >Thus, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a9bc681f5ac954b2ce9e1c62545c6796f" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> is the synchronous engine that we use to perform our work in our asynchronous boost.asio loop running in thread W (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a98cf53ba1f6abee1c3d3a4dd7533232d" title="Single-thread worker pool for all internal async work. Referred to as thread W in comments.">m_worker</a>) while collaborating with user thread(s) a/k/a thread U. (Recall that the user may choose to set up their own event loop/thread(s) &ndash; boost.asio-based or otherwise &ndash; and use their own equivalent of an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html#a9bc681f5ac954b2ce9e1c62545c6796f" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> instead.) </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00213">213</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00250">250</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="async__adapter__snd_8hpp_source.html#l00219">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::Async_adapter_sender()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="async__adapter__snd_8hpp_source.html#l00256">ipc::transport::sync_io::Async_adapter_sender&lt; Core_t &gt;::Async_adapter_sender()</a>.</p>
 
 </div>
 </div>
@@ -609,18 +710,18 @@ template&lt;typename Core_t &gt; </div>
 
 <p>Single-thread worker pool for all internal async work. Referred to as thread W in comments. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00201">201</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__snd_8hpp_source.html#l00238">238</a> of file <a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>transport/detail/<a class="el" href="detail_2transport__fwd_8hpp_source.html">transport_fwd.hpp</a></li>
-<li>transport/sync_io/detail/<a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a></li>
+<li>transport/sync_io/<a class="el" href="async__adapter__snd_8hpp_source.html">async_adapter_snd.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

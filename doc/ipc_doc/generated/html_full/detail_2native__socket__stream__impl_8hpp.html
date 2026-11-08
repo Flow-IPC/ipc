@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -69,25 +69,27 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">native_socket_stream_impl.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="native__socket__stream_8hpp_source.html">ipc/transport/native_socket_stream.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="sync__io_2native__socket__stream_8hpp_source.html">ipc/transport/sync_io/native_socket_stream.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="async__adapter__snd_8hpp_source.html">ipc/transport/sync_io/detail/async_adapter_snd.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="async__adapter__rcv_8hpp_source.html">ipc/transport/sync_io/detail/async_adapter_rcv.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="sync__io_2native__socket__stream_8hpp_source.html">ipc/transport/sync_io/native_socket_stream.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="async__adapter__snd_8hpp_source.html">ipc/transport/sync_io/async_adapter_snd.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="async__adapter__rcv_8hpp_source.html">ipc/transport/sync_io/async_adapter_rcv.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="asio__local__stream__socket__fwd_8hpp_source.html">ipc/transport/asio_local_stream_socket_fwd.hpp</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;flow/async/single_thread_task_loop.hpp&gt;</code><br />
+<code>#include &lt;boost/noncopyable.hpp&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="detail_2native__socket__stream__impl_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html">ipc::transport::Native_socket_stream::Impl</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal, non-movable pImpl implementation of <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a> class.  <a href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html">ipc::transport::Native_socket_stream_impl</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal, non-movable pImpl-lite implementation of <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">Native_socket_stream</a> class.  <a href="classipc_1_1transport_1_1Native__socket__stream__impl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -98,17 +100,11 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceipc_1_1transport"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html">ipc::transport</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) between pairs of processes. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a33231b969171a9103cd0a319ea10278b"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a33231b969171a9103cd0a319ea10278b">ipc::transport::operator&lt;&lt;</a> (std::ostream &amp;os, const Native_socket_stream::Impl &amp;val)</td></tr>
-<tr class="memdesc:a33231b969171a9103cd0a319ea10278b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of Native_socket_stream class.">Native_socket_stream::Impl</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a33231b969171a9103cd0a319ea10278b">More...</a><br /></td></tr>
-<tr class="separator:a33231b969171a9103cd0a319ea10278b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

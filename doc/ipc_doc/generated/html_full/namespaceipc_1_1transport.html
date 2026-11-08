@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -82,10 +82,13 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceipc_1_1transport_1_1asio__local__stream__socket"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html">asio_local_stream_socket</a></td></tr>
-<tr class="memdesc:namespaceipc_1_1transport_1_1asio__local__stream__socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional (versus boost.asio) APIs for advanced work with local stream (Unix domain) sockets including transmission of native handles through such streams; and peer process credentials acquisition. <br /></td></tr>
+<tr class="memdesc:namespaceipc_1_1transport_1_1asio__local__stream__socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional (versus boost.asio) APIs for advanced work with local (Unix domain) stream and connected-datagram sockets including transmission of native handles through them; and peer process credentials acquisition. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1transport_1_1error"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1error.html">error</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1transport_1_1error"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace containing the <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> module's extension of <a class="el" href="namespaceboost_1_1system.html" title="Small group of miscellaneous utilities to ease work with boost.system, joining its boost::system name...">boost.system</a> error conventions, so that that API can return codes/messages from within its own new set of error codes/messages. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceipc_1_1transport_1_1stat"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1stat.html">stat</a></td></tr>
+<tr class="memdesc:namespaceipc_1_1transport_1_1stat"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stats-related sub-namespace, for ADL segregation and general organization. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1transport_1_1struc"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html">struc</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1transport_1_1struc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sub-module of Flow-IPC module <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> providing transmission of structured messages specifically. <br /></td></tr>
@@ -114,6 +117,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html">Blob_stream_mq_receiver</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a> concept by using an adopted <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> MQ handle to an MQ (message queue) of that type, such as a POSIX or bipc MQ.  <a href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver__base.html">Blob_stream_mq_receiver_base</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html" title="Base of Blob_stream_mq_sender and Blob_stream_mq_receiver containing certain static facilities,...">Blob_stream_mq_base</a> but contains non-class-template-parameter-dependent <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> items.  <a href="classipc_1_1transport_1_1Blob__stream__mq__receiver__base.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver__impl.html">Blob_stream_mq_receiver_impl</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal, non-movable pImpl-lite implementation of <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> class template.  <a href="classipc_1_1transport_1_1Blob__stream__mq__receiver__impl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,11 +132,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Channel.html">Channel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the other for transmitting native handle+blob combos; hence a <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a> + <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a>, a <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a> + <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Native_handle_receiver</a>, or both.  <a href="classipc_1_1transport_1_1Channel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Generic__msg__batch__in.html">Generic_msg_batch_in</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Straightforward <a class="el" href="classipc_1_1transport_1_1Msg__batch__in.html" title="A documentation-only concept defining the behavior of an object that is a key aspect of batch-receivi...">Msg_batch_in</a> concept implementation (as taken by API <code>{Blob|Native_handle}_receiver::async_receive_*_batch()</code> concept) usable by any receiver engaging in <em>emulated batching</em>.  <a href="classipc_1_1transport_1_1Generic__msg__batch__in.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Mqs__channel.html">Mqs_channel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> with <em>at least</em> a <em>blobs pipe</em> consisting of two MQs of type <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> (template arg 1); and <em>possibly</em> a <em>handles pipe</em> as governed by template args 2 and 3 which default to <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a> (in which case the handles pipe is disabled).  <a href="classipc_1_1transport_1_1Mqs__channel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Mqs__socket__stream__channel.html">Mqs_socket_stream_channel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> with a <em>blobs pipe</em> consisting of 2 MQs of type <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> (template arg); and a <em>handles pipe</em> over a Unix domain socket connection.  <a href="classipc_1_1transport_1_1Mqs__socket__stream__channel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Msg__batch__in.html">Msg_batch_in</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A documentation-only <em>concept</em> defining the behavior of an object that is a key aspect of batch-receiving functionality, namely as arg to <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html#a0e3431717899a7d24386f4248b9b2d59" title="In PEER state: Asynchronously awaits 1+ discrete message(s) – as sent by the opposing peer via Native...">Native_handle_receiver::async_receive_native_handle_batch()</a> (if t-param <a class="el" href="classipc_1_1transport_1_1Msg__batch__in.html#af3dce81391498a3333e68d33300c3b73" title="Constant mirroring template parameter.">S_NO_HNDLS</a> is <code>false</code>) or <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a8571a255e8c1bccab2c71f43d5e603f2" title="In PEER state: Asynchronously awaits 1+ discrete message(s) – as sent by the opposing peer via Blob_s...">Blob_receiver::async_receive_blob_batch()</a> (if <code>NO_HNDLS == true</code>).  <a href="classipc_1_1transport_1_1Msg__batch__in.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html">Native_handle_receiver</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A documentation-only <em>concept</em> defining the behavior of an object capable of reliably/in-order <em>receiving</em> of discrete messages, each containing a native handle, a binary blob, or both.  <a href="classipc_1_1transport_1_1Native__handle__receiver.html#details">More...</a><br /></td></tr>
@@ -139,13 +151,25 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A documentation-only <em>concept</em> defining the behavior of an object capable of reliably/in-order <em>sending</em> of discrete messages, each containing a native handle, a binary blob, or both.  <a href="classipc_1_1transport_1_1Native__handle__sender.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html">Native_socket_stream</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements both <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a> and <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Native_handle_receiver</a> concepts by using a stream-oriented Unix domain socket, allowing high-performance but non-zero-copy transmission of discrete messages, each containing a native handle, a binary blob, or both.  <a href="classipc_1_1transport_1_1Native__socket__stream.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements both <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a> and <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Native_handle_receiver</a> concepts by using a Unix domain socket, allowing high-performance but non-zero-copy transmission of discrete messages, each containing a native handle, a binary blob, or both.  <a href="classipc_1_1transport_1_1Native__socket__stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html">Native_socket_stream_acceptor</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A server object that binds to a <code>Shared_name</code> and listens for incoming <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a></code> connect attempts to that name; and yields connected-peer <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">sync_io::Native_socket_stream</a> objects, one per counterpart opposing <code>*_connect()</code>.  <a href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A server object that binds to a <code>Shared_name</code> and listens for incoming <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">Native_socket_stream</a></code> connect attempts to that name; and yields connected-peer <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">sync_io::Native_socket_stream</a> objects, one per counterpart opposing <code>*_connect()</code>.  <a href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Native__socket__stream__cfg.html">Native_socket_stream_cfg</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grouping of compile-type config/knobs (such as type aliases, constants) governing some of the behavior of <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">Native_socket_stream</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">sync_io::Native_socket_stream</a>, the latter in particular being a core IPC transport in Flow-IPC.  <a href="classipc_1_1transport_1_1Native__socket__stream__cfg.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html">Native_socket_stream_impl</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal, non-movable pImpl-lite implementation of <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">Native_socket_stream</a> class.  <a href="classipc_1_1transport_1_1Native__socket__stream__impl.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Native__socket__stream__msg__batch__in.html">Native_socket_stream_msg_batch_in</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classipc_1_1transport_1_1Msg__batch__in.html" title="A documentation-only concept defining the behavior of an object that is a key aspect of batch-receivi...">Msg_batch_in</a></code> concept implementation for at least <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">sync_io::Native_socket_stream</a> (as taken by APIs <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a67ced1ef257e5d606a41ae6fd640a5d3" title="Implements Blob_receiver API per contract.">Native_socket_stream::async_receive_blob_batch()</a> and <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a1402a4fae168b1d058ff8c7f3e85e6b2" title="Implements Native_handle_receiver API per contract.">Native_socket_stream::async_receive_native_handle_batch()</a>) for high-speed <em>natively batched</em> receiving.  <a href="classipc_1_1transport_1_1Native__socket__stream__msg__batch__in.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1Native__socket__stream__msg__batch__in__privileged.html">Native_socket_stream_msg_batch_in_privileged</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the <code>friend</code> facade of <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__msg__batch__in.html" title="Msg_batch_in concept implementation for at least sync_io::Native_socket_stream (as taken by APIs Nati...">Native_socket_stream_msg_batch_in</a> that exposes <code>private</code> APIs hidden from public user by providing public access to them; this is used internally by at least <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">sync_io::Native_socket_stream</a> impl.  <a href="structipc_1_1transport_1_1Native__socket__stream__msg__batch__in__privileged.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and coversely for async-I/O guys and their <code>Async_io_obj</code>s.  <a href="classipc_1_1transport_1_1Null__peer.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and conversely for async-I/O guys and their <code>Async_io_obj</code>s.  <a href="classipc_1_1transport_1_1Null__peer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html">Persistent_mq_handle</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A documentation-only <em>concept</em> defining the behavior of an object representing a light-weight handle to a message queue, capable of receiving/sending discrete messages in non-blocking/blocking/timed-blocking fashion, as well as some support for polling/waiting and interruptions thereof.  <a href="classipc_1_1transport_1_1Persistent__mq__handle.html#details">More...</a><br /></td></tr>
@@ -154,7 +178,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements the <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> concept by wrapping the POSIX message queue API (see <code>man mq_overview</code>).  <a href="classipc_1_1transport_1_1Posix__mq__handle.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html">Protocol_negotiator</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple state machine that, assuming the opposide side of a comm pathway uses an equivalent state machine, helps negotiate the protocol version to speak over that pathway, given each side being capable of speaking a range of protocol versions and reporting the highest such version to the other side.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple state machine that, assuming the opposing side of a comm pathway uses an equivalent state machine, helps negotiate the protocol version to speak over that pathway, given each side being capable of speaking a range of protocol versions and reporting the highest such version to the other side.  <a href="classipc_1_1transport_1_1Protocol__negotiator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Socket__stream__channel.html">Socket_stream_channel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> with a <em>handles pipe</em> only (no <em>blobs pipe</em>) that uses a Unix domain socket connection as the underlying transport for that pipe.  <a href="classipc_1_1transport_1_1Socket__stream__channel.html#details">More...</a><br /></td></tr>
@@ -198,6 +222,10 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a01d7d61268a1d3b2ecfd1641fe51fce0"><td class="memTemplParams" colspan="2">template&lt;typename Msg_resource_t , bool NO_HNDLS&gt; </td></tr>
+<tr class="memitem:a01d7d61268a1d3b2ecfd1641fe51fce0"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a01d7d61268a1d3b2ecfd1641fe51fce0">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Generic__msg__batch__in.html">Generic_msg_batch_in</a>&lt; Msg_resource_t, NO_HNDLS &gt; &amp;val)</td></tr>
+<tr class="memdesc:a01d7d61268a1d3b2ecfd1641fe51fce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Generic__msg__batch__in.html" title="Straightforward Msg_batch_in concept implementation (as taken by API {Blob|Native_handle}_receiver::a...">Generic_msg_batch_in</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a01d7d61268a1d3b2ecfd1641fe51fce0">More...</a><br /></td></tr>
+<tr class="separator:a01d7d61268a1d3b2ecfd1641fe51fce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0610dff5efd418a8ff393f0ad9dd5c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#af0610dff5efd418a8ff393f0ad9dd5c2">swap</a> (<a class="el" href="classipc_1_1transport_1_1Bipc__mq__handle.html">Bipc_mq_handle</a> &amp;val1, <a class="el" href="classipc_1_1transport_1_1Bipc__mq__handle.html">Bipc_mq_handle</a> &amp;val2)</td></tr>
 <tr class="memdesc:af0610dff5efd418a8ff393f0ad9dd5c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> related concept: Swaps two objects.  <a href="namespaceipc_1_1transport.html#af0610dff5efd418a8ff393f0ad9dd5c2">More...</a><br /></td></tr>
 <tr class="separator:af0610dff5efd418a8ff393f0ad9dd5c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,10 +243,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a7f08625d3fffff74a794f14aa4022b9d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a7f08625d3fffff74a794f14aa4022b9d">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a> &amp;val)</td></tr>
 <tr class="memdesc:a7f08625d3fffff74a794f14aa4022b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy that is never invoked.  <a href="namespaceipc_1_1transport.html#a7f08625d3fffff74a794f14aa4022b9d">More...</a><br /></td></tr>
 <tr class="separator:a7f08625d3fffff74a794f14aa4022b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8eff22e594b6fe82f94f13d6a172537f"><td class="memTemplParams" colspan="2">template&lt;typename <a class="el" href="classipc_1_1transport_1_1Blob__sender.html">Blob_sender</a> , typename <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html">Blob_receiver</a> , typename <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html">Native_handle_sender</a> , typename <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html">Native_handle_receiver</a> &gt; </td></tr>
-<tr class="memitem:a8eff22e594b6fe82f94f13d6a172537f"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a8eff22e594b6fe82f94f13d6a172537f">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Channel.html">Channel</a>&lt; <a class="el" href="classipc_1_1transport_1_1Blob__sender.html">Blob_sender</a>, <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html">Blob_receiver</a>, <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html">Native_handle_sender</a>, <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html">Native_handle_receiver</a> &gt; &amp;val)</td></tr>
-<tr class="memdesc:a8eff22e594b6fe82f94f13d6a172537f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a8eff22e594b6fe82f94f13d6a172537f">More...</a><br /></td></tr>
-<tr class="separator:a8eff22e594b6fe82f94f13d6a172537f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2e5f05a20475a07dc1f40a1bd0dd557"><td class="memTemplParams" colspan="2">template&lt;typename Blob_sender_t , typename Blob_receiver_t , typename Native_handle_sender_t , typename Native_handle_receiver_t &gt; </td></tr>
+<tr class="memitem:af2e5f05a20475a07dc1f40a1bd0dd557"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#af2e5f05a20475a07dc1f40a1bd0dd557">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Channel.html">Channel</a>&lt; Blob_sender_t, Blob_receiver_t, Native_handle_sender_t, Native_handle_receiver_t &gt; &amp;val)</td></tr>
+<tr class="memdesc:af2e5f05a20475a07dc1f40a1bd0dd557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#af2e5f05a20475a07dc1f40a1bd0dd557">More...</a><br /></td></tr>
+<tr class="separator:af2e5f05a20475a07dc1f40a1bd0dd557"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4efecbe0fe86aa7d61b86f9c5edf20b4"><td class="memTemplParams" colspan="2">template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html">Persistent_mq_handle</a> &gt; </td></tr>
 <tr class="memitem:a4efecbe0fe86aa7d61b86f9c5edf20b4"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a4efecbe0fe86aa7d61b86f9c5edf20b4">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver__impl.html">Blob_stream_mq_receiver_impl</a>&lt; <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html">Persistent_mq_handle</a> &gt; &amp;val)</td></tr>
 <tr class="memdesc:a4efecbe0fe86aa7d61b86f9c5edf20b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_receiver class template.">Blob_stream_mq_receiver_impl</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a4efecbe0fe86aa7d61b86f9c5edf20b4">More...</a><br /></td></tr>
@@ -227,15 +255,19 @@ Functions</h2></td></tr>
 <tr class="memitem:a8bc3464c81b40649e99da6ce2ee5f87c"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a8bc3464c81b40649e99da6ce2ee5f87c">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender__impl.html">Blob_stream_mq_sender_impl</a>&lt; <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html">Persistent_mq_handle</a> &gt; &amp;val)</td></tr>
 <tr class="memdesc:a8bc3464c81b40649e99da6ce2ee5f87c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html" title="Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...">Blob_stream_mq_sender</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a8bc3464c81b40649e99da6ce2ee5f87c">More...</a><br /></td></tr>
 <tr class="separator:a8bc3464c81b40649e99da6ce2ee5f87c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33231b969171a9103cd0a319ea10278b"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a33231b969171a9103cd0a319ea10278b">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html">Native_socket_stream::Impl</a> &amp;val)</td></tr>
-<tr class="memdesc:a33231b969171a9103cd0a319ea10278b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of Native_socket_stream class.">Native_socket_stream::Impl</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a33231b969171a9103cd0a319ea10278b">More...</a><br /></td></tr>
-<tr class="separator:a33231b969171a9103cd0a319ea10278b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7febad90b3a03d2db53ac4ba99f966c9"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a7febad90b3a03d2db53ac4ba99f966c9">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html">Native_socket_stream_impl</a> &amp;val)</td></tr>
+<tr class="memdesc:a7febad90b3a03d2db53ac4ba99f966c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html" title="Internal, non-movable pImpl-lite implementation of Native_socket_stream class.">Native_socket_stream_impl</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a7febad90b3a03d2db53ac4ba99f966c9">More...</a><br /></td></tr>
+<tr class="separator:a7febad90b3a03d2db53ac4ba99f966c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6108711cc8b33c3b7ef0491ba78e2f6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#ac6108711cc8b33c3b7ef0491ba78e2f6">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html">Native_socket_stream</a> &amp;val)</td></tr>
-<tr class="memdesc:ac6108711cc8b33c3b7ef0491ba78e2f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#ac6108711cc8b33c3b7ef0491ba78e2f6">More...</a><br /></td></tr>
+<tr class="memdesc:ac6108711cc8b33c3b7ef0491ba78e2f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">Native_socket_stream</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#ac6108711cc8b33c3b7ef0491ba78e2f6">More...</a><br /></td></tr>
 <tr class="separator:ac6108711cc8b33c3b7ef0491ba78e2f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03f0ad84b5d21920a58be5e95f12e69f"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a03f0ad84b5d21920a58be5e95f12e69f">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html">Native_socket_stream_acceptor</a> &amp;val)</td></tr>
 <tr class="memdesc:a03f0ad84b5d21920a58be5e95f12e69f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html" title="A server object that binds to a Shared_name and listens for incoming Native_socket_stream connect att...">Native_socket_stream_acceptor</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a03f0ad84b5d21920a58be5e95f12e69f">More...</a><br /></td></tr>
 <tr class="separator:a03f0ad84b5d21920a58be5e95f12e69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a055c601aee6f8eec8a7b26905ef5dd"><td class="memTemplParams" colspan="2">template&lt;typename Msg_resource_t &gt; </td></tr>
+<tr class="memitem:a3a055c601aee6f8eec8a7b26905ef5dd"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a3a055c601aee6f8eec8a7b26905ef5dd">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__msg__batch__in.html">Native_socket_stream_msg_batch_in</a>&lt; Msg_resource_t &gt; &amp;val)</td></tr>
+<tr class="memdesc:a3a055c601aee6f8eec8a7b26905ef5dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream__msg__batch__in.html" title="Msg_batch_in concept implementation for at least sync_io::Native_socket_stream (as taken by APIs Nati...">Native_socket_stream_msg_batch_in</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a3a055c601aee6f8eec8a7b26905ef5dd">More...</a><br /></td></tr>
+<tr class="separator:a3a055c601aee6f8eec8a7b26905ef5dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f670a864f39c533a6a98dbca8fdb224"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a6f670a864f39c533a6a98dbca8fdb224">swap</a> (<a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html">Persistent_mq_handle</a> &amp;val1, <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html">Persistent_mq_handle</a> &amp;val2)</td></tr>
 <tr class="memdesc:a6f670a864f39c533a6a98dbca8fdb224"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swaps two objects.  <a href="namespaceipc_1_1transport.html#a6f670a864f39c533a6a98dbca8fdb224">More...</a><br /></td></tr>
 <tr class="separator:a6f670a864f39c533a6a98dbca8fdb224"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,7 +281,8 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) between pairs of processes. </p>
 <p >See namespace <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a> doc header for an overview of Flow-IPC modules including how <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> relates to the others. Then return here. A synopsis follows:</p>
-<p >The main transport features of <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> are: class template <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> (for structured message and native handle transport) and various lower-level utilities (<a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a>; blob/handle streams; message queue (MQ) streams). Structured transmission facilities (<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> being the main guy) are segregated in sub-namespace <a class="el" href="namespaceipc_1_1transport_1_1struc.html" title="Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...">transport::struc</a>.</p>
+<dl class="section see"><dt>See also</dt><dd>The guided Manual chapters <a class="el" href="chan_open.html">Sessions: Opening Channels</a> (obtaining channels), <a class="el" href="chan_struct.html">Structured Message Transport (Structured Channels)</a> and <a class="el" href="chan_struct_advanced.html">Structured Message Transport: Messages As Long-lived Data Structures / Advanced Topics</a> (structured <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">transport</a>), and <a class="el" href="transport_core.html">Transport Core Layer: Transmitting Unstructured Data</a> (unstructured <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">transport</a>) cover these topics.</dd></dl>
+<p>The main transport features of <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> are: class template <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> (for structured message and native handle transport) and various lower-level utilities (<a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a>; blob/handle streams; message queue (MQ) streams). Structured transmission facilities (<a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> being the main guy) are segregated in sub-namespace <a class="el" href="namespaceipc_1_1transport_1_1struc.html" title="Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...">transport::struc</a>.</p>
 <p >Generally speaking, to communicate (via <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> and others), the two processes A and B that intend to talk must have established a broad conversation called a <em>session</em> within which all communication occurs. In fact, a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">transport::struc::Channel</a> wraps a <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a>, and the latter can be established, in factory-ish fashion and otherwise, from an <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">ipc::session::Session</a>. Hence, see namespace <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> doc header to learn about establishing/terminating sessions. Once you have a <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">session::Session</a>, you can actually use main <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> facilities.</p>
 <p >That said: <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> does <em>not</em> require <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> to be used: One can instantiate all the various IPC mechanisms therein directly. <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> provides the lifecycle and organization to make this as simple as possible (but no simpler). In that sense <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> has the essential building blocks; <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> provides access to those building blocks in one possible fashion &ndash; for example by establishing a naming convention for the various required <code>Shared_name</code>s taken by the various <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> constructors. Formally speaking there can certainly be other fashions of organizing <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> resources. Therefore the API design of <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> is not rigid. </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
@@ -268,7 +301,7 @@ Functions</h2></td></tr>
 <p>Convenience alias: <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a> via unidirectional bipc MQ (message queue). </p>
 <p >Tip: In <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> sub-namespace there is the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterpart. </p>
 
-<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00112">112</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00123">123</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
 
 </div>
 </div>
@@ -287,7 +320,7 @@ Functions</h2></td></tr>
 <p>Convenience alias: <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a> via unidirectional bipc MQ (message queue). </p>
 <p >Tip: In <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> sub-namespace there is the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterpart. </p>
 
-<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00105">105</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00116">116</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
 
 </div>
 </div>
@@ -306,7 +339,7 @@ Functions</h2></td></tr>
 <p>Convenience alias: <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> peer (<a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a>, <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a>) at one end of full-duplex (bidirectional) pipe composed of 2 opposite-facing unidirectional POSIX MQs (message queues). </p>
 <p >Tip: In <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> sub-namespace there is the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterpart. </p>
 
-<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00128">128</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00139">139</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
 
 </div>
 </div>
@@ -325,7 +358,7 @@ Functions</h2></td></tr>
 <p>Convenience alias: <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> peer (<a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a>, <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a>, <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a>, <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Native_handle_receiver</a>) at one end of a full-duplex (bidirectional) pipe composed of 2 opposite-facing unidirectional bipc MQs (message queues), transmitting blobs only; and a full-duplex pipe over a Unix domain stream connection, transmitting native-handle-and/or-meta-blob messages. </p>
 <p >Tip: In <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> sub-namespace there is the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterpart. </p>
 
-<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00148">148</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00159">159</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
 
 </div>
 </div>
@@ -343,7 +376,7 @@ Functions</h2></td></tr>
 
 <p>Convenience alias for the commonly used type <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">util::Native_handle</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00081">81</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00092">92</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
 
 </div>
 </div>
@@ -362,7 +395,7 @@ Functions</h2></td></tr>
 <p>Convenience alias: <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a> via unidirectional POSIX MQ (message queue). </p>
 <p >Tip: In <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> sub-namespace there is the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterpart. </p>
 
-<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00098">98</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00109">109</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
 
 </div>
 </div>
@@ -381,7 +414,7 @@ Functions</h2></td></tr>
 <p>Convenience alias: <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a> via unidirectional POSIX MQ (message queue). </p>
 <p >Tip: In <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> sub-namespace there is the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterpart. </p>
 
-<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00091">91</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00102">102</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
 
 </div>
 </div>
@@ -400,7 +433,7 @@ Functions</h2></td></tr>
 <p>Convenience alias: <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> peer (<a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a>, <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a>) at one end of full-duplex (bidirectional) pipe composed of 2 opposite-facing unidirectional POSIX MQs (message queues). </p>
 <p >Tip: In <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> sub-namespace there is the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterpart. </p>
 
-<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00120">120</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00131">131</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
 
 </div>
 </div>
@@ -419,7 +452,7 @@ Functions</h2></td></tr>
 <p>Convenience alias: <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> peer (<a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a>, <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a>, <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a>, <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Native_handle_receiver</a>) at one end of a full-duplex (bidirectional) pipe composed of 2 opposite-facing unidirectional POSIX MQs (message queues), transmitting blobs only; and a full-duplex pipe over a Unix domain stream connection, transmitting native-handle-and/or-meta-blob messages. </p>
 <p >Tip: In <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> sub-namespace there is the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterpart. </p>
 
-<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00138">138</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00149">149</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
 
 </div>
 </div>
@@ -437,13 +470,13 @@ Functions</h2></td></tr>
 
 <p>Convenience alias for the commonly used type <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">util::Shared_name</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00084">84</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transport__fwd_8hpp_source.html#l00095">95</a> of file <a class="el" href="transport__fwd_8hpp_source.html">transport_fwd.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a61c80019823537694f925275dccb4f3f" name="a61c80019823537694f925275dccb4f3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61c80019823537694f925275dccb4f3f">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[1/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a61c80019823537694f925275dccb4f3f">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[1/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -478,12 +511,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="bipc__mq__handle_8cpp_source.html#l01028">1028</a> of file <a class="el" href="bipc__mq__handle_8cpp_source.html">bipc_mq_handle.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bipc__mq__handle_8cpp_source.html#l01046">1046</a> of file <a class="el" href="bipc__mq__handle_8cpp_source.html">bipc_mq_handle.cpp</a>.</p>
 
 </div>
 </div>
 <a id="a65a95c466144d63ce3f7f11f554a335c" name="a65a95c466144d63ce3f7f11f554a335c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65a95c466144d63ce3f7f11f554a335c">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[2/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a65a95c466144d63ce3f7f11f554a335c">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[2/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -521,12 +554,12 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__rcv_8hpp_source.html#l00385">385</a> of file <a class="el" href="blob__stream__mq__rcv_8hpp_source.html">blob_stream_mq_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__rcv_8hpp_source.html#l00463">463</a> of file <a class="el" href="blob__stream__mq__rcv_8hpp_source.html">blob_stream_mq_rcv.hpp</a>.</p>
 
 </div>
 </div>
 <a id="a4efecbe0fe86aa7d61b86f9c5edf20b4" name="a4efecbe0fe86aa7d61b86f9c5edf20b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4efecbe0fe86aa7d61b86f9c5edf20b4">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[3/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4efecbe0fe86aa7d61b86f9c5edf20b4">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[3/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -563,12 +596,12 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00338">338</a> of file <a class="el" href="detail_2blob__stream__mq__rcv__impl_8hpp_source.html">blob_stream_mq_rcv_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00389">389</a> of file <a class="el" href="detail_2blob__stream__mq__rcv__impl_8hpp_source.html">blob_stream_mq_rcv_impl.hpp</a>.</p>
 
 </div>
 </div>
 <a id="acb29aca9de166fd1f24a09d08afe2fcc" name="acb29aca9de166fd1f24a09d08afe2fcc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb29aca9de166fd1f24a09d08afe2fcc">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[4/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acb29aca9de166fd1f24a09d08afe2fcc">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[4/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -606,12 +639,12 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__snd_8hpp_source.html#l00531">531</a> of file <a class="el" href="blob__stream__mq__snd_8hpp_source.html">blob_stream_mq_snd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__snd_8hpp_source.html#l00549">549</a> of file <a class="el" href="blob__stream__mq__snd_8hpp_source.html">blob_stream_mq_snd.hpp</a>.</p>
 
 </div>
 </div>
 <a id="a8bc3464c81b40649e99da6ce2ee5f87c" name="a8bc3464c81b40649e99da6ce2ee5f87c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bc3464c81b40649e99da6ce2ee5f87c">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[5/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bc3464c81b40649e99da6ce2ee5f87c">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[5/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -648,17 +681,17 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00368">368</a> of file <a class="el" href="detail_2blob__stream__mq__snd__impl_8hpp_source.html">blob_stream_mq_snd_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00390">390</a> of file <a class="el" href="detail_2blob__stream__mq__snd__impl_8hpp_source.html">blob_stream_mq_snd_impl.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a8eff22e594b6fe82f94f13d6a172537f" name="a8eff22e594b6fe82f94f13d6a172537f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8eff22e594b6fe82f94f13d6a172537f">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[6/11]</span></h2>
+<a id="af2e5f05a20475a07dc1f40a1bd0dd557" name="af2e5f05a20475a07dc1f40a1bd0dd557"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2e5f05a20475a07dc1f40a1bd0dd557">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[6/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classipc_1_1transport_1_1Blob__sender.html">Blob_sender</a> , typename <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html">Blob_receiver</a> , typename <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html">Native_handle_sender</a> , typename <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html">Native_handle_receiver</a> &gt; </div>
+template&lt;typename Blob_sender_t , typename Blob_receiver_t , typename Native_handle_sender_t , typename Native_handle_receiver_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
@@ -669,7 +702,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Blob__sender.h
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1Channel.html">Channel</a>&lt; <a class="el" href="classipc_1_1transport_1_1Blob__sender.html">Blob_sender</a>, <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html">Blob_receiver</a>, <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html">Native_handle_sender</a>, <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html">Native_handle_receiver</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1Channel.html">Channel</a>&lt; Blob_sender_t, Blob_receiver_t, Native_handle_sender_t, Native_handle_receiver_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
@@ -690,12 +723,54 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Blob__sender.h
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l02161">2161</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l02527">2527</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a01d7d61268a1d3b2ecfd1641fe51fce0" name="a01d7d61268a1d3b2ecfd1641fe51fce0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01d7d61268a1d3b2ecfd1641fe51fce0">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[7/13]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Msg_resource_t , bool NO_HNDLS&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1Generic__msg__batch__in.html">Generic_msg_batch_in</a>&lt; Msg_resource_t, NO_HNDLS &gt; &amp;&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Generic__msg__batch__in.html" title="Straightforward Msg_batch_in concept implementation (as taken by API {Blob|Native_handle}_receiver::a...">Generic_msg_batch_in</a></code> to the given <code>ostream</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
+    <tr><td class="paramname">val</td><td>Object to serialize. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="batch_8hpp_source.html#l00431">431</a> of file <a class="el" href="batch_8hpp_source.html">batch.hpp</a>.</p>
 
 </div>
 </div>
 <a id="ac6108711cc8b33c3b7ef0491ba78e2f6" name="ac6108711cc8b33c3b7ef0491ba78e2f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6108711cc8b33c3b7ef0491ba78e2f6">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[7/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6108711cc8b33c3b7ef0491ba78e2f6">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[8/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -720,8 +795,8 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Blob__sender.h
       </table>
 </div><div class="memdoc">
 
-<p>Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a></code> to the given <code>ostream</code>. </p>
-<p >Friend of <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a>.</p>
+<p>Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">Native_socket_stream</a></code> to the given <code>ostream</code>. </p>
+<p >Friend of <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">Native_socket_stream</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
@@ -731,53 +806,12 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Blob__sender.h
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream_8cpp_source.html#l00152">152</a> of file <a class="el" href="native__socket__stream_8cpp_source.html">native_socket_stream.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a33231b969171a9103cd0a319ea10278b" name="a33231b969171a9103cd0a319ea10278b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33231b969171a9103cd0a319ea10278b">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[8/11]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html">Native_socket_stream::Impl</a> &amp;&#160;</td>
-          <td class="paramname"><em>val</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of Native_socket_stream class.">Native_socket_stream::Impl</a> to the given <code>ostream</code>. </p>
-<p >Friend of <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
-    <tr><td class="paramname">val</td><td>Object to serialize. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="detail_2native__socket__stream__impl_8cpp_source.html#l00230">230</a> of file <a class="el" href="detail_2native__socket__stream__impl_8cpp_source.html">native_socket_stream_impl.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream_8cpp_source.html#l00182">182</a> of file <a class="el" href="native__socket__stream_8cpp_source.html">native_socket_stream.cpp</a>.</p>
 
 </div>
 </div>
 <a id="a03f0ad84b5d21920a58be5e95f12e69f" name="a03f0ad84b5d21920a58be5e95f12e69f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03f0ad84b5d21920a58be5e95f12e69f">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[9/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a03f0ad84b5d21920a58be5e95f12e69f">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[9/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -812,12 +846,94 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Blob__sender.h
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00481">481</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__acceptor_8cpp_source.html#l00488">488</a> of file <a class="el" href="native__socket__stream__acceptor_8cpp_source.html">native_socket_stream_acceptor.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a7febad90b3a03d2db53ac4ba99f966c9" name="a7febad90b3a03d2db53ac4ba99f966c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7febad90b3a03d2db53ac4ba99f966c9">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[10/13]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html">Native_socket_stream_impl</a> &amp;&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html" title="Internal, non-movable pImpl-lite implementation of Native_socket_stream class.">Native_socket_stream_impl</a> to the given <code>ostream</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
+    <tr><td class="paramname">val</td><td>Object to serialize. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="detail_2native__socket__stream__impl_8cpp_source.html#l00236">236</a> of file <a class="el" href="detail_2native__socket__stream__impl_8cpp_source.html">native_socket_stream_impl.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a3a055c601aee6f8eec8a7b26905ef5dd" name="a3a055c601aee6f8eec8a7b26905ef5dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a055c601aee6f8eec8a7b26905ef5dd">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[11/13]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Msg_resource_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__msg__batch__in.html">Native_socket_stream_msg_batch_in</a>&lt; Msg_resource_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream__msg__batch__in.html" title="Msg_batch_in concept implementation for at least sync_io::Native_socket_stream (as taken by APIs Nati...">Native_socket_stream_msg_batch_in</a></code> to the given <code>ostream</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
+    <tr><td class="paramname">val</td><td>Object to serialize. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="native__socket__stream__batch_8hpp_source.html#l01482">1482</a> of file <a class="el" href="native__socket__stream__batch_8hpp_source.html">native_socket_stream_batch.hpp</a>.</p>
 
 </div>
 </div>
 <a id="a7f08625d3fffff74a794f14aa4022b9d" name="a7f08625d3fffff74a794f14aa4022b9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f08625d3fffff74a794f14aa4022b9d">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[10/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f08625d3fffff74a794f14aa4022b9d">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[12/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -854,12 +970,12 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Blob__sender.h
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8cpp_source.html#l00028">28</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8cpp_source.html">channel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8cpp_source.html#l00030">30</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8cpp_source.html">channel.cpp</a>.</p>
 
 </div>
 </div>
 <a id="a8fb9256b66ad3dfdf742de66223466d7" name="a8fb9256b66ad3dfdf742de66223466d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fb9256b66ad3dfdf742de66223466d7">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[11/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fb9256b66ad3dfdf742de66223466d7">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[13/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -894,7 +1010,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Blob__sender.h
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="posix__mq__handle_8cpp_source.html#l01366">1366</a> of file <a class="el" href="posix__mq__handle_8cpp_source.html">posix_mq_handle.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="posix__mq__handle_8cpp_source.html#l01397">1397</a> of file <a class="el" href="posix__mq__handle_8cpp_source.html">posix_mq_handle.cpp</a>.</p>
 
 </div>
 </div>
@@ -933,13 +1049,13 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Blob__sender.h
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="bipc__mq__handle_8cpp_source.html#l00130">130</a> of file <a class="el" href="bipc__mq__handle_8cpp_source.html">bipc_mq_handle.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bipc__mq__handle_8cpp_source.html#l00142">142</a> of file <a class="el" href="bipc__mq__handle_8cpp_source.html">bipc_mq_handle.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="native__handle_8cpp_source.html#l00047">ipc::util::Native_handle::operator=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="heap__serializer_8hpp_source.html#l00492">ipc::transport::struc::Heap_reader::deserialization()</a>, <a class="el" href="asio__local__stream__socket_8hpp_source.html#l01113">ipc::transport::asio_local_stream_socket::Msg_batch_in&lt; Mutable_buffer_sequence_t, Msg_resource_t &gt;::nb_read()</a>, <a class="el" href="asio__local__stream__socket_8hpp_source.html#l00971">ipc::transport::asio_local_stream_socket::Msg_batch_in&lt; Mutable_buffer_sequence_t, Msg_resource_t &gt;::reuse_result_payloads()</a>, and <a class="el" href="asio__local__stream__socket_8hpp_source.html#l00931">ipc::transport::asio_local_stream_socket::Msg_batch_in&lt; Mutable_buffer_sequence_t, Msg_resource_t &gt;::Mdt_per_payload::swap()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceipc_1_1transport_af0610dff5efd418a8ff393f0ad9dd5c2_icgraph.svg" width="539" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceipc_1_1transport_af0610dff5efd418a8ff393f0ad9dd5c2_icgraph.svg" width="382" height="336"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -1018,9 +1134,9 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="posix__mq__handle_8cpp_source.html#l00549">549</a> of file <a class="el" href="posix__mq__handle_8cpp_source.html">posix_mq_handle.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="posix__mq__handle_8cpp_source.html#l00581">581</a> of file <a class="el" href="posix__mq__handle_8cpp_source.html">posix_mq_handle.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="posix__mq__handle_8cpp_source.html#l00529">ipc::transport::Posix_mq_handle::operator=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="posix__mq__handle_8cpp_source.html#l00544">ipc::transport::Posix_mq_handle::operator=()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1033,7 +1149,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

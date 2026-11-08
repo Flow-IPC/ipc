@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A <code>capnp::MessageBuilder</code> used by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a>: similar to a <code>capnp::MallocMessageBuilder</code> with the FIXED_SIZE alloc-strategy but with framing space around the allocated segment(s).  
+<p>A <code>capnp::MessageBuilder</code> used by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a>: similar to a <code>capnp::MallocMessageBuilder</code> (albeit with somewhat different accounting/knobs) and with framing/header space around the allocated segment(s).  
  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#details">More...</a></p>
 
 <p><code>#include &lt;heap_fixed_builder_capnp_msg_builder.hpp&gt;</code></p>
@@ -83,32 +83,35 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a29e45b9263096e876754ea544031242d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a29e45b9263096e876754ea544031242d">Heap_fixed_builder_capnp_message_builder</a> (flow::log::Logger *logger_for_blobs, size_t segment_sz, size_t frame_prefix_sz, size_t frame_postfix_sz)</td></tr>
-<tr class="memdesc:a29e45b9263096e876754ea544031242d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the message-builder, with the policy to allocate the segments in a particular way, always with a fixed size.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a29e45b9263096e876754ea544031242d">More...</a><br /></td></tr>
-<tr class="separator:a29e45b9263096e876754ea544031242d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a478c109e008dd33b04b605278c1b2a54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54">emit_segment_blobs</a> (<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a82a69eaa39cbe8a002de1266f1cbb5cb">Segment_ptrs</a> *target_blob_ptrs)</td></tr>
-<tr class="memdesc:a478c109e008dd33b04b605278c1b2a54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointers to <code>Blob</code>s which are the serialization segments at this time.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54">More...</a><br /></td></tr>
+<tr class="memitem:a2b0ccd4d4bf9c2a59f46a0040e32664c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a2b0ccd4d4bf9c2a59f46a0040e32664c">Heap_fixed_builder_capnp_message_builder</a> (size_t seg_and_frame_sz_cap, size_t frame_prefix_sz1, size_t frame_prefix_sz_cont, bool grow_seg_sz_else_constant, size_t segment_sz_init_pre_growth=sizeof(::capnp::word) *::capnp::SUGGESTED_FIRST_SEGMENT_WORDS, <a class="el" href="structipc_1_1transport_1_1struc_1_1stat_1_1Serializer__stats_1_1Snd.html">stat::Serializer_stats::Snd</a> *stats=nullptr)</td></tr>
+<tr class="memdesc:a2b0ccd4d4bf9c2a59f46a0040e32664c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the message-builder, with the policy to allocate the segments in a particular way.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a2b0ccd4d4bf9c2a59f46a0040e32664c">More...</a><br /></td></tr>
+<tr class="separator:a2b0ccd4d4bf9c2a59f46a0040e32664c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e046ed62cc9f11016aa22e06c8c3bf3"><td class="memItemLeft" align="right" valign="top"><a id="a8e046ed62cc9f11016aa22e06c8c3bf3" name="a8e046ed62cc9f11016aa22e06c8c3bf3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~Heap_fixed_builder_capnp_message_builder</b> () override</td></tr>
+<tr class="memdesc:a8e046ed62cc9f11016aa22e06c8c3bf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor: frees segments-related state held inside the base <code>MessageBuilder</code> and within <code>*this</code>; and updates certain stats (if so configured in ctor) that can only be by definition sampled at a builder/message's end of life. <br /></td></tr>
+<tr class="separator:a8e046ed62cc9f11016aa22e06c8c3bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a478c109e008dd33b04b605278c1b2a54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54">emit_segment_blobs</a> (<a class="el" href="namespaceipc_1_1transport_1_1struc.html#aa7c19464ac8ecc5db765f660d9fd2433">Segment_ptrs</a> *target_blob_ptrs)</td></tr>
+<tr class="memdesc:a478c109e008dd33b04b605278c1b2a54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointers to <code>Basic_blob</code>s which are the serialization segments at this time.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54">More...</a><br /></td></tr>
 <tr class="separator:a478c109e008dd33b04b605278c1b2a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d4767193250d909cdf5b298f92f43e9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a8d4767193250d909cdf5b298f92f43e9">n_segments</a> () const</td></tr>
 <tr class="memdesc:a8d4767193250d909cdf5b298f92f43e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns what <code>target_blob_ptrs.size()</code> would return after calling <code>emit_segment_blobs(&amp;target_blob_ptrs)</code> (with an empty <code>target_blob_ptrs</code> going-in), right now.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a8d4767193250d909cdf5b298f92f43e9">More...</a><br /></td></tr>
 <tr class="separator:a8d4767193250d909cdf5b298f92f43e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a766736906354f28d6ef2fa0752ba0e21"><td class="memItemLeft" align="right" valign="top">kj::ArrayPtr&lt;::capnp::word &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a766736906354f28d6ef2fa0752ba0e21">allocateSegment</a> (unsigned int min_sz) override</td></tr>
-<tr class="memdesc:a766736906354f28d6ef2fa0752ba0e21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <code>MessageBuilder</code> API.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a766736906354f28d6ef2fa0752ba0e21">More...</a><br /></td></tr>
-<tr class="separator:a766736906354f28d6ef2fa0752ba0e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33286f7426832f3779c4c5a8dd59fa26"><td class="memItemLeft" align="right" valign="top">kj::ArrayPtr&lt;::capnp::word &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a33286f7426832f3779c4c5a8dd59fa26">allocateSegment</a> (unsigned int min_sz_words) override</td></tr>
+<tr class="memdesc:a33286f7426832f3779c4c5a8dd59fa26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <code>MessageBuilder</code> API.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a33286f7426832f3779c4c5a8dd59fa26">More...</a><br /></td></tr>
+<tr class="separator:a33286f7426832f3779c4c5a8dd59fa26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >A <code>capnp::MessageBuilder</code> used by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a>: similar to a <code>capnp::MallocMessageBuilder</code> with the FIXED_SIZE alloc-strategy but with framing space around the allocated segment(s). </p>
-<p >It can also be used as a <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc" title="Alias for capnp&#39;s MessageBuilder interface. Rationale: as part of our API, we use our identifier styl...">Capnp_msg_builder_interface</a> (<code>capnp::MessageBuilder</code>) independently of the rest of <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> or even <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a>, although that was not the impetus for its development.</p>
-<h3>Move-ctible and move-assignable</h3>
-<p >Super-class <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc" title="Alias for capnp&#39;s MessageBuilder interface. Rationale: as part of our API, we use our identifier styl...">Capnp_msg_builder_interface</a>, which is an abstract class but not a pure interface (it has data and concrete methods), is move-ctible and move-assignable (but not copyable). Accordingly, the present class is as well. (So is our peer <code>capnp::MallocMessageBuilder</code>.) However: as of this writing (newest version capnp 0.10) <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc" title="Alias for capnp&#39;s MessageBuilder interface. Rationale: as part of our API, we use our identifier styl...">Capnp_msg_builder_interface</a> consists of a raw data area that = 1 <code>bool</code> + 22 words; or at least 176 bytes in a 64-bit system. Its (defaulted) move ctor/assignment will thus need to copy the 176+ bytes. That is a little "fat." We add another 3 <code>size_t</code>, a pointer, and a <code>vector</code> of 1+ pointers, or 30+ bytes. Hence the user may wish to wrap us in a <code>unique_ptr</code>, and only then use the move semantics; as the trade-off against the extra alloc/dealloc is arguably worth it. The same arguably holds for any <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc" title="Alias for capnp&#39;s MessageBuilder interface. Rationale: as part of our API, we use our identifier styl...">Capnp_msg_builder_interface</a> sub-class (interface implementation).</p>
-<p >Style note: Much of the rest of the code explicitly documents deleted copy-ctor/assignment and defaulted move-ctor/assignment (as separate items each with a doc header); we do not. This is of course for brevity; but we justify it in that the abstract class (interface) we implement (<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc" title="Alias for capnp&#39;s MessageBuilder interface. Rationale: as part of our API, we use our identifier styl...">Capnp_msg_builder_interface</a>) omits them as well.</p>
+<div class="textblock"><p >A <code>capnp::MessageBuilder</code> used by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a>: similar to a <code>capnp::MallocMessageBuilder</code> (albeit with somewhat different accounting/knobs) and with framing/header space around the allocated segment(s). </p>
+<p >It can also be used as a <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc" title="Alias for capnp&#39;s MessageBuilder interface. Rationale: as part of our API, we use our identifier styl...">Capnp_msg_builder_interface</a> (<code>capnp::MessageBuilder</code>) independently of the rest of <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> or even <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a>, although that was not the impetus for its development originally.</p>
+<h3>Move-ctible and move-assignable?</h3>
+<p >As of capnp-1.0.0 at the latest, but sometime after capnp-0.10, the super-class <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc" title="Alias for capnp&#39;s MessageBuilder interface. Rationale: as part of our API, we use our identifier styl...">Capnp_msg_builder_interface</a> a/k/a/ <code>capnp::MessageBuilder</code> &ndash; which is not a pure interface but includes some impl &ndash; is no longer move-ctible or move-assignable. Therefore we aren't either.</p>
+<p >(Historically: When it was movable, we were too, but we still advised that the super-class size is such that using its move facilities instead of e.g. <code>unique_ptr</code> wrapping might have been a bit slow.)</p>
 <h3>Rationale</h3>
-<p >Why we'd use a <code>MallocMessageBuilder</code>-like approach is explained within <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> doc header. So why not just use that actual class? Answer: We send the resulting serialization segments over IPC pipes (<a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a>, <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a>), and in some cases <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> needs to surround the serialization with a bit of metadata. <code>MallocMessageBuilder</code> will, for each segment, allocate X bytes &ndash; and then potentially fill all of them. The only way for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> to work with this is to allocate another buffer of X + (frame size) bytes and then copy the X bytes into it &ndash; losing the adherence to the zero-copy-when-possible paradigm. Hence this class which will use <code>flow::util::Blob</code> machinery to maintain the frame space.</p>
-<p >(Update: The previous paragraph remains correct in that in order to support the framing feature it was necessary to write this class, as <code>MallocMessageBuilder</code> does not have it. However <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> no longer needs to frame "a bit of metadata" around the serialization; hence it does not require this framing feature; hence we could now get rid of the present class and just use <code>MallocMessageBuilder</code>. Nevertheless I (ygoldfel) have kept this class around, as it is a nice feature in general. Plus niceties like <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54" title="Returns pointers to Blobs which are the serialization segments at this time.">emit_segment_blobs()</a> and <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a8d4767193250d909cdf5b298f92f43e9" title="Returns what target_blob_ptrs.size() would return after calling emit_segment_blobs(&amp;target_blob_ptrs)...">n_segments()</a> remain nice.)</p>
-<p >Note that in order to make use of the added feature (frame space) one should <em>not</em> access the serialization result via the usual <code>MessageBuilder::getSegmentsForOutput()</code>. That still works, and that method is essential in the impl of this class; but it returns only the actual serialization segments (each one's start and size, not including for example the allocated-but-unused data probably at the tail of the allocated buffer). Technically it would indeed be correct/safe to simply write frame prefix data by subtracting <code>frame_prefix_sz</code> from the segment's start pointer and writing there; and similarly write postfix data immediately past the end of the start ptr + size. However that is error-prone and inconvenient. Call <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54" title="Returns pointers to Blobs which are the serialization segments at this time.">emit_segment_blobs()</a> instead: it will return the <code>flow::util::Blob</code>s which will have set <code>start()</code> and <code>size()</code> appropriately (see <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54" title="Returns pointers to Blobs which are the serialization segments at this time.">emit_segment_blobs()</a> doc header). </p>
+<p >Why we'd use a <code>MallocMessageBuilder</code>-like approach is explained within <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a> doc header. So why not just use that actual class? Answer: We send the resulting serialization segments over IPC pipes (<a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a>, <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a>), and in some cases <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> needs to surround the serialization with a bit of metadata. <code>MallocMessageBuilder</code> will, for each segment, allocate X bytes &ndash; and then potentially fill all of them. The only way for <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> to work with this is to allocate another buffer of X + (frame size) bytes and then copy the X bytes into it &ndash; losing the adherence to the zero-copy-when-possible paradigm. Hence this class which will use <code>flow::util::Basic_blob</code> machinery to maintain the frame space.</p>
+<p >Note that in order to make use of the added feature (frame space) one should <em>not</em> access the serialization result via the usual <code>MessageBuilder::getSegmentsForOutput()</code>. That still works, and that method is essential in the impl of this class; but it returns only the actual serialization segments (each one's start and size, not including for example the allocated-but-unused data probably at the tail of the allocated buffer). Technically it would indeed be correct/safe to simply write frame prefix data by subtracting <code>frame_prefix_sz</code> from the segment's start pointer and writing there. However that is error-prone and inconvenient. Call <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54" title="Returns pointers to Basic_blobs which are the serialization segments at this time.">emit_segment_blobs()</a> instead: it will return the <code>flow::util::Basic_blob</code>s which will have set <code>start()</code> and <code>size()</code> appropriately (see <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54" title="Returns pointers to Basic_blobs which are the serialization segments at this time.">emit_segment_blobs()</a> doc header). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a29e45b9263096e876754ea544031242d" name="a29e45b9263096e876754ea544031242d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29e45b9263096e876754ea544031242d">&#9670;&nbsp;</a></span>Heap_fixed_builder_capnp_message_builder()</h2>
+<a id="a2b0ccd4d4bf9c2a59f46a0040e32664c" name="a2b0ccd4d4bf9c2a59f46a0040e32664c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b0ccd4d4bf9c2a59f46a0040e32664c">&#9670;&nbsp;</a></span>Heap_fixed_builder_capnp_message_builder()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -119,26 +122,38 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">ipc::transport::struc::Heap_fixed_builder_capnp_message_builder::Heap_fixed_builder_capnp_message_builder </td>
           <td>(</td>
-          <td class="paramtype">flow::log::Logger *&#160;</td>
-          <td class="paramname"><em>logger_for_blobs</em>, </td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>seg_and_frame_sz_cap</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>segment_sz</em>, </td>
+          <td class="paramname"><em>frame_prefix_sz1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>frame_prefix_sz</em>, </td>
+          <td class="paramname"><em>frame_prefix_sz_cont</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>grow_seg_sz_else_constant</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>frame_postfix_sz</em>&#160;</td>
+          <td class="paramname"><em>segment_sz_init_pre_growth</em> = <code>sizeof(::capnp::word)&#160;*&#160;::capnp::SUGGESTED_FIRST_SEGMENT_WORDS</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structipc_1_1transport_1_1struc_1_1stat_1_1Serializer__stats_1_1Snd.html">stat::Serializer_stats::Snd</a> *&#160;</td>
+          <td class="paramname"><em>stats</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -153,30 +168,18 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Constructs the message-builder, with the policy to allocate the segments in a particular way, always with a fixed size. </p>
-<p >Namely, capnp will call <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a766736906354f28d6ef2fa0752ba0e21" title="Implements MessageBuilder API.">allocateSegment()</a> with <code>min_sz * sizeof(word) == M</code>. This will:</p><ul>
-<li>Create an internal <code>flow::util::Blob B</code> with:<ul>
-<li><code>capacity()</code> = <code>max(M, segment_sz) + frame_prefix_sz + frame_postfix_sz</code>, up to ceiling-nearest word;</li>
-<li><code>start()</code> = <code>frame_prefix_sz</code>.</li>
-<li><code>size()</code> = <code>capacity() - start() - frame_postfix_sz</code> which equals ~<code>max(M, segment_sz)</code>.</li>
-</ul>
-</li>
-<li>Return <code>ArrayPtr</code> pointing at <code>B.begin()</code> (which is buffer start + <code>start()</code>), sized <code>B.size()</code> (that is, <code>max(M, segment_sz)</code> adjust to ceiling-nearest word).</li>
-</ul>
-<p >Furthermore, this will cause the following <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54" title="Returns pointers to Blobs which are the serialization segments at this time.">emit_segment_blobs()</a> behavior:</p><ul>
-<li>It will emit a sequence of <code>flow::util::Blob</code> pointers to the above.</li>
-<li>Each <code>Blob</code> pointer will correspond to an earlier <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a766736906354f28d6ef2fa0752ba0e21" title="Implements MessageBuilder API.">allocateSegment()</a> call 1-1.</li>
-<li>The pointee's <code>start()</code> will be as above.</li>
-<li>The pointee's <code>size()</code> will equal the serialization segment's size as determined ultimately by capnp (per <code>getSegmentsForOutput()</code>). This will be at most <code>max(M, segment_sz)</code> (less if it didn't need every single byte to hold the serialization ultimately &ndash; it is typical some bytes are wasted).</li>
-<li>Its <code>capacity() - start() - size() &gt;= frame_postfix_sz</code>.</li>
-</ul>
-<p >In this way the consumer of <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54" title="Returns pointers to Blobs which are the serialization segments at this time.">emit_segment_blobs()</a> (presumably <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>) will be able to adjust <code>start()</code> and <code>size()</code> of each serialization <code>Blob</code> to add framing info if needed.</p>
+<p>Constructs the message-builder, with the policy to allocate the segments in a particular way. </p>
+<p >See the doc headers for invidiuals args for details.</p>
+<p >For a given segment, <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a478c109e008dd33b04b605278c1b2a54" title="Returns pointers to Basic_blobs which are the serialization segments at this time.">emit_segment_blobs()</a> shall emit it in the form of a sequence of <code>Basic_blob</code> pointers, 1-1 with the segments, where for a given <code>Basic_blob B</code> that capnp-serialization segment itself is in range [<code>B.begin()</code>, <code>B.end()</code>) (indices within internal buffer [<code>B.start()</code>, <code>B.start() + B.size()</code>)); and the header if any lives in area [<code>B.begin() - B.start()</code>, <code>B.begin()</code>).</p>
+<p >Also/instead <code>getSegmentsForOutput()</code> can be used to obtain the same (well, very-related) information. The form is somewhat different; as only memory area descriptions are returned; are in <code>word</code>s instead of bytes; and any header location/size would have to be calculated by the caller. E.g., no equivalent of <code>B.start()</code> is communicated, so the caller would have to have memorized it.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">logger_for_blobs</td><td>Passed to each <code>Blob</code> ctor. </td></tr>
-    <tr><td class="paramname">segment_sz</td><td>See above. </td></tr>
-    <tr><td class="paramname">frame_prefix_sz</td><td>Guaranteed space for prefix framing. See above. This must be a multiple of <code>sizeof(void*)</code>; else behavior undefined (assertion may trip). </td></tr>
-    <tr><td class="paramname">frame_postfix_sz</td><td>Guaranteed space for postfix framing. See above. </td></tr>
+    <tr><td class="paramname">seg_and_frame_sz_cap</td><td>Say <code>allocateSegment(M)</code> is being called; we shall now select the size N of the buffer to allocate; though if <code>M * sizeof(word)</code> exceeds this size, then N shall be ignored in favor of the <code>M</code>-derived size. N shall be chosen based on <code>grow_seg_sz_else_constant</code> and <code>segment_sz_init_pre_growth</code> as well as the value(s) chosen in preceding <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a33286f7426832f3779c4c5a8dd59fa26" title="Implements MessageBuilder API.">allocateSegment()</a></code> calls if any; and then it shall be capped at <code>seg_and_frame_sz_cap</code>. Note that the buffer being described shall hold both the segment being requested; and header space just ahead of it (if so configured). </td></tr>
+    <tr><td class="paramname">frame_prefix_sz1</td><td>For the first <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a33286f7426832f3779c4c5a8dd59fa26" title="Implements MessageBuilder API.">allocateSegment()</a>: The allocated buffer shall have <code>.start() ==</code> this value. Hence the reserved header area for seg 1 is of this size and is immediately followed by the segment itself. Can be zero. Must be a multiple of <code>sizeof(capnp::word)</code>. </td></tr>
+    <tr><td class="paramname">frame_prefix_sz_cont</td><td>Same as <code>frame_prefix_sz1</code> but applied to each subsequent <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a33286f7426832f3779c4c5a8dd59fa26" title="Implements MessageBuilder API.">allocateSegment()</a> if any. </td></tr>
+    <tr><td class="paramname">grow_seg_sz_else_constant</td><td><code>true</code> means mimic capnp's <code>GROW_HEURISTICALLY</code> (preferred seg sizes grow ~exponentially) but capping preferred seg-size (including header if any) to <code>seg_and_frame_sz_cap</code> and starting at <code>segment_sz_init_pre_growth</code> (plus header if any). <code>false</code> means mimic <code>FIXED_SIZE</code> with preferred seg-size (including header if any) equal to <code>seg_and_frame_sz_cap</code>. (In the latter case <code>segment_sz_init_pre_growth</code> is ignored.) Note: "Preferred" here communicates the capnp mechanics described in the doc header for arg <code>seg_and_frame_sz_cap</code> (where if <code>M</code> is large enough, it overrides our calculated "preferred" seg-size). </td></tr>
+    <tr><td class="paramname">segment_sz_init_pre_growth</td><td>See above. Relevant only if <code>grow_seg_sz_else_constant == true</code>, this is chosen as the size of the segment (not counting header if any) for the first <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a33286f7426832f3779c4c5a8dd59fa26" title="Implements MessageBuilder API.">allocateSegment()</a>. (Due to capnp mechanics, <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a33286f7426832f3779c4c5a8dd59fa26" title="Implements MessageBuilder API.">allocateSegment()</a></code> 1 is always called with arg equal to ~0; hence seg 1's size, unlike the others', is simply known ahead of time.) If <code>grow_seg_sz_else_constant == false</code>, that seg 1 size (sans header) is instead chosen as <code>seg_and_frame_sz_cap - frame_prefix_sz1</code>. If it can be estimated, reasonably tightly, to be large enough for the entire message, then this can lead to significant perf wins: fewer zero-filling cycles spent and the entire message being in 1 segment. </td></tr>
+    <tr><td class="paramname">stats</td><td>Optional pointer to the cumulative stats to update. If not null, pointee must outlive <code>*this</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -184,8 +187,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a766736906354f28d6ef2fa0752ba0e21" name="a766736906354f28d6ef2fa0752ba0e21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a766736906354f28d6ef2fa0752ba0e21">&#9670;&nbsp;</a></span>allocateSegment()</h2>
+<a id="a33286f7426832f3779c4c5a8dd59fa26" name="a33286f7426832f3779c4c5a8dd59fa26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33286f7426832f3779c4c5a8dd59fa26">&#9670;&nbsp;</a></span>allocateSegment()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,7 +200,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">kj::ArrayPtr&lt; capnp::word &gt; ipc::transport::struc::Heap_fixed_builder_capnp_message_builder::allocateSegment </td>
           <td>(</td>
           <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>min_sz</em></td><td>)</td>
+          <td class="paramname"><em>min_sz_words</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -211,14 +214,14 @@ Public Member Functions</h2></td></tr>
 <p>Implements <code>MessageBuilder</code> API. </p>
 <p >Invoked by capnp, as the user mutates via <code>Builder</code>s. Do not invoke directly.</p>
 <dl class="section note"><dt>Note</dt><dd>The strange capitalization (that goes against standard Flow-IPC style) is because we are implementing a capnp API.</dd></dl>
-<p>For details as to how this will behave in context of <code>*this</code> see <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a29e45b9263096e876754ea544031242d" title="Constructs the message-builder, with the policy to allocate the segments in a particular way,...">Heap_fixed_builder_capnp_message_builder()</a> ctor doc header.</p>
+<p>For details as to how this will behave in context of <code>*this</code> see <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a2b0ccd4d4bf9c2a59f46a0040e32664c" title="Constructs the message-builder, with the policy to allocate the segments in a particular way.">Heap_fixed_builder_capnp_message_builder()</a> ctor doc header.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">min_sz</td><td>See <code>MessageBuilder</code> API. The allocated segment will allow for a serialization of at most <code>min(min_sz * sizeof(word), segment_sz)</code> bytes, where <code>segment_sz</code> was passed to ctor (adjusted to the ceiling-nearest word). </td></tr>
+    <tr><td class="paramname">min_sz_words</td><td>See <code>MessageBuilder</code> API. The allocated segment will allow for a serialization of at most <code>min(min_sz_words * sizeof(word), segment_sz)</code> bytes, where <code>segment_sz</code> is determined according to the algorithm described in our ctor doc header (plus adjusted to the ceiling-nearest word). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See <code>MessageBuilder</code> API. The ptr and size of the area for capnp to serialize-to. (As noted in ctor doc header: <code>frame_prefix_sz</code> bytes will precede this area, and <code>frame_postfix_sz</code> will succeed it.) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See <code>MessageBuilder</code> API. The ptr and size of the area for capnp to serialize-to. (As noted in ctor doc header: <code>frame_prefix_sz</code> bytes will precede this area; the value is determined as described in our ctor doc header.) </dd></dl>
 
 </div>
 </div>
@@ -231,28 +234,32 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void ipc::transport::struc::Heap_fixed_builder_capnp_message_builder::emit_segment_blobs </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a82a69eaa39cbe8a002de1266f1cbb5cb">Segment_ptrs</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#aa7c19464ac8ecc5db765f660d9fd2433">Segment_ptrs</a> *&#160;</td>
           <td class="paramname"><em>target_blob_ptrs</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns pointers to <code>Blob</code>s which are the serialization segments at this time. </p>
+<p>Returns pointers to <code>Basic_blob</code>s which are the serialization segments at this time. </p>
 <p >They are as follows:</p><ul>
-<li>Each <code>Blob</code> holds a serialization segment, in order. There shall be at least 1.</li>
-<li>For each <code>Blob B</code> (see ctor):<ul>
-<li><code>start() == frame_prefix_sz</code>.</li>
-<li><code>capacity() - start() - size() &gt;= frame_postfix_sz</code>.</li>
-<li>[<code>begin()</code>, <code>end()</code>) is the serialization segment. Recall that <code>begin()</code> starts at position <code>start()</code>, while <code>end()</code> is at position <code>start() + size()</code>.</li>
+<li>Each <code>Basic_blob</code> holds a serialization segment, in order. There shall be at least 1.</li>
+<li>For each <code>Basic_blob B</code> (see ctor):<ul>
+<li><code>B.start() == frame_prefix_sz</code>.</li>
+<li>[<code>B.begin()</code>, <code>B.end()</code>) is the serialization segment. Recall that <code>B.begin()</code> starts at position <code>B.start()</code>, while <code>B.end()</code> is at position <code>B.start() + B.size()</code>.</li>
 </ul>
 </li>
+<li>See ctor doc header for how <code>frame_prefix_sz</code> is determined.</li>
 </ul>
-<p >Therefore one can use <code>B.resize()</code> and similar and then add frame data without breaking zero-copy.</p>
 <p >This method can be invoked more than once; however the emitted result is meaningless once any mutation occurs subsequently.</p>
+<dl class="section warning"><dt>Warning</dt><dd>For a given emitted blob <code>B</code>: You'll note it is mutable. However, behavior is undefined if you modify anything about it or it-described memory area except the contents of the header memory area [<code>B.begin() - B.start()</code>, <code>B.begin()</code>). Hence, things you are disallowed to do include (but may not be limited to): modifying any other <code>B</code>-owned memory area (anything in [<code>B.begin()</code>, <code>B.begin() - B.start() + B.capacity()</code>); modifying any metadata of <code>B</code> itself (no <code>B.resize()</code> or derivatives thereof; no <code>B.make_zero()</code> or derivatives thereof).</dd></dl>
+<p>It is mutable expressly for the purpose of potentially modifying the header area &ndash; that is it!</p>
+<h3>Rationale</h3>
+<p >This API is, on reflection, a bit funky. And, really, one could get by with just <code>getSegmentsForOutput()</code> (and memorizing the header policy, as passed to our ctor). It evolved this way, and to be fair it's nice to emit information that's stored anyway, namely <code>flow::util::Basic_blob::start()</code> being the header size (et al). On the other hand it's somewhat odd to emit mutable <code>Basic_blob</code>s but only formally allow modifying the header areas they describe. It's not language-enforced which is... well... it's okay but not ideal.</p>
+<p >At this time I (ygoldfel) think it's fine in the context of how Flow-IPC uses it but would've been probably too funky if its main or only use-case were direct calls by the user. So maintainers should keep that in mind.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target_blob_ptrs</td><td>It is appended-to. Recall these are mere pointers (into <code>*this</code>-managed heap memory). </td></tr>
+    <tr><td class="paramname">target_blob_ptrs</td><td>It is appended-to. Recall these are mere pointers (into <code>*this</code>-managed heap memory, with each pointee <code>Blob_sans_log_context</code> describing a header + segment memory area). </td></tr>
   </table>
   </dd>
 </dl>
@@ -275,7 +282,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns what <code>target_blob_ptrs.size()</code> would return after calling <code>emit_segment_blobs(&amp;target_blob_ptrs)</code> (with an empty <code>target_blob_ptrs</code> going-in), right now. </p>
-<p >In other words it is the number of times capnp has invoked <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a766736906354f28d6ef2fa0752ba0e21" title="Implements MessageBuilder API.">allocateSegment()</a>.</p>
+<p >In other words it is the number of times capnp has invoked <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#a33286f7426832f3779c4c5a8dd59fa26" title="Implements MessageBuilder API.">allocateSegment()</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
@@ -287,7 +294,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['error_5fcategory_0',['error_category',['../classboost_1_1system_1_1error__category.html',1,'boost::system']]],
-  ['expecting_5fresponse_1',['Expecting_response',['../structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html',1,'ipc::transport::struc::sync_io::Channel']]]
+  ['finalized_5fshards_0',['Finalized_shards',['../classipc_1_1shm_1_1arena__lend_1_1detail_1_1stat_1_1Finalized__shards.html',1,'ipc::shm::arena_lend::detail::stat']]],
+  ['fulfiller_5fdisposer_1',['Fulfiller_disposer',['../structipc_1_1transport_1_1struc_1_1shm_1_1rpc_1_1Session__vat__network_1_1Fulfiller__disposer.html',1,'ipc::transport::struc::shm::rpc::Session_vat_network']]]
 ];

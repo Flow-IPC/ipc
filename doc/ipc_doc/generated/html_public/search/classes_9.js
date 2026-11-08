@@ -1,8 +1,12 @@
 var searchData=
 [
-  ['persistent_5fmq_5fhandle_0',['Persistent_mq_handle',['../classipc_1_1transport_1_1Persistent__mq__handle.html',1,'ipc::transport']]],
-  ['pool_5farena_1',['Pool_arena',['../classipc_1_1shm_1_1classic_1_1Pool__arena.html',1,'ipc::shm::classic']]],
-  ['posix_5fmq_5fhandle_2',['Posix_mq_handle',['../classipc_1_1transport_1_1Posix__mq__handle.html',1,'ipc::transport']]],
-  ['process_5fcredentials_3',['Process_credentials',['../classipc_1_1util_1_1Process__credentials.html',1,'ipc::util']]],
-  ['protocol_5fnegotiator_4',['Protocol_negotiator',['../classipc_1_1transport_1_1Protocol__negotiator.html',1,'ipc::transport']]]
+  ['native_5fhandle_0',['Native_handle',['../structipc_1_1util_1_1Native__handle.html',1,'ipc::util']]],
+  ['native_5fhandle_5freceiver_1',['Native_handle_receiver',['../classipc_1_1transport_1_1Native__handle__receiver.html',1,'ipc::transport::Native_handle_receiver'],['../classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html',1,'ipc::transport::sync_io::Native_handle_receiver']]],
+  ['native_5fhandle_5fsender_2',['Native_handle_sender',['../classipc_1_1transport_1_1Native__handle__sender.html',1,'ipc::transport::Native_handle_sender'],['../classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html',1,'ipc::transport::sync_io::Native_handle_sender']]],
+  ['native_5fsocket_5fstream_3',['Native_socket_stream',['../classipc_1_1transport_1_1Native__socket__stream.html',1,'ipc::transport::Native_socket_stream'],['../classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html',1,'ipc::transport::sync_io::Native_socket_stream']]],
+  ['native_5fsocket_5fstream_5facceptor_4',['Native_socket_stream_acceptor',['../classipc_1_1transport_1_1Native__socket__stream__acceptor.html',1,'ipc::transport::Native_socket_stream_acceptor'],['../classipc_1_1transport_1_1sync__io_1_1Native__socket__stream__acceptor.html',1,'ipc::transport::sync_io::Native_socket_stream_acceptor']]],
+  ['native_5fsocket_5fstream_5fcfg_5',['Native_socket_stream_cfg',['../classipc_1_1transport_1_1Native__socket__stream__cfg.html',1,'ipc::transport']]],
+  ['native_5fsocket_5fstream_5fmsg_5fbatch_5fin_6',['Native_socket_stream_msg_batch_in',['../classipc_1_1transport_1_1Native__socket__stream__msg__batch__in.html',1,'ipc::transport']]],
+  ['null_5fpeer_7',['Null_peer',['../classipc_1_1transport_1_1Null__peer.html',1,'ipc::transport']]],
+  ['null_5fsession_8',['Null_session',['../structipc_1_1transport_1_1struc_1_1Null__session.html',1,'ipc::transport::struc']]]
 ];

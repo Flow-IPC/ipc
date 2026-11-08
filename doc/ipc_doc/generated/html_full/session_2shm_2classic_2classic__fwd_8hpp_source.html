@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -97,7 +97,7 @@ $(function() {
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * Support for SHM-backed ipc::session sessions and session-servers with the SHM-classic</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> * (ipc::shm::classic::Pool_arena) provider.  See the doc header for the general ipc::session::shm namespace.</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceipc_1_1session_1_1shm_1_1classic.html">ipc::session::shm::classic</a></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceipc_1_1session_1_1shm_1_1classic.html">ipc::session::shm::classic</a> <span class="comment">// See also ipc::session::shm::classic::rpc {} lower down.</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// Types.</span></div>
@@ -107,135 +107,190 @@ $(function() {
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Session_t&gt;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">class </span>Session_mv;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Server_session_impl_t&gt;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session__mv.html">   39</a></span><span class="keyword">class </span><a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session__mv.html">Server_session_mv</a>;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Client_session_impl_t&gt;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classipc_1_1session_1_1shm_1_1classic_1_1Client__session__mv.html">   41</a></span><span class="keyword">class </span><a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Client__session__mv.html">Client_session_mv</a>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">template</span>&lt;schema::MqType S_MQ_TYPE_OR_NONE, <span class="keywordtype">bool</span> S_TRANSMIT_NATIVE_HANDLES, <span class="keyword">typename</span> Mdt_payload = ::capnp::Vo<span class="keywordtype">id</span>&gt;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">class </span><a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session.html">Server_session</a>;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">template</span>&lt;schema::MqType S_MQ_TYPE_OR_NONE, <span class="keywordtype">bool</span> S_TRANSMIT_NATIVE_HANDLES, <span class="keyword">typename</span> Mdt_payload = ::capnp::Vo<span class="keywordtype">id</span>&gt;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">class </span><a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">Session_server</a>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"></span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"> * This is to session::Client_session what shm::classic::Server_session is to session::Server_session.  In</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"> * terms of additional (to that of #Client_session) public behavior, from the public API user&#39;s point of</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"> * view, this class template alias is simply ~exactly identical/symmetrical to shm::classic::Server_session.</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment"> * See its doc header.  That is during PEER state.</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment"> * The only difference is shm::classic::Server_session::app_shm() and `shm::classic::Client_session::app_shm()`</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment"> * (actually Session_mv::app_shm() = both) differ in terms of how one views the lifetime of the</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"> * underlying SHM areas.  This is reflected in the latter&#39;s doc header.</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"> * Essentially, though, the `Arena*` returned by the former can be used beyond</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment"> * the returning `*this` being destroyed, as long as its parent shm::classic::Session_server is alive (which</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"> * is typical).  In contrast that is not true of that returned by `shm::classic::Client_session::app_shm()`; but</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"> * since the destruction of a #Client_session implies either the process is itself going down, or the</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment"> * opposing server process (and thus shm::classic::Session_server) is going down/has gone down, this should not</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment"> * be relevant, as those objects should never be accessed again anyway.</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment"> * @internal</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment"> * ### Implementation ###</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment"> * First see the Implementation section of shm::classic::Server_session.  It gives a detailed description of the</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment"> * overall design -- both its own side and this (client) side too.  So read it; then come back here.</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment"> * That said, shm::classic::Client_session is a much simpler situation.  It is not inter-operating with</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment"> * any server object; and (as explained in the referenced doc header) all it needs to do is open the pools</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment"> * guaranteed to exist by the time the vanilla #Client_session enters PEER state (just past log-in response receipt).</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment"> * So all we have to do is provide a modified `async_connect()` which:</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment"> *   - executes vanilla session::Client_session_impl::async_connect(); once that triggers the on-done handler:</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment"> *   - open the 2 SHM pools (a synchronous op);</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment"> *   - invoke the user&#39;s original on-done handler.</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment"> * In `*this`, mechanically: the true implementation of the needed setup and accessors (explained above) is in</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment"> * shm::classic::Client_session_impl, and the vanilla core of that is in its super-class session::Client_session_impl.</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment"> * That&#39;s the key; then Client_session_mv adds movability around that guy; and lastly this type sub-classes *that*</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment"> * and completes the puzzle by pImpl-forwarding to the added (SHM-focused) API.</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment"> * The last and most boring piece of the puzzle are the pImpl-lite wrappers around the SHM-specific API</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment"> * that shm::classic::Client_session adds to super-class Client_session_mv: `session_shm()` and so on.</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment"> * Just see same spot in shm::classic::Server_session doc header; it explains both client and server sides.</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment"> * @endinternal</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment"> * @tparam S_MQ_TYPE_OR_NONE</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">template</span>&lt;session::schema::MqType MQ_TYPE_OR_NONE, <span class="keywordtype">bool</span> TRANSMIT_NATIVE_HANDLES, <span class="keyword">typename</span> Mdt_payload = ::capnp::Vo<span class="keywordtype">id</span>&gt;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">class </span><a class="code hl_typedef" href="namespaceipc_1_1session.html#a961e318f69fac2b45e55346591ea46e1">Server_session</a>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">template</span>&lt;session::schema::MqType MQ_TYPE_OR_NONE, <span class="keywordtype">bool</span> TRANSMIT_NATIVE_HANDLES, <span class="keyword">typename</span> Mdt_payload = ::capnp::Vo<span class="keywordtype">id</span>&gt;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">class </span><a class="code hl_typedef" href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html#a5887c53cc020854f26a8160bb698707c">Session_server</a>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"></span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"> * This is to session::Client_session what shm::classic::Server_session is to session::Server_session.  In</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"> * terms of additional (to that of #Client_session) public behavior, from the public API user&#39;s point of</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"> * view, this class template alias is simply ~exactly identical/symmetrical to shm::classic::Server_session.</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"> * See its doc header.  That is during PEER state.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"> * @warning See same-named section of session::Client_session_mv ctor doc header.  In short: the `Client_app`</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"> *          and `Server_app` passed to the ctor must outlive `*this`.</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment"> * The only difference is shm::classic::Server_session::app_shm() and `shm::classic::Client_session::app_shm()`</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"> * (actually Session_mv::app_shm() = both) differ in terms of how one views the lifetime of the</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment"> * underlying SHM areas.  This is reflected in the latter&#39;s doc header.</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment"> * Essentially, though, the `Arena*` returned by the former can be used beyond the returning `*this` being destroyed,</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"> * as long as its parent shm::classic::Session_server -- or another shm::classic::Server_session from it, with the</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"> * same Client_app -- is alive (which is typical).  In contrast that is not true of that returned by</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment"> * `shm::classic::Client_session::app_shm()`; but since the destruction of a #Client_session implies either the</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"> * process is itself going down, or the opposing server process (and thus shm::classic::Session_server) is going</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"> * down/has gone down, this should not be relevant, as those objects should never be accessed again anyway.</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment"> * @internal</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment"> * ### Implementation ###</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment"> * First see the Implementation section of shm::classic::Server_session.  It gives a detailed description of the</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment"> * overall design -- both its own side and this (client) side too.  So read it; then come back here.</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment"> * That said, shm::classic::Client_session is a much simpler situation.  It is not inter-operating with</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment"> * any server object; and (as explained in the referenced doc header) all it needs to do is open the pools</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment"> * guaranteed to exist by the time the vanilla #Client_session enters PEER state (just past log-in response receipt).</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment"> * So all we have to do is provide a modified `async_connect()` which:</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment"> *   - executes vanilla session::Client_session_impl::async_connect(); once that triggers the on-done handler:</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment"> *   - open the 2 SHM pools (a synchronous op);</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment"> *   - invoke the user&#39;s original on-done handler.</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment"> * In `*this`, mechanically: the true implementation of the needed setup and accessors (explained above) is in</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment"> * shm::classic::Client_session_impl, and the vanilla core of that is in its super-class session::Client_session_impl.</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment"> * That&#39;s the key; then Client_session_mv adds movability around that guy; and lastly this type sub-classes *that*</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment"> * and completes the puzzle by pImpl-forwarding to the added (SHM-focused) API.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment"> * The last and most boring piece of the puzzle are the pImpl-lite wrappers around the SHM-specific API</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment"> * that shm::classic::Client_session adds to super-class Client_session_mv: `session_shm()` and so on.</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment"> * Just see same spot in shm::classic::Server_session doc header; it explains both client and server sides.</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment"> * @endinternal</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment"> * @tparam MQ_TYPE_OR_NONE</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment"> *         Identical to session::Client_session.</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment"> * @tparam TRANSMIT_NATIVE_HANDLES</span></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment"> *         Identical to session::Client_session.</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment"> * @tparam S_TRANSMIT_NATIVE_HANDLES</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment"> * @tparam Mdt_payload</span></div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment"> *         Identical to session::Client_session.</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment"> * @tparam Mdt_payload</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment"> *         Identical to session::Client_session.</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="keyword">template</span>&lt;schema::MqType S_MQ_TYPE_OR_NONE, <span class="keywordtype">bool</span> S_TRANSMIT_NATIVE_HANDLES, <span class="keyword">typename</span> Mdt_payload = ::capnp::Vo<span class="keywordtype">id</span>&gt;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="namespaceipc_1_1session_1_1shm_1_1classic.html#ac6c443a72e0f22710c83bb1e8c229618">   97</a></span><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">Client_session</a></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  = <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">Session_mv</a></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      &lt;<a class="code hl_class" href="classipc_1_1session_1_1Client__session__mv.html">session::Client_session_mv</a></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        &lt;<a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Client__session__impl.html">Client_session_impl&lt;S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;</a>&gt;&gt;;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">// Free functions.</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment"></span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment"> * Prints string representation of the given `Session_mv` to the given `ostream`.</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keyword">template</span>&lt;session::schema::MqType MQ_TYPE_OR_NONE, <span class="keywordtype">bool</span> TRANSMIT_NATIVE_HANDLES, <span class="keyword">typename</span> Mdt_payload = ::capnp::Vo<span class="keywordtype">id</span>&gt;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="namespaceipc_1_1session_1_1shm_1_1classic.html#a027af2fb147d37cce937d83d82b94e53">   95</a></span><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">Client_session</a></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  = <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">Session_mv</a></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      &lt;<a class="code hl_class" href="classipc_1_1session_1_1Client__session__mv.html">session::Client_session_mv</a></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        &lt;<a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Client__session__impl.html">Client_session_impl&lt;MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;</a>&gt;&gt;;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">// Free functions.</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment"></span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment"> * Prints string representation of the given `Session_mv` to the given `ostream`.</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment"> * @relatesalso Session_mv</span></div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment"> * @relatesalso Session_mv</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment"> * @param os</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment"> *        Stream to which to write.</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment"> * @param val</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment"> *        Object to serialize.</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment"> * @return `os`.</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Session_t&gt;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>std::ostream&amp; <a class="code hl_function" href="namespaceipc_1_1session_1_1shm_1_1classic.html#ae28750f5d14a8ec78ea4d5310e212482">operator&lt;&lt;</a>(std::ostream&amp; os, <span class="keyword">const</span> <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">Session_mv&lt;Session_t&gt;</a>&amp; val);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment"></span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment"> * Prints string representation of the given `Server_session` to the given `ostream`.</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment"> * @param os</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment"> *        Stream to which to write.</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment"> * @param val</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment"> *        Object to serialize.</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment"> * @return `os`.</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Session_t&gt;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>std::ostream&amp; <a class="code hl_function" href="namespaceipc_1_1session_1_1shm_1_1classic.html#ae28750f5d14a8ec78ea4d5310e212482">operator&lt;&lt;</a>(std::ostream&amp; os, <span class="keyword">const</span> <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">Session_mv&lt;Session_t&gt;</a>&amp; val);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment"></span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment"> * Prints string representation of the given `Server_session` to the given `ostream`.</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment"> * @relatesalso Server_session</span></div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment"> * @relatesalso Server_session</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment"> * @param os</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment"> *        Stream to which to write.</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment"> * @param val</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment"> *        Object to serialize.</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment"> * @return `os`.</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keyword">template</span>&lt;schema::MqType S_MQ_TYPE_OR_NONE, <span class="keywordtype">bool</span> S_TRANSMIT_NATIVE_HANDLES,</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>         <span class="keyword">typename</span> Mdt_payload&gt;</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>std::ostream&amp; <a class="code hl_function" href="namespaceipc_1_1session_1_1shm_1_1classic.html#ae28750f5d14a8ec78ea4d5310e212482">operator&lt;&lt;</a>(std::ostream&amp; os,</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                         <span class="keyword">const</span> <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session.html">Server_session</a></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                                 &lt;S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;&amp; val);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment"></span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment"> * Prints string representation of the given `Session_server` to the given `ostream`.</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment"> * @param os</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment"> *        Stream to which to write.</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment"> * @param val</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment"> *        Object to serialize.</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment"> * @return `os`.</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keyword">template</span>&lt;session::schema::MqType MQ_TYPE_OR_NONE, <span class="keywordtype">bool</span> TRANSMIT_NATIVE_HANDLES,</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>         <span class="keyword">typename</span> Mdt_payload&gt;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>std::ostream&amp; <a class="code hl_function" href="namespaceipc_1_1session_1_1shm_1_1classic.html#ae28750f5d14a8ec78ea4d5310e212482">operator&lt;&lt;</a>(std::ostream&amp; os,</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                         <span class="keyword">const</span> <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session.html">Server_session</a></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                                 &lt;MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;&amp; val);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment"></span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment"> * Prints string representation of the given `Session_server` to the given `ostream`.</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment"> * @relatesalso Session_server</span></div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment"> * @relatesalso Session_server</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="comment"> * @param os</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment"> *        Stream to which to write.</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment"> * @param val</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment"> *        Object to serialize.</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment"> * @return `os`.</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="keyword">template</span>&lt;schema::MqType S_MQ_TYPE_OR_NONE, <span class="keywordtype">bool</span> S_TRANSMIT_NATIVE_HANDLES,</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>         <span class="keyword">typename</span> Mdt_payload&gt;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>std::ostream&amp; <a class="code hl_function" href="namespaceipc_1_1session_1_1shm_1_1classic.html#ae28750f5d14a8ec78ea4d5310e212482">operator&lt;&lt;</a>(std::ostream&amp; os,</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                         <span class="keyword">const</span> <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">Session_server</a></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                                 &lt;S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;&amp; val);</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>} <span class="comment">// namespace ipc::session::shm::classic</span></div>
-<div class="ttc" id="aclassipc_1_1session_1_1Client__session__mv_html"><div class="ttname"><a href="classipc_1_1session_1_1Client__session__mv.html">ipc::session::Client_session_mv</a></div><div class="ttdoc">Implements Session concept on the Client_app end: a Session_mv that first achieves PEER state by conn...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html#l00143">client_session.hpp:145</a></div></div>
-<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Client__session__impl_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Client__session__impl.html">ipc::session::shm::classic::Client_session_impl</a></div><div class="ttdoc">Core internally-used implementation of shm::classic::Client_session: it is to the latter what its pub...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2session_2detail_2shm_2classic_2client__session__impl_8hpp_source.html#l00051">client_session_impl.hpp:54</a></div></div>
-<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Client__session__mv_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Client__session__mv.html">ipc::session::shm::classic::Client_session_mv</a></div><div class="ttdef"><b>Definition:</b> <a href="session_2shm_2classic_2classic__fwd_8hpp_source.html#l00041">classic_fwd.hpp:41</a></div></div>
-<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Server__session__mv_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session__mv.html">ipc::session::shm::classic::Server_session_mv</a></div><div class="ttdef"><b>Definition:</b> <a href="session_2shm_2classic_2classic__fwd_8hpp_source.html#l00039">classic_fwd.hpp:39</a></div></div>
-<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Server__session_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session.html">ipc::session::shm::classic::Server_session</a></div><div class="ttdoc">Identical to session::Server_session in every way, except that it makes available two SHM arenas,...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2session_2shm_2classic_2server__session_8hpp_source.html#l00216">server_session.hpp:219</a></div></div>
-<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Session__mv_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">ipc::session::shm::classic::Session_mv</a></div><div class="ttdoc">Implements the SHM-related API common to shm::classic::Server_session and shm::classic::Client_sessio...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2session_2shm_2classic_2session_8hpp_source.html#l00042">session.hpp:44</a></div></div>
-<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Session__server_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">ipc::session::shm::classic::Session_server</a></div><div class="ttdoc">This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2session_2shm_2classic_2session__server_8hpp_source.html#l00070">session_server.hpp:74</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1session_1_1shm_1_1classic_html"><div class="ttname"><a href="namespaceipc_1_1session_1_1shm_1_1classic.html">ipc::session::shm::classic</a></div><div class="ttdoc">Support for SHM-backed ipc::session sessions and session-servers with the SHM-classic (ipc::shm::clas...</div><div class="ttdef"><b>Definition:</b> <a href="session_2detail_2shm_2classic_2classic__fwd_8hpp_source.html#l00023">classic_fwd.hpp:24</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1session_1_1shm_1_1classic_html_ae28750f5d14a8ec78ea4d5310e212482"><div class="ttname"><a href="namespaceipc_1_1session_1_1shm_1_1classic.html#ae28750f5d14a8ec78ea4d5310e212482">ipc::session::shm::classic::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const Session_impl&lt; Session_impl_t &gt; &amp;val)</div><div class="ttdoc">Prints string representation of the given Session_impl to the given ostream.</div><div class="ttdef"><b>Definition:</b> <a href="src_2ipc_2session_2detail_2shm_2classic_2session__impl_8hpp_source.html#l00436">session_impl.hpp:436</a></div></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment"> * @param os</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment"> *        Stream to which to write.</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="comment"> * @param val</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment"> *        Object to serialize.</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment"> * @return `os`.</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keyword">template</span>&lt;session::schema::MqType MQ_TYPE_OR_NONE, <span class="keywordtype">bool</span> TRANSMIT_NATIVE_HANDLES,</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>         <span class="keyword">typename</span> Mdt_payload&gt;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>std::ostream&amp; <a class="code hl_function" href="namespaceipc_1_1session_1_1shm_1_1classic.html#ae28750f5d14a8ec78ea4d5310e212482">operator&lt;&lt;</a>(std::ostream&amp; os,</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                         <span class="keyword">const</span> <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">Session_server</a></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                                 &lt;MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;&amp; val);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>} <span class="comment">// namespace ipc::session::shm::classic</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment"></span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment"> * Sub-namespace containing utilities useful when working with capnp-RPC-with-zero-copy module of Flow-IPC</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment"> * (transport::struc::shm::rpc) -- assuming one has chosen SHM-classic as the SHM-provider for such work.</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html">  156</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html">ipc::session::shm::classic::rpc</a></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>{</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">// Types.</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment"></span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment"> * Having decided to use SHM-classic SHM-provider: Suitable template argument for</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment"> * transport::struc::shm::rpc::Client_context, or more generally a suitable session::Client_session for</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment"> * transport::struc::shm::rpc::Session_vat_network.</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment"> * @tparam S_MQ_TYPE_OR_NONE</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment"> *         Whether you want the session to include a transport::Persistent_mq_handle (MQ) pipe; and if so</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment"> *         what kind.  The default `NONE` is best, unless you specifically intend to create side channel(s)</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment"> *         in addition to the one used for the central capnp-RPC session; in the latter case choose the one</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment"> *         that fits your performance needs best.</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment"> * @internal</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment"> * ### Rationale ###</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment"> * Why this value for the alias and the ones nearby?</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment"> *   - By definition it must be a session::Client_session variant that is SHM-enabled.</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment"> *   - transport::struc::shm::rpc::Client_context (et al), by its internal protocol, sends a native handle --</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="comment"> *     the stream-socket underlying the capnp-RPC conversation -- over the first init-channel; so specifying</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="comment"> *     `true` there is required, guaranteeing the session will produce Native_handle-bearing channel(s).</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment"> *   - An additional MQ-based pipe *might* be useful for user&#39;s side channels (if any), so `NONE` is default, but</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment"> *     they can choose an actual MQ type instead.</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="keyword">template</span>&lt;session::schema::MqType S_MQ_TYPE_OR_NONE = session::schema::MqType::NONE&gt;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html#a413975308be04f1dd900f4b53e805b25">  183</a></span><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">Client_session</a> = <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">classic::Client_session&lt;S_MQ_TYPE_OR_NONE, true&gt;</a>;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="comment"></span> </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="comment"> * Having decided to use SHM-classic SHM-provider: Suitable template argument for</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment"> * transport::struc::shm::rpc::Context_server, or more generally a suitable session::Session_server for</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment"> * generating `Session`s in use with transport::struc::shm::rpc::Session_vat_network.</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment"> * @tparam S_MQ_TYPE_OR_NONE</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment"> *         See #Client_session.</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="keyword">template</span>&lt;session::schema::MqType S_MQ_TYPE_OR_NONE = session::schema::MqType::NONE&gt;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno"><a class="line" href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html#a5887c53cc020854f26a8160bb698707c">  194</a></span><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">Session_server</a> = <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">classic::Session_server&lt;S_MQ_TYPE_OR_NONE, true&gt;</a>;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment"></span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment"> * Having decided to use SHM-classic SHM-provider: Generally a suitable session::Server_session for</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment"> * transport::struc::shm::rpc::Session_vat_network.</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment"> * @tparam S_MQ_TYPE_OR_NONE</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment"> *         See #Client_session.</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="keyword">template</span>&lt;session::schema::MqType S_MQ_TYPE_OR_NONE = session::schema::MqType::NONE&gt;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html#a022362c0cce3badd16f5c7b97039fbb0">  204</a></span><span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session.html">Server_session</a> = <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session.html">classic::Server_session&lt;S_MQ_TYPE_OR_NONE, true&gt;</a>;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>} <span class="comment">// namespace ipc::session::shm::classic::rpc</span></div>
+<div class="ttc" id="aclassipc_1_1session_1_1Client__session__mv_html"><div class="ttname"><a href="classipc_1_1session_1_1Client__session__mv.html">ipc::session::Client_session_mv</a></div><div class="ttdoc">Implements Session concept on the Client_app end: a Session_mv that first achieves PEER state by conn...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html#l00144">client_session.hpp:146</a></div></div>
+<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Client__session__impl_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Client__session__impl.html">ipc::session::shm::classic::Client_session_impl</a></div><div class="ttdoc">Core internally-used implementation of shm::classic::Client_session: it is to the latter what its pub...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2session_2detail_2shm_2classic_2client__session__impl_8hpp_source.html#l00050">client_session_impl.hpp:53</a></div></div>
+<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Server__session_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session.html">ipc::session::shm::classic::Server_session</a></div><div class="ttdoc">Identical to session::Server_session in every way, except that it makes available two SHM arenas,...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2session_2shm_2classic_2server__session_8hpp_source.html#l00220">server_session.hpp:223</a></div></div>
+<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Session__mv_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Session__mv.html">ipc::session::shm::classic::Session_mv</a></div><div class="ttdoc">Implements the SHM-related API common to shm::classic::Server_session and shm::classic::Client_sessio...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2session_2shm_2classic_2session_8hpp_source.html#l00045">session.hpp:47</a></div></div>
+<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1classic_1_1Session__server_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html">ipc::session::shm::classic::Session_server</a></div><div class="ttdoc">This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2session_2shm_2classic_2session__server_8hpp_source.html#l00081">session_server.hpp:85</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1session_1_1shm_1_1classic_1_1rpc_html"><div class="ttname"><a href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html">ipc::session::shm::classic::rpc</a></div><div class="ttdoc">Sub-namespace containing utilities useful when working with capnp-RPC-with-zero-copy module of Flow-I...</div><div class="ttdef"><b>Definition:</b> <a href="session_2shm_2classic_2classic__fwd_8hpp_source.html#l00156">classic_fwd.hpp:157</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1session_1_1shm_1_1classic_1_1rpc_html_a5887c53cc020854f26a8160bb698707c"><div class="ttname"><a href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html#a5887c53cc020854f26a8160bb698707c">ipc::session::shm::classic::rpc::Session_server</a></div><div class="ttdeci">classic::Session_server&lt; S_MQ_TYPE_OR_NONE, true &gt; Session_server</div><div class="ttdoc">Having decided to use SHM-classic SHM-provider: Suitable template argument for transport::struc::shm:...</div><div class="ttdef"><b>Definition:</b> <a href="session_2shm_2classic_2classic__fwd_8hpp_source.html#l00194">classic_fwd.hpp:194</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1session_1_1shm_1_1classic_html"><div class="ttname"><a href="namespaceipc_1_1session_1_1shm_1_1classic.html">ipc::session::shm::classic</a></div><div class="ttdoc">Support for SHM-backed ipc::session sessions and session-servers with the SHM-classic (ipc::shm::clas...</div><div class="ttdef"><b>Definition:</b> <a href="session_2detail_2shm_2classic_2classic__fwd_8hpp_source.html#l00025">classic_fwd.hpp:26</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1session_1_1shm_1_1classic_html_ae28750f5d14a8ec78ea4d5310e212482"><div class="ttname"><a href="namespaceipc_1_1session_1_1shm_1_1classic.html#ae28750f5d14a8ec78ea4d5310e212482">ipc::session::shm::classic::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const Session_impl&lt; Session_impl_t &gt; &amp;val)</div><div class="ttdoc">Prints string representation of the given Session_impl to the given ostream.</div><div class="ttdef"><b>Definition:</b> <a href="src_2ipc_2session_2detail_2shm_2classic_2session__impl_8hpp_source.html#l00453">session_impl.hpp:453</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1session_html_a961e318f69fac2b45e55346591ea46e1"><div class="ttname"><a href="namespaceipc_1_1session.html#a961e318f69fac2b45e55346591ea46e1">ipc::session::Server_session</a></div><div class="ttdeci">Server_session_mv&lt; Server_session_impl&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &gt; Server_session</div><div class="ttdoc">A vanilla Server_session with no optional capabilities.</div><div class="ttdef"><b>Definition:</b> <a href="session__fwd_8hpp_source.html#l00350">session_fwd.hpp:351</a></div></div>
 <div class="ttc" id="asession_2detail_2shm_2classic_2classic__fwd_8hpp_html"><div class="ttname"><a href="session_2detail_2shm_2classic_2classic__fwd_8hpp.html">classic_fwd.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

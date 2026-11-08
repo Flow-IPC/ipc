@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -69,35 +69,50 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">native_socket_stream_impl.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="protocol__negotiator_8hpp_source.html">ipc/transport/protocol_negotiator.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="detail_2transport__fwd_8hpp_source.html">ipc/transport/detail/transport_fwd.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="sync__io_2native__socket__stream_8hpp_source.html">ipc/transport/sync_io/native_socket_stream.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="blob__transport__stats_8hpp_source.html">ipc/transport/blob_transport_stats.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="native__socket__stream__cfg_8hpp_source.html">ipc/transport/native_socket_stream_cfg.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="native__socket__stream__batch_8hpp_source.html">ipc/transport/native_socket_stream_batch.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="asio__local__stream__socket__fwd_8hpp_source.html">ipc/transport/asio_local_stream_socket_fwd.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="asio__local__stream__socket_8hpp_source.html">ipc/transport/asio_local_stream_socket.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="sync__io_2batch_8hpp_source.html">ipc/transport/sync_io/batch.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="detail_2transport__fwd_8hpp_source.html">ipc/transport/detail/transport_fwd.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="timer__ev__emitter_8hpp_source.html">ipc/util/sync_io/detail/timer_ev_emitter.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="asio__waitable__native__hndl_8hpp_source.html">ipc/util/sync_io/asio_waitable_native_hndl.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="sync__io__fwd_8hpp_source.html">ipc/util/sync_io/sync_io_fwd.hpp</a>&quot;</code><br />
-<code>#include &lt;cstddef&gt;</code><br />
+<code>#include &quot;<a class="el" href="native__handle_8hpp_source.html">ipc/util/native_handle.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="util__fwd_8hpp_source.html">ipc/util/util_fwd.hpp</a>&quot;</code><br />
+<code>#include &lt;flow/error/error.hpp&gt;</code><br />
 <code>#include &lt;flow/util/blob.hpp&gt;</code><br />
+<code>#include &lt;boost/move/unique_ptr.hpp&gt;</code><br />
+<code>#include &lt;boost/noncopyable.hpp&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;queue&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
+<code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl.html">ipc::transport::sync_io::Native_socket_stream::Impl</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal, non-movable pImpl implementation of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">sync_io::Native_socket_stream</a> class.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl.html">ipc::transport::sync_io::Native_socket_stream_impl</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal, non-movable pImpl-lite implementation of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">sync_io::Native_socket_stream</a> class.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl_1_1Snd__low__lvl__payload.html">ipc::transport::sync_io::Native_socket_stream::Impl::Snd_low_lvl_payload</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data store representing a payload corresponding to exactly one attempted async write-op, albeit used if and only if we encounter would-block in <code>send_*()</code> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl.html#a4b31da3a7ff63f307bd08e288c391556" title="Handler for the async-wait, via util::sync_io::Timer_event_emitter, of the auto-ping timer firing; if...">snd_on_ev_auto_ping_now_timer_fired()</a> or <code>*end_sending()</code> and have to queue (and therefore one-time-copy) data in <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl.html#a1af9eb83b9afee25ba153a2ca066858d" title="Queue storing (at head) the currently in-progress async write-op of a Snd_low_lvl_payload; followed b...">m_snd_pending_payloads_q</a>.  <a href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl_1_1Snd__low__lvl__payload.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl_1_1Snd__low__lvl__payload.html">ipc::transport::sync_io::Native_socket_stream_impl::Snd_low_lvl_payload</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data store representing a payload corresponding to queued-up payload to write, used if and only if we encounter would-block when performing a non-blocking-write op and have to queue (and therefore one-time-copy) data in <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl.html#aae88ec00da16d0854e89956aa585010c" title="Queue storing (at head) the currently in-progress async write-op of a Snd_low_lvl_payload; followed b...">m_snd_pending_payloads_q</a>.  <a href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl_1_1Snd__low__lvl__payload.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl_1_1Rcv__user__request.html">ipc::transport::sync_io::Native_socket_stream::Impl::Rcv_user_request</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">sync_io::Async_adapter_receiver::User_request</a>, except we only keep at most 1 of these and thus don't need a <code>Ptr</code> alias inside.  <a href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl_1_1Rcv__user__request.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl_1_1Rcv__user__request.html">ipc::transport::sync_io::Native_socket_stream_impl::Rcv_user_request</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data store representing a deficit user single-message async-receive request: <em>the</em> one being currently handled by <code>*this</code> &ndash; which can handle one at a time, no more.  <a href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl_1_1Rcv__user__request.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl_1_1Rcv__user__batch__request.html">ipc::transport::sync_io::Native_socket_stream_impl::Rcv_user_batch_request</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar in spirit to <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl_1_1Rcv__user__request.html" title="Data store representing a deficit user single-message async-receive request: the one being currently ...">Rcv_user_request</a> but stores a batch-receive request as opposed to a single-message-receive request.  <a href="structipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl_1_1Rcv__user__batch__request.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -111,17 +126,11 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceipc_1_1transport_1_1sync__io"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html">ipc::transport::sync_io</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1transport_1_1sync__io"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterparts to async-I/O-pattern object types in parent namespace <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a33231b969171a9103cd0a319ea10278b"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#a33231b969171a9103cd0a319ea10278b">ipc::transport::sync_io::operator&lt;&lt;</a> (std::ostream &amp;os, const Native_socket_stream::Impl &amp;val)</td></tr>
-<tr class="memdesc:a33231b969171a9103cd0a319ea10278b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of sync_io::Native_socket_stream class.">Native_socket_stream::Impl</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1sync__io.html#a33231b969171a9103cd0a319ea10278b">More...</a><br /></td></tr>
-<tr class="separator:a33231b969171a9103cd0a319ea10278b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

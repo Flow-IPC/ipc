@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -68,6 +68,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver-members.html">List of all members</a>  </div>
@@ -82,10 +83,20 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for ipc::transport::sync_io::Blob_receiver:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1sync__io_1_1Blob__receiver__coll__graph.svg" width="550" height="372"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1sync__io_1_1Blob__receiver__coll__graph.svg" width="584" height="372"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a2c9ce3cc0a23244a824e775386d21df6"><td class="memTemplParams" colspan="2">template&lt;typename Msg_resource &gt; </td></tr>
+<tr class="memitem:a2c9ce3cc0a23244a824e775386d21df6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a2c9ce3cc0a23244a824e775386d21df6">Blob_batch_in</a> = <a class="el" href="classipc_1_1transport_1_1Msg__batch__in.html">Msg_batch_in</a>&lt; Msg_resource, true &gt;</td></tr>
+<tr class="memdesc:a2c9ce3cc0a23244a824e775386d21df6"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <code>async_receive_*_batch()</code> argument <code>batch</code>.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a2c9ce3cc0a23244a824e775386d21df6">More...</a><br /></td></tr>
+<tr class="separator:a2c9ce3cc0a23244a824e775386d21df6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f666804340fbf5b160ea0b273f168dd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a2f666804340fbf5b160ea0b273f168dd">Blob_rcv_stats</a> = value</td></tr>
+<tr class="memdesc:a2f666804340fbf5b160ea0b273f168dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return type, typically a <code>struct</code>, for <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a9d5e683f4ae9dafe8b4641fbfd86719b" title="Returns the accumulated transport statistics as of this call.">blob_receive_stats()</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a2f666804340fbf5b160ea0b273f168dd">More...</a><br /></td></tr>
+<tr class="separator:a2f666804340fbf5b160ea0b273f168dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a73f2f615f48566e32f7a974e9448f4fc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a73f2f615f48566e32f7a974e9448f4fc">Blob_receiver</a> ()</td></tr>
@@ -99,7 +110,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7b004f1d90488b41593ad03dd92498e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disallow copying. <br /></td></tr>
 <tr class="separator:a7b004f1d90488b41593ad03dd92498e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53d0a7f08ce20ea8515b57d78c598858"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a53d0a7f08ce20ea8515b57d78c598858">~Blob_receiver</a> ()</td></tr>
-<tr class="memdesc:a53d0a7f08ce20ea8515b57d78c598858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys this peer endpoint which will end the conceptual outgoing-direction pipe (in PEER state, and if it's still active) and return resources to OS as applicable.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a53d0a7f08ce20ea8515b57d78c598858">More...</a><br /></td></tr>
+<tr class="memdesc:a53d0a7f08ce20ea8515b57d78c598858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys this peer endpoint which will end the conceptual incoming-direction pipe (in PEER state, and if it's still active) and return resources to OS as applicable.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a53d0a7f08ce20ea8515b57d78c598858">More...</a><br /></td></tr>
 <tr class="separator:a53d0a7f08ce20ea8515b57d78c598858"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb43ada47b7cd5034eeb4a639f32141d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html">Blob_receiver</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#acb43ada47b7cd5034eeb4a639f32141d">operator=</a> (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html">Blob_receiver</a> &amp;&amp;src)</td></tr>
 <tr class="memdesc:acb43ada47b7cd5034eeb4a639f32141d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move-assigns from <code>src</code>; <code>*this</code> acts as if destructed; <code>src</code> becomes as-if default-cted (therefore in NULL state).  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#acb43ada47b7cd5034eeb4a639f32141d">More...</a><br /></td></tr>
@@ -116,16 +127,26 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af35b13d02df7b68916ba642eaf1352c3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#af35b13d02df7b68916ba642eaf1352c3">start_receive_blob_ops</a> (Event_wait_func_t &amp;&amp;ev_wait_func)</td></tr>
 <tr class="memdesc:af35b13d02df7b68916ba642eaf1352c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">All notes from <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#aa55c06ebb8ba1ba262560eabadb09ab6" title="Sets up the sync_io-pattern interaction between *this and the user&#39;s event loop; required before asyn...">sync_io::Native_handle_receiver::start_receive_native_handle_ops()</a> apply.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#af35b13d02df7b68916ba642eaf1352c3">More...</a><br /></td></tr>
 <tr class="separator:af35b13d02df7b68916ba642eaf1352c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8c46b25839f7660a1c867a25aa3680c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#aa8c46b25839f7660a1c867a25aa3680c">receive_blob_max_size</a> () const</td></tr>
+<tr class="memitem:aa8c46b25839f7660a1c867a25aa3680c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#aa8c46b25839f7660a1c867a25aa3680c">receive_blob_max_size</a> () const</td></tr>
 <tr class="memdesc:aa8c46b25839f7660a1c867a25aa3680c"><td class="mdescLeft">&#160;</td><td class="mdescRight">All notes from <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#a46194b54e9465a5a41d7fedf9d4982ae" title="Mirrors sync_io::Native_handle_sender::send_meta_blob_max_size().">sync_io::Native_handle_receiver::receive_meta_blob_max_size()</a> apply.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#aa8c46b25839f7660a1c867a25aa3680c">More...</a><br /></td></tr>
 <tr class="separator:aa8c46b25839f7660a1c867a25aa3680c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af05f5ec0a8fd01b2056c09613a4dfc1e"><td class="memTemplParams" colspan="2">template&lt;typename Task_err_sz &gt; </td></tr>
-<tr class="memitem:af05f5ec0a8fd01b2056c09613a4dfc1e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#af05f5ec0a8fd01b2056c09613a4dfc1e">async_receive_blob</a> (const <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> &amp;target_blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *sync_err_code, size_t *sync_sz, Task_err_sz &amp;&amp;on_done_func)</td></tr>
+<tr class="memitem:af05f5ec0a8fd01b2056c09613a4dfc1e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#af05f5ec0a8fd01b2056c09613a4dfc1e">async_receive_blob</a> (const <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> &amp;target_blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *sync_err_code, <a class="el" href="classsize__t.html">size_t</a> *sync_sz, Task_err_sz &amp;&amp;on_done_func)</td></tr>
 <tr class="memdesc:af05f5ec0a8fd01b2056c09613a4dfc1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state: Possibly-asynchronously awaits one discrete message &ndash; as sent by the opposing peer &ndash; and receives it into the given target locations, reliably and in-order.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#af05f5ec0a8fd01b2056c09613a4dfc1e">More...</a><br /></td></tr>
 <tr class="separator:af05f5ec0a8fd01b2056c09613a4dfc1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6888f84e88c00d28daa579a9b47a2d77"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a6888f84e88c00d28daa579a9b47a2d77">idle_timer_run</a> (<a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> timeout)</td></tr>
-<tr class="memdesc:a6888f84e88c00d28daa579a9b47a2d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state: Irreversibly enables a conceptual idle timer whose potential side effect is, once at least the specified time has passed since the last received low-level traffic (or this call, whichever most recently occurred), to emit the pipe-hosing error <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aba920b52e9801e4927dd346ad83ce815" title="No messages (optional auto-pings or otherwise) have been received; optionally configured timeout exce...">error::Code::S_RECEIVER_IDLE_TIMEOUT</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a6888f84e88c00d28daa579a9b47a2d77">More...</a><br /></td></tr>
-<tr class="separator:a6888f84e88c00d28daa579a9b47a2d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8edc1f11933bfd784694b2ec4d5e9627"><td class="memTemplParams" colspan="2">template&lt;typename Msg_resource , typename Task_err &gt; </td></tr>
+<tr class="memitem:a8edc1f11933bfd784694b2ec4d5e9627"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a8edc1f11933bfd784694b2ec4d5e9627">async_receive_blob_batch</a> (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a2c9ce3cc0a23244a824e775386d21df6">Blob_batch_in</a>&lt; Msg_resource &gt; *batch, bool assume_would_block, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *sync_err_code, Task_err &amp;&amp;on_done_func)</td></tr>
+<tr class="memdesc:a8edc1f11933bfd784694b2ec4d5e9627"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state: Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#ace64f262845b3040331e28e7b339c92e" title="In PEER state: Possibly-asynchronously awaits 1+ discrete message(s) – as sent by the opposing peer v...">sync_io::Native_handle_receiver::async_receive_native_handle_batch()</a>; except that since <code><a class="el" href="classipc_1_1transport_1_1Msg__batch__in.html" title="A documentation-only concept defining the behavior of an object that is a key aspect of batch-receivi...">Msg_batch_in</a>&lt;..., true&gt;</code> (note the <code>true</code>) is the type of <code>*batch</code>, only blobs (not <code>Native_handle</code>s) can be received.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a8edc1f11933bfd784694b2ec4d5e9627">More...</a><br /></td></tr>
+<tr class="separator:a8edc1f11933bfd784694b2ec4d5e9627"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a812eab1063cdc9f1f603f38d4d39f32a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a812eab1063cdc9f1f603f38d4d39f32a">idle_timer_run</a> (<a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> timeout=default_value)</td></tr>
+<tr class="memdesc:a812eab1063cdc9f1f603f38d4d39f32a"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state: Irreversibly enables a conceptual idle timer whose potential side effect is, once at least the specified time has passed since the last received low-level traffic (or this call, whichever most recently occurred), to emit the pipe-hosing error <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aba920b52e9801e4927dd346ad83ce815" title="No messages (optional auto-pings or otherwise) have been received; optionally configured timeout exce...">error::Code::S_RECEIVER_IDLE_TIMEOUT</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a812eab1063cdc9f1f603f38d4d39f32a">More...</a><br /></td></tr>
+<tr class="separator:a812eab1063cdc9f1f603f38d4d39f32a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d5e683f4ae9dafe8b4641fbfd86719b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a2f666804340fbf5b160ea0b273f168dd">Blob_rcv_stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a9d5e683f4ae9dafe8b4641fbfd86719b">blob_receive_stats</a> () const</td></tr>
+<tr class="memdesc:a9d5e683f4ae9dafe8b4641fbfd86719b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the accumulated transport statistics as of this call.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a9d5e683f4ae9dafe8b4641fbfd86719b">More...</a><br /></td></tr>
+<tr class="separator:a9d5e683f4ae9dafe8b4641fbfd86719b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1293f41c5d9c6d1abdfc6f3a8ef91823"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a1293f41c5d9c6d1abdfc6f3a8ef91823">blob_receive_stats_reset</a> ()</td></tr>
+<tr class="memdesc:a1293f41c5d9c6d1abdfc6f3a8ef91823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the transport statistics as of this call.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a1293f41c5d9c6d1abdfc6f3a8ef91823">More...</a><br /></td></tr>
+<tr class="separator:a1293f41c5d9c6d1abdfc6f3a8ef91823"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -135,6 +156,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:aa50b1339ffe19e11a89de580a4d5d4d6"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#aa50b1339ffe19e11a89de580a4d5d4d6">S_BLOB_UNDERFLOW_ALLOWED</a> = value</td></tr>
 <tr class="memdesc:aa50b1339ffe19e11a89de580a4d5d4d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same notes as for <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#aa50b1339ffe19e11a89de580a4d5d4d6">More...</a><br /></td></tr>
 <tr class="separator:aa50b1339ffe19e11a89de580a4d5d4d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83342e6e0376af00c932e221b99d51da"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a83342e6e0376af00c932e221b99d51da">S_RCV_BLOB_BATCH_SZ_RECOMMENDATION</a> = value</td></tr>
+<tr class="memdesc:a83342e6e0376af00c932e221b99d51da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same notes as for <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a83342e6e0376af00c932e221b99d51da">More...</a><br /></td></tr>
+<tr class="separator:a83342e6e0376af00c932e221b99d51da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A documentation-only <em>concept</em>: what <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a> is to <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Native_handle_receiver</a> (namely a degenerate version thereof), this is to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a>. </p>
@@ -142,8 +166,48 @@ Static Public Attributes</h2></td></tr>
 <p >Therefore we keep the documentation very light, only pointing out the differences against <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> &ndash; which are summarized in the preceding paragraph. All other notes from <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> apply here.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a>, an identical concept with 1 feature (native handle transmission) added. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2blob__transport_8hpp_source.html#l00203">203</a> of file <a class="el" href="sync__io_2blob__transport_8hpp_source.html">blob_transport.hpp</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="sync__io_2blob__transport_8hpp_source.html#l00228">228</a> of file <a class="el" href="sync__io_2blob__transport_8hpp_source.html">blob_transport.hpp</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a2c9ce3cc0a23244a824e775386d21df6" name="a2c9ce3cc0a23244a824e775386d21df6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c9ce3cc0a23244a824e775386d21df6">&#9670;&nbsp;</a></span>Blob_batch_in</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Msg_resource &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a2c9ce3cc0a23244a824e775386d21df6">ipc::transport::sync_io::Blob_receiver::Blob_batch_in</a> =  <a class="el" href="classipc_1_1transport_1_1Msg__batch__in.html">Msg_batch_in</a>&lt;Msg_resource, true&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <code>async_receive_*_batch()</code> argument <code>batch</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="sync__io_2blob__transport_8hpp_source.html#l00246">246</a> of file <a class="el" href="sync__io_2blob__transport_8hpp_source.html">blob_transport.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a2f666804340fbf5b160ea0b273f168dd" name="a2f666804340fbf5b160ea0b273f168dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f666804340fbf5b160ea0b273f168dd">&#9670;&nbsp;</a></span>Blob_rcv_stats</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a2f666804340fbf5b160ea0b273f168dd">ipc::transport::sync_io::Blob_receiver::Blob_rcv_stats</a> =  value</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return type, typically a <code>struct</code>, for <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a9d5e683f4ae9dafe8b4641fbfd86719b" title="Returns the accumulated transport statistics as of this call.">blob_receive_stats()</a>. </p>
+<p >All notes from <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a7d48c4e9187242481c2f28926607c506" title="Return type, typically a struct, for blob_receive_stats().">transport::Blob_receiver::Blob_rcv_stats</a> doc header apply verbatim. </p>
+
+<p class="definition">Definition at line <a class="el" href="sync__io_2blob__transport_8hpp_source.html#l00253">253</a> of file <a class="el" href="sync__io_2blob__transport_8hpp_source.html">blob_transport.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a73f2f615f48566e32f7a974e9448f4fc" name="a73f2f615f48566e32f7a974e9448f4fc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a73f2f615f48566e32f7a974e9448f4fc">&#9670;&nbsp;</a></span>Blob_receiver() <span class="overload">[1/2]</span></h2>
 
@@ -206,7 +270,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Destroys this peer endpoint which will end the conceptual outgoing-direction pipe (in PEER state, and if it's still active) and return resources to OS as applicable. </p>
+<p>Destroys this peer endpoint which will end the conceptual incoming-direction pipe (in PEER state, and if it's still active) and return resources to OS as applicable. </p>
 <p >All notes from <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> apply. </p>
 
 </div>
@@ -235,7 +299,7 @@ template&lt;typename Task_err_sz &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramtype"><a class="el" href="classsize__t.html">size_t</a> *&#160;</td>
           <td class="paramname"><em>sync_sz</em>, </td>
         </tr>
         <tr>
@@ -253,7 +317,7 @@ template&lt;typename Task_err_sz &gt; </div>
 </div><div class="memdoc">
 
 <p>In PEER state: Possibly-asynchronously awaits one discrete message &ndash; as sent by the opposing peer &ndash; and receives it into the given target locations, reliably and in-order. </p>
-<p >Otherwise all notes from <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#a6350bfb7f929a5b60fa4af1b6f7166cf" title="In PEER state: Possibly-asynchronously awaits one discrete message – as sent by the opposing peer via...">sync_io::Native_handle_receiver::async_receive_native_handle()</a> apply.</p>
+<p >Otherwise all notes from <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#ada3cedd4a982a80a30d99198a4639ee3" title="In PEER state: Possibly-asynchronously awaits one discrete message – as sent by the opposing peer via...">sync_io::Native_handle_receiver::async_receive_native_handle()</a> apply.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Task_err_sz</td><td>See above. </td></tr>
@@ -273,8 +337,111 @@ template&lt;typename Task_err_sz &gt; </div>
 
 </div>
 </div>
-<a id="a6888f84e88c00d28daa579a9b47a2d77" name="a6888f84e88c00d28daa579a9b47a2d77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6888f84e88c00d28daa579a9b47a2d77">&#9670;&nbsp;</a></span>idle_timer_run()</h2>
+<a id="a8edc1f11933bfd784694b2ec4d5e9627" name="a8edc1f11933bfd784694b2ec4d5e9627"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8edc1f11933bfd784694b2ec4d5e9627">&#9670;&nbsp;</a></span>async_receive_blob_batch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Msg_resource , typename Task_err &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::transport::sync_io::Blob_receiver::async_receive_blob_batch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a2c9ce3cc0a23244a824e775386d21df6">Blob_batch_in</a>&lt; Msg_resource &gt; *&#160;</td>
+          <td class="paramname"><em>batch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>assume_would_block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
+          <td class="paramname"><em>sync_err_code</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Task_err &amp;&amp;&#160;</td>
+          <td class="paramname"><em>on_done_func</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>In PEER state: Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#ace64f262845b3040331e28e7b339c92e" title="In PEER state: Possibly-asynchronously awaits 1+ discrete message(s) – as sent by the opposing peer v...">sync_io::Native_handle_receiver::async_receive_native_handle_batch()</a>; except that since <code><a class="el" href="classipc_1_1transport_1_1Msg__batch__in.html" title="A documentation-only concept defining the behavior of an object that is a key aspect of batch-receivi...">Msg_batch_in</a>&lt;..., true&gt;</code> (note the <code>true</code>) is the type of <code>*batch</code>, only blobs (not <code>Native_handle</code>s) can be received. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Msg_resource</td><td>See above. </td></tr>
+    <tr><td class="paramname">Task_err</td><td>See above. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">batch</td><td>See above. </td></tr>
+    <tr><td class="paramname">assume_would_block</td><td>See above. </td></tr>
+    <tr><td class="paramname">sync_err_code</td><td>See above. Do realize <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24" title="A sync_io operation could not immediately complete; it will complete contingent on active async-wait ...">error::Code::S_SYNC_IO_WOULD_BLOCK</a> <em>is</em> still an error, so if this pointer is null, then would-block <em>will</em> make this throw. </td></tr>
+    <tr><td class="paramname">on_done_func</td><td>See above. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
+<a id="a9d5e683f4ae9dafe8b4641fbfd86719b" name="a9d5e683f4ae9dafe8b4641fbfd86719b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d5e683f4ae9dafe8b4641fbfd86719b">&#9670;&nbsp;</a></span>blob_receive_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a2f666804340fbf5b160ea0b273f168dd">Blob_rcv_stats</a> ipc::transport::sync_io::Blob_receiver::blob_receive_stats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the accumulated transport statistics as of this call. </p>
+<p >If not in PEER state returns a zeroed-out stats object.</p>
+<p >All notes from <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> apply.</p>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
+<a id="a1293f41c5d9c6d1abdfc6f3a8ef91823" name="a1293f41c5d9c6d1abdfc6f3a8ef91823"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1293f41c5d9c6d1abdfc6f3a8ef91823">&#9670;&nbsp;</a></span>blob_receive_stats_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ipc::transport::sync_io::Blob_receiver::blob_receive_stats_reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resets the transport statistics as of this call. </p>
+<p >The formal meaning of a reset is discussed in <code>flow::util::stat</code> doc header. If not in PEER state this is a no-op. </p>
+
+</div>
+</div>
+<a id="a812eab1063cdc9f1f603f38d4d39f32a" name="a812eab1063cdc9f1f603f38d4d39f32a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a812eab1063cdc9f1f603f38d4d39f32a">&#9670;&nbsp;</a></span>idle_timer_run()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -283,7 +450,7 @@ template&lt;typename Task_err_sz &gt; </div>
           <td class="memname">bool ipc::transport::sync_io::Blob_receiver::idle_timer_run </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a>&#160;</td>
-          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td class="paramname"><em>timeout</em> = <code>default_value</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -337,7 +504,7 @@ template&lt;typename Task_err_sz &gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t ipc::transport::sync_io::Blob_receiver::receive_blob_max_size </td>
+          <td class="memname"><a class="el" href="classsize__t.html">size_t</a> ipc::transport::sync_io::Blob_receiver::receive_blob_max_size </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -444,7 +611,33 @@ template&lt;typename Event_wait_func_t &gt; </div>
 
 <p>Same notes as for <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2blob__transport_8hpp_source.html#l00212">212</a> of file <a class="el" href="sync__io_2blob__transport_8hpp_source.html">blob_transport.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2blob__transport_8hpp_source.html#l00237">237</a> of file <a class="el" href="sync__io_2blob__transport_8hpp_source.html">blob_transport.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a83342e6e0376af00c932e221b99d51da" name="a83342e6e0376af00c932e221b99d51da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83342e6e0376af00c932e221b99d51da">&#9670;&nbsp;</a></span>S_RCV_BLOB_BATCH_SZ_RECOMMENDATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classsize__t.html">size_t</a> ipc::transport::sync_io::Blob_receiver::S_RCV_BLOB_BATCH_SZ_RECOMMENDATION = value</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Same notes as for <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="sync__io_2blob__transport_8hpp_source.html#l00240">240</a> of file <a class="el" href="sync__io_2blob__transport_8hpp_source.html">blob_transport.hpp</a>.</p>
 
 </div>
 </div>
@@ -470,7 +663,7 @@ template&lt;typename Event_wait_func_t &gt; </div>
 
 <p>Same notes as for <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2blob__transport_8hpp_source.html#l00209">209</a> of file <a class="el" href="sync__io_2blob__transport_8hpp_source.html">blob_transport.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2blob__transport_8hpp_source.html#l00234">234</a> of file <a class="el" href="sync__io_2blob__transport_8hpp_source.html">blob_transport.hpp</a>.</p>
 
 </div>
 </div>
@@ -480,7 +673,7 @@ template&lt;typename Event_wait_func_t &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

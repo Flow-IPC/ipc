@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -84,16 +84,22 @@ $(function() {
 <code>#include &quot;<a class="el" href="ipc__core_2src_2ipc_2transport_2error_8hpp_source.html">ipc/transport/error.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="transport__fwd_8hpp_source.html">ipc/transport/transport_fwd.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="process__credentials_8hpp_source.html">ipc/util/process_credentials.hpp</a>&quot;</code><br />
+<code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
+<code>#include &lt;ostream&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Channel.html">ipc::transport::Channel&lt; Blob_sender, Blob_receiver, Native_handle_sender, Native_handle_receiver &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Channel.html">ipc::transport::Channel&lt; Blob_sender_t, Blob_receiver_t, Native_handle_sender_t, Native_handle_receiver_t &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the other for transmitting native handle+blob combos; hence a <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a> + <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a>, a <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a> + <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Native_handle_receiver</a>, or both.  <a href="classipc_1_1transport_1_1Channel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html">ipc::transport::Null_peer</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and coversely for async-I/O guys and their <code>Async_io_obj</code>s.  <a href="classipc_1_1transport_1_1Null__peer.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and conversely for async-I/O guys and their <code>Async_io_obj</code>s.  <a href="classipc_1_1transport_1_1Null__peer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Socket__stream__channel.html">ipc::transport::Socket_stream_channel&lt; SIO &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> with a <em>handles pipe</em> only (no <em>blobs pipe</em>) that uses a Unix domain socket connection as the underlying transport for that pipe.  <a href="classipc_1_1transport_1_1Socket__stream__channel.html#details">More...</a><br /></td></tr>
@@ -101,7 +107,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Socket__stream__channel__of__blobs.html">ipc::transport::Socket_stream_channel_of_blobs&lt; SIO &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> with a <em>blobs pipe</em> only (no <em>handles pipe</em>) that uses a Unix domain socket connection as the underlying transport for that pipe.  <a href="classipc_1_1transport_1_1Socket__stream__channel__of__blobs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Mqs__channel.html">ipc::transport::Mqs_channel&lt; SIO, Persistent_mq_handle, Native_handle_sender, Native_handle_receiver &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Mqs__channel.html">ipc::transport::Mqs_channel&lt; SIO, Persistent_mq_handle, Native_handle_sender_t, Native_handle_receiver_t &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> with <em>at least</em> a <em>blobs pipe</em> consisting of two MQs of type <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> (template arg 1); and <em>possibly</em> a <em>handles pipe</em> as governed by template args 2 and 3 which default to <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a> (in which case the handles pipe is disabled).  <a href="classipc_1_1transport_1_1Mqs__channel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Mqs__socket__stream__channel.html">ipc::transport::Mqs_socket_stream_channel&lt; SIO, Persistent_mq_handle &gt;</a></td></tr>
@@ -119,19 +125,19 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a5dfdd05a68a4cee245ca6f3393a090b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp.html#a5dfdd05a68a4cee245ca6f3393a090b1">TEMPLATE_CHANNEL</a>&#160;&#160;&#160;  template&lt;typename Blob_sender, typename Blob_receiver, typename Native_handle_sender, typename Native_handle_receiver&gt;</td></tr>
+<tr class="memitem:a5dfdd05a68a4cee245ca6f3393a090b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp.html#a5dfdd05a68a4cee245ca6f3393a090b1">TEMPLATE_CHANNEL</a></td></tr>
 <tr class="memdesc:a5dfdd05a68a4cee245ca6f3393a090b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="ipc__core_2src_2ipc_2transport_2channel_8hpp.html#a5dfdd05a68a4cee245ca6f3393a090b1">More...</a><br /></td></tr>
 <tr class="separator:a5dfdd05a68a4cee245ca6f3393a090b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa498064773ba3aad9a5828df463739a7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp.html#aa498064773ba3aad9a5828df463739a7">CLASS_CHANNEL</a>&#160;&#160;&#160;  Channel&lt;Blob_sender, Blob_receiver, Native_handle_sender, Native_handle_receiver&gt;</td></tr>
+<tr class="memitem:aa498064773ba3aad9a5828df463739a7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp.html#aa498064773ba3aad9a5828df463739a7">CLASS_CHANNEL</a>&#160;&#160;&#160;  Channel&lt;Blob_sender_t, Blob_receiver_t, Native_handle_sender_t, Native_handle_receiver_t&gt;</td></tr>
 <tr class="memdesc:aa498064773ba3aad9a5828df463739a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="ipc__core_2src_2ipc_2transport_2channel_8hpp.html#aa498064773ba3aad9a5828df463739a7">More...</a><br /></td></tr>
 <tr class="separator:aa498064773ba3aad9a5828df463739a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8eff22e594b6fe82f94f13d6a172537f"><td class="memTemplParams" colspan="2">template&lt;typename Blob_sender , typename Blob_receiver , typename Native_handle_sender , typename Native_handle_receiver &gt; </td></tr>
-<tr class="memitem:a8eff22e594b6fe82f94f13d6a172537f"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a8eff22e594b6fe82f94f13d6a172537f">ipc::transport::operator&lt;&lt;</a> (std::ostream &amp;os, const Channel&lt; Blob_sender, Blob_receiver, Native_handle_sender, Native_handle_receiver &gt; &amp;val)</td></tr>
-<tr class="memdesc:a8eff22e594b6fe82f94f13d6a172537f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a8eff22e594b6fe82f94f13d6a172537f">More...</a><br /></td></tr>
-<tr class="separator:a8eff22e594b6fe82f94f13d6a172537f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2e5f05a20475a07dc1f40a1bd0dd557"><td class="memTemplParams" colspan="2">template&lt;typename Blob_sender_t , typename Blob_receiver_t , typename Native_handle_sender_t , typename Native_handle_receiver_t &gt; </td></tr>
+<tr class="memitem:af2e5f05a20475a07dc1f40a1bd0dd557"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#af2e5f05a20475a07dc1f40a1bd0dd557">ipc::transport::operator&lt;&lt;</a> (std::ostream &amp;os, const Channel&lt; Blob_sender_t, Blob_receiver_t, Native_handle_sender_t, Native_handle_receiver_t &gt; &amp;val)</td></tr>
+<tr class="memdesc:af2e5f05a20475a07dc1f40a1bd0dd557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#af2e5f05a20475a07dc1f40a1bd0dd557">More...</a><br /></td></tr>
+<tr class="separator:af2e5f05a20475a07dc1f40a1bd0dd557"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="aa498064773ba3aad9a5828df463739a7" name="aa498064773ba3aad9a5828df463739a7"></a>
@@ -141,14 +147,14 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CLASS_CHANNEL&#160;&#160;&#160;  Channel&lt;Blob_sender, Blob_receiver, Native_handle_sender, Native_handle_receiver&gt;</td>
+          <td class="memname">#define CLASS_CHANNEL&#160;&#160;&#160;  Channel&lt;Blob_sender_t, Blob_receiver_t, Native_handle_sender_t, Native_handle_receiver_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01356">1356</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01524">1524</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -159,21 +165,23 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TEMPLATE_CHANNEL&#160;&#160;&#160;  template&lt;typename Blob_sender, typename Blob_receiver, typename Native_handle_sender, typename Native_handle_receiver&gt;</td>
+          <td class="memname">#define TEMPLATE_CHANNEL</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Blob_sender_t, <span class="keyword">typename</span> Blob_receiver_t, \</div>
+<div class="line">           typename Native_handle_sender_t, <span class="keyword">typename</span> Native_handle_receiver_t&gt;</div>
+</div><!-- fragment -->
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01353">1353</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01520">1520</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

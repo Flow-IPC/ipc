@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -73,20 +73,27 @@ $(function() {
   <div class="headertitle"><div class="title">native_socket_stream.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="transport__fwd_8hpp_source.html">ipc/transport/transport_fwd.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="sync__io_2detail_2native__socket__stream__impl_8hpp_source.html">ipc/transport/sync_io/detail/native_socket_stream_impl.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="native__socket__stream__impl__rcv_8hpp_source.html">ipc/transport/sync_io/detail/native_socket_stream_impl_rcv.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="native__socket__stream__cfg_8hpp_source.html">ipc/transport/native_socket_stream_cfg.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="transport__fwd_8hpp_source.html">ipc/transport/transport_fwd.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="shared__name_8hpp_source.html">ipc/util/shared_name.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="process__credentials_8hpp_source.html">ipc/util/process_credentials.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="sync__io__fwd_8hpp_source.html">ipc/util/sync_io/sync_io_fwd.hpp</a>&quot;</code><br />
 <code>#include &lt;flow/log/log.hpp&gt;</code><br />
 <code>#include &lt;flow/async/util.hpp&gt;</code><br />
+<code>#include &lt;boost/move/unique_ptr.hpp&gt;</code><br />
 <code>#include &lt;experimental/propagate_const&gt;</code><br />
+<code>#include &lt;iosfwd&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="sync__io_2native__socket__stream_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html">ipc::transport::sync_io::Native_socket_stream</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements both <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> concepts by using a stream-oriented Unix domain socket, allowing high-performance but non-zero-copy transmission of discrete messages, each containing a native handle, a binary blob, or both.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements both <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> concepts by using a Unix domain socket, allowing high-performance but non-zero-copy transmission of discrete messages, each containing a native handle, a binary blob, or both.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -104,7 +111,7 @@ Namespaces</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

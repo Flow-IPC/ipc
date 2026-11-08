@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -75,10 +75,12 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="heap__fixed__builder__capnp__msg__builder_8hpp_source.html">ipc/transport/struc/heap_fixed_builder_capnp_msg_builder.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer__stats_8hpp_source.html">ipc/transport/struc/serializer_stats.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2error_8hpp_source.html">ipc/transport/struc/error.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="util__fwd_8hpp_source.html">ipc/util/util_fwd.hpp</a>&quot;</code><br />
 <code>#include &lt;flow/error/error.hpp&gt;</code><br />
 <code>#include &lt;boost/move/make_unique.hpp&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="heap__serializer_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -87,14 +89,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Null__session.html">ipc::transport::struc::Null_session</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value for <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#ab90424897efed06ffc6b0884761fb31f" title="Type objects of which specify to emit_serialization() the opposing recipient for which the serializat...">Struct_builder::Session</a> when no extra information is needed when serializing <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> for subsequent sending to another process.  <a href="structipc_1_1transport_1_1struc_1_1Null__session.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Split__segment.html">ipc::transport::struc::Split_segment</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple structure describing how a pre-split single segment was turned into 2+ post-split component sub-segments.  <a href="structipc_1_1transport_1_1struc_1_1Split__segment.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html">ipc::transport::struc::Heap_fixed_builder</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept by straightforwardly allocating fixed-size segments on-demand in the regular heap and serializing directly inside those segments.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">~Simplest possible impl of <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept that represents the capnp payload directly in heap memory (outer serialization only), with a segment-allocation strategy similar to <code>capnp::MallocMessageBuilder</code>.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html">ipc::transport::struc::Heap_fixed_builder::Config</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> sub-concept.  <a href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html">ipc::transport::struc::Heap_reader</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">Struct_reader</a> concept by straightforwardly interpreting a serialization by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> or any other builder that produces segments directly readable via <code>SegmentArrayMessageReader</code>.  <a href="classipc_1_1transport_1_1struc_1_1Heap__reader.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">Struct_reader</a> concept by straightforwardly interpreting a serialization by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a> or any other builder that produces segments directly readable via <code>SegmentArrayMessageReader</code>.  <a href="classipc_1_1transport_1_1struc_1_1Heap__reader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html">ipc::transport::struc::Heap_reader::Config</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__reader_1_1Config.html" title="Analogous to Struct_builder::Config but for deserialization.">Struct_reader::Config</a> sub-concept.  <a href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html#details">More...</a><br /></td></tr>
@@ -114,15 +119,15 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aca041b0efd4a9ae18e10088b2ee3c052"><td class="memTemplParams" colspan="2">template&lt;typename Channel_obj , typename Message_body &gt; </td></tr>
-<tr class="memitem:aca041b0efd4a9ae18e10088b2ee3c052"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#aca041b0efd4a9ae18e10088b2ee3c052">ipc::transport::struc::Channel_via_heap</a> = Channel&lt; Channel_obj, Message_body, Heap_fixed_builder::Config, Heap_reader::Config &gt;</td></tr>
-<tr class="memdesc:aca041b0efd4a9ae18e10088b2ee3c052"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience alias: Use this when constructing a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> with tag <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#ab0eb05b5fb52364c99868a8535aaf26e" title="The sole value of the tag type Serialize_via_heap.">Channel_base::S_SERIALIZE_VIA_HEAP</a>.  <a href="namespaceipc_1_1transport_1_1struc.html#aca041b0efd4a9ae18e10088b2ee3c052">More...</a><br /></td></tr>
-<tr class="separator:aca041b0efd4a9ae18e10088b2ee3c052"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dadd21d3e18e526bd01cd5824c74e41"><td class="memTemplParams" colspan="2">template&lt;typename Channel_obj , typename Msg_body_t &gt; </td></tr>
+<tr class="memitem:a3dadd21d3e18e526bd01cd5824c74e41"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3dadd21d3e18e526bd01cd5824c74e41">ipc::transport::struc::Channel_via_heap</a> = Channel&lt; Channel_obj, Msg_body_t, Heap_fixed_builder::Config, Heap_reader::Config &gt;</td></tr>
+<tr class="memdesc:a3dadd21d3e18e526bd01cd5824c74e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience alias: Use this when constructing a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> with tag <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#ab0eb05b5fb52364c99868a8535aaf26e" title="The sole value of the tag type Serialize_via_heap.">Channel_base::S_SERIALIZE_VIA_HEAP</a>.  <a href="namespaceipc_1_1transport_1_1struc.html#a3dadd21d3e18e526bd01cd5824c74e41">More...</a><br /></td></tr>
+<tr class="separator:a3dadd21d3e18e526bd01cd5824c74e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

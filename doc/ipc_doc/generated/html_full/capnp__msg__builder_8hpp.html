@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -75,19 +75,27 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="struc__fwd_8hpp_source.html">ipc/transport/struc/struc_fwd.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2serializer__stats_8hpp_source.html">ipc/transport/struc/serializer_stats.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="session_2shm_2shm_8hpp_source.html">ipc/session/shm/shm.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="arena__activator_8hpp_source.html">ipc/shm/stl/arena_activator.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="stateless__allocator_8hpp_source.html">ipc/shm/stl/stateless_allocator.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="shm_2shm_8hpp_source.html">ipc/shm/shm.hpp</a>&quot;</code><br />
-<code>#include &quot;ipc/transport/struc/shm/schema/detail/serialization.capnp.h&quot;</code><br />
-<code>#include &lt;boost/interprocess/containers/list.hpp&gt;</code><br />
+<code>#include &quot;<a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2error_8hpp_source.html">ipc/transport/struc/error.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2error_8hpp_source.html">ipc/transport/struc/shm/error.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2util_8hpp_source.html">ipc/transport/struc/shm/util.hpp</a>&quot;</code><br />
+<code>#include &lt;flow/error/error.hpp&gt;</code><br />
+<code>#include &lt;boost/container/list.hpp&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
 </div>
 <p><a href="capnp__msg__builder_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html">ipc::transport::struc::shm::Capnp_message_builder&lt; Shm_arena &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>capnp::MessageBuilder</code> used by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">shm::Builder</a>: similar to a <code>MallocMessageBuilder</code> with the <code>GROW_HEURISTICALLY</code> alloc-strategy but allocating via a SHM provider (of template-arg-specific type) in SHM instead of the heap via <code>malloc()</code>.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>capnp::MessageBuilder</code> used by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">shm::Builder</a> and for general capnp users: similar to a <code>MallocMessageBuilder</code> with the <code>GROW_HEURISTICALLY</code> alloc-strategy but allocating via a SHM-provider (of template-arg-specific type) in SHM instead of the heap via <code>malloc()</code>.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__reader.html">ipc::transport::struc::shm::Capnp_message_reader&lt; Shm_arena &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>capnp::MessageReader</code> used by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html" title="Implements Struct_reader concept by interpreting a serialization by shm::Builder with the same templa...">shm::Reader</a> and for general capnp users: able to access capnp-serialized structure previously created by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html" title="A capnp::MessageBuilder used by shm::Builder and for general capnp users: similar to a MallocMessageB...">Capnp_message_builder</a> (a <code>MessageBuilder</code> impl).  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__reader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -109,13 +117,17 @@ Namespaces</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ac4969b49016844f884240b81ee1ab180"><td class="memTemplParams" colspan="2">template&lt;typename Shm_arena &gt; </td></tr>
 <tr class="memitem:ac4969b49016844f884240b81ee1ab180"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ac4969b49016844f884240b81ee1ab180">ipc::transport::struc::shm::operator&lt;&lt;</a> (std::ostream &amp;os, const Capnp_message_builder&lt; Shm_arena &gt; &amp;val)</td></tr>
-<tr class="memdesc:ac4969b49016844f884240b81ee1ab180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html" title="A capnp::MessageBuilder used by shm::Builder: similar to a MallocMessageBuilder with the GROW_HEURIST...">Capnp_message_builder</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ac4969b49016844f884240b81ee1ab180">More...</a><br /></td></tr>
+<tr class="memdesc:ac4969b49016844f884240b81ee1ab180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__builder.html" title="A capnp::MessageBuilder used by shm::Builder and for general capnp users: similar to a MallocMessageB...">Capnp_message_builder</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#ac4969b49016844f884240b81ee1ab180">More...</a><br /></td></tr>
 <tr class="separator:ac4969b49016844f884240b81ee1ab180"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b8cb22c53f6da56889f879ca0d5dc62"><td class="memTemplParams" colspan="2">template&lt;typename Shm_arena &gt; </td></tr>
+<tr class="memitem:a8b8cb22c53f6da56889f879ca0d5dc62"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html#a8b8cb22c53f6da56889f879ca0d5dc62">ipc::transport::struc::shm::operator&lt;&lt;</a> (std::ostream &amp;os, const Capnp_message_reader&lt; Shm_arena &gt; &amp;val)</td></tr>
+<tr class="memdesc:a8b8cb22c53f6da56889f879ca0d5dc62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Capnp__message__reader.html" title="A capnp::MessageReader used by shm::Reader and for general capnp users: able to access capnp-serializ...">Capnp_message_reader</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc_1_1shm.html#a8b8cb22c53f6da56889f879ca0d5dc62">More...</a><br /></td></tr>
+<tr class="separator:a8b8cb22c53f6da56889f879ca0d5dc62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

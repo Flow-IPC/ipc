@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -87,9 +87,9 @@ Inheritance diagram for ipc::transport::Blob_stream_mq_base&lt; Persistent_mq_ha
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac1230ff7e73783da730b8639c30511e2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html#ac1230ff7e73783da730b8639c30511e2">remove_persistent</a> (flow::log::Logger *logger_ptr, const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a> &amp;name, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0)</td></tr>
-<tr class="memdesc:ac1230ff7e73783da730b8639c30511e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html" title="Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...">Blob_stream_mq_sender</a> and/or <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> persistent resources associated with a <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> with the given name.  <a href="classipc_1_1transport_1_1Blob__stream__mq__base.html#ac1230ff7e73783da730b8639c30511e2">More...</a><br /></td></tr>
-<tr class="separator:ac1230ff7e73783da730b8639c30511e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a973b452cdc2b2aa6936888f360d01a32"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html#a973b452cdc2b2aa6936888f360d01a32">remove_persistent</a> (flow::log::Logger *logger_ptr, const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a> &amp;name, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:a973b452cdc2b2aa6936888f360d01a32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html" title="Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...">Blob_stream_mq_sender</a> and/or <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> persistent resources associated with a <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> with the given name.  <a href="classipc_1_1transport_1_1Blob__stream__mq__base.html#a973b452cdc2b2aa6936888f360d01a32">More...</a><br /></td></tr>
+<tr class="separator:a973b452cdc2b2aa6936888f360d01a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ef2c620fae98180ecd482f0093da44f"><td class="memTemplParams" colspan="2">template&lt;typename Handle_name_func &gt; </td></tr>
 <tr class="memitem:a8ef2c620fae98180ecd482f0093da44f"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html#a8ef2c620fae98180ecd482f0093da44f">for_each_persistent</a> (const Handle_name_func &amp;handle_name_func)</td></tr>
 <tr class="memdesc:a8ef2c620fae98180ecd482f0093da44f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forwards to <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#ac14dd419cdbc97b6630900268f8b7dd2" title="Lists all named persistent MQs currently persisting, invoking the given handler synchronously on each...">Persistent_mq_handle::for_each_persistent()</a>.  <a href="classipc_1_1transport_1_1Blob__stream__mq__base.html#a8ef2c620fae98180ecd482f0093da44f">More...</a><br /></td></tr>
@@ -135,7 +135,7 @@ template&lt;typename Handle_name_func &gt; </div>
 </div><div class="memdoc">
 
 <p>Forwards to <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#ac14dd419cdbc97b6630900268f8b7dd2" title="Lists all named persistent MQs currently persisting, invoking the given handler synchronously on each...">Persistent_mq_handle::for_each_persistent()</a>. </p>
-<p >In practice this exists merely to enable templates <a class="el" href="namespaceipc_1_1util.html#ad6be904bf1b0fe6659a11dec0fabbf6b" title="Utility that invokes remove_each_persistent_if() with the filter that returns true (yes,...">remove_each_persistent_with_name_prefix()</a> and <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent(name_prefix_or_empty) and synchronously i...">remove_each_persistent_if()</a> to work with <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html" title="Base of Blob_stream_mq_sender and Blob_stream_mq_receiver containing certain static facilities,...">Blob_stream_mq_base</a>.</p>
+<p >In practice this exists merely to enable templates <a class="el" href="namespaceipc_1_1util.html#ad6be904bf1b0fe6659a11dec0fabbf6b" title="Utility that invokes remove_each_persistent_if() with the filter that returns true (yes,...">remove_each_persistent_with_name_prefix()</a> and <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent() and synchronously invokes Persistent_ob...">remove_each_persistent_if()</a> to work with <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html" title="Base of Blob_stream_mq_sender and Blob_stream_mq_receiver containing certain static facilities,...">Blob_stream_mq_base</a>.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Handle_name_func</td><td>See <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#ac14dd419cdbc97b6630900268f8b7dd2" title="Lists all named persistent MQs currently persisting, invoking the given handler synchronously on each...">Persistent_mq_handle::for_each_persistent()</a>. </td></tr>
@@ -151,8 +151,8 @@ template&lt;typename Handle_name_func &gt; </div>
 
 </div>
 </div>
-<a id="ac1230ff7e73783da730b8639c30511e2" name="ac1230ff7e73783da730b8639c30511e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1230ff7e73783da730b8639c30511e2">&#9670;&nbsp;</a></span>remove_persistent()</h2>
+<a id="a973b452cdc2b2aa6936888f360d01a32" name="a973b452cdc2b2aa6936888f360d01a32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a973b452cdc2b2aa6936888f360d01a32">&#9670;&nbsp;</a></span>remove_persistent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,7 +178,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -195,13 +195,13 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 
 <p>Removes the <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html" title="Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...">Blob_stream_mq_sender</a> and/or <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> persistent resources associated with a <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> with the given name. </p>
 <p >Please see Cleanup in <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html" title="Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...">Blob_stream_mq_sender</a> doc header for context; and note it applies equally to <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a>. In short: Those classes gracefully clean up by themselves, via their dtors; but an abort (or two) may prevent this from occurring &ndash; in which case one should do one of the following:</p><ul>
-<li>If the name of the potentially-leaked MQ is known: Call this function, <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html#ac1230ff7e73783da730b8639c30511e2" title="Removes the Blob_stream_mq_sender and/or Blob_stream_mq_receiver persistent resources associated with...">remove_persistent()</a>.</li>
-<li>If not, but you used a name-prefix-based scheme: Call <code>remove_each_persistent_with_name_prefix&lt;<a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html" title="Base of Blob_stream_mq_sender and Blob_stream_mq_receiver containing certain static facilities,...">Blob_stream_mq_base</a>&gt;()</code>, providing the applicable name prefix. It will invoke <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html#ac1230ff7e73783da730b8639c30511e2" title="Removes the Blob_stream_mq_sender and/or Blob_stream_mq_receiver persistent resources associated with...">remove_persistent()</a> (and <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html#a8ef2c620fae98180ecd482f0093da44f" title="Forwards to Persistent_mq_handle::for_each_persistent().">for_each_persistent()</a>) internally as needed.</li>
+<li>If the name of the potentially-leaked MQ is known: Call this function, <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html#a973b452cdc2b2aa6936888f360d01a32" title="Removes the Blob_stream_mq_sender and/or Blob_stream_mq_receiver persistent resources associated with...">remove_persistent()</a>.</li>
+<li>If not, but you used a name-prefix-based scheme: Call <code>remove_each_persistent_with_name_prefix&lt;<a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html" title="Base of Blob_stream_mq_sender and Blob_stream_mq_receiver containing certain static facilities,...">Blob_stream_mq_base</a>&gt;()</code>, providing the applicable name prefix. It will invoke <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html#a973b452cdc2b2aa6936888f360d01a32" title="Removes the Blob_stream_mq_sender and/or Blob_stream_mq_receiver persistent resources associated with...">remove_persistent()</a> (and <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html#a8ef2c620fae98180ecd482f0093da44f" title="Forwards to Persistent_mq_handle::for_each_persistent().">for_each_persistent()</a>) internally as needed.</li>
 </ul>
 <p >Trying to remove a non-existent name <em>is</em> an error; but typically one should ignore any error, since the function is meant for best-effort cleanup in case a leak occurred earlier due to abort(s).</p>
 <p >Logs INFO message.</p>
 <h3>Rationale</h3>
-<p >Why does this exist, when <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#a2e8b8102fdbacc064d4759533a725f51" title="Removes the named persistent MQ.">Persistent_mq_handle::remove_persistent()</a> is available? Answer: <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html" title="Base of Blob_stream_mq_sender and Blob_stream_mq_receiver containing certain static facilities,...">Blob_stream_mq_base</a> sub-classes require certain internal resources (tiny SHM pools as of this writing) to ensure a single sender and single receiver per MQ (a limitation not imposed by the lower-level <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> construct).</p>
+<p >Why does this exist, when <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#a7811e5893dccf138445972627320720d" title="Removes the named persistent MQ.">Persistent_mq_handle::remove_persistent()</a> is available? Answer: <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base.html" title="Base of Blob_stream_mq_sender and Blob_stream_mq_receiver containing certain static facilities,...">Blob_stream_mq_base</a> sub-classes require certain internal resources (tiny SHM pools as of this writing) to ensure a single sender and single receiver per MQ (a limitation not imposed by the lower-level <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> construct).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>Logger to use for subsequently logging. </td></tr>
@@ -219,7 +219,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

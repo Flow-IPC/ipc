@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Flow-IPC: transport/sync_io/detail/async_adapter_rcv.hpp File Reference</title>
+<title>Flow-IPC: transport/sync_io/async_adapter_rcv.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_0c017496b493ff066fbbe686970307ba.html">transport</a></li><li class="navelem"><a class="el" href="dir_00580eb0cf40d799755587f5d56ed1cf.html">sync_io</a></li><li class="navelem"><a class="el" href="dir_51213d4cdf375ab846ee07ea55bdba59.html">detail</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_0c017496b493ff066fbbe686970307ba.html">transport</a></li><li class="navelem"><a class="el" href="dir_00580eb0cf40d799755587f5d56ed1cf.html">sync_io</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -74,21 +74,30 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="detail_2transport__fwd_8hpp_source.html">ipc/transport/detail/transport_fwd.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="blob__transport__stats_8hpp_source.html">ipc/transport/blob_transport_stats.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__core_2src_2ipc_2transport_2error_8hpp_source.html">ipc/transport/error.hpp</a>&quot;</code><br />
 <code>#include &lt;flow/log/log.hpp&gt;</code><br />
 <code>#include &lt;flow/async/single_thread_task_loop.hpp&gt;</code><br />
 <code>#include &lt;boost/move/make_unique.hpp&gt;</code><br />
+<code>#include &lt;boost/noncopyable.hpp&gt;</code><br />
 <code>#include &lt;queue&gt;</code><br />
+<code>#include &lt;variant&gt;</code><br />
+<code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="async__adapter__rcv_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal-use type that adapts a given PEER-state <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> <em>core</em> into the async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type that adapts a given PEER-state <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> <em>core</em> into the async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::User_request</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data store representing a deficit user async-receive request: either one being currently handled by <code>m_sync_io</code> &ndash; which can handle one <code>m_sync_io.async_receive_*()</code> at a time, no more &ndash; or one queued up behind it, if <code>async_receive_*()</code> was called before the current one could complete.  <a href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::User_request_one</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data store representing a deficit user single-message async-receive request: either one being currently handled by <code>m_sync_io</code> &ndash; which can handle one <code>m_sync_io.async_receive_*()</code> at a time, no more &ndash; or one queued up behind it, if <code>async_receive_*()</code> was called before the current one could complete.  <a href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__batch.html">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::User_request_batch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analogous to <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">User_request_one</a> but for a batch async-receive request as opposed to single-message request.  <a href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__batch.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -106,7 +115,7 @@ Namespaces</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

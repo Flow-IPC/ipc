@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -77,7 +77,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept by straightforwardly allocating fixed-size segments on-demand in the regular heap and serializing directly inside those segments.  
+<p>~Simplest possible impl of <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept that represents the capnp payload directly in heap memory (outer serialization only), with a segment-allocation strategy similar to <code>capnp::MallocMessageBuilder</code>.  
  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#details">More...</a></p>
 
 <p><code>#include &lt;heap_serializer.hpp&gt;</code></p>
@@ -98,8 +98,9 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6debedf2ddfff80f269d296c24686add"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a6debedf2ddfff80f269d296c24686add">Heap_fixed_builder</a> ()</td></tr>
-<tr class="memdesc:a6debedf2ddfff80f269d296c24686add"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a6debedf2ddfff80f269d296c24686add">More...</a><br /></td></tr>
+<tr class="memitem:a6debedf2ddfff80f269d296c24686add"><td class="memItemLeft" align="right" valign="top"><a id="a6debedf2ddfff80f269d296c24686add" name="a6debedf2ddfff80f269d296c24686add"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Heap_fixed_builder</b> ()</td></tr>
+<tr class="memdesc:a6debedf2ddfff80f269d296c24686add"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API. <br /></td></tr>
 <tr class="separator:a6debedf2ddfff80f269d296c24686add"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac18c78936dffe8edb5990c4222e78fa5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#ac18c78936dffe8edb5990c4222e78fa5">Heap_fixed_builder</a> (const <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html">Config</a> &amp;config)</td></tr>
 <tr class="memdesc:ac18c78936dffe8edb5990c4222e78fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#ac18c78936dffe8edb5990c4222e78fa5">More...</a><br /></td></tr>
@@ -111,8 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aec92902440d6705137065b4463ef2e11"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#aec92902440d6705137065b4463ef2e11">Heap_fixed_builder</a> (<a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html">Heap_fixed_builder</a> &amp;&amp;src)</td></tr>
 <tr class="memdesc:aec92902440d6705137065b4463ef2e11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#aec92902440d6705137065b4463ef2e11">More...</a><br /></td></tr>
 <tr class="separator:aec92902440d6705137065b4463ef2e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa670a6356fe677ae5b1e629a3964b355"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#aa670a6356fe677ae5b1e629a3964b355">~Heap_fixed_builder</a> ()</td></tr>
-<tr class="memdesc:aa670a6356fe677ae5b1e629a3964b355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#aa670a6356fe677ae5b1e629a3964b355">More...</a><br /></td></tr>
+<tr class="memitem:aa670a6356fe677ae5b1e629a3964b355"><td class="memItemLeft" align="right" valign="top"><a id="aa670a6356fe677ae5b1e629a3964b355" name="aa670a6356fe677ae5b1e629a3964b355"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~Heap_fixed_builder</b> ()</td></tr>
+<tr class="memdesc:aa670a6356fe677ae5b1e629a3964b355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API. In this impl: frees all segments allocated on-demand so far. <br /></td></tr>
 <tr class="separator:aa670a6356fe677ae5b1e629a3964b355"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1f2df842a49ea376749893af71a7a07"><td class="memItemLeft" align="right" valign="top"><a id="ad1f2df842a49ea376749893af71a7a07" name="ad1f2df842a49ea376749893af71a7a07"></a>
 <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html">Heap_fixed_builder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html">Heap_fixed_builder</a> &amp;)=delete</td></tr>
@@ -124,9 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0c054e351753ce326620aa1dec12d923"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc">Capnp_msg_builder_interface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a0c054e351753ce326620aa1dec12d923">payload_msg_builder</a> ()</td></tr>
 <tr class="memdesc:a0c054e351753ce326620aa1dec12d923"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a0c054e351753ce326620aa1dec12d923">More...</a><br /></td></tr>
 <tr class="separator:a0c054e351753ce326620aa1dec12d923"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fb6b2727c7cc0fb8fe7d231385b5517"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517">emit_serialization</a> (<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a82a69eaa39cbe8a002de1266f1cbb5cb">Segment_ptrs</a> *target_blobs, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#ab01fea591145a42c216a5bb396cf0be7">Session</a> &amp;session, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0) const</td></tr>
-<tr class="memdesc:a9fb6b2727c7cc0fb8fe7d231385b5517"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517">More...</a><br /></td></tr>
-<tr class="separator:a9fb6b2727c7cc0fb8fe7d231385b5517"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf7204182668ac541dbf8b12521698f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#abf7204182668ac541dbf8b12521698f6">emit_serialization</a> (<a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983">Segment_bufs</a> *target_blobs, <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> *hdr_blob, <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929">Split_segments</a> *split_segs, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#ab01fea591145a42c216a5bb396cf0be7">Session</a> &amp;session, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr) const</td></tr>
+<tr class="memdesc:abf7204182668ac541dbf8b12521698f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#abf7204182668ac541dbf8b12521698f6">More...</a><br /></td></tr>
+<tr class="separator:abf7204182668ac541dbf8b12521698f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f8b3c876c577aa0550d13faa60e30d2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a0f8b3c876c577aa0550d13faa60e30d2">n_serialization_segments</a> () const</td></tr>
 <tr class="memdesc:a0f8b3c876c577aa0550d13faa60e30d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a0f8b3c876c577aa0550d13faa60e30d2">More...</a><br /></td></tr>
 <tr class="separator:a0f8b3c876c577aa0550d13faa60e30d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,28 +138,14 @@ Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p >(Note that these are not member functions.) </p>
 </td></tr>
 <tr class="memitem:ae272f248d74db0486c4d9411715db15d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#ae272f248d74db0486c4d9411715db15d">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html">Heap_fixed_builder</a> &amp;val)</td></tr>
-<tr class="memdesc:ae272f248d74db0486c4d9411715db15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a></code> to the given <code>ostream</code>.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#ae272f248d74db0486c4d9411715db15d">More...</a><br /></td></tr>
+<tr class="memdesc:ae272f248d74db0486c4d9411715db15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a></code> to the given <code>ostream</code>.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#ae272f248d74db0486c4d9411715db15d">More...</a><br /></td></tr>
 <tr class="separator:ae272f248d74db0486c4d9411715db15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept by straightforwardly allocating fixed-size segments on-demand in the regular heap and serializing directly inside those segments. </p>
-<p >That is, each mutation via <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a0c054e351753ce326620aa1dec12d923" title="Implements concept API.">payload_msg_builder()</a> may, as needed, trigger a <code>malloc()</code> (or similar) of size N passed to the ctor of <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a>; and each buffer returned by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517" title="Implements concept API.">emit_serialization()</a> will be of size N or less.</p>
-<h3>Failure mode</h3>
-<p >As long as each leaf capnp object set via mutation of <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a0c054e351753ce326620aa1dec12d923" title="Implements concept API.">payload_msg_builder()</a> can be serialized in N bytes or fewer, <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517" title="Implements concept API.">emit_serialization()</a> shall succeed. For fixed-size leaves this is generally not a problem; for reasonable N in the KiB, things such as integers and enumerations won't be a problem. However for variable-size objects, particularly strings and blobs and lists and the like, it can be easy to exceed N. In this case, even though internally the problem could be detected at mutation time, it will be reported in the next <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517" title="Implements concept API.">emit_serialization()</a> call (as mandated by the concept API). Specifically <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da3deddc950bfa6d35ae03c9494eec15a6" title="Structured message serialization (e.g., when sending over channel): A user-mutated datum (e....">error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG</a> shall be emitted. See "Reasonable uses" below for discussion on avoiding this fate.</p>
-<h3>Reasonable uses</h3>
-<p >This is suitable for transmission via a <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a> (or <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a>) wherein each blob (or meta-blob, respectively) sent has either a hard size limit (meaning a <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a776b55ae93e65592b90c3943ca99e948" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">Blob_sender::send_blob()</a> or <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html#ac96b0aa01c286d525f9dcfa6dacc4220" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably/in-order,...">Native_handle_sender::send_native_handle()</a> call will fail if this limit is exceeded) or an effective limit (meaning transmission performance is poor in the same event). Indeed the use cases that informed this strategy were:</p><ul>
-<li><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html#a1d23a47d08ac7c31aa546ea02bb24c55" title="Implements Blob_sender API per contract.">Blob_stream_mq_sender::send_blob()</a> shall fail if <code>blob.size() &gt;= N</code>, where <code>N</code> is the message size limit passed to its ctor.</li>
-<li><code>Native_socket_stream::send_*()</code> shall fail if <code>blob.size() &gt;= <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a00624e2fc3757012d13e3dc0feb26a21" title="The maximum length of a blob that can be sent by this protocol.">sync_io::Native_socket_stream::S_MAX_META_BLOB_LENGTH</a></code>.<ul>
-<li>Moreover <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a> informally is documented to feature good performance compared to the MQ-based streams when not exceeding the "10s-of-KiB range" (quoting its doc header as of this writing).</li>
-</ul>
-</li>
-</ul>
-<p >In "Failure mode" above we pointed out an immediate danger if one uses <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> to naively serialize arbitrary user-supplied schemas. Simply put, if one mutates <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a0c054e351753ce326620aa1dec12d923" title="Implements concept API.">payload_msg_builder()</a> in such a way as to introduce a big leaf, such as a large image blob, then <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517" title="Implements concept API.">emit_serialization()</a>) will emit <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da3deddc950bfa6d35ae03c9494eec15a6" title="Structured message serialization (e.g., when sending over channel): A user-mutated datum (e....">error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG</a>; and that's the end of that.</p>
-<p >Even if one avoids this somehow &ndash; let's say by always fragmenting large things into smaller-size leaves (itself undesirable: the point of serialization of structured data is to not have to worry about data representation at the application level) &ndash; this can lead to, well, a fragmented representation, inefficiently using each N-sized segment with too much unused space. So what to do?</p>
-<p >One could write a builder similar to <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> minus the <code>_fixed</code> part; certainly capnp supplies the tools needed to simply allocate large-enough segments (internally, a <code>capnp::MallocMessageBuilder</code>-like <code>MessageBuilder</code> is used already; we'd just need to use different knob values on <code>MallocMessageBuilder</code> or similar and be less draconian in what segment sizes <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517" title="Implements concept API.">emit_serialization()</a>) will allow). Of course then the transport mechanism used for the resulting segments would need to be able to handle larger blobs. <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html" title="Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...">Blob_stream_mq_sender</a> already supports larger max message sizes, and <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">Native_socket_stream</a> with a larger or variable <code>S_MAX_META_BLOB_LENGTH</code> could be written. Or even without that one could split any too-large segments across multiple blobs. However that's hardly consolation in practice: too much RAM use could result; and/or the copying involved would eventually prove too expensive. So... probably the non-<code>_fixed</code>/multi-blob-segment approaches are not good enough, at least not in general. So what to do?</p>
-<p >At least one approach is to use a 2-layer approach. The true serialization of the user's schema could be placed in SHared Memory (SHM). Then only a handle (or handles) to this SHM-stored serialization could be transmitted via <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a>; even a <em>single</em> segment of small size would be enough to transmit as much, as each handle is (more or less) a pointer. Although the SHM-based builder (documented elsewhere) would be the one used at the higher level, internally it would leverage <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> to transmit the handle(s) to SHM.</p>
-<p >Hence <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> remains of use; but keep in mind the above limitations and (at least its original) intended use.</p>
-<p >The above discussion is a more specific treatment of the outer-serialization/inner-serialization discussion in the <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept doc header.</p>
+<div class="textblock"><p >~Simplest possible impl of <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept that represents the capnp payload directly in heap memory (outer serialization only), with a segment-allocation strategy similar to <code>capnp::MallocMessageBuilder</code>. </p>
+<p >The <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a></code>-required seg 1 header-space minutiae are also followed.</p>
+<p >That is, each mutation via <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a0c054e351753ce326620aa1dec12d923" title="Implements concept API.">payload_msg_builder()</a> may, as needed, trigger a <code>malloc()</code> (or similar) of size N, where N is (roughly speaking) either a fixed, configured value; or grows roughly exponentially each time up to N. (<code>capnp::MallocMessageBuilder</code> has similar knobs.) Plus seg 1 shall be preceded by a (zero-filled, untouched further by <code>*this</code>) header area of a specified size if so configured.</p>
+<dl class="section note"><dt>Note</dt><dd>This can/should be viewed as the core impl of <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept. Other impls thereof most likely should be built on top of/around a <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a> which would implement the outer serialization, an element in practice required in a uniform way by any <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a>. For example <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">shm::Builder</a> does so: it maintains a <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a> for the outer serialization (even though in its case it's always one small segment, certainly without any splitting/joining needed) while itself handling the inner serialization in SHM.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html" title="Implements Struct_reader concept by straightforwardly interpreting a serialization by Heap_fixed_buil...">Heap_reader</a> Counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">Struct_reader</a> implementation that can deserialize data that this has serialized. </dd>
 <dd>
 <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a>: implemented concept. </dd></dl>
@@ -175,41 +163,13 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements concept API. </p>
-<p >This being a non-zero-copy <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a>, no information is needed for <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517" title="Implements concept API.">emit_serialization()</a> beyond the payload itself. </p>
+<p >This being a non-zero-copy <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a>, no information is needed for <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#abf7204182668ac541dbf8b12521698f6" title="Implements concept API.">emit_serialization()</a> beyond the payload itself. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6debedf2ddfff80f269d296c24686add" name="a6debedf2ddfff80f269d296c24686add"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6debedf2ddfff80f269d296c24686add">&#9670;&nbsp;</a></span>Heap_fixed_builder() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">ipc::transport::struc::Heap_fixed_builder::Heap_fixed_builder </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements concept API. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a460aa187c0aaa5adfb81ecc902c7eca9" title="Default ctor, leaving *this in a state only suitable for destruction or being moved-to.">Struct_builder::Struct_builder()</a>: implemented concept. </dd></dl>
-
-</div>
-</div>
 <a id="ac18c78936dffe8edb5990c4222e78fa5" name="ac18c78936dffe8edb5990c4222e78fa5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac18c78936dffe8edb5990c4222e78fa5">&#9670;&nbsp;</a></span>Heap_fixed_builder() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac18c78936dffe8edb5990c4222e78fa5">&#9670;&nbsp;</a></span>Heap_fixed_builder() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,16 +196,15 @@ Related Functions</h2></td></tr>
 <p >See <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html" title="Implements Struct_builder::Config sub-concept.">Config</a> doc header for information on how <code>*this</code> behavior is controlled by <code>config</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">config</td><td>See above.</td></tr>
+    <tr><td class="paramname">config</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a460aa187c0aaa5adfb81ecc902c7eca9" title="Default ctor, leaving *this in a state only suitable for destruction or being moved-to.">Struct_builder::Struct_builder()</a>: implemented concept. </dd></dl>
 
 </div>
 </div>
 <a id="aec92902440d6705137065b4463ef2e11" name="aec92902440d6705137065b4463ef2e11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec92902440d6705137065b4463ef2e11">&#9670;&nbsp;</a></span>Heap_fixed_builder() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aec92902440d6705137065b4463ef2e11">&#9670;&nbsp;</a></span>Heap_fixed_builder() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,37 +230,16 @@ Related Functions</h2></td></tr>
 <p>Implements concept API. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">src</td><td>See above.</td></tr>
+    <tr><td class="paramname">src</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a460aa187c0aaa5adfb81ecc902c7eca9" title="Default ctor, leaving *this in a state only suitable for destruction or being moved-to.">Struct_builder::Struct_builder()</a>: implemented concept. </dd></dl>
-
-</div>
-</div>
-<a id="aa670a6356fe677ae5b1e629a3964b355" name="aa670a6356fe677ae5b1e629a3964b355"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa670a6356fe677ae5b1e629a3964b355">&#9670;&nbsp;</a></span>~Heap_fixed_builder()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ipc::transport::struc::Heap_fixed_builder::~Heap_fixed_builder </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Implements concept API. </p>
-<p >In this impl: frees all segments allocated on-demand so far. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a008f6b6456a4b2dab63cdda5f9e4cfe5" title="Destructor. Do not use *payload_msg_builder() or any copies thereof past this.">Struct_builder::~Struct_builder()</a>: implemented concept. </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9fb6b2727c7cc0fb8fe7d231385b5517" name="a9fb6b2727c7cc0fb8fe7d231385b5517"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fb6b2727c7cc0fb8fe7d231385b5517">&#9670;&nbsp;</a></span>emit_serialization()</h2>
+<a id="abf7204182668ac541dbf8b12521698f6" name="abf7204182668ac541dbf8b12521698f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf7204182668ac541dbf8b12521698f6">&#9670;&nbsp;</a></span>emit_serialization()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -309,8 +247,20 @@ Related Functions</h2></td></tr>
         <tr>
           <td class="memname">void ipc::transport::struc::Heap_fixed_builder::emit_serialization </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a82a69eaa39cbe8a002de1266f1cbb5cb">Segment_ptrs</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983">Segment_bufs</a> *&#160;</td>
           <td class="paramname"><em>target_blobs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> *&#160;</td>
+          <td class="paramname"><em>hdr_blob</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929">Split_segments</a> *&#160;</td>
+          <td class="paramname"><em>split_segs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -322,7 +272,7 @@ Related Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -333,17 +283,16 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements concept API. </p>
-<h3>Errors</h3>
-<p >As discussed in class doc header, you should be on guard for the particular error <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da3deddc950bfa6d35ae03c9494eec15a6" title="Structured message serialization (e.g., when sending over channel): A user-mutated datum (e....">error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG</a>. See class doc header for discussion on how to avoid it. As of this writing no other failure modes exist.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target_blobs</td><td>See above. Also recall (see ctor) that for each returned <code>blob</code>: individual segment sizes shall never exceed <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b" title="See struct doc header.">Config::m_segment_sz</a> (for the [<code>begin()</code>, <code>end()</code>) area), with <code>start() == m_frame_prefix_sz</code>, and with <code>capacity() - start() - size() &gt;= m_frame_postfix_sz</code>. </td></tr>
-    <tr><td class="paramname">session</td><td>See above. In this case the proper value is <code>NULL_SESSION</code>. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See above. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da3deddc950bfa6d35ae03c9494eec15a6" title="Structured message serialization (e.g., when sending over channel): A user-mutated datum (e....">error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG</a> (a previous mutation introduced a leaf whose serialization would necessitate allocating a segment exceeding <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b" title="See struct doc header.">Config::m_segment_sz</a> &ndash; see ctor &ndash; in size).</td></tr>
+    <tr><td class="paramname">target_blobs</td><td>See above. </td></tr>
+    <tr><td class="paramname">hdr_blob</td><td>See above. </td></tr>
+    <tr><td class="paramname">split_segs</td><td>See above. </td></tr>
+    <tr><td class="paramname">session</td><td>See above. In this impl: the proper value is <code>NULL_SESSION</code>. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See above. Generated codes: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71da3deddc950bfa6d35ae03c9494eec15a6" title="Structured message serialization (e.g., when sending over channel): A user-mutated datum (list/blob/s...">error::Code::S_INTERNAL_ERROR_SERIALIZE_LEAF_TOO_BIG</a> (see above; reminder: possible only if <code>split_segs == nullptr</code>). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#af5085934123f075c6d0701e9e45e4bcc" title="Returns the serialization in the form of a sequence of 1+ pointers to Blobs which are guaranteed to r...">Struct_builder::emit_serialization()</a>: implemented concept. </dd></dl>
 
 </div>
 </div>
@@ -363,8 +312,7 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements concept API. </p>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#ae1516b0d68c48f2e13baf6aca366ac6c" title="Returns what target_blobs.size() would return after calling emit_serialization(&amp;target_blobs) (with a...">Struct_builder::n_serialization_segments()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -373,9 +321,6 @@ Related Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html">Heap_fixed_builder</a> &amp; ipc::transport::struc::Heap_fixed_builder::operator= </td>
@@ -385,11 +330,6 @@ Related Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Implements concept API. </p>
@@ -399,8 +339,7 @@ Related Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a460aa187c0aaa5adfb81ecc902c7eca9" title="Default ctor, leaving *this in a state only suitable for destruction or being moved-to.">Struct_builder::Struct_builder()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -420,8 +359,7 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements concept API. </p>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a9a4b9587c162f85ad4d3e0a5fad8dffb" title="Pointer to the payload Capnp_msg_builder_interface, suitable for mutation by the user.">Struct_builder::payload_msg_builder()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -460,7 +398,7 @@ Related Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a></code> to the given <code>ostream</code>. </p>
+<p>Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a></code> to the given <code>ostream</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
@@ -480,7 +418,7 @@ Related Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

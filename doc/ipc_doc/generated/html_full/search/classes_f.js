@@ -1,5 +1,9 @@
 var searchData=
 [
-  ['use_5fcounted_5fobject_0',['Use_counted_object',['../classipc_1_1util_1_1Use__counted__object.html',1,'ipc::util']]],
-  ['user_5frequest_1',['User_request',['../structipc_1_1transport_1_1Native__socket__stream__acceptor_1_1User__request.html',1,'ipc::transport::Native_socket_stream_acceptor::User_request'],['../structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html',1,'ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::User_request'],['../structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html',1,'ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::User_request']]]
+  ['thread_5fcache_0',['Thread_cache',['../classipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Thread__cache.html',1,'ipc::shm::arena_lend::jemalloc']]],
+  ['thread_5flcl_5fobj_5fdb_5fadmin_1',['Thread_lcl_obj_db_admin',['../classipc_1_1shm_1_1arena__lend_1_1detail_1_1Thread__lcl__obj__db__admin.html',1,'ipc::shm::arena_lend::detail']]],
+  ['thread_5flcl_5fobj_5fdb_5fclient_2',['Thread_lcl_obj_db_client',['../classipc_1_1shm_1_1arena__lend_1_1detail_1_1Thread__lcl__obj__db__client.html',1,'ipc::shm::arena_lend::detail']]],
+  ['thread_5flocal_5fpool_5flookup_5ffwd_3',['Thread_local_pool_lookup_fwd',['../classipc_1_1shm_1_1arena__lend_1_1detail_1_1Thread__local__pool__lookup__fwd.html',1,'ipc::shm::arena_lend::detail']]],
+  ['thread_5flocal_5fpool_5flookup_5frev_4',['Thread_local_pool_lookup_rev',['../classipc_1_1shm_1_1arena__lend_1_1detail_1_1Thread__local__pool__lookup__rev.html',1,'ipc::shm::arena_lend::detail']]],
+  ['timer_5fevent_5femitter_5',['Timer_event_emitter',['../classipc_1_1util_1_1sync__io_1_1Timer__event__emitter.html',1,'ipc::util::sync_io']]]
 ];

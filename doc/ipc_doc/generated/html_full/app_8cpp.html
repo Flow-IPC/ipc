@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -78,6 +78,8 @@ $(function() {
 <code>#include &quot;<a class="el" href="ipc__session_2src_2ipc_2session_2error_8hpp_source.html">ipc/session/error.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="native__handle_8hpp_source.html">ipc/util/native_handle.hpp</a>&quot;</code><br />
 <code>#include &lt;flow/error/error.hpp&gt;</code><br />
+<code>#include &lt;cerrno&gt;</code><br />
+<code>#include &lt;fcntl.h&gt;</code><br />
 <code>#include &lt;sys/stat.h&gt;</code><br />
 </div>
 <p><a href="app_8cpp_source.html">Go to the source code of this file.</a></p>
@@ -93,17 +95,17 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0eac87b284d50832334d819a8877cbaa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#a0eac87b284d50832334d819a8877cbaa">ipc::session::ensure_resource_owner_is_app</a> (flow::log::Logger *logger_ptr, const fs::path &amp;path, const App &amp;app, Error_code *err_code=0)</td></tr>
-<tr class="memdesc:a0eac87b284d50832334d819a8877cbaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility, used internally but exposed in public API in case it is of general use, that checks that the owner of the given resource (at the supplied file system path) is as specified in the given <a class="el" href="structipc_1_1session_1_1App.html" title="A description of an application in this ipc::session inter-process communication universe.">App</a> (<a class="el" href="structipc_1_1session_1_1App.html#a9e32297579603f2d96616976474d0246" title="The application must run as this user ID (UID). Files and other shared resources shall have this owne...">App::m_user_id</a> et al).  <a href="namespaceipc_1_1session.html#a0eac87b284d50832334d819a8877cbaa">More...</a><br /></td></tr>
-<tr class="separator:a0eac87b284d50832334d819a8877cbaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7f0052fa0537c3696063693644bcff8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#ac7f0052fa0537c3696063693644bcff8">ipc::session::ensure_resource_owner_is_app</a> (flow::log::Logger *logger_ptr, util::Native_handle handle, const App &amp;app, Error_code *err_code=0)</td></tr>
-<tr class="memdesc:ac7f0052fa0537c3696063693644bcff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to the other <a class="el" href="namespaceipc_1_1session.html#a0eac87b284d50832334d819a8877cbaa" title="Utility, used internally but exposed in public API in case it is of general use, that checks that the...">ensure_resource_owner_is_app()</a> overload but operates on a pre-opened <code>Native_handle</code> (a/k/a handle, socket, file descriptor) to the resource in question.  <a href="namespaceipc_1_1session.html#ac7f0052fa0537c3696063693644bcff8">More...</a><br /></td></tr>
-<tr class="separator:ac7f0052fa0537c3696063693644bcff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2cb8885cd801c96c7ed107f489f7d0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#aa2cb8885cd801c96c7ed107f489f7d0c">ipc::session::ensure_resource_owner_is_app</a> (flow::log::Logger *logger_ptr, const fs::path &amp;path, const App &amp;app, Error_code *err_code=nullptr)</td></tr>
+<tr class="memdesc:aa2cb8885cd801c96c7ed107f489f7d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility, used internally but exposed in public API in case it is of general use, that checks that the owner of the given resource (at the supplied file system path) is as specified in the given <a class="el" href="structipc_1_1session_1_1App.html" title="A description of an application in this ipc::session inter-process communication universe.">App</a> (<a class="el" href="structipc_1_1session_1_1App.html#a9e32297579603f2d96616976474d0246" title="The application must run as this user ID (UID). Files and other shared resources shall have this owne...">App::m_user_id</a> et al).  <a href="namespaceipc_1_1session.html#aa2cb8885cd801c96c7ed107f489f7d0c">More...</a><br /></td></tr>
+<tr class="separator:aa2cb8885cd801c96c7ed107f489f7d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1f8f8e6eb6622ce380a8275e52c36ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#af1f8f8e6eb6622ce380a8275e52c36ed">ipc::session::ensure_resource_owner_is_app</a> (flow::log::Logger *logger_ptr, util::Native_handle handle, const App &amp;app, Error_code *err_code=nullptr)</td></tr>
+<tr class="memdesc:af1f8f8e6eb6622ce380a8275e52c36ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to the other <a class="el" href="namespaceipc_1_1session.html#aa2cb8885cd801c96c7ed107f489f7d0c" title="Utility, used internally but exposed in public API in case it is of general use, that checks that the...">ensure_resource_owner_is_app()</a> overload but operates on a pre-opened <code>Native_handle</code> (a/k/a handle, socket, file descriptor) to the resource in question.  <a href="namespaceipc_1_1session.html#af1f8f8e6eb6622ce380a8275e52c36ed">More...</a><br /></td></tr>
+<tr class="separator:af1f8f8e6eb6622ce380a8275e52c36ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b2f9a90ac9cc5098d9b90e7f547c97e"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#a6b2f9a90ac9cc5098d9b90e7f547c97e">ipc::session::operator&lt;&lt;</a> (std::ostream &amp;os, const App &amp;val)</td></tr>
 <tr class="memdesc:a6b2f9a90ac9cc5098d9b90e7f547c97e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="structipc_1_1session_1_1App.html" title="A description of an application in this ipc::session inter-process communication universe.">App</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1session.html#a6b2f9a90ac9cc5098d9b90e7f547c97e">More...</a><br /></td></tr>
 <tr class="separator:a6b2f9a90ac9cc5098d9b90e7f547c97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e786447d51449f1249c10e127ab10e2"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#a0e786447d51449f1249c10e127ab10e2">ipc::session::operator&lt;&lt;</a> (std::ostream &amp;os, const Client_app &amp;val)</td></tr>
-<tr class="memdesc:a0e786447d51449f1249c10e127ab10e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code>Client_appp</code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1session.html#a0e786447d51449f1249c10e127ab10e2">More...</a><br /></td></tr>
+<tr class="memdesc:a0e786447d51449f1249c10e127ab10e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1session.html#a0e786447d51449f1249c10e127ab10e2">More...</a><br /></td></tr>
 <tr class="separator:a0e786447d51449f1249c10e127ab10e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34a03a25908100446b3eca2e8dca61fe"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#a34a03a25908100446b3eca2e8dca61fe">ipc::session::operator&lt;&lt;</a> (std::ostream &amp;os, const Server_app &amp;val)</td></tr>
 <tr class="memdesc:a34a03a25908100446b3eca2e8dca61fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="structipc_1_1session_1_1Server__app.html" title="An App that is used as a server in at least one client-server IPC split.">Server_app</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1session.html#a34a03a25908100446b3eca2e8dca61fe">More...</a><br /></td></tr>
@@ -112,7 +114,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

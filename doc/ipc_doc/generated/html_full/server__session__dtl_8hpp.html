@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -69,19 +69,19 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">server_session_dtl.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="session__fwd_8hpp_source.html">ipc/session/session_fwd.hpp</a>&quot;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="server__session__dtl_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Server__session__dtl.html">ipc::session::Server_session_dtl&lt; Server_session_t &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the data-less sub-class of Server_session or any more-advanced (e.g., SHM-capable) variant thereof that exposes <code>protected</code> APIs hidden from public user by providing public access to them; this is used internally by <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a>.  <a href="classipc_1_1session_1_1Server__session__dtl.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1session_1_1Server__session__dtl.html">ipc::session::Server_session_dtl&lt; Base_t &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the <code>friend</code> facade of Server_session or any more-advanced (e.g., SHM-capable) variant thereof that exposes <code>private</code> APIs hidden from public user by providing public access to them; this is used internally by <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a>.  <a href="structipc_1_1session_1_1Server__session__dtl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -92,57 +92,11 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceipc_1_1session"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html">ipc::session</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1session"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module providing the broad lifecycle and shared-resource organization &ndash; via the <em>session</em> concept &ndash; in such a way as to make it possible for a given pair of processes A and B to set up <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> structured- or unstructured-message channels for general IPC, as well as to share data in SHared Memory (SHM). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a7fdbb3fbe80e1dcd9f5e2b809596d039"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server__session__dtl_8hpp.html#a7fdbb3fbe80e1dcd9f5e2b809596d039">TEMPLATE_SRV_SESSION_DTL</a>&#160;&#160;&#160;  template&lt;typename <a class="el" href="classServer__session__t.html">Server_session_t</a>&gt;</td></tr>
-<tr class="memdesc:a7fdbb3fbe80e1dcd9f5e2b809596d039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="server__session__dtl_8hpp.html#a7fdbb3fbe80e1dcd9f5e2b809596d039">More...</a><br /></td></tr>
-<tr class="separator:a7fdbb3fbe80e1dcd9f5e2b809596d039"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa28b78944d644c37a88a9f9bedcfdf34"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server__session__dtl_8hpp.html#aa28b78944d644c37a88a9f9bedcfdf34">CLASS_SRV_SESSION_DTL</a>&#160;&#160;&#160;  Server_session_dtl&lt;<a class="el" href="classServer__session__t.html">Server_session_t</a>&gt;</td></tr>
-<tr class="memdesc:aa28b78944d644c37a88a9f9bedcfdf34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="server__session__dtl_8hpp.html#aa28b78944d644c37a88a9f9bedcfdf34">More...</a><br /></td></tr>
-<tr class="separator:aa28b78944d644c37a88a9f9bedcfdf34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="aa28b78944d644c37a88a9f9bedcfdf34" name="aa28b78944d644c37a88a9f9bedcfdf34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa28b78944d644c37a88a9f9bedcfdf34">&#9670;&nbsp;</a></span>CLASS_SRV_SESSION_DTL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CLASS_SRV_SESSION_DTL&#160;&#160;&#160;  Server_session_dtl&lt;<a class="el" href="classServer__session__t.html">Server_session_t</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
-
-<p class="definition">Definition at line <a class="el" href="server__session__dtl_8hpp_source.html#l00116">116</a> of file <a class="el" href="server__session__dtl_8hpp_source.html">server_session_dtl.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a7fdbb3fbe80e1dcd9f5e2b809596d039" name="a7fdbb3fbe80e1dcd9f5e2b809596d039"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fdbb3fbe80e1dcd9f5e2b809596d039">&#9670;&nbsp;</a></span>TEMPLATE_SRV_SESSION_DTL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TEMPLATE_SRV_SESSION_DTL&#160;&#160;&#160;  template&lt;typename <a class="el" href="classServer__session__t.html">Server_session_t</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
-
-<p class="definition">Definition at line <a class="el" href="server__session__dtl_8hpp_source.html#l00113">113</a> of file <a class="el" href="server__session__dtl_8hpp_source.html">server_session_dtl.hpp</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

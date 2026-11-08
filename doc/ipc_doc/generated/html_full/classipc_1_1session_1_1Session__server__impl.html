@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -94,7 +94,7 @@ Inheritance diagram for ipc::session::Session_server_impl&lt; Session_server_t, 
 <div class="dynheader">
 Collaboration diagram for ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1session_1_1Session__server__impl__coll__graph.svg" width="1224" height="434"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1session_1_1Session__server__impl__coll__graph.svg" width="1224" height="482"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -109,7 +109,7 @@ Public Types</h2></td></tr>
 <tr class="memitem:a47625f247dea35cf276d31c039c6bf0c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a47625f247dea35cf276d31c039c6bf0c">Session_server_obj</a> = Session_server_t</td></tr>
 <tr class="memdesc:a47625f247dea35cf276d31c039c6bf0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">this_session_srv()</a>.  <a href="classipc_1_1session_1_1Session__server__impl.html#a47625f247dea35cf276d31c039c6bf0c">More...</a><br /></td></tr>
 <tr class="separator:a47625f247dea35cf276d31c039c6bf0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0009247dd98ec58b22040d1c65bb5a54"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">Server_session_obj</a> = <a class="el" href="classServer__session__t.html">Server_session_t</a></td></tr>
+<tr class="memitem:a0009247dd98ec58b22040d1c65bb5a54"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">Server_session_obj</a> = Server_session_t</td></tr>
 <tr class="memdesc:a0009247dd98ec58b22040d1c65bb5a54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Useful short-hand for the concrete <code>Server_session</code> type emitted by <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a>.  <a href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">More...</a><br /></td></tr>
 <tr class="separator:a0009247dd98ec58b22040d1c65bb5a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86de1d5b7cae35d89827c3235e2b8d89"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a86de1d5b7cae35d89827c3235e2b8d89">Mdt_reader_ptr</a> = typename Server_session_obj::Mdt_reader_ptr</td></tr>
@@ -132,8 +132,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a60ec88b23d73c354959a1e11636dc717"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717">async_accept</a> (<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">Server_session_obj</a> *target_session, <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a9ad5c6cbb1c9378d42ec5cd909389dc2">Channels</a> *init_channels_by_srv_req, <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a86de1d5b7cae35d89827c3235e2b8d89">Mdt_reader_ptr</a> *mdt_from_cli_or_null, <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a9ad5c6cbb1c9378d42ec5cd909389dc2">Channels</a> *init_channels_by_cli_req, N_init_channels_by_srv_req_func &amp;&amp;n_init_channels_by_srv_req_func, Mdt_load_func &amp;&amp;mdt_load_func, Task_err &amp;&amp;on_done_func)</td></tr>
 <tr class="memdesc:a60ec88b23d73c354959a1e11636dc717"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> method.  <a href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717">More...</a><br /></td></tr>
 <tr class="separator:a60ec88b23d73c354959a1e11636dc717"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accb87b3e54064a37cdf73d542121bd9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#accb87b3e54064a37cdf73d542121bd9a">mq_msg_size_limit</a> () const</td></tr>
+<tr class="memdesc:accb87b3e54064a37cdf73d542121bd9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> method.  <a href="classipc_1_1session_1_1Session__server__impl.html#accb87b3e54064a37cdf73d542121bd9a">More...</a><br /></td></tr>
+<tr class="separator:accb87b3e54064a37cdf73d542121bd9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a459aa0be5daeafd2781c0e82654efbec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a459aa0be5daeafd2781c0e82654efbec">mq_msg_size_limit</a> (<a class="el" href="classsize__t.html">size_t</a> limit)</td></tr>
+<tr class="memdesc:a459aa0be5daeafd2781c0e82654efbec"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> method.  <a href="classipc_1_1session_1_1Session__server__impl.html#a459aa0be5daeafd2781c0e82654efbec">More...</a><br /></td></tr>
+<tr class="separator:a459aa0be5daeafd2781c0e82654efbec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a3c0c330d477176b714a9920196775d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a2a3c0c330d477176b714a9920196775d">to_ostream</a> (std::ostream *os) const</td></tr>
-<tr class="memdesc:a2a3c0c330d477176b714a9920196775d"><td class="mdescLeft">&#160;</td><td class="mdescRight">See Server_session method.  <a href="classipc_1_1session_1_1Session__server__impl.html#a2a3c0c330d477176b714a9920196775d">More...</a><br /></td></tr>
+<tr class="memdesc:a2a3c0c330d477176b714a9920196775d"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> method.  <a href="classipc_1_1session_1_1Session__server__impl.html#a2a3c0c330d477176b714a9920196775d">More...</a><br /></td></tr>
 <tr class="separator:a2a3c0c330d477176b714a9920196775d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7cd4d77db826af9fe39c17e8ee7ca37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a47625f247dea35cf276d31c039c6bf0c">Session_server_obj</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37">this_session_srv</a> ()</td></tr>
 <tr class="memdesc:ad7cd4d77db826af9fe39c17e8ee7ca37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointer to the object that is <code>private</code>ly sub-classing us.  <a href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37">More...</a><br /></td></tr>
@@ -149,25 +155,25 @@ Public Attributes</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a40fca0b878f9150f5f7db55768da45ad"><td class="memTemplParams" colspan="2">template&lt;typename Task &gt; </td></tr>
 <tr class="memitem:a40fca0b878f9150f5f7db55768da45ad"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a40fca0b878f9150f5f7db55768da45ad">sub_class_set_deinit_func</a> (Task &amp;&amp;task)</td></tr>
-<tr class="memdesc:a40fca0b878f9150f5f7db55768da45ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility for sub-classes: ensures that <code>task()</code> is invoked near the end of <code>*this</code> dtor's execution, after <em>all</em> other (mutable) state has been destroyed, including stopping/joining any threads performing async <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> ops.  <a href="classipc_1_1session_1_1Session__server__impl.html#a40fca0b878f9150f5f7db55768da45ad">More...</a><br /></td></tr>
+<tr class="memdesc:a40fca0b878f9150f5f7db55768da45ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility for sub-classes: ensures that <code>task()</code> is invoked near the end of <code>*this</code> dtor's execution, after <em>all</em> other (mutable) state has been destroyed, including stopping/joining any threads performing <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> ops.  <a href="classipc_1_1session_1_1Session__server__impl.html#a40fca0b878f9150f5f7db55768da45ad">More...</a><br /></td></tr>
 <tr class="separator:a40fca0b878f9150f5f7db55768da45ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ffd7553dc44f6dd3e4381369853bc6b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a6ffd7553dc44f6dd3e4381369853bc6b">dtor_stop_accepting</a> ()</td></tr>
+<tr class="memdesc:a6ffd7553dc44f6dd3e4381369853bc6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronously stops all <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> activity, the post-condition being that no internal handler &ndash; including any invocation of the <code>per_app_setup_func</code> customization point, and anything a <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a> does during its log-in &ndash; is executing or shall execute, and every outstanding <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> has fired its handler (with <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed" title="Async completion handler is being called prematurely, because underlying object is shutting down,...">error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>).  <a href="classipc_1_1session_1_1Session__server__impl.html#a6ffd7553dc44f6dd3e4381369853bc6b">More...</a><br /></td></tr>
+<tr class="separator:a6ffd7553dc44f6dd3e4381369853bc6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
 Private Types</h2></td></tr>
-<tr class="memitem:ae87dfd48a7e435800255722301d5bddc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc">Server_session_dtl_obj</a> = <a class="el" href="classipc_1_1session_1_1Server__session__dtl.html">Server_session_dtl</a>&lt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">Server_session_obj</a> &gt;</td></tr>
-<tr class="memdesc:ae87dfd48a7e435800255722301d5bddc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for concrete <a class="el" href="classipc_1_1session_1_1Server__session__dtl.html" title="This is the data-less sub-class of Server_session or any more-advanced (e.g., SHM-capable) variant th...">Server_session_dtl</a> type, which each <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> creates internally, completes the log-in process upon, and then up-casts to <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a> to emit to user via move-assignment.  <a href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc">More...</a><br /></td></tr>
-<tr class="separator:ae87dfd48a7e435800255722301d5bddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a608ab714f6a6725e6122470d87713f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f">Incomplete_session</a> = boost::shared_ptr&lt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc">Server_session_dtl_obj</a> &gt;</td></tr>
-<tr class="memdesc:a3a608ab714f6a6725e6122470d87713f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used ref-counted handle to a <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc" title="Short-hand for concrete Server_session_dtl type, which each async_accept() creates internally,...">Server_session_dtl_obj</a>, suitable for capturing and passing around lambdas.  <a href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f">More...</a><br /></td></tr>
-<tr class="separator:a3a608ab714f6a6725e6122470d87713f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae66f28a17f3cdd72d97212126483650a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae66f28a17f3cdd72d97212126483650a">Incomplete_session_observer</a> = boost::weak_ptr&lt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc">Server_session_dtl_obj</a> &gt;</td></tr>
-<tr class="memdesc:ae66f28a17f3cdd72d97212126483650a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>weak_ptr</code> observer of an <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a>.  <a href="classipc_1_1session_1_1Session__server__impl.html#ae66f28a17f3cdd72d97212126483650a">More...</a><br /></td></tr>
-<tr class="separator:ae66f28a17f3cdd72d97212126483650a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5286c0f847ccf7e62d87c088e7be32e0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a5286c0f847ccf7e62d87c088e7be32e0">Incomplete_sessions</a> = boost::unordered_set&lt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f">Incomplete_session</a> &gt;</td></tr>
-<tr class="memdesc:a5286c0f847ccf7e62d87c088e7be32e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for set of <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a>, with fast insertion and removal by key <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> itself.  <a href="classipc_1_1session_1_1Session__server__impl.html#a5286c0f847ccf7e62d87c088e7be32e0">More...</a><br /></td></tr>
+<tr class="memitem:a1c15765a6ee7096e1d13b8c25e92c2e2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2">Incomplete_session</a> = boost::shared_ptr&lt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">Server_session_obj</a> &gt;</td></tr>
+<tr class="memdesc:a1c15765a6ee7096e1d13b8c25e92c2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used ref-counted handle to a <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a>, suitable for capturing and passing around lambdas.  <a href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2">More...</a><br /></td></tr>
+<tr class="separator:a1c15765a6ee7096e1d13b8c25e92c2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2375032b03b6f3b37304ed12d07c447"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ab2375032b03b6f3b37304ed12d07c447">Incomplete_session_observer</a> = boost::weak_ptr&lt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">Server_session_obj</a> &gt;</td></tr>
+<tr class="memdesc:ab2375032b03b6f3b37304ed12d07c447"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>weak_ptr</code> observer of an <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2" title="Internally used ref-counted handle to a Server_session_obj, suitable for capturing and passing around...">Incomplete_session</a>.  <a href="classipc_1_1session_1_1Session__server__impl.html#ab2375032b03b6f3b37304ed12d07c447">More...</a><br /></td></tr>
+<tr class="separator:ab2375032b03b6f3b37304ed12d07c447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5286c0f847ccf7e62d87c088e7be32e0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a5286c0f847ccf7e62d87c088e7be32e0">Incomplete_sessions</a> = boost::unordered_set&lt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2">Incomplete_session</a> &gt;</td></tr>
+<tr class="memdesc:a5286c0f847ccf7e62d87c088e7be32e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for set of <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2" title="Internally used ref-counted handle to a Server_session_obj, suitable for capturing and passing around...">Incomplete_session</a>, with fast insertion and removal by key <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2" title="Internally used ref-counted handle to a Server_session_obj, suitable for capturing and passing around...">Incomplete_session</a> itself.  <a href="classipc_1_1session_1_1Session__server__impl.html#a5286c0f847ccf7e62d87c088e7be32e0">More...</a><br /></td></tr>
 <tr class="separator:a5286c0f847ccf7e62d87c088e7be32e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7f35b32be309d354044662f0e17a891"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae7f35b32be309d354044662f0e17a891">Mutex</a> = flow::util::Mutex_non_recursive</td></tr>
-<tr class="memdesc:ae7f35b32be309d354044662f0e17a891"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#a96b5d124c1a31532a38a0f0cd095ec05" title="Protects m_incomplete_sessions. See class doc header impl section for discussion of thread design.">State::m_mutex</a> type.  <a href="classipc_1_1session_1_1Session__server__impl.html#ae7f35b32be309d354044662f0e17a891">More...</a><br /></td></tr>
+<tr class="memdesc:ae7f35b32be309d354044662f0e17a891"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#a96b5d124c1a31532a38a0f0cd095ec05" title="Protects m_incomplete_sessions, m_stopping, m_n_handlers_active.">State::m_mutex</a> type.  <a href="classipc_1_1session_1_1Session__server__impl.html#ae7f35b32be309d354044662f0e17a891">More...</a><br /></td></tr>
 <tr class="separator:ae7f35b32be309d354044662f0e17a891"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e864e857a767101ed964f532b06acd4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a5e864e857a767101ed964f532b06acd4">Lock_guard</a> = flow::util::Lock_guard&lt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae7f35b32be309d354044662f0e17a891">Mutex</a> &gt;</td></tr>
 <tr class="memdesc:a5e864e857a767101ed964f532b06acd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae7f35b32be309d354044662f0e17a891" title="Short-hand for State::m_mutex type.">Mutex</a> lock.  <a href="classipc_1_1session_1_1Session__server__impl.html#a5e864e857a767101ed964f532b06acd4">More...</a><br /></td></tr>
@@ -175,6 +181,9 @@ Private Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:a03bd54647454e35207e5602eb68181cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a03bd54647454e35207e5602eb68181cb">m_mq_msg_size_limit</a></td></tr>
+<tr class="memdesc:a03bd54647454e35207e5602eb68181cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#accb87b3e54064a37cdf73d542121bd9a" title="See Session_server method.">mq_msg_size_limit()</a>; starts at zero but can be overridden to another value and/or back to zero via mutator.  <a href="classipc_1_1session_1_1Session__server__impl.html#a03bd54647454e35207e5602eb68181cb">More...</a><br /></td></tr>
+<tr class="separator:a03bd54647454e35207e5602eb68181cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7aed6de161203a2e7414411fa1defa5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a47625f247dea35cf276d31c039c6bf0c">Session_server_obj</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#aa7aed6de161203a2e7414411fa1defa5">m_this_session_srv</a></td></tr>
 <tr class="memdesc:aa7aed6de161203a2e7414411fa1defa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">this_session_srv()</a>.  <a href="classipc_1_1session_1_1Session__server__impl.html#aa7aed6de161203a2e7414411fa1defa5">More...</a><br /></td></tr>
 <tr class="separator:aa7aed6de161203a2e7414411fa1defa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,48 +204,50 @@ Private Attributes</h2></td></tr>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p >(Note that these are not member functions.) </p>
 </td></tr>
-<tr class="memitem:a5fc42e333522f7b1ed11fbff4ae72e5c"><td class="memTemplParams" colspan="2">template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </td></tr>
-<tr class="memitem:a5fc42e333522f7b1ed11fbff4ae72e5c"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a5fc42e333522f7b1ed11fbff4ae72e5c">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; &amp;val)</td></tr>
+<tr class="memitem:a5fc42e333522f7b1ed11fbff4ae72e5c"><td class="memTemplParams" colspan="2">template&lt;typename Session_server_t , typename Server_session_t &gt; </td></tr>
+<tr class="memitem:a5fc42e333522f7b1ed11fbff4ae72e5c"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a5fc42e333522f7b1ed11fbff4ae72e5c">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt; &amp;val)</td></tr>
 <tr class="memdesc:a5fc42e333522f7b1ed11fbff4ae72e5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a></code> to the given <code>ostream</code>.  <a href="classipc_1_1session_1_1Session__server__impl.html#a5fc42e333522f7b1ed11fbff4ae72e5c">More...</a><br /></td></tr>
 <tr class="separator:a5fc42e333522f7b1ed11fbff4ae72e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;typename Session_server_t, typename <a class="el" href="classServer__session__t.html">Server_session_t</a>&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename Session_server_t, typename Server_session_t&gt;<br />
 class ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;</div><p >Internal class template comprising API/logic common to every <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> variant, meant to be <code>private</code>ly sub-classed and largely forwarded. </p>
 <p >In particular the vanilla <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> (see its short Implementation doc header section) sub-classes us and makes no use of the available customization points. Contrast with, e.g., <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html" title="This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...">shm::classic::Session_server</a> which uses customization points for <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic.html" title="Support for SHM-backed ipc::session sessions and session-servers with the SHM-classic (ipc::shm::clas...">shm::classic</a> SHM-arena setup.</p>
 <p >The available customization points are as follows.</p><ul>
-<li>Per-session: <code>*this</code> is parameterized on <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a>. The vanilla value is <code>Server_session&lt;...&gt;</code>; but to add capabilities sub-class <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> as explained in its doc header and proceed from there. For example see <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::classic::Server_session</a>. <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> has its own customization point(s).<ul>
-<li>No-customization = specify <a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc" title="A vanilla Server_session with no optional capabilities.">Server_session</a> here.</li>
+<li>Per-session: <code>*this</code> is parameterized on <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a>. The vanilla value is <code>Server_session&lt;...&gt;</code>; but to add capabilities extend <a class="el" href="classipc_1_1session_1_1Server__session__mv.html" title="Implements Session concept on the Server_app end: a Session that is emitted in almost-PEER state by l...">Server_session_mv</a>'s behavior as explained in its doc header and proceed from there. For example see <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session.html" title="Identical to session::Server_session in every way, except that it makes available two SHM arenas,...">shm::classic::Server_session</a>.<ul>
+<li>No-customization = specify <a class="el" href="namespaceipc_1_1session.html#a961e318f69fac2b45e55346591ea46e1" title="A vanilla Server_session with no optional capabilities.">Server_session</a> here.</li>
 </ul>
 </li>
 <li>Cross-session: Additional per-Client_app setup (such as setting up cross-session SHM arena(s) in on-demand fashion) can be specified by passing in <code>per_app_setup_func</code> to ctor.<ul>
-<li>No-customization = specify do-nothing function here that returns <code><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code()</a></code> always.</li>
+<li>No-customization = specify do-nothing function here that returns <code>Error_code{}</code> always.</li>
 </ul>
 </li>
 <li>Cross-session: Certain custom code can be caused to run as the last thing in the <a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a> dtor, even after all its state has been destroyed (e.g., all threads have been stopped/joined). A sub-class may use this customization point by calling <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a40fca0b878f9150f5f7db55768da45ad" title="Utility for sub-classes: ensures that task() is invoked near the end of *this dtor&#39;s execution,...">sub_class_set_deinit_func()</a>. If not called, the customization point is unused by default.</li>
 </ul>
 <h3>Implementation design</h3>
 <p >Generally the impl should be reasonably easy to follow by reading the method bodies, at least if one understands the general <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> client-server paradigm.</p>
-<p >The thing to understand strategically, as usual, is the thread design. This is an acceptor, so one might have expected it to be implemented similarly to, say, Native_socket_stream_acceptor &ndash; maintaining a thread W in which to do some/most work; including maintaining a "deficit" queue of oustanding <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> requests and a "surplus" queue of ready <code>Server_session</code>s to emit. This was an option, but I (ygoldfel) felt that piggy-backing handling of events directly onto the unspecified handler-invoking threads of the internally used objects would produce a much simpler data structure and state machine. (As a side effect, the behavior described in "FIFO" section above occurs. Also as a side effect, the error-emission behavior described in "Error handling" above occurs. Basically: each <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a>'s internal handling is independent of the others. They share (almost) no state; there is no single async-chain and explicit queues unlike in various other boost.asio-like classes in <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a>. Each <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> triggers async op 1, the handler for which triggers async op 2, the handler for which emits the result to user. This is simpler to implement, but it also results in sensible API contract behavior, I feel.)</p>
-<p >Here is how it works.</p>
+<p >The thing to understand strategically, as usual, is the thread design. This is an acceptor, so one might have expected it to be implemented similarly to, say, Native_socket_stream_acceptor &ndash; maintaining a thread W in which to do some/most work; including maintaining a "deficit" queue of outstanding <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> requests and a "surplus" queue of ready <code>Server_session</code>s to emit. This was an option, but I (ygoldfel) felt that piggy-backing handling of events directly onto the unspecified handler-invoking threads of the internally used objects would produce a much simpler data structure and state machine. (As a side effect, the behavior described in the "FIFO" section of <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> doc header occurs. Also as a side effect, the error-emission behavior described in its "Error handling" section occurs. Basically: each <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a>'s internal handling is independent of the others. They share (almost) no state; there is no single async-chain and explicit queues unlike in various other boost.asio-like classes in <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a>. Each <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> triggers async op 1, the handler for which triggers async op 2, the handler for which emits the result to user. This is simpler to implement, but it also results in sensible API contract behavior, I feel.)</p>
+<p >(Update: With hindsight from experience we added the following to-do.)</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000044">Todo:</a></b></dt><dd><a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a> (+ its subclasses, together as a whole) are internally complicated, with tricky thread interactions, hence difficult to reason about and maintain; a design wherein a <code><a class="el" href="namespaceipc_1_1session_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::session.">sync_io</a></code>-pattern core is adapted by an async-I/O-pattern wrapper (as done in the perf-conscious <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> unstructured-IPC impls like <code>Native_socket_stream</code>) would likely be much simpler and more elegant. Most likely this would need to be extended to <code>Server_session</code> hierarchy (heavily interacts with <code>_server_impl</code>). (<code>Client_session</code> hierarchy would at that point pretty much have to follow at least for consistency.) This is a major internal refactor &ndash; should not be taken lightly &ndash; and incidentally would likely precede any attempt at the to-do elsewhere, where we endeavour to make <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> user-extensible. (A bit of historical background: The internal impl of async-I/O-pattern hierachies in <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> preceded the very existence of the <code><a class="el" href="namespaceipc_1_1session_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::session.">sync_io</a></code>-pattern as an idea. Hence writing <code><a class="el" href="namespaceipc_1_1session_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::session.">sync_io</a></code>-pattern adapters around the already-written async-I/O core &ndash; e.g., Session_server_adapter &ndash; was more expedient than doing the reverse. With the benefit of extra hindsight, though, we feel more strongly that (while the status quo is acceptable in and of itself), subsequent maintenance would benefit from the refactor.) As a bonus/corollary there would be many fewer threads about per session and per server (not a real perf benefit but pretty good).</dd></dl>
+<p >Back to it: Here is how it works, to-dos notwithstanding.</p>
 <p >For each potential <code>Server_session</code> &ndash; i.e., for each <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> &ndash; there are 2 steps that must occur asynchronously before one is ready to emit to the user-supplied handler:</p><ul>
 <li>Our stored Native_socket_stream_acceptor, where we invoke <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#a81426af495ba5a9c832d1ba35fe23ba5" title="Asynchronously awaits for a peer connection to be established and calls on_done_func(),...">transport::Native_socket_stream_acceptor::async_accept()</a>, must emit a PEER-state (connected) <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">transport::sync_io::Native_socket_stream</a> (the opposing peer object living inside the opposing Client_session).<ul>
-<li>Now a <a class="el" href="classipc_1_1session_1_1Server__session__dtl.html" title="This is the data-less sub-class of Server_session or any more-advanced (e.g., SHM-capable) variant th...">Server_session_dtl</a> may be constructed (not yet emitted to user) and then <a class="el" href="classipc_1_1session_1_1Server__session__dtl.html#a31a6cd6a9ed4f836f0844ddb4069080f" title="See protected counterpart.">Server_session_dtl::async_accept_log_in()</a> is invoked.</li>
+<li>Now a <a class="el" href="classipc_1_1session_1_1Server__session__mv.html" title="Implements Session concept on the Server_app end: a Session that is emitted in almost-PEER state by l...">Server_session_mv</a> may be constructed (not yet emitted to user) and then <a class="el" href="classipc_1_1session_1_1Server__session__mv.html#a0fc7806eee170dd6bbdc8aef0b0f6791" title="For use by internal user Session_server: called no more than once, ideally immediately following ctor...">Server_session_mv::async_accept_log_in()</a> is invoked.</li>
 <li>Or if the socket-accept failed, then we can emit that to the user already; done.</li>
 </ul>
 </li>
-<li>That <a class="el" href="classipc_1_1session_1_1Server__session__dtl.html#a31a6cd6a9ed4f836f0844ddb4069080f" title="See protected counterpart.">Server_session_dtl::async_accept_log_in()</a> must complete the async log-in exchange against the opposing Client_session.<ul>
-<li>Now the <a class="el" href="classipc_1_1session_1_1Server__session__dtl.html" title="This is the data-less sub-class of Server_session or any more-advanced (e.g., SHM-capable) variant th...">Server_session_dtl</a> can be converted via pointer <code>static_cast&lt;&gt;</code> to <code>Server_session</code> and emitted to the user.</li>
+<li>That <a class="el" href="classipc_1_1session_1_1Server__session__mv.html#a0fc7806eee170dd6bbdc8aef0b0f6791" title="For use by internal user Session_server: called no more than once, ideally immediately following ctor...">Server_session_mv::async_accept_log_in()</a> must complete the async log-in exchange against the opposing Client_session.<ul>
+<li>Now the Server_session_obj can be emitted to the user.</li>
 <li>Or if the log-in fails at some state, then we can emit that to the user.</li>
 </ul>
 </li>
 </ul>
-<p >Nomenclature: We call the <code>N_s_s_a::async_accept()</code> handler-invoking thread: Wa. It is officially an unspecified thread or threads, but, by contract, handlers are executed non-concurrently, so it can be considered one thread (and actually it is as of this writing). We call the <a class="el" href="classipc_1_1session_1_1Server__session__mv.html#a74d647e2f555465c28065dc11cd092cb" title="For use by internal user Session_server: called no more than once, ideally immediately following ctor...">Server_session::async_accept_log_in()</a> handler-invoking thread: Ws. This is really a separate thread for each <code>Server_session</code>, so in fact 2 different async-accept requests can cause 2 handlers to invoke simultaneously.</p>
-<p >So each time one calls <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> from thread U (i.e., user thread(s) from which they must never invoke mutating stuff concurrently), that kicks off <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#a81426af495ba5a9c832d1ba35fe23ba5" title="Asynchronously awaits for a peer connection to be established and calls on_done_func(),...">transport::Native_socket_stream_acceptor::async_accept()</a>, which fires handler in thread Wa; we then kick off <code><a class="el" href="classipc_1_1session_1_1Server__session__mv.html#a74d647e2f555465c28065dc11cd092cb" title="For use by internal user Session_server: called no more than once, ideally immediately following ctor...">Server_session::async_accept_log_in()</a></code>, which fires handler in thread Ws, where we finalize the <code>Server_session</code> and emit it to user. There is no cross-posting to some other worker thread W (but read on).</p>
+<p >Nomenclature: We call the <code>N_s_s_a::async_accept()</code> handler-invoking thread: Wa. It is officially an unspecified thread or threads, but, by contract, handlers are executed non-concurrently, so it can be considered one thread (and actually it is as of this writing). We call the <a class="el" href="classipc_1_1session_1_1Server__session__mv.html#a0fc7806eee170dd6bbdc8aef0b0f6791" title="For use by internal user Session_server: called no more than once, ideally immediately following ctor...">Server_session::async_accept_log_in()</a> handler-invoking thread: Ws. This is really a separate thread for each <code>Server_session</code>, so in fact 2 different async-accept requests can cause 2 handlers to invoke simultaneously.</p>
+<p >So each time one calls <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> from thread U (i.e., user thread(s) from which they must never invoke mutating stuff concurrently), that kicks off <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__acceptor.html#a81426af495ba5a9c832d1ba35fe23ba5" title="Asynchronously awaits for a peer connection to be established and calls on_done_func(),...">transport::Native_socket_stream_acceptor::async_accept()</a>, which fires handler in thread Wa; we then kick off <code><a class="el" href="classipc_1_1session_1_1Server__session__mv.html#a0fc7806eee170dd6bbdc8aef0b0f6791" title="For use by internal user Session_server: called no more than once, ideally immediately following ctor...">Server_session::async_accept_log_in()</a></code>, which fires handler in thread Ws, where we finalize the <code>Server_session</code> and emit it to user. There is no cross-posting to some other worker thread W (but read on).</p>
 <p >The obvious question is, do the handlers, some of which (as noted) may run concurrently to each other (request 1's Ws handler can co-execute with request 2's Wa handler; and request 2's Wa handler can co-execute with request 3's Wa handler), mess each other over by mutatingly accessing common data? Let's consider the state involved.</p>
-<p >For each async-accept request, the amassed data are independent from any other's; they are passed around throughout the 2 async ops per request via lambda captures. There is, however, one caveat to this: Suppose <code>S-&gt;accept_log_in(F)</code> is invoked on not-yet-ready (incomplete) <code>Server_session* S</code>; suppose F is invoked with a truthy <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> (it failed). We are now sitting in thread Ws: and S should be destroyed. But invoking dtor of S from within S's own handler is documented to be not-okay and results in a deadlock/infinite dtor execution, or if the system can detect it, at best an abort due to a thread trying to join itself. So:</p><ul>
-<li>We maintain <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#ab6097ff11f1f8cca396ece86482861f4" title="The set of all Incomplete_session objects such that each one comes from a distinct async_accept() req...">State::m_incomplete_sessions</a> storing each such outstanding S. If dtor runs, then all S will be auto-destroyed which will automatically invoke the user handler with operation-aborted.</li>
-<li>If an incomplete (oustanding) S successfully completes log-in, we remove it from Session_server_impl::m_incomplete_sessions and emit it to user via handler.</li>
+<p >For each async-accept request, the amassed data are independent from any other's; they are passed around throughout the 2 async ops per request via lambda captures. There is, however, one caveat to this: Suppose <code>S-&gt;async_accept_log_in(F)</code> is invoked on not-yet-ready (incomplete) <code>Server_session* S</code>; suppose F is invoked with a truthy <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> (it failed). We are now sitting in thread Ws: and S should be destroyed. But invoking dtor of S from within S's own handler is documented to be not-okay and results in a deadlock/infinite dtor execution, or if the system can detect it, at best an abort due to a thread trying to join itself. So:</p><ul>
+<li>We maintain <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#ab6097ff11f1f8cca396ece86482861f4" title="The set of all Incomplete_session objects such that each one comes from a distinct async_accept() req...">State::m_incomplete_sessions</a> storing each such outstanding S. If dtor runs, then <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a6ffd7553dc44f6dd3e4381369853bc6b" title="Synchronously stops all async_accept() activity, the post-condition being that no internal handler – ...">dtor_stop_accepting()</a> destroys each S's innards, which invokes the user handler with operation-aborted.</li>
+<li>If an incomplete (outstanding) S successfully completes log-in, we remove it from <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#ab6097ff11f1f8cca396ece86482861f4" title="The set of all Incomplete_session objects such that each one comes from a distinct async_accept() req...">State::m_incomplete_sessions</a> and emit it to user via handler.</li>
 <li>If it completes log-in with failure, we remove it from <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#ab6097ff11f1f8cca396ece86482861f4" title="The set of all Incomplete_session objects such that each one comes from a distinct async_accept() req...">State::m_incomplete_sessions</a> and then:<ul>
 <li>hand it off to a mostly-idle separate thread, <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#afea14f96bce70093ebf65d0f9b612b29" title="Mostly-idle thread that solely destroys objects removed from m_incomplete_sessions in the case where ...">State::m_incomplete_session_graveyard</a>, which can run S's dtor in peace without deadlocking anyone. (If <code>*this</code> dtor runs before then, the S dtors will still run, as each queued lambda's captures are destroyed.)<ul>
 <li>This is the part that avoids the deadlock. The other things above are orthogonally needed for the promised boost.asio-like semantics, where handler must run exactly once eventually, from dtor at the latest.</li>
@@ -246,16 +257,16 @@ class ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &
 </li>
 </ul>
 <p >However note that <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#ab6097ff11f1f8cca396ece86482861f4" title="The set of all Incomplete_session objects such that each one comes from a distinct async_accept() req...">State::m_incomplete_sessions</a> is added-to in thread Wa but removed-from in various threads Ws. Therefore it is protected by a mutex; simple enough.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000035">Todo:</a></b></dt><dd><a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a>, probably in ctor or similar, should &ndash; for safety &ndash; enforce the accuracy of <a class="el" href="structipc_1_1session_1_1Server__app.html" title="An App that is used as a server in at least one client-server IPC split.">Server_app</a> attributes including <a class="el" href="structipc_1_1session_1_1App.html#ae82a8635858664720c8546e468f8090b" title="Absolute, lexically normalized canonical path to the executable entity (which is not a directory),...">App::m_exec_path</a>, <a class="el" href="structipc_1_1session_1_1App.html#a9e32297579603f2d96616976474d0246" title="The application must run as this user ID (UID). Files and other shared resources shall have this owne...">App::m_user_id</a>, <a class="el" href="structipc_1_1session_1_1App.html#a78bb1e984835f429fd44869a83f4b093" title="The application must run as this group ID (GID). Files and other shared resources shall have this own...">App::m_group_id</a>. As of this writing it enforces these things about each <em>opposing</em> <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> and process &ndash; so for sanity it can/should do so about itself, before the sessions can begin.</dd></dl>
+<p >Shutdown is the subtle part, as threads Wa and Ws may be mid-handler when the dtor begins; and those handlers touch our state (and possibly sub-class state via the customization points). <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a6ffd7553dc44f6dd3e4381369853bc6b" title="Synchronously stops all async_accept() activity, the post-condition being that no internal handler – ...">dtor_stop_accepting()</a> joins them all, in a safe order, before anything they touch is destroyed; and the log-in handler recognizes that it is racing it. This shutdown stuff is indeed tricky and was ultimately the thing that cause me (ygoldfel) to add the to-do above about refactoring <a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a> et al around <code><a class="el" href="namespaceipc_1_1session_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::session.">sync_io</a></code>-pattern core(s).</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname"><a class="el" href="classServer__session__t.html">Server_session_t</a></td><td>See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a>. Its API must exactly equal (or be a superset of) that of vanilla <a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc" title="A vanilla Server_session with no optional capabilities.">Server_session</a>. (Its impl may perform extra steps; for example <code>async_accept_log_in()</code> might set up a per-session SHM arena.) </td></tr>
+    <tr><td class="paramname">Server_session_t</td><td>See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a>. Its API must exactly equal (or be a superset of) that of vanilla <a class="el" href="namespaceipc_1_1session.html#a961e318f69fac2b45e55346591ea46e1" title="A vanilla Server_session with no optional capabilities.">Server_session</a>. (Its impl may perform extra steps; for example <code>async_accept_log_in()</code> might set up a per-session SHM arena.) </td></tr>
     <tr><td class="paramname">Session_server_t</td><td>The class that is in fact <code>private</code>ly sub-classing us. This is necessary for <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">this_session_srv()</a>. See its doc header for discussion. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00143">143</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00164">164</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a9ad5c6cbb1c9378d42ec5cd909389dc2" name="a9ad5c6cbb1c9378d42ec5cd909389dc2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ad5c6cbb1c9378d42ec5cd909389dc2">&#9670;&nbsp;</a></span>Channels</h2>
@@ -263,33 +274,33 @@ class ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Channels =  typename Server_session_obj::Channels</td>
+          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::Channels =  typename Server_session_obj::Channels</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Short-hand for <a class="el" href="classipc_1_1session_1_1Session__mv.html#af87da439644b2afd73d6a13d97e7985f" title="Container (vector&lt;&gt;) of Channel_obj.">Session_mv::Channels</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00160">160</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00181">181</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a3a608ab714f6a6725e6122470d87713f" name="a3a608ab714f6a6725e6122470d87713f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a608ab714f6a6725e6122470d87713f">&#9670;&nbsp;</a></span>Incomplete_session</h2>
+<a id="a1c15765a6ee7096e1d13b8c25e92c2e2" name="a1c15765a6ee7096e1d13b8c25e92c2e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c15765a6ee7096e1d13b8c25e92c2e2">&#9670;&nbsp;</a></span>Incomplete_session</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Incomplete_session =  boost::shared_ptr&lt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc">Server_session_dtl_obj</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::Incomplete_session =  boost::shared_ptr&lt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">Server_session_obj</a>&gt;</td>
         </tr>
       </table>
   </td>
@@ -299,28 +310,28 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 </table>
 </div><div class="memdoc">
 
-<p>Internally used ref-counted handle to a <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc" title="Short-hand for concrete Server_session_dtl type, which each async_accept() creates internally,...">Server_session_dtl_obj</a>, suitable for capturing and passing around lambdas. </p>
+<p>Internally used ref-counted handle to a <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a>, suitable for capturing and passing around lambdas. </p>
 <h3>Rationale</h3>
-<p >It is <code>shared_ptr</code>, not <code>unique_ptr</code>, for two reasons. Primarily, it is so that it can be captured via <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae66f28a17f3cdd72d97212126483650a" title="weak_ptr observer of an Incomplete_session.">Incomplete_session_observer</a> to avoid a leak that would result from capturing <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> in a lambda passed-to an async op on an <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> <em>itself</em>. <code>unique_ptr</code> cannot be observed via <code>weak_ptr</code>; <code>shared_ptr</code> can.</p>
+<p >It is <code>shared_ptr</code>, not <code>unique_ptr</code>, for two reasons. Primarily, it is so that it can be captured via <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ab2375032b03b6f3b37304ed12d07c447" title="weak_ptr observer of an Incomplete_session.">Incomplete_session_observer</a> to avoid a leak that would result from capturing <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2" title="Internally used ref-counted handle to a Server_session_obj, suitable for capturing and passing around...">Incomplete_session</a> in a lambda passed-to an async op on an <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2" title="Internally used ref-counted handle to a Server_session_obj, suitable for capturing and passing around...">Incomplete_session</a> <em>itself</em>. <code>unique_ptr</code> cannot be observed via <code>weak_ptr</code>; <code>shared_ptr</code> can.</p>
 <p >Secondarily, a <code>unique_ptr</code> cannot be captured in a lambda in the first place. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00335">335</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00383">383</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ae66f28a17f3cdd72d97212126483650a" name="ae66f28a17f3cdd72d97212126483650a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae66f28a17f3cdd72d97212126483650a">&#9670;&nbsp;</a></span>Incomplete_session_observer</h2>
+<a id="ab2375032b03b6f3b37304ed12d07c447" name="ab2375032b03b6f3b37304ed12d07c447"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2375032b03b6f3b37304ed12d07c447">&#9670;&nbsp;</a></span>Incomplete_session_observer</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Incomplete_session_observer =  boost::weak_ptr&lt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc">Server_session_dtl_obj</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::Incomplete_session_observer =  boost::weak_ptr&lt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">Server_session_obj</a>&gt;</td>
         </tr>
       </table>
   </td>
@@ -330,10 +341,10 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 </table>
 </div><div class="memdoc">
 
-<p><code>weak_ptr</code> observer of an <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a>. </p>
-<p >Capturing this, instead of <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> itself, allows for the underlying <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> to be destroyed while the lambda still exists. </p>
+<p><code>weak_ptr</code> observer of an <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2" title="Internally used ref-counted handle to a Server_session_obj, suitable for capturing and passing around...">Incomplete_session</a>. </p>
+<p >Capturing this, instead of <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2" title="Internally used ref-counted handle to a Server_session_obj, suitable for capturing and passing around...">Incomplete_session</a> itself, allows for the underlying <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2" title="Internally used ref-counted handle to a Server_session_obj, suitable for capturing and passing around...">Incomplete_session</a> to be destroyed while the lambda still exists. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00341">341</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00389">389</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -343,13 +354,13 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Incomplete_sessions =  boost::unordered_set&lt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f">Incomplete_session</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::Incomplete_sessions =  boost::unordered_set&lt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2">Incomplete_session</a>&gt;</td>
         </tr>
       </table>
   </td>
@@ -359,9 +370,9 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 </table>
 </div><div class="memdoc">
 
-<p>Short-hand for set of <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a>, with fast insertion and removal by key <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a3a608ab714f6a6725e6122470d87713f" title="Internally used ref-counted handle to a Server_session_dtl_obj, suitable for capturing and passing ar...">Incomplete_session</a> itself. </p>
+<p>Short-hand for set of <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2" title="Internally used ref-counted handle to a Server_session_obj, suitable for capturing and passing around...">Incomplete_session</a>, with fast insertion and removal by key <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a1c15765a6ee7096e1d13b8c25e92c2e2" title="Internally used ref-counted handle to a Server_session_obj, suitable for capturing and passing around...">Incomplete_session</a> itself. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00344">344</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00392">392</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -371,13 +382,13 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Lock_guard =  flow::util::Lock_guard&lt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae7f35b32be309d354044662f0e17a891">Mutex</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::Lock_guard =  flow::util::Lock_guard&lt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae7f35b32be309d354044662f0e17a891">Mutex</a>&gt;</td>
         </tr>
       </table>
   </td>
@@ -389,7 +400,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>Short-hand for <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae7f35b32be309d354044662f0e17a891" title="Short-hand for State::m_mutex type.">Mutex</a> lock. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00350">350</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00398">398</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -399,17 +410,17 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Mdt_reader_ptr =  typename Server_session_obj::Mdt_reader_ptr</td>
+          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::Mdt_reader_ptr =  typename Server_session_obj::Mdt_reader_ptr</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Short-hand for <a class="el" href="classipc_1_1session_1_1Session__mv.html#a2b1215fb0c9738b9fcfbb337d23c43df" title="Implements Session API per contract.">Session_mv::Mdt_reader_ptr</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00157">157</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00178">178</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -419,13 +430,13 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Mutex =  flow::util::Mutex_non_recursive</td>
+          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::Mutex =  flow::util::Mutex_non_recursive</td>
         </tr>
       </table>
   </td>
@@ -435,38 +446,9 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 </table>
 </div><div class="memdoc">
 
-<p>Short-hand for <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#a96b5d124c1a31532a38a0f0cd095ec05" title="Protects m_incomplete_sessions. See class doc header impl section for discussion of thread design.">State::m_mutex</a> type. </p>
+<p>Short-hand for <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html#a96b5d124c1a31532a38a0f0cd095ec05" title="Protects m_incomplete_sessions, m_stopping, m_n_handlers_active.">State::m_mutex</a> type. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00347">347</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
-
-</div>
-</div>
-<a id="ae87dfd48a7e435800255722301d5bddc" name="ae87dfd48a7e435800255722301d5bddc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae87dfd48a7e435800255722301d5bddc">&#9670;&nbsp;</a></span>Server_session_dtl_obj</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Server_session_dtl_obj =  <a class="el" href="classipc_1_1session_1_1Server__session__dtl.html">Server_session_dtl</a>&lt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">Server_session_obj</a>&gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Short-hand for concrete <a class="el" href="classipc_1_1session_1_1Server__session__dtl.html" title="This is the data-less sub-class of Server_session or any more-advanced (e.g., SHM-capable) variant th...">Server_session_dtl</a> type, which each <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> creates internally, completes the log-in process upon, and then up-casts to <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a> to emit to user via move-assignment. </p>
-<p ><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc" title="Short-hand for concrete Server_session_dtl type, which each async_accept() creates internally,...">Server_session_dtl_obj</a> is equal to <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a> &ndash; it adds no data &ndash; but exposes certain internally invoked APIs that the user shall not access. </p>
-
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00321">321</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00395">395</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -476,17 +458,17 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Server_session_obj =  <a class="el" href="classServer__session__t.html">Server_session_t</a></td>
+          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::Server_session_obj =  Server_session_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Useful short-hand for the concrete <code>Server_session</code> type emitted by <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00154">154</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00175">175</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -496,17 +478,17 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Session_server_obj =  Session_server_t</td>
+          <td class="memname">using <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::Session_server_obj =  Session_server_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">this_session_srv()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00151">151</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00172">172</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -517,7 +499,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <div class="memtemplate">
 template&lt;typename Per_app_setup_func &gt; </div>
 <table class="mlabels">
@@ -525,7 +507,7 @@ template&lt;typename Per_app_setup_func &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::Session_server_impl </td>
+          <td class="memname"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::Session_server_impl </td>
           <td>(</td>
           <td class="paramtype">flow::log::Logger *&#160;</td>
           <td class="paramname"><em>logger_ptr</em>, </td>
@@ -577,7 +559,7 @@ template&lt;typename Per_app_setup_func &gt; </div>
 <p >In addition:</p>
 <p >takes and memorizes a functor that takes a <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> const ref that identifies the app that wants to open the session, performs unspecified synchronous steps, and returns an <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> indicating success or reason for failure which dooms that <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a>.</p>
 <h3>Rationale for <code>per_app_setup_func</code></h3>
-<p >It is not intended for per-session setup. <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ae87dfd48a7e435800255722301d5bddc" title="Short-hand for concrete Server_session_dtl type, which each async_accept() creates internally,...">Server_session_dtl_obj</a> should take care of that where it makes sense &ndash; it does after all represent the individual budding session peer. However our sub-class (e.g., <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html" title="This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...">shm::classic::Session_server</a>) may need to keep track of per-distinct-Client_app resources (e.g., the per-app-scope SHM arena) which must exist before the opposing Client_session-type object completes its setup (e.g., by opening the aforementioned per-Client_app/multi-instance-scope SHM arena). It can detect a new <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> is logging-in and set that up in the nick of time.</p>
+<p >It is not intended for per-session setup. <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a> should take care of that where it makes sense &ndash; it does after all represent the individual budding session peer. However our sub-class (e.g., <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html" title="This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...">shm::classic::Session_server</a>) may need to keep track of per-distinct-Client_app resources (e.g., the per-app-scope SHM arena) which must exist before the opposing Client_session-type object completes its setup (e.g., by opening the aforementioned per-Client_app/multi-instance-scope SHM arena). It can detect a new <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> is logging-in and set that up in the nick of time.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Per_app_setup_func</td><td>See above. Signature: <code>Error_code F(const Client_app&amp;)</code>. </td></tr>
@@ -596,13 +578,13 @@ template&lt;typename Per_app_setup_func &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00438">438</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00509">509</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="server__session__dtl_8hpp_source.html#l00151">ipc::session::Server_session_dtl&lt; Server_session_t &gt;::base()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2session__shared__name_8cpp_source.html#l00093">ipc::session::build_conventional_shared_name_prefix()</a>, <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>, <a class="el" href="app_8cpp_source.html#l00031">ipc::session::ensure_resource_owner_is_app()</a>, <a class="el" href="app_8hpp_source.html#l00171">ipc::session::App::m_group_id</a>, <a class="el" href="app_8hpp_source.html#l00144">ipc::session::App::m_name</a>, <a class="el" href="app_8hpp_source.html#l00288">ipc::session::Server_app::m_permissions_level_for_client_apps</a>, <a class="el" href="session__server__impl_8hpp_source.html#l00285">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::m_srv_app_ref</a>, <a class="el" href="session__server__impl_8hpp_source.html#l00419">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::m_state</a>, <a class="el" href="app_8hpp_source.html#l00168">ipc::session::App::m_user_id</a>, <a class="el" href="util_8hpp_source.html#l00034">ipc::util::op_with_possible_bipc_exception()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00030">ipc::util::OPEN_OR_CREATE</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00042">ipc::util::PRODUCER_CONSUMER_RESOURCE_PERMISSIONS_LVL_MAP</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa7300721595cc25baa9a9e43bd76296aa">ipc::session::error::S_MUTEX_BIPC_MISC_LIBRARY_ERROR</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa5c437fa266aea0c8e2b348ee84dd61fa">ipc::session::error::S_RESOURCE_OWNER_UNEXPECTED</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00046">ipc::util::set_resource_permissions()</a>, and <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00037">ipc::util::shared_resource_permissions()</a>.</p>
+<p class="reference">References <a class="el" href="server__session__dtl_8hpp_source.html#l00100">ipc::session::Server_session_dtl&lt; Base_t &gt;::base()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2session__shared__name_8cpp_source.html#l00076">ipc::session::build_conventional_shared_name_prefix()</a>, <a class="el" href="shared__name_8hpp_source.html#l00715">ipc::util::Shared_name::ct()</a>, <a class="el" href="server__session__dtl_8hpp_source.html#l00084">ipc::session::Server_session_dtl&lt; Base_t &gt;::ct_base()</a>, <a class="el" href="app_8cpp_source.html#l00033">ipc::session::ensure_resource_owner_is_app()</a>, <a class="el" href="app_8hpp_source.html#l00200">ipc::session::App::m_exec_path</a>, <a class="el" href="app_8hpp_source.html#l00206">ipc::session::App::m_group_id</a>, <a class="el" href="app_8hpp_source.html#l00179">ipc::session::App::m_name</a>, <a class="el" href="app_8hpp_source.html#l00325">ipc::session::Server_app::m_permissions_level_for_client_apps</a>, <a class="el" href="session__server__impl_8hpp_source.html#l00321">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::m_srv_app_ref</a>, <a class="el" href="session__server__impl_8hpp_source.html#l00490">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::m_state</a>, <a class="el" href="app_8hpp_source.html#l00203">ipc::session::App::m_user_id</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8hpp_source.html#l00035">ipc::util::op_with_possible_bipc_exception()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00036">ipc::util::OPEN_OR_CREATE</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00046">ipc::util::PRODUCER_CONSUMER_RESOURCE_PERMISSIONS_LVL_MAP</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fac416e988563e44bf15fc6a81743eef53">ipc::session::error::S_INVALID_ARGUMENT</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa7300721595cc25baa9a9e43bd76296aa">ipc::session::error::S_MUTEX_BIPC_MISC_LIBRARY_ERROR</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa5c437fa266aea0c8e2b348ee84dd61fa">ipc::session::error::S_RESOURCE_OWNER_UNEXPECTED</a>, <a class="el" href="shared__name_8hpp_source.html#l00292">ipc::util::Shared_name::S_SEPARATOR</a>, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2faadc4c74d8132a4e10352df037a779c79">ipc::session::error::S_SERVER_APP_EXEC_PATH_INCONSISTENT</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00052">ipc::util::set_resource_permissions()</a>, and <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00043">ipc::util::shared_resource_permissions()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1session_1_1Session__server__impl_a9bf4d5502b41c98a98fee4cc3c2f2530_cgraph.svg" width="558" height="480"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1session_1_1Session__server__impl_a9bf4d5502b41c98a98fee4cc3c2f2530_cgraph.svg" width="558" height="540"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -614,17 +596,17 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::~<a class="el" href="classipc_1_1session_1_1Session__server__impl.html">Session_server_impl</a></td>
+          <td class="memname"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::~<a class="el" href="classipc_1_1session_1_1Session__server__impl.html">Session_server_impl</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> dtor. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00727">727</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00871">871</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -635,12 +617,12 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <div class="memtemplate">
 template&lt;typename Task_err , typename N_init_channels_by_srv_req_func , typename Mdt_load_func &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::async_accept </td>
+          <td class="memname">void <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::async_accept </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54">Server_session_obj</a> *&#160;</td>
           <td class="paramname"><em>target_session</em>, </td>
@@ -712,15 +694,98 @@ template&lt;typename Task_err , typename N_init_channels_by_srv_req_func , typen
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00758">758</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00955">955</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="shared__name_8hpp_source.html#l00674">ipc::util::Shared_name::ct()</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">ipc::transport::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>, and <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed">ipc::session::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>.</p>
+<p class="reference">References <a class="el" href="server__session__dtl_8hpp_source.html#l00093">ipc::session::Server_session_dtl&lt; Base_t &gt;::async_accept_log_in()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2session__shared__name_8cpp_source.html#l00097">ipc::session::next_cli_namespace()</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">ipc::transport::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>, and <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed">ipc::session::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1session_1_1Session__server__impl_a60ec88b23d73c354959a1e11636dc717_cgraph.svg" width="394" height="47"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1session_1_1Session__server__impl_a60ec88b23d73c354959a1e11636dc717_cgraph.svg" width="595" height="120"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
+
+</div>
+</div>
+<a id="a6ffd7553dc44f6dd3e4381369853bc6b" name="a6ffd7553dc44f6dd3e4381369853bc6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ffd7553dc44f6dd3e4381369853bc6b">&#9670;&nbsp;</a></span>dtor_stop_accepting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::dtor_stop_accepting</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Synchronously stops all <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> activity, the post-condition being that no internal handler &ndash; including any invocation of the <code>per_app_setup_func</code> customization point, and anything a <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a> does during its log-in &ndash; is executing or shall execute, and every outstanding <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> has fired its handler (with <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fafe29343445a7bf167cc186a44bd2c6ed" title="Async completion handler is being called prematurely, because underlying object is shutting down,...">error::Code::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>). </p>
+<p >Idempotent.</p>
+<p >Namely it: (1) destroys the socket-stream acceptor, joining thread Wa; (2) fences the log-in handlers off from the incomplete-sessions container, and waits out any handler already past the fence; (3) empties each incomplete session in place, joining its thread Ws, then clears the container; (4) destroys the graveyard thread and anything queued on it.</p>
+<h3>The terminal sub-class dtor must call this, first thing</h3>
+<p >By the time our dtor runs, the sub-class's own members have already been destroyed; yet <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> activity may access sub-class state &ndash; through <code>per_app_setup_func</code> (e.g., a per-Client_app arena map and its mutex), or through <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">this_session_srv()</a> from inside a <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a0009247dd98ec58b22040d1c65bb5a54" title="Useful short-hand for the concrete Server_session type emitted by async_accept().">Server_session_obj</a> log-in. Hence the terminal sub-class dtor must call <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a6ffd7553dc44f6dd3e4381369853bc6b" title="Synchronously stops all async_accept() activity, the post-condition being that no internal handler – ...">dtor_stop_accepting()</a> before its own members are destroyed, i.e., first thing. (Our dtor asserts this; and calls it anyway, as a release-build fallback that is correct if the sub-class has no such state.) </p>
+
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00896">896</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+
+</div>
+</div>
+<a id="accb87b3e54064a37cdf73d542121bd9a" name="accb87b3e54064a37cdf73d542121bd9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accb87b3e54064a37cdf73d542121bd9a">&#9670;&nbsp;</a></span>mq_msg_size_limit() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classsize__t.html">size_t</a> <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::mq_msg_size_limit</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> method. </p>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> method. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l01231">1231</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a459aa0be5daeafd2781c0e82654efbec" name="a459aa0be5daeafd2781c0e82654efbec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a459aa0be5daeafd2781c0e82654efbec">&#9670;&nbsp;</a></span>mq_msg_size_limit() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::mq_msg_size_limit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classsize__t.html">size_t</a>&#160;</td>
+          <td class="paramname"><em>limit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">limit</td><td>See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> method. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l01240">1240</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -730,7 +795,7 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <div class="memtemplate">
 template&lt;typename Task &gt; </div>
 <table class="mlabels">
@@ -738,7 +803,7 @@ template&lt;typename Task &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::sub_class_set_deinit_func </td>
+          <td class="memname">void <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::sub_class_set_deinit_func </td>
           <td>(</td>
           <td class="paramtype">Task &amp;&amp;&#160;</td>
           <td class="paramname"><em>task</em></td><td>)</td>
@@ -752,7 +817,7 @@ template&lt;typename Task &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Utility for sub-classes: ensures that <code>task()</code> is invoked near the end of <code>*this</code> dtor's execution, after <em>all</em> other (mutable) state has been destroyed, including stopping/joining any threads performing async <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> ops. </p>
+<p>Utility for sub-classes: ensures that <code>task()</code> is invoked near the end of <code>*this</code> dtor's execution, after <em>all</em> other (mutable) state has been destroyed, including stopping/joining any threads performing <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a60ec88b23d73c354959a1e11636dc717" title="See Session_server method.">async_accept()</a> ops. </p>
 <p >It may be invoked at most once.</p>
 <p >The value it adds: A long story best told by specific example. See the original use case which is in <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html" title="This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...">shm::classic::Session_server</a>; it sets up certain SHM cleanup steps to occur, when the session-server is destroyed.</p>
 <h3>Watch out!</h3>
@@ -770,7 +835,7 @@ template&lt;typename Task &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00999">999</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l01269">1269</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -780,10 +845,10 @@ template&lt;typename Task &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html">Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a47625f247dea35cf276d31c039c6bf0c">::Session_server_obj</a> * <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::this_session_srv</td>
+          <td class="memname"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html">Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;<a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a47625f247dea35cf276d31c039c6bf0c">::Session_server_obj</a> * <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::this_session_srv</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -791,12 +856,12 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <p>Returns pointer to the object that is <code>private</code>ly sub-classing us. </p>
 <p >In other words this equals <code>static_cast&lt;const Session_server_obj*&gt;(this)</code>, where this class is the base of <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a47625f247dea35cf276d31c039c6bf0c" title="See this_session_srv().">Session_server_obj</a>, but up-casting from a <code>private</code> base is not allowed.</p>
 <h3>Rationale</h3>
-<p >I (ygoldfel) acknowledge this is somewhat odd. Why should a sub-class, per se, care or know about its super-class? This at least vaguely indicates some sort of design mistake. In fact this is needed, as of this writing, because <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session__impl.html#a9c78b2c35b853e1702a06ec451545945" title="For use by internal user Session_server: See Server_session_mv counterpart.">shm::classic::Server_session_impl::async_accept_log_in()</a> gets a <a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a> ptr, which it knows points to an object that's really the core of a <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html" title="This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...">shm::classic::Session_server</a>, and it needs to interact with the SHM-classic-specific aspect of that guy's API. So it calls this accessor here, essentially as a way to up-cast from a <code>private</code> base (which is not allowed by C++). Why can't it "just" take a <code><a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html" title="This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...">shm::classic::Session_server</a>*</code> then? Answer: because <a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a> uses, like, <code>virtual</code>-less polymorphism to invoke <code>async_accept_log_in()</code> regardless of which object it's calling it on.... It's hard to summarize here in words in any way that'll make sense, but if one looks at the relevant code it makes sense. Eventually. Bottom line is, this way, it can just pass-in <code>this</code>, and then <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session__impl.html#a9c78b2c35b853e1702a06ec451545945" title="For use by internal user Session_server: See Server_session_mv counterpart.">shm::classic::Server_session_impl::async_accept_log_in()</a> can call <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">this_session_srv()</a> to get at the super-class version of <code>this</code>.</p>
+<p >I (ygoldfel) acknowledge this is somewhat odd. Why should a sub-class, per se, care or know about its super-class? This at least vaguely indicates some sort of design mistake. In fact this is needed, as of this writing, because <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session__impl.html#a148479effde9af46232c5851f456a06f" title="For use by internal user Session_server: See Server_session_mv counterpart.">shm::classic::Server_session_impl::async_accept_log_in()</a> gets a <a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a> ptr, which it knows points to an object that's really the core of a <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html" title="This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...">shm::classic::Session_server</a>, and it needs to interact with the SHM-classic-specific aspect of that guy's API. So it calls this accessor here, essentially as a way to up-cast from a <code>private</code> base (which is not allowed by C++). Why can't it "just" take a <code><a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Session__server.html" title="This is to vanilla Session_server what shm::classic::Server_session is to vanilla Server_session: it ...">shm::classic::Session_server</a>*</code> then? Answer: because <a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a> uses, like, <code>virtual</code>-less polymorphism to invoke <code>async_accept_log_in()</code> regardless of which object it's calling it on.... It's hard to summarize here in words in any way that'll make sense, but if one looks at the relevant code it makes sense. Eventually. Bottom line is, this way, it can just pass-in <code>this</code>, and then <a class="el" href="classipc_1_1session_1_1shm_1_1classic_1_1Server__session__impl.html#a148479effde9af46232c5851f456a06f" title="For use by internal user Session_server: See Server_session_mv counterpart.">shm::classic::Server_session_impl::async_accept_log_in()</a> can call <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">this_session_srv()</a> to get at the super-class version of <code>this</code>.</p>
 <p >I feel it is not criminal &ndash; internal things are working together in a way that they logically intend to &ndash; but intuitively it feels like there's a smoother way to design it. Probably.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000036">Todo:</a></b></dt><dd>Reconsider the details of how classes in the non-<code>virtual</code> hierarchies <code><a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a></code>, <code>Server_session</code>, <code><a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a></code>, <code><a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a></code> cooperate internally, as there is some funky stuff going on, particularly <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">Session_server_impl::this_session_srv()</a>.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000045">Todo:</a></b></dt><dd>Reconsider the details of how classes in the non-<code>virtual</code> hierarchies <code><a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a></code>, <code>Server_session</code>, <code><a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a></code>, <code><a class="el" href="classipc_1_1session_1_1Server__session__impl.html" title="Internal, non-movable pImpl-lite implementation of Server_session_mv class template.">Server_session_impl</a></code> cooperate internally, as there is some funky stuff going on, particularly <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">Session_server_impl::this_session_srv()</a>.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00992">992</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l01262">1262</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -806,10 +871,10 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::to_ostream </td>
+          <td class="memname">void <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::to_ostream </td>
           <td>(</td>
           <td class="paramtype">std::ostream *&#160;</td>
           <td class="paramname"><em>os</em></td><td>)</td>
@@ -818,15 +883,15 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
       </table>
 </div><div class="memdoc">
 
-<p>See Server_session method. </p>
+<p>See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>See Server_session method. </td></tr>
+    <tr><td class="paramname">os</td><td>See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> method. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00986">986</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l01256">1256</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -837,7 +902,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -851,7 +916,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
@@ -877,7 +942,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l01005">1005</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l01275">1275</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -888,13 +953,13 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structipc_1_1session_1_1Client__app.html#add718cbf6aa1d2abb26fbadcc974a7bd">Client_app::Master_set</a>&amp; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::m_cli_app_master_set_ref</td>
+          <td class="memname">const <a class="el" href="structipc_1_1session_1_1Client__app.html#add718cbf6aa1d2abb26fbadcc974a7bd">Client_app::Master_set</a>&amp; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::m_cli_app_master_set_ref</td>
         </tr>
       </table>
   </td>
@@ -906,7 +971,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See ctor. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00413">413</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00484">484</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -916,13 +981,13 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">Function</a>&lt;void ()&gt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::m_deinit_func_or_empty</td>
+          <td class="memname"><a class="el" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">Function</a>&lt;void ()&gt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::m_deinit_func_or_empty</td>
         </tr>
       </table>
   </td>
@@ -934,7 +999,36 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a40fca0b878f9150f5f7db55768da45ad" title="Utility for sub-classes: ensures that task() is invoked near the end of *this dtor&#39;s execution,...">sub_class_set_deinit_func()</a>. <code>.empty()</code> unless that was called at least once. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00422">422</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00493">493</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a03bd54647454e35207e5602eb68181cb" name="a03bd54647454e35207e5602eb68181cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03bd54647454e35207e5602eb68181cb">&#9670;&nbsp;</a></span>m_mq_msg_size_limit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classsize__t.html">size_t</a> <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::m_mq_msg_size_limit</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#accb87b3e54064a37cdf73d542121bd9a" title="See Session_server method.">mq_msg_size_limit()</a>; starts at zero but can be overridden to another value and/or back to zero via mutator. </p>
+<p >Saved as an alignment-friendly multiple. </p>
+
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00478">478</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -944,13 +1038,13 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">Function</a>&lt;<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> (const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a>&amp; client_app)&gt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::m_per_app_setup_func</td>
+          <td class="memname">const <a class="el" href="namespaceipc.html#aa455c7f045059736578ca275fc1a851f">Function</a>&lt;<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> (const <a class="el" href="structipc_1_1session_1_1Client__app.html">Client_app</a>&amp; client_app)&gt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::m_per_app_setup_func</td>
         </tr>
       </table>
   </td>
@@ -962,7 +1056,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See ctor. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00416">416</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00487">487</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -972,19 +1066,19 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structipc_1_1session_1_1Server__app.html">Server_app</a>&amp; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::m_srv_app_ref</td>
+          <td class="memname">const <a class="el" href="structipc_1_1session_1_1Server__app.html">Server_app</a>&amp; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::m_srv_app_ref</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> public data member. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00285">285</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00321">321</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="session__server__impl_8hpp_source.html#l00439">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::Session_server_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="session__server__impl_8hpp_source.html#l00510">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::Session_server_impl()</a>.</p>
 
 </div>
 </div>
@@ -994,13 +1088,13 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;<a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html">State</a>&gt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::m_state</td>
+          <td class="memname">std::optional&lt;<a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html">State</a>&gt; <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::m_state</td>
         </tr>
       </table>
   </td>
@@ -1012,9 +1106,9 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See <a class="el" href="structipc_1_1session_1_1Session__server__impl_1_1State.html" title="All internal mutable state of Session_server_impl.">State</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00419">419</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00490">490</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="session__server__impl_8hpp_source.html#l00439">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::Session_server_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="session__server__impl_8hpp_source.html#l00510">ipc::session::Session_server_impl&lt; Session_server_t, Server_session_t &gt;::Session_server_impl()</a>.</p>
 
 </div>
 </div>
@@ -1024,13 +1118,13 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </div>
+template&lt;typename Session_server_t , typename Server_session_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a47625f247dea35cf276d31c039c6bf0c">Session_server_obj</a>* const <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt;::m_this_session_srv</td>
+          <td class="memname"><a class="el" href="classipc_1_1session_1_1Session__server__impl.html#a47625f247dea35cf276d31c039c6bf0c">Session_server_obj</a>* const <a class="el" href="classipc_1_1session_1_1Session__server__impl.html">ipc::session::Session_server_impl</a>&lt; Session_server_t, Server_session_t &gt;::m_this_session_srv</td>
         </tr>
       </table>
   </td>
@@ -1042,7 +1136,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 
 <p>See <a class="el" href="classipc_1_1session_1_1Session__server__impl.html#ad7cd4d77db826af9fe39c17e8ee7ca37" title="Returns pointer to the object that is privately sub-classing us.">this_session_srv()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00410">410</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00481">481</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1053,7 +1147,7 @@ template&lt;typename Session_server_t , typename <a class="el" href="classServer
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

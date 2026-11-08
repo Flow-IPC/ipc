@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -71,7 +71,6 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-types">Protected Types</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="classipc_1_1transport_1_1Blob__stream__mq__base__impl-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ipc::transport::Blob_stream_mq_base_impl&lt; Persistent_mq_handle &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -109,6 +108,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a4776b5f569ccac03eccb3fc2f360fcc9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#aab7c4c91d42c746c93e61eb367572eb1">Auto_closing_mq</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a4776b5f569ccac03eccb3fc2f360fcc9">ensure_unique_peer</a> (flow::log::Logger *logger_ptr, <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a8fac0ed5fff23aa42e0a601db6fee42d">Mq</a> &amp;&amp;mq, bool snd_else_rcv, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code)</td></tr>
 <tr class="memdesc:a4776b5f569ccac03eccb3fc2f360fcc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal helper for <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html" title="Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...">Blob_stream_mq_sender</a> and <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> that operates both the start and end of the anti-dupe-endpoint machinery used by those 2 classes to prevent more than 1 <code>_sender</code> and more than 1 <code>_receiver</code> for a given underlying MQ.  <a href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a4776b5f569ccac03eccb3fc2f360fcc9">More...</a><br /></td></tr>
 <tr class="separator:a4776b5f569ccac03eccb3fc2f360fcc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad64ef04f561dcb09e473be433df81074"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#ad64ef04f561dcb09e473be433df81074">mq_sentinel_name</a> (const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a> &amp;mq_name, bool snd_else_rcv)</td></tr>
+<tr class="memdesc:ad64ef04f561dcb09e473be433df81074"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of sentinel SHM pool created by <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a4776b5f569ccac03eccb3fc2f360fcc9" title="Internal helper for Blob_stream_mq_sender and Blob_stream_mq_receiver that operates both the start an...">ensure_unique_peer()</a> and potentially cleaned up by <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a8877f75af055ab927a4b4c993f0873a2" title="See Blob_stream_mq_base counterpart.">remove_persistent()</a>.  <a href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#ad64ef04f561dcb09e473be433df81074">More...</a><br /></td></tr>
+<tr class="separator:ad64ef04f561dcb09e473be433df81074"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
 Protected Types</h2></td></tr>
@@ -118,12 +120,6 @@ Protected Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a2e46672d40fbf38cf6054edfad69e705"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_sender class template.">Blob_stream_mq_sender_impl</a> sends an empty message, in NORMAL state <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">Blob_stream_mq_receiver</a> enters CONTROL state and expects one of these values in the next message, to react as documented per <code>enum</code> value (upon re-entering NORMAL state).  <a href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a2e46672d40fbf38cf6054edfad69e705">More...</a><br /></td></tr>
 <tr class="separator:a2e46672d40fbf38cf6054edfad69e705"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:ad64ef04f561dcb09e473be433df81074"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#ad64ef04f561dcb09e473be433df81074">mq_sentinel_name</a> (const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a> &amp;mq_name, bool snd_else_rcv)</td></tr>
-<tr class="memdesc:ad64ef04f561dcb09e473be433df81074"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of sentinel SHM pool created by <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a4776b5f569ccac03eccb3fc2f360fcc9" title="Internal helper for Blob_stream_mq_sender and Blob_stream_mq_receiver that operates both the start an...">ensure_unique_peer()</a> and potentially cleaned up by <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a8877f75af055ab927a4b4c993f0873a2" title="See Blob_stream_mq_base counterpart.">remove_persistent()</a>.  <a href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#ad64ef04f561dcb09e473be433df81074">More...</a><br /></td></tr>
-<tr class="separator:ad64ef04f561dcb09e473be433df81074"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html">Persistent_mq_handle</a>&gt;<br />
@@ -135,7 +131,7 @@ class ipc::transport::Blob_stream_mq_base_impl&lt; Persistent_mq_handle &gt;</di
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00042">42</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00045">45</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aab7c4c91d42c746c93e61eb367572eb1" name="aab7c4c91d42c746c93e61eb367572eb1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aab7c4c91d42c746c93e61eb367572eb1">&#9670;&nbsp;</a></span>Auto_closing_mq</h2>
@@ -152,9 +148,11 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </div><div class="memdoc">
 
 <p><a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> holder that takes a deleter lambda on construction, intended here to perform additional deinit steps in addition to closing the <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a8fac0ed5fff23aa42e0a601db6fee42d" title="Short-hand for template arg for underlying MQ handle type.">Mq</a> by deleting it. </p>
-<p >Used by <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a4776b5f569ccac03eccb3fc2f360fcc9" title="Internal helper for Blob_stream_mq_sender and Blob_stream_mq_receiver that operates both the start an...">ensure_unique_peer()</a> machinery. </p>
+<p >Used by <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a4776b5f569ccac03eccb3fc2f360fcc9" title="Internal helper for Blob_stream_mq_sender and Blob_stream_mq_receiver that operates both the start an...">ensure_unique_peer()</a> machinery.</p>
+<h3>Rationale: Why <code>unique_ptr</code> and not <code>boost::scope::unique_resource</code>?</h3>
+<p >The latter (cf. its use as <a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40" title="A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...">util::Own_native_handle</a>) would store the <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a8fac0ed5fff23aa42e0a601db6fee42d" title="Short-hand for template arg for underlying MQ handle type.">Mq</a> inline (no heap alloc) and skip the type-erased deleter. However: the alloc and erasure are one-time costs at stream-object construction &ndash; nowhere near a hot path &ndash; and <code><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_sender class template.">Blob_stream_mq_sender_impl</a></code>/<code>_receiver_impl</code> rely on the null-pointer idiom (null &lt;=&gt; pipe hosed/closed) which <code>unique_ptr</code> provides naturally. So the simpler thing stays. </p>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00054">54</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00063">63</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -174,7 +172,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 
 <p>Short-hand for template arg for underlying MQ handle type. </p>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00048">48</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00051">51</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -216,7 +214,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00131">131</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00158">158</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -286,15 +284,15 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>null or pointer to new <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html" title="A documentation-only concept defining the behavior of an object representing a light-weight handle to...">Persistent_mq_handle</a> moved-from <code>mq</code>, and with deinit deleter. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00219">219</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00232">232</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html#a5ef74ca74a9d985710af974fd6518940">ipc::transport::Persistent_mq_handle::absolute_name()</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00032">ipc::util::CREATE_ONLY</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00119">ipc::util::remove_persistent_shm_pool()</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297af6ee4717280d29cc272ef2a356ad3982">ipc::transport::error::S_BLOB_STREAM_MQ_RECEIVER_EXISTS</a>, and <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a5026917d99ad25df8bc708cc6628f28c">ipc::transport::error::S_BLOB_STREAM_MQ_SENDER_EXISTS</a>.</p>
+<p class="reference">References <a class="el" href="ipc__core_2src_2ipc_2util_2util_8cpp_source.html#l00038">ipc::util::CREATE_ONLY</a>, <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00112">ipc::util::remove_persistent_shm_pool()</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297af6ee4717280d29cc272ef2a356ad3982">ipc::transport::error::S_BLOB_STREAM_MQ_RECEIVER_EXISTS</a>, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a5026917d99ad25df8bc708cc6628f28c">ipc::transport::error::S_BLOB_STREAM_MQ_SENDER_EXISTS</a>, and <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a5640941b8dbafc13ad6f6ef8dec1937f">ipc::transport::error::S_SHM_BIPC_MISC_LIBRARY_ERROR</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00487">ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_receiver_impl()</a>, and <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00641">ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_sender_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00600">ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_receiver_impl()</a>, and <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00677">ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_sender_impl()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1Blob__stream__mq__base__impl_a4776b5f569ccac03eccb3fc2f360fcc9_cgraph.svg" width="579" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1Blob__stream__mq__base__impl_a4776b5f569ccac03eccb3fc2f360fcc9_cgraph.svg" width="572" height="78"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <div class="dynheader">
@@ -348,9 +346,9 @@ template&lt;typename Handle_name_func &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00198">198</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00211">211</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="blob__stream__mq_8hpp_source.html#l00101">ipc::transport::Blob_stream_mq_base&lt; Persistent_mq_handle &gt;::for_each_persistent()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="blob__stream__mq_8hpp_source.html#l00123">ipc::transport::Blob_stream_mq_base&lt; Persistent_mq_handle &gt;::for_each_persistent()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -391,12 +389,14 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Name of sentinel SHM pool created by <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a4776b5f569ccac03eccb3fc2f360fcc9" title="Internal helper for Blob_stream_mq_sender and Blob_stream_mq_receiver that operates both the start an...">ensure_unique_peer()</a> and potentially cleaned up by <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a8877f75af055ab927a4b4c993f0873a2" title="See Blob_stream_mq_base counterpart.">remove_persistent()</a>. </p>
+<h3>Rationale: Why public?</h3>
+<p >This class is internal-use (in detail/), so this is not a question of exposing something (potentially) undue to the user. As for exposing it to our impl layer: Truthfully, the precipitating reason to have made this public was that it is convenient for certain unit-tests. In and of itself that is not sufficient &ndash; we prefer not to make style/design compromises for easier testing &ndash; but in this case we feel it is reasonable to expose this informationally to the impl layer anyway, such as for logging or something. So: it is fine.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mq_name</td><td><code>mq.absolute_name()</code>. See <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__base__impl.html#a4776b5f569ccac03eccb3fc2f360fcc9" title="Internal helper for Blob_stream_mq_sender and Blob_stream_mq_receiver that operates both the start an...">ensure_unique_peer()</a>. </td></tr>
@@ -406,9 +406,9 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Absolute name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00344">344</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00360">360</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="shared__name_8cpp_source.html#l00165">ipc::util::Shared_name::absolute()</a>, <a class="el" href="shared__name_8cpp_source.html#l00337">ipc::util::build_conventional_non_session_based_shared_name()</a>, and <a class="el" href="shared__name_8hpp_source.html#l00312">ipc::util::Shared_name::S_RESOURCE_TYPE_ID_SHM</a>.</p>
+<p class="reference">References <a class="el" href="shared__name_8cpp_source.html#l00114">ipc::util::Shared_name::absolute()</a>, <a class="el" href="shared__name_8cpp_source.html#l00255">ipc::util::build_conventional_non_session_based_shared_name()</a>, and <a class="el" href="shared__name_8hpp_source.html#l00338">ipc::util::Shared_name::S_RESOURCE_TYPE_ID_SHM</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -470,11 +470,11 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00164">164</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="blob__stream__mq__impl_8hpp_source.html#l00177">177</a> of file <a class="el" href="blob__stream__mq__impl_8hpp_source.html">blob_stream_mq_impl.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00119">ipc::util::remove_persistent_shm_pool()</a>.</p>
+<p class="reference">References <a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00112">ipc::util::remove_persistent_shm_pool()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="blob__stream__mq_8hpp_source.html#l00092">ipc::transport::Blob_stream_mq_base&lt; Persistent_mq_handle &gt;::remove_persistent()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="blob__stream__mq_8hpp_source.html#l00114">ipc::transport::Blob_stream_mq_base&lt; Persistent_mq_handle &gt;::remove_persistent()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -496,7 +496,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

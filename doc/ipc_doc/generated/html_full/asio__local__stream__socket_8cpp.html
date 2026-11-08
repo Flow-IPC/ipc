@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -68,17 +68,13 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">asio_local_stream_socket.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="asio__local__stream__socket_8hpp_source.html">ipc/transport/asio_local_stream_socket.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__core_2src_2ipc_2transport_2error_8hpp_source.html">ipc/transport/error.hpp</a>&quot;</code><br />
-<code>#include &lt;flow/common.hpp&gt;</code><br />
-<code>#include &lt;boost/array.hpp&gt;</code><br />
-<code>#include &lt;sys/types.h&gt;</code><br />
-<code>#include &lt;sys/socket.h&gt;</code><br />
+<code>#include &lt;unistd.h&gt;</code><br />
 </div>
 <p><a href="asio__local__stream__socket_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -91,25 +87,13 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespaceipc_1_1transport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) between pairs of processes. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1transport_1_1asio__local__stream__socket"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html">ipc::transport::asio_local_stream_socket</a></td></tr>
-<tr class="memdesc:namespaceipc_1_1transport_1_1asio__local__stream__socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional (versus boost.asio) APIs for advanced work with local stream (Unix domain) sockets including transmission of native handles through such streams; and peer process credentials acquisition. <br /></td></tr>
+<tr class="memdesc:namespaceipc_1_1transport_1_1asio__local__stream__socket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional (versus boost.asio) APIs for advanced work with local (Unix domain) stream and connected-datagram sockets including transmission of native handles through them; and peer process credentials acquisition. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a1022dfd42e9a0d6eab8384b0352decb0"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a1022dfd42e9a0d6eab8384b0352decb0">ipc::transport::asio_local_stream_socket::nb_write_some_with_native_handle</a> (flow::log::Logger *logger_ptr, Peer_socket *peer_socket, Native_handle payload_hndl, const util::Blob_const &amp;payload_blob, Error_code *err_code)</td></tr>
-<tr class="memdesc:a1022dfd42e9a0d6eab8384b0352decb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">boost.asio extension similar to <code>peer_socket-&gt;non_blocking(true); auto n = peer_socket-&gt;write_some(payload_blob)</code> with the added capability of accompanying the <code>Blob_const payload_blob</code> with a native handle to be transmitted to the opposing peer.  <a href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a1022dfd42e9a0d6eab8384b0352decb0">More...</a><br /></td></tr>
-<tr class="separator:a1022dfd42e9a0d6eab8384b0352decb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ae82b2a234b218704c62fb616d6fcc5"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a9ae82b2a234b218704c62fb616d6fcc5">ipc::transport::asio_local_stream_socket::nb_read_some_with_native_handle</a> (flow::log::Logger *logger_ptr, Peer_socket *peer_socket, Native_handle *target_payload_hndl, const util::Blob_mutable &amp;target_payload_blob, Error_code *err_code, int message_flags=0)</td></tr>
-<tr class="memdesc:a9ae82b2a234b218704c62fb616d6fcc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">boost.asio extension similar to <code>peer_socket-&gt;non_blocking(true); auto n = peer_socket-&gt;read_some(target_payload_blob)</code> with the added capability of reading (from opposing peer) not only <code>Blob_mutable target_payload_blob</code> but an optionally accompanying native handle.  <a href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a9ae82b2a234b218704c62fb616d6fcc5">More...</a><br /></td></tr>
-<tr class="separator:a9ae82b2a234b218704c62fb616d6fcc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0833f160dffd7f1c6921d27883a186b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#af0833f160dffd7f1c6921d27883a186b">ipc::transport::asio_local_stream_socket::release_native_peer_socket</a> (Native_handle &amp;&amp;peer_socket_native_or_null)</td></tr>
-<tr class="memdesc:af0833f160dffd7f1c6921d27883a186b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Little utility that returns the raw Native_handle suitable for <a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a1788f9dbd896bb71b3693f9ae25b40ae" title="Short-hand for boost.asio Unix domain peer stream-socket (usually-connected-or-empty guy).">Peer_socket</a> to the OS.  <a href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#af0833f160dffd7f1c6921d27883a186b">More...</a><br /></td></tr>
-<tr class="separator:af0833f160dffd7f1c6921d27883a186b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

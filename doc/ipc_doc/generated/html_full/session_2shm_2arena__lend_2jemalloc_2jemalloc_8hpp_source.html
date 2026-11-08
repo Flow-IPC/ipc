@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -98,9 +98,9 @@ $(function() {
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"></span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;<a class="code" href="session_2shm_2shm_8hpp.html">ipc/session/shm/shm.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;ipc/shm/arena_lend/jemalloc/jemalloc_fwd.hpp&quot;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;<a class="code" href="shm_2arena__lend_2jemalloc_2jemalloc__fwd_8hpp.html">ipc/shm/arena_lend/jemalloc/jemalloc_fwd.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#include &quot;<a class="code" href="session_2shm_2arena__lend_2jemalloc_2jemalloc__fwd_8hpp.html">ipc/session/shm/arena_lend/jemalloc/jemalloc_fwd.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &quot;ipc/session/standalone/shm/arena_lend/jemalloc/shm_session.hpp&quot;</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &quot;<a class="code" href="shm__session_8hpp.html">ipc/session/standalone/shm/arena_lend/jemalloc/shm_session.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceipc_1_1session_1_1shm.html">ipc::session::shm</a></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
@@ -109,23 +109,26 @@ $(function() {
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"></span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">/// Implementation of #Arena_to_shm_session_t for SHM-jemalloc arenas.</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"></span><span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structipc_1_1session_1_1shm_1_1Arena__to__shm__session_3_01ipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena_01_4.html">   40</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structipc_1_1session_1_1shm_1_1Arena__to__shm__session.html">Arena_to_shm_session</a>&lt;<a class="code hl_namespace" href="namespaceipc.html">ipc</a>::shm::arena_lend::jemalloc::Ipc_arena&gt;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structipc_1_1session_1_1shm_1_1Arena__to__shm__session_3_01ipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena_01_4.html">   40</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structipc_1_1session_1_1shm_1_1Arena__to__shm__session.html">Arena_to_shm_session</a>&lt;<a class="code hl_namespace" href="namespaceipc.html">ipc</a>::<a class="code hl_class" href="classipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena.html">shm::arena_lend::jemalloc::Ipc_arena</a>&gt;</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>{<span class="comment"></span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">  /// Implementation of `Arena_to_shm_session_t`; for SHM-jemalloc the `Arena` and `Shm_session` are different objects.</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structipc_1_1session_1_1shm_1_1Arena__to__shm__session_3_01ipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena_01_4.html#a8ff5c582a86393dc8a481b30a82d67af">   43</a></span><span class="comment"></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structipc_1_1session_1_1shm_1_1Arena__to__shm__session_3_01ipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena_01_4.html#a8ff5c582a86393dc8a481b30a82d67af">Type</a> = arena_lend::jemalloc::Shm_session;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structipc_1_1session_1_1shm_1_1Arena__to__shm__session_3_01ipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena_01_4.html#a8ff5c582a86393dc8a481b30a82d67af">   43</a></span><span class="comment"></span>  <span class="keyword">using </span><a class="code hl_class" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Shm__session.html">Type</a> = <a class="code hl_class" href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Shm__session.html">arena_lend::jemalloc::Shm_session</a>;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>};</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace ipc::session::shm</span></div>
-<div class="ttc" id="anamespaceipc_1_1session_1_1shm_html"><div class="ttname"><a href="namespaceipc_1_1session_1_1shm.html">ipc::session::shm</a></div><div class="ttdoc">ipc::session sub-namespace that groups together facilities for SHM-backed sessions,...</div><div class="ttdef"><b>Definition:</b> <a href="session_2detail_2shm_2classic_2classic__fwd_8hpp_source.html#l00023">classic_fwd.hpp:24</a></div></div>
+<div class="ttc" id="aclassipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Shm__session_html"><div class="ttname"><a href="classipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1Shm__session.html">ipc::session::shm::arena_lend::jemalloc::Shm_session</a></div><div class="ttdoc">In SHM-jemalloc, a context between this process and a single (typically other) opposing process w/r/t...</div><div class="ttdef"><b>Definition:</b> <a href="shm__session_8hpp_source.html#l00157">shm_session.hpp:164</a></div></div>
+<div class="ttc" id="aclassipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena_html"><div class="ttname"><a href="classipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena.html">ipc::shm::arena_lend::jemalloc::Ipc_arena</a></div><div class="ttdoc">Represents/manages a segregated collection of in-SHM (shared memory) objects and buffers allocated us...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__arena_8hpp_source.html#l00174">ipc_arena.hpp:177</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1session_1_1shm_html"><div class="ttname"><a href="namespaceipc_1_1session_1_1shm.html">ipc::session::shm</a></div><div class="ttdoc">ipc::session sub-namespace that groups together facilities for SHM-backed sessions,...</div><div class="ttdef"><b>Definition:</b> <a href="session_2detail_2shm_2classic_2classic__fwd_8hpp_source.html#l00025">classic_fwd.hpp:26</a></div></div>
 <div class="ttc" id="anamespaceipc_html"><div class="ttname"><a href="namespaceipc.html">ipc</a></div><div class="ttdoc">Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...</div><div class="ttdef"><b>Definition:</b> <a href="common_8cpp_source.html#l00021">common.cpp:22</a></div></div>
 <div class="ttc" id="asession_2shm_2arena__lend_2jemalloc_2jemalloc__fwd_8hpp_html"><div class="ttname"><a href="session_2shm_2arena__lend_2jemalloc_2jemalloc__fwd_8hpp.html">jemalloc_fwd.hpp</a></div></div>
 <div class="ttc" id="asession_2shm_2shm_8hpp_html"><div class="ttname"><a href="session_2shm_2shm_8hpp.html">shm.hpp</a></div></div>
-<div class="ttc" id="astructipc_1_1session_1_1shm_1_1Arena__to__shm__session_3_01ipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena_01_4_html_a8ff5c582a86393dc8a481b30a82d67af"><div class="ttname"><a href="structipc_1_1session_1_1shm_1_1Arena__to__shm__session_3_01ipc_1_1shm_1_1arena__lend_1_1jemalloc_1_1Ipc__arena_01_4.html#a8ff5c582a86393dc8a481b30a82d67af">ipc::session::shm::Arena_to_shm_session&lt; ipc::shm::arena_lend::jemalloc::Ipc_arena &gt;::Type</a></div><div class="ttdeci">arena_lend::jemalloc::Shm_session Type</div><div class="ttdoc">Implementation of Arena_to_shm_session_t; for SHM-jemalloc the Arena and Shm_session are different ob...</div><div class="ttdef"><b>Definition:</b> <a href="session_2shm_2arena__lend_2jemalloc_2jemalloc_8hpp_source.html#l00043">jemalloc.hpp:43</a></div></div>
+<div class="ttc" id="ashm_2arena__lend_2jemalloc_2jemalloc__fwd_8hpp_html"><div class="ttname"><a href="shm_2arena__lend_2jemalloc_2jemalloc__fwd_8hpp.html">jemalloc_fwd.hpp</a></div></div>
+<div class="ttc" id="ashm__session_8hpp_html"><div class="ttname"><a href="shm__session_8hpp.html">shm_session.hpp</a></div></div>
 <div class="ttc" id="astructipc_1_1session_1_1shm_1_1Arena__to__shm__session_html"><div class="ttname"><a href="structipc_1_1session_1_1shm_1_1Arena__to__shm__session.html">ipc::session::shm::Arena_to_shm_session</a></div><div class="ttdoc">Implementation of Arena_to_shm_session_t.</div><div class="ttdef"><b>Definition:</b> <a href="session_2shm_2shm_8hpp_source.html#l00032">shm.hpp:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

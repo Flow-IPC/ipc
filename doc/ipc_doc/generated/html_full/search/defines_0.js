@@ -19,13 +19,10 @@ var searchData=
   ['class_5fsession_5fmv_16',['CLASS_SESSION_MV',['../ipc__session_2src_2ipc_2session_2session_8hpp.html#ae75d4feea6a31d1856dee263c3812114',1,'session.hpp']]],
   ['class_5fsession_5fserver_17',['CLASS_SESSION_SERVER',['../ipc__session_2src_2ipc_2session_2session__server_8hpp.html#a09f0b9ebdcfae182d71e2b2ae500eac9',1,'session_server.hpp']]],
   ['class_5fsession_5fserver_5fimpl_18',['CLASS_SESSION_SERVER_IMPL',['../session__server__impl_8hpp.html#afb6afd5f56bebcabd155f3c1def7f180',1,'session_server_impl.hpp']]],
-  ['class_5fshm_5fbuilder_19',['CLASS_SHM_BUILDER',['../ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#a6c1d27726471c6aa66a98b8b6b26331c',1,'serializer.hpp']]],
-  ['class_5fshm_5freader_20',['CLASS_SHM_READER',['../ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#aa5a44fbd142148023f896d8a16898887',1,'serializer.hpp']]],
-  ['class_5fsio_5fstruct_5fchannel_21',['CLASS_SIO_STRUCT_CHANNEL',['../ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp.html#aefc68934c89912e7b5d0706bdb2be6e5',1,'channel.hpp']]],
-  ['class_5fsrv_5fsession_5fdtl_22',['CLASS_SRV_SESSION_DTL',['../server__session__dtl_8hpp.html#aa28b78944d644c37a88a9f9bedcfdf34',1,'server_session_dtl.hpp']]],
-  ['class_5fsrv_5fsession_5fimpl_23',['CLASS_SRV_SESSION_IMPL',['../ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp.html#a97654d0122c90a30b35a270e840ad9b7',1,'server_session_impl.hpp']]],
-  ['class_5fsrv_5fsession_5fmv_24',['CLASS_SRV_SESSION_MV',['../ipc__session_2src_2ipc_2session_2server__session_8hpp.html#a3256543f79aa6e11e4e995ea0c545ac2',1,'server_session.hpp']]],
-  ['class_5fstruct_5fmsg_5fin_25',['CLASS_STRUCT_MSG_IN',['../msg_8hpp.html#a679f25e8d9dc9d3ad750442e92b640f0',1,'msg.hpp']]],
-  ['class_5fstruct_5fmsg_5fout_26',['CLASS_STRUCT_MSG_OUT',['../msg_8hpp.html#af8ab263935b3bae1c9ee6355a55fa94a',1,'msg.hpp']]],
-  ['class_5fstructured_5fchannel_27',['CLASS_STRUCTURED_CHANNEL',['../ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html#a5313383b4bb7158e2f65d89690348f04',1,'channel.hpp']]]
+  ['class_5fsio_5fstruct_5fchannel_19',['CLASS_SIO_STRUCT_CHANNEL',['../ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp.html#aefc68934c89912e7b5d0706bdb2be6e5',1,'channel.hpp']]],
+  ['class_5fsrv_5fsession_5fimpl_20',['CLASS_SRV_SESSION_IMPL',['../ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp.html#a97654d0122c90a30b35a270e840ad9b7',1,'server_session_impl.hpp']]],
+  ['class_5fsrv_5fsession_5fmv_21',['CLASS_SRV_SESSION_MV',['../ipc__session_2src_2ipc_2session_2server__session_8hpp.html#a3256543f79aa6e11e4e995ea0c545ac2',1,'server_session.hpp']]],
+  ['class_5fstruct_5fmsg_5fin_22',['CLASS_STRUCT_MSG_IN',['../msg_8hpp.html#a679f25e8d9dc9d3ad750442e92b640f0',1,'msg.hpp']]],
+  ['class_5fstruct_5fmsg_5fout_23',['CLASS_STRUCT_MSG_OUT',['../msg_8hpp.html#af8ab263935b3bae1c9ee6355a55fa94a',1,'msg.hpp']]],
+  ['class_5fstructured_5fchannel_24',['CLASS_STRUCTURED_CHANNEL',['../ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html#a5313383b4bb7158e2f65d89690348f04',1,'channel.hpp']]]
 ];

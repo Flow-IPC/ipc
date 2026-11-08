@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -72,9 +72,9 @@ $(function() {
 </div>
 <ul>
 <li>On the left &ndash; Flow-IPC's mission: applications speaking to each other performantly, in organized fashion. The infrastructure inside the dotted-line boxes is provided by Flow-IPC. Perhaps most centrally this offers communication <em>channels</em> over which one can transmit <em>messages</em> with a few lines of code.</li>
-<li>On the right &ndash; zooming into a single <em>channel</em>; and how it transmits data of various kinds, especially without copying (therefore at high speed).<ul>
+<li>On the right &ndash; zooming into a single <em>channel</em>; and how it transmits data of various kinds, especially without copying (so message size need not matter).<ul>
 <li>"capnp" stands for <a href="https://capnproto.org/language.html">Cap'n Proto</a>.</li>
-<li>Some readers have said this diagram is too "busy." If that's your impression: Please do not worry about the details. It is a <em>survey</em> of what and how one <em>could</em> transmit via Flow-IPC; different details might appeal to different users.</li>
+<li>Some readers have said this diagram is too "busy." If that's your impression: Please do not worry about the details. It is a survey of what and how one <em>could</em> transmit via Flow-IPC; different details might appeal to different users.</li>
 <li>Ultimately, if you've got a message or data structure to share between processes, Flow-IPC will let you do it with a few lines of code.</li>
 </ul>
 </li>
@@ -82,10 +82,10 @@ $(function() {
 <p >We hope a picture is worth a thousand words, but please do scroll down to read a few words anyway.</p>
 <p >If you'd prefer a synopsis with code snippets, right away, try <a class="el" href="api_overview.html">API Overview / Synopses</a>.</p>
 <h2>Executive summary: Why does Flow-IPC exist? </h2>
-<p >Multi-process microservice systems need to communicate between processes efficiently. Existing microservice communication frameworks are elegant at a high level but can add unacceptable latency out of the box. (This is true of even lower-level tools including the popular and powerful <a href="https://grpc.io/">gRPC</a>, usually written around <a href="https://protobuf.dev/">Protocol Buffers</a> serialization.) Low-level interprocess communication (<em>IPC</em>) solutions, typically custom-written on-demand to address this problem, struggle to do so comprehensively and in reusable fashion. Teams repeatedly spend resources on challenges like structured data and session cleanup. These issues make it difficult to break monolithic systems into more resilient multi-process systems that are also maximally performant.</p>
-<p >Flow-IPC is a modern C++ library that solves these problems. It adds virtually zero latency. Structured data are represented using the high-speed Cap’n Proto (<em>capnp</em>) serialization library, which is integrated directly into our shared memory (SHM) system. The Flow-IPC SHM system extends a commercial-grade memory manager (<em>jemalloc</em>, as used by FreeBSD and Meta). Overall, this approach eliminates all memory copying (end-to-end <em>zero copy</em>).</p>
-<p >Flow-IPC features a session-based channel management model. A <em>session</em> is a conversation between two programs; to start talking one only needs the name of the other program. Resource cleanup, in case of exit or failure of either program, is automatic. Flow-IPC’s sessions are also safety-minded as to the identities and permissions at both ends of the conversation.</p>
-<p >Flow-IPC’s API allows developers to easily adapt existing code to a multi-process model. Instead of each dev team writing their own IPC implementation piecemeal, Flow-IPC provides a highly efficient standard that can be used across many projects.</p>
+<p >Multi-process systems on one machine need to communicate between processes efficiently, whether they are a large application split into parts or co-located services. Existing RPC and service-communication frameworks are elegant at a high level but can add unacceptable latency out of the box. (This is true even of the popular and powerful <a href="https://grpc.io/">gRPC</a>, usually written around <a href="https://protobuf.dev/">Protocol Buffers</a> serialization.) Low-level interprocess communication (<em>IPC</em>) solutions, typically custom-written on-demand to address this problem, struggle to do so comprehensively and in reusable fashion. Teams repeatedly spend resources on challenges like structured data and session cleanup. These issues make it difficult to break monolithic systems into more resilient multi-process systems that are also performant.</p>
+<p >Flow-IPC is a modern C++ library that solves these problems. It adds virtually zero latency. Structured data are represented using the high-speed Cap'n Proto (<em>capnp</em>) serialization library, which is integrated directly into our shared memory (SHM) system. Those preferring a remote-procedure-call style can use capnp's own RPC layer, likewise zero-copy. The Flow-IPC SHM system extends a commercial-grade memory manager (<em>jemalloc</em>, as used by FreeBSD and Meta). Overall, this approach can eliminate all memory copying (end-to-end <em>zero copy</em>).</p>
+<p >Flow-IPC features a session-based channel management model. A <em>session</em> is a conversation between two programs; to start talking one only needs the name of the other program. Resource cleanup, in case of exit or failure of either program, is automatic. Flow-IPC's sessions are also safety-minded as to the identities and permissions at both ends of the conversation.</p>
+<p >Flow-IPC's API allows developers to easily adapt existing code to a multi-process model. Instead of each dev team writing their own IPC implementation piecemeal, Flow-IPC provides a highly efficient standard that can be used across many projects.</p>
 <hr  />
 <p >Welcome to the guided Manual. It explains how to use Flow-IPC with a gentle learning curve in mind. It is arranged in top-down order. (You may also be interested in the <a class="el" href="namespaceipc.html">Reference</a>.)</p>
 <h2>Feature overview: What is Flow-IPC? </h2>
@@ -93,6 +93,7 @@ $(function() {
 <li>is a <b>modern C++</b> library with a concept-based API in the spirit of STL/Boost;</li>
 <li>enables near-zero-latency <b>zero-copy</b> messaging between processes (via behind-the-scenes use of the below SHM solution);</li>
 <li>transmits messages containing binary data, native handles, and/or <b>structured data</b> (defined via <a href="https://capnproto.org/language.html">Cap'n Proto</a>);</li>
+<li>supports <b>Cap'n Proto RPC</b> (capnp-RPC: interfaces, capabilities, promise pipelining), adding zero-copy to it (see <a class="el" href="chan_rpc.html">Zero-copy capnp-RPC</a>);</li>
 <li>provides a <b>shared memory (SHM)</b> solution<ul>
 <li>with out-of-the-box ability to transmit arbitrarily complex combinations of scalars, <code>struct</code>s, and <b>STL-compliant containers</b> thereof;</li>
 <li>that integrates with <b>commercial-grade memory managers</b> (a/k/a <code>malloc()</code> providers).<ul>
@@ -107,7 +108,8 @@ $(function() {
 <li>The <b>async-I/O API</b> automatically starts threads as needed to offload work onto multi-processor cores.</li>
 <li>The <code>sync_io</code> <b>API</b> supplies lighter-weight objects allowing you full control over each application's thread structure, hooking into reactor-style (<code>poll()</code>, <code>epoll_wait()</code>, etc.) or proactor (boost.asio) event loops. As a result context switching is minimized.</li>
 </ul>
-<p >Lastly Flow-IPC supplies <b>lower-level utilities</b> facilitating work with POSIX and SHM-based <b>message queues (MQs)</b> and <b>local (Unix domain) stream sockets</b>.</p>
+<p >The Flow-IPC capnp-RPC integration layer integrates, instead, with the <a href="https://github.com/capnproto/capnproto/blob/v2/kjdoc/tour.md#core-systems">KJ event loop</a>, which is made mandatory by capnp-RPC itself.</p>
+<p >Lastly Flow-IPC supplies <b>lower-level utilities</b> facilitating work with POSIX and SHM-based <b>message queues (MQs)</b> and <b>local (Unix domain) sockets</b>.</p>
 <h2>Delving deeper </h2>
 <p >The high-level diagram <a class="el" href="about.html#fig0">above</a> is a pretty good synopsis of the highest-impact features. The following diagram delves deeper, roughly introducing the <em>core</em> layer of <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>. Then we begin a textual exploration in <a class="el" href="api_overview.html">API Overview / Synopses</a>.</p>
 <div class="image">
@@ -118,11 +120,15 @@ Figure 1. IPC channels (core layer); SHM arenas; and your code.</div></div>
 <img src="transport_core_v1.png" alt=""/>
 </div>
 <h2>Future directions of work </h2>
-<p >We feel this is a comprehensive work, but there is always more to achieve. Beyond maintenance and incremental features, here are some future-work ideas of a more strategic nature.</p><ul>
-<li><b>Networked IPC</b>: At the moment all IPC supported by Flow-IPC is between processes within a given machine (node). A session can only be established that way for now. Extending this to establish IPC sessions via network would be easy. Unix-domain-socket-based low-level transports would easily be extended to work via TCP sockets (at least). This is a very natural next step for Flow-IPC development: a low-hanging fruit.</li>
+<p >We feel this is a comprehensive work, but there is always more to achieve. Beyond maintenance and incremental features, here are some future-work ideas of a more strategic nature.</p>
+<p >Shorter-term:</p><ul>
+<li>Executing the (largely internal) <a href="https://github.com/Flow-IPC/ipc/issues/160">Adaptive hybrid heap/SHM-backed serializer</a> project looks to add significant performance to the existing <a class="el" href="chan_struct.html">Structured Message Transport (Structured Channels)</a> and <a class="el" href="chan_rpc.html">Zero-copy capnp-RPC</a> features.</li>
+</ul>
+<p >Longer-term:</p><ul>
+<li><b>More architectures</b>: As of this writing, Flow-IPC targets Linux + x86-64. macOS/Darwin/similar support is attainable with a few weeks of work, we estimate. (Could tackle Windows as well.) Supporting other hardware architectures, such as ARM64, is also doable and valuable. We'd like to do these things: by far most of the code is platform-independent, the exceptions being certain internal low-level details typically involving shared memory and pointer tagging in the SHM-jemalloc sub-component.</li>
+<li><b>Networked IPC</b>: At the moment all IPC supported by Flow-IPC is between processes within a given machine (node). A session can only be established that way for now. Extending this to establish IPC sessions via network would not be difficult. Unix-domain-socket-based low-level transports would be extended to work via TCP sockets (at least). This is potentially a natural next step for Flow-IPC development, though it is not entirely trivial and would depend on demand.</li>
 <li><b>Networked "shared memory" (RDMA)</b>: While the preceding bullet point would have clear utility, naturally the zero-copy aspect of the existing Flow-IPC cannot directly translate across a networked session: It is internally achieved using SHM, but there is no shared memory between two separate machines. There <em>is</em>, however, <a href="https://en.wikipedia.org/wiki/Remote_direct_memory_access">Remote Direct Memory Access (RDMA)</a>: direct memory access from the memory of one computer into that of another without involving either one's OS. While assuredly non-trivial, leveraging RDMA in Flow-IPC might allow for a major improvement over the feature in the preceding bullet point, analogously to how SHM-based zero-copy hugely improves upon basic IPC.</li>
 <li><b>Beyond C++</b>: This is a C++ project at this time, but languages including Rust and Go have gained well-deserved popularity as well. In a similar way that (for example) Cap'n Proto's original core is in C++, but there are implementations for other languages, it would make sense for the same to happen for Flow-IPC. There are no technical stumbling blocks for this; it is only a question of time and effort.</li>
-<li><b>More architectures</b>: As of this writing, Flow-IPC targets Linux + x86-64. macOS/Darwin/similar support is attainable with a few weeks of work, we estimate. (Could tackle Windows as well.) Supporting other hardware architectures, such as ARM64, is also doable and valuable. We'd like to do these things: by far most of the code is platform-independent, the exceptions being certain internal low-level details typically involving shared memory and pointer tagging in the SHM-jemalloc sub-component.</li>
 </ul>
 <p >We welcome feedback, ideas, and (of course) pull requests of all kinds!</p>
 <hr  />
@@ -132,7 +138,7 @@ Figure 1. IPC channels (core layer); SHM arenas; and your code.</div></div>
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

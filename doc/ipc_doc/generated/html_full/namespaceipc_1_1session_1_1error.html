@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -105,10 +105,13 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa5c437fa266aea0c8e2b348ee84dd61fa">S_RESOURCE_OWNER_UNEXPECTED</a>
 , <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa24eaed39f149e32f6ceaad54d24f8759">S_SESSION_FINISHED</a>
-, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a>
+, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa100419439d1724d973afc8a098034c66">S_CLIENT_MASTER_LOG_IN_SERVER_APP_INCONSISTENT_CREDS</a>
+, <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2faadc4c74d8132a4e10352df037a779c79">S_SERVER_APP_EXEC_PATH_INCONSISTENT</a>
+, <br />
+&#160;&#160;<a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a>
 <br />
  }</td></tr>
-<tr class="memdesc:a0708d4bec9ae853f4d7e3d7822fc8f2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">All possible errors returned (via <code>Error_code</code> arguments) by <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> functions/methods <em>outside of</em> <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>-triggered errors involved in transport involved in doing session-related work; and possibly system-triggered errors.  <a href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2f">More...</a><br /></td></tr>
+<tr class="memdesc:a0708d4bec9ae853f4d7e3d7822fc8f2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">All possible errors returned (via <code>Error_code</code> arguments) by <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> functions/methods <em>outside of</em> <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>-triggered errors encountered in the course of session-related work; and possibly system-triggered errors.  <a href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2f">More...</a><br /></td></tr>
 <tr class="separator:a0708d4bec9ae853f4d7e3d7822fc8f2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -131,7 +134,7 @@ Variables</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Namespace containing the <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> module's extension of <a class="el" href="namespaceboost_1_1system.html" title="Small group of miscellaneous utilities to ease work with boost.system, joining its boost::system name...">boost.system</a> error conventions, so that that API can return codes/messages from within its own new set of error codes/messages. </p>
-<p >Historically this was written after <a class="el" href="namespaceipc_1_1transport_1_1error.html" title="Namespace containing the ipc::transport module&#39;s extension of boost.system error conventions,...">ipc::transport::error</a>, and essentially all the notes in that doc header and otherwise within that namespace apply equally here. Therefore please:</p>
+<p >It follows the pattern of <a class="el" href="namespaceipc_1_1transport_1_1error.html" title="Namespace containing the ipc::transport module&#39;s extension of boost.system error conventions,...">ipc::transport::error</a>; essentially all the notes in that doc header and otherwise within that namespace apply equally here. Therefore please:</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceipc_1_1transport_1_1error.html" title="Namespace containing the ipc::transport module&#39;s extension of boost.system error conventions,...">ipc::transport::error</a> documentation; notes therein (such as to-dos) likely apply here equally. </dd></dl>
 </div><h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a0708d4bec9ae853f4d7e3d7822fc8f2f" name="a0708d4bec9ae853f4d7e3d7822fc8f2f"></a>
@@ -154,7 +157,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>All possible errors returned (via <code>Error_code</code> arguments) by <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> functions/methods <em>outside of</em> <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>-triggered errors involved in transport involved in doing session-related work; and possibly system-triggered errors. </p>
+<p>All possible errors returned (via <code>Error_code</code> arguments) by <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> functions/methods <em>outside of</em> <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a>-triggered errors encountered in the course of session-related work; and possibly system-triggered errors. </p>
 <p >All notes from <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297" title="All possible errors returned (via Error_code arguments) by ipc::transport functions/methods outside o...">transport::error::Code</a> doc header apply here. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0708d4bec9ae853f4d7e3d7822fc8f2fac416e988563e44bf15fc6a81743eef53" name="a0708d4bec9ae853f4d7e3d7822fc8f2fac416e988563e44bf15fc6a81743eef53"></a>S_INVALID_ARGUMENT&#160;</td><td class="fielddoc"><p >User called an API with 1 or more arguments against the API spec. </p>
@@ -186,6 +189,10 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a0708d4bec9ae853f4d7e3d7822fc8f2fa5c437fa266aea0c8e2b348ee84dd61fa" name="a0708d4bec9ae853f4d7e3d7822fc8f2fa5c437fa266aea0c8e2b348ee84dd61fa"></a>S_RESOURCE_OWNER_UNEXPECTED&#160;</td><td class="fielddoc"><p >A resource in the file system (file, SHM pool, MQ, etc.) has or could have unexpected owner; <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> may emit this when acquiring resources and/or opening session if the server process is not running as the configured user, or a previous iteration was not running as that user. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a0708d4bec9ae853f4d7e3d7822fc8f2fa24eaed39f149e32f6ceaad54d24f8759" name="a0708d4bec9ae853f4d7e3d7822fc8f2fa24eaed39f149e32f6ceaad54d24f8759"></a>S_SESSION_FINISHED&#160;</td><td class="fielddoc"><p >The opposing end of the session in question has been closed gracefully by the user invoking the end-session API. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0708d4bec9ae853f4d7e3d7822fc8f2fa100419439d1724d973afc8a098034c66" name="a0708d4bec9ae853f4d7e3d7822fc8f2fa100419439d1724d973afc8a098034c66"></a>S_CLIENT_MASTER_LOG_IN_SERVER_APP_INCONSISTENT_CREDS&#160;</td><td class="fielddoc"><p ><a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> master channel: log-in as client: server application-level process credentials (UID, etc.) do not match the registered values and/or the OS-reported server peer values from socket stream. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0708d4bec9ae853f4d7e3d7822fc8f2faadc4c74d8132a4e10352df037a779c79" name="a0708d4bec9ae853f4d7e3d7822fc8f2faadc4c74d8132a4e10352df037a779c79"></a>S_SERVER_APP_EXEC_PATH_INCONSISTENT&#160;</td><td class="fielddoc"><p >Session-server creation: this process's executable path, as invoked, does not match the registered value; opposing session-clients would refuse to open sessions. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a0708d4bec9ae853f4d7e3d7822fc8f2fa6fba12db09e5bebfaa04f6372c41c2cf" name="a0708d4bec9ae853f4d7e3d7822fc8f2fa6fba12db09e5bebfaa04f6372c41c2cf"></a>S_END_SENTINEL&#160;</td><td class="fielddoc"><p >SENTINEL: Not an error. This Code must never be issued by an error/success-emitting API; I/O use only. </p>
 </td></tr>
@@ -221,9 +228,9 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00079">79</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html">error.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00080">80</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html">error.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00038">ipc::session::error::Category::S_CATEGORY</a>.</p>
+<p class="reference">References <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00039">ipc::session::error::Category::S_CATEGORY</a>.</p>
 
 </div>
 </div>
@@ -263,9 +270,9 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00195">195</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html">error.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00206">206</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html">error.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00153">ipc::session::error::Category::code_symbol()</a>.</p>
+<p class="reference">References <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00160">ipc::session::error::Category::code_symbol()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -311,7 +318,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00201">201</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html">error.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00212">212</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html">error.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="ipc__session_2src_2ipc_2session_2error_8hpp_source.html#l00037">S_CODE_LOWEST_INT_VALUE</a>, and <a class="el" href="namespaceipc_1_1session_1_1error.html#a0708d4bec9ae853f4d7e3d7822fc8f2fa6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a>.</p>
 
@@ -342,14 +349,14 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2error_8hpp_source.html#l00037">37</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2error_8hpp_source.html">error.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00201">operator&gt;&gt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__session_2src_2ipc_2session_2error_8cpp_source.html#l00212">operator&gt;&gt;()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

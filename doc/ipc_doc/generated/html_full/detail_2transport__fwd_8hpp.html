@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -74,6 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="transport__fwd_8hpp_source.html">ipc/transport/transport_fwd.hpp</a>&quot;</code><br />
+<code>#include &lt;iosfwd&gt;</code><br />
 </div>
 <p><a href="detail_2transport__fwd_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -91,6 +92,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a7febad90b3a03d2db53ac4ba99f966c9"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a7febad90b3a03d2db53ac4ba99f966c9">ipc::transport::operator&lt;&lt;</a> (std::ostream &amp;os, const Native_socket_stream_impl &amp;val)</td></tr>
+<tr class="memdesc:a7febad90b3a03d2db53ac4ba99f966c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html" title="Internal, non-movable pImpl-lite implementation of Native_socket_stream class.">Native_socket_stream_impl</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a7febad90b3a03d2db53ac4ba99f966c9">More...</a><br /></td></tr>
+<tr class="separator:a7febad90b3a03d2db53ac4ba99f966c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4efecbe0fe86aa7d61b86f9c5edf20b4"><td class="memTemplParams" colspan="2">template&lt;typename Persistent_mq_handle &gt; </td></tr>
 <tr class="memitem:a4efecbe0fe86aa7d61b86f9c5edf20b4"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a4efecbe0fe86aa7d61b86f9c5edf20b4">ipc::transport::operator&lt;&lt;</a> (std::ostream &amp;os, const Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt; &amp;val)</td></tr>
 <tr class="memdesc:a4efecbe0fe86aa7d61b86f9c5edf20b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_receiver class template.">Blob_stream_mq_receiver_impl</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a4efecbe0fe86aa7d61b86f9c5edf20b4">More...</a><br /></td></tr>
@@ -99,6 +103,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a8bc3464c81b40649e99da6ce2ee5f87c"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport.html#a8bc3464c81b40649e99da6ce2ee5f87c">ipc::transport::operator&lt;&lt;</a> (std::ostream &amp;os, const Blob_stream_mq_sender_impl&lt; Persistent_mq_handle &gt; &amp;val)</td></tr>
 <tr class="memdesc:a8bc3464c81b40649e99da6ce2ee5f87c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__sender.html" title="Implements Blob_sender concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message q...">Blob_stream_mq_sender</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport.html#a8bc3464c81b40649e99da6ce2ee5f87c">More...</a><br /></td></tr>
 <tr class="separator:a8bc3464c81b40649e99da6ce2ee5f87c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affef28892da14571f0dc724fc7ec0d1b"><td class="memTemplParams" colspan="2">template&lt;bool NO_HNDLS, typename Batch , typename Async_rcv_impl_func &gt; </td></tr>
+<tr class="memitem:affef28892da14571f0dc724fc7ec0d1b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#affef28892da14571f0dc724fc7ec0d1b">ipc::transport::sync_io::async_receive_batch_emulation_on_init_msg</a> (flow::log::Logger *logger_ptr, Batch *batch, Error_code *sync_err_code, const Async_rcv_impl_func &amp;async_rcv_impl_func, const Error_code init_err_code, <a class="el" href="classsize__t.html">size_t</a> init_sz)</td></tr>
+<tr class="memdesc:affef28892da14571f0dc724fc7ec0d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for <a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#ac8e1b28112a507fa3373a5b5dcce640d" title="Implements {Native_handle|Blob}_receiver::async_receive_*_batch() by emulating batch-receiving as a s...">async_receive_batch_emulation()</a> that executes on that call's <em>initial</em> single-message async-read (whether the result was immediate or following an async-wait due to initial would-block).  <a href="namespaceipc_1_1transport_1_1sync__io.html#affef28892da14571f0dc724fc7ec0d1b">More...</a><br /></td></tr>
+<tr class="separator:affef28892da14571f0dc724fc7ec0d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89ef1e48376bcd8893aa9be3cba707fd"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#a89ef1e48376bcd8893aa9be3cba707fd">ipc::transport::sync_io::operator&lt;&lt;</a> (std::ostream &amp;os, const Native_socket_stream_impl &amp;val)</td></tr>
+<tr class="memdesc:a89ef1e48376bcd8893aa9be3cba707fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream__impl.html" title="Internal, non-movable pImpl-lite implementation of sync_io::Native_socket_stream class.">Native_socket_stream_impl</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1sync__io.html#a89ef1e48376bcd8893aa9be3cba707fd">More...</a><br /></td></tr>
+<tr class="separator:a89ef1e48376bcd8893aa9be3cba707fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd90efe9d59793c62bc89da75f74030d"><td class="memTemplParams" colspan="2">template&lt;typename Persistent_mq_handle &gt; </td></tr>
 <tr class="memitem:acd90efe9d59793c62bc89da75f74030d"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#acd90efe9d59793c62bc89da75f74030d">ipc::transport::sync_io::operator&lt;&lt;</a> (std::ostream &amp;os, const Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt; &amp;val)</td></tr>
 <tr class="memdesc:acd90efe9d59793c62bc89da75f74030d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html" title="Internal, non-movable pImpl-lite implementation of sync_io::Blob_stream_mq_receiver class template.">Blob_stream_mq_receiver_impl</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1sync__io.html#acd90efe9d59793c62bc89da75f74030d">More...</a><br /></td></tr>
@@ -111,7 +122,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

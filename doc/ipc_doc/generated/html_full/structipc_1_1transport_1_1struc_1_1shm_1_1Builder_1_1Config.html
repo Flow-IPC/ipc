@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -82,7 +82,7 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Config:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config__coll__graph.svg" width="342" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config__coll__graph.svg" width="500" height="155"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -97,24 +97,32 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a4c287783d239663193a681aad8690dd4"><td class="memItemLeft" align="right" valign="top">flow::log::Logger *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#a4c287783d239663193a681aad8690dd4">m_logger_ptr</a></td></tr>
 <tr class="memdesc:a4c287783d239663193a681aad8690dd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logger to use for logging subsequently.  <a href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#a4c287783d239663193a681aad8690dd4">More...</a><br /></td></tr>
 <tr class="separator:a4c287783d239663193a681aad8690dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab850e04c8a411941c75b74e7c6eccb36"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#ab850e04c8a411941c75b74e7c6eccb36">m_top_builder_frame_prefix_sz</a></td></tr>
-<tr class="memdesc:ab850e04c8a411941c75b74e7c6eccb36"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <code>struct</code> doc header.  <a href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#ab850e04c8a411941c75b74e7c6eccb36">More...</a><br /></td></tr>
-<tr class="separator:ab850e04c8a411941c75b74e7c6eccb36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae30cd8f4721bccd20ef5f195c332a960"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#ae30cd8f4721bccd20ef5f195c332a960">m_top_builder_frame_postfix_sz</a></td></tr>
-<tr class="memdesc:ae30cd8f4721bccd20ef5f195c332a960"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <code>struct</code> doc header.  <a href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#ae30cd8f4721bccd20ef5f195c332a960">More...</a><br /></td></tr>
-<tr class="separator:ae30cd8f4721bccd20ef5f195c332a960"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab94a8a0f473b72a9954ce2b36ab81cae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#ab94a8a0f473b72a9954ce2b36ab81cae">m_segment_sz_init</a></td></tr>
+<tr class="memdesc:ab94a8a0f473b72a9954ce2b36ab81cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a3adf8bb7f01b728893200e36932fb5b3" title="Seg 1 size; a value exceeding m_seg_and_frame_sz_cap - m_frame_prefix_sz is clamped to that.">Heap_fixed_builder::Config::m_segment_sz_init</a> but applied here to the in-SHM serialization.  <a href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#ab94a8a0f473b72a9954ce2b36ab81cae">More...</a><br /></td></tr>
+<tr class="separator:ab94a8a0f473b72a9954ce2b36ab81cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16cb24c29d46e55c4c21b13aebdf6943"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#a16cb24c29d46e55c4c21b13aebdf6943">m_frame_prefix_sz</a></td></tr>
+<tr class="memdesc:a16cb24c29d46e55c4c21b13aebdf6943"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> concept.  <a href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#a16cb24c29d46e55c4c21b13aebdf6943">More...</a><br /></td></tr>
+<tr class="separator:a16cb24c29d46e55c4c21b13aebdf6943"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca2f1b980653da86d533243f174107f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a9bc898884381eebdb03f0dd9f74895de">Arena</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#aca2f1b980653da86d533243f174107f3">m_arena</a></td></tr>
-<tr class="memdesc:aca2f1b980653da86d533243f174107f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <code>struct</code> doc header.  <a href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#aca2f1b980653da86d533243f174107f3">More...</a><br /></td></tr>
+<tr class="memdesc:aca2f1b980653da86d533243f174107f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">See our <code>struct</code> doc header: <code>m_arena-&gt;construct&lt;T&gt;()</code> shall be used to allocate inner-serialization segs.  <a href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#aca2f1b980653da86d533243f174107f3">More...</a><br /></td></tr>
 <tr class="separator:aca2f1b980653da86d533243f174107f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a43eeb4f9eb0fd2ef3021980b7e1e33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1struc_1_1stat_1_1Serializer__stats_1_1Snd.html">stat::Core_serializer_stats::Snd</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#a0a43eeb4f9eb0fd2ef3021980b7e1e33">m_core_stats</a></td></tr>
+<tr class="memdesc:a0a43eeb4f9eb0fd2ef3021980b7e1e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> concept.  <a href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#a0a43eeb4f9eb0fd2ef3021980b7e1e33">More...</a><br /></td></tr>
+<tr class="separator:a0a43eeb4f9eb0fd2ef3021980b7e1e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94dfe284ad179f11ed398bf36a3eede7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1struc_1_1stat_1_1Serializer__stats_1_1Snd.html">stat::Outer_serializer_stats::Snd</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#a94dfe284ad179f11ed398bf36a3eede7">m_stats</a></td></tr>
+<tr class="memdesc:a94dfe284ad179f11ed398bf36a3eede7"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> concept.  <a href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#a94dfe284ad179f11ed398bf36a3eede7">More...</a><br /></td></tr>
+<tr class="separator:a94dfe284ad179f11ed398bf36a3eede7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename Shm_arena&gt;<br />
 struct ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Config</div><p >Implements <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> sub-concept. </p>
-<p >In this impl: The data members control <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">Builder</a>'s behavior as follows:</p>
-<p ><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">Builder</a> ctor configured by <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html" title="Implements Struct_builder::Config sub-concept.">Config</a> creates builder that shall SHM-allocate segments of internally determined sizes subsequently. The SHM provider is to be supplied to this ctor via <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#aca2f1b980653da86d533243f174107f3" title="See struct doc header.">m_arena</a> arg; see class doc header for requirements and background. (The simplest available setup would let <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a9bc898884381eebdb03f0dd9f74895de" title="Short-hand for Shm_arena template param.">Arena</a> = <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">ipc::shm::classic::Pool_arena</a>; with <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#aca2f1b980653da86d533243f174107f3" title="See struct doc header.">m_arena</a> = some pre-opened <code>Pool_arena</code>.)</p>
-<p >This builder, like all builders in this context, produces a non-zero copy <em>top serialization</em>, in this case storing just a small handful of bits encoding the SHM handle to the true serialization which is SHM-stored. <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">Builder::emit_serialization()</a> will emit to you a top serialization to transmit to the recipient process over pipe-like IPC. This top serialization shall consist of 1 segment, and that segment shall be quite small &ndash; small enough to fit into any reasonable <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a> message. <em>If</em> framing is required &ndash; in the exact same sense as <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#aeb6fcd8308642adbcb6edcd564375c88" title="See struct doc header.">Heap_fixed_builder::Config::m_frame_prefix_sz</a> and <code>m_frame_postfix_sz</code> &ndash; you may set either or both of those members to the appropriate non-zero values. </p>
+<p >In this impl: The knobs (<code>m_logger_ptr</code> aside) control either the outer serialization (in heap) or the inner serialization (in SHM). Regarding the latter there is as of this writing: <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#ab94a8a0f473b72a9954ce2b36ab81cae" title="Equivalent to Heap_fixed_builder::Config::m_segment_sz_init but applied here to the in-SHM serializat...">m_segment_sz_init</a> which indicates the size of the initial capnp-segment in SHM (where user-specified capnp-data are serialized); and <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#aca2f1b980653da86d533243f174107f3" title="See our struct doc header: m_arena-&gt;construct&lt;T&gt;() shall be used to allocate inner-serialization segs...">m_arena</a>. Explanation of that one: <code><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">Builder</a></code> ctor configured by <code><a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html" title="Implements Struct_builder::Config sub-concept.">Config</a></code> creates builder that shall SHM-allocate segments of internally determined sizes subsequently. The SHM-provider is to be supplied to this ctor via <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#aca2f1b980653da86d533243f174107f3" title="See our struct doc header: m_arena-&gt;construct&lt;T&gt;() shall be used to allocate inner-serialization segs...">m_arena</a> arg; see class doc header for requirements and background. (The simplest available setup would let <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a9bc898884381eebdb03f0dd9f74895de" title="Short-hand for Shm_arena template param.">Arena</a> = <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">ipc::shm::classic::Pool_arena</a>; with <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#aca2f1b980653da86d533243f174107f3" title="See our struct doc header: m_arena-&gt;construct&lt;T&gt;() shall be used to allocate inner-serialization segs...">m_arena</a> = some pre-opened <code>Pool_arena</code>.)</p>
+<p >As for the former (outer serialization knobs), consistently with <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> concept requirements:</p><ul>
+<li>Since the serialization in heap (outer serialization) we by definition always produce 1, small capnp-segment (with a SHM handle only), there is no need for a <code>m_seg_and_frame_sz_cap</code>.</li>
+<li>So that leaves only <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#a16cb24c29d46e55c4c21b13aebdf6943" title="See Struct_builder::Config concept.">m_frame_prefix_sz</a> which is always required. </li>
+</ul>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00151">151</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00152">152</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ac660f2e20310d2804f3dbcf8e9d1244d" name="ac660f2e20310d2804f3dbcf8e9d1244d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac660f2e20310d2804f3dbcf8e9d1244d">&#9670;&nbsp;</a></span>Builder</h2>
@@ -132,7 +140,7 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>Implements concept API. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00156">156</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00157">157</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -151,9 +159,52 @@ template&lt;typename Shm_arena &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>See <code>struct</code> doc header. </p>
+<p>See our <code>struct</code> doc header: <code>m_arena-&gt;construct&lt;T&gt;()</code> shall be used to allocate inner-serialization segs. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00174">174</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00175">175</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a0a43eeb4f9eb0fd2ef3021980b7e1e33" name="a0a43eeb4f9eb0fd2ef3021980b7e1e33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a43eeb4f9eb0fd2ef3021980b7e1e33">&#9670;&nbsp;</a></span>m_core_stats</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Shm_arena &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1struc_1_1stat_1_1Serializer__stats_1_1Snd.html">stat::Core_serializer_stats::Snd</a>* <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html">ipc::transport::struc::shm::Builder</a>&lt; Shm_arena &gt;::Config::m_core_stats</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> concept. </p>
+<p >Pointee (null OK = no stats kept) for cumulative snd-stats of the <em>inner</em> (in-SHM, user-payload) serialization; must outlive each <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">Builder</a> built with <code>*this</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00182">182</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a16cb24c29d46e55c4c21b13aebdf6943" name="a16cb24c29d46e55c4c21b13aebdf6943"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16cb24c29d46e55c4c21b13aebdf6943">&#9670;&nbsp;</a></span>m_frame_prefix_sz</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Shm_arena &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classsize__t.html">size_t</a> <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html">ipc::transport::struc::shm::Builder</a>&lt; Shm_arena &gt;::Config::m_frame_prefix_sz</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> concept. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00172">172</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00492">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Builder()</a>.</p>
 
 </div>
 </div>
@@ -173,12 +224,12 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>Logger to use for logging subsequently. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00165">165</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00166">166</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ae30cd8f4721bccd20ef5f195c332a960" name="ae30cd8f4721bccd20ef5f195c332a960"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae30cd8f4721bccd20ef5f195c332a960">&#9670;&nbsp;</a></span>m_top_builder_frame_postfix_sz</h2>
+<a id="ab94a8a0f473b72a9954ce2b36ab81cae" name="ab94a8a0f473b72a9954ce2b36ab81cae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab94a8a0f473b72a9954ce2b36ab81cae">&#9670;&nbsp;</a></span>m_segment_sz_init</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,21 +237,19 @@ template&lt;typename Shm_arena &gt; </div>
 template&lt;typename Shm_arena &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html">ipc::transport::struc::shm::Builder</a>&lt; Shm_arena &gt;::Config::m_top_builder_frame_postfix_sz</td>
+          <td class="memname"><a class="el" href="classsize__t.html">size_t</a> <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html">ipc::transport::struc::shm::Builder</a>&lt; Shm_arena &gt;::Config::m_segment_sz_init</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>See <code>struct</code> doc header. </p>
+<p>Equivalent to <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a3adf8bb7f01b728893200e36932fb5b3" title="Seg 1 size; a value exceeding m_seg_and_frame_sz_cap - m_frame_prefix_sz is clamped to that.">Heap_fixed_builder::Config::m_segment_sz_init</a> but applied here to the in-SHM serialization. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00171">171</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00528">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Builder()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00169">169</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ab850e04c8a411941c75b74e7c6eccb36" name="ab850e04c8a411941c75b74e7c6eccb36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab850e04c8a411941c75b74e7c6eccb36">&#9670;&nbsp;</a></span>m_top_builder_frame_prefix_sz</h2>
+<a id="a94dfe284ad179f11ed398bf36a3eede7" name="a94dfe284ad179f11ed398bf36a3eede7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94dfe284ad179f11ed398bf36a3eede7">&#9670;&nbsp;</a></span>m_stats</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -208,16 +257,17 @@ template&lt;typename Shm_arena &gt; </div>
 template&lt;typename Shm_arena &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html">ipc::transport::struc::shm::Builder</a>&lt; Shm_arena &gt;::Config::m_top_builder_frame_prefix_sz</td>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1struc_1_1stat_1_1Serializer__stats_1_1Snd.html">stat::Outer_serializer_stats::Snd</a>* <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html">ipc::transport::struc::shm::Builder</a>&lt; Shm_arena &gt;::Config::m_stats</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>See <code>struct</code> doc header. </p>
+<p>See <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> concept. </p>
+<p >Pointee (null OK = no stats kept) for cumulative snd-stats of the <em>outer</em> (in-heap, SHM-handle envelope) serialization; must outlive each <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">Builder</a> built with <code>*this</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00168">168</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00189">189</a> of file <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html">serializer.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00528">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Builder()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00492">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::Builder()</a>.</p>
 
 </div>
 </div>
@@ -227,7 +277,7 @@ template&lt;typename Shm_arena &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

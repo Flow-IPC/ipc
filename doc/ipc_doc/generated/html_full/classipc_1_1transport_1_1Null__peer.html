@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -69,16 +69,23 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#related">Related Functions</a> &#124;
 <a href="classipc_1_1transport_1_1Null__peer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ipc::transport::Null_peer Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and coversely for async-I/O guys and their <code>Async_io_obj</code>s.  
+<p>Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and conversely for async-I/O guys and their <code>Async_io_obj</code>s.  
  <a href="classipc_1_1transport_1_1Null__peer.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for ipc::transport::Null_peer:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1Null__peer__coll__graph.svg" width="254" height="155"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -88,6 +95,35 @@ Public Types</h2></td></tr>
 <tr class="memitem:af4e6e3e13b508fd8522b0a95bb69f4d1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html#af4e6e3e13b508fd8522b0a95bb69f4d1">Async_io_obj</a> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
 <tr class="memdesc:af4e6e3e13b508fd8522b0a95bb69f4d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard.  <a href="classipc_1_1transport_1_1Null__peer.html#af4e6e3e13b508fd8522b0a95bb69f4d1">More...</a><br /></td></tr>
 <tr class="separator:af4e6e3e13b508fd8522b0a95bb69f4d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16cc14ede5cc575efafe826a578b3b6d"><td class="memTemplParams" colspan="2">template&lt;typename Msg_resource &gt; </td></tr>
+<tr class="memitem:a16cc14ede5cc575efafe826a578b3b6d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html#a16cc14ede5cc575efafe826a578b3b6d">Native_handle_batch_in</a> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:a16cc14ede5cc575efafe826a578b3b6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard.  <a href="classipc_1_1transport_1_1Null__peer.html#a16cc14ede5cc575efafe826a578b3b6d">More...</a><br /></td></tr>
+<tr class="separator:a16cc14ede5cc575efafe826a578b3b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50e913214f700b727a9a9f1eafb9904b"><td class="memTemplParams" colspan="2">template&lt;typename Msg_resource &gt; </td></tr>
+<tr class="memitem:a50e913214f700b727a9a9f1eafb9904b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html#a50e913214f700b727a9a9f1eafb9904b">Blob_batch_in</a> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:a50e913214f700b727a9a9f1eafb9904b"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard.  <a href="classipc_1_1transport_1_1Null__peer.html#a50e913214f700b727a9a9f1eafb9904b">More...</a><br /></td></tr>
+<tr class="separator:a50e913214f700b727a9a9f1eafb9904b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa1d97de671da72c8679eaafdba9865f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html#aaa1d97de671da72c8679eaafdba9865f">Native_handle_snd_stats</a> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:aaa1d97de671da72c8679eaafdba9865f"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard.  <a href="classipc_1_1transport_1_1Null__peer.html#aaa1d97de671da72c8679eaafdba9865f">More...</a><br /></td></tr>
+<tr class="separator:aaa1d97de671da72c8679eaafdba9865f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae30d33231c3fd6065411830a506af23c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html#ae30d33231c3fd6065411830a506af23c">Blob_snd_stats</a> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:ae30d33231c3fd6065411830a506af23c"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard.  <a href="classipc_1_1transport_1_1Null__peer.html#ae30d33231c3fd6065411830a506af23c">More...</a><br /></td></tr>
+<tr class="separator:ae30d33231c3fd6065411830a506af23c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42d26568bb6e435fd96419ecb2438f7f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html#a42d26568bb6e435fd96419ecb2438f7f">Native_handle_rcv_stats</a> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:a42d26568bb6e435fd96419ecb2438f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard.  <a href="classipc_1_1transport_1_1Null__peer.html#a42d26568bb6e435fd96419ecb2438f7f">More...</a><br /></td></tr>
+<tr class="separator:a42d26568bb6e435fd96419ecb2438f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60891fe09f0f4c9ad5ea4fc02b7f67eb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html#a60891fe09f0f4c9ad5ea4fc02b7f67eb">Blob_rcv_stats</a> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:a60891fe09f0f4c9ad5ea4fc02b7f67eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard.  <a href="classipc_1_1transport_1_1Null__peer.html#a60891fe09f0f4c9ad5ea4fc02b7f67eb">More...</a><br /></td></tr>
+<tr class="separator:a60891fe09f0f4c9ad5ea4fc02b7f67eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ad904b8c1ad7b93d6a53ee607d0d98a3e"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html#ad904b8c1ad7b93d6a53ee607d0d98a3e">S_RCV_BLOB_BATCH_SZ_RECOMMENDATION</a> = 0</td></tr>
+<tr class="memdesc:ad904b8c1ad7b93d6a53ee607d0d98a3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard.  <a href="classipc_1_1transport_1_1Null__peer.html#ad904b8c1ad7b93d6a53ee607d0d98a3e">More...</a><br /></td></tr>
+<tr class="separator:ad904b8c1ad7b93d6a53ee607d0d98a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31ae641eef884c8fd1665e496c72af42"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Null__peer.html#a31ae641eef884c8fd1665e496c72af42">S_RCV_NATIVE_HANDLE_BATCH_SZ_RECOMMENDATION</a> = 0</td></tr>
+<tr class="memdesc:a31ae641eef884c8fd1665e496c72af42"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard.  <a href="classipc_1_1transport_1_1Null__peer.html#a31ae641eef884c8fd1665e496c72af42">More...</a><br /></td></tr>
+<tr class="separator:a31ae641eef884c8fd1665e496c72af42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="related" name="related"></a>
 Related Functions</h2></td></tr>
@@ -98,10 +134,10 @@ Related Functions</h2></td></tr>
 <tr class="separator:a7f08625d3fffff74a794f14aa4022b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and coversely for async-I/O guys and their <code>Async_io_obj</code>s. </p>
+<div class="textblock"><p >Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and conversely for async-I/O guys and their <code>Async_io_obj</code>s. </p>
 <p >No object of this type is ever touched, at least if <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> is properly used. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l00999">999</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01136">1136</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="af4e6e3e13b508fd8522b0a95bb69f4d1" name="af4e6e3e13b508fd8522b0a95bb69f4d1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4e6e3e13b508fd8522b0a95bb69f4d1">&#9670;&nbsp;</a></span>Async_io_obj</h2>
@@ -117,7 +153,119 @@ Related Functions</h2></td></tr>
 
 <p>You may disregard. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01005">1005</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01142">1142</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a50e913214f700b727a9a9f1eafb9904b" name="a50e913214f700b727a9a9f1eafb9904b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50e913214f700b727a9a9f1eafb9904b">&#9670;&nbsp;</a></span>Blob_batch_in</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Msg_resource &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1Null__peer.html#a50e913214f700b727a9a9f1eafb9904b">ipc::transport::Null_peer::Blob_batch_in</a> =  <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>You may disregard. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01148">1148</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a60891fe09f0f4c9ad5ea4fc02b7f67eb" name="a60891fe09f0f4c9ad5ea4fc02b7f67eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60891fe09f0f4c9ad5ea4fc02b7f67eb">&#9670;&nbsp;</a></span>Blob_rcv_stats</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1Null__peer.html#a60891fe09f0f4c9ad5ea4fc02b7f67eb">ipc::transport::Null_peer::Blob_rcv_stats</a> =  <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>You may disregard. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01156">1156</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ae30d33231c3fd6065411830a506af23c" name="ae30d33231c3fd6065411830a506af23c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae30d33231c3fd6065411830a506af23c">&#9670;&nbsp;</a></span>Blob_snd_stats</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1Null__peer.html#ae30d33231c3fd6065411830a506af23c">ipc::transport::Null_peer::Blob_snd_stats</a> =  <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>You may disregard. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01152">1152</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a16cc14ede5cc575efafe826a578b3b6d" name="a16cc14ede5cc575efafe826a578b3b6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16cc14ede5cc575efafe826a578b3b6d">&#9670;&nbsp;</a></span>Native_handle_batch_in</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Msg_resource &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1Null__peer.html#a16cc14ede5cc575efafe826a578b3b6d">ipc::transport::Null_peer::Native_handle_batch_in</a> =  <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>You may disregard. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01145">1145</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a42d26568bb6e435fd96419ecb2438f7f" name="a42d26568bb6e435fd96419ecb2438f7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42d26568bb6e435fd96419ecb2438f7f">&#9670;&nbsp;</a></span>Native_handle_rcv_stats</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1Null__peer.html#a42d26568bb6e435fd96419ecb2438f7f">ipc::transport::Null_peer::Native_handle_rcv_stats</a> =  <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>You may disregard. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01154">1154</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aaa1d97de671da72c8679eaafdba9865f" name="aaa1d97de671da72c8679eaafdba9865f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa1d97de671da72c8679eaafdba9865f">&#9670;&nbsp;</a></span>Native_handle_snd_stats</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1Null__peer.html#aaa1d97de671da72c8679eaafdba9865f">ipc::transport::Null_peer::Native_handle_snd_stats</a> =  <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>You may disregard. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01150">1150</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -135,7 +283,7 @@ Related Functions</h2></td></tr>
 
 <p>You may disregard. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01003">1003</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01140">1140</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -186,7 +334,60 @@ Related Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8cpp_source.html#l00028">28</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8cpp_source.html">channel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8cpp_source.html#l00030">30</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8cpp_source.html">channel.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ad904b8c1ad7b93d6a53ee607d0d98a3e" name="ad904b8c1ad7b93d6a53ee607d0d98a3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad904b8c1ad7b93d6a53ee607d0d98a3e">&#9670;&nbsp;</a></span>S_RCV_BLOB_BATCH_SZ_RECOMMENDATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classsize__t.html">size_t</a> ipc::transport::Null_peer::S_RCV_BLOB_BATCH_SZ_RECOMMENDATION = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>You may disregard. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01158">1158</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a31ae641eef884c8fd1665e496c72af42" name="a31ae641eef884c8fd1665e496c72af42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31ae641eef884c8fd1665e496c72af42">&#9670;&nbsp;</a></span>S_RCV_NATIVE_HANDLE_BATCH_SZ_RECOMMENDATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classsize__t.html">size_t</a> ipc::transport::Null_peer::S_RCV_NATIVE_HANDLE_BATCH_SZ_RECOMMENDATION = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>You may disregard. </p>
+
+<p class="definition">Definition at line <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html#l01160">1160</a> of file <a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -197,7 +398,7 @@ Related Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

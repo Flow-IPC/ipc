@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Flow-IPC: ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Expecting_response Struct Reference</title>
+<title>Flow-IPC: ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_response Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -71,104 +71,95 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Expecting_response Struct Reference</div></div>
+  <div class="headertitle"><div class="title">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_response Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Policy for how to act upon receiving a response in-message that indicates its originating out-message is the message associated with this object in <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a3d4c8da3dd620d113479f5c6a3f96c3a" title="Table mapping originating out-message to the policy for handling an in-message that indicates that ou...">Expecting_response_map</a>.  
+<p>Policy for how to act upon receiving a response in-message that indicates its originating out-message is the message associated with this object in <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a7b70be013b6cf859411eb9ccdd314745" title="Table mapping originating out-message to the policy for handling an in-message that indicates that ou...">Expecting_response_map</a>.  
  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Expecting_response:</div>
+Inheritance diagram for ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_response:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response__coll__graph.svg" width="236" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response__inherit__graph.svg" width="432" height="83"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_response:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response__coll__graph.svg" width="838" height="142"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a5f68a8c574bf52f8fce42ea01c564923"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#a5f68a8c574bf52f8fce42ea01c564923">Ptr</a> = boost::movelib::unique_ptr&lt; <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html">Expecting_response</a> &gt;</td></tr>
-<tr class="memdesc:a5f68a8c574bf52f8fce42ea01c564923"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand to cheap handle type.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#a5f68a8c574bf52f8fce42ea01c564923">More...</a><br /></td></tr>
-<tr class="separator:a5f68a8c574bf52f8fce42ea01c564923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abba15b0c5a4e85979a916c0c0fb0155e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#abba15b0c5a4e85979a916c0c0fb0155e">Ptr</a> = boost::movelib::unique_ptr&lt; <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html">Expecting_response</a> &gt;</td></tr>
+<tr class="memdesc:abba15b0c5a4e85979a916c0c0fb0155e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand to cheap handle type.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#abba15b0c5a4e85979a916c0c0fb0155e">More...</a><br /></td></tr>
+<tr class="separator:abba15b0c5a4e85979a916c0c0fb0155e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td colspan="2" onclick="javascript:toggleInherit('pub_types_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_msg</a></td></tr>
+<tr class="memitem:a4f9c0b22c022e858db023f5427a04a14 inherit pub_types_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html#a4f9c0b22c022e858db023f5427a04a14">Ptr</a> = boost::movelib::unique_ptr&lt; <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html">Expecting_msg</a> &gt;</td></tr>
+<tr class="memdesc:a4f9c0b22c022e858db023f5427a04a14 inherit pub_types_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand to cheap handle type.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html#a4f9c0b22c022e858db023f5427a04a14">More...</a><br /></td></tr>
+<tr class="separator:a4f9c0b22c022e858db023f5427a04a14 inherit pub_types_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a615b5613ac4e2bc93be88b8835e6a22c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#a615b5613ac4e2bc93be88b8835e6a22c">m_one_expected</a></td></tr>
-<tr class="memdesc:a615b5613ac4e2bc93be88b8835e6a22c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>true</code> if receiving a response means request is satisfied; <code>false</code> if <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a5aae7a7f907f56fa07a230eadec2fedf" title="See Async_io_obj counterpart.">undo_expect_responses()</a> must be invoked to mark request satisfied.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#a615b5613ac4e2bc93be88b8835e6a22c">More...</a><br /></td></tr>
-<tr class="separator:a615b5613ac4e2bc93be88b8835e6a22c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a410ae0ef77010cfb5f90de9a90b25e92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a583ccd4bb6b1aefb09d77e5709aef5b4">On_msg_func_ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#a410ae0ef77010cfb5f90de9a90b25e92">m_on_msg_func</a></td></tr>
-<tr class="memdesc:a410ae0ef77010cfb5f90de9a90b25e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">The handler to invoke on receiving a response to the requesting <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a83fb4462a8d4045bdb56b694bf80393c" title="See Async_io_obj counterpart.">Msg_out</a> (see <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a0dc388e18b0fc0fa2d8ad0a6953fb039" title="See Async_io_obj counterpart.">send()</a> response-expecting form).  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#a410ae0ef77010cfb5f90de9a90b25e92">More...</a><br /></td></tr>
-<tr class="separator:a410ae0ef77010cfb5f90de9a90b25e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e888b582e1c90b565e1b0ae9e5c642a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceipc_1_1util.html#aa3808edfc4d59bce4b9800d6a60026d3">util::Fine_time_pt</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#a4e888b582e1c90b565e1b0ae9e5c642a">m_sent_when</a></td></tr>
+<tr class="memdesc:a4e888b582e1c90b565e1b0ae9e5c642a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time point when this request was sent; used for one-off RTT histogram in <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1stat_1_1Channel__stats.html" title="Cumulative stats from a struc::sync_io::Channel, covering both send and receive directions as well as...">stat::Channel_stats</a>.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#a4e888b582e1c90b565e1b0ae9e5c642a">More...</a><br /></td></tr>
+<tr class="separator:a4e888b582e1c90b565e1b0ae9e5c642a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_msg</a></td></tr>
+<tr class="memitem:a6d23f42eedb9a150366aec103dadd069 inherit pub_attribs_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html#a6d23f42eedb9a150366aec103dadd069">m_one_expected</a></td></tr>
+<tr class="memdesc:a6d23f42eedb9a150366aec103dadd069 inherit pub_attribs_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>true</code> if receiving the expected in-message means the expectation is satisfied; <code>false</code> if an <code>undo_*()</code> must be invoked to mark it satisfied.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html#a6d23f42eedb9a150366aec103dadd069">More...</a><br /></td></tr>
+<tr class="separator:a6d23f42eedb9a150366aec103dadd069 inherit pub_attribs_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f5ec8de934ec3ab7968670b942524d9 inherit pub_attribs_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a2b1fac064a194f0961138601767e779c">On_msg_handler_ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html#a8f5ec8de934ec3ab7968670b942524d9">m_on_msg_func</a></td></tr>
+<tr class="memdesc:a8f5ec8de934ec3ab7968670b942524d9 inherit pub_attribs_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td class="mdescLeft">&#160;</td><td class="mdescRight">The handler to invoke on receiving the expected in-message.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html#a8f5ec8de934ec3ab7968670b942524d9">More...</a><br /></td></tr>
+<tr class="separator:a8f5ec8de934ec3ab7968670b942524d9 inherit pub_attribs_structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;typename Channel_obj, typename Message_body, typename Struct_builder_config, typename Struct_reader_config&gt;<br />
-struct ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Expecting_response</div><p >Policy for how to act upon receiving a response in-message that indicates its originating out-message is the message associated with this object in <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a3d4c8da3dd620d113479f5c6a3f96c3a" title="Table mapping originating out-message to the policy for handling an in-message that indicates that ou...">Expecting_response_map</a>. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename Owned_channel_t, typename Msg_body_t, typename Builder_config_t, typename Reader_config_t&gt;<br />
+struct ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_response</div><p >Policy for how to act upon receiving a response in-message that indicates its originating out-message is the message associated with this object in <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a7b70be013b6cf859411eb9ccdd314745" title="Table mapping originating out-message to the policy for handling an in-message that indicates that ou...">Expecting_response_map</a>. </p>
+<dl class="section note"><dt>Note</dt><dd>Attention: It builds on <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html" title="Policy for how to act upon receiving an expected message of one kind or another.">Expecting_msg</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01104">1104</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01262">1262</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a5f68a8c574bf52f8fce42ea01c564923" name="a5f68a8c574bf52f8fce42ea01c564923"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f68a8c574bf52f8fce42ea01c564923">&#9670;&nbsp;</a></span>Ptr</h2>
+<a id="abba15b0c5a4e85979a916c0c0fb0155e" name="abba15b0c5a4e85979a916c0c0fb0155e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abba15b0c5a4e85979a916c0c0fb0155e">&#9670;&nbsp;</a></span>Ptr</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Channel_obj , typename Message_body , typename Struct_builder_config , typename Struct_reader_config &gt; </div>
+template&lt;typename Owned_channel_t , typename Msg_body_t , typename Builder_config_t , typename Reader_config_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">ipc::transport::struc::sync_io::Channel</a>&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Expecting_response::Ptr =  boost::movelib::unique_ptr&lt;<a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html">Expecting_response</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">ipc::transport::struc::sync_io::Channel</a>&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_response::Ptr =  boost::movelib::unique_ptr&lt;<a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html">Expecting_response</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Short-hand to cheap handle type. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01109">1109</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01267">1267</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a410ae0ef77010cfb5f90de9a90b25e92" name="a410ae0ef77010cfb5f90de9a90b25e92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a410ae0ef77010cfb5f90de9a90b25e92">&#9670;&nbsp;</a></span>m_on_msg_func</h2>
+<a id="a4e888b582e1c90b565e1b0ae9e5c642a" name="a4e888b582e1c90b565e1b0ae9e5c642a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e888b582e1c90b565e1b0ae9e5c642a">&#9670;&nbsp;</a></span>m_sent_when</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Channel_obj , typename Message_body , typename Struct_builder_config , typename Struct_reader_config &gt; </div>
+template&lt;typename Owned_channel_t , typename Msg_body_t , typename Builder_config_t , typename Reader_config_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a583ccd4bb6b1aefb09d77e5709aef5b4">On_msg_func_ptr</a> <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">ipc::transport::struc::sync_io::Channel</a>&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Expecting_response::m_on_msg_func</td>
+          <td class="memname"><a class="el" href="namespaceipc_1_1util.html#aa3808edfc4d59bce4b9800d6a60026d3">util::Fine_time_pt</a> <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">ipc::transport::struc::sync_io::Channel</a>&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_response::m_sent_when</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The handler to invoke on receiving a response to the requesting <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a83fb4462a8d4045bdb56b694bf80393c" title="See Async_io_obj counterpart.">Msg_out</a> (see <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a0dc388e18b0fc0fa2d8ad0a6953fb039" title="See Async_io_obj counterpart.">send()</a> response-expecting form). </p>
-<p >The <code>shared_ptr</code> wrapper is because in case of <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#a615b5613ac4e2bc93be88b8835e6a22c" title="true if receiving a response means request is satisfied; false if undo_expect_responses() must be inv...">m_one_expected</a> being <code>false</code> we have to copy it when <code><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a126c0d7ee5fcab20dc8c87884fdd7597" title="Record handler to invoke in handlers_poll() soon.">handlers_post()</a></code>ing; <code>move()</code> could destroy it (leave it <code>.empty()</code>) instead. </p>
+<p>Time point when this request was sent; used for one-off RTT histogram in <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1stat_1_1Channel__stats.html" title="Cumulative stats from a struc::sync_io::Channel, covering both send and receive directions as well as...">stat::Channel_stats</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01126">1126</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01272">1272</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03915">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_struct_new_msg_in_is_next_expected()</a>.</p>
-
-</div>
-</div>
-<a id="a615b5613ac4e2bc93be88b8835e6a22c" name="a615b5613ac4e2bc93be88b8835e6a22c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a615b5613ac4e2bc93be88b8835e6a22c">&#9670;&nbsp;</a></span>m_one_expected</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Channel_obj , typename Message_body , typename Struct_builder_config , typename Struct_reader_config &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">ipc::transport::struc::sync_io::Channel</a>&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Expecting_response::m_one_expected</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><code>true</code> if receiving a response means request is satisfied; <code>false</code> if <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a5aae7a7f907f56fa07a230eadec2fedf" title="See Async_io_obj counterpart.">undo_expect_responses()</a> must be invoked to mark request satisfied. </p>
-<p >This controls the mechanism by which an <a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html" title="Policy for how to act upon receiving a response in-message that indicates its originating out-message...">Expecting_response</a> is removed from the expected-responses map, freeing the non-zero RAM (at least) resource involved. </p>
-
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l01118">1118</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03915">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::rcv_struct_new_msg_in_is_next_expected()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04789">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::rcv_struct_new_msg_in_is_next_expected()</a>.</p>
 
 </div>
 </div>
@@ -178,7 +169,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

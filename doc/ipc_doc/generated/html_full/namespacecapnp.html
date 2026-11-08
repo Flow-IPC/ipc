@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -80,7 +80,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Small group of miscellaneous utilities to ease work with capnp (Cap'n Proto), joining its <code>capnp</code> namespace. </p>
-<p >As of this writing circumstances have to very particular and rare indeed for something to actually be added by us to this namespace. As I write this, it contains only <code>oparator&lt;&lt;(std::ostream&amp;, capnp::Text::Reader&amp;)</code>. </p>
+<p >As of this writing circumstances have to be very particular and rare indeed for something to actually be added by us to this namespace. As I write this, it contains only <code>operator&lt;&lt;(std::ostream&amp;, capnp::Text::Reader&amp;)</code>. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a8ce2ee1369a8ff7c8bd2ea75ca8af067" name="a8ce2ee1369a8ff7c8bd2ea75ca8af067"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ce2ee1369a8ff7c8bd2ea75ca8af067">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
@@ -111,7 +111,7 @@ Functions</h2></td></tr>
 <p>Prints string representation of the given <code>capnp::Text::Reader</code> to the given <code>ostream</code>. </p>
 <h3>Rationale for existence</h3>
 <p >Well, capnp does not provide it, even though it provides a conversion operator to <code>string</code> and such; and it's nice to be able to print these (particularly when logging with <code>FLOW_LOG_*()</code>). For whatever reason the auto-conversion operator does not "kick in" when placed in a an <code>ostream&lt;&lt;</code> context; so such printing does not compile (nor does <code>lexical_cast&lt;string&gt;</code>).</p>
-<p >It won't be forced on anyone that doesn't include the present detail/ header.</p>
+<p >It won't be forced on anyone that doesn't include the present header.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
@@ -121,14 +121,14 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8cpp_source.html#l00190">190</a> of file <a class="el" href="heap__serializer_8cpp_source.html">heap_serializer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8cpp_source.html#l00366">366</a> of file <a class="el" href="heap__serializer_8cpp_source.html">heap_serializer.cpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

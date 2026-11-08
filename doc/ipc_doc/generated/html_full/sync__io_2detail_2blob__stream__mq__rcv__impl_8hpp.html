@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -75,12 +75,23 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="protocol__negotiator_8hpp_source.html">ipc/transport/protocol_negotiator.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="blob__transport__stats_8hpp_source.html">ipc/transport/blob_transport_stats.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="sync__io_2batch_8hpp_source.html">ipc/transport/sync_io/batch.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="blob__stream__mq__impl_8hpp_source.html">ipc/transport/detail/blob_stream_mq_impl.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="timer__ev__emitter_8hpp_source.html">ipc/util/sync_io/detail/timer_ev_emitter.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="sync__io__fwd_8hpp_source.html">ipc/util/sync_io/sync_io_fwd.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="util_8hpp_source.html">ipc/util/detail/util.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8hpp_source.html">ipc/util/detail/util.hpp</a>&quot;</code><br />
 <code>#include &lt;flow/async/single_thread_task_loop.hpp&gt;</code><br />
 <code>#include &lt;flow/error/error.hpp&gt;</code><br />
+<code>#include &lt;boost/asio/connect_pipe.hpp&gt;</code><br />
+<code>#include &lt;boost/noncopyable.hpp&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
+<code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
+<code>#include &lt;ostream&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -90,7 +101,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal, non-movable pImpl-lite implementation of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver.html" title="Implements sync_io::Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ...">sync_io::Blob_stream_mq_receiver</a> class template.  <a href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html">ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::User_request</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">sync_io::Async_adapter_receiver::User_request</a>, except we only keep at most 1 of these and thus don't need a <code>Ptr</code> alias inside; and we need not worry about transmitting <code>Native_handle</code>s.  <a href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">sync_io::Async_adapter_receiver::User_request_one</a>, except we only keep at most 1 of these and thus don't need a <code>Ptr</code> alias inside; and we need not worry about transmitting <code>Native_handle</code>s.  <a href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -115,7 +126,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

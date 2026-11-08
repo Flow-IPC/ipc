@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -77,6 +77,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ipc__session_2src_2ipc_2session_2session_8hpp_source.html">ipc/session/session.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html">ipc/session/detail/client_session_impl.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="transport__fwd_8hpp_source.html">ipc/transport/transport_fwd.hpp</a>&quot;</code><br />
 <code>#include &lt;boost/move/make_unique.hpp&gt;</code><br />
 </div>
 <p><a href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -84,7 +85,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Client__session__mv.html">ipc::session::Client_session_mv&lt; Client_session_impl_t &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept on the <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> end: a <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a> that first achieves PEER state by connecting to an opposing <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> via <a class="el" href="classipc_1_1session_1_1Client__session__mv.html#ab971ea979200828d572638c60d7d9f44" title="To be invoked in NULL state only, and not as-if default-cted, it synchronously and non-blockingly att...">Client_session_mv::sync_connect()</a>.  <a href="classipc_1_1session_1_1Client__session__mv.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1session_1_1Session.html" title="A documentation-only concept defining the local side of an IPC conversation (session) with another en...">Session</a> concept on the <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> end: a <a class="el" href="classipc_1_1session_1_1Session__mv.html" title="Implements the Session concept when it is in PEER state.">Session_mv</a> that first achieves PEER state by connecting to an opposing <a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a> via <a class="el" href="classipc_1_1session_1_1Client__session__mv.html#aeaa4e32e6be2642ad82899f0c637af91" title="To be invoked in NULL state only, and not as-if default-cted, it synchronously and non-blockingly att...">Client_session_mv::sync_connect()</a>.  <a href="classipc_1_1session_1_1Client__session__mv.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -127,7 +128,7 @@ Functions</h2></td></tr>
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html#l00369">369</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html">client_session.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html#l00395">395</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html">client_session.hpp</a>.</p>
 
 </div>
 </div>
@@ -145,14 +146,14 @@ Functions</h2></td></tr>
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html#l00366">366</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html">client_session.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html#l00392">392</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2client__session_8hpp_source.html">client_session.hpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

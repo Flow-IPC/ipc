@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -74,22 +74,29 @@ $(function() {
   <div class="headertitle"><div class="title">channel.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">ipc/transport/struc/sync_io/channel.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="channel__stats_8hpp_source.html">ipc/transport/struc/channel_stats.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">ipc/transport/struc/sync_io/channel.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="channel__base_8hpp_source.html">ipc/transport/struc/channel_base.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="process__credentials__fwd_8hpp_source.html">ipc/util/process_credentials_fwd.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="util__fwd_8hpp_source.html">ipc/util/util_fwd.hpp</a>&quot;</code><br />
 <code>#include &lt;flow/async/single_thread_task_loop.hpp&gt;</code><br />
+<code>#include &lt;flow/util/string_view.hpp&gt;</code><br />
+<code>#include &lt;flow/util/util.hpp&gt;</code><br />
+<code>#include &lt;flow/util/stat/stat_set.hpp&gt;</code><br />
 <code>#include &lt;boost/move/make_unique.hpp&gt;</code><br />
 </div>
 <p><a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">ipc::transport::struc::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Owning and wrapping a pre-connected <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> peer (an endpoint of an established channel over which <em>unstructured</em> messages and optionally native handles can be transported), this template is the central pillar of the <a class="el" href="namespaceipc_1_1transport_1_1struc.html" title="Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...">ipc::transport::struc</a> (<em>structured layer</em>), capable of communicating structured capnp-schema-based messages (and native handles).  <a href="classipc_1_1transport_1_1struc_1_1Channel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state.html">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Sync_op_state</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">State in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a>, when a sync-op is in fact in progress, meaning <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ab40d8133d53135bcc41a12cc27fc8e13" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a> is not null.  <a href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state.html">ipc::transport::struc::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Sync_op_state</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">State in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae7f75f80feb3d33a53705f12dcf77e0c" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a>, when a sync-op is in fact in progress, meaning <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae7f75f80feb3d33a53705f12dcf77e0c" title="The current state of the blocking sync-op mechanism; a variant that broadly describes the state as: n...">m_sync_op_state</a> is not null.  <a href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state_1_1Request__result.html">ipc::transport::struc::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Sync_op_state::Request_result</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A successul result of <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa41aee3c76035f43833078e625e6ef78" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>.  <a href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state_1_1Request__result.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state_1_1Request__result.html">ipc::transport::struc::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Sync_op_state::Request_result</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A successul result of <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a3102e6b12c213902947d1ec21367d6b4" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">sync_request()</a>.  <a href="structipc_1_1transport_1_1struc_1_1Channel_1_1Sync__op__state_1_1Request__result.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -109,7 +116,7 @@ Macros</h2></td></tr>
 <tr class="memitem:a8646782bf9b3daa107f2aa818f6345cb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html#a8646782bf9b3daa107f2aa818f6345cb">TEMPLATE_STRUCTURED_CHANNEL</a></td></tr>
 <tr class="memdesc:a8646782bf9b3daa107f2aa818f6345cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard.  <a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html#a8646782bf9b3daa107f2aa818f6345cb">More...</a><br /></td></tr>
 <tr class="separator:a8646782bf9b3daa107f2aa818f6345cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5313383b4bb7158e2f65d89690348f04"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html#a5313383b4bb7158e2f65d89690348f04">CLASS_STRUCTURED_CHANNEL</a>&#160;&#160;&#160;  Channel&lt;Channel_obj, Message_body, Struct_builder_config, Struct_reader_config&gt;</td></tr>
+<tr class="memitem:a5313383b4bb7158e2f65d89690348f04"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html#a5313383b4bb7158e2f65d89690348f04">CLASS_STRUCTURED_CHANNEL</a>&#160;&#160;&#160;  Channel&lt;Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t&gt;</td></tr>
 <tr class="memdesc:a5313383b4bb7158e2f65d89690348f04"><td class="mdescLeft">&#160;</td><td class="mdescRight">See nearby <code>TEMPLATE_...</code> macro; same deal here.  <a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html#a5313383b4bb7158e2f65d89690348f04">More...</a><br /></td></tr>
 <tr class="separator:a5313383b4bb7158e2f65d89690348f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -121,14 +128,14 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CLASS_STRUCTURED_CHANNEL&#160;&#160;&#160;  Channel&lt;Channel_obj, Message_body, Struct_builder_config, Struct_reader_config&gt;</td>
+          <td class="memname">#define CLASS_STRUCTURED_CHANNEL&#160;&#160;&#160;  Channel&lt;Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>See nearby <code>TEMPLATE_...</code> macro; same deal here. </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01624">1624</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02124">2124</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -143,26 +150,23 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Channel_obj, <span class="keyword">typename</span> Message_body, \</div>
-<div class="line">           typename Struct_builder_config, <span class="keyword">typename</span> Struct_reader_config&gt;</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Owned_channel_t, <span class="keyword">typename</span> Msg_body_t, \</div>
+<div class="line">           typename Builder_config_t, <span class="keyword">typename</span> Reader_config_t&gt;</div>
 </div><!-- fragment -->
 <p>Internally used macro; public API users should disregard. </p>
 <p >Convenience macro for <em>this</em> file only: non-inline class template methods are hideous to read (+ write), when there are so many template parameters. These are <code>undef</code>-ed at the end of the file.</p>
 <h3>Doxygen notes</h3>
 <p >Ideally these would not output Doxygen documentation, but then Doxygen produces a warning which we cannot accept. <code>cond</code> + <code>endcond</code> Doxygen directives can easily make Doxygen ignore them; but then another problem pops up: It sees the method bodies and gets confused by what it sees as non-existent class name <code>CLASS_...</code> and warns about <em>that</em>. The Doxyfile <code>MACRO_EXPANSION = YES</code> tag setting eliminates that problem &ndash; but then <code>cond</code> + <code>endcond</code> around this makes it also ignore the <code>"#define"</code> which brings back the latter warning. Hence, as far as we can tell with Doxygen 1.9.3, no choice but to Doxygen-document these.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000025">Todo:</a></b></dt><dd>Look over the rest of the code base &ndash; possibly in Flow too &ndash; and apply the <code>define TEMPLATE_</code><ul>
-<li><code>define CLASS_</code> technique where it'd be subjectively beneficial. </li>
-</ul>
-</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000028">Todo:</a></b></dt><dd>Look over the rest of the code base &ndash; possibly in Flow too &ndash; and apply the <code>define TEMPLATE_</code> + <code>define CLASS_</code> technique where it'd be subjectively beneficial. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l01620">1620</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02120">2120</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

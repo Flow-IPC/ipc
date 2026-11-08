@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['native_5fhandle_0',['Native_handle',['../namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8',1,'ipc::transport']]],
-  ['native_5fhandle_5freceiver_5fobj_1',['Native_handle_receiver_obj',['../classipc_1_1transport_1_1Channel.html#ad011bfbcfc226b9a32d97188485d9a22',1,'ipc::transport::Channel']]],
-  ['native_5fhandle_5fsender_5fobj_2',['Native_handle_sender_obj',['../classipc_1_1transport_1_1Channel.html#afc600491e137c9dc16c202b04885a36a',1,'ipc::transport::Channel']]]
+  ['low_5flvl_5fpayload_5fblob_5flength_5ft_0',['low_lvl_payload_blob_length_t',['../classipc_1_1transport_1_1Native__socket__stream__cfg.html#ad862e5bbb91ba16c2112a705f526c1c8',1,'ipc::transport::Native_socket_stream_cfg']]]
 ];

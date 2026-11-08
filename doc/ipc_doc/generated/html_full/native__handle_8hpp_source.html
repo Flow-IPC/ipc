@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -90,214 +90,484 @@ $(function() {
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">/// @file</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"></span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;ostream&gt;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;flow/common.hpp&gt;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceipc_1_1util.html">ipc::util</a></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#ifndef FLOW_OS_LINUX</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">static_assert</span>(<span class="keyword">false</span>, <span class="stringliteral">&quot;Flow-IPC supports transmitting native handles in Linux only; a core feature.  &quot;</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                       <span class="stringliteral">&quot;Build in Linux only.&quot;</span>);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// From this point on (in #including .cpp files as well) POSIX is assumed; and in a few spots specifically Linux.</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// Types.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="common_8hpp.html">ipc/common.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;boost/scope/unique_resource.hpp&gt;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;boost/core/functor.hpp&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;ostream&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceipc_1_1util.html">ipc::util</a></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#ifndef FLOW_OS_LINUX</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">static_assert</span>(<span class="keyword">false</span>, <span class="stringliteral">&quot;Flow-IPC supports transmitting native handles in Linux only; a core feature.  &quot;</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                       <span class="stringliteral">&quot;Build in Linux only.&quot;</span>);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// From this point on (in #including .cpp files as well) POSIX is assumed; and in a few spots specifically Linux.</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">/* Note: We lack a native_handle_fwd.hpp, as it&#39;s such a thin wrapper around an FD (int) that there&#39;s no point</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"> * forward-declaring it, as it&#39;s ~always referred to by value. */</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"></span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"> * A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"> * It would have been acceptable to simply use an alias</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"> * to the native handle type (in POSIX, `int`), but this way is better stylistically with exactly zero performance</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"> * overhead.  Initialize it, e.g., `Native_handle hndl(some_fd);`, where</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"> * `some_fd` might be some POSIX-y FD (network socket, Unix domain socket, file descriptor, etc.).</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment"> * Or initialize via no-arg construction which results in an `null() == true` object.  Copy construction, assignment,</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"> * equality, total ordering, and hashing all work as one would expect and essentially the same as on the underlying</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"> * native handles.</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"> * It is either null() or stores a native handle.  In the former case, null() being `true` means explicitly</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"> * that `m_native_handle == Native_handle::S_NULL_HANDLE`.</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"> * ### Rationale ###</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"> * Originally we tried to make it aggregate-initializable, like `Native_handle hndl = {some_fd}`; for example see</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment"> * standard `array&lt;&gt;`.  This is reassuring perf-wise; and it involves less (i.e., no) code to boot.</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"> * However, it really is just one light-weight scalar, and there&#39;s 0% chance explicit construction is any slower.</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment"> * So, perf isn&#39;t an issue.  Still, why not make it aggregate-initializable though?  I (ygoldfel) gave up, eventually,</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment"> * because I wanted *some* non-default-behavior constructors to be available, namely no-args (`Native_handle()` that</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"> * makes an `null() == true` one) and move (`Native_handle(Native_handle&amp;&amp;)` that nullifies the source object).</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"> * This isn&#39;t allowed in aggregate-initializable classes; so then I made some `static` &quot;constructors&quot; instead; but</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment"> * those aren&#39;t sufficient for containers... and on it went.  This way, though verbose, just works out better for the</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"> * API.</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html">   62</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>{</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">// Types.</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment"></span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">  /// The native handle type.  Much logic relies on this type being light-weight (fast to copy).</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">   67</a></span><span class="comment"></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> = int;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">// Constants.</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment"></span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">   * The value for #m_native_handle such that `null() == true`; else it is `false`.</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">   * No valid handle ever equals this.</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"> * forward-declaring it, as it&#39;s ~always referred to by value, and almost everything is `constexpr`. */</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// Types.</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"></span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"> * A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"> * It would have been acceptable to simply use an alias to the native handle type (in POSIX, `int`),</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"> * but this way is better stylistically with exactly zero performance overhead.  Initialize it, e.g.,</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment"> * `Native_handle hndl{some_fd};`, where `some_fd` might be some POSIX-y FD (network socket, Unix domain socket,</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"> * file descriptor, etc.).  Or initialize via no-arg construction which results in a `null() == true` object.</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"> * Copy construction, assignment, equality, total ordering, and hashing all work as one would expect and</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"> * essentially the same as on the underlying native handles.</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"> * It is either null() or stores a native handle.  In the former case, null() being `true` means explicitly</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"> * that `m_native_handle == Native_handle::S_NULL_HANDLE`.</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"> * ### Ownership ###</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment"> * Native_handle is extremely simple.  Other than providing move semantics, where the moved-from guy becomes `.null()`,</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"> * and an always-manual close() API, it does not add ownership semantics.  You&#39;re free to, e.g., assign a non-null</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment"> * socket value, then make a copy, then (e.g.) `.close()` them both -- the second one being an erroneous</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment"> * double-close.  However, if you need added cleverness to avoid such things:</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"> * @see Helper type #Own_native_handle: It adds auto-`close()` behavior, on destruction and being moved-to.</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment"> *      (To get at the Native_handle itself, given an `Own_native_handle x`: Call `x.get()`.  The full API</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"> *      is similar to `unique_ptr`&#39;s basic API: `.reset()`, `.release()`, and so on.)</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"> *      This can be quite useful when one is juggling `Native_handle`s in some operation and, e.g., does not</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment"> *      want to leak the OS-handles (descriptors) on early `return` due to error conditions.  If ultimately</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment"> *      a raw `Native_handle` is required, one can always get it out via `.release()`.</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html">   65</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>{</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="comment">// A method (odd placement b/c needed for Closer below).</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment"></span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">   * Simply calls `hndl.close()`; helpful for things like `boost::core::functor&lt;static_close&gt;`.</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">   * @param hndl</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">   *        See above.  It can be `.null()`.</span></div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a">   75</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a">S_NULL_HANDLE</a>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a8074ac584216ccc6e5e387384ce46674">static_close</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; hndl) <span class="keyword">noexcept</span>;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">// Data.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">// Types.</span></div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment"></span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">   * The native handle (possibly equal to #S_NULL_HANDLE), the exact payload of this Native_handle.</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">   * It can, of course, be assigned and accessed explicitly.  The best way to initialize a</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">   * new Native_handle is, therefore: `Native_handle{some_native_handle}`.  You may also use the</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">   * null() &quot;constructor&quot; to create a null() handle.</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">   85</a></span>  <a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">m_native_handle</a>;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">// Constructors/destructor.</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment"></span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">   * Constructs with given payload; also subsumes no-args construction to mean constructing an object with</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">   * `null() == true`.</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">   * @param native_handle</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">   *        Payload.</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a54a6ce76ea4ce5aa68da13d7a677ca9f">Native_handle</a>(<a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> native_handle = <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a">S_NULL_HANDLE</a>);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">  /// The native handle type.  Much logic relies on this type being light-weight (fast to copy).</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">   80</a></span><span class="comment"></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> = int;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment"></span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">   * Function object type (storing no data), suitable for `unique_resource`, whose `(Native_handle&amp; hndl)` operator</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">   * invokes Native_handle::close() on `hndl`.</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a2072797b16646cc28a5bd35d323e12aa">   86</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a2072797b16646cc28a5bd35d323e12aa">Closer</a> = boost::core::functor&lt;static_close&gt;;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="comment">// Constants.</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment"></span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">   * The value for #m_native_handle such that `null() == true`; else it is `false`.</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">   * No valid handle ever equals this.</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">   94</a></span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">S_NULL_HANDLE</a> = -1;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="comment">// Data.</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment"></span> </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">   * Constructs object equal to `src`, while making `src == null()`.</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">   * ### Rationale ###</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">   * This is move construction, but it&#39;s not about performance at all (as this is all quite cheap anyway);</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">   * more to allow for the pattern of making an object from another object without propagating more copies of the</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">   * underlying handle.  Won&#39;t the default move ctor take care of it?  No, because it&#39;ll just copy the handle and not</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">   * nullify it.</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">   *</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">   * @param src</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">   *        Source object which will be made `null() == true`.</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a54a6ce76ea4ce5aa68da13d7a677ca9f">Native_handle</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp;&amp; src);</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment"></span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment">   * Copy constructor.</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment">   * @param src</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment">   *        Source object.</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a45ae7a5b093b5419a524cf30b07921c4">  117</a></span>  <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a45ae7a5b093b5419a524cf30b07921c4">Native_handle</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; src);</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="comment">// Methods.</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment"></span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment">   * Move assignment; acts similarly to move ctor; but no-op if `*this == src`.</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment">   * @param src</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment">   *        Source object which will be made `null() == true`, unles `*this == src`.</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment">   * @return `*this`.</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a6e321b8cc4628d56cc903beae13c6438">operator=</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp;&amp; src);</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment"></span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="comment">   * Copy assignment; acts similarly to copy ctor.</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">   * @param src</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">   *        Source object.</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">   * @return `*this`.</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#ad1d01d9b502f65c6fe0d8d4a1488cec4">  135</a></span>  <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#ad1d01d9b502f65c6fe0d8d4a1488cec4">operator=</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; src);</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment"></span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment">  /**</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment">   * Returns `true` if and only if #m_native_handle equals #S_NULL_HANDLE.</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment">   * @return See above.</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc">null</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>}; <span class="comment">// struct Native_handle</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">// Free functions.</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment"></span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment"> * Returns `true` if and only if the two Native_handle objects are the same underlying handle.</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment"> * @relatesalso Native_handle</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment"> * @param val1</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment"> *        Object.</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment"> * @param val2</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment"> *        Object.</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment"> * @return See above.</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceipc_1_1util.html#ae4b4126f841ef060cdae15998e48691c">operator==</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2);</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment"></span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment"> * Negation of similar `==`.</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment"> * @relatesalso Native_handle</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment"> * @param val1</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment"> *        Object.</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment"> * @param val2</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment"> *        Object.</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment"> * @return See above.</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceipc_1_1util.html#aacbd7ee43d4912a8790a228dc7cf682d">operator!=</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2);</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment"></span> </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment"> * Returns a less-than comparison of two Native_handle objects, with the usual total ordering guarantees.</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment"> * @relatesalso Native_handle</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="comment"> * @param val1</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="comment"> *        Left-hand side object.</span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment"> * @param val2</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment"> *        Right-hand side object.</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment"> * @return Whether left side is considered strictly less-than right side.</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceipc_1_1util.html#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">operator&lt;</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">   * The native handle (possibly equal to #S_NULL_HANDLE), the exact payload of this Native_handle.</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">   * It can, of course, be assigned and accessed explicitly.</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">  102</a></span>  <a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">m_native_handle</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="comment">// Constructors/destructor.</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment"></span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">   * Constructs with given payload; also subsumes no-args construction to mean constructing an object with</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">   * `null() == true`.</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">   * @param native_handle</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">   *        Payload.</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a45e74a5bc83ed72130fabe8e93d8d82e">Native_handle</a>(<a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> native_handle = <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">S_NULL_HANDLE</a>) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment"></span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="comment">   * Constructs object equal to `src`, while making `src.null() == true`.</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">   * ### Rationale ###</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment">   * This is move construction, but it&#39;s not about performance at all (as this is all quite cheap anyway);</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment">   * more to allow for the pattern of making an object from another object without propagating more copies of the</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment">   * underlying handle.  Wouldn&#39;t the auto-generated move ctor take care of it?  No, because it&#39;d just copy the handle</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment">   * and not nullify the source.</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment">   * However: this is not a replacement for #Own_native_handle.</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment">   * @param src</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">   *        Source object which will be made `null() == true`.</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a45e74a5bc83ed72130fabe8e93d8d82e">Native_handle</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp;&amp; src) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="comment"></span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">   * Copy constructor.</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">   * @param src</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">   *        Source object.</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a2f97bb51efd784fed1b1257caae76419">  136</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a2f97bb51efd784fed1b1257caae76419">Native_handle</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; src) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="comment">// Methods.</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment"></span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment">   * Move assignment; acts similarly to move ctor; but no-op if `this == &amp;src`.</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment">   * @param src</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment">   *        Source object which will be made `.null() == true`, unless `this == &amp;src`.</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">   * @return `*this`.</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="keyword">constexpr</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a512d71649fa27312d2f447580a73e728">operator=</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp;&amp; src) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment"></span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">   * Copy assignment; acts similarly to copy ctor.</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment">   * @param src</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">   *        Source object.</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">   * @return `*this`.</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a08c258105bc038414d2013e5fe589105">  154</a></span>  <span class="keyword">constexpr</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a08c258105bc038414d2013e5fe589105">operator=</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; src) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment"></span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">   * Returns `true` if and only if #m_native_handle equals #S_NULL_HANDLE.</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">   * @return See above.</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29">null</a>() const noexcept;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment"></span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">   * Little utility that returns #m_native_handle to the OS.</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment">   * This is helpful to close, without invoking a native API (`&quot;::close()&quot;` really), a value returned by</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment">   * `transport::asio_local_stream_socket::Peer_socket::release()` or, perhaps, received over a</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment">   * `transport::Native_socket_stream`.</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment">   * `*this` is nullified (null() shall return `true`).  No-op if already so at entry.</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment">   * Nothing is logged; no errors are emitted.  This is intended for no-questions-asked cleanup.</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment">   * @note The Native_handle destructor, such as it is, absolutely does not close() or anything similar.</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment">   *       Similarly move ctor/assignment does not either.  In fact nothing else in Native_handle does.</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment">   *       If you want to do it, you must call close() yourself.  It is a utility; and Native_handle as a whole</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment">   *       intentionally features minimal intelligence; it is merely an object wrapper around a raw handle.</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="comment">   *       Move ctor/assignment nullifying the source object is as &quot;intelligent&quot; as we get.</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment">   * @see However: #Own_native_handle adds auto-`close()` behavior, on destruction and being moved-to.</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment">   *      This can be quite useful when one is juggling `Native_handle`s and, e.g., does not want to leak</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment">   *      the OS-handle (descriptor) on early `return` due to error conditions.</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc">close</a>() noexcept;</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="comment"></span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="comment"> * Hasher of Native_handle for boost.unordered et al.</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment"> * @relatesalso Native_handle</span></div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment"> * @param val</span></div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment"> *        Object to hash.</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment"> * @return See above.</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="keywordtype">size_t</span> <a class="code hl_function" href="namespaceipc_1_1util.html#ad3883df3081441d71a9a989073264b04">hash_value</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val);</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment"></span> </div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment"> * Prints string representation of the given Native_handle to the given `ostream`.</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment"> * @relatesalso Native_handle</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment"> * @param os</span></div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment"> *        Stream to which to write.</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment"> * @param val</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment"> *        Object to serialize.</span></div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment"> * @return `os`.</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>std::ostream&amp; <a class="code hl_function" href="namespaceipc_1_1util.html#a28030c32e9c66f5c2862cbc6998885c7">operator&lt;&lt;</a>(std::ostream&amp; os, <span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; val);</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>} <span class="comment">// namespace ipc::util</span></div>
-<div class="ttc" id="anamespaceipc_1_1util_html"><div class="ttname"><a href="namespaceipc_1_1util.html">ipc::util</a></div><div class="ttdoc">Flow-IPC module containing miscellaneous general-use facilities that ubiquitously used by ~all Flow-I...</div><div class="ttdef"><b>Definition:</b> <a href="default__init__allocator_8hpp_source.html#l00023">default_init_allocator.hpp:24</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1util_html_a28030c32e9c66f5c2862cbc6998885c7"><div class="ttname"><a href="namespaceipc_1_1util.html#a28030c32e9c66f5c2862cbc6998885c7">ipc::util::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const Native_handle &amp;val)</div><div class="ttdoc">Prints string representation of the given Native_handle to the given ostream.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00066">native_handle.cpp:66</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1util_html_a6ff4b35d8fbbe2eb6266f3a7b0f07c49"><div class="ttname"><a href="namespaceipc_1_1util.html#a6ff4b35d8fbbe2eb6266f3a7b0f07c49">ipc::util::operator&lt;</a></div><div class="ttdeci">bool operator&lt;(Native_handle val1, Native_handle val2)</div><div class="ttdoc">Returns a less-than comparison of two Native_handle objects, with the usual total ordering guarantees...</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00097">native_handle.cpp:97</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1util_html_aacbd7ee43d4912a8790a228dc7cf682d"><div class="ttname"><a href="namespaceipc_1_1util.html#aacbd7ee43d4912a8790a228dc7cf682d">ipc::util::operator!=</a></div><div class="ttdeci">bool operator!=(Native_handle val1, Native_handle val2)</div><div class="ttdoc">Negation of similar ==.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00085">native_handle.cpp:85</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1util_html_ad3883df3081441d71a9a989073264b04"><div class="ttname"><a href="namespaceipc_1_1util.html#ad3883df3081441d71a9a989073264b04">ipc::util::hash_value</a></div><div class="ttdeci">size_t hash_value(Native_handle val)</div><div class="ttdoc">Hasher of Native_handle for boost.unordered et al.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00090">native_handle.cpp:90</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1util_html_ae4b4126f841ef060cdae15998e48691c"><div class="ttname"><a href="namespaceipc_1_1util.html#ae4b4126f841ef060cdae15998e48691c">ipc::util::operator==</a></div><div class="ttdeci">bool operator==(Native_handle val1, Native_handle val2)</div><div class="ttdoc">Returns true if and only if the two Native_handle objects are the same underlying handle.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00080">native_handle.cpp:80</a></div></div>
-<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html">ipc::util::Native_handle</a></div><div class="ttdoc">A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00062">native_handle.hpp:63</a></div></div>
-<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a11bd62ce0a7bef4bdfe666201c26d4dc"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a11bd62ce0a7bef4bdfe666201c26d4dc">ipc::util::Native_handle::null</a></div><div class="ttdeci">bool null() const</div><div class="ttdoc">Returns true if and only if m_native_handle equals S_NULL_HANDLE.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00061">native_handle.cpp:61</a></div></div>
-<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a45ae7a5b093b5419a524cf30b07921c4"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a45ae7a5b093b5419a524cf30b07921c4">ipc::util::Native_handle::Native_handle</a></div><div class="ttdeci">Native_handle(const Native_handle &amp;src)</div><div class="ttdoc">Copy constructor.</div></div>
-<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a54a6ce76ea4ce5aa68da13d7a677ca9f"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a54a6ce76ea4ce5aa68da13d7a677ca9f">ipc::util::Native_handle::Native_handle</a></div><div class="ttdeci">Native_handle(handle_t native_handle=S_NULL_HANDLE)</div><div class="ttdoc">Constructs with given payload; also subsumes no-args construction to mean constructing an object with...</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00033">native_handle.cpp:33</a></div></div>
-<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a68e693929170523d58b541d466bac03a"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a68e693929170523d58b541d466bac03a">ipc::util::Native_handle::S_NULL_HANDLE</a></div><div class="ttdeci">static const handle_t S_NULL_HANDLE</div><div class="ttdoc">The value for m_native_handle such that null() == true; else it is false.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00075">native_handle.hpp:75</a></div></div>
-<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a6e321b8cc4628d56cc903beae13c6438"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a6e321b8cc4628d56cc903beae13c6438">ipc::util::Native_handle::operator=</a></div><div class="ttdeci">Native_handle &amp; operator=(Native_handle &amp;&amp;src)</div><div class="ttdoc">Move assignment; acts similarly to move ctor; but no-op if *this == src.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00047">native_handle.cpp:47</a></div></div>
-<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a7194e8aaf9fc0109aad80222ae4ecb25"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">ipc::util::Native_handle::handle_t</a></div><div class="ttdeci">int handle_t</div><div class="ttdoc">The native handle type. Much logic relies on this type being light-weight (fast to copy).</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00067">native_handle.hpp:67</a></div></div>
-<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_ab2f496740139c5752a25a30cf3325d86"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">ipc::util::Native_handle::m_native_handle</a></div><div class="ttdeci">handle_t m_native_handle</div><div class="ttdoc">The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00085">native_handle.hpp:85</a></div></div>
-<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_ad1d01d9b502f65c6fe0d8d4a1488cec4"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#ad1d01d9b502f65c6fe0d8d4a1488cec4">ipc::util::Native_handle::operator=</a></div><div class="ttdeci">Native_handle &amp; operator=(const Native_handle &amp;src)</div><div class="ttdoc">Copy assignment; acts similarly to copy ctor.</div></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="comment">   * Returns whether #m_native_handle is currently an open descriptor in this process; `false` if null().</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment">   * @warning Caveats due to the nature of what Native_handle stores:</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment">   *          1, is_open() is a point-in-time answer (nothing prevents a close immediately after).</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment">   *          2, returning `true` means *some* descriptor identified by #m_native_handle is open -- a stale value</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">   *          whose value has since been recycled answers `true`.</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment">   *          So, watch out, particularly when there is asynchronicity and/or concurrency.</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">   * Nothing is logged; no errors are emitted.</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">   * @return See above.</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a04cda130f65576866261d38dc8e9fd4a">is_open</a>() const noexcept;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment"></span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">   * Returns a new handle referring to the same underlying OS-level open resource as `*this`, a-la POSIX `&quot;::dup()&quot;`</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">   * (in POSIX parlance: a new descript*or* to the same open file descript*ion*).  The result is independent</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">   * of `*this`: closing either leaves the other valid.</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">   * @see duped_native_handle() to obtain the same in the auto-closing #Own_native_handle form.</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">   * An error is possible but generally indicates a truly exceptional situation, probably classifiable in one of these:</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">   *   - User error: null() is `true`.</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">   *   - User error: The stored #m_native_handle is invalid/corrupt.</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">   *   - Environment is hosed: Ran out of descriptors in the OS table/reached a configured limit/etc.</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="comment">   * @note For all applicable OS: close-on-exec is set on the returned handle.</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="comment">   * @param err_code</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="comment">   *        See `flow::Error_code` docs for error reporting semantics.  #Error_code generated:</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="comment">   *        transport::error::Code::S_INVALID_ARGUMENT if `*this` is `.null()`,</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">   *        system error (likely culprits estimated above).</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">   * @return On success a non-`.null()` Native_handle; on failure a `.null() == true` one.</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">   *         (Per usual Flow semantics: on failure: if `!err_code`, exception is thrown instead.)</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#aceb716d03f3e7882706f40a8d5e3ee5b">dup</a>(<a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>* err_code = <span class="keywordtype">nullptr</span>) const;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment"></span> </div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="comment">   * Simply returns `Native_handle{}`, a null handle.</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">   * ### Rationale for existence ###</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">   * It is so that Native_handle can be used as its own traits class in `unique_resource&lt;Native_handle&gt;`.</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">   * You probably need not worry about it: just use #Own_native_handle when you need those capabilities.</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment">   *</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="comment">   * @return See above.</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  static constexpr <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a0163d9407105e1b0f7988609731508db">make_default</a>() noexcept;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="comment"></span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="comment">   * Simply returns `!hndl.null()`.  Rationale for existence: same as make_default().</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="comment">   * @param hndl</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment">   *        See above.</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="comment">   * @return See above.</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  static constexpr <span class="keywordtype">bool</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#ac300500076b676a77b5bfe52cb38de5b">is_allocated</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> hndl) noexcept;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>}; <span class="comment">// struct Native_handle</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="comment"></span> </div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="comment"> * A `unique_resource` wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can be thought</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="comment"> * of as a `unique_ptr&lt;Native_handle&gt;` except involves no heap allocation, and nullness is determined by</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="comment"> * Native_handle::null().</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="comment"> * For a bit more background on rationale and usage: see Native_handle doc header Ownership section.</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="comment"> * Reminder: if/when ready to get a raw, non-auto-closing Native_handle back: use `.release()`.</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="comment"> * @internal</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment"> * ### Impl notes ###</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="comment"> * `unique_resource` is almost perfect for what we want here.  Just a couple subtleties:</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="comment"> *   - `boost.scope` itself threw in a `unique_fd` which, in POSIX-land at least, is very similar or identical</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment"> *     to `Own_native_handle`; it uses `unique_resource` too, naturally, but around `int` a/k/a Native_handle::handle_t</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="comment"> *     as opposed to some wrapper like our `Native_handle`.  We contemplated reusing it anyway, for that</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="comment"> *     particular purpose, but decided that the Native_handle abstraction works for us, so we&#39;d rather re-wrap</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment"> *     it ourselves.  As you can see it is not hard: one line here plus the traits functions</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="comment"> *     Native_handle::make_default() and Native_handle::is_allocated().</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="comment"> *   - The resulting thing, due to our use of traits, is quite tight perf-wise: Its size is that of `handle_t` --</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="comment"> *     an `int` in POSIX at least -- and, combining `constexpr`ness and `unique_resource`&#39;s design, all the</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="comment"> *     basic operations (assign, compare, construct...) should be trivially fast.</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="comment"> *     - There is one *little* asterisk on that front: Given a *non-null object*: the close operation (through</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="comment"> *       `.reset()`, dtor, being assigned-onto or -from) will check for `m_native_handle == S_NULL_HANDLE`</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="comment"> *       twice: 1, `unique_resource` through Native_handle::is_allocated() (traits); 2,</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="comment"> *       in Native_handle::close() again.  It&#39;ll be `false` both times, so then `&quot;::close(m_native_handle)&quot;`</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment"> *       will occur.  The 2nd equality check is redundant.  (If it&#39;s a null object, then the initial check</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment"> *       returns `true` =&gt; GTFO; no problem there.)</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment"> *       - The reason: `.close()` is defensive, as it should be; and Native_handle::Closer inherits that -- why</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment"> *         shouldn&#39;t it, in and of itself? -- and then it is convenient to use `Closer` for</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment"> *         our `unique_resource` setup.  Could we &quot;defeat&quot; it by using a, like, `Closer_unchecked` as the deleter?</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment"> *         Yes; but pragmatically speaking that&#39;s over-engineering.  A redundant `int` compare -- probably optimized</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment"> *         away at some point anyway -- only when the close OS-call will be invoked?  Not a real problem.</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno"><a class="line" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">  277</a></span>using <a class="code hl_typedef" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a> = boost::scope::unique_resource&lt;<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>::<a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a2072797b16646cc28a5bd35d323e12aa">Closer</a>, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&gt;;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment">// Free functions.</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment"></span> </div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment"> * Returns Native_handle constructed by relieving an existing auto-closing #Own_native_handle of its ownership of a</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment"> * particular raw handle and storing it, sans auto-closing protection, in that Native_handle.  That is, it is equal to:</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment"> *   ~~~</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="comment"> *   // src is Own_native_handle.</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment"> *   Native_handle ret{src.get()};</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment"> *   src.release();</span></div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="comment"> *   return ret;</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="comment"> *   ~~~</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="comment"> * @relatesalso Native_handle</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="comment"> * @param src</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="comment"> *        Source object; post-condition is `src.get().null() == true`.</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="comment"> * @return See above.</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a29b19e2440d200540619eb8c9c7239bb">disowned_native_handle</a>(<a class="code hl_typedef" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a>&amp;&amp; src) noexcept;</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment"></span> </div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="comment"> * Returns `Own_native_handle{src.dup(err_code)}`: an auto-closing duplicate of `src`; on error the result is</span></div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="comment"> * `.get().null()`.  See Native_handle::dup() for details.</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment"> * @relatesalso Native_handle</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="comment"> * @param src</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="comment"> *        Handle to duplicate; it is unaffected.</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="comment"> * @param err_code</span></div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="comment"> *        See Native_handle::dup().</span></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="comment"> * @return See above.</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span><a class="code hl_typedef" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">Own_native_handle</a> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a55b346b1c8839776351242a3974d3345">duped_native_handle</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> src, <a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a>* err_code = <span class="keywordtype">nullptr</span>);</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span><span class="comment"></span> </div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="comment"> * Returns `true` if and only if the two Native_handle objects are the same underlying handle.</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="comment"> * @relatesalso Native_handle</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="comment"> * @param val1</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="comment"> *        Object.</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="comment"> * @param val2</span></div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="comment"> *        Object.</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="comment"> * @return See above.</span></div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>constexpr <span class="keywordtype">bool</span> operator==(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) noexcept;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment"></span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="comment"> * Negation of similar `==`.</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="comment"> * @relatesalso Native_handle</span></div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="comment"> * @param val1</span></div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="comment"> *        Object.</span></div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="comment"> * @param val2</span></div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="comment"> *        Object.</span></div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="comment"> * @return See above.</span></div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>constexpr <span class="keywordtype">bool</span> operator!=(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) noexcept;</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span><span class="comment"></span> </div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="comment"> * Returns a less-than comparison of two Native_handle objects, with the usual total ordering guarantees.</span></div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><span class="comment"> * @relatesalso Native_handle</span></div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span><span class="comment"> * @param val1</span></div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span><span class="comment"> *        Left-hand side object.</span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="comment"> * @param val2</span></div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span><span class="comment"> *        Right-hand side object.</span></div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span><span class="comment"> * @return Whether left side is considered strictly less-than right side.</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>constexpr <span class="keywordtype">bool</span> operator&lt;(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) noexcept;</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="comment"></span> </div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="comment"> * Hasher of Native_handle for boost.unordered et al.</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span><span class="comment"> * @relatesalso Native_handle</span></div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span><span class="comment"> * @param val</span></div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span><span class="comment"> *        Object to hash.</span></div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span><span class="comment"> * @return See above.</span></div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span><span class="keywordtype">size_t</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a956b1b739e02118cb8b6c0f3bcbee6ae">hash_value</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val) noexcept;</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span><span class="comment"></span> </div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span><span class="comment"> * Standard swap.  (Proper pattern is `using std::swap;` and then `swap()` in any using function.)</span></div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span><span class="comment"> * ### Rationale for existence ###</span></div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span><span class="comment"> * `std::swap()` would perform 3 move-assigns; Native_handle move-assignment/construction involves nullifying</span></div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span><span class="comment"> * the source Native_handle::m_native_handle; that&#39;s not necessary in a swap and wastes cycles.</span></div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span><span class="comment"> * @relatesalso Native_handle</span></div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span><span class="comment"> * @param val1</span></div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span><span class="comment"> *        Object to swap.</span></div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span><span class="comment"> * @param val2</span></div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span><span class="comment"> *        Object to swap.</span></div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>constexpr <span class="keywordtype">void</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a542d0d7cd95408ec289df9e3cc15cc71">swap</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; val2) noexcept;</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span><span class="comment"></span> </div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span><span class="comment"> * Prints string representation of the given Native_handle to the given `ostream`.</span></div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span><span class="comment"> * @relatesalso Native_handle</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span><span class="comment"> * @param os</span></div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span><span class="comment"> *        Stream to which to write.</span></div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span><span class="comment"> * @param val</span></div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span><span class="comment"> *        Object to serialize.</span></div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span><span class="comment"> * @return `os`.</span></div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; val);</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span><span class="comment">// constexpr implementations.</span></div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span> </div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a45e74a5bc83ed72130fabe8e93d8d82e">  395</a></span>constexpr <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>::<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>(<a class="code hl_typedef" href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">handle_t</a> native_handle) noexcept :</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">m_native_handle</a>(native_handle)</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>{</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  <span class="comment">// Nope.</span></div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>}</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a33928d3671fdca4f3eb6b997b19b1cf9">  401</a></span><span class="keyword">constexpr</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a45e74a5bc83ed72130fabe8e93d8d82e">Native_handle::Native_handle</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp;&amp; src) noexcept :</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a45e74a5bc83ed72130fabe8e93d8d82e">Native_handle</a>(src)</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>{</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  <span class="comment">// It&#39;s why we exist: prevent duplication of src.m_native_handle.</span></div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>  src.m_native_handle = <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">S_NULL_HANDLE</a>;</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>}</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span> </div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span><span class="keyword">constexpr</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a45e74a5bc83ed72130fabe8e93d8d82e">Native_handle::Native_handle</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp;) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span> </div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a512d71649fa27312d2f447580a73e728">  410</a></span><span class="keyword">constexpr</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a512d71649fa27312d2f447580a73e728">Native_handle::operator=</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp;&amp; src) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>{</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  <span class="keywordflow">if</span> (<span class="keyword">this</span> != &amp;src)</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>  {</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">m_native_handle</a> = src.m_native_handle;</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>    src.m_native_handle = <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">S_NULL_HANDLE</a>;</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>  }</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>}</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span> </div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span><span class="keyword">constexpr</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a512d71649fa27312d2f447580a73e728">Native_handle::operator=</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp;) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29">  422</a></span><span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29">Native_handle::null</a>() const noexcept</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>{</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">m_native_handle</a> == <a class="code hl_variable" href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">S_NULL_HANDLE</a>;</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>}</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span> </div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a0163d9407105e1b0f7988609731508db">  427</a></span><span class="keyword">constexpr</span> <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a0163d9407105e1b0f7988609731508db">Native_handle::make_default</a>() noexcept <span class="comment">// Static.</span></div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>{</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>  <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>}</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span> </div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#ac300500076b676a77b5bfe52cb38de5b">  432</a></span><span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#ac300500076b676a77b5bfe52cb38de5b">Native_handle::is_allocated</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> hndl) <span class="keyword">noexcept</span> <span class="comment">// Static.</span></div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>{</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>  <span class="keywordflow">return</span> !hndl.<a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29">null</a>();</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>}</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span> </div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a9568a0f5ce8c7386c44f8da23b368bc6">  437</a></span><span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a9568a0f5ce8c7386c44f8da23b368bc6">operator==</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>{</div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>  <span class="keywordflow">return</span> val1.m_native_handle == val2.m_native_handle;</div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>}</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span> </div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#ac80858a49a824d88303ac7174a051b86">  442</a></span><span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#ac80858a49a824d88303ac7174a051b86">operator!=</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>{</div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>  <span class="keywordflow">return</span> !<a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a9568a0f5ce8c7386c44f8da23b368bc6">operator==</a>(val1, val2);</div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>}</div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> </div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a542d0d7cd95408ec289df9e3cc15cc71">  447</a></span><span class="keyword">constexpr</span> <span class="keywordtype">void</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a542d0d7cd95408ec289df9e3cc15cc71">swap</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a>&amp; val2) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>{</div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>  <span class="comment">// (See `Rationale for existence` in our doc header.)</span></div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span> </div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>  <span class="comment">// Looks like this std::swap() is not constexpr (C++17), so let&#39;s just:</span></div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tmp = val1.m_native_handle;</div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>  val1.m_native_handle = val2.m_native_handle;</div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>  val2.m_native_handle = tmp;</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>}</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span> </div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno"><a class="line" href="structipc_1_1util_1_1Native__handle.html#a94a973e272e5dc44bbaa3931d2241b52">  457</a></span><span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structipc_1_1util_1_1Native__handle.html#a94a973e272e5dc44bbaa3931d2241b52">operator&lt;</a>(<a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val1, <a class="code hl_struct" href="structipc_1_1util_1_1Native__handle.html">Native_handle</a> val2) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>{</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>  <span class="comment">/* In POSIX and Windows this is valid.  So don&#39;t worry about #ifdef&#39;ing for OS, static_assert(false), etc.</span></div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span><span class="comment">   * I did check that even in Windows they are formally integers still.  Update: Actually... not sure... depends</span></div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="comment">   * on what&#39;s a Native_handle; if it&#39;s SOCKET then sure, but otherwise -- who knows?  There&#39;s probably a ticket</span></div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span><span class="comment">   * about that whole topic (porting for Windows, that is; a big part would be figuring out what Native_handle might</span></div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span><span class="comment">   * even be... if anything). */</span></div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>  <span class="keywordflow">return</span> val1.m_native_handle &lt; val2.m_native_handle;</div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>}</div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span> </div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>} <span class="comment">// namespace ipc::util</span></div>
+<div class="ttc" id="acommon_8hpp_html"><div class="ttname"><a href="common_8hpp.html">common.hpp</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html"><div class="ttname"><a href="namespaceipc_1_1util.html">ipc::util</a></div><div class="ttdoc">Flow-IPC module containing miscellaneous general-use facilities that are ubiquitously used by ~all Fl...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2util_2detail_2util_8cpp_source.html#l00030">util.cpp:31</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1util_html_aeabf2feb5c96b0a90acc026b964d4c40"><div class="ttname"><a href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">ipc::util::Own_native_handle</a></div><div class="ttdeci">boost::scope::unique_resource&lt; Native_handle, Native_handle::Closer, Native_handle &gt; Own_native_handle</div><div class="ttdoc">A unique_resource wrapper for Native_handle useful to avoid descriptor leaks and double-closing; can ...</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00277">native_handle.hpp:277</a></div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00313">common.hpp:313</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html">ipc::util::Native_handle</a></div><div class="ttdoc">A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00065">native_handle.hpp:66</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a0163d9407105e1b0f7988609731508db"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a0163d9407105e1b0f7988609731508db">ipc::util::Native_handle::make_default</a></div><div class="ttdeci">static constexpr Native_handle make_default() noexcept</div><div class="ttdoc">Simply returns Native_handle{}, a null handle.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00427">native_handle.hpp:427</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a04cda130f65576866261d38dc8e9fd4a"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a04cda130f65576866261d38dc8e9fd4a">ipc::util::Native_handle::is_open</a></div><div class="ttdeci">bool is_open() const noexcept</div><div class="ttdoc">Returns whether m_native_handle is currently an open descriptor in this process; false if null().</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00079">native_handle.cpp:79</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a08c258105bc038414d2013e5fe589105"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a08c258105bc038414d2013e5fe589105">ipc::util::Native_handle::operator=</a></div><div class="ttdeci">constexpr Native_handle &amp; operator=(const Native_handle &amp;src) noexcept</div><div class="ttdoc">Copy assignment; acts similarly to copy ctor.</div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a19da06dc81aacb0c35917e3ecd9ddd95"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a19da06dc81aacb0c35917e3ecd9ddd95">ipc::util::Native_handle::S_NULL_HANDLE</a></div><div class="ttdeci">static constexpr handle_t S_NULL_HANDLE</div><div class="ttdoc">The value for m_native_handle such that null() == true; else it is false.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00094">native_handle.hpp:94</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a2072797b16646cc28a5bd35d323e12aa"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a2072797b16646cc28a5bd35d323e12aa">ipc::util::Native_handle::Closer</a></div><div class="ttdeci">boost::core::functor&lt; static_close &gt; Closer</div><div class="ttdoc">Function object type (storing no data), suitable for unique_resource, whose (Native_handle&amp; hndl) ope...</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00086">native_handle.hpp:86</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a290ac28f142c84ee7033932f4ee53c29"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a290ac28f142c84ee7033932f4ee53c29">ipc::util::Native_handle::null</a></div><div class="ttdeci">constexpr bool null() const noexcept</div><div class="ttdoc">Returns true if and only if m_native_handle equals S_NULL_HANDLE.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00422">native_handle.hpp:422</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a29b19e2440d200540619eb8c9c7239bb"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a29b19e2440d200540619eb8c9c7239bb">ipc::util::Native_handle::disowned_native_handle</a></div><div class="ttdeci">Native_handle disowned_native_handle(Own_native_handle &amp;&amp;src) noexcept</div><div class="ttdoc">Returns Native_handle constructed by relieving an existing auto-closing Own_native_handle of its owne...</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00119">native_handle.cpp:119</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a2f97bb51efd784fed1b1257caae76419"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a2f97bb51efd784fed1b1257caae76419">ipc::util::Native_handle::Native_handle</a></div><div class="ttdeci">constexpr Native_handle(const Native_handle &amp;src) noexcept</div><div class="ttdoc">Copy constructor.</div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a45e74a5bc83ed72130fabe8e93d8d82e"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a45e74a5bc83ed72130fabe8e93d8d82e">ipc::util::Native_handle::Native_handle</a></div><div class="ttdeci">constexpr Native_handle(handle_t native_handle=S_NULL_HANDLE) noexcept</div><div class="ttdoc">Constructs with given payload; also subsumes no-args construction to mean constructing an object with...</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00395">native_handle.hpp:395</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a512d71649fa27312d2f447580a73e728"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a512d71649fa27312d2f447580a73e728">ipc::util::Native_handle::operator=</a></div><div class="ttdeci">constexpr Native_handle &amp; operator=(Native_handle &amp;&amp;src) noexcept</div><div class="ttdoc">Move assignment; acts similarly to move ctor; but no-op if this == &amp;src.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00410">native_handle.hpp:410</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a542d0d7cd95408ec289df9e3cc15cc71"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a542d0d7cd95408ec289df9e3cc15cc71">ipc::util::Native_handle::swap</a></div><div class="ttdeci">constexpr void swap(Native_handle &amp;val1, Native_handle &amp;val2) noexcept</div><div class="ttdoc">Standard swap.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00447">native_handle.hpp:447</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a55b346b1c8839776351242a3974d3345"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a55b346b1c8839776351242a3974d3345">ipc::util::Native_handle::duped_native_handle</a></div><div class="ttdeci">Own_native_handle duped_native_handle(Native_handle src, Error_code *err_code=nullptr)</div><div class="ttdoc">Returns Own_native_handle{src.dup(err_code)}: an auto-closing duplicate of src; on error the result i...</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00126">native_handle.cpp:126</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a6ea6048351bfd92d7d50f92138dfe5cc"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc">ipc::util::Native_handle::close</a></div><div class="ttdeci">void close() noexcept</div><div class="ttdoc">Little utility that returns m_native_handle to the OS.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00032">native_handle.cpp:32</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a7194e8aaf9fc0109aad80222ae4ecb25"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a7194e8aaf9fc0109aad80222ae4ecb25">ipc::util::Native_handle::handle_t</a></div><div class="ttdeci">int handle_t</div><div class="ttdoc">The native handle type. Much logic relies on this type being light-weight (fast to copy).</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00080">native_handle.hpp:80</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a8074ac584216ccc6e5e387384ce46674"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a8074ac584216ccc6e5e387384ce46674">ipc::util::Native_handle::static_close</a></div><div class="ttdeci">static void static_close(Native_handle &amp;hndl) noexcept</div><div class="ttdoc">Simply calls hndl.close(); helpful for things like boost::core::functor&lt;static_close&gt;.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00074">native_handle.cpp:74</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a94a973e272e5dc44bbaa3931d2241b52"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a94a973e272e5dc44bbaa3931d2241b52">ipc::util::Native_handle::operator&lt;</a></div><div class="ttdeci">constexpr bool operator&lt;(Native_handle val1, Native_handle val2) noexcept</div><div class="ttdoc">Returns a less-than comparison of two Native_handle objects, with the usual total ordering guarantees...</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00457">native_handle.hpp:457</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a9568a0f5ce8c7386c44f8da23b368bc6"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a9568a0f5ce8c7386c44f8da23b368bc6">ipc::util::Native_handle::operator==</a></div><div class="ttdeci">constexpr bool operator==(Native_handle val1, Native_handle val2) noexcept</div><div class="ttdoc">Returns true if and only if the two Native_handle objects are the same underlying handle.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00437">native_handle.hpp:437</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_a956b1b739e02118cb8b6c0f3bcbee6ae"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#a956b1b739e02118cb8b6c0f3bcbee6ae">ipc::util::Native_handle::hash_value</a></div><div class="ttdeci">size_t hash_value(Native_handle val) noexcept</div><div class="ttdoc">Hasher of Native_handle for boost.unordered et al.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00131">native_handle.cpp:131</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_ab2f496740139c5752a25a30cf3325d86"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86">ipc::util::Native_handle::m_native_handle</a></div><div class="ttdeci">handle_t m_native_handle</div><div class="ttdoc">The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00102">native_handle.hpp:102</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_ac300500076b676a77b5bfe52cb38de5b"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#ac300500076b676a77b5bfe52cb38de5b">ipc::util::Native_handle::is_allocated</a></div><div class="ttdeci">static constexpr bool is_allocated(Native_handle hndl) noexcept</div><div class="ttdoc">Simply returns !hndl.null().</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00432">native_handle.hpp:432</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_ac80858a49a824d88303ac7174a051b86"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#ac80858a49a824d88303ac7174a051b86">ipc::util::Native_handle::operator!=</a></div><div class="ttdeci">constexpr bool operator!=(Native_handle val1, Native_handle val2) noexcept</div><div class="ttdoc">Negation of similar ==.</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8hpp_source.html#l00442">native_handle.hpp:442</a></div></div>
+<div class="ttc" id="astructipc_1_1util_1_1Native__handle_html_aceb716d03f3e7882706f40a8d5e3ee5b"><div class="ttname"><a href="structipc_1_1util_1_1Native__handle.html#aceb716d03f3e7882706f40a8d5e3ee5b">ipc::util::Native_handle::dup</a></div><div class="ttdeci">Native_handle dup(Error_code *err_code=nullptr) const</div><div class="ttdoc">Returns a new handle referring to the same underlying OS-level open resource as *this,...</div><div class="ttdef"><b>Definition:</b> <a href="native__handle_8cpp_source.html#l00087">native_handle.cpp:87</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

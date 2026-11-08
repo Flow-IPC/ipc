@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -118,7 +118,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa19dd114ab82118dc1f100d07583b106"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move-construct.  <a href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#aa19dd114ab82118dc1f100d07583b106">More...</a><br /></td></tr>
 <tr class="separator:aa19dd114ab82118dc1f100d07583b106"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e987cbc14f210607f39d06495c275b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#a3e987cbc14f210607f39d06495c275b0">~Asio_waitable_native_handle</a> ()</td></tr>
-<tr class="memdesc:a3e987cbc14f210607f39d06495c275b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor that does <em>not</em> OS-close (<code>"::close()"</code>) the stored native handle (if any) but rather performs <code>this-&gt;release()</code> (eating any potential error in doing so).  <a href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#a3e987cbc14f210607f39d06495c275b0">More...</a><br /></td></tr>
+<tr class="memdesc:a3e987cbc14f210607f39d06495c275b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor that does <em>not</em> OS-close (in the <a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc" title="Little utility that returns m_native_handle to the OS.">Native_handle::close()</a> sense) the stored native handle (if any) but rather performs <code>this-&gt;release()</code> (eating any potential error in doing so).  <a href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#a3e987cbc14f210607f39d06495c275b0">More...</a><br /></td></tr>
 <tr class="separator:a3e987cbc14f210607f39d06495c275b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae38328d6ef63942c3539f7b17b0108da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html">Asio_waitable_native_handle</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#ae38328d6ef63942c3539f7b17b0108da">operator=</a> (<a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html">Asio_waitable_native_handle</a> &amp;&amp;src)</td></tr>
 <tr class="memdesc:ae38328d6ef63942c3539f7b17b0108da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move-assign.  <a href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#ae38328d6ef63942c3539f7b17b0108da">More...</a><br /></td></tr>
@@ -149,14 +149,14 @@ Public Member Functions</h2></td></tr>
 </ol>
 </li>
 </ol>
-<p >You may not use <code>*this</code> object directly to perform actual I/O; it lacks such methods as <code>async_read_some()</code>. Moreover it is likely against the (informal) aim of <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html" title="Useful if using the sync_io pattern within a user event loop built on boost.asio (optionally with flo...">Asio_waitable_native_handle</a> to perform actual I/O by obtaining the handle via <code>.<a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#ad6663616504b4543a6227eb21279ce39" title="Returns the same Native_handle as passed to original handle-loading ctor or assign(),...">native_handle()</a></code> and then doing reads/writes on that handle.</p>
-<p >Construction is likely performed by internal Flow-IPC code only in practice, though you are free to use it for your own purposes.</p>
-<dl class="section warning"><dt>Warning</dt><dd>This object, like <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#a4cbb287f5971162e747f475052abc413" title="Short-hand for our base type; can be used for, e.g., Base::wait_write and Base::wait_read.">Asio_waitable_native_handle::Base</a>, isn't <em>just</em> a <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> wrapper: It also has to be associated with an execution context, usually <code>Task_engine</code> (<code>boost::asio::io_context</code>) or boost.asio strand. If you associate, via ctor or <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#a7d28277f9ef090032b0483c65f79f23c" title="Loads value to be returned by native_handle().">assign()</a>, 2 <code>*this</code>es each wrapping the same-valued <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> (storing the same raw handle) with the same <code>Task_engine</code>, behavior is undefined formally; though internally it'll cause a duplicate-descriptor error/exception (in Linux from <code>errno == EEXIST</code> from an internal <code>epoll_ctl()</code>). Even if you don't plan to <code>async_wait()</code>, this will unfortunately still happen; and for <code>async_wait()</code> purposes it will and <em>should</em> happen. So just take care not to create duplicate-handle <code>*this</code>es associated with the same <code>Task_engine</code>. </dd></dl>
+<p >You may not use <code>*this</code> object directly to perform actual I/O; it lacks such methods as <code>async_read_some()</code>. Moreover, performing actual I/O by obtaining the handle via <code>.<a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#ad6663616504b4543a6227eb21279ce39" title="Returns the same Native_handle as passed to original handle-loading ctor or assign(),...">native_handle()</a></code> and then doing reads/writes on that handle is likely against the (informal) aim of <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html" title="Useful if using the sync_io pattern within a user event loop built on boost.asio (optionally with flo...">Asio_waitable_native_handle</a>.</p>
+<p >Construction with a handle is likely performed by internal Flow-IPC code only, in practice. If integrating with boost.asio, you will construct handle-less ones (associated with your execution context) in the function you pass to <code>replace_event_wait_handles()</code>. Beyond that you are free to use it for your own purposes.</p>
+<dl class="section warning"><dt>Warning</dt><dd>This object, like <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#a4cbb287f5971162e747f475052abc413" title="Short-hand for our base type; can be used for, e.g., Base::wait_write and Base::wait_read.">Asio_waitable_native_handle::Base</a>, isn't <em>just</em> a <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> wrapper: It also has to be associated with an execution context, usually <code>Task_engine</code> (<code>boost::asio::io_context</code>) or boost.asio <code>strand</code>. If you associate, via ctor or <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#a7d28277f9ef090032b0483c65f79f23c" title="Loads value to be returned by native_handle().">assign()</a>, 2 <code>*this</code>es each wrapping the same-valued <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> (storing the same raw handle) with the same <code>Task_engine</code>, behavior is undefined formally; though internally it'll cause a duplicate-descriptor error/exception (in Linux from <code>errno == EEXIST</code> from an internal <code>epoll_ctl()</code>). Even if you don't plan to <code>async_wait()</code>, this will unfortunately still happen; and for <code>async_wait()</code> purposes it will and <em>should</em> happen. So just take care not to create duplicate-handle <code>*this</code>es associated with the same <code>Task_engine</code>. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Move assignment works which can be useful to associate a <code>*this</code> with a different execution context (event loop, <code>Task_engine</code>, etc.).</dd></dl>
 <h3>Rationale for <code>protected</code> rather than <code>public</code> inheritance</h3>
-<p ><code>public</code> inheritance would have been fine, more or less, but it seemed prudent to close off access to mutators from <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#a4cbb287f5971162e747f475052abc413" title="Short-hand for our base type; can be used for, e.g., Base::wait_write and Base::wait_read.">Asio_waitable_native_handle::Base</a> like <code>close()</code> and <code>non_blocking()</code> which could sow sheer chaos; the point here is to watch for events on this guy, not (e.g.) blow up some internal transport within <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> et al. </p>
+<p ><code>public</code> inheritance would have been fine, more or less, but it seemed prudent to close off access to mutators from <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#a4cbb287f5971162e747f475052abc413" title="Short-hand for our base type; can be used for, e.g., Base::wait_write and Base::wait_read.">Asio_waitable_native_handle::Base</a> like <code>close()</code> and <code>non_blocking()</code> which could sow sheer chaos; the point here is to watch for events on this guy, not (e.g.) blow up some internal transport within <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> et al. </p>
 
-<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8hpp_source.html#l00080">80</a> of file <a class="el" href="asio__waitable__native__hndl_8hpp_source.html">asio_waitable_native_hndl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8hpp_source.html#l00083">83</a> of file <a class="el" href="asio__waitable__native__hndl_8hpp_source.html">asio_waitable_native_hndl.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a4cbb287f5971162e747f475052abc413" name="a4cbb287f5971162e747f475052abc413"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4cbb287f5971162e747f475052abc413">&#9670;&nbsp;</a></span>Base</h2>
@@ -172,7 +172,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Short-hand for our base type; can be used for, e.g., <code>Base::wait_write</code> and <code>Base::wait_read</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8hpp_source.html#l00086">86</a> of file <a class="el" href="asio__waitable__native__hndl_8hpp_source.html">asio_waitable_native_hndl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8hpp_source.html#l00089">89</a> of file <a class="el" href="asio__waitable__native__hndl_8hpp_source.html">asio_waitable_native_hndl.hpp</a>.</p>
 
 </div>
 </div>
@@ -222,9 +222,9 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00027">27</a> of file <a class="el" href="asio__waitable__native__hndl_8cpp_source.html">asio_waitable_native_hndl.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00029">29</a> of file <a class="el" href="asio__waitable__native__hndl_8cpp_source.html">asio_waitable_native_hndl.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__handle_8cpp_source.html#l00061">ipc::util::Native_handle::null()</a>.</p>
+<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00422">ipc::util::Native_handle::null()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -267,7 +267,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00036">36</a> of file <a class="el" href="asio__waitable__native__hndl_8cpp_source.html">asio_waitable_native_hndl.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00038">38</a> of file <a class="el" href="asio__waitable__native__hndl_8cpp_source.html">asio_waitable_native_hndl.cpp</a>.</p>
 
 </div>
 </div>
@@ -331,9 +331,9 @@ template&lt;typename Execution_context &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8hpp_source.html#l00216">216</a> of file <a class="el" href="asio__waitable__native__hndl_8hpp_source.html">asio_waitable_native_hndl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8hpp_source.html#l00219">219</a> of file <a class="el" href="asio__waitable__native__hndl_8hpp_source.html">asio_waitable_native_hndl.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__handle_8cpp_source.html#l00061">ipc::util::Native_handle::null()</a>.</p>
+<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00422">ipc::util::Native_handle::null()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -395,7 +395,7 @@ template&lt;typename Execution_context &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8hpp_source.html#l00227">227</a> of file <a class="el" href="asio__waitable__native__hndl_8hpp_source.html">asio_waitable_native_hndl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8hpp_source.html#l00230">230</a> of file <a class="el" href="asio__waitable__native__hndl_8hpp_source.html">asio_waitable_native_hndl.hpp</a>.</p>
 
 </div>
 </div>
@@ -424,9 +424,10 @@ template&lt;typename Execution_context &gt; </div>
 </div><div class="memdoc">
 
 <p>Move-construct. </p>
+<p >See boost.asio docs for similar <code>posix::basic_descriptor</code> ctor.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">src</td><td>See boost.asio docs for similar <code>posix::basic_descriptor</code> ctor. </td></tr>
+    <tr><td class="paramname">src</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
@@ -448,9 +449,9 @@ template&lt;typename Execution_context &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Destructor that does <em>not</em> OS-close (<code>"::close()"</code>) the stored native handle (if any) but rather performs <code>this-&gt;release()</code> (eating any potential error in doing so). </p>
+<p>Destructor that does <em>not</em> OS-close (in the <a class="el" href="structipc_1_1util_1_1Native__handle.html#a6ea6048351bfd92d7d50f92138dfe5cc" title="Little utility that returns m_native_handle to the OS.">Native_handle::close()</a> sense) the stored native handle (if any) but rather performs <code>this-&gt;release()</code> (eating any potential error in doing so). </p>
 
-<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00046">46</a> of file <a class="el" href="asio__waitable__native__hndl_8cpp_source.html">asio_waitable_native_hndl.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00048">48</a> of file <a class="el" href="asio__waitable__native__hndl_8cpp_source.html">asio_waitable_native_hndl.cpp</a>.</p>
 
 </div>
 </div>
@@ -473,7 +474,7 @@ template&lt;typename Execution_context &gt; </div>
 
 <p>Loads value to be returned by <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#ad6663616504b4543a6227eb21279ce39" title="Returns the same Native_handle as passed to original handle-loading ctor or assign(),...">native_handle()</a>. </p>
 <p >As with the 2+-arg ctor(s) the handle must be valid (not closed). See also <code>.release()</code> and dtor.</p>
-<p >If a handle is already loaded (<code>Base::is_open() == true</code>), this method automatically release()s it first.</p>
+<p >If a handle is already loaded (<code>Base::is_open() == true</code>), this method automatically <code>release()</code>s it first.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hndl</td><td>The handle that might be watched subsequently. <code>.null()</code> leads to undefined behavior; assertion may trip. If the associated <code>Task_engine</code> is already associated with another <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html" title="Useful if using the sync_io pattern within a user event loop built on boost.asio (optionally with flo...">Asio_waitable_native_handle</a> that stores the same <a class="el" href="structipc_1_1util_1_1Native__handle.html#ab2f496740139c5752a25a30cf3325d86" title="The native handle (possibly equal to S_NULL_HANDLE), the exact payload of this Native_handle.">Native_handle::m_native_handle</a>, it is formally undefined behavior (in reality a boost.asio exception is thrown; but just don't do it). </td></tr>
@@ -481,11 +482,11 @@ template&lt;typename Execution_context &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00065">65</a> of file <a class="el" href="asio__waitable__native__hndl_8cpp_source.html">asio_waitable_native_hndl.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00068">68</a> of file <a class="el" href="asio__waitable__native__hndl_8cpp_source.html">asio_waitable_native_hndl.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00085">ipc::util::Native_handle::m_native_handle</a>, and <a class="el" href="native__handle_8cpp_source.html#l00061">ipc::util::Native_handle::null()</a>.</p>
+<p class="reference">References <a class="el" href="native__handle_8hpp_source.html#l00102">ipc::util::Native_handle::m_native_handle</a>, and <a class="el" href="native__handle_8hpp_source.html#l00422">ipc::util::Native_handle::null()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00487">ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_receiver_impl()</a>, <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00641">ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_sender_impl()</a>, <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8cpp_source.html#l00070">ipc::transport::sync_io::Native_socket_stream::Impl::Impl()</a>, <a class="el" href="session__adapter_8hpp_source.html#l00520">ipc::session::sync_io::Session_adapter&lt; Session &gt;::init_pipe()</a>, <a class="el" href="sync__io_2native__socket__stream__acceptor_8cpp_source.html#l00031">ipc::transport::sync_io::Native_socket_stream_acceptor::Native_socket_stream_acceptor()</a>, <a class="el" href="sync__io_2native__socket__stream__acceptor_8hpp_source.html#l00310">ipc::transport::sync_io::Native_socket_stream_acceptor::replace_event_wait_handles()</a>, and <a class="el" href="session__server__adapter_8hpp_source.html#l00266">ipc::session::sync_io::Session_server_adapter&lt; Session_server &gt;::Session_server_adapter()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00600">ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_receiver_impl()</a>, <a class="el" href="sync__io_2detail_2blob__stream__mq__snd__impl_8hpp_source.html#l00677">ipc::transport::sync_io::Blob_stream_mq_sender_impl&lt; Persistent_mq_handle &gt;::Blob_stream_mq_sender_impl()</a>, <a class="el" href="session__adapter_8hpp_source.html#l00528">ipc::session::sync_io::Session_adapter&lt; Session &gt;::init_pipe()</a>, <a class="el" href="sync__io_2native__socket__stream__acceptor_8cpp_source.html#l00033">ipc::transport::sync_io::Native_socket_stream_acceptor::Native_socket_stream_acceptor()</a>, <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8cpp_source.html#l00076">ipc::transport::sync_io::Native_socket_stream_impl::Native_socket_stream_impl()</a>, <a class="el" href="sync__io_2native__socket__stream__acceptor_8hpp_source.html#l00322">ipc::transport::sync_io::Native_socket_stream_acceptor::replace_event_wait_handles()</a>, <a class="el" href="sync__io_2detail_2native__socket__stream__impl_8cpp_source.html#l00481">ipc::transport::sync_io::Native_socket_stream_impl::replace_event_wait_handles()</a>, and <a class="el" href="session__server__adapter_8hpp_source.html#l00266">ipc::session::sync_io::Session_server_adapter&lt; Session_server &gt;::Session_server_adapter()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -495,7 +496,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle_a7d28277f9ef090032b0483c65f79f23c_icgraph.svg" width="611" height="528"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle_a7d28277f9ef090032b0483c65f79f23c_icgraph.svg" width="611" height="614"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -519,7 +520,7 @@ Here is the caller graph for this function:</div>
 <p>Returns the same <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> as passed to original handle-loading ctor or <a class="el" href="classipc_1_1util_1_1sync__io_1_1Asio__waitable__native__handle.html#a7d28277f9ef090032b0483c65f79f23c" title="Loads value to be returned by native_handle().">assign()</a>, whichever happened last; or <code>.null()</code> <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a>, if neither has been invoked, or release() was invoked more recently than either. </p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00060">60</a> of file <a class="el" href="asio__waitable__native__hndl_8cpp_source.html">asio_waitable_native_hndl.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="asio__waitable__native__hndl_8cpp_source.html#l00063">63</a> of file <a class="el" href="asio__waitable__native__hndl_8cpp_source.html">asio_waitable_native_hndl.cpp</a>.</p>
 
 </div>
 </div>
@@ -548,13 +549,14 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Move-assign. </p>
+<p >See boost.asio docs for similar <code>posix::basic_descriptor</code> method.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">src</td><td>See boost.asio docs for similar <code>posix::basic_descriptor</code> method. </td></tr>
+    <tr><td class="paramname">src</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See boost.asio docs for similar <code>posix::basic_descriptor</code> method. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -565,7 +567,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

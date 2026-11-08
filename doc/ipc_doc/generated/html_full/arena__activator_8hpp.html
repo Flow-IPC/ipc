@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -73,14 +73,15 @@ $(function() {
   <div class="headertitle"><div class="title">arena_activator.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;flow/util/util.hpp&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="stl__fwd_8hpp_source.html">ipc/shm/stl/stl_fwd.hpp</a>&quot;</code><br />
+<code>#include &lt;flow/util/util.hpp&gt;</code><br />
 </div>
 <p><a href="arena__activator_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html">ipc::shm::stl::Arena_activator&lt; Arena &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">RAII-style class operating a stack-like notion of a the given <em>thread</em>'s currently active SHM-aware <code>Arena</code>, so that <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a> knows which <code>Arena</code> is currently active w/r/t a given code context operating on a SHM-stored container instance.  <a href="classipc_1_1shm_1_1stl_1_1Arena__activator.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html">ipc::shm::stl::Arena_activator&lt; Arena_t &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">RAII-style class operating a stack-like notion of the given <em>thread</em>'s currently active SHM-aware <a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html#a67a338071fd106b3c220884281df2750" title="Short-hand for the Arena_t type this activates/deactivates in the current thread of ctor/dtor.">Arena</a>, so that <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a> knows which <code>Arena</code> is currently active w/r/t a given code context operating on a SHM-stored container instance.  <a href="classipc_1_1shm_1_1stl_1_1Arena__activator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -98,7 +99,7 @@ Namespaces</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

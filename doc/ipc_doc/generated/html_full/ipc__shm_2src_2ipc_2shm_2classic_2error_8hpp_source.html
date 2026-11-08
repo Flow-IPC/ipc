@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -94,9 +94,9 @@ $(function() {
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"></span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">/**</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * Namespace containing the ipc::shm::classic module&#39;s extension of boost.system error conventions, so that that API</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * can return codes/messages from within its own new set of error codes/messages.  Historically this was written</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> * after ipc::transport::error, and essentially all the notes in that doc header and otherwise within that</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> * namespace apply equally here.  Therefore please:</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * can return codes/messages from within its own new set of error codes/messages.  It follows the pattern</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> * of ipc::transport::error; essentially all the notes in that doc header and otherwise within that namespace apply</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> * equally here.  Therefore please:</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"> * @see ipc::transport::error documentation; notes therein (such as to-dos) likely apply here equally.</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"> */</span></div>
@@ -109,7 +109,7 @@ $(function() {
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="namespaceipc_1_1shm_1_1classic_1_1error.html#a3be6dfb3752b43cb0b1bfce832426499">   37</a></span><span class="comment"></span><span class="keyword">constexpr</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceipc_1_1shm_1_1classic_1_1error.html#a3be6dfb3752b43cb0b1bfce832426499">S_CODE_LOWEST_INT_VALUE</a> = 1;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment"></span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"> * All possible errors returned (via `Error_code` arguments) by ipc::shm functions/methods *outside of*</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"> * All possible errors returned (via `Error_code` arguments) by ipc::shm::classic functions/methods *outside of*</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"> * possibly system-triggered errors.</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"> * All notes from transport::error::Code doc header apply here.</span></div>
@@ -120,85 +120,93 @@ $(function() {
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">   * Low-level boost.ipc.shm: boost.interprocess emitted miscellaneous library exception sans a system code;</span></div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">   * a WARNING message at throw-time should contain all possible details.</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">   */</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_enumvalue" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999ba5640941b8dbafc13ad6f6ef8dec1937f">S_SHM_BIPC_MISC_LIBRARY_ERROR</a>,</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  S_SHM_BIPC_MISC_LIBRARY_ERROR = <a class="code hl_variable" href="namespaceipc_1_1shm_1_1classic_1_1error.html#a3be6dfb3752b43cb0b1bfce832426499">S_CODE_LOWEST_INT_VALUE</a>,</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"></span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">  /// SENTINEL: Not an error.  This Code must never be issued by an error/success-emitting API; I/O use only.</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"></span>  <a class="code hl_enumvalue" href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7a6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}; <span class="comment">// enum class Code</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">// Free functions.</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"></span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"> * Analogous to transport::error::make_error_code().</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment"> * @param err_code</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment"> *        See above.</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment"> * @return See above.</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> <a class="code hl_function" href="namespaceipc_1_1shm_1_1classic_1_1error.html#a1912c719fef62337844569554ac02050">make_error_code</a>(<a class="code hl_enumeration" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999b">Code</a> err_code);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment"></span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment"> * Analogous to transport::error::operator&gt;&gt;().</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment"> * @param is</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment"> *        See above.</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment"> * @param val</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment"> *        See above.</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment"> * @return See above.</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>std::istream&amp; <a class="code hl_function" href="namespaceipc_1_1shm_1_1classic_1_1error.html#affc3eb235917a58a91f92c94660f09e6">operator&gt;&gt;</a>(std::istream&amp; is, <a class="code hl_enumeration" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999b">Code</a>&amp; val);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">// @todo - `@relatesalso Code` makes Doxygen complain; maybe it doesn&#39;t work with `enum class`es like Code.</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment"></span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment"> * Analogous to transport::error::operator&lt;&lt;().</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment"> * @param os</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment"> *        See above.</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment"> * @param val</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment"> *        See above.</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment"> * @return See above.</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>std::ostream&amp; <a class="code hl_function" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ac9e2291b4d5ea84a759e0a5a6dc239ff">operator&lt;&lt;</a>(std::ostream&amp; os, <a class="code hl_enumeration" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999b">Code</a> val);</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">// @todo - `@relatesalso Code` makes Doxygen complain; maybe it doesn&#39;t work with `enum class`es like Code.</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>} <span class="comment">// namespace ipc::shm::classic::error</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceboost_1_1system.html">boost::system</a></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>{</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">// Types.</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment"></span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment"> * Ummm -- it specializes this `struct` to -- look -- the end result is boost.system uses this as</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment"> * authorization to make `enum` `Code` convertible to `Error_code`.  The non-specialized</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment"> * version of this sets `value` to `false`, so that random arbitary `enum`s can&#39;t just be used as</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment"> * `Error_code`s.  Note that this is the offical way to accomplish that, as (confusingly but</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment"> * formally) documented in boost.system docs.</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="structboost_1_1system_1_1is__error__code__enum_3_1_1ipc_1_1shm_1_1classic_1_1error_1_1Code_01_4.html">  107</a></span><span class="keyword">struct </span>is_error_code_enum&lt;::<a class="code hl_enumeration" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999b">ipc::shm::classic::error::Code</a>&gt;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>{<span class="comment"></span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">  /// Means `Code` `enum` values can be used for `Error_code`.</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="structboost_1_1system_1_1is__error__code__enum_3_1_1ipc_1_1shm_1_1classic_1_1error_1_1Code_01_4.html#ad212be3d5deccfe7326277d532baf111">  110</a></span><span class="comment"></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> value = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="comment">// See note in similar place near transport::error.</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>};</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>} <span class="comment">// namespace boost::system</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">  /**</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">   * SHM-classic pool/arena, requested to be opened in native read-only mode, was found by name, but its internal</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">   * setup had not been completed (e.g., the creating op was still in progress); so the pool-open failed.  The contract</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">   * requires completing the pool-create op before a read-only pool-open.  Violating it can instead cause undefined</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">   * behavior: this error means only that a violation was detected this time.</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">   */</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_enumvalue" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999ba26670db5520749a54efb3aa9210a99e4">S_SHM_POOL_OPEN_READ_ONLY_FOUND_BUT_UNINIT</a>,</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"></span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">  /// SENTINEL: Not an error.  This Code must never be issued by an error/success-emitting API; I/O use only.</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment"></span>  <a class="code hl_enumvalue" href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7a6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>}; <span class="comment">// enum class Code</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">// Free functions.</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment"></span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment"> * Analogous to transport::error::make_error_code().</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment"> * @param err_code</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment"> *        See above.</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment"> * @return See above.</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><a class="code hl_typedef" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> <a class="code hl_function" href="namespaceipc_1_1shm_1_1classic_1_1error.html#a1912c719fef62337844569554ac02050">make_error_code</a>(<a class="code hl_enumeration" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999b">Code</a> err_code);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment"></span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment"> * Analogous to transport::error::operator&gt;&gt;().</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment"> * @param is</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment"> *        See above.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment"> * @param val</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment"> *        See above.</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment"> * @return See above.</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>std::istream&amp; <a class="code hl_function" href="namespaceipc_1_1shm_1_1classic_1_1error.html#affc3eb235917a58a91f92c94660f09e6">operator&gt;&gt;</a>(std::istream&amp; is, <a class="code hl_enumeration" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999b">Code</a>&amp; val);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">// @todo `@relatesalso Code` makes Doxygen complain; maybe it doesn&#39;t work with `enum class`es like Code.</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment"></span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment"> * Analogous to transport::error::operator&lt;&lt;().</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment"> * @param os</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment"> *        See above.</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment"> * @param val</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment"> *        See above.</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment"> * @return See above.</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>std::ostream&amp; <a class="code hl_function" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ac9e2291b4d5ea84a759e0a5a6dc239ff">operator&lt;&lt;</a>(std::ostream&amp; os, <a class="code hl_enumeration" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999b">Code</a> val);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">// @todo `@relatesalso Code` makes Doxygen complain; maybe it doesn&#39;t work with `enum class`es like Code.</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>} <span class="comment">// namespace ipc::shm::classic::error</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceboost_1_1system.html">boost::system</a></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>{</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">// Types.</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment"></span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment"> * Ummm -- it specializes this `struct` to -- look -- the end result is boost.system uses this as</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment"> * authorization to make `enum` `Code` convertible to `Error_code`.  The non-specialized</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment"> * version of this sets `value` to `false`, so that random arbitrary `enum`s can&#39;t just be used as</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment"> * `Error_code`s.  Note that this is the official way to accomplish that, as (confusingly but</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment"> * formally) documented in boost.system docs.</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="structboost_1_1system_1_1is__error__code__enum_3_1_1ipc_1_1shm_1_1classic_1_1error_1_1Code_01_4.html">  115</a></span><span class="keyword">struct </span>is_error_code_enum&lt;::<a class="code hl_enumeration" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999b">ipc::shm::classic::error::Code</a>&gt;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>{<span class="comment"></span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment">  /// Means `Code` `enum` values can be used for `Error_code`.</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="structboost_1_1system_1_1is__error__code__enum_3_1_1ipc_1_1shm_1_1classic_1_1error_1_1Code_01_4.html#ad212be3d5deccfe7326277d532baf111">  118</a></span><span class="comment"></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> value = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="comment">// See note in similar place near transport::error.</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>};</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>} <span class="comment">// namespace boost::system</span></div>
 <div class="ttc" id="acommon_8hpp_html"><div class="ttname"><a href="common_8hpp.html">common.hpp</a></div></div>
-<div class="ttc" id="anamespaceboost_1_1system_html"><div class="ttname"><a href="namespaceboost_1_1system.html">boost::system</a></div><div class="ttdoc">Small group of miscellaneous utilities to ease work with boost.system, joining its boost::system name...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2transport_2error_8hpp_source.html#l00244">error.hpp:245</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html">ipc::shm::classic::error</a></div><div class="ttdoc">Namespace containing the ipc::shm::classic module's extension of boost.system error conventions,...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8cpp_source.html#l00022">error.cpp:23</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_a1912c719fef62337844569554ac02050"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#a1912c719fef62337844569554ac02050">ipc::shm::classic::error::make_error_code</a></div><div class="ttdeci">Error_code make_error_code(Code err_code)</div><div class="ttdoc">Analogous to transport::error::make_error_code().</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8cpp_source.html#l00079">error.cpp:79</a></div></div>
+<div class="ttc" id="anamespaceboost_1_1system_html"><div class="ttname"><a href="namespaceboost_1_1system.html">boost::system</a></div><div class="ttdoc">Small group of miscellaneous utilities to ease work with boost.system, joining its boost::system name...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__core_2src_2ipc_2transport_2error_8hpp_source.html#l00257">error.hpp:258</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html">ipc::shm::classic::error</a></div><div class="ttdoc">Namespace containing the ipc::shm::classic module's extension of boost.system error conventions,...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8cpp_source.html#l00023">error.cpp:24</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_a1912c719fef62337844569554ac02050"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#a1912c719fef62337844569554ac02050">ipc::shm::classic::error::make_error_code</a></div><div class="ttdeci">Error_code make_error_code(Code err_code)</div><div class="ttdoc">Analogous to transport::error::make_error_code().</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8cpp_source.html#l00080">error.cpp:80</a></div></div>
 <div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_a3be6dfb3752b43cb0b1bfce832426499"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#a3be6dfb3752b43cb0b1bfce832426499">ipc::shm::classic::error::S_CODE_LOWEST_INT_VALUE</a></div><div class="ttdeci">constexpr int S_CODE_LOWEST_INT_VALUE</div><div class="ttdoc">Numeric value of the lowest Code.</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8hpp_source.html#l00037">error.hpp:37</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_ab01754e54c67d287addcf7a5c6ce999b"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999b">ipc::shm::classic::error::Code</a></div><div class="ttdeci">Code</div><div class="ttdoc">All possible errors returned (via Error_code arguments) by ipc::shm functions/methods outside of poss...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8hpp_source.html#l00045">error.hpp:46</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_ab01754e54c67d287addcf7a5c6ce999ba5640941b8dbafc13ad6f6ef8dec1937f"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999ba5640941b8dbafc13ad6f6ef8dec1937f">ipc::shm::classic::error::Code::S_SHM_BIPC_MISC_LIBRARY_ERROR</a></div><div class="ttdeci">@ S_SHM_BIPC_MISC_LIBRARY_ERROR</div><div class="ttdoc">Low-level boost.ipc.shm: boost.interprocess emitted miscellaneous library exception sans a system cod...</div></div>
-<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_ac9e2291b4d5ea84a759e0a5a6dc239ff"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#ac9e2291b4d5ea84a759e0a5a6dc239ff">ipc::shm::classic::error::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, Code val)</div><div class="ttdoc">Analogous to transport::error::operator&lt;&lt;().</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8cpp_source.html#l00130">error.cpp:130</a></div></div>
-<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_affc3eb235917a58a91f92c94660f09e6"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#affc3eb235917a58a91f92c94660f09e6">ipc::shm::classic::error::operator&gt;&gt;</a></div><div class="ttdeci">std::istream &amp; operator&gt;&gt;(std::istream &amp;is, Code &amp;val)</div><div class="ttdoc">Analogous to transport::error::operator&gt;&gt;().</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8cpp_source.html#l00136">error.cpp:136</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_ab01754e54c67d287addcf7a5c6ce999b"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999b">ipc::shm::classic::error::Code</a></div><div class="ttdeci">Code</div><div class="ttdoc">All possible errors returned (via Error_code arguments) by ipc::shm::classic functions/methods outsid...</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8hpp_source.html#l00045">error.hpp:46</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_ab01754e54c67d287addcf7a5c6ce999ba26670db5520749a54efb3aa9210a99e4"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999ba26670db5520749a54efb3aa9210a99e4">ipc::shm::classic::error::Code::S_SHM_POOL_OPEN_READ_ONLY_FOUND_BUT_UNINIT</a></div><div class="ttdeci">@ S_SHM_POOL_OPEN_READ_ONLY_FOUND_BUT_UNINIT</div><div class="ttdoc">SHM-classic pool/arena, requested to be opened in native read-only mode, was found by name,...</div></div>
+<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_ac9e2291b4d5ea84a759e0a5a6dc239ff"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#ac9e2291b4d5ea84a759e0a5a6dc239ff">ipc::shm::classic::error::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, Code val)</div><div class="ttdoc">Analogous to transport::error::operator&lt;&lt;().</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8cpp_source.html#l00138">error.cpp:138</a></div></div>
+<div class="ttc" id="anamespaceipc_1_1shm_1_1classic_1_1error_html_affc3eb235917a58a91f92c94660f09e6"><div class="ttname"><a href="namespaceipc_1_1shm_1_1classic_1_1error.html#affc3eb235917a58a91f92c94660f09e6">ipc::shm::classic::error::operator&gt;&gt;</a></div><div class="ttdeci">std::istream &amp; operator&gt;&gt;(std::istream &amp;is, Code &amp;val)</div><div class="ttdoc">Analogous to transport::error::operator&gt;&gt;().</div><div class="ttdef"><b>Definition:</b> <a href="ipc__shm_2src_2ipc_2shm_2classic_2error_8cpp_source.html#l00144">error.cpp:144</a></div></div>
 <div class="ttc" id="anamespaceipc_html_a4ccdeed058222c635745a4dc830e99f7a6fba12db09e5bebfaa04f6372c41c2cf"><div class="ttname"><a href="namespaceipc.html#a4ccdeed058222c635745a4dc830e99f7a6fba12db09e5bebfaa04f6372c41c2cf">ipc::Log_component::S_END_SENTINEL</a></div><div class="ttdeci">@ S_END_SENTINEL</div><div class="ttdoc">CAUTION – see ipc::Log_component doc header for directions to find actual members of this enum class.</div></div>
-<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00298">common.hpp:298</a></div></div>
+<div class="ttc" id="anamespaceipc_html_aa3192e586cc45d3e7c22463bf2760f89"><div class="ttname"><a href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc::Error_code</a></div><div class="ttdeci">flow::Error_code Error_code</div><div class="ttdoc">Short-hand for flow::Error_code which is very common.</div><div class="ttdef"><b>Definition:</b> <a href="common_8hpp_source.html#l00313">common.hpp:313</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

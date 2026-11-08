@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Identical to <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">sync_io::Async_adapter_receiver::User_request</a>, except we only keep at most 1 of these and thus don't need a <code>Ptr</code> alias inside; and we need not worry about transmitting <code>Native_handle</code>s.  
+<p>Identical to <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">sync_io::Async_adapter_receiver::User_request_one</a>, except we only keep at most 1 of these and thus don't need a <code>Ptr</code> alias inside; and we need not worry about transmitting <code>Native_handle</code>s.  
  <a href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::User_request:</div>
@@ -86,18 +86,19 @@ Collaboration diagram for ipc::transport::sync_io::Blob_stream_mq_receiver_impl&
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aabc02495e840cdd6fe0e5bfa31b33509"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html#aabc02495e840cdd6fe0e5bfa31b33509">m_target_blob</a></td></tr>
-<tr class="memdesc:aabc02495e840cdd6fe0e5bfa31b33509"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as in <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">sync_io::Async_adapter_receiver::User_request</a>.  <a href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html#aabc02495e840cdd6fe0e5bfa31b33509">More...</a><br /></td></tr>
+<tr class="memdesc:aabc02495e840cdd6fe0e5bfa31b33509"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as in <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">sync_io::Async_adapter_receiver::User_request_one</a>.  <a href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html#aabc02495e840cdd6fe0e5bfa31b33509">More...</a><br /></td></tr>
 <tr class="separator:aabc02495e840cdd6fe0e5bfa31b33509"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8da903f9c107dd546991e8b9843190e6"><td class="memItemLeft" align="right" valign="top">flow::async::Task_asio_err_sz&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html#a8da903f9c107dd546991e8b9843190e6">m_on_done_func</a></td></tr>
-<tr class="memdesc:a8da903f9c107dd546991e8b9843190e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as in <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">sync_io::Async_adapter_receiver::User_request</a>.  <a href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html#a8da903f9c107dd546991e8b9843190e6">More...</a><br /></td></tr>
+<tr class="memdesc:a8da903f9c107dd546991e8b9843190e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as in <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">sync_io::Async_adapter_receiver::User_request_one</a>.  <a href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html#a8da903f9c107dd546991e8b9843190e6">More...</a><br /></td></tr>
 <tr class="separator:a8da903f9c107dd546991e8b9843190e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq__handle.html">Persistent_mq_handle</a>&gt;<br />
-struct ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::User_request</div><p >Identical to <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">sync_io::Async_adapter_receiver::User_request</a>, except we only keep at most 1 of these and thus don't need a <code>Ptr</code> alias inside; and we need not worry about transmitting <code>Native_handle</code>s. </p>
-<p >As in that other class, this records the args from an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#a8d1a81d379e1a31031adb9cccbbabd35" title="See Blob_stream_mq_receiver counterpart, but assuming PEER state.">async_receive_blob()</a> call. </p>
+struct ipc::transport::sync_io::Blob_stream_mq_receiver_impl&lt; Persistent_mq_handle &gt;::User_request</div><p >Identical to <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">sync_io::Async_adapter_receiver::User_request_one</a>, except we only keep at most 1 of these and thus don't need a <code>Ptr</code> alias inside; and we need not worry about transmitting <code>Native_handle</code>s. </p>
+<p >As in that other class, this records the args from an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#a8d1a81d379e1a31031adb9cccbbabd35" title="See Blob_stream_mq_receiver counterpart, but assuming PEER state.">async_receive_blob()</a> call.</p>
+<dl class="section note"><dt>Note</dt><dd>If you're wondering why there is no batch-receive equivalent of this, the reason is that we use the <a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#ac8e1b28112a507fa3373a5b5dcce640d" title="Implements {Native_handle|Blob}_receiver::async_receive_*_batch() by emulating batch-receiving as a s...">async_receive_batch_emulation()</a> pattern so as to build <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#a57b12afa7b6a7936ac9a14f48e9841c5" title="See Blob_stream_mq_receiver counterpart, but assuming PEER state.">async_receive_blob_batch()</a> as a series of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl.html#a3ba4448371cab46228d82698812f3dc5" title="Core of either async_receive_blob() (user invoked single-message receiving directly) or the function ...">async_receive_blob_impl()</a>. So <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Blob__stream__mq__receiver__impl_1_1User__request.html" title="Identical to sync_io::Async_adapter_receiver::User_request_one, except we only keep at most 1 of thes...">User_request</a> is again used. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00183">183</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html">blob_stream_mq_rcv_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00229">229</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html">blob_stream_mq_rcv_impl.hpp</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a8da903f9c107dd546991e8b9843190e6" name="a8da903f9c107dd546991e8b9843190e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8da903f9c107dd546991e8b9843190e6">&#9670;&nbsp;</a></span>m_on_done_func</h2>
@@ -113,9 +114,9 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
       </table>
 </div><div class="memdoc">
 
-<p>Same as in <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">sync_io::Async_adapter_receiver::User_request</a>. </p>
+<p>Same as in <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">sync_io::Async_adapter_receiver::User_request_one</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00190">190</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html">blob_stream_mq_rcv_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00236">236</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html">blob_stream_mq_rcv_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -133,9 +134,9 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
       </table>
 </div><div class="memdoc">
 
-<p>Same as in <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">sync_io::Async_adapter_receiver::User_request</a>. </p>
+<p>Same as in <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">sync_io::Async_adapter_receiver::User_request_one</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00188">188</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html">blob_stream_mq_rcv_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html#l00234">234</a> of file <a class="el" href="sync__io_2detail_2blob__stream__mq__rcv__impl_8hpp_source.html">blob_stream_mq_rcv_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -145,7 +146,7 @@ template&lt;typename <a class="el" href="classipc_1_1transport_1_1Persistent__mq
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

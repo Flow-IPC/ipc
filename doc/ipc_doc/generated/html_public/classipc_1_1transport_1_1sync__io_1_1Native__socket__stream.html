@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -77,7 +77,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Implements both <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> concepts by using a stream-oriented Unix domain socket, allowing high-performance but non-zero-copy transmission of discrete messages, each containing a native handle, a binary blob, or both.  
+<p>Implements both <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> concepts by using a Unix domain socket, allowing high-performance but non-zero-copy transmission of discrete messages, each containing a native handle, a binary blob, or both.  
  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#details">More...</a></p>
 
 <p><code>#include &lt;native_socket_stream.hpp&gt;</code></p>
@@ -98,6 +98,32 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>Async_io_obj</b> = <
 using&#160;</td><td class="memItemRight" valign="bottom"><b>Sync_io_obj</b> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
 <tr class="memdesc:a74c58ffad50d8be50a58693626df3610"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
 <tr class="separator:a74c58ffad50d8be50a58693626df3610"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae02638894f37ea1050b38bad405b3d8"><td class="memTemplParams" colspan="2"><a id="aae02638894f37ea1050b38bad405b3d8" name="aae02638894f37ea1050b38bad405b3d8"></a>
+template&lt;typename Msg_resource &gt; </td></tr>
+<tr class="memitem:aae02638894f37ea1050b38bad405b3d8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Native_handle_batch_in</b> = typename Impl::template <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aae02638894f37ea1050b38bad405b3d8">Native_handle_batch_in</a>&lt; Msg_resource &gt;</td></tr>
+<tr class="memdesc:aae02638894f37ea1050b38bad405b3d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> concept API. <br /></td></tr>
+<tr class="separator:aae02638894f37ea1050b38bad405b3d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88202b718c50332e177f81023dc99a9c"><td class="memTemplParams" colspan="2"><a id="a88202b718c50332e177f81023dc99a9c" name="a88202b718c50332e177f81023dc99a9c"></a>
+template&lt;typename Msg_resource &gt; </td></tr>
+<tr class="memitem:a88202b718c50332e177f81023dc99a9c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Blob_batch_in</b> = typename Impl::template <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a88202b718c50332e177f81023dc99a9c">Blob_batch_in</a>&lt; Msg_resource &gt;</td></tr>
+<tr class="memdesc:a88202b718c50332e177f81023dc99a9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> concept API. <br /></td></tr>
+<tr class="separator:a88202b718c50332e177f81023dc99a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e27a4f1c959f0d6bd46e653e27bcf31"><td class="memItemLeft" align="right" valign="top"><a id="a0e27a4f1c959f0d6bd46e653e27bcf31" name="a0e27a4f1c959f0d6bd46e653e27bcf31"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Blob_snd_stats</b> = <a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html">transport::stat::Blob_snd_stats</a></td></tr>
+<tr class="memdesc:a0e27a4f1c959f0d6bd46e653e27bcf31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a> concept API. <br /></td></tr>
+<tr class="separator:a0e27a4f1c959f0d6bd46e653e27bcf31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0d4ba3e6e645f0447153efbead73dc6"><td class="memItemLeft" align="right" valign="top"><a id="aa0d4ba3e6e645f0447153efbead73dc6" name="aa0d4ba3e6e645f0447153efbead73dc6"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Native_handle_snd_stats</b> = <a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html">transport::stat::Blob_snd_stats</a></td></tr>
+<tr class="memdesc:aa0d4ba3e6e645f0447153efbead73dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> concept API. Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a0e27a4f1c959f0d6bd46e653e27bcf31" title="Implements sync_io::Blob_sender concept API.">Blob_snd_stats</a> for this impl. <br /></td></tr>
+<tr class="separator:aa0d4ba3e6e645f0447153efbead73dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7455de3367741f3c807453d5582ee7c9"><td class="memItemLeft" align="right" valign="top"><a id="a7455de3367741f3c807453d5582ee7c9" name="a7455de3367741f3c807453d5582ee7c9"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Blob_rcv_stats</b> = <a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__rcv__stats.html">transport::stat::Blob_rcv_stats</a></td></tr>
+<tr class="memdesc:a7455de3367741f3c807453d5582ee7c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> concept API. <br /></td></tr>
+<tr class="separator:a7455de3367741f3c807453d5582ee7c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c9171312ef2cc0299ae6eead094d022"><td class="memItemLeft" align="right" valign="top"><a id="a3c9171312ef2cc0299ae6eead094d022" name="a3c9171312ef2cc0299ae6eead094d022"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Native_handle_rcv_stats</b> = <a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__rcv__stats.html">transport::stat::Blob_rcv_stats</a></td></tr>
+<tr class="memdesc:a3c9171312ef2cc0299ae6eead094d022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> concept API. Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a7455de3367741f3c807453d5582ee7c9" title="Implements sync_io::Blob_receiver concept API.">Blob_rcv_stats</a> for this impl. <br /></td></tr>
+<tr class="separator:a3c9171312ef2cc0299ae6eead094d022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -137,9 +163,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af5e6e5ccf19782cb698017e9dcf85b34"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af5e6e5ccf19782cb698017e9dcf85b34">replace_event_wait_handles</a> (const Create_ev_wait_hndl_func &amp;create_ev_wait_hndl_func)</td></tr>
 <tr class="memdesc:af5e6e5ccf19782cb698017e9dcf85b34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> <em>and</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> APIs at the same time, per their concept contracts.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af5e6e5ccf19782cb698017e9dcf85b34">More...</a><br /></td></tr>
 <tr class="separator:af5e6e5ccf19782cb698017e9dcf85b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e22d55369f5bd67a4e0d277b73f2823"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e22d55369f5bd67a4e0d277b73f2823">sync_connect</a> (const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a> &amp;absolute_name, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0)</td></tr>
-<tr class="memdesc:a2e22d55369f5bd67a4e0d277b73f2823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e22d55369f5bd67a4e0d277b73f2823">More...</a><br /></td></tr>
-<tr class="separator:a2e22d55369f5bd67a4e0d277b73f2823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c3ce3700ee9cc8e01d013fe9da1681f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a8c3ce3700ee9cc8e01d013fe9da1681f">sync_connect</a> (const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">Shared_name</a> &amp;absolute_name, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:a8c3ce3700ee9cc8e01d013fe9da1681f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a8c3ce3700ee9cc8e01d013fe9da1681f">More...</a><br /></td></tr>
+<tr class="separator:a8c3ce3700ee9cc8e01d013fe9da1681f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a945fb744696feed25067241ce2b6ca4b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a945fb744696feed25067241ce2b6ca4b">send_meta_blob_max_size</a> () const</td></tr>
 <tr class="memdesc:a945fb744696feed25067241ce2b6ca4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a945fb744696feed25067241ce2b6ca4b">More...</a><br /></td></tr>
 <tr class="separator:a945fb744696feed25067241ce2b6ca4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,12 +180,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2b1fa31c4d8ac11683472b83efe7956a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2b1fa31c4d8ac11683472b83efe7956a">start_send_blob_ops</a> (Event_wait_func_t &amp;&amp;ev_wait_func)</td></tr>
 <tr class="memdesc:a2b1fa31c4d8ac11683472b83efe7956a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2b1fa31c4d8ac11683472b83efe7956a">More...</a><br /></td></tr>
 <tr class="separator:a2b1fa31c4d8ac11683472b83efe7956a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9805f7625a1272af64295555f9a1a61b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9805f7625a1272af64295555f9a1a61b">send_native_handle</a> (<a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">Native_handle</a> hndl_or_null, const <a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a> &amp;meta_blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0)</td></tr>
-<tr class="memdesc:a9805f7625a1272af64295555f9a1a61b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9805f7625a1272af64295555f9a1a61b">More...</a><br /></td></tr>
-<tr class="separator:a9805f7625a1272af64295555f9a1a61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e1474a87ee8f5ec18bf6cc8d6cfe7b2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e1474a87ee8f5ec18bf6cc8d6cfe7b2">send_blob</a> (const <a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a> &amp;blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0)</td></tr>
-<tr class="memdesc:a2e1474a87ee8f5ec18bf6cc8d6cfe7b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e1474a87ee8f5ec18bf6cc8d6cfe7b2">More...</a><br /></td></tr>
-<tr class="separator:a2e1474a87ee8f5ec18bf6cc8d6cfe7b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17ebc2b1c25e3c8f493a86f2c5dab5e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a17ebc2b1c25e3c8f493a86f2c5dab5e5">send_native_handle</a> (<a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">Native_handle</a> hndl_or_null, const <a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a> &amp;meta_blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:a17ebc2b1c25e3c8f493a86f2c5dab5e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a17ebc2b1c25e3c8f493a86f2c5dab5e5">More...</a><br /></td></tr>
+<tr class="separator:a17ebc2b1c25e3c8f493a86f2c5dab5e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac78ceb9351432b8fbec719e592a28b0e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac78ceb9351432b8fbec719e592a28b0e">send_blob</a> (const <a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a> &amp;blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:ac78ceb9351432b8fbec719e592a28b0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac78ceb9351432b8fbec719e592a28b0e">More...</a><br /></td></tr>
+<tr class="separator:ac78ceb9351432b8fbec719e592a28b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb680eb576497ac7e05e8294b49da0eb"><td class="memTemplParams" colspan="2">template&lt;typename Task_err &gt; </td></tr>
 <tr class="memitem:afb680eb576497ac7e05e8294b49da0eb"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afb680eb576497ac7e05e8294b49da0eb">async_end_sending</a> (<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *sync_err_code, Task_err &amp;&amp;on_done_func)</td></tr>
 <tr class="memdesc:afb680eb576497ac7e05e8294b49da0eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afb680eb576497ac7e05e8294b49da0eb">More...</a><br /></td></tr>
@@ -167,9 +193,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a69ed821cc3a41b68dd56880d45033a45"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a69ed821cc3a41b68dd56880d45033a45">end_sending</a> ()</td></tr>
 <tr class="memdesc:a69ed821cc3a41b68dd56880d45033a45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a69ed821cc3a41b68dd56880d45033a45">More...</a><br /></td></tr>
 <tr class="separator:a69ed821cc3a41b68dd56880d45033a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaef9afdeb3800df615a01b22070acad8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aaef9afdeb3800df615a01b22070acad8">auto_ping</a> (<a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> period=boost::chrono::seconds(2))</td></tr>
-<tr class="memdesc:aaef9afdeb3800df615a01b22070acad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aaef9afdeb3800df615a01b22070acad8">More...</a><br /></td></tr>
-<tr class="separator:aaef9afdeb3800df615a01b22070acad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fb1779f2ac962705b6d2488ea96227f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fb1779f2ac962705b6d2488ea96227f">auto_ping</a> (<a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> period=boost::chrono::seconds{2})</td></tr>
+<tr class="memdesc:a3fb1779f2ac962705b6d2488ea96227f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fb1779f2ac962705b6d2488ea96227f">More...</a><br /></td></tr>
+<tr class="separator:a3fb1779f2ac962705b6d2488ea96227f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a345610ec6373956cd87b27e2704f5061"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a0e27a4f1c959f0d6bd46e653e27bcf31">Blob_snd_stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a345610ec6373956cd87b27e2704f5061">blob_send_stats</a> () const</td></tr>
+<tr class="memdesc:a345610ec6373956cd87b27e2704f5061"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a345610ec6373956cd87b27e2704f5061">More...</a><br /></td></tr>
+<tr class="separator:a345610ec6373956cd87b27e2704f5061"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c13eff7ecdae528445219f9b55714be"><td class="memItemLeft" align="right" valign="top"><a id="a3c13eff7ecdae528445219f9b55714be" name="a3c13eff7ecdae528445219f9b55714be"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>blob_send_stats_reset</b> ()</td></tr>
+<tr class="memdesc:a3c13eff7ecdae528445219f9b55714be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a> API per contract. <br /></td></tr>
+<tr class="separator:a3c13eff7ecdae528445219f9b55714be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb3719cc0869bf23577ed604284e080d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a0e27a4f1c959f0d6bd46e653e27bcf31">Blob_snd_stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afb3719cc0869bf23577ed604284e080d">native_handle_send_stats</a> () const</td></tr>
+<tr class="memdesc:afb3719cc0869bf23577ed604284e080d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afb3719cc0869bf23577ed604284e080d">More...</a><br /></td></tr>
+<tr class="separator:afb3719cc0869bf23577ed604284e080d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8df8a37116e7f7e5a4383abc89c99fcc"><td class="memItemLeft" align="right" valign="top"><a id="a8df8a37116e7f7e5a4383abc89c99fcc" name="a8df8a37116e7f7e5a4383abc89c99fcc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>native_handle_send_stats_reset</b> ()</td></tr>
+<tr class="memdesc:a8df8a37116e7f7e5a4383abc89c99fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> API per contract. Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3c13eff7ecdae528445219f9b55714be" title="Implements sync_io::Blob_sender API per contract.">blob_send_stats_reset()</a>. <br /></td></tr>
+<tr class="separator:a8df8a37116e7f7e5a4383abc89c99fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc5f3cae4c5ff2facb5795c5013374e6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#acc5f3cae4c5ff2facb5795c5013374e6">receive_meta_blob_max_size</a> () const</td></tr>
 <tr class="memdesc:acc5f3cae4c5ff2facb5795c5013374e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#acc5f3cae4c5ff2facb5795c5013374e6">More...</a><br /></td></tr>
 <tr class="separator:acc5f3cae4c5ff2facb5795c5013374e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,14 +232,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8b5fc40ddcdda4b7c78672e9b9dc53c2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a8b5fc40ddcdda4b7c78672e9b9dc53c2">async_receive_blob</a> (const <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> &amp;target_blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *sync_err_code, size_t *sync_sz, Task_err_sz &amp;&amp;on_done_func)</td></tr>
 <tr class="memdesc:a8b5fc40ddcdda4b7c78672e9b9dc53c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a8b5fc40ddcdda4b7c78672e9b9dc53c2">More...</a><br /></td></tr>
 <tr class="separator:a8b5fc40ddcdda4b7c78672e9b9dc53c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac645b3e69ee3bfda64c0e9fda62f656a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac645b3e69ee3bfda64c0e9fda62f656a">idle_timer_run</a> (<a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> timeout=boost::chrono::seconds(5))</td></tr>
-<tr class="memdesc:ac645b3e69ee3bfda64c0e9fda62f656a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac645b3e69ee3bfda64c0e9fda62f656a">More...</a><br /></td></tr>
-<tr class="separator:ac645b3e69ee3bfda64c0e9fda62f656a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16b605c316922325415d60aeb0af3c40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a16b605c316922325415d60aeb0af3c40">remote_peer_process_credentials</a> (<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0) const</td></tr>
-<tr class="memdesc:a16b605c316922325415d60aeb0af3c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a16b605c316922325415d60aeb0af3c40">More...</a><br /></td></tr>
-<tr class="separator:a16b605c316922325415d60aeb0af3c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acef21ccb0881689a533d2aff8350f0b4"><td class="memTemplParams" colspan="2">template&lt;typename Msg_resource , typename Task_err &gt; </td></tr>
+<tr class="memitem:acef21ccb0881689a533d2aff8350f0b4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#acef21ccb0881689a533d2aff8350f0b4">async_receive_native_handle_batch</a> (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aae02638894f37ea1050b38bad405b3d8">Native_handle_batch_in</a>&lt; Msg_resource &gt; *batch, bool assume_would_block, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *sync_err_code, Task_err &amp;&amp;on_done_func)</td></tr>
+<tr class="memdesc:acef21ccb0881689a533d2aff8350f0b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#acef21ccb0881689a533d2aff8350f0b4">More...</a><br /></td></tr>
+<tr class="separator:acef21ccb0881689a533d2aff8350f0b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ba6bc935444c315d0d761b4f8016f20"><td class="memTemplParams" colspan="2">template&lt;typename Msg_resource , typename Task_err &gt; </td></tr>
+<tr class="memitem:a4ba6bc935444c315d0d761b4f8016f20"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a4ba6bc935444c315d0d761b4f8016f20">async_receive_blob_batch</a> (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a88202b718c50332e177f81023dc99a9c">Blob_batch_in</a>&lt; Msg_resource &gt; *batch, bool assume_would_block, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *sync_err_code, Task_err &amp;&amp;on_done_func)</td></tr>
+<tr class="memdesc:a4ba6bc935444c315d0d761b4f8016f20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a4ba6bc935444c315d0d761b4f8016f20">More...</a><br /></td></tr>
+<tr class="separator:a4ba6bc935444c315d0d761b4f8016f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a740d8c97c66df7b4441b38f79f0638eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a740d8c97c66df7b4441b38f79f0638eb">idle_timer_run</a> (<a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> timeout=boost::chrono::seconds{5})</td></tr>
+<tr class="memdesc:a740d8c97c66df7b4441b38f79f0638eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a740d8c97c66df7b4441b38f79f0638eb">More...</a><br /></td></tr>
+<tr class="separator:a740d8c97c66df7b4441b38f79f0638eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ee26589579195f9fce6ca14a05d8f60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a7455de3367741f3c807453d5582ee7c9">Blob_rcv_stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9ee26589579195f9fce6ca14a05d8f60">blob_receive_stats</a> () const</td></tr>
+<tr class="memdesc:a9ee26589579195f9fce6ca14a05d8f60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9ee26589579195f9fce6ca14a05d8f60">More...</a><br /></td></tr>
+<tr class="separator:a9ee26589579195f9fce6ca14a05d8f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeade848b1232b8224fb0c3e2118a422a"><td class="memItemLeft" align="right" valign="top"><a id="aeade848b1232b8224fb0c3e2118a422a" name="aeade848b1232b8224fb0c3e2118a422a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>blob_receive_stats_reset</b> ()</td></tr>
+<tr class="memdesc:aeade848b1232b8224fb0c3e2118a422a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> API per contract. <br /></td></tr>
+<tr class="separator:aeade848b1232b8224fb0c3e2118a422a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8383fb9e002bba6b7465fc7a3549bb8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a7455de3367741f3c807453d5582ee7c9">Blob_rcv_stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a8383fb9e002bba6b7465fc7a3549bb8e">native_handle_receive_stats</a> () const</td></tr>
+<tr class="memdesc:a8383fb9e002bba6b7465fc7a3549bb8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> API per contract.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a8383fb9e002bba6b7465fc7a3549bb8e">More...</a><br /></td></tr>
+<tr class="separator:a8383fb9e002bba6b7465fc7a3549bb8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adba18ca01d6bee12d11aaf2f29475d1c"><td class="memItemLeft" align="right" valign="top"><a id="adba18ca01d6bee12d11aaf2f29475d1c" name="adba18ca01d6bee12d11aaf2f29475d1c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>native_handle_receive_stats_reset</b> ()</td></tr>
+<tr class="memdesc:adba18ca01d6bee12d11aaf2f29475d1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> API per contract. Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aeade848b1232b8224fb0c3e2118a422a" title="Implements sync_io::Blob_receiver API per contract.">blob_receive_stats_reset()</a>. <br /></td></tr>
+<tr class="separator:adba18ca01d6bee12d11aaf2f29475d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2602b125b74f0025a7cb4af3ffb017bc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2602b125b74f0025a7cb4af3ffb017bc">remote_peer_process_credentials</a> (<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr) const</td></tr>
+<tr class="memdesc:a2602b125b74f0025a7cb4af3ffb017bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2602b125b74f0025a7cb4af3ffb017bc">More...</a><br /></td></tr>
+<tr class="separator:a2602b125b74f0025a7cb4af3ffb017bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aeb690bc5e4361fc318ff1ed9743af1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3aeb690bc5e4361fc318ff1ed9743af1">remote_peer_process_credentials</a> (const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a> &amp;creds)</td></tr>
-<tr class="memdesc:a3aeb690bc5e4361fc318ff1ed9743af1"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3aeb690bc5e4361fc318ff1ed9743af1">More...</a><br /></td></tr>
+<tr class="memdesc:a3aeb690bc5e4361fc318ff1ed9743af1"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3aeb690bc5e4361fc318ff1ed9743af1">More...</a><br /></td></tr>
 <tr class="separator:a3aeb690bc5e4361fc318ff1ed9743af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -211,16 +273,18 @@ static const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb39
 <tr class="memitem:aab8f0844b61c700b3ab6ab50e3389fff"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aab8f0844b61c700b3ab6ab50e3389fff">S_META_BLOB_UNDERFLOW_ALLOWED</a> = true</td></tr>
 <tr class="memdesc:aab8f0844b61c700b3ab6ab50e3389fff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API; namely it is <code>true</code>.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aab8f0844b61c700b3ab6ab50e3389fff">More...</a><br /></td></tr>
 <tr class="separator:aab8f0844b61c700b3ab6ab50e3389fff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7034a92ae66759080c035b36ff851e0c"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a7034a92ae66759080c035b36ff851e0c">S_BLOB_UNDERFLOW_ALLOWED</a> = true</td></tr>
+<tr class="memitem:a7034a92ae66759080c035b36ff851e0c"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a7034a92ae66759080c035b36ff851e0c">S_BLOB_UNDERFLOW_ALLOWED</a> = <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aab8f0844b61c700b3ab6ab50e3389fff">S_META_BLOB_UNDERFLOW_ALLOWED</a></td></tr>
 <tr class="memdesc:a7034a92ae66759080c035b36ff851e0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API; namely it is <code>true</code>.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a7034a92ae66759080c035b36ff851e0c">More...</a><br /></td></tr>
 <tr class="separator:a7034a92ae66759080c035b36ff851e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2ebc6eabb5f5b4ed5e0264f0fca3db7"><td class="memItemLeft" align="right" valign="top"><a id="af2ebc6eabb5f5b4ed5e0264f0fca3db7" name="af2ebc6eabb5f5b4ed5e0264f0fca3db7"></a>
-static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>S_TRANSMIT_NATIVE_HANDLES</b> = true</td></tr>
-<tr class="memdesc:af2ebc6eabb5f5b4ed5e0264f0fca3db7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Useful for generic programming: <code>true</code> to indicate a <code>*this</code> has a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9805f7625a1272af64295555f9a1a61b" title="Implements Native_handle_sender API per contract.">send_native_handle()</a> and an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a04effad6ce75fc5c8e6cbee5a26b73e8" title="Implements Native_handle_receiver API per contract.">async_receive_native_handle()</a>. <br /></td></tr>
+<tr class="memitem:a103b5764025152e606e61e7855d61b8b"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a103b5764025152e606e61e7855d61b8b">S_RCV_NATIVE_HANDLE_BATCH_SZ_RECOMMENDATION</a></td></tr>
+<tr class="memdesc:a103b5764025152e606e61e7855d61b8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a103b5764025152e606e61e7855d61b8b">More...</a><br /></td></tr>
+<tr class="separator:a103b5764025152e606e61e7855d61b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b79864092c3f86b8eccb323a2a7ebcf"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a1b79864092c3f86b8eccb323a2a7ebcf">S_RCV_BLOB_BATCH_SZ_RECOMMENDATION</a> = <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a103b5764025152e606e61e7855d61b8b">S_RCV_NATIVE_HANDLE_BATCH_SZ_RECOMMENDATION</a></td></tr>
+<tr class="memdesc:a1b79864092c3f86b8eccb323a2a7ebcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a1b79864092c3f86b8eccb323a2a7ebcf">More...</a><br /></td></tr>
+<tr class="separator:a1b79864092c3f86b8eccb323a2a7ebcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2ebc6eabb5f5b4ed5e0264f0fca3db7"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af2ebc6eabb5f5b4ed5e0264f0fca3db7">S_TRANSMIT_NATIVE_HANDLES</a> = true</td></tr>
+<tr class="memdesc:af2ebc6eabb5f5b4ed5e0264f0fca3db7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Useful for generic programming: <code>true</code> to indicate a <code>*this</code> has a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a17ebc2b1c25e3c8f493a86f2c5dab5e5" title="Implements Native_handle_sender API per contract.">send_native_handle()</a> and an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a04effad6ce75fc5c8e6cbee5a26b73e8" title="Implements Native_handle_receiver API per contract.">async_receive_native_handle()</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af2ebc6eabb5f5b4ed5e0264f0fca3db7">More...</a><br /></td></tr>
 <tr class="separator:af2ebc6eabb5f5b4ed5e0264f0fca3db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00624e2fc3757012d13e3dc0feb26a21"><td class="memItemLeft" align="right" valign="top">static const size_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a00624e2fc3757012d13e3dc0feb26a21">S_MAX_META_BLOB_LENGTH</a> = Impl::S_MAX_META_BLOB_LENGTH</td></tr>
-<tr class="memdesc:a00624e2fc3757012d13e3dc0feb26a21"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum length of a blob that can be sent by this protocol.  <a href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a00624e2fc3757012d13e3dc0feb26a21">More...</a><br /></td></tr>
-<tr class="separator:a00624e2fc3757012d13e3dc0feb26a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="related" name="related"></a>
 Related Functions</h2></td></tr>
@@ -231,22 +295,22 @@ Related Functions</h2></td></tr>
 <tr class="separator:ac6108711cc8b33c3b7ef0491ba78e2f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Implements both <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> concepts by using a stream-oriented Unix domain socket, allowing high-performance but non-zero-copy transmission of discrete messages, each containing a native handle, a binary blob, or both. </p>
-<p >This is the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterpart to <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> &ndash; and in fact the latter use an instance of the present class as its core.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> and <a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">util::sync_io</a> doc headers. The latter describes the general pattern which we implement here; it also contrasts it with the async-I/O pattern, which the former implements. In general we recommend you use a <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> rather than a <code>*this</code> &ndash; but you may have particular needs (summarized in <a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">util::sync_io</a> doc header) that would make you decide otherwise.</dd></dl>
+<div class="textblock"><p >Implements both <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> concepts by using a Unix domain socket, allowing high-performance but non-zero-copy transmission of discrete messages, each containing a native handle, a binary blob, or both. </p>
+<p >This is the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-pattern counterpart to <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> &ndash; and in fact the latter use an instance of the present class as its core.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> and <a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">util::sync_io</a> doc headers. The latter describes the general pattern which we implement here; it also contrasts it with the async-I/O pattern, which the former implements. Which of the two to use depends on your needs, as summarized in the <a class="el" href="namespaceipc_1_1util_1_1sync__io.html" title="Contains common code, as well as important explanatory documentation in the following text,...">util::sync_io</a> doc header.</dd></dl>
 <h3>Quick note on naming</h3>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <h3><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> concept compatibility</h3>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply analogously.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply analogously.</p>
 <h3>Informal comparison to other core transport mechanisms</h3>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <h3>Cleanup</h3>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <h3>How to use</h3>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply. The differences (some of which are quite important) are as follows.</p>
-<p >As described by the concepts being implemented &ndash; one must use <code>start_send_*_ops()</code> before the send API (<code>send_*()</code>, <code>*end_sending()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aaef9afdeb3800df615a01b22070acad8" title="Implements Native_handle_sender, Blob_sender API per contract.">auto_ping()</a>) and/or <code>start_receive_*_ops()</code> before the receive API (<code>async_receive_*()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac645b3e69ee3bfda64c0e9fda62f656a" title="Implements Native_handle_receiver, Blob_receiver API per contract.">idle_timer_run()</a>).</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply. The differences (some of which are quite important) are as follows.</p>
+<p >As described by the concepts being implemented &ndash; one must use <code>start_send_*_ops()</code> before the send API (<code>send_*()</code>, <code>*end_sending()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fb1779f2ac962705b6d2488ea96227f" title="Implements Native_handle_sender, Blob_sender API per contract.">auto_ping()</a>) and/or <code>start_receive_*_ops()</code> before the receive API (<code>async_receive_*()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a740d8c97c66df7b4441b38f79f0638eb" title="Implements Native_handle_receiver, Blob_receiver API per contract.">idle_timer_run()</a>).</p>
 <p >Before <code>start_*_ops()</code>, it may be required to call <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af5e6e5ccf19782cb698017e9dcf85b34" title="Implements Native_handle_sender and Native_handle_receiver APIs at the same time, per their concept c...">replace_event_wait_handles()</a> (depending on your use case).</p>
-<p >Regarding ctors: Naturally the <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-core-adopting ctor does not exist here, as we <em>are</em> a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> core. (Or I suppose it's just the move ctor.)</p>
+<p >Regarding ctors: Naturally the <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code>-core-adopting ctor does not exist here, as we <em>are</em> a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> core. (Or I suppose it's just the move ctor.)</p>
 <h2>Thread safety </h2>
 <p >Boring stuff out of the way first: It is safe to concurrently act on 2 separate objects of this type. <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a80cb628f57f12c19f7ce46d0894c773a" title="Returns nickname, a brief string suitable for logging.">nickname()</a> and <code>ostream&lt;&lt;</code> are always safe to call, and they always yield the same value (modulo across move-assignment).</p>
 <p >Now as to invoking operation X concurrently with operation Y on the same <code>*this</code>, where at least X is non-<code>const</code>:</p>
@@ -263,20 +327,21 @@ Related Functions</h2></td></tr>
 <p >Objects of most types simply declare it to be unsafe to invoke (on one <code>*this</code>) non-<code>const</code> operation X concurrently with operation Y (whether X or Y are the same op or differ). <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code>, however, works as follows: By <em>default</em> that is indeed the rule... with the exception of the following specific exceptions, wherein it <em>is</em> <b>intentionally</b> safe.</p>
 <h3>In PEER state</h3>
 <p >Firstly, let's assume <code>*this</code> is in PEER state, which is achieved either by using the PEER-state ctor form (where a pre-connected <code>Native_handle</code> is subsumed), or else by successfully completing <code>*_connect()</code>. Cool? Cool. We are in PEER state. Then:</p>
-<p >Boring ones first: <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e22d55369f5bd67a4e0d277b73f2823" title="Identical to Async_io_obj counterpart.">sync_connect()</a> simply returns <code>false</code> and is always safe to call (it is meant for NULL state). <code>*_max_size()</code> always return the same respective constant values and are always safe to call.</p>
+<p >Boring ones first: <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a8c3ce3700ee9cc8e01d013fe9da1681f" title="Identical to Async_io_obj counterpart.">sync_connect()</a> simply returns <code>false</code> and is always safe to call (it is meant for NULL state). <code>*_max_size()</code> always return the same respective constant values and are always safe to call.</p>
 <p >Much more significantly, we now list two specific categories of operations:</p><ul>
 <li>Send-ops:<ul>
-<li><code>send_*()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a69ed821cc3a41b68dd56880d45033a45" title="Implements Native_handle_sender, Blob_sender API per contract.">end_sending()</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afb680eb576497ac7e05e8294b49da0eb" title="Implements Native_handle_sender, Blob_sender API per contract.">async_end_sending()</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aaef9afdeb3800df615a01b22070acad8" title="Implements Native_handle_sender, Blob_sender API per contract.">auto_ping()</a>; and <code>send_on_active_ev()</code> (reminder: not a real method but a real op/see definition above).</li>
+<li><code>send_*()</code>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a69ed821cc3a41b68dd56880d45033a45" title="Implements Native_handle_sender, Blob_sender API per contract.">end_sending()</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#afb680eb576497ac7e05e8294b49da0eb" title="Implements Native_handle_sender, Blob_sender API per contract.">async_end_sending()</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a3fb1779f2ac962705b6d2488ea96227f" title="Implements Native_handle_sender, Blob_sender API per contract.">auto_ping()</a>; and <code>send_on_active_ev()</code> (reminder: not a real method but a real op/see definition above).</li>
 </ul>
 </li>
 <li>Receive-ops:<ul>
-<li><code>async_receive_*()</code>, <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac645b3e69ee3bfda64c0e9fda62f656a" title="Implements Native_handle_receiver, Blob_receiver API per contract.">idle_timer_run()</a></code>; and <code>receive_on_active_ev()</code> (reminder: not a real method but a real op/see definition above).</li>
+<li><code>async_receive_*()</code>, <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a740d8c97c66df7b4441b38f79f0638eb" title="Implements Native_handle_receiver, Blob_receiver API per contract.">idle_timer_run()</a></code>; and <code>receive_on_active_ev()</code> (reminder: not a real method but a real op/see definition above).</li>
 </ul>
 </li>
 </ul>
 <p >Now then: It is safe to invoke (even on the same <code>*this</code>) any 1 operation from the "send-ops" list concurrently with any 1 operation from the "receive-ops" list.</p>
 <p >Formally that's simply the case.</p>
-<p >Informally: it may be highly significant to performance of the user code that this is the case. It means that the two mutually-opposing pipes can operate concurrently, despite the fact they're operating on the same socket. E.g., an upload and download being highly active simultaneously will proceed in parallel on separate processor cores if possible. If your event loop is single-threaded in any case, then this does not matter; but if 2+ threads are involved, then it may well matter quite a bit. (For example: non-<code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> is internally built on a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">sync_io::Native_socket_stream</a>. It starts a thread (internally dubbed thread W) in which to perform significant incoming-direction work, while most &ndash; but not all &ndash; outgoing-direction work is done synchronously from its user's calling thread (dubbed thread U). Therefore it can keep 2 separate mutexes (one for each direction) and lock only 1 when doing in-work (in either thread U/W); and lock the other when doing out-work, in either thread U/W. So if a send can complete synchronously in thread U, while a receive does stuff in the background in thread W, the two may execute concurrently as opposed to serially. Running concurrently would decrease latency latency in sending and/or receipt.)</p>
+<p >Additionally: The <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2602b125b74f0025a7cb4af3ffb017bc" title="See transport::Native_socket_stream counterpart.">remote_peer_process_credentials()</a> accessor (not the mutator) may be invoked concurrently with any 1 operation from the "send-ops" list and/or any 1 operation from the "receive-ops" list.</p>
+<p >Informally: it may be highly significant to performance of the user code that this is the case. It means that the two mutually-opposing pipes can operate concurrently, despite the fact they're operating on the same socket. E.g., an upload and download being highly active simultaneously will proceed in parallel on separate processor cores if possible. If your event loop is single-threaded in any case, then this does not matter; but if 2+ threads are involved, then it may well matter quite a bit. (For example: non-<code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> is internally built on a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">sync_io::Native_socket_stream</a>. It starts a thread (internally dubbed thread W) in which to perform significant incoming-direction work, while most &ndash; but not all &ndash; outgoing-direction work is done synchronously from its user's calling thread (dubbed thread U). Therefore it can keep 2 separate mutexes (one for each direction) and lock only 1 when doing in-work (in either thread U/W); and lock the other when doing out-work, in either thread U/W. So if a send can complete synchronously in thread U, while a receive does stuff in the background in thread W, the two may execute concurrently as opposed to serially. Running concurrently would decrease latency latency in sending and/or receipt.)</p>
 <h3>In NULL state</h3>
 <p >Nothing interesting here.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a>: implemented concept. </dd>
@@ -303,7 +368,7 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Default ctor (object is in NULL state). </p>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#a935bfba8ac18f395eb920224395cbc8f" title="Default ctor: Creates a peer object in NULL (neither connected nor connecting) state.">Native_handle_sender::Native_handle_sender()</a>: implemented concept. </dd>
 <dd>
 <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#a4d1ef7666fc35e98ced97abdc131a345" title="Default ctor: Creates a peer object in NULL (neither connected nor connecting) state.">Native_handle_receiver::Native_handle_receiver()</a>: implemented concept. </dd>
@@ -349,7 +414,7 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Creates a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> in NULL (not connected) state. </p>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>See above. </td></tr>
@@ -401,7 +466,7 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Constructs the socket-and-meta-blob stream by taking over an already-connected native Unix domain socket handle. </p>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>See above. </td></tr>
@@ -438,7 +503,7 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Move-constructs from <code>src</code>; <code>src</code> becomes as-if default-cted (therefore in NULL state). </p>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src</td><td>See above.</td></tr>
@@ -479,14 +544,7 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> <em>and</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> APIs at the same time, per their concept contracts. </p>
-<p >(Also implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> <em>and</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> APIs; they are identical.)</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#a59dff09b6ab224e32a096c97b629d059" title="Destroys this peer endpoint which will end the conceptual outgoing-direction pipe (in PEER state,...">Native_handle_sender::~Native_handle_sender()</a>: implemented concept. </dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#a9b464ca1d564e19340221e9958a5aa45" title="Destroys this peer endpoint which will end the conceptual outgoing-direction pipe (in PEER state,...">Native_handle_receiver::~Native_handle_receiver()</a>: implemented concept. </dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html#a5b6fd92f1c435e13dcf6df40c76b3ce2" title="Destroys this peer endpoint which will end the conceptual outgoing-direction pipe (in PEER state,...">Blob_sender::~Blob_sender()</a>: alternatively implemented concept. </dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a53d0a7f08ce20ea8515b57d78c598858" title="Destroys this peer endpoint which will end the conceptual outgoing-direction pipe (in PEER state,...">Blob_receiver::~Blob_receiver()</a>: alternatively implemented concept. </dd></dl>
+<p >(Also implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> <em>and</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> APIs; they are identical.) </p>
 
 </div>
 </div>
@@ -522,7 +580,7 @@ template&lt;typename Task_err &gt; </div>
 <p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> API per contract. </p>
 <p >Reminder: Please peruse "Thread safety" in class doc header.</p>
 <p ><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated and passed to <code>on_done_func()</code> or emitted synchronously: See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart doc header.</p>
-<p >Reminder: In rare circumstances, an error emitted there may represent something detected during handling of a preceding <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9805f7625a1272af64295555f9a1a61b" title="Implements Native_handle_sender API per contract.">send_native_handle()</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e1474a87ee8f5ec18bf6cc8d6cfe7b2" title="Implements Blob_sender API per contract.">send_blob()</a> call but after it returned.</p>
+<p >Reminder: In rare circumstances, an error emitted there may represent something detected during handling of a preceding <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a17ebc2b1c25e3c8f493a86f2c5dab5e5" title="Implements Native_handle_sender API per contract.">send_native_handle()</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac78ceb9351432b8fbec719e592a28b0e" title="Implements Blob_sender API per contract.">send_blob()</a> call but after it returned.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Task_err</td><td>See above. </td></tr>
@@ -536,10 +594,7 @@ template&lt;typename Task_err &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. Reminder: If and only if it returns <code>false</code>, we're in NULL state, or <code>*end_sending()</code> has already been called; and <code>on_done_func()</code> will never be called, nor will an error be emitted.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#a9b99e18949cf819bfae4e08e44744fc6" title="Equivalent to send_native_handle() but sends a graceful-close message instead of the usual payload; t...">Native_handle_sender::async_end_sending()</a>: implemented concept. </dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html#a923cff103f564573c90999e545e1f644" title="Equivalent to send_blob() but sends a graceful-close message instead of the usual payload.">Blob_sender::async_end_sending()</a>: alternatively implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. Reminder: If and only if it returns <code>false</code>, we're in NULL state, or <code>*end_sending()</code> has already been called; and <code>on_done_func()</code> will never be called, nor will an error be emitted. </dd></dl>
 
 </div>
 </div>
@@ -585,7 +640,7 @@ template&lt;typename Task_err_sz &gt; </div>
 
 <p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> API per contract. </p>
 <p >Reminder: Please peruse "Thread safety" in class doc header.</p>
-<p ><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated and passed to <code>on_done_func()</code> or emitted synchronously: See <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#ac5572c8165e25f106f18d327c07d1c3f" title="Implements Blob_receiver API per contract.">Async_io_obj::async_receive_blob()</a></code> doc header (but not <code>S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</code>).</p>
+<p ><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated and passed to <code>on_done_func()</code> or emitted synchronously: See <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#ac5572c8165e25f106f18d327c07d1c3f" title="Implements Blob_receiver API per contract.">Async_io_obj::async_receive_blob()</a></code> doc header (but not <code>S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</code>; and add <code>S_SYNC_IO_WOULD_BLOCK</code>).</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Task_err_sz</td><td>See above. </td></tr>
@@ -601,8 +656,70 @@ template&lt;typename Task_err_sz &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#af05f5ec0a8fd01b2056c09613a4dfc1e" title="In PEER state: Possibly-asynchronously awaits one discrete message – as sent by the opposing peer – a...">Blob_receiver::async_receive_blob()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
+<a id="a4ba6bc935444c315d0d761b4f8016f20" name="a4ba6bc935444c315d0d761b4f8016f20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ba6bc935444c315d0d761b4f8016f20">&#9670;&nbsp;</a></span>async_receive_blob_batch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Msg_resource , typename Task_err &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::transport::sync_io::Native_socket_stream::async_receive_blob_batch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a88202b718c50332e177f81023dc99a9c">Blob_batch_in</a>&lt; Msg_resource &gt; *&#160;</td>
+          <td class="paramname"><em>batch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>assume_would_block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
+          <td class="paramname"><em>sync_err_code</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Task_err &amp;&amp;&#160;</td>
+          <td class="paramname"><em>on_done_func</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> API per contract. </p>
+<p >Reminder: Please peruse "Thread safety" in class doc header.</p>
+<p ><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated and passed to <code>on_done_func()</code> or emitted synchronously: See <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a67ced1ef257e5d606a41ae6fd640a5d3" title="Implements Blob_receiver API per contract.">Async_io_obj::async_receive_blob_batch()</a></code> doc header (but not <code>S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</code>; and add <code>S_SYNC_IO_WOULD_BLOCK</code>).</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Msg_resource</td><td>See above. </td></tr>
+    <tr><td class="paramname">Task_err</td><td>See above. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">batch</td><td>See above. </td></tr>
+    <tr><td class="paramname">assume_would_block</td><td>See above. </td></tr>
+    <tr><td class="paramname">sync_err_code</td><td>See above. Do realize <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24" title="A sync_io operation could not immediately complete; it will complete contingent on active async-wait ...">error::Code::S_SYNC_IO_WOULD_BLOCK</a> <em>is</em> still an error, so if this pointer is null, then would-block <em>will</em> make this throw. </td></tr>
+    <tr><td class="paramname">on_done_func</td><td>See above. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -654,7 +771,7 @@ template&lt;typename Task_err_sz &gt; </div>
 
 <p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> API per contract. </p>
 <p >Reminder: Please peruse "Thread safety" in class doc header.</p>
-<p ><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated and passed to <code>on_done_func()</code> or emitted synchronously: See <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a266b52821557f2a4fa8f81058290dee2" title="Implements Native_handle_receiver API per contract.">Async_io_obj::async_receive_native_handle()</a></code> doc header (but not <code>S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</code>).</p>
+<p ><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated and passed to <code>on_done_func()</code> or emitted synchronously: See <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a266b52821557f2a4fa8f81058290dee2" title="Implements Native_handle_receiver API per contract.">Async_io_obj::async_receive_native_handle()</a></code> doc header (but not <code>S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</code>; and add <code>S_SYNC_IO_WOULD_BLOCK</code>).</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Task_err_sz</td><td>See above. </td></tr>
@@ -671,13 +788,75 @@ template&lt;typename Task_err_sz &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#a6350bfb7f929a5b60fa4af1b6f7166cf" title="In PEER state: Possibly-asynchronously awaits one discrete message – as sent by the opposing peer via...">Native_handle_receiver::async_receive_native_handle()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
-<a id="aaef9afdeb3800df615a01b22070acad8" name="aaef9afdeb3800df615a01b22070acad8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaef9afdeb3800df615a01b22070acad8">&#9670;&nbsp;</a></span>auto_ping()</h2>
+<a id="acef21ccb0881689a533d2aff8350f0b4" name="acef21ccb0881689a533d2aff8350f0b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acef21ccb0881689a533d2aff8350f0b4">&#9670;&nbsp;</a></span>async_receive_native_handle_batch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Msg_resource , typename Task_err &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::transport::sync_io::Native_socket_stream::async_receive_native_handle_batch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aae02638894f37ea1050b38bad405b3d8">Native_handle_batch_in</a>&lt; Msg_resource &gt; *&#160;</td>
+          <td class="paramname"><em>batch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>assume_would_block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
+          <td class="paramname"><em>sync_err_code</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Task_err &amp;&amp;&#160;</td>
+          <td class="paramname"><em>on_done_func</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> API per contract. </p>
+<p >Reminder: Please peruse "Thread safety" in class doc header.</p>
+<p ><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated and passed to <code>on_done_func()</code> or emitted synchronously: See <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html#a1402a4fae168b1d058ff8c7f3e85e6b2" title="Implements Native_handle_receiver API per contract.">Async_io_obj::async_receive_native_handle_batch()</a></code> doc header (but not <code>S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</code>; and add <code>S_SYNC_IO_WOULD_BLOCK</code>).</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Msg_resource</td><td>See above. </td></tr>
+    <tr><td class="paramname">Task_err</td><td>See above. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">batch</td><td>See above. </td></tr>
+    <tr><td class="paramname">assume_would_block</td><td>See above. </td></tr>
+    <tr><td class="paramname">sync_err_code</td><td>See above. Do realize <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24" title="A sync_io operation could not immediately complete; it will complete contingent on active async-wait ...">error::Code::S_SYNC_IO_WOULD_BLOCK</a> <em>is</em> still an error, so if this pointer is null, then would-block <em>will</em> make this throw. </td></tr>
+    <tr><td class="paramname">on_done_func</td><td>See above. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
+<a id="a3fb1779f2ac962705b6d2488ea96227f" name="a3fb1779f2ac962705b6d2488ea96227f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fb1779f2ac962705b6d2488ea96227f">&#9670;&nbsp;</a></span>auto_ping()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -686,7 +865,7 @@ template&lt;typename Task_err_sz &gt; </div>
           <td class="memname">bool ipc::transport::sync_io::Native_socket_stream::auto_ping </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a>&#160;</td>
-          <td class="paramname"><em>period</em> = <code>boost::chrono::seconds(2)</code></td><td>)</td>
+          <td class="paramname"><em>period</em> = <code>boost::chrono::seconds{2}</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -699,10 +878,47 @@ template&lt;typename Task_err_sz &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#a5b90444b333091c3e44d01b8cb07a499" title="In PEER state: Irreversibly enables periodic auto-pinging of opposing receiver with low-level message...">Native_handle_sender::auto_ping()</a>: implemented concept. </dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html#ab66231120f7e774e9d8dadd6b1d9b2ea" title="In PEER state: Irreversibly enables periodic auto-pinging of opposing receiver with low-level message...">Blob_sender::auto_ping()</a>: alternatively implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
+<a id="a9ee26589579195f9fce6ca14a05d8f60" name="a9ee26589579195f9fce6ca14a05d8f60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ee26589579195f9fce6ca14a05d8f60">&#9670;&nbsp;</a></span>blob_receive_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__rcv__stats.html">stat::Blob_rcv_stats</a> ipc::transport::sync_io::Native_socket_stream::blob_receive_stats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> API per contract. </p>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
+<a id="a345610ec6373956cd87b27e2704f5061" name="a345610ec6373956cd87b27e2704f5061"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a345610ec6373956cd87b27e2704f5061">&#9670;&nbsp;</a></span>blob_send_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html">stat::Blob_snd_stats</a> ipc::transport::sync_io::Native_socket_stream::blob_send_stats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">sync_io::Blob_sender</a> API per contract. </p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply. </p><dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -722,10 +938,7 @@ template&lt;typename Task_err_sz &gt; </div>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> API per contract. </p>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#a8c60142c23bf70bc3722d557ad309d58" title="Equivalent to async_end_sending(&amp;E, F) wherein F() does nothing, and E is some Error_code &quot;sink&quot; igno...">Native_handle_sender::end_sending()</a>: implemented concept. </dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html#a4fd1a24f1221886230ffc18313eaedce" title="Equivalent to async_end_sending(F) wherein F() does nothing.">Blob_sender::end_sending()</a>: alternatively implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -749,8 +962,8 @@ template&lt;typename Task_err_sz &gt; </div>
 
 </div>
 </div>
-<a id="ac645b3e69ee3bfda64c0e9fda62f656a" name="ac645b3e69ee3bfda64c0e9fda62f656a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac645b3e69ee3bfda64c0e9fda62f656a">&#9670;&nbsp;</a></span>idle_timer_run()</h2>
+<a id="a740d8c97c66df7b4441b38f79f0638eb" name="a740d8c97c66df7b4441b38f79f0638eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a740d8c97c66df7b4441b38f79f0638eb">&#9670;&nbsp;</a></span>idle_timer_run()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -759,7 +972,7 @@ template&lt;typename Task_err_sz &gt; </div>
           <td class="memname">bool ipc::transport::sync_io::Native_socket_stream::idle_timer_run </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a>&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>boost::chrono::seconds(5)</code></td><td>)</td>
+          <td class="paramname"><em>timeout</em> = <code>boost::chrono::seconds{5}</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -773,10 +986,47 @@ template&lt;typename Task_err_sz &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a6888f84e88c00d28daa579a9b47a2d77" title="In PEER state: Irreversibly enables a conceptual idle timer whose potential side effect is,...">Blob_receiver::idle_timer_run()</a>: implemented concept. </dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#a57ec0f2a9c1b8bfbaaf88975433a1354" title="In PEER state: Irreversibly enables a conceptual idle timer whose potential side effect is,...">Native_handle_receiver::idle_timer_run()</a>: alternatively implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
+<a id="a8383fb9e002bba6b7465fc7a3549bb8e" name="a8383fb9e002bba6b7465fc7a3549bb8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8383fb9e002bba6b7465fc7a3549bb8e">&#9670;&nbsp;</a></span>native_handle_receive_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__rcv__stats.html">stat::Blob_rcv_stats</a> ipc::transport::sync_io::Native_socket_stream::native_handle_receive_stats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> API per contract. </p>
+<p >Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9ee26589579195f9fce6ca14a05d8f60" title="Implements sync_io::Blob_receiver API per contract.">blob_receive_stats()</a> for this impl. </p><dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
+<a id="afb3719cc0869bf23577ed604284e080d" name="afb3719cc0869bf23577ed604284e080d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb3719cc0869bf23577ed604284e080d">&#9670;&nbsp;</a></span>native_handle_send_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html">stat::Blob_snd_stats</a> ipc::transport::sync_io::Native_socket_stream::native_handle_send_stats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_sender</a> API per contract. </p>
+<p >Identical to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a345610ec6373956cd87b27e2704f5061" title="Implements sync_io::Blob_sender API per contract.">blob_send_stats()</a> for this impl. </p><dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -796,7 +1046,7 @@ template&lt;typename Task_err_sz &gt; </div>
 </div><div class="memdoc">
 
 <p>Returns nickname, a brief string suitable for logging. </p>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
@@ -827,7 +1077,7 @@ template&lt;typename Task_err_sz &gt; </div>
 
 <p>Move-assigns from <code>src</code>; <code>*this</code> acts as if destructed; <code>src</code> becomes as-if default-cted (therefore in NULL state). </p>
 <p >No-op if <code>&amp;src == this</code>.</p>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src</td><td>See above. </td></tr>
@@ -862,8 +1112,7 @@ template&lt;typename Task_err_sz &gt; </div>
 
 <p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> API per contract. </p>
 <p >Notes for <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a> apply.</p>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#aa8c46b25839f7660a1c867a25aa3680c" title="All notes from sync_io::Native_handle_receiver::receive_meta_blob_max_size() apply.">Blob_receiver::receive_blob_max_size()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -884,8 +1133,7 @@ template&lt;typename Task_err_sz &gt; </div>
 
 <p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> API per contract. </p>
 <p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Native_handle_receiver</a> apply.</p>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#a46194b54e9465a5a41d7fedf9d4982ae" title="Mirrors sync_io::Native_handle_sender::send_meta_blob_max_size().">Native_handle_receiver::receive_meta_blob_max_size()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -905,41 +1153,41 @@ template&lt;typename Task_err_sz &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </p>
+<p>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> counterpart. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">creds</td><td>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </td></tr>
+    <tr><td class="paramname">creds</td><td>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> counterpart. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> counterpart. </dd></dl>
 
 </div>
 </div>
-<a id="a16b605c316922325415d60aeb0af3c40" name="a16b605c316922325415d60aeb0af3c40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16b605c316922325415d60aeb0af3c40">&#9670;&nbsp;</a></span>remote_peer_process_credentials() <span class="overload">[2/2]</span></h2>
+<a id="a2602b125b74f0025a7cb4af3ffb017bc" name="a2602b125b74f0025a7cb4af3ffb017bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2602b125b74f0025a7cb4af3ffb017bc">&#9670;&nbsp;</a></span>remote_peer_process_credentials() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a> ipc::transport::sync_io::Native_socket_stream::remote_peer_process_credentials </td>
+          <td class="memname">const <a class="el" href="classipc_1_1util_1_1Process__credentials.html">util::Process_credentials</a> &amp; ipc::transport::sync_io::Native_socket_stream::remote_peer_process_credentials </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code></td><td>)</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </p>
+<p>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> counterpart. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">err_code</td><td>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> counterpart. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterpart. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> counterpart. </dd></dl>
 
 </div>
 </div>
@@ -969,19 +1217,12 @@ template&lt;typename Create_ev_wait_hndl_func &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#abe6227dfa077571d6eed2707532e4360" title="To be (optionally) invoked before any start_*_ops(), supplies a factory for the util::sync_io::Asio_w...">Native_handle_sender::replace_event_wait_handles()</a>: implemented concept. </dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#a6b26e7ee8f63e8e80b9cc7010bf208d6" title="Coincides with sync_io::Native_handle_sender concept counterpart.">Native_handle_receiver::replace_event_wait_handles()</a>: implemented concept. </dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html#a15da7ad5bcf7147e6308d532f1432352" title="Coincides with sync_io::Native_handle_sender concept counterpart.">Blob_sender::replace_event_wait_handles()</a>: alternatively implemented concept. </dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a349a3fc5bf2b0246f206ea332f8684e0" title="Coincides with sync_io::Native_handle_receiver concept counterpart.">Blob_receiver::replace_event_wait_handles()</a>: alternatively implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
-<a id="a2e1474a87ee8f5ec18bf6cc8d6cfe7b2" name="a2e1474a87ee8f5ec18bf6cc8d6cfe7b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e1474a87ee8f5ec18bf6cc8d6cfe7b2">&#9670;&nbsp;</a></span>send_blob()</h2>
+<a id="ac78ceb9351432b8fbec719e592a28b0e" name="ac78ceb9351432b8fbec719e592a28b0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac78ceb9351432b8fbec719e592a28b0e">&#9670;&nbsp;</a></span>send_blob()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -996,7 +1237,7 @@ template&lt;typename Create_ev_wait_hndl_func &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1011,12 +1252,11 @@ template&lt;typename Create_ev_wait_hndl_func &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">blob</td><td>See above. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See above. Reminder: In rare circumstances, an error emitted here may represent something detected during handling of a <em>preceding</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9805f7625a1272af64295555f9a1a61b" title="Implements Native_handle_sender API per contract.">send_native_handle()</a> call but after it returned. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart doc header. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See above. Reminder: In rare circumstances, an error emitted here may represent something detected during handling of a <em>preceding</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a17ebc2b1c25e3c8f493a86f2c5dab5e5" title="Implements Native_handle_sender API per contract.">send_native_handle()</a> call but after it returned. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart doc header. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html#add3aa0b782c02b3e1222b4ee25598ecc" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">Blob_sender::send_blob()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -1037,8 +1277,7 @@ template&lt;typename Create_ev_wait_hndl_func &gt; </div>
 
 <p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html" title="A documentation-only concept: what transport::Blob_sender is to transport::Native_handle_sender (name...">Blob_sender</a> API per contract. </p>
 <p >Notes for <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Blob_sender</a> apply.</p>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html#a57611f88b625f095d4a6a0f0e5d9e665" title="All notes from sync_io::Native_handle_sender apply.">Blob_sender::send_blob_max_size()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -1059,13 +1298,12 @@ template&lt;typename Create_ev_wait_hndl_func &gt; </div>
 
 <p>Implements <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> API per contract. </p>
 <p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">transport::Native_handle_sender</a> apply.</p>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#afde03d7fb5746e77524229d5881b8d79" title="Same notes as for transport::Native_handle_sender.">Native_handle_sender::send_meta_blob_max_size()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
-<a id="a9805f7625a1272af64295555f9a1a61b" name="a9805f7625a1272af64295555f9a1a61b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9805f7625a1272af64295555f9a1a61b">&#9670;&nbsp;</a></span>send_native_handle()</h2>
+<a id="a17ebc2b1c25e3c8f493a86f2c5dab5e5" name="a17ebc2b1c25e3c8f493a86f2c5dab5e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17ebc2b1c25e3c8f493a86f2c5dab5e5">&#9670;&nbsp;</a></span>send_native_handle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1086,7 +1324,7 @@ template&lt;typename Create_ev_wait_hndl_func &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1102,12 +1340,11 @@ template&lt;typename Create_ev_wait_hndl_func &gt; </div>
   <table class="params">
     <tr><td class="paramname">hndl_or_null</td><td>See above. </td></tr>
     <tr><td class="paramname">meta_blob</td><td>See above. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See above. Reminder: In rare circumstances, an error emitted here may represent something detected during handling of a <em>preceding</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9805f7625a1272af64295555f9a1a61b" title="Implements Native_handle_sender API per contract.">send_native_handle()</a> call but after it returned. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart doc header. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See above. Reminder: In rare circumstances, an error emitted here may represent something detected during handling of a <em>preceding</em> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a17ebc2b1c25e3c8f493a86f2c5dab5e5" title="Implements Native_handle_sender API per contract.">send_native_handle()</a> call but after it returned. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a24d39cb096987f483f233d9d4ab51ecf" title="Useful for generic programming, the async-I/O-pattern counterpart to *this type.">Async_io_obj</a> counterpart doc header. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#a0f8f3fb816c09dd9a992a878892bbffb" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably/in-order,...">Native_handle_sender::send_native_handle()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -1143,8 +1380,7 @@ template&lt;typename Event_wait_func_t &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. In addition return <code>false</code>/WARNING/no-op, if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac6d65bc2852ad8800cb57a23311fbe7e" title="Implements Native_handle_receiver API per contract.">start_receive_native_handle_ops()</a> earlier succeeded.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>Native_handle_receiver::start_receive_blob_ops(): implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. In addition return <code>false</code>/WARNING/no-op, if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#ac6d65bc2852ad8800cb57a23311fbe7e" title="Implements Native_handle_receiver API per contract.">start_receive_native_handle_ops()</a> earlier succeeded; same if <code>*this</code> is not in PEER state. </dd></dl>
 
 </div>
 </div>
@@ -1180,8 +1416,7 @@ template&lt;typename Event_wait_func_t &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. In addition return <code>false</code>/WARNING/no-op, if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a931e45a395d0bef15084db3b6b1e9754" title="Implements Blob_receiver API per contract.">start_receive_blob_ops()</a> earlier succeeded.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>Native_handle_receiver::receive_blob_max_size(): implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. In addition return <code>false</code>/WARNING/no-op, if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a931e45a395d0bef15084db3b6b1e9754" title="Implements Blob_receiver API per contract.">start_receive_blob_ops()</a> earlier succeeded; same if <code>*this</code> is not in PEER state. </dd></dl>
 
 </div>
 </div>
@@ -1217,8 +1452,7 @@ template&lt;typename Event_wait_func_t &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. In addition return <code>false</code>/WARNING/no-op, if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2bd0b6a8badd0b770917bb9df9ad6093" title="Implements Native_handle_sender API per contract.">start_send_native_handle_ops()</a> earlier succeeded.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__sender.html#aa7676391885035faa7195c0840ae2009" title="All notes from sync_io::Native_handle_sender::start_send_native_handle_ops() apply.">Blob_sender::start_send_blob_ops()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. In addition return <code>false</code>/WARNING/no-op, if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2bd0b6a8badd0b770917bb9df9ad6093" title="Implements Native_handle_sender API per contract.">start_send_native_handle_ops()</a> earlier succeeded; same if <code>*this</code> is not in PEER state. </dd></dl>
 
 </div>
 </div>
@@ -1254,13 +1488,12 @@ template&lt;typename Event_wait_func_t &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above. In addition return <code>false</code>/WARNING/no-op, if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2b1fa31c4d8ac11683472b83efe7956a" title="Implements Blob_sender API per contract.">start_send_blob_ops()</a> earlier succeeded.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html#a8c34b110850c736c45d88689ab06c27c" title="Sets up the sync_io-pattern interaction between *this and the user&#39;s event loop; required before send...">Native_handle_sender::start_send_native_handle_ops()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. In addition return <code>false</code>/WARNING/no-op, if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2b1fa31c4d8ac11683472b83efe7956a" title="Implements Blob_sender API per contract.">start_send_blob_ops()</a> earlier succeeded; same if <code>*this</code> is not in PEER state. </dd></dl>
 
 </div>
 </div>
-<a id="a2e22d55369f5bd67a4e0d277b73f2823" name="a2e22d55369f5bd67a4e0d277b73f2823"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e22d55369f5bd67a4e0d277b73f2823">&#9670;&nbsp;</a></span>sync_connect()</h2>
+<a id="a8c3ce3700ee9cc8e01d013fe9da1681f" name="a8c3ce3700ee9cc8e01d013fe9da1681f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c3ce3700ee9cc8e01d013fe9da1681f">&#9670;&nbsp;</a></span>sync_connect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1275,7 +1508,7 @@ template&lt;typename Event_wait_func_t &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1355,7 +1588,7 @@ template&lt;typename Event_wait_func_t &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ipc::transport::sync_io::Native_socket_stream::S_BLOB_UNDERFLOW_ALLOWED = true</td>
+          <td class="memname">constexpr bool ipc::transport::sync_io::Native_socket_stream::S_BLOB_UNDERFLOW_ALLOWED = <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#aab8f0844b61c700b3ab6ab50e3389fff">S_META_BLOB_UNDERFLOW_ALLOWED</a></td>
         </tr>
       </table>
   </td>
@@ -1366,33 +1599,8 @@ template&lt;typename Event_wait_func_t &gt; </div>
 </div><div class="memdoc">
 
 <p>Implements concept API; namely it is <code>true</code>. </p>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <dl class="section see"><dt>See also</dt><dd>Native_handle_receiver::S_BLOB_UNDERFLOW_ALLOWED: implemented concept. Accordingly also see "Blob underflow semantics" in <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Native_handle_receiver</a> doc header. </dd></dl>
-
-</div>
-</div>
-<a id="a00624e2fc3757012d13e3dc0feb26a21" name="a00624e2fc3757012d13e3dc0feb26a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00624e2fc3757012d13e3dc0feb26a21">&#9670;&nbsp;</a></span>S_MAX_META_BLOB_LENGTH</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const size_t &amp; ipc::transport::sync_io::Native_socket_stream::S_MAX_META_BLOB_LENGTH = Impl::S_MAX_META_BLOB_LENGTH</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The maximum length of a blob that can be sent by this protocol. </p>
-<p ><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a9805f7625a1272af64295555f9a1a61b" title="Implements Native_handle_sender API per contract.">send_native_handle()</a> shall synchronously emit a particular error, if <code>meta_blob.size()</code> exceeds this. <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a2e1474a87ee8f5ec18bf6cc8d6cfe7b2" title="Implements Blob_sender API per contract.">send_blob()</a> shall do similarly for <code>blob</code> arg. The same is accurate of their async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> counterparts. </p>
 
 </div>
 </div>
@@ -1417,8 +1625,87 @@ template&lt;typename Event_wait_func_t &gt; </div>
 </div><div class="memdoc">
 
 <p>Implements concept API; namely it is <code>true</code>. </p>
-<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a stream-oriented U...">transport::Native_socket_stream</a> apply.</p>
+<p >Notes for <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> apply.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html#aeb80b0f432a762a5c78ff19c8e32c0b9" title="Same notes as for transport::Native_handle_receiver.">Native_handle_receiver::S_META_BLOB_UNDERFLOW_ALLOWED</a>: implemented concept. Accordingly also see "Blob underflow semantics" in <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Native_handle_receiver</a> doc header. </dd></dl>
+
+</div>
+</div>
+<a id="a1b79864092c3f86b8eccb323a2a7ebcf" name="a1b79864092c3f86b8eccb323a2a7ebcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b79864092c3f86b8eccb323a2a7ebcf">&#9670;&nbsp;</a></span>S_RCV_BLOB_BATCH_SZ_RECOMMENDATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t ipc::transport::sync_io::Native_socket_stream::S_RCV_BLOB_BATCH_SZ_RECOMMENDATION = <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a103b5764025152e606e61e7855d61b8b">S_RCV_NATIVE_HANDLE_BATCH_SZ_RECOMMENDATION</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements concept API. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html#a83342e6e0376af00c932e221b99d51da" title="Same notes as for transport::Blob_receiver.">Blob_receiver::S_RCV_BLOB_BATCH_SZ_RECOMMENDATION</a>: implemented concept. One <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">transport</a>, one value: it serves both of our receiver-concept personas equally (batch-receiving mechanics do not depend on whether native handles ride along). </dd></dl>
+
+</div>
+</div>
+<a id="a103b5764025152e606e61e7855d61b8b" name="a103b5764025152e606e61e7855d61b8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a103b5764025152e606e61e7855d61b8b">&#9670;&nbsp;</a></span>S_RCV_NATIVE_HANDLE_BATCH_SZ_RECOMMENDATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t ipc::transport::sync_io::Native_socket_stream::S_RCV_NATIVE_HANDLE_BATCH_SZ_RECOMMENDATION</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= (<a class="code hl_variable" href="classipc_1_1transport_1_1Native__socket__stream__cfg.html#af116135675b62766d0bf21109ec7fac9">Native_socket_stream_cfg::S_USE_OS_DGRAM_SUPPORT</a> &amp;&amp; <a class="code hl_variable" href="classipc_1_1transport_1_1Native__socket__stream__cfg.html#aee2bb5d0359808a3e423ceeda7ee6a62">Native_socket_stream_cfg::S_USE_OS_DGRAM_BATCH_SUPPORT</a>)</div>
+<div class="line">        ? 64 : 1</div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Native__socket__stream__cfg_html_aee2bb5d0359808a3e423ceeda7ee6a62"><div class="ttname"><a href="classipc_1_1transport_1_1Native__socket__stream__cfg.html#aee2bb5d0359808a3e423ceeda7ee6a62">ipc::transport::Native_socket_stream_cfg::S_USE_OS_DGRAM_BATCH_SUPPORT</a></div><div class="ttdeci">static constexpr bool S_USE_OS_DGRAM_BATCH_SUPPORT</div><div class="ttdoc">Whether the OS provides, and we shall use for sync_io::Native_socket_stream and derivative(s),...</div><div class="ttdef"><b>Definition:</b> native_socket_stream_cfg.hpp:124</div></div>
+<div class="ttc" id="aclassipc_1_1transport_1_1Native__socket__stream__cfg_html_af116135675b62766d0bf21109ec7fac9"><div class="ttname"><a href="classipc_1_1transport_1_1Native__socket__stream__cfg.html#af116135675b62766d0bf21109ec7fac9">ipc::transport::Native_socket_stream_cfg::S_USE_OS_DGRAM_SUPPORT</a></div><div class="ttdeci">static constexpr bool S_USE_OS_DGRAM_SUPPORT</div><div class="ttdoc">Whether the OS provides, and we shall use for sync_io::Native_socket_stream and derivative(s),...</div><div class="ttdef"><b>Definition:</b> native_socket_stream_cfg.hpp:110</div></div>
+</div><!-- fragment -->
+<p>Implements concept API. </p>
+<p >As of this writing this value depends on <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__cfg.html#aee2bb5d0359808a3e423ceeda7ee6a62" title="Whether the OS provides, and we shall use for sync_io::Native_socket_stream and derivative(s),...">Native_socket_stream_cfg::S_USE_OS_DGRAM_BATCH_SUPPORT</a> and <code>S_USE_OS_DGRAM_SUPPORT</code>; iff and only if both are <code>true</code>, then this value is <code>&gt; 1</code>; otherwise it is <code>1</code>. </p>
+
+</div>
+</div>
+<a id="af2ebc6eabb5f5b4ed5e0264f0fca3db7" name="af2ebc6eabb5f5b4ed5e0264f0fca3db7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2ebc6eabb5f5b4ed5e0264f0fca3db7">&#9670;&nbsp;</a></span>S_TRANSMIT_NATIVE_HANDLES</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool ipc::transport::sync_io::Native_socket_stream::S_TRANSMIT_NATIVE_HANDLES = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Useful for generic programming: <code>true</code> to indicate a <code>*this</code> has a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a17ebc2b1c25e3c8f493a86f2c5dab5e5" title="Implements Native_handle_sender API per contract.">send_native_handle()</a> and an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#a04effad6ce75fc5c8e6cbee5a26b73e8" title="Implements Native_handle_receiver API per contract.">async_receive_native_handle()</a>. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>Shouldn't <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html#af2ebc6eabb5f5b4ed5e0264f0fca3db7" title="Useful for generic programming: true to indicate a *this has a send_native_handle() and an async_rece...">Native_socket_stream::S_TRANSMIT_NATIVE_HANDLES</a> and its peer concept impls be formally generalized in the appopriate concept? E.g., as of this writing the <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html" title="Type that adapts a given PEER-state sync_io::Native_handle_receiver or sync_io::Blob_receiver core in...">Async_adapter_receiver</a> impl relies on it, so trying to use that guy to implement a custom <code>..._receiver</code> in terms of a custom <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a>::..._receiver</code> would cause a build error, unless the writer of the latter hypothetical custom guy added a <code>S_TRANSMIT_NATIVE_HANDLES</code> member. In practice they'd probably know to do so upon seeing the error and the present code; but formally a relevant concept should specify it, so the custom-guy writer would've known to do so from the start. </dd></dl>
 
 </div>
 </div>
@@ -1430,7 +1717,7 @@ template&lt;typename Event_wait_func_t &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

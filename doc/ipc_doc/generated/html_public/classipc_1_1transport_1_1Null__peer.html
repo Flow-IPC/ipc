@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -69,13 +69,14 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#related">Related Functions</a> &#124;
 <a href="classipc_1_1transport_1_1Null__peer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ipc::transport::Null_peer Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and coversely for async-I/O guys and their <code>Async_io_obj</code>s.  
+<p>Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and conversely for async-I/O guys and their <code>Async_io_obj</code>s.  
  <a href="classipc_1_1transport_1_1Null__peer.html#details">More...</a></p>
 
 <p><code>#include &lt;channel.hpp&gt;</code></p>
@@ -90,6 +91,43 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>Sync_io_obj</b> = <a
 using&#160;</td><td class="memItemRight" valign="bottom"><b>Async_io_obj</b> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
 <tr class="memdesc:af4e6e3e13b508fd8522b0a95bb69f4d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
 <tr class="separator:af4e6e3e13b508fd8522b0a95bb69f4d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16cc14ede5cc575efafe826a578b3b6d"><td class="memTemplParams" colspan="2"><a id="a16cc14ede5cc575efafe826a578b3b6d" name="a16cc14ede5cc575efafe826a578b3b6d"></a>
+template&lt;typename Msg_resource &gt; </td></tr>
+<tr class="memitem:a16cc14ede5cc575efafe826a578b3b6d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Native_handle_batch_in</b> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:a16cc14ede5cc575efafe826a578b3b6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
+<tr class="separator:a16cc14ede5cc575efafe826a578b3b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50e913214f700b727a9a9f1eafb9904b"><td class="memTemplParams" colspan="2"><a id="a50e913214f700b727a9a9f1eafb9904b" name="a50e913214f700b727a9a9f1eafb9904b"></a>
+template&lt;typename Msg_resource &gt; </td></tr>
+<tr class="memitem:a50e913214f700b727a9a9f1eafb9904b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Blob_batch_in</b> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:a50e913214f700b727a9a9f1eafb9904b"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
+<tr class="separator:a50e913214f700b727a9a9f1eafb9904b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa1d97de671da72c8679eaafdba9865f"><td class="memItemLeft" align="right" valign="top"><a id="aaa1d97de671da72c8679eaafdba9865f" name="aaa1d97de671da72c8679eaafdba9865f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Native_handle_snd_stats</b> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:aaa1d97de671da72c8679eaafdba9865f"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
+<tr class="separator:aaa1d97de671da72c8679eaafdba9865f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae30d33231c3fd6065411830a506af23c"><td class="memItemLeft" align="right" valign="top"><a id="ae30d33231c3fd6065411830a506af23c" name="ae30d33231c3fd6065411830a506af23c"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Blob_snd_stats</b> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:ae30d33231c3fd6065411830a506af23c"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
+<tr class="separator:ae30d33231c3fd6065411830a506af23c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42d26568bb6e435fd96419ecb2438f7f"><td class="memItemLeft" align="right" valign="top"><a id="a42d26568bb6e435fd96419ecb2438f7f" name="a42d26568bb6e435fd96419ecb2438f7f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Native_handle_rcv_stats</b> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:a42d26568bb6e435fd96419ecb2438f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
+<tr class="separator:a42d26568bb6e435fd96419ecb2438f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60891fe09f0f4c9ad5ea4fc02b7f67eb"><td class="memItemLeft" align="right" valign="top"><a id="a60891fe09f0f4c9ad5ea4fc02b7f67eb" name="a60891fe09f0f4c9ad5ea4fc02b7f67eb"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Blob_rcv_stats</b> = <a class="el" href="classipc_1_1transport_1_1Null__peer.html">Null_peer</a></td></tr>
+<tr class="memdesc:a60891fe09f0f4c9ad5ea4fc02b7f67eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
+<tr class="separator:a60891fe09f0f4c9ad5ea4fc02b7f67eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ad904b8c1ad7b93d6a53ee607d0d98a3e"><td class="memItemLeft" align="right" valign="top"><a id="ad904b8c1ad7b93d6a53ee607d0d98a3e" name="ad904b8c1ad7b93d6a53ee607d0d98a3e"></a>
+static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>S_RCV_BLOB_BATCH_SZ_RECOMMENDATION</b> = 0</td></tr>
+<tr class="memdesc:ad904b8c1ad7b93d6a53ee607d0d98a3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
+<tr class="separator:ad904b8c1ad7b93d6a53ee607d0d98a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31ae641eef884c8fd1665e496c72af42"><td class="memItemLeft" align="right" valign="top"><a id="a31ae641eef884c8fd1665e496c72af42" name="a31ae641eef884c8fd1665e496c72af42"></a>
+static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>S_RCV_NATIVE_HANDLE_BATCH_SZ_RECOMMENDATION</b> = 0</td></tr>
+<tr class="memdesc:a31ae641eef884c8fd1665e496c72af42"><td class="mdescLeft">&#160;</td><td class="mdescRight">You may disregard. <br /></td></tr>
+<tr class="separator:a31ae641eef884c8fd1665e496c72af42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="related" name="related"></a>
 Related Functions</h2></td></tr>
@@ -100,7 +138,7 @@ Related Functions</h2></td></tr>
 <tr class="separator:a7f08625d3fffff74a794f14aa4022b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and coversely for async-I/O guys and their <code>Async_io_obj</code>s. </p>
+<div class="textblock"><p >Dummy type for use as a template param to <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> when either the blobs pipe or handles pipe is disabled; as well as to mark a given peer object as not having a counterpart form: a <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> object shall have its <code>using Sync_io_obj = <a class="el" href="classipc_1_1transport_1_1Null__peer.html" title="Dummy type for use as a template param to Channel when either the blobs pipe or handles pipe is disab...">Null_peer</a></code> and conversely for async-I/O guys and their <code>Async_io_obj</code>s. </p>
 <p >No object of this type is ever touched, at least if <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">Channel</a> is properly used. </p>
 </div><h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a id="a7f08625d3fffff74a794f14aa4022b9d" name="a7f08625d3fffff74a794f14aa4022b9d"></a>
@@ -158,7 +196,7 @@ Related Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

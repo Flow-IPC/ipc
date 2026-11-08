@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -74,16 +74,17 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="msg_8hpp_source.html">ipc/transport/struc/msg.hpp</a>&quot;</code><br />
+<code>#include &lt;boost/move/unique_ptr.hpp&gt;</code><br />
 </div>
 <p><a href="msg__impl_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out__impl.html">ipc::transport::struc::Msg_out_impl&lt; Message_body, Struct_builder &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used (data-free) addendum on-top of <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a> which makes the <code>protected</code> API public instead.  <a href="classipc_1_1transport_1_1struc_1_1Msg__out__impl.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Msg__out__impl.html">ipc::transport::struc::Msg_out_impl&lt; Base_t &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the <code>friend</code> facade of <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a> that exposes <code>private</code> APIs hidden from public user by providing public access to them; this is used internally by <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a> at least.  <a href="structipc_1_1transport_1_1struc_1_1Msg__out__impl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in__impl.html">ipc::transport::struc::Msg_in_impl&lt; Message_body, Struct_reader_config &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used (data-free) addendum on-top of <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a> which makes the <code>protected</code> API public instead.  <a href="classipc_1_1transport_1_1struc_1_1Msg__in__impl.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Msg__in__impl.html">ipc::transport::struc::Msg_in_impl&lt; Base_t &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the <code>friend</code> facade of <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a> that exposes <code>private</code> APIs hidden from public user by providing public access to them; this is used internally by <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a> at least.  <a href="structipc_1_1transport_1_1struc_1_1Msg__in__impl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -101,7 +102,7 @@ Namespaces</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

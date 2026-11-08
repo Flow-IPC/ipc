@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -76,14 +76,14 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a></code> base that contains non-parameterized <code>public</code> items such as tag types and constants.  
+<p><code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a></code> base that contains non-parameterized items such as tag types and constants.  
  <a href="classipc_1_1transport_1_1struc_1_1Channel__base.html#details">More...</a></p>
 
 <p><code>#include &lt;channel_base.hpp&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ipc::transport::struc::Channel_base:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1struc_1_1Channel__base__inherit__graph.svg" width="372" height="83"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classipc_1_1transport_1_1struc_1_1Channel__base__inherit__graph.svg" width="363" height="83"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -125,9 +125,18 @@ static constexpr <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_
 static constexpr <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel__base_1_1Serialize__via__app__shm.html">Serialize_via_app_shm</a>&#160;</td><td class="memItemRight" valign="bottom"><b>S_SERIALIZE_VIA_APP_SHM</b> = {}</td></tr>
 <tr class="memdesc:af732121649271d1368a2fb637917ce7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sole value of the tag type <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel__base_1_1Serialize__via__app__shm.html" title="Similar to Serialize_via_session_shm but assumes per-app-scope SHM-arena (as opposed to per-session-s...">Serialize_via_app_shm</a>. <br /></td></tr>
 <tr class="separator:af732121649271d1368a2fb637917ce7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdbbad78939b39f398fa1121673d4673"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592">Protocol_negotiator::proto_ver_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#abdbbad78939b39f398fa1121673d4673">S_PROTOCOL_MIN_VERSION</a> = 2</td></tr>
+<tr class="memdesc:abdbbad78939b39f398fa1121673d4673"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum protocol version supported internally by <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a> and derivative(s).  <a href="classipc_1_1transport_1_1struc_1_1Channel__base.html#abdbbad78939b39f398fa1121673d4673">More...</a><br /></td></tr>
+<tr class="separator:abdbbad78939b39f398fa1121673d4673"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb665eb15fa35960951ef934d3ac4b3d"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592">Protocol_negotiator::proto_ver_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#abb665eb15fa35960951ef934d3ac4b3d">S_PROTOCOL_MAX_VERSION</a> = <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#abdbbad78939b39f398fa1121673d4673">S_PROTOCOL_MIN_VERSION</a></td></tr>
+<tr class="memdesc:abb665eb15fa35960951ef934d3ac4b3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum protocol version supported internally by <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a> and derivative(s).  <a href="classipc_1_1transport_1_1struc_1_1Channel__base.html#abb665eb15fa35960951ef934d3ac4b3d">More...</a><br /></td></tr>
+<tr class="separator:abb665eb15fa35960951ef934d3ac4b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a207f0f6cc45fff341c71b8942a7db8e2"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#a207f0f6cc45fff341c71b8942a7db8e2">S_SYNC_OP_PEER_PROCESS_LIVENESS_CHECK_PERIOD</a> = boost::chrono::milliseconds(500)</td></tr>
+<tr class="memdesc:a207f0f6cc45fff341c71b8942a7db8e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">For <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a3102e6b12c213902947d1ec21367d6b4" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">struc::Channel::sync_request()</a> (and any other <code>sync_*()</code> APIs, that is potentially-blocking ops), how often the op shall, while awaiting completion or channel error, internally check that the opposing process still exists (and if not, exit and emit <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ab51c5d9bb7ed60dd94a3a6758d34eb3c" title="The opposing peer process involved in an IPC channel is currently reported by the OS as no longer run...">transport::error::Code::S_PEER_PROCESS_NO_LONGER_EXISTS</a>).  <a href="classipc_1_1transport_1_1struc_1_1Channel__base.html#a207f0f6cc45fff341c71b8942a7db8e2">More...</a><br /></td></tr>
+<tr class="separator:a207f0f6cc45fff341c71b8942a7db8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p ><code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a></code> base that contains non-parameterized <code>public</code> items such as tag types and constants. </p>
+<div class="textblock"><p ><code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a></code> base that contains non-parameterized items such as tag types and constants. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="adcf24fa51747ed83c4b6427fbf44fecf" name="adcf24fa51747ed83c4b6427fbf44fecf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adcf24fa51747ed83c4b6427fbf44fecf">&#9670;&nbsp;</a></span>msg_id_out_t</h2>
@@ -146,13 +155,127 @@ static constexpr <a class="el" href="structipc_1_1transport_1_1struc_1_1Channel_
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="abb665eb15fa35960951ef934d3ac4b3d" name="abb665eb15fa35960951ef934d3ac4b3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb665eb15fa35960951ef934d3ac4b3d">&#9670;&nbsp;</a></span>S_PROTOCOL_MAX_VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592">Protocol_negotiator::proto_ver_t</a> ipc::transport::struc::Channel_base::S_PROTOCOL_MAX_VERSION = <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#abdbbad78939b39f398fa1121673d4673">S_PROTOCOL_MIN_VERSION</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Maximum protocol version supported internally by <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a> and derivative(s). </p>
+<p >Public for logging/reporting only; really it is an internally used only value.</p>
+<p >It is currently the same as <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#abdbbad78939b39f398fa1121673d4673" title="Minimum protocol version supported internally by struc::sync_io::Channel and derivative(s).">S_PROTOCOL_MIN_VERSION</a>, as so far we've kept it intentionally simple to not deal with backward-compatibility. </p>
+
+</div>
+</div>
+<a id="abdbbad78939b39f398fa1121673d4673" name="abdbbad78939b39f398fa1121673d4673"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdbbad78939b39f398fa1121673d4673">&#9670;&nbsp;</a></span>S_PROTOCOL_MIN_VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classipc_1_1transport_1_1Protocol__negotiator.html#a35fb3885d39f11d0c1f7860e64194592">Protocol_negotiator::proto_ver_t</a> ipc::transport::struc::Channel_base::S_PROTOCOL_MIN_VERSION = 2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Minimum protocol version supported internally by <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a> and derivative(s). </p>
+<p >Public for logging/reporting only; really it is an internally used only value. </p>
+
+</div>
+</div>
+<a id="a207f0f6cc45fff341c71b8942a7db8e2" name="a207f0f6cc45fff341c71b8942a7db8e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a207f0f6cc45fff341c71b8942a7db8e2">&#9670;&nbsp;</a></span>S_SYNC_OP_PEER_PROCESS_LIVENESS_CHECK_PERIOD</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> ipc::transport::struc::Channel_base::S_SYNC_OP_PEER_PROCESS_LIVENESS_CHECK_PERIOD = boost::chrono::milliseconds(500)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>For <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a3102e6b12c213902947d1ec21367d6b4" title="Equivalent to the other sync_request() overload but with no timeout; meaning it shall exit only once ...">struc::Channel::sync_request()</a> (and any other <code>sync_*()</code> APIs, that is potentially-blocking ops), how often the op shall, while awaiting completion or channel error, internally check that the opposing process still exists (and if not, exit and emit <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ab51c5d9bb7ed60dd94a3a6758d34eb3c" title="The opposing peer process involved in an IPC channel is currently reported by the OS as no longer run...">transport::error::Code::S_PEER_PROCESS_NO_LONGER_EXISTS</a>). </p>
+<p >Public for logging/reporting only; really it is an internally used only value.</p>
+<h3>Rationale / Explanation</h3>
+<p >The mechanism tuned by this knob is a back-stop/backup mechanism employed by each <code>struc::Channel::sync_...()</code> operation; every effort is made to not need to use it and to return an appropriate channel-hosed error (such as <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aad44f87d53255ba573d57086dfeab805" title="Will not receive message: opposing user sent graceful-close via API.">error::Code::S_RECEIVES_FINISHED_CANNOT_RECEIVE</a>) ~instantly upon the hosing of the channel by the peer process.</p>
+<p >To wit:</p><ul>
+<li>If you use a with-timeout overload of the <code>sync_...()</code> op in question, and that timeout is exceeded, the <code>sync_...()</code> shall always return appropriately. The present mechanism is in that situation irrelevant. From this point on, let's assume either one used a no-timeout overload; or a long-enough timeout to where it is desirable to return from <code>sync_...()</code> closer chronologically to a problem occurring in the opposing process than simply awaiting said long timeout.</li>
+<li>A properly written (with <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a515a091aa4a53b8695f6ab478fb94151" title="Operating at the unstructured layer, executes a graceful-close send by forwarding to the async transp...">Channel::async_end_sending()</a> and <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a> dtor both used per their docs) use of <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a></code> on the opposing side, without the opposing process crashing (aborting), will make the present mechanism irrelevant. <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aad44f87d53255ba573d57086dfeab805" title="Will not receive message: opposing user sent graceful-close via API.">error::Code::S_RECEIVES_FINISHED_CANNOT_RECEIVE</a> shall be emitted responsively.</li>
+<li>Even without <code>async_end_sending()</code>, if the opposing process does not crash (abort), the present mechanism will still be irrelevant. <code>boost::asio::error::eof</code> or equivalent shall be emitted responsively.</li>
+<li>In a properly functioning system, if the opposing side does crash, at least for some <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a141e1cf24dc6dde4f4a391fbd4337fb9" title="Short-hand for the transport::Channel type passed into ctor and accessible via owned_channel().">Channel::Owned_channel</a> types &ndash; including ones with at least a <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">Native_socket_stream</a> pipe &ndash; an error shall ~instantly propagate to our process; thus the present mechanism will again be irrelevant. <code>eof</code> or equivalent shall again be emitted responsively.</li>
+</ul>
+<p >Unfortunately:</p><ul>
+<li>Sometimes an opposing process shall indeed crash (abort).</li>
+<li>When this happens, and there is no <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">Native_socket_stream</a> in the relevant <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a141e1cf24dc6dde4f4a391fbd4337fb9" title="Short-hand for the transport::Channel type passed into ctor and accessible via owned_channel().">Channel::Owned_channel</a>, and there is no conceptually similar pipe &ndash; one such that the opposing crash would responsively propagate an error along the now-defunct <code>Owned_channel</code> &ndash; available in <code>Owned_channel</code>...<ul>
+<li>...then the <code>sync_...()</code> op will hang, either indefinitely or until the (earlier-assumed undesirable large) timeout given as arg to <code>sync_...()</code>.</li>
+</ul>
+</li>
+<li>We have also observed, in the field in production, that certain mysterious (as of this writing) circumstances can cause even <code><a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">Native_socket_stream</a></code> to not detect an error, if the opposing process crashes. An <code>eof</code> should be emitted responsively, but we have seen this not happen at times, much to our frustration...<ul>
+<li>...in which case, again, <code>sync_...()</code> will hang indefinitely or too-long.</li>
+</ul>
+</li>
+</ul>
+<p >For that reason, we internally use this back-stop/backup mechanism to still detect the death (crash) of the opposing process. Specifically:</p><ul>
+<li>Instead of, internally, issuing an indefinite-or-up-to-long-user-specified-timeout wait...</li>
+<li>...we break it up into successive waits up to the period <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#a207f0f6cc45fff341c71b8942a7db8e2" title="For struc::Channel::sync_request() (and any other sync_*() APIs, that is potentially-blocking ops),...">S_SYNC_OP_PEER_PROCESS_LIVENESS_CHECK_PERIOD</a>.<ul>
+<li>This period shall be sufficiently long so as to make the periodic wakeups negligible in terms of compute used.</li>
+<li>It will be sufficiently short for a human to perceive the detection of opposing-peer-death as reasonably responsive. So, it would be a fraction of a second.</li>
+</ul>
+</li>
+<li>Therefore, after the first and each successive such wait, we check whether the opposing process is alive according to the OS. (As of this writing the mechanism used for this is <a class="el" href="namespaceipc_1_1util.html#a924cd56daf7eeaa0b07edb352367f9ec" title="Returns true if and only if the given process (by PID) is reported as running by the OS.">util::process_running()</a>.) If not, <code>sync_...()</code> shall immediately emit <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ab51c5d9bb7ed60dd94a3a6758d34eb3c" title="The opposing peer process involved in an IPC channel is currently reported by the OS as no longer run...">transport::error::Code::S_PEER_PROCESS_NO_LONGER_EXISTS</a> (hence return or throw).</li>
+</ul>
+<p >This mechanism is not perfect:</p><ul>
+<li>It is not maximally responsive; a value such as 500msec is quick-enough but not sub-millisecond as with proper OS-driven error propagation.</li>
+<li>It will not (as of this writing) detect a zombified or otherwise stalled opposing process (unlike official zombification combined with OS-driven error propagation). <a class="el" href="namespaceipc_1_1util.html#a924cd56daf7eeaa0b07edb352367f9ec" title="Returns true if and only if the given process (by PID) is reported as running by the OS.">util::process_running()</a> does not detect those cases.</li>
+<li>Upon detecting opposing process death, the emitted error &ndash; unlike the OS-propagated ones &ndash; does not "stick" to the <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a></code> object. One <em>should</em> stop using that <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a></code>; but if one does not, further attempts to use it may not obviously and quickly fail.<ul>
+<li>(That said, in our experience, <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> will always report any opposing process death/zombification/stall appropriately quickly. The problem, typically, is to get out of the hanging <code>sync_...()</code> first so as to be able to react to such a report. The present mechanism will do that.)</li>
+</ul>
+</li>
+</ul>
+<p >However, it can help significantly when needed; and when not needed, it does no harm (basically a periodic internal no-op inside the given <code>sync_...()</code>). </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>transport/struc/<a class="el" href="channel__base_8hpp.html">channel_base.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

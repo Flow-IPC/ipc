@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -107,7 +107,11 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a0ba1798bc135b43eebd7ce2481151348">S_BLOB_STREAM_MQ_RECEIVER_BAD_CTL_CMD</a>
 , <br />
 &#160;&#160;<a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">S_SYNC_IO_WOULD_BLOCK</a>
-, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a>
+, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a666de079baf225689b4f101ebc13513a">S_LOW_LVL_INTERNAL_PROTOCOL_INVALID_HEADER</a>
+, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ab51c5d9bb7ed60dd94a3a6758d34eb3c">S_PEER_PROCESS_NO_LONGER_EXISTS</a>
+, <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a5640941b8dbafc13ad6f6ef8dec1937f">S_SHM_BIPC_MISC_LIBRARY_ERROR</a>
+, <br />
+&#160;&#160;<a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297a6fba12db09e5bebfaa04f6372c41c2cf">S_END_SENTINEL</a>
 <br />
  }</td></tr>
 <tr class="memdesc:adfef15ef4e76cc55d652fbd9c2797297"><td class="mdescLeft">&#160;</td><td class="mdescRight">All possible errors returned (via <code>Error_code</code> arguments) by <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> functions/methods <em>outside of</em> system-triggered errors such as <code>boost::asio::error::connection_reset</code>.  <a href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297">More...</a><br /></td></tr>
@@ -163,7 +167,7 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>S_CODE_LOWES
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297a42d41c622e92e9053177ba73e75633fe" name="adfef15ef4e76cc55d652fbd9c2797297a42d41c622e92e9053177ba73e75633fe"></a>S_SENDS_FINISHED_CANNOT_SEND&#160;</td><td class="fielddoc"><p >Will not send message: local user already ended sending via API marking this. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297aad44f87d53255ba573d57086dfeab805" name="adfef15ef4e76cc55d652fbd9c2797297aad44f87d53255ba573d57086dfeab805"></a>S_RECEIVES_FINISHED_CANNOT_RECEIVE&#160;</td><td class="fielddoc"><p >Will not receive message: either opposing user sent graceful-close via API. </p>
+<tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297aad44f87d53255ba573d57086dfeab805" name="adfef15ef4e76cc55d652fbd9c2797297aad44f87d53255ba573d57086dfeab805"></a>S_RECEIVES_FINISHED_CANNOT_RECEIVE&#160;</td><td class="fielddoc"><p >Will not receive message: opposing user sent graceful-close via API. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297adc5d7b9dbaa8c76c6835e3c9a7942410" name="adfef15ef4e76cc55d652fbd9c2797297adc5d7b9dbaa8c76c6835e3c9a7942410"></a>S_LOW_LVL_TRANSPORT_HOSED_CANNOT_SEND&#160;</td><td class="fielddoc"><p >Unable to send outgoing traffic: an earlier-reported, or at least logged, system error had hosed the underlying transport mechanism. </p>
 </td></tr>
@@ -203,6 +207,12 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>S_CODE_LOWES
 <tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297a0ba1798bc135b43eebd7ce2481151348" name="adfef15ef4e76cc55d652fbd9c2797297a0ba1798bc135b43eebd7ce2481151348"></a>S_BLOB_STREAM_MQ_RECEIVER_BAD_CTL_CMD&#160;</td><td class="fielddoc"><p >Message-queue blob stream peer received a malformed internal-use message from opposing side. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24" name="adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24"></a>S_SYNC_IO_WOULD_BLOCK&#160;</td><td class="fielddoc"><p >A <a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a> operation could not immediately complete; it will complete contingent on active async-wait event(s). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297a666de079baf225689b4f101ebc13513a" name="adfef15ef4e76cc55d652fbd9c2797297a666de079baf225689b4f101ebc13513a"></a>S_LOW_LVL_INTERNAL_PROTOCOL_INVALID_HEADER&#160;</td><td class="fielddoc"><p >Unable to receive incoming traffic: Opposing side sent invalid internal per-message header. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297ab51c5d9bb7ed60dd94a3a6758d34eb3c" name="adfef15ef4e76cc55d652fbd9c2797297ab51c5d9bb7ed60dd94a3a6758d34eb3c"></a>S_PEER_PROCESS_NO_LONGER_EXISTS&#160;</td><td class="fielddoc"><p >The opposing peer process involved in an IPC channel is currently reported by the OS as no longer running. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297a5640941b8dbafc13ad6f6ef8dec1937f" name="adfef15ef4e76cc55d652fbd9c2797297a5640941b8dbafc13ad6f6ef8dec1937f"></a>S_SHM_BIPC_MISC_LIBRARY_ERROR&#160;</td><td class="fielddoc"><p >Low-level boost.ipc.shm: boost.interprocess emitted miscellaneous library exception sans a system code; a WARNING message at throw-time should contain all possible details. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="adfef15ef4e76cc55d652fbd9c2797297a6fba12db09e5bebfaa04f6372c41c2cf" name="adfef15ef4e76cc55d652fbd9c2797297a6fba12db09e5bebfaa04f6372c41c2cf"></a>S_END_SENTINEL&#160;</td><td class="fielddoc"><p >SENTINEL: Not an error. This Code must never be issued by an error/success-emitting API; I/O use only. </p>
 </td></tr>
@@ -326,7 +336,7 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>S_CODE_LOWES
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

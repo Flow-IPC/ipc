@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -77,15 +77,19 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="detail_2session__fwd_8hpp_source.html">ipc/session/detail/session_fwd.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="server__session__dtl_8hpp_source.html">ipc/session/detail/server_session_dtl.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="session__shared__name_8hpp_source.html">ipc/session/detail/session_shared_name.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__session_2src_2ipc_2session_2error_8hpp_source.html">ipc/session/error.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="app_8hpp_source.html">ipc/session/app.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="native__socket__stream__acceptor_8hpp_source.html">ipc/transport/native_socket_stream_acceptor.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="blob__stream__mq_8hpp_source.html">ipc/transport/blob_stream_mq.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__core_2src_2ipc_2transport_2error_8hpp_source.html">ipc/transport/error.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="util_8hpp_source.html">ipc/util/detail/util.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ipc__core_2src_2ipc_2util_2detail_2util_8hpp_source.html">ipc/util/detail/util.hpp</a>&quot;</code><br />
+<code>#include &lt;flow/util/util.hpp&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;boost/interprocess/sync/named_mutex.hpp&gt;</code><br />
 <code>#include &lt;boost/interprocess/sync/scoped_lock.hpp&gt;</code><br />
 <code>#include &lt;boost/move/make_unique.hpp&gt;</code><br />
+<code>#include &lt;boost/thread/condition_variable.hpp&gt;</code><br />
 </div>
 <p><a href="session__server__impl_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -109,17 +113,17 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ac0975eaa72bec0cc17ccbf062e6785a1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="session__server__impl_8hpp.html#ac0975eaa72bec0cc17ccbf062e6785a1">TEMPLATE_SESSION_SERVER_IMPL</a>&#160;&#160;&#160;  template&lt;typename Session_server_t, typename <a class="el" href="classServer__session__t.html">Server_session_t</a>&gt;</td></tr>
+<tr class="memitem:ac0975eaa72bec0cc17ccbf062e6785a1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="session__server__impl_8hpp.html#ac0975eaa72bec0cc17ccbf062e6785a1">TEMPLATE_SESSION_SERVER_IMPL</a>&#160;&#160;&#160;  template&lt;typename Session_server_t, typename Server_session_t&gt;</td></tr>
 <tr class="memdesc:ac0975eaa72bec0cc17ccbf062e6785a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="session__server__impl_8hpp.html#ac0975eaa72bec0cc17ccbf062e6785a1">More...</a><br /></td></tr>
 <tr class="separator:ac0975eaa72bec0cc17ccbf062e6785a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb6afd5f56bebcabd155f3c1def7f180"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="session__server__impl_8hpp.html#afb6afd5f56bebcabd155f3c1def7f180">CLASS_SESSION_SERVER_IMPL</a>&#160;&#160;&#160;  Session_server_impl&lt;Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a>&gt;</td></tr>
+<tr class="memitem:afb6afd5f56bebcabd155f3c1def7f180"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="session__server__impl_8hpp.html#afb6afd5f56bebcabd155f3c1def7f180">CLASS_SESSION_SERVER_IMPL</a>&#160;&#160;&#160;  Session_server_impl&lt;Session_server_t, Server_session_t&gt;</td></tr>
 <tr class="memdesc:afb6afd5f56bebcabd155f3c1def7f180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="session__server__impl_8hpp.html#afb6afd5f56bebcabd155f3c1def7f180">More...</a><br /></td></tr>
 <tr class="separator:afb6afd5f56bebcabd155f3c1def7f180"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae30bd38cf316a597b0c333364e51d029"><td class="memTemplParams" colspan="2">template&lt;typename Session_server_t , typename <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; </td></tr>
-<tr class="memitem:ae30bd38cf316a597b0c333364e51d029"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#ae30bd38cf316a597b0c333364e51d029">ipc::session::operator&lt;&lt;</a> (std::ostream &amp;os, const Session_server_impl&lt; Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a> &gt; &amp;val)</td></tr>
+<tr class="memitem:ae30bd38cf316a597b0c333364e51d029"><td class="memTemplParams" colspan="2">template&lt;typename Session_server_t , typename Server_session_t &gt; </td></tr>
+<tr class="memitem:ae30bd38cf316a597b0c333364e51d029"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#ae30bd38cf316a597b0c333364e51d029">ipc::session::operator&lt;&lt;</a> (std::ostream &amp;os, const Session_server_impl&lt; Session_server_t, Server_session_t &gt; &amp;val)</td></tr>
 <tr class="memdesc:ae30bd38cf316a597b0c333364e51d029"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1session_1_1Session__server__impl.html" title="Internal class template comprising API/logic common to every Session_server variant,...">Session_server_impl</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1session.html#ae30bd38cf316a597b0c333364e51d029">More...</a><br /></td></tr>
 <tr class="separator:ae30bd38cf316a597b0c333364e51d029"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -131,14 +135,14 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CLASS_SESSION_SERVER_IMPL&#160;&#160;&#160;  Session_server_impl&lt;Session_server_t, <a class="el" href="classServer__session__t.html">Server_session_t</a>&gt;</td>
+          <td class="memname">#define CLASS_SESSION_SERVER_IMPL&#160;&#160;&#160;  Session_server_impl&lt;Session_server_t, Server_session_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00433">433</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00504">504</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -149,21 +153,21 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TEMPLATE_SESSION_SERVER_IMPL&#160;&#160;&#160;  template&lt;typename Session_server_t, typename <a class="el" href="classServer__session__t.html">Server_session_t</a>&gt;</td>
+          <td class="memname">#define TEMPLATE_SESSION_SERVER_IMPL&#160;&#160;&#160;  template&lt;typename Session_server_t, typename Server_session_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00430">430</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="session__server__impl_8hpp_source.html#l00501">501</a> of file <a class="el" href="session__server__impl_8hpp_source.html">session_server_impl.hpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

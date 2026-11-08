@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -88,44 +88,59 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceipc_1_1transport_1_1struc_1_1shm"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html">shm</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1transport_1_1struc_1_1shm"><td class="mdescLeft">&#160;</td><td class="mdescRight">Segregates zero-copy/SHM implementations of concepts residing in parent namespace <a class="el" href="namespaceipc_1_1transport_1_1struc.html" title="Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...">ipc::transport::struc</a> proper &ndash; most notably the concepts <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">ipc::transport::struc::Struct_builder</a> and <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">ipc::transport::struc::Struct_reader</a> &ndash; and items related to them. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceipc_1_1transport_1_1struc_1_1stat"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1stat.html">stat</a></td></tr>
+<tr class="memdesc:namespaceipc_1_1transport_1_1struc_1_1stat"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stats-related sub-namespace, for ADL segregation and general organization. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1transport_1_1struc_1_1sync__io"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html">sync_io</a></td></tr>
 <tr class="memdesc:namespaceipc_1_1transport_1_1struc_1_1sync__io"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code>-pattern counterparts to async-I/O-pattern object types in parent namespace <a class="el" href="namespaceipc_1_1transport_1_1struc.html" title="Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...">ipc::transport::struc</a>. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Capped__sz__capnp__message__builder.html">Capped_sz_capnp_message_builder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple utility: a capnp <code>MessageBuilder</code> operating over a single, contiguous, user-supplied area in virtual memory.  <a href="classipc_1_1transport_1_1struc_1_1Capped__sz__capnp__message__builder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Capped__sz__capnp__message__reader.html">Capped_sz_capnp_message_reader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple utility: a capnp <code>MessageReader</code> operating over a single, contiguous, user-supplied area in virtual memory.  <a href="classipc_1_1transport_1_1struc_1_1Capped__sz__capnp__message__reader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">Channel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Owning and wrapping a pre-connected <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> peer (an endpoint of an established channel over which <em>unstructured</em> messages and optionally native handles can be transported), this template is the central pillar of the <a class="el" href="namespaceipc_1_1transport_1_1struc.html" title="Sub-module of Flow-IPC module ipc::transport providing transmission of structured messages specifical...">ipc::transport::struc</a> (<em>structured layer</em>), capable of communicating structured capnp-schema-based messages (and native handles).  <a href="classipc_1_1transport_1_1struc_1_1Channel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html">Channel_base</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a></code> base that contains non-parameterized <code>public</code> items such as tag types and constants.  <a href="classipc_1_1transport_1_1struc_1_1Channel__base.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">Channel</a></code> base that contains non-parameterized items such as tag types and constants.  <a href="classipc_1_1transport_1_1struc_1_1Channel__base.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html">Heap_fixed_builder</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept by straightforwardly allocating fixed-size segments on-demand in the regular heap and serializing directly inside those segments.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">~Simplest possible impl of <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept that represents the capnp payload directly in heap memory (outer serialization only), with a segment-allocation strategy similar to <code>capnp::MallocMessageBuilder</code>.  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html">Heap_fixed_builder_capnp_message_builder</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>capnp::MessageBuilder</code> used by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a>: similar to a <code>capnp::MallocMessageBuilder</code> with the FIXED_SIZE alloc-strategy but with framing space around the allocated segment(s).  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>capnp::MessageBuilder</code> used by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a>: similar to a <code>capnp::MallocMessageBuilder</code> (albeit with somewhat different accounting/knobs) and with framing/header space around the allocated segment(s).  <a href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html">Heap_reader</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">Struct_reader</a> concept by straightforwardly interpreting a serialization by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> or any other builder that produces segments directly readable via <code>SegmentArrayMessageReader</code>.  <a href="classipc_1_1transport_1_1struc_1_1Heap__reader.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">Struct_reader</a> concept by straightforwardly interpreting a serialization by <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a> or any other builder that produces segments directly readable via <code>SegmentArrayMessageReader</code>.  <a href="classipc_1_1transport_1_1struc_1_1Heap__reader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html">Msg_in</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structured in-message <em>instance</em> suitable as received and emittable (to user) by <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>.  <a href="classipc_1_1transport_1_1struc_1_1Msg__in.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in__impl.html">Msg_in_impl</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used (data-free) addendum on-top of <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a> which makes the <code>protected</code> API public instead.  <a href="classipc_1_1transport_1_1struc_1_1Msg__in__impl.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__mdt__out.html">Msg_mdt_out</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used (data-free) addendum on-top of <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a>; really an alias to <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a>&lt;schema::detail::StructuredMessage&gt;</code>, where the latter is the internal-use set of metadata schema, with a convenience public mutating API wrapping around capnp-generated mutator API for things like message ID.  <a href="classipc_1_1transport_1_1struc_1_1Msg__mdt__out.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Msg__in__impl.html">Msg_in_impl</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the <code>friend</code> facade of <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a> that exposes <code>private</code> APIs hidden from public user by providing public access to them; this is used internally by <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a> at least.  <a href="structipc_1_1transport_1_1struc_1_1Msg__in__impl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html">Msg_out</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structured out-message suitable to be sent via <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">struc::Channel::send()</a> (et al).  <a href="classipc_1_1transport_1_1struc_1_1Msg__out.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structured out-message suitable to be sent via <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa6c9fafeadca475296e2cc4c0e28403f" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">struc::Channel::send()</a> (et al).  <a href="classipc_1_1transport_1_1struc_1_1Msg__out.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out__impl.html">Msg_out_impl</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used (data-free) addendum on-top of <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a> which makes the <code>protected</code> API public instead.  <a href="classipc_1_1transport_1_1struc_1_1Msg__out__impl.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Msg__out__impl.html">Msg_out_impl</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the <code>friend</code> facade of <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a> that exposes <code>private</code> APIs hidden from public user by providing public access to them; this is used internally by <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a> at least.  <a href="structipc_1_1transport_1_1struc_1_1Msg__out__impl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Null__session.html">Null_session</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value for <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#ab90424897efed06ffc6b0884761fb31f" title="Type objects of which specify to emit_serialization() the opposing recipient for which the serializat...">Struct_builder::Session</a> when no extra information is needed when serializing <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> for subsequent sending to another process.  <a href="structipc_1_1transport_1_1struc_1_1Null__session.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__brief.html">Ostreamable_capnp_brief</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Proxy object referring to a capnp <code>Reader</code> for straightforward output via overloaded <code>ostream&lt;&lt;</code>: one-line/potentially-truncated form.  <a href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__brief.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__full.html">Ostreamable_capnp_full</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Proxy object referring to a capnp <code>Reader</code> for straightforward output via overloaded <code>ostream&lt;&lt;</code>: multi-line/pretty-printed/indented/full-length form.  <a href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__full.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Split__segment.html">Split_segment</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple structure describing how a pre-split single segment was turned into 2+ post-split component sub-segments.  <a href="structipc_1_1transport_1_1struc_1_1Split__segment.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html">Struct_builder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A documentation-only <em>concept</em> defining the behavior of an object capable of zero-copy-serializing, similar to <code>capnp::MessageBuilder</code> but geared to transmission over pipe-like IPC transports.  <a href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#details">More...</a><br /></td></tr>
@@ -136,43 +151,74 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aca041b0efd4a9ae18e10088b2ee3c052"><td class="memTemplParams" colspan="2">template&lt;typename Channel_obj , typename Message_body &gt; </td></tr>
-<tr class="memitem:aca041b0efd4a9ae18e10088b2ee3c052"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#aca041b0efd4a9ae18e10088b2ee3c052">Channel_via_heap</a> = <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">Channel</a>&lt; Channel_obj, Message_body, <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html">Heap_fixed_builder::Config</a>, <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html">Heap_reader::Config</a> &gt;</td></tr>
-<tr class="memdesc:aca041b0efd4a9ae18e10088b2ee3c052"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience alias: Use this when constructing a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> with tag <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#ab0eb05b5fb52364c99868a8535aaf26e" title="The sole value of the tag type Serialize_via_heap.">Channel_base::S_SERIALIZE_VIA_HEAP</a>.  <a href="namespaceipc_1_1transport_1_1struc.html#aca041b0efd4a9ae18e10088b2ee3c052">More...</a><br /></td></tr>
-<tr class="separator:aca041b0efd4a9ae18e10088b2ee3c052"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52405569bf63eaef55f3c2435c885abc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc">Capnp_msg_builder_interface</a> = ::capnp::MessageBuilder</td></tr>
-<tr class="memdesc:a52405569bf63eaef55f3c2435c885abc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for capnp's MessageBuilder interface. Rationale: as part of our API, we use our identifier style.  <a href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc">More...</a><br /></td></tr>
-<tr class="separator:a52405569bf63eaef55f3c2435c885abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dadd21d3e18e526bd01cd5824c74e41"><td class="memTemplParams" colspan="2">template&lt;typename Channel_obj , typename Msg_body_t &gt; </td></tr>
+<tr class="memitem:a3dadd21d3e18e526bd01cd5824c74e41"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3dadd21d3e18e526bd01cd5824c74e41">Channel_via_heap</a> = <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">Channel</a>&lt; Channel_obj, Msg_body_t, <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html">Heap_fixed_builder::Config</a>, <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html">Heap_reader::Config</a> &gt;</td></tr>
+<tr class="memdesc:a3dadd21d3e18e526bd01cd5824c74e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience alias: Use this when constructing a <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> with tag <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel__base.html#ab0eb05b5fb52364c99868a8535aaf26e" title="The sole value of the tag type Serialize_via_heap.">Channel_base::S_SERIALIZE_VIA_HEAP</a>.  <a href="namespaceipc_1_1transport_1_1struc.html#a3dadd21d3e18e526bd01cd5824c74e41">More...</a><br /></td></tr>
+<tr class="separator:a3dadd21d3e18e526bd01cd5824c74e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6751c05fb6582a34c7c47ac470c4a48b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a6751c05fb6582a34c7c47ac470c4a48b">Session_token</a> = boost::uuids::uuid</td></tr>
 <tr class="memdesc:a6751c05fb6582a34c7c47ac470c4a48b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A type used by <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> for internal safety/security/auth needs.  <a href="namespaceipc_1_1transport_1_1struc.html#a6751c05fb6582a34c7c47ac470c4a48b">More...</a><br /></td></tr>
 <tr class="separator:a6751c05fb6582a34c7c47ac470c4a48b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82a69eaa39cbe8a002de1266f1cbb5cb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a82a69eaa39cbe8a002de1266f1cbb5cb">Segment_ptrs</a> = std::vector&lt; flow::util::Blob * &gt;</td></tr>
-<tr class="memdesc:a82a69eaa39cbe8a002de1266f1cbb5cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sequence of 1+ <code>Blob</code> <em>pointers</em> to blobs which must stay alive while these pointers may be dereferenced, intended here to refer to a capnp serialization of a capnp-<code>struct</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a82a69eaa39cbe8a002de1266f1cbb5cb">More...</a><br /></td></tr>
-<tr class="separator:a82a69eaa39cbe8a002de1266f1cbb5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7c19464ac8ecc5db765f660d9fd2433"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#aa7c19464ac8ecc5db765f660d9fd2433">Segment_ptrs</a> = std::vector&lt; flow::util::Blob_sans_log_context * &gt;</td></tr>
+<tr class="memdesc:aa7c19464ac8ecc5db765f660d9fd2433"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sequence of 1+ segment descriptions, each representing a live writable segment (of a capnp serialization of a capnp-<code>struct</code>) and optional header/prefix area immediately preceding it.  <a href="namespaceipc_1_1transport_1_1struc.html#aa7c19464ac8ecc5db765f660d9fd2433">More...</a><br /></td></tr>
+<tr class="separator:aa7c19464ac8ecc5db765f660d9fd2433"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6f4b1f3071a5f648cbf9e44ba80d983"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983">Segment_bufs</a> = std::vector&lt; <a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a> &gt;</td></tr>
+<tr class="memdesc:af6f4b1f3071a5f648cbf9e44ba80d983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simpler cousin of <a class="el" href="namespaceipc_1_1transport_1_1struc.html#aa7c19464ac8ecc5db765f660d9fd2433" title="Sequence of 1+ segment descriptions, each representing a live writable segment (of a capnp serializat...">Segment_ptrs</a>, this represents the IPC-transmissible representation of a capnp serialization of a capnp-<code>struct</code> including any framing header(s), expressed as simply a sequence of N read-only views, each containing a pointer to header-if-any-followed-by-serialization-segment and the size in bytes thereof.  <a href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983">More...</a><br /></td></tr>
+<tr class="separator:af6f4b1f3071a5f648cbf9e44ba80d983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a1f3387713930f0bb9f074e7a631929"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929">Split_segments</a> = std::vector&lt; <a class="el" href="structipc_1_1transport_1_1struc_1_1Split__segment.html">Split_segment</a> &gt;</td></tr>
+<tr class="memdesc:a3a1f3387713930f0bb9f074e7a631929"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple data structure describing the segments (if any) in a <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983" title="Simpler cousin of Segment_ptrs, this represents the IPC-transmissible representation of a capnp seria...">Segment_bufs</a> (or similar) structure which had to be split (presumably due to size constraints); by following the indices/sizes into a post-split <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983" title="Simpler cousin of Segment_ptrs, this represents the IPC-transmissible representation of a capnp seria...">Segment_bufs</a> one can join the appropriate elements so as to obtain the original pre-split segments.  <a href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929">More...</a><br /></td></tr>
+<tr class="separator:a3a1f3387713930f0bb9f074e7a631929"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef611314925f13e1ff34e5d03e2fce35"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#aef611314925f13e1ff34e5d03e2fce35">Segment_blob_in</a> = flow::util::Blob_sans_log_context</td></tr>
+<tr class="memdesc:aef611314925f13e1ff34e5d03e2fce35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for a high-performance blob structure that represents an IPC-incoming (sub-)segment 1+ of which make up the outer serialization of a given <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a>.  <a href="namespaceipc_1_1transport_1_1struc.html#aef611314925f13e1ff34e5d03e2fce35">More...</a><br /></td></tr>
+<tr class="separator:aef611314925f13e1ff34e5d03e2fce35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7f35fc7588d97a838274fa25700ead9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#af7f35fc7588d97a838274fa25700ead9">msg_id_t</a> = uint64_t</td></tr>
 <tr class="memdesc:af7f35fc7588d97a838274fa25700ead9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Message ID uniquely identifying outgoing message (<a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a>, among all other <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a></code>s), per channel; and similarly incoming message (<a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a>, among <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a></code>s), per channel.  <a href="namespaceipc_1_1transport_1_1struc.html#af7f35fc7588d97a838274fa25700ead9">More...</a><br /></td></tr>
 <tr class="separator:af7f35fc7588d97a838274fa25700ead9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52405569bf63eaef55f3c2435c885abc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc">Capnp_msg_builder_interface</a> = ::capnp::MessageBuilder</td></tr>
+<tr class="memdesc:a52405569bf63eaef55f3c2435c885abc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for capnp's MessageBuilder interface. Rationale: as part of our API, we use our identifier style.  <a href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc">More...</a><br /></td></tr>
+<tr class="separator:a52405569bf63eaef55f3c2435c885abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b9b36797dd428f7ac4b409d2e2a1fc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a90b9b36797dd428f7ac4b409d2e2a1fc">Capnp_msg_reader_interface</a> = ::capnp::MessageReader</td></tr>
+<tr class="memdesc:a90b9b36797dd428f7ac4b409d2e2a1fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for capnp's MessageReader interface. Rationale: as part of our API, we use our identifier style.  <a href="namespaceipc_1_1transport_1_1struc.html#a90b9b36797dd428f7ac4b409d2e2a1fc">More...</a><br /></td></tr>
+<tr class="separator:a90b9b36797dd428f7ac4b409d2e2a1fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ad3e8026f40e4319e13663fc2696e2387"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#ad3e8026f40e4319e13663fc2696e2387">load_mdt</a> (<a class="el" href="classipc_1_1transport_1_1struc_1_1Capped__sz__capnp__message__builder.html">Capped_sz_capnp_message_builder</a> *builder, schema::detail::StructuredMessage::InternalMessageBody::Builder *internal_msg_builder_or_null, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code, const <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a6751c05fb6582a34c7c47ac470c4a48b">Session_token</a> &amp;session_token, <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af7f35fc7588d97a838274fa25700ead9">msg_id_t</a> originating_msg_id_or_none, <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af7f35fc7588d97a838274fa25700ead9">msg_id_t</a> id_or_none=0, <a class="el" href="classsize__t.html">size_t</a> n_serialization_segments_or_none=0, const <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929">Split_segments</a> *split_segs=nullptr)</td></tr>
+<tr class="memdesc:ad3e8026f40e4319e13663fc2696e2387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given user- or internal-message-describing metadata values as arguments, loads (via the provided <code>capnp::MessageBuilder</code>) a <code>schema::detail::StructuredMessage</code> capnp-<code>struct</code> so as to contain those values.  <a href="namespaceipc_1_1transport_1_1struc.html#ad3e8026f40e4319e13663fc2696e2387">More...</a><br /></td></tr>
+<tr class="separator:ad3e8026f40e4319e13663fc2696e2387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae272f248d74db0486c4d9411715db15d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#ae272f248d74db0486c4d9411715db15d">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html">Heap_fixed_builder</a> &amp;val)</td></tr>
-<tr class="memdesc:ae272f248d74db0486c4d9411715db15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#ae272f248d74db0486c4d9411715db15d">More...</a><br /></td></tr>
+<tr class="memdesc:ae272f248d74db0486c4d9411715db15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#ae272f248d74db0486c4d9411715db15d">More...</a><br /></td></tr>
 <tr class="separator:ae272f248d74db0486c4d9411715db15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b1483d548bd56b3bf1e73bc46419e7a"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a8b1483d548bd56b3bf1e73bc46419e7a">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html">Heap_reader</a> &amp;val)</td></tr>
 <tr class="memdesc:a8b1483d548bd56b3bf1e73bc46419e7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__reader.html" title="Implements Struct_reader concept by straightforwardly interpreting a serialization by Heap_fixed_buil...">Heap_reader</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a8b1483d548bd56b3bf1e73bc46419e7a">More...</a><br /></td></tr>
 <tr class="separator:a8b1483d548bd56b3bf1e73bc46419e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a134e737e55ae825527efd6a9e68bf37e"><td class="memTemplParams" colspan="2">template&lt;typename Message_body , typename Struct_builder_t &gt; </td></tr>
-<tr class="memitem:a134e737e55ae825527efd6a9e68bf37e"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a134e737e55ae825527efd6a9e68bf37e">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html">Msg_out</a>&lt; Message_body, Struct_builder_t &gt; &amp;val)</td></tr>
-<tr class="memdesc:a134e737e55ae825527efd6a9e68bf37e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a134e737e55ae825527efd6a9e68bf37e">More...</a><br /></td></tr>
-<tr class="separator:a134e737e55ae825527efd6a9e68bf37e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad52996a4d66f74e21e4f2e74c93c763"><td class="memTemplParams" colspan="2">template&lt;typename Message_body , typename Struct_reader_config &gt; </td></tr>
-<tr class="memitem:aad52996a4d66f74e21e4f2e74c93c763"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#aad52996a4d66f74e21e4f2e74c93c763">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html">Msg_in</a>&lt; Message_body, Struct_reader_config &gt; &amp;val)</td></tr>
-<tr class="memdesc:aad52996a4d66f74e21e4f2e74c93c763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#aad52996a4d66f74e21e4f2e74c93c763">More...</a><br /></td></tr>
-<tr class="separator:aad52996a4d66f74e21e4f2e74c93c763"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0351bb14f40312b30e6cae4927f3373b"><td class="memTemplParams" colspan="2">template&lt;typename Channel_obj , typename Message_body , typename Struct_builder_config , typename Struct_reader_config &gt; </td></tr>
-<tr class="memitem:a0351bb14f40312b30e6cae4927f3373b"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a0351bb14f40312b30e6cae4927f3373b">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">Channel</a>&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt; &amp;val)</td></tr>
-<tr class="memdesc:a0351bb14f40312b30e6cae4927f3373b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a0351bb14f40312b30e6cae4927f3373b">More...</a><br /></td></tr>
-<tr class="separator:a0351bb14f40312b30e6cae4927f3373b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a949bd239aa536f1a8a78afa045900f01"><td class="memTemplParams" colspan="2">template&lt;typename Body_t , typename Struct_builder_t &gt; </td></tr>
+<tr class="memitem:a949bd239aa536f1a8a78afa045900f01"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a949bd239aa536f1a8a78afa045900f01">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html">Msg_out</a>&lt; Body_t, Struct_builder_t &gt; &amp;val)</td></tr>
+<tr class="memdesc:a949bd239aa536f1a8a78afa045900f01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a949bd239aa536f1a8a78afa045900f01">More...</a><br /></td></tr>
+<tr class="separator:a949bd239aa536f1a8a78afa045900f01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f22cc38e6a79bc8d79d9f10bb7764ec"><td class="memTemplParams" colspan="2">template&lt;typename Body_t , typename Reader_config_t &gt; </td></tr>
+<tr class="memitem:a8f22cc38e6a79bc8d79d9f10bb7764ec"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a8f22cc38e6a79bc8d79d9f10bb7764ec">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html">Msg_in</a>&lt; Body_t, Reader_config_t &gt; &amp;val)</td></tr>
+<tr class="memdesc:a8f22cc38e6a79bc8d79d9f10bb7764ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a8f22cc38e6a79bc8d79d9f10bb7764ec">More...</a><br /></td></tr>
+<tr class="separator:a8f22cc38e6a79bc8d79d9f10bb7764ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f3c9a5b93c17e4fbf73606fa7b84282"><td class="memTemplParams" colspan="2">template&lt;typename Capnp_reader &gt; </td></tr>
+<tr class="memitem:a0f3c9a5b93c17e4fbf73606fa7b84282"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__brief.html">Ostreamable_capnp_brief</a>&lt; Capnp_reader &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a0f3c9a5b93c17e4fbf73606fa7b84282">ostreamable_capnp_brief</a> (const Capnp_reader &amp;capnp_reader)</td></tr>
+<tr class="memdesc:a0f3c9a5b93c17e4fbf73606fa7b84282"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function that returns an object passable to <code>ostream&lt;&lt;</code> to print a one-line/potentially-truncated representation to that stream, given an arbitrary capnp <code>Reader</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a0f3c9a5b93c17e4fbf73606fa7b84282">More...</a><br /></td></tr>
+<tr class="separator:a0f3c9a5b93c17e4fbf73606fa7b84282"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a310bc581d00d0a2b57280929cdb7a64a"><td class="memTemplParams" colspan="2">template&lt;typename Capnp_reader &gt; </td></tr>
+<tr class="memitem:a310bc581d00d0a2b57280929cdb7a64a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__full.html">Ostreamable_capnp_full</a>&lt; Capnp_reader &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a310bc581d00d0a2b57280929cdb7a64a">ostreamable_capnp_full</a> (const Capnp_reader &amp;capnp_reader)</td></tr>
+<tr class="memdesc:a310bc581d00d0a2b57280929cdb7a64a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function that returns an object passable to <code>ostream&lt;&lt;</code> to print a multi-line/pretty-printed/indented/full-length representation to that stream, given an arbitrary capnp <code>Reader</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a310bc581d00d0a2b57280929cdb7a64a">More...</a><br /></td></tr>
+<tr class="separator:a310bc581d00d0a2b57280929cdb7a64a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc232529c622b2fe2368e870d9e236ff"><td class="memTemplParams" colspan="2">template&lt;typename Capnp_reader &gt; </td></tr>
+<tr class="memitem:afc232529c622b2fe2368e870d9e236ff"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#afc232529c622b2fe2368e870d9e236ff">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__brief.html">Ostreamable_capnp_brief</a>&lt; Capnp_reader &gt; &amp;val)</td></tr>
+<tr class="memdesc:afc232529c622b2fe2368e870d9e236ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation (one-line/potentially-truncated form) of the given capnp <code>Reader</code>, via proxy object, to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#afc232529c622b2fe2368e870d9e236ff">More...</a><br /></td></tr>
+<tr class="separator:afc232529c622b2fe2368e870d9e236ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78dd72f823ac435b116b72b37f2caec9"><td class="memTemplParams" colspan="2">template&lt;typename Capnp_reader &gt; </td></tr>
+<tr class="memitem:a78dd72f823ac435b116b72b37f2caec9"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a78dd72f823ac435b116b72b37f2caec9">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__full.html">Ostreamable_capnp_full</a>&lt; Capnp_reader &gt; &amp;val)</td></tr>
+<tr class="memdesc:a78dd72f823ac435b116b72b37f2caec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation (multi-line/pretty-printed/indented/full-length form) of the given capnp <code>Reader</code>, via proxy object, to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a78dd72f823ac435b116b72b37f2caec9">More...</a><br /></td></tr>
+<tr class="separator:a78dd72f823ac435b116b72b37f2caec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c1f7c929b2b3b9c372bc4d9c2542a82"><td class="memTemplParams" colspan="2">template&lt;typename Owned_channel_t , typename Msg_body_t , typename Builder_config_t , typename Reader_config_t &gt; </td></tr>
+<tr class="memitem:a4c1f7c929b2b3b9c372bc4d9c2542a82"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a4c1f7c929b2b3b9c372bc4d9c2542a82">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">Channel</a>&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt; &amp;val)</td></tr>
+<tr class="memdesc:a4c1f7c929b2b3b9c372bc4d9c2542a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a4c1f7c929b2b3b9c372bc4d9c2542a82">More...</a><br /></td></tr>
+<tr class="separator:a4c1f7c929b2b3b9c372bc4d9c2542a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -182,11 +228,15 @@ Variables</h2></td></tr>
 <tr class="memitem:ac70446757444f864afa21a5062bc5b0d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structipc_1_1transport_1_1struc_1_1Null__session.html">Null_session</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#ac70446757444f864afa21a5062bc5b0d">NULL_SESSION</a></td></tr>
 <tr class="memdesc:ac70446757444f864afa21a5062bc5b0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The only necessary value of empty-type <a class="el" href="structipc_1_1transport_1_1struc_1_1Null__session.html" title="Value for Struct_builder::Session when no extra information is needed when serializing Struct_builder...">Null_session</a>.  <a href="namespaceipc_1_1transport_1_1struc.html#ac70446757444f864afa21a5062bc5b0d">More...</a><br /></td></tr>
 <tr class="separator:ac70446757444f864afa21a5062bc5b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16a96cfcaff0dd3748bfa455e3348e25"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a16a96cfcaff0dd3748bfa455e3348e25">BUILDER_CONFIG_FRAME_PREFIX_SZ_VIA_STRUC_CHANNEL</a> = 128</td></tr>
+<tr class="memdesc:a16a96cfcaff0dd3748bfa455e3348e25"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> (and <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a>) requires, for internal purposes, that any <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a> transmitted over it was provided with a <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> that has <code>m_frame_prefix_sz</code> member set to this value (or larger if desired for some purpose).  <a href="namespaceipc_1_1transport_1_1struc.html#a16a96cfcaff0dd3748bfa455e3348e25">More...</a><br /></td></tr>
+<tr class="separator:a16a96cfcaff0dd3748bfa455e3348e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Sub-module of Flow-IPC module <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> providing transmission of structured messages specifically. </p>
 <p >See <a class="el" href="namespaceipc_1_1transport.html" title="Flow-IPC module providing transmission of structured messages and/or low-level blobs (and more) betwe...">ipc::transport</a> doc header. As that notes, the big daddy here is <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>.</p>
-<p >Be aware of sub-namespace <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html" title="Segregates zero-copy/SHM implementations of concepts residing in parent namespace ipc::transport::str...">ipc::transport::struc::shm</a> which concerns itself with end-to-end-zero-copyable messages leveraging in-SHM storage. Normally there's no need for the user to know or worry about it, but for advanced applications, particularly extensions and customizations, one might delve into this area of the code. Otherwise it'll be used silently as important glue between various systems. Your journey would like start with the struc::Builder concept doc header which would then lead you to <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">struc::shm::Builder</a> impl. That might lead you to specific SHM-providers like <a class="el" href="namespaceipc_1_1shm_1_1classic.html" title="ipc::shm sub-module with the SHM-classic SHM-provider. See ipc::shm doc header for introduction.">ipc::shm::classic</a>. </p>
+<dl class="section see"><dt>See also</dt><dd>The guided Manual chapters <a class="el" href="chan_struct.html">Structured Message Transport (Structured Channels)</a> and <a class="el" href="chan_struct_advanced.html">Structured Message Transport: Messages As Long-lived Data Structures / Advanced Topics</a> cover these topics.</dd></dl>
+<p>Be aware of sub-namespace <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm.html" title="Segregates zero-copy/SHM implementations of concepts residing in parent namespace ipc::transport::str...">ipc::transport::struc::shm</a> which concerns itself with end-to-end-zero-copyable messages leveraging in-SHM storage. Normally there's no need for the user to know or worry about it, but for advanced applications, particularly extensions and customizations, one might delve into this area of the code. Otherwise it'll be used silently as important glue between various systems. Your journey would likely start with the struc::Builder concept doc header which would then lead you to <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">struc::shm::Builder</a> impl. That might lead you to specific SHM-providers like <a class="el" href="namespaceipc_1_1shm_1_1classic.html" title="ipc::shm sub-module with the SHM-classic SHM-provider. See ipc::shm doc header for introduction.">ipc::shm::classic</a>. </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="a52405569bf63eaef55f3c2435c885abc" name="a52405569bf63eaef55f3c2435c885abc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a52405569bf63eaef55f3c2435c885abc">&#9670;&nbsp;</a></span>Capnp_msg_builder_interface</h2>
@@ -202,20 +252,38 @@ Variables</h2></td></tr>
 
 <p>Alias for capnp's MessageBuilder interface. Rationale: as part of our API, we use our identifier style. </p>
 
-<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00067">67</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00218">218</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aca041b0efd4a9ae18e10088b2ee3c052" name="aca041b0efd4a9ae18e10088b2ee3c052"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca041b0efd4a9ae18e10088b2ee3c052">&#9670;&nbsp;</a></span>Channel_via_heap</h2>
+<a id="a90b9b36797dd428f7ac4b409d2e2a1fc" name="a90b9b36797dd428f7ac4b409d2e2a1fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b9b36797dd428f7ac4b409d2e2a1fc">&#9670;&nbsp;</a></span>Capnp_msg_reader_interface</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a90b9b36797dd428f7ac4b409d2e2a1fc">ipc::transport::struc::Capnp_msg_reader_interface</a> = typedef ::capnp::MessageReader</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Alias for capnp's MessageReader interface. Rationale: as part of our API, we use our identifier style. </p>
+
+<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00221">221</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a3dadd21d3e18e526bd01cd5824c74e41" name="a3dadd21d3e18e526bd01cd5824c74e41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dadd21d3e18e526bd01cd5824c74e41">&#9670;&nbsp;</a></span>Channel_via_heap</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Channel_obj , typename Message_body &gt; </div>
+template&lt;typename Channel_obj , typename Msg_body_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespaceipc_1_1transport_1_1struc.html#aca041b0efd4a9ae18e10088b2ee3c052">ipc::transport::struc::Channel_via_heap</a> = typedef <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">Channel</a>&lt;Channel_obj, Message_body, <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html">Heap_fixed_builder::Config</a>, <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html">Heap_reader::Config</a>&gt;</td>
+          <td class="memname">using <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3dadd21d3e18e526bd01cd5824c74e41">ipc::transport::struc::Channel_via_heap</a> = typedef <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">Channel</a>&lt;Channel_obj, Msg_body_t, <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html">Heap_fixed_builder::Config</a>, <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__reader_1_1Config.html">Heap_reader::Config</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -225,7 +293,7 @@ template&lt;typename Channel_obj , typename Message_body &gt; </div>
 <p >Tip: <code>Sync_io_obj</code> member alias will get you the <code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code>-pattern counterpart.</p>
 <p >Unable to put it in ..._fwd.hpp, because it relies on nested class inside incomplete type. </p>
 
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00460">460</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00483">483</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -242,35 +310,76 @@ template&lt;typename Channel_obj , typename Message_body &gt; </div>
 </div><div class="memdoc">
 
 <p>Message ID uniquely identifying outgoing message (<a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a>, among all other <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a></code>s), per channel; and similarly incoming message (<a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a>, among <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a></code>s), per channel. </p>
-<p >0 is a sentinel value and not a valid user message ID. A message ID pertains to a <em>sent</em> or <em>received</em> <em>instance</em> of a user-created <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a> (and its in-message countrepart <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a>). A given <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a> can be sent 2+ times through a given <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> and even a <em>different</em> <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>; a different message ID will pertain to each of those times for a given <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>. Therefore there is no <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af7f35fc7588d97a838274fa25700ead9" title="Message ID uniquely identifying outgoing message (Msg_out, among all other Msg_outs),...">msg_id_t</a> <em>inside</em> a user <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a>.</p>
+<p >0 is a sentinel value and not a valid user message ID. A message ID pertains to a <em>sent</em> or <em>received</em> <em>instance</em> of a user-created <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a> (and its in-message counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a>). A given <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a> can be sent 2+ times through a given <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> and even a <em>different</em> <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>; a different message ID will pertain to each of those times for a given <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>. Therefore there is no <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af7f35fc7588d97a838274fa25700ead9" title="Message ID uniquely identifying outgoing message (Msg_out, among all other Msg_outs),...">msg_id_t</a> <em>inside</em> a user <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a>.</p>
 <p >This type is in the public API, as the message ID is made available in certain contexts for:</p><ul>
-<li>referring to an earlier-sent message, such as in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a34780bd3507a571cb719ce1d59e5d56f" title="Unregisters the expectation earlier-registered with the id_unless_one_off != nullptr form of async_re...">struc::Channel::undo_expect_responses()</a>; and</li>
+<li>referring to an earlier-sent message, such as in <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#a53bb716a18689c06aa583c3023bd6dd5" title="Unregisters the expectation earlier-registered with the id_unless_one_off != nullptr form of async_re...">struc::Channel::undo_expect_responses()</a>; and</li>
 <li>logging/reporting.</li>
 </ul>
 <p >It can also be used as a sequence number and is therefore assigned from sequence 1, 2, ... (0 is sentinel).</p>
 <h3>Rationale for type used</h3>
 <p >Needs to be big enough to where there's no chance it overflows in a given channel for a given direction. Assume 1 billion messages per second, or about 2^30 msg/s. That would take 2^(64-30), or 2^34, seconds, or over 500 years, to overflow. So this should be fine. Moreover overflow is fine in that case, in practice, if this is used only as a unique ID; it would however in theory present problems if used as a sequence number. </p>
 
-<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00145">145</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00215">215</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a82a69eaa39cbe8a002de1266f1cbb5cb" name="a82a69eaa39cbe8a002de1266f1cbb5cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82a69eaa39cbe8a002de1266f1cbb5cb">&#9670;&nbsp;</a></span>Segment_ptrs</h2>
+<a id="aef611314925f13e1ff34e5d03e2fce35" name="aef611314925f13e1ff34e5d03e2fce35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef611314925f13e1ff34e5d03e2fce35">&#9670;&nbsp;</a></span>Segment_blob_in</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a82a69eaa39cbe8a002de1266f1cbb5cb">ipc::transport::struc::Segment_ptrs</a> = typedef std::vector&lt;flow::util::Blob*&gt;</td>
+          <td class="memname">using <a class="el" href="namespaceipc_1_1transport_1_1struc.html#aef611314925f13e1ff34e5d03e2fce35">ipc::transport::struc::Segment_blob_in</a> = typedef flow::util::Blob_sans_log_context</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sequence of 1+ <code>Blob</code> <em>pointers</em> to blobs which must stay alive while these pointers may be dereferenced, intended here to refer to a capnp serialization of a capnp-<code>struct</code>. </p>
-<p >In each <code>Blob</code> [<code>begin()</code>, <code>end()</code>) is the serialization itself; and space before <code>begin()</code> and starting with <code>end()</code> may be reserved for framing prefix/postfix to preserve zero-copy when transmitting such serializations over an IPC "wire." </p>
+<p>Short-hand for a high-performance blob structure that represents an IPC-incoming (sub-)segment 1+ of which make up the outer serialization of a given <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a>. </p>
+<p >Its <em>exact</em> semantics are context-dependent, so it's best to read the API or context to determine such details. </p>
 
-<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00122">122</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00192">192</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
+
+</div>
+</div>
+<a id="af6f4b1f3071a5f648cbf9e44ba80d983" name="af6f4b1f3071a5f648cbf9e44ba80d983"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6f4b1f3071a5f648cbf9e44ba80d983">&#9670;&nbsp;</a></span>Segment_bufs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983">ipc::transport::struc::Segment_bufs</a> = typedef std::vector&lt;<a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Simpler cousin of <a class="el" href="namespaceipc_1_1transport_1_1struc.html#aa7c19464ac8ecc5db765f660d9fd2433" title="Sequence of 1+ segment descriptions, each representing a live writable segment (of a capnp serializat...">Segment_ptrs</a>, this represents the IPC-transmissible representation of a capnp serialization of a capnp-<code>struct</code> including any framing header(s), expressed as simply a sequence of N read-only views, each containing a pointer to header-if-any-followed-by-serialization-segment and the size in bytes thereof. </p>
+<p >Note that while <a class="el" href="namespaceipc_1_1transport_1_1struc.html#aa7c19464ac8ecc5db765f660d9fd2433" title="Sequence of 1+ segment descriptions, each representing a live writable segment (of a capnp serializat...">Segment_ptrs</a> contains info on header size, this <code>Segment_bufs</code> does not: So to properly interpret the given <code>Blob_const</code> element, one must know the size of the header therein (if any; by convention we can say that no header =&gt; header size is 0 =&gt; segment = entire <code>Blob_const</code>). </p>
+
+<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00171">171</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aa7c19464ac8ecc5db765f660d9fd2433" name="aa7c19464ac8ecc5db765f660d9fd2433"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7c19464ac8ecc5db765f660d9fd2433">&#9670;&nbsp;</a></span>Segment_ptrs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceipc_1_1transport_1_1struc.html#aa7c19464ac8ecc5db765f660d9fd2433">ipc::transport::struc::Segment_ptrs</a> = typedef std::vector&lt;flow::util::Blob_sans_log_context*&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sequence of 1+ segment descriptions, each representing a live writable segment (of a capnp serialization of a capnp-<code>struct</code>) and optional header/prefix area immediately preceding it. </p>
+<p >As of this writing this is specifically 1+ <code>Basic_blob</code> <em>pointers</em> to blobs that directly represent those segments+header(s) which must stay alive while these pointers may be dereferenced. In each <code>Basic_blob</code> [<code>begin()</code>, <code>end()</code>) is the serialization segment itself; and space before <code>begin()</code> (of size <code>start()</code>) may be reserved for framing prefix/header to preserve zero-copy when transmitting such serializations over an IPC "wire." (Area after <code>end()</code> up to <code>capacity()</code> could represent a framing postfix, though as of this writing we assume only a header might exist, for simplicity. As long as possible we shall avoid adding a postfix into the design.)</p>
+<h3>Rationale</h3>
+<p >Why represent the segment+header as <code>Basic_blob</code> specifically? Answer: The relevant serialization engine(s) could internally represent data structures (namely segments and frame-prefix and such) however they want, and indeed by choosing <code>Basic_blob*</code> here essentially we force that impl to be specifically that. That is a very reasonable structure (and less-feature-filled, slightly-higher-performing than the derivative <code>Blob</code>), but why force it? Indeed, as regards a public API, something merely describing locations and sizes <em>inside</em> the data structure of choice would be stylistically more direct and therefore more flexible/better. To wit <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983" title="Simpler cousin of Segment_ptrs, this represents the IPC-transmissible representation of a capnp seria...">Segment_bufs</a> (sequence of pointer + size pairs essentially) is almost such a thing; just it's not <em>quite</em> enough, because it does not directly/intuitively represent the header/prefix areas that might precede segments (but instead merely the segments themselves). So we choose <code>Basic_blob*</code> simply because it is (1) a decent choice for all impls in practice and (2) sufficiently-well describes both segments and frame headers nearby. It is slightly inflexible but acceptable overall.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000036">Todo:</a></b></dt><dd>As per nearby Rationale comment, <code>Segment_ptrs</code> element type would ideally be a view <em>into</em> <code>Blob</code>-or-similar instead of actual <code>Basic_blob*</code>, to decouple impl from API more cleanly. One approach might be to develop a <code>flow::util</code> class/template, a peer of the <code>flow::util::Blob</code> hierarchy, that specifically represents a view into a <code>Blob</code>-type-thing (perhaps 1 variant for mutable, 1 variant for immutable), perhaps analogously to how <code>span&lt;uint8_t&gt;</code> + <code>span&lt;const uint8_t&gt;</code> is each a view into <code>vector&lt;uint8_t&gt;</code> (minus the latter's capacity). It would therefore store a pointer, a size, a capacity, and a start-index &ndash; representing a main buffer (<code>size()</code> in size), N-byte header/prefix (N = <code>start()</code>), and M-byte postfix (M = <code>capacity() - start() - size()</code>). (A more economical buffer+header version &ndash; directly applicable here &ndash; might store all of those minus the capacity, meaning there is no postfix area.) Possible names might be <code>Blob_view_const</code> (read-only view into buffer plus header plus postfix), <code>Blob_view_mutable</code> (same plus writable access), <code>Prefixed_byte_span_const</code> (<code>Blob_view_const</code> minus postfix area), <code>Prefixed_byte_span_mutable</code> (<code>Blob_view_mutable</code> minus postfix area). <a class="el" href="namespaceipc_1_1transport_1_1struc.html#aa7c19464ac8ecc5db765f660d9fd2433" title="Sequence of 1+ segment descriptions, each representing a live writable segment (of a capnp serializat...">Segment_ptrs</a> would likely be <code>vector&lt;Prefixed_byte_span_mutable&gt;</code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00160">160</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
 
 </div>
 </div>
@@ -298,20 +407,163 @@ template&lt;typename Channel_obj , typename Message_body &gt; </div>
 <p >That's how it's used. Is the random-generator method of UUID generation acceptable for this use?</p>
 <p >A bit of research (starting in the RFC perhaps; or Wikipedia) shows that collisions are so cosmically rare as to make it, quite officially, a non-concern. Even if one does not accept that, however, suppose a collision does occur: two channels happen to generate the same UUID on the same machine around the same time. This (essentially impossible) scenario would not cause either channel to break; it would only allow (in theory) a token check to succeed where it shouldn't, if the fabled wires-crossed scenario occurred. This is an acceptable level of risk.</p>
 <p >Conversely, perhaps using UUIDs for this is overkill. 128 bits isn't heavy, but perhaps something smaller &ndash; maybe even much smaller, like 32 bits or even 16 &ndash; would improve perf without really reducing effectiveness given the above rationale. Indeed that's worth considering but only in the phase where perf optimization is the explicit goal. Until then (if that even happens) the ability to use the nice boost.uuid library instead of rolling our own jankier/smaller UUID-like thing (or whatever) is well worth the alleged perf cost.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000030">Todo:</a></b></dt><dd>Look into whether something smaller that RFC 4122 UUIDs can and should be used for <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a6751c05fb6582a34c7c47ac470c4a48b" title="A type used by struc::Channel for internal safety/security/auth needs.">Session_token</a>. This would be for perf but may well be unnecessary. See discussion near this to-do. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000035">Todo:</a></b></dt><dd>Look into whether something smaller than RFC 4122 UUIDs can and should be used for <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a6751c05fb6582a34c7c47ac470c4a48b" title="A type used by struc::Channel for internal safety/security/auth needs.">Session_token</a>. This would be for perf but may well be unnecessary. See discussion near this to-do. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00113">113</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00121">121</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a3a1f3387713930f0bb9f074e7a631929" name="a3a1f3387713930f0bb9f074e7a631929"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a1f3387713930f0bb9f074e7a631929">&#9670;&nbsp;</a></span>Split_segments</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929">ipc::transport::struc::Split_segments</a> = typedef std::vector&lt;<a class="el" href="structipc_1_1transport_1_1struc_1_1Split__segment.html">Split_segment</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A simple data structure describing the segments (if any) in a <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983" title="Simpler cousin of Segment_ptrs, this represents the IPC-transmissible representation of a capnp seria...">Segment_bufs</a> (or similar) structure which had to be split (presumably due to size constraints); by following the indices/sizes into a post-split <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983" title="Simpler cousin of Segment_ptrs, this represents the IPC-transmissible representation of a capnp seria...">Segment_bufs</a> one can join the appropriate elements so as to obtain the original pre-split segments. </p>
+<p >The order of <code><a class="el" href="structipc_1_1transport_1_1struc_1_1Split__segment.html" title="Simple structure describing how a pre-split single segment was turned into 2+ post-split component su...">Split_segment</a></code>s is strictly from left to right. A reasonable join algorithm, therefore, would iterate over a <code>Split_segments</code> in <em>reverse</em> order; for each <a class="el" href="structipc_1_1transport_1_1struc_1_1Split__segment.html" title="Simple structure describing how a pre-split single segment was turned into 2+ post-split component su...">Split_segment</a> join the 2+ segments in the post-split <a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983" title="Simpler cousin of Segment_ptrs, this represents the IPC-transmissible representation of a capnp seria...">Segment_bufs</a> (or similar) described therein, in-place. By doing this in reverse order, handling <a class="el" href="structipc_1_1transport_1_1struc_1_1Split__segment.html" title="Simple structure describing how a pre-split single segment was turned into 2+ post-split component su...">Split_segment</a> A before B will not invalidate the start-index member in B.</p>
+<p >By convention <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929" title="A simple data structure describing the segments (if any) in a Segment_bufs (or similar) structure whi...">Split_segments</a> shall include a <a class="el" href="structipc_1_1transport_1_1struc_1_1Split__segment.html" title="Simple structure describing how a pre-split single segment was turned into 2+ post-split component su...">Split_segment</a> only if a segment actually needed to be split. </p>
+
+<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00185">185</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a0351bb14f40312b30e6cae4927f3373b" name="a0351bb14f40312b30e6cae4927f3373b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0351bb14f40312b30e6cae4927f3373b">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[1/5]</span></h2>
+<a id="ad3e8026f40e4319e13663fc2696e2387" name="ad3e8026f40e4319e13663fc2696e2387"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3e8026f40e4319e13663fc2696e2387">&#9670;&nbsp;</a></span>load_mdt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::transport::struc::load_mdt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1transport_1_1struc_1_1Capped__sz__capnp__message__builder.html">Capped_sz_capnp_message_builder</a> *&#160;</td>
+          <td class="paramname"><em>builder</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">schema::detail::StructuredMessage::InternalMessageBody::Builder *&#160;</td>
+          <td class="paramname"><em>internal_msg_builder_or_null</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
+          <td class="paramname"><em>err_code</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a6751c05fb6582a34c7c47ac470c4a48b">Session_token</a> &amp;&#160;</td>
+          <td class="paramname"><em>session_token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#af7f35fc7588d97a838274fa25700ead9">msg_id_t</a>&#160;</td>
+          <td class="paramname"><em>originating_msg_id_or_none</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#af7f35fc7588d97a838274fa25700ead9">msg_id_t</a>&#160;</td>
+          <td class="paramname"><em>id_or_none</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classsize__t.html">size_t</a>&#160;</td>
+          <td class="paramname"><em>n_serialization_segments_or_none</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929">Split_segments</a> *&#160;</td>
+          <td class="paramname"><em>split_segs</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Given user- or internal-message-describing metadata values as arguments, loads (via the provided <code>capnp::MessageBuilder</code>) a <code>schema::detail::StructuredMessage</code> capnp-<code>struct</code> so as to contain those values. </p>
+<p >The resulting <code>MessageBuilder</code> a/k/a <a class="el" href="classCapnp__msg__builder__interface.html">Capnp_msg_builder_interface</a> can then be serialized as an mdt header for an out-message.</p>
+<p >The out-arg <code>*builder</code> may be reused for performance; meaning if it encoded mdt for out-message X earlier, it can be reused to encode mdt for out-message Y now with higher perf than if a fresh <code>*builder</code> had to be created. There are however the following limitations.</p><ul>
+<li>If you're loading mdt for an <em>internal</em> message (hence <code>internal_msg_builder_or_null != nullptr</code>, and <code>id_or_none == 0</code>), then <code>*builder</code> must be fresh. Else behavior is undefined.</li>
+<li>Else (it's a user message), and indeed <code>*builder</code> is previously-<code><a class="el" href="namespaceipc_1_1transport_1_1struc.html#ad3e8026f40e4319e13663fc2696e2387" title="Given user- or internal-message-describing metadata values as arguments, loads (via the provided capn...">load_mdt()</a></code>ed:<ul>
+<li><code>*builder</code> must have been used to also load a user message's MDT. Else behavior is undefined.</li>
+<li>Typically reuse is possible. If so <a class="el" href="namespaceipc_1_1transport_1_1struc.html#ad3e8026f40e4319e13663fc2696e2387" title="Given user- or internal-message-describing metadata values as arguments, loads (via the provided capn...">load_mdt()</a> shall return <code>true</code> indicating success.</li>
+<li>In some rare cases it is not possible. If so <a class="el" href="namespaceipc_1_1transport_1_1struc.html#ad3e8026f40e4319e13663fc2696e2387" title="Given user- or internal-message-describing metadata values as arguments, loads (via the provided capn...">load_mdt()</a> shall return <code>false</code> indicating reuse failure. You should in that case try again, passing-in a fresh <code>*builder</code>. We'll return <code>true</code> that time.</li>
+</ul>
+</li>
+</ul>
+<p >In other words:</p><ul>
+<li>If <code>*builder</code> is fresh, all is cool; we'll return <code>true</code>.</li>
+<li>If <code>*builder</code> is being reused:<ul>
+<li>You must be trying to load a user message's mdt, not an internal message.</li>
+<li><code>*builder</code> must have been <code><a class="el" href="namespaceipc_1_1transport_1_1struc.html#ad3e8026f40e4319e13663fc2696e2387" title="Given user- or internal-message-describing metadata values as arguments, loads (via the provided capn...">load_mdt()</a></code>ed for the same purpose (user message, not internal message).</li>
+<li>If reuse is possible (typical), we'll return <code>true</code>.</li>
+<li>If reuse is not possible (atypical), we'll return <code>false</code>. Try again with fresh <code>*builder</code>.</li>
+</ul>
+</li>
+</ul>
+<h3>Fatal error possibility</h3>
+<p >The above ignores the possibility of fatal error, meaning an input such that for internal reasons <a class="el" href="namespaceipc_1_1transport_1_1struc.html#ad3e8026f40e4319e13663fc2696e2387" title="Given user- or internal-message-describing metadata values as arguments, loads (via the provided capn...">load_mdt()</a> cannot work, regardless of <code>*builder</code> freshness. So far we've described these:</p><ul>
+<li>If <code>false</code> returned: no fatal error; try with fresh <code>*builder</code> as explained.</li>
+<li>If <code>true</code> returned, and <code>*err_code</code> is falsy post-call: no fatal error; all good as explained.</li>
+</ul>
+<p >That leaves this one:</p><ul>
+<li>If <code>true</code> returned, and <code>*err_code</code> is truthy post-call: fatal error; recommend emitting to user.<ul>
+<li>This shall <em>not</em> occur if <code>id_or_none == 0</code> (for internal messages). Only user messages have enough degrees of freedom as to overload the mdt conventions we've established internally.</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">builder</td><td>A <code>MessageBuilder</code>. If <code>id_or_none == 0</code>, it must be fresh (not previously <code><a class="el" href="namespaceipc_1_1transport_1_1struc.html#ad3e8026f40e4319e13663fc2696e2387" title="Given user- or internal-message-describing metadata values as arguments, loads (via the provided capn...">load_mdt()</a></code>ed). Else it may be fresh or previously <code><a class="el" href="namespaceipc_1_1transport_1_1struc.html#ad3e8026f40e4319e13663fc2696e2387" title="Given user- or internal-message-describing metadata values as arguments, loads (via the provided capn...">load_mdt()</a></code>ed; in the latter case <code>id_or_none != 0</code> had to have been the case as well. / If we return <code>true</code>, <code>*builder</code> will have been loaded with a filled-out <code>schema::detail::StructuredMessage</code>. </td></tr>
+    <tr><td class="paramname">internal_msg_builder_or_null</td><td>Must be null if and only if <code>id_or_none != 0</code>, indicating we're loading a user message's mdt. Else we're loading an internal message. In that case the post-condition is: we return <code>true</code> (always succeed); and <code>*internal_msg_builder_or_null</code> is a capnp-<code>Builder</code> for the <code>schema::detail::StructuredMessage::InternalMessageBody</code> node inside <code>*builder</code>. It is the return value of <code>.initInternalMessageBody()</code>, but that node's insides have not been filled further. The caller should use the <code>Builder</code> to set the particulars of the internal message per schema (see <code>structured_msg.capnp</code>). </td></tr>
+    <tr><td class="paramname">err_code</td><td>To set, if and only if returning <code>true</code> (see above). If null behavior is undefined (assertion may trip). As of this writing generated codes: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71dac5ebc34885b65e8cc46bfec78a5876b1" title="The combination of serialized structured-message size and large individual leaves (list/blob/string) ...">error::Code::S_SERIALIZE_FAILED_SPLIT_ENCODING_TOO_BIG</a> (a <a class="el" href="structipc_1_1transport_1_1struc_1_1Split__segment.html" title="Simple structure describing how a pre-split single segment was turned into 2+ post-split component su...">Split_segment</a> record's field's value does not fit the chosen capnp-encoding type's bit-width); <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71daf92173916c38cf0c4d712fd26c074b89" title="The serialized structured message consists of so many large individual leaves (list/blob/string),...">error::Code::S_SERIALIZE_FAILED_SPLIT_SEGS_TOO_MANY</a> (the mdt in total, due to its variable-length parts &ndash; in practice the <code>*split_segs</code>-encoding list as of this writing &ndash; does not fit <code>*builder</code>'s fixed-size area; a 2nd segment would be needed =&gt; this error). </td></tr>
+    <tr><td class="paramname">session_token</td><td>The token to load into <code>*builder</code>. </td></tr>
+    <tr><td class="paramname">originating_msg_id_or_none</td><td>Message ID of the in-message to which this one responds or which this one otherwise references; or 0 if none. </td></tr>
+    <tr><td class="paramname">id_or_none</td><td>Message ID of the user message whose mdt we're loading; or 0 to indicate we're loading an internal message. </td></tr>
+    <tr><td class="paramname">n_serialization_segments_or_none</td><td>Must be 0 if and only if <code>id_or_none == 0</code>, indicating we're loading an internal message. Else we're loading a user message. In that case this is the number of (sub-)segments composing the user message's payload (this is 1 or higher). Some of these (sub-)segments may need to be re-joined by the receiver before being used as actual capnp-serialization segments; in which case this info is in <code>split_segs</code>. </td></tr>
+    <tr><td class="paramname">split_segs</td><td>Must be null and is otherwise ignored if <code>id_or_none == 0</code> (internal message case). Else it's a user message's mdt; in which case: If <code>split_segs</code> is null, then no splitting of segments was needed, hence no re-joining is needed on the opposing side; otherwise it is a list (by convention of size at least 1) describing the split structure. See <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929" title="A simple data structure describing the segments (if any) in a Segment_bufs (or similar) structure whi...">Split_segments</a> doc header for details. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above: <code>true</code> means success, <code>false</code> means retry sans reuse. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="msg__impl_8cpp_source.html#l00043">43</a> of file <a class="el" href="msg__impl_8cpp_source.html">msg_impl.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71dac416e988563e44bf15fc6a81743eef53">ipc::transport::struc::error::S_INVALID_ARGUMENT</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71dac5ebc34885b65e8cc46bfec78a5876b1">ipc::transport::struc::error::S_SERIALIZE_FAILED_SPLIT_ENCODING_TOO_BIG</a>, and <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1error.html#a990b9ff850cf9aaf354efdd07d86a71daf92173916c38cf0c4d712fd26c074b89">ipc::transport::struc::error::S_SERIALIZE_FAILED_SPLIT_SEGS_TOO_MANY</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="msg_8hpp_source.html#l01324">ipc::transport::struc::Msg_out&lt; Body_t, Builder_t &gt;::emit_serialization()</a>, and <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04917">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::rcv_struct_inform_of_unexpected_response()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceipc_1_1transport_1_1struc_ad3e8026f40e4319e13663fc2696e2387_icgraph.svg" width="372" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a4c1f7c929b2b3b9c372bc4d9c2542a82" name="a4c1f7c929b2b3b9c372bc4d9c2542a82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c1f7c929b2b3b9c372bc4d9c2542a82">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Channel_obj , typename Message_body , typename Struct_builder_config , typename Struct_reader_config &gt; </div>
+template&lt;typename Owned_channel_t , typename Msg_body_t , typename Builder_config_t , typename Reader_config_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
@@ -322,7 +574,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">Channel</a>&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html">Channel</a>&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
@@ -346,7 +598,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </div>
 </div>
 <a id="ae272f248d74db0486c4d9411715db15d" name="ae272f248d74db0486c4d9411715db15d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae272f248d74db0486c4d9411715db15d">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae272f248d74db0486c4d9411715db15d">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -371,7 +623,7 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
       </table>
 </div><div class="memdoc">
 
-<p>Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a></code> to the given <code>ostream</code>. </p>
+<p>Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a></code> to the given <code>ostream</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
@@ -381,12 +633,12 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8cpp_source.html#l00132">132</a> of file <a class="el" href="heap__serializer_8cpp_source.html">heap_serializer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8cpp_source.html#l00263">263</a> of file <a class="el" href="heap__serializer_8cpp_source.html">heap_serializer.cpp</a>.</p>
 
 </div>
 </div>
 <a id="a8b1483d548bd56b3bf1e73bc46419e7a" name="a8b1483d548bd56b3bf1e73bc46419e7a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b1483d548bd56b3bf1e73bc46419e7a">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b1483d548bd56b3bf1e73bc46419e7a">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -421,17 +673,17 @@ template&lt;typename Channel_obj , typename Message_body , typename Struct_build
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8cpp_source.html#l00180">180</a> of file <a class="el" href="heap__serializer_8cpp_source.html">heap_serializer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8cpp_source.html#l00356">356</a> of file <a class="el" href="heap__serializer_8cpp_source.html">heap_serializer.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aad52996a4d66f74e21e4f2e74c93c763" name="aad52996a4d66f74e21e4f2e74c93c763"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad52996a4d66f74e21e4f2e74c93c763">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[4/5]</span></h2>
+<a id="a8f22cc38e6a79bc8d79d9f10bb7764ec" name="a8f22cc38e6a79bc8d79d9f10bb7764ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f22cc38e6a79bc8d79d9f10bb7764ec">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Message_body , typename Struct_reader_config &gt; </div>
+template&lt;typename Body_t , typename Reader_config_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
@@ -442,7 +694,7 @@ template&lt;typename Message_body , typename Struct_reader_config &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html">Msg_in</a>&lt; Message_body, Struct_reader_config &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html">Msg_in</a>&lt; Body_t, Reader_config_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
@@ -463,17 +715,17 @@ template&lt;typename Message_body , typename Struct_reader_config &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l01407">1407</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l01925">1925</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a134e737e55ae825527efd6a9e68bf37e" name="a134e737e55ae825527efd6a9e68bf37e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a134e737e55ae825527efd6a9e68bf37e">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[5/5]</span></h2>
+<a id="a949bd239aa536f1a8a78afa045900f01" name="a949bd239aa536f1a8a78afa045900f01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a949bd239aa536f1a8a78afa045900f01">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Message_body , typename Struct_builder_t &gt; </div>
+template&lt;typename Body_t , typename Struct_builder_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
@@ -484,7 +736,7 @@ template&lt;typename Message_body , typename Struct_builder_t &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html">Msg_out</a>&lt; Message_body, Struct_builder_t &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html">Msg_out</a>&lt; Body_t, Struct_builder_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
@@ -496,7 +748,7 @@ template&lt;typename Message_body , typename Struct_builder_t &gt; </div>
 </div><div class="memdoc">
 
 <p>Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a></code> to the given <code>ostream</code>. </p>
-<p >Namely it prints via <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html#a754e0f025f471105d52b3b090c27f1c0" title="Prints string representation to the given ostream.">Msg_out::to_ostream()</a>`; be sure to read perf notes on that!</p>
+<p >Namely it prints via <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html#a1158ecda9ea58ef4ff298ccbfd721d64" title="Prints string representation to the given ostream.">Msg_out::to_ostream()</a>; be sure to read perf notes on that!</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
@@ -506,11 +758,213 @@ template&lt;typename Message_body , typename Struct_builder_t &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l01108">1108</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l01461">1461</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
+
+</div>
+</div>
+<a id="afc232529c622b2fe2368e870d9e236ff" name="afc232529c622b2fe2368e870d9e236ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc232529c622b2fe2368e870d9e236ff">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[6/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Capnp_reader &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; ipc::transport::struc::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__brief.html">Ostreamable_capnp_brief</a>&lt; Capnp_reader &gt; &amp;&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints string representation (one-line/potentially-truncated form) of the given capnp <code>Reader</code>, via proxy object, to the given <code>ostream</code>. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Potentially the entire underlying capnp tree shall be traversed to make the output work (even if ultimately the output is truncated for length). This can be quite slow. Do not use in perf-critical paths, unless verbose-logging (etc.) is enabled.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a0f3c9a5b93c17e4fbf73606fa7b84282" title="Convenience function that returns an object passable to ostream&lt;&lt; to print a one-line/potentially-tru...">ostreamable_capnp_brief()</a>: Wrap your <code>Reader capnp_reader</code> (or <code>builder.asReader()</code>) in this call to make use of this output operator conveniently.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
+    <tr><td class="paramname">val</td><td>Object to serialize. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html#l00083">83</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html">util.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html#l00049">ipc::transport::struc::Ostreamable_capnp_brief&lt; Capnp_reader &gt;::m_capnp_reader</a>.</p>
+
+</div>
+</div>
+<a id="a78dd72f823ac435b116b72b37f2caec9" name="a78dd72f823ac435b116b72b37f2caec9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78dd72f823ac435b116b72b37f2caec9">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[7/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Capnp_reader &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; ipc::transport::struc::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__full.html">Ostreamable_capnp_full</a>&lt; Capnp_reader &gt; &amp;&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints string representation (multi-line/pretty-printed/indented/full-length form) of the given capnp <code>Reader</code>, via proxy object, to the given <code>ostream</code>. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Potentially the entire underlying capnp tree shall be traversed to make the output work. This can be quite slow. Do not use in perf-critical paths, unless verbose-logging (etc.) is enabled.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a310bc581d00d0a2b57280929cdb7a64a" title="Convenience function that returns an object passable to ostream&lt;&lt; to print a multi-line/pretty-printe...">ostreamable_capnp_full()</a>: Wrap your <code>Reader capnp_reader</code> (or <code>builder.asReader()</code>) in this call to make use of this output operator conveniently.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">os</td><td>Stream to which to write. </td></tr>
+    <tr><td class="paramname">val</td><td>Object to serialize. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>os</code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html#l00101">101</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html">util.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html#l00063">ipc::transport::struc::Ostreamable_capnp_full&lt; Capnp_reader &gt;::m_capnp_reader</a>.</p>
+
+</div>
+</div>
+<a id="a0f3c9a5b93c17e4fbf73606fa7b84282" name="a0f3c9a5b93c17e4fbf73606fa7b84282"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f3c9a5b93c17e4fbf73606fa7b84282">&#9670;&nbsp;</a></span>ostreamable_capnp_brief()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Capnp_reader &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__brief.html">Ostreamable_capnp_brief</a>&lt; Capnp_reader &gt; ipc::transport::struc::ostreamable_capnp_brief </td>
+          <td>(</td>
+          <td class="paramtype">const Capnp_reader &amp;&#160;</td>
+          <td class="paramname"><em>capnp_reader</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convenience function that returns an object passable to <code>ostream&lt;&lt;</code> to print a one-line/potentially-truncated representation to that stream, given an arbitrary capnp <code>Reader</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">capnp_reader</td><td>The <code>Reader</code> to presumably print. Tip: if you have a <code>Builder builder</code> to print then pass <code>builder.asReader()</code> here. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html#l00071">71</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html">util.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="session__vat__network_8hpp_source.html#l01352">ipc::transport::struc::shm::rpc::Session_vat_network&lt; Shm_lender_borrower_t, Shm_arena_t &gt;::Rpc_msg_in_impl::Rpc_msg_in_impl()</a>, <a class="el" href="session__vat__network_8hpp_source.html#l01194">ipc::transport::struc::shm::rpc::Session_vat_network&lt; Shm_lender_borrower_t, Shm_arena_t &gt;::Rpc_msg_out_impl::send()</a>, <a class="el" href="msg_8hpp_source.html#l01442">ipc::transport::struc::Msg_out&lt; Body_t, Builder_t &gt;::to_ostream()</a>, and <a class="el" href="msg_8hpp_source.html#l01867">ipc::transport::struc::Msg_in&lt; Body_t, Reader_config_t &gt;::to_ostream()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceipc_1_1transport_1_1struc_a0f3c9a5b93c17e4fbf73606fa7b84282_icgraph.svg" width="636" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a310bc581d00d0a2b57280929cdb7a64a" name="a310bc581d00d0a2b57280929cdb7a64a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a310bc581d00d0a2b57280929cdb7a64a">&#9670;&nbsp;</a></span>ostreamable_capnp_full()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Capnp_reader &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__full.html">Ostreamable_capnp_full</a>&lt; Capnp_reader &gt; ipc::transport::struc::ostreamable_capnp_full </td>
+          <td>(</td>
+          <td class="paramtype">const Capnp_reader &amp;&#160;</td>
+          <td class="paramname"><em>capnp_reader</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convenience function that returns an object passable to <code>ostream&lt;&lt;</code> to print a multi-line/pretty-printed/indented/full-length representation to that stream, given an arbitrary capnp <code>Reader</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">capnp_reader</td><td>The <code>Reader</code> to presumably print. Tip: if you have a <code>Builder builder</code> to print then pass <code>builder.asReader()</code> here. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html#l00077">77</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html">util.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04157">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::rcv_on_async_read_channel_header()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l03734">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::rcv_on_async_read_lead_msg()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04002">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::rcv_on_async_read_proto_neg_msg()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04917">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::rcv_struct_inform_of_unexpected_response()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04256">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::rcv_struct_new_msg_in()</a>, <a class="el" href="session__vat__network_8hpp_source.html#l01352">ipc::transport::struc::shm::rpc::Session_vat_network&lt; Shm_lender_borrower_t, Shm_arena_t &gt;::Rpc_msg_in_impl::Rpc_msg_in_impl()</a>, <a class="el" href="session__vat__network_8hpp_source.html#l01194">ipc::transport::struc::shm::rpc::Session_vat_network&lt; Shm_lender_borrower_t, Shm_arena_t &gt;::Rpc_msg_out_impl::send()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l05316">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::send_impl()</a>, and <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l05807">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::send_init_msgs()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceipc_1_1transport_1_1struc_a310bc581d00d0a2b57280929cdb7a64a_icgraph.svg" width="432" height="651"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a16a96cfcaff0dd3748bfa455e3348e25" name="a16a96cfcaff0dd3748bfa455e3348e25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16a96cfcaff0dd3748bfa455e3348e25">&#9670;&nbsp;</a></span>BUILDER_CONFIG_FRAME_PREFIX_SZ_VIA_STRUC_CHANNEL</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classsize__t.html">size_t</a> ipc::transport::struc::BUILDER_CONFIG_FRAME_PREFIX_SZ_VIA_STRUC_CHANNEL = 128</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a> (and <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">struc::sync_io::Channel</a>) requires, for internal purposes, that any <a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a> transmitted over it was provided with a <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> that has <code>m_frame_prefix_sz</code> member set to this value (or larger if desired for some purpose). </p>
+<p >As of this writing that includes <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#aeb6fcd8308642adbcb6edcd564375c88" title="Size of header to precede seg 1 in the first buffer allocated by the Heap_fixed_builder.">Heap_fixed_builder::Config::m_frame_prefix_sz</a> (for heap-backed messages) and <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html#a16cb24c29d46e55c4c21b13aebdf6943" title="See Struct_builder::Config concept.">shm::Builder::Config::m_frame_prefix_sz</a> (for SHM-backed ones).</p>
+<h3>Rationale</h3>
+<p >In typical usage patterns one need not assemble a <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> explicitly, but nothing forbids it, hence it seemed prudent to expose this publicly.</p>
+<p >Note that <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a></code>s and hence their <code>Config</code>s (formally speaking) may be used independently of <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>, so it <em>is</em> conceivable to not need this value set (e.g., <code>0</code> would be quite conceivable). (In fact internally Flow-IPC might use these guys in various capacities and may well set <code>.m_frame_prefix_sz = 0</code> in some contexts.) That is to say, <code>m_frame_prefix_sz</code> should <em>not</em> simply be removed from our APIs and replaced by a constant all-over. </p>
+
+<p class="definition">Definition at line <a class="el" href="struc__fwd_8hpp_source.html#l00247">247</a> of file <a class="el" href="struc__fwd_8hpp_source.html">struc_fwd.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="msg_8hpp_source.html#l01493">ipc::transport::struc::Msg_in&lt; Body_t, Reader_config_t &gt;::add_serialization_segment()</a>, <a class="el" href="ipc__shm_2src_2ipc_2session_2shm_2classic_2session__server_8hpp_source.html#l00718">ipc::session::shm::classic::Session_server&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm_builder_config()</a>, <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2shm_2arena__lend_2jemalloc_2session__server_8hpp_source.html#l00610">ipc::session::shm::arena_lend::jemalloc::Session_server&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm_builder_config()</a>, <a class="el" href="ipc__shm__arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2server__session__impl_8hpp_source.html#l00386">ipc::session::shm::arena_lend::jemalloc::Server_session_impl&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;::app_shm_builder_config()</a>, <a class="el" href="msg_8hpp_source.html#l01540">ipc::transport::struc::Msg_in&lt; Body_t, Reader_config_t &gt;::deserialize_mdt()</a>, <a class="el" href="msg_8hpp_source.html#l01324">ipc::transport::struc::Msg_out&lt; Body_t, Builder_t &gt;::emit_serialization()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp_source.html#l02504">ipc::transport::struc::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::heap_fixed_builder_config()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02248">ipc::session::Client_session_impl&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload, SHM_TYPE_OR_NONE, GRACEFUL_FINISH_REQUIRED &gt;::mdt_builder()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04917">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::rcv_struct_inform_of_unexpected_response()</a>, <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l05316">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::send_impl()</a>, <a class="el" href="arena__lend_2src_2ipc_2session_2detail_2shm_2arena__lend_2jemalloc_2session__impl_8hpp_source.html#l00675">ipc::session::shm::arena_lend::jemalloc::Session_impl&lt; Session_impl_t &gt;::session_shm_builder_config()</a>, and <a class="el" href="src_2ipc_2session_2detail_2shm_2classic_2session__impl_8hpp_source.html#l00382">ipc::session::shm::classic::Session_impl&lt; Session_impl_t &gt;::shm_builder_config()</a>.</p>
+
+</div>
+</div>
 <a id="ac70446757444f864afa21a5062bc5b0d" name="ac70446757444f864afa21a5062bc5b0d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac70446757444f864afa21a5062bc5b0d">&#9670;&nbsp;</a></span>NULL_SESSION</h2>
 
@@ -525,9 +979,9 @@ template&lt;typename Message_body , typename Struct_builder_t &gt; </div>
 
 <p>The only necessary value of empty-type <a class="el" href="structipc_1_1transport_1_1struc_1_1Null__session.html" title="Value for Struct_builder::Session when no extra information is needed when serializing Struct_builder...">Null_session</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8cpp_source.html#l00035">35</a> of file <a class="el" href="heap__serializer_8cpp_source.html">heap_serializer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8cpp_source.html#l00036">36</a> of file <a class="el" href="heap__serializer_8cpp_source.html">heap_serializer.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00567">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::emit_serialization()</a>, and <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l04582">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::send_proto_neg()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp_source.html#l00535">ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;::emit_serialization()</a>.</p>
 
 </div>
 </div>
@@ -547,14 +1001,14 @@ template&lt;typename Message_body , typename Struct_builder_t &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8cpp_source.html#l00035">35</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8cpp_source.html">channel.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02028">ipc::session::Client_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE, S_GRACEFUL_FINISH_REQUIRED_V &gt;::session_token()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html#l00963">ipc::session::Server_session_impl&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload, S_SHM_TYPE_OR_NONE, S_SHM_MAX_HNDL_SZ, S_GRACEFUL_FINISH_REQUIRED_V &gt;::session_token()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2session_8hpp_source.html#l00879">ipc::session::Session_mv&lt; Session_impl_t &gt;::session_token()</a>, and <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l05070">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::session_token()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2client__session__impl_8hpp_source.html#l02217">ipc::session::Client_session_impl&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload, SHM_TYPE_OR_NONE, GRACEFUL_FINISH_REQUIRED &gt;::session_token()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2detail_2server__session__impl_8hpp_source.html#l01120">ipc::session::Server_session_impl&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload, SHM_TYPE_OR_NONE, SHM_MAX_HNDL_SZ, GRACEFUL_FINISH_REQUIRED &gt;::session_token()</a>, <a class="el" href="ipc__session_2src_2ipc_2session_2session_8hpp_source.html#l00884">ipc::session::Session_mv&lt; Session_impl_t &gt;::session_token()</a>, and <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l06473">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::session_token()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

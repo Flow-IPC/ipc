@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -77,7 +77,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept with maximal zero-copy perf by (1) storing the actual user-schema-controlled message using the SHM provider of choice, in SHM, and (2) straightforwardly allocating 1 segment in regular heap and placing the SHM handle there for transmission over IPC.  
+<p>Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept with maximal zero-copy perf by (1) storing the actual user-schema-controlled message using the SHM-provider of choice, in SHM, and (2) straightforwardly allocating 1 segment in regular heap and placing the SHM handle there for transmission over IPC.  
  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#details">More...</a></p>
 
 <p><code>#include &lt;serializer.hpp&gt;</code></p>
@@ -112,8 +112,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>Arena</b> = Shm_aren
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9374ce7f0dc46bb841d9359df5d4045f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a9374ce7f0dc46bb841d9359df5d4045f">Builder</a> ()</td></tr>
-<tr class="memdesc:a9374ce7f0dc46bb841d9359df5d4045f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a9374ce7f0dc46bb841d9359df5d4045f">More...</a><br /></td></tr>
+<tr class="memitem:a9374ce7f0dc46bb841d9359df5d4045f"><td class="memItemLeft" align="right" valign="top"><a id="a9374ce7f0dc46bb841d9359df5d4045f" name="a9374ce7f0dc46bb841d9359df5d4045f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Builder</b> ()</td></tr>
+<tr class="memdesc:a9374ce7f0dc46bb841d9359df5d4045f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API. <br /></td></tr>
 <tr class="separator:a9374ce7f0dc46bb841d9359df5d4045f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23b111e2bf7be45589eb958d6ccc24f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a23b111e2bf7be45589eb958d6ccc24f6">Builder</a> (const <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html">Config</a> &amp;config)</td></tr>
 <tr class="memdesc:a23b111e2bf7be45589eb958d6ccc24f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a23b111e2bf7be45589eb958d6ccc24f6">More...</a><br /></td></tr>
@@ -138,9 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaeceaccf183170b1785aa240921ae893"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc">Capnp_msg_builder_interface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893">payload_msg_builder</a> ()</td></tr>
 <tr class="memdesc:aaeceaccf183170b1785aa240921ae893"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893">More...</a><br /></td></tr>
 <tr class="separator:aaeceaccf183170b1785aa240921ae893"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7909a2d1e1d24037fb8af5338fffa783"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783">emit_serialization</a> (<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a82a69eaa39cbe8a002de1266f1cbb5cb">Segment_ptrs</a> *target_blobs, const <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a2d9808d9b0c04cf84c8e439b1643506d">Session</a> &amp;session, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0) const</td></tr>
-<tr class="memdesc:a7909a2d1e1d24037fb8af5338fffa783"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783">More...</a><br /></td></tr>
-<tr class="separator:a7909a2d1e1d24037fb8af5338fffa783"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b8fbd9d5b77d41f6637f321383f39c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a6b8fbd9d5b77d41f6637f321383f39c8">emit_serialization</a> (<a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983">Segment_bufs</a> *target_blobs, <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> *hdr_blob, <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929">Split_segments</a> *split_segs, const <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a2d9808d9b0c04cf84c8e439b1643506d">Session</a> &amp;session, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr) const</td></tr>
+<tr class="memdesc:a6b8fbd9d5b77d41f6637f321383f39c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a6b8fbd9d5b77d41f6637f321383f39c8">More...</a><br /></td></tr>
+<tr class="separator:a6b8fbd9d5b77d41f6637f321383f39c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f01bec0e66080850379df98a2ecf99e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a8f01bec0e66080850379df98a2ecf99e">n_serialization_segments</a> () const</td></tr>
 <tr class="memdesc:a8f01bec0e66080850379df98a2ecf99e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements concept API.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a8f01bec0e66080850379df98a2ecf99e">More...</a><br /></td></tr>
 <tr class="separator:a8f01bec0e66080850379df98a2ecf99e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,36 +159,37 @@ Related Functions</h2></td></tr>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_attribs_classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base.html">ipc::transport::struc::shm::Builder_base</a></td></tr>
 <tr class="memitem:a2dae5df49d355c6f2199af42fff9befd inherit pub_static_attribs_classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base.html#a2dae5df49d355c6f2199af42fff9befd">S_MAX_SERIALIZATION_SEGMENT_SZ</a> = 512</td></tr>
-<tr class="memdesc:a2dae5df49d355c6f2199af42fff9befd inherit pub_static_attribs_classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base"><td class="mdescLeft">&#160;</td><td class="mdescRight">A message of this size will be able to completely contain the (single) segment emitted by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">Builder::emit_serialization()</a> no matter how large or complex the user data loaded into <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">Builder::payload_msg_builder()</a>.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base.html#a2dae5df49d355c6f2199af42fff9befd">More...</a><br /></td></tr>
+<tr class="memdesc:a2dae5df49d355c6f2199af42fff9befd inherit pub_static_attribs_classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base"><td class="mdescLeft">&#160;</td><td class="mdescRight">A message of this size will be able to completely contain the (single) segment emitted by <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a6b8fbd9d5b77d41f6637f321383f39c8" title="Implements concept API.">Builder::emit_serialization()</a> no matter how large or complex the user data loaded into <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">Builder::payload_msg_builder()</a>.  <a href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base.html#a2dae5df49d355c6f2199af42fff9befd">More...</a><br /></td></tr>
 <tr class="separator:a2dae5df49d355c6f2199af42fff9befd inherit pub_static_attribs_classipc_1_1transport_1_1struc_1_1shm_1_1Builder__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename Shm_arena&gt;<br />
-class ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;</div><p >Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept with maximal zero-copy perf by (1) storing the actual user-schema-controlled message using the SHM provider of choice, in SHM, and (2) straightforwardly allocating 1 segment in regular heap and placing the SHM handle there for transmission over IPC. </p>
-<p >That is, each mutation via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> may, as needed, trigger a SHM allocation. In this algorithm, unlike <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a>, the size of each (SHM-)allocated segment will be determined intelligently based on an exponential-growth algorithm, similarly to that mode of capnp's <code>MallocMessageBuilder</code>. Hence there is no knob to control segment size, as it is determined dynamically, internally.</p>
+class ipc::transport::struc::shm::Builder&lt; Shm_arena &gt;</div><p >Implements <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> concept with maximal zero-copy perf by (1) storing the actual user-schema-controlled message using the SHM-provider of choice, in SHM, and (2) straightforwardly allocating 1 segment in regular heap and placing the SHM handle there for transmission over IPC. </p>
+<p >That is, each mutation via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> may, as needed, trigger a SHM allocation. In this algorithm, somewhat similarly to <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a>, the size of each (SHM-)allocated segment will be determined intelligently based on an exponential-growth algorithm, albeit not strictly capped in size as in <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a> (as these buffers need not be copied: the whole point of SHM).</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000037">Todo:</a></b></dt><dd>In <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html" title="Implements Struct_builder concept with maximal zero-copy perf by (1) storing the actual user-schema-c...">shm::Builder</a> some comments and/or logging and/or identifiers refer to "top/bottom" serialization; in others to "outer/inner" serialization; we should consistently use the latter terminology there and all over Flow-IPC.</dd></dl>
 <h3>Failure mode; reasonable uses</h3>
-<p >First see "Failure mode" and "Reasonable uses" in <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> doc header; then come back here. Back already? Good news: that failure mode (leaf-too-big) does <em>not</em> apply here. As long as the SHM provider is able to dole out RAM, there is no limit at all on the size/complexity of what one mutates over <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a>. In fact <code>*this</code> provides the "2-layer approach" specified in that doc header section you just came back from reading.</p>
+<p >As long as the SHM-provider is able to dole out RAM, there is no limit at all on the size/complexity of what one mutates over <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a>. In fact <code>*this</code> provides the 2-layer approach explained in the concept <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> doc header.</p>
 <p >There are two realistic failure modes in <code>*this</code>. The first is the following:</p><ol type="1">
 <li>User attempts to mutate via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a>.</li>
 <li>capnp internals recognize the current segment is used up and asks for a new segment of at least N bytes.</li>
-<li><code>*this</code> asks the SHM provider (see template param docs below) to allocate &gt;=N bytes.</li>
-<li>The SHM provider determines it has run out of space according to its policies/algorithm/limitations and throws exception, in spirit similar to <code>std::bad_alloc</code>.</li>
+<li><code>*this</code> asks the SHM-provider (see template param docs below) to allocate &gt;=N bytes.</li>
+<li>The SHM-provider determines it has run out of space according to its policies/algorithm/limitations and throws exception, in spirit similar to <code>std::bad_alloc</code>.</li>
 <li>This propagates to the user via their <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> mutation statement: it throws.</li>
 </ol>
-<p >The key here: This cannot be detected via <code>*this</code>. In spirit it is similar to <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a></code>-originated mutations by the user running out of regular-heap (even virtual disk heap, if enabled) and is outside our scope to control. The only remedy: choose a SHM provider that does not run out of space beyond simply running out of RAM; e.g., by mapping more SHM pools, or whatever. Otherwise, all the user can do is catch the <code>bad_alloc</code>-like exception around their mutations on <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> and take whatever contingency steps.</p>
-<p >The second failure mode is <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> failing. See its doc header for more information. In a similar key, <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#aceb5816f4e9f312a8ce2ef17feb81223" title="Implements concept API.">Reader::deserialization()</a> can fail down the line. See its doc header for more information.</p>
+<p >The key here: This cannot be detected via <code>*this</code>. In spirit it is similar to <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a></code>-originated mutations by the user running out of regular-heap (even virtual disk heap, if enabled) and is outside our scope to control. The only remedy: choose a SHM-provider that does not run out of space beyond simply running out of RAM; e.g., by mapping more SHM pools, or whatever. Otherwise, all the user can do is catch the <code>bad_alloc</code>-like exception around their mutations on <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> and take whatever contingency steps.</p>
+<p >The second failure mode is <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a6b8fbd9d5b77d41f6637f321383f39c8" title="Implements concept API.">emit_serialization()</a> failing. See its doc header for more information. In a similar key, <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#acd3d5381f8437c7134d8a155c8f1f4f5" title="Implements concept API.">Reader::deserialization()</a> can fail down the line. See its doc header for more information.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html" title="Implements Struct_reader concept by interpreting a serialization by shm::Builder with the same templa...">shm::Reader</a> Counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__reader.html" title="A documentation-only concept that is, conceptually, roughly what capnp::MessageReader is to capnp::Me...">Struct_reader</a> implementation that can deserialize data that this has serialized. </dd>
 <dd>
 <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a>: implemented concept.</dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Shm_arena</td><td>SHM provider type with the ability to allocate STL-compliant data structures directly in SHM, returning a <code>shared_ptr</code> outer-SHM-handle that is possible to <code>lend_object()</code>/<code>borrow_object()</code> via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a2d9808d9b0c04cf84c8e439b1643506d" title="Implements concept API.">shm::Builder::Session</a>. <code>Shm_arena::Handle&lt;T&gt;</code> must equal <code>shared_ptr&lt;T&gt;</code> (meaning type with standard <code>shared_ptr&lt;T&gt;</code> semantics; in practice probably either <code>std::shared_ptr&lt;T&gt;</code> or <code>boost::shared_ptr&lt;T&gt;</code>). It must provide a <code>construct&lt;T&gt;()</code> method as exemplified by <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36" title="Constructs an object of given type with given ctor args, having allocated space directly in attached ...">shm::classic::Pool_arena::construct()</a>. (This is an <em>example</em>; you do not have to use <code>Pool_arena</code> and indeed should choose a SHM provider suitable to your needs, especially as regards to being able to allocate sufficiently large segments.) That is: <code>Handle&lt;T&gt; construct&lt;T&gt;(...ctor_args...)</code>, such that if it returned <code>p</code> then <code><a class="el" href="namespaceipc_1_1session_1_1shm.html#af2acc444cc9664e57df8143b66b78d70" title="Alias that, given an Arena type (with Arena::construct&lt;T&gt;() which allocates/constructs a T),...">session::shm::Arena_to_shm_session_t</a>&lt;Shm_arena&gt;</code> pointee has method <code>flow::util::Blob_sans_log_context lend_object&lt;T&gt;(const Handle&lt;T&gt;&amp; p)</code>. Next, if the returned blob <code>b</code> is bit-wise copied into an IPC transport and copied out of it and then given to counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html" title="Implements Struct_reader concept by interpreting a serialization by shm::Builder with the same templa...">shm::Reader</a>, then <code><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#ae77502abf0b04ad7543266fc6c34f49d" title="See shm::Builder::Session.">shm::Reader::Session</a></code> pointee has method <code>borrow_object&lt;T&gt;(b)</code> that shall return (in the receiving process) <code>Handle&lt;T&gt;</code> that points to the same SHM-stored data structure originally returned by <code>construct()</code>. In addition <code>Shm_arena</code> must be compatible with <code>Stateless_allocator</code> requirements as explained in "Additional formal requirements" below. Lastly, <code>lend_object()</code> and <code>borrow_object()</code> may return an empty blob/null respectively, indicating (assuming proper inputs) the session is permanently down (opposing process is likely down/closed session).</td></tr>
+    <tr><td class="paramname">Shm_arena</td><td>SHM-provider type with the ability to allocate STL-compliant data structures directly in SHM, returning a <code>shared_ptr</code> outer-SHM-handle that is possible to <code>lend_object()</code>/<code>borrow_object()</code> via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a2d9808d9b0c04cf84c8e439b1643506d" title="Implements concept API.">shm::Builder::Session</a>. <code>Shm_arena::Handle&lt;T&gt;</code> must equal <code>shared_ptr&lt;T&gt;</code> (meaning type with standard <code>shared_ptr&lt;T&gt;</code> semantics; in practice probably either <code>std::shared_ptr&lt;T&gt;</code> or <code>boost::shared_ptr&lt;T&gt;</code>). It must provide a <code>construct&lt;T&gt;()</code> method as exemplified by <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36" title="Constructs an object of given type with given ctor args, having allocated space directly in attached ...">shm::classic::Pool_arena::construct()</a>. (This is an <em>example</em>; you do not have to use <code>Pool_arena</code> and indeed should choose a SHM-provider suitable to your needs, especially as regards to being able to allocate sufficiently large segments.) That is: <code>Handle&lt;T&gt; construct&lt;T&gt;(...ctor_args...)</code>, such that if it returned <code>p</code> then <code><a class="el" href="namespaceipc_1_1session_1_1shm.html#af2acc444cc9664e57df8143b66b78d70" title="Alias that, given an Arena type (with Arena::construct&lt;T&gt;() which allocates/constructs a T),...">session::shm::Arena_to_shm_session_t</a>&lt;Shm_arena&gt;</code> pointee has method <code>flow::util::Blob_sans_log_context lend_object&lt;T&gt;(const Handle&lt;T&gt;&amp; p)</code>. Next, if the returned blob <code>b</code> is bit-wise copied into an IPC transport and copied out of it and then given to counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html" title="Implements Struct_reader concept by interpreting a serialization by shm::Builder with the same templa...">shm::Reader</a>, then <code><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#ae77502abf0b04ad7543266fc6c34f49d" title="See shm::Builder::Session.">shm::Reader::Session</a></code> pointee has method <code>borrow_object&lt;T&gt;(b)</code> that shall return (in the receiving process) <code>Handle&lt;T&gt;</code> that points to the same SHM-stored data structure originally returned by <code>construct()</code>. In addition <code>Shm_arena</code> must be compatible with <code>Stateless_allocator</code> requirements as explained in "Additional formal requirements" below. Lastly, <code>lend_object()</code> and <code>borrow_object()</code> may return an empty blob/null respectively, indicating (assuming proper inputs) the session is permanently down (opposing process is likely down/closed session).</td></tr>
   </table>
   </dd>
 </dl>
 <h3>Additional formal requirements w/r/t <code>Shm_arena</code></h3>
 <p >Information on <code>T</code> that <code>*this</code> shall use with <code>Shm_arena::construct&lt;T&gt;()</code>: As of this writing it is <code>list&lt;Basic_blob&gt;</code>, representing (internally) the capnp-requested 1+ segments in which the serialization mutated via <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> is stored in zero-copy fashion. In order for this to work, the <code>Allocator</code> template arg on both <code>list</code> and the inner <code>Blob</code>s shall be <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">ipc::shm::stl::Stateless_allocator</a>. Therefore, the requirement is: <code>Shm_arena</code> must formally meet the requirements for <code>Arena</code> from <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">ipc::shm::stl::Stateless_allocator</a> doc header. Briefly these are: <code>allocate(n) -&gt; void*</code>, <code>deallocate(void*)</code>, <code>Pointer</code> fancy-pointer type that is SHM-storable.</p>
-<p >A simple (likely the simplest) example is <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">ipc::shm::classic::Pool_arena</a>, which satisfies both <code>Shm_arena</code> and <code><a class="el" href="namespaceipc_1_1session_1_1shm.html#af2acc444cc9664e57df8143b66b78d70" title="Alias that, given an Arena type (with Arena::construct&lt;T&gt;() which allocates/constructs a T),...">session::shm::Arena_to_shm_session_t</a>&lt;Shm_arena&gt;</code>-pointee requirements. However, it has deficiencies w/r/t max pool size having to be specified and a non-industry-strength allocation algorithm. The Jemalloc-based SHM provider in ipc::shm::arena_lend::jemalloc is more complex &ndash; with a separate <code>Arena_to_shm_session_t&lt;Shm_arena&gt;</code> pointee from <code>Shm_arena</code> &ndash; but lacks these problems. </p>
+<p >A simple (likely the simplest) example is <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">ipc::shm::classic::Pool_arena</a>, which satisfies both <code>Shm_arena</code> and <code><a class="el" href="namespaceipc_1_1session_1_1shm.html#af2acc444cc9664e57df8143b66b78d70" title="Alias that, given an Arena type (with Arena::construct&lt;T&gt;() which allocates/constructs a T),...">session::shm::Arena_to_shm_session_t</a>&lt;Shm_arena&gt;</code>-pointee requirements. However, it has deficiencies w/r/t max pool size having to be specified and a non-industry-strength allocation algorithm. The Jemalloc-based SHM provider in <a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1jemalloc.html" title="ipc::shm sub-module with the SHM-jemalloc SHM-provider. See ipc::shm doc header for introduction.">ipc::shm::arena_lend::jemalloc</a> is more complex &ndash; with a separate <code>Arena_to_shm_session_t&lt;Shm_arena&gt;</code> pointee from <code>Shm_arena</code> &ndash; but lacks these problems. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a2d9808d9b0c04cf84c8e439b1643506d" name="a2d9808d9b0c04cf84c8e439b1643506d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d9808d9b0c04cf84c8e439b1643506d">&#9670;&nbsp;</a></span>Session</h2>
@@ -204,43 +206,13 @@ template&lt;typename Shm_arena &gt; </div>
 </div><div class="memdoc">
 
 <p>Implements concept API. </p>
-<p >This being a zero-copy (SHM-based) <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a>, information is needed for <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> beyond the payload itself: pointer to a <code>Shm_session</code> object. </p>
+<p >This being a zero-copy (SHM-based) <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a>, information is needed for <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a6b8fbd9d5b77d41f6637f321383f39c8" title="Implements concept API.">emit_serialization()</a> beyond the payload itself: pointer to a <code>Shm_session</code> object. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9374ce7f0dc46bb841d9359df5d4045f" name="a9374ce7f0dc46bb841d9359df5d4045f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9374ce7f0dc46bb841d9359df5d4045f">&#9670;&nbsp;</a></span>Builder() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Shm_arena &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html">ipc::transport::struc::shm::Builder</a>&lt; Shm_arena &gt;::Builder </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements concept API. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a460aa187c0aaa5adfb81ecc902c7eca9" title="Default ctor, leaving *this in a state only suitable for destruction or being moved-to.">Struct_builder::Struct_builder()</a>: implemented concept. </dd></dl>
-
-</div>
-</div>
 <a id="a23b111e2bf7be45589eb958d6ccc24f6" name="a23b111e2bf7be45589eb958d6ccc24f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23b111e2bf7be45589eb958d6ccc24f6">&#9670;&nbsp;</a></span>Builder() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a23b111e2bf7be45589eb958d6ccc24f6">&#9670;&nbsp;</a></span>Builder() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -269,16 +241,15 @@ template&lt;typename Shm_arena &gt; </div>
 <p >See <a class="el" href="structipc_1_1transport_1_1struc_1_1shm_1_1Builder_1_1Config.html" title="Implements Struct_builder::Config sub-concept.">Config</a> doc header for information on how <code>*this</code> behavior is controlled by <code>config</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">config</td><td>See above.</td></tr>
+    <tr><td class="paramname">config</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a460aa187c0aaa5adfb81ecc902c7eca9" title="Default ctor, leaving *this in a state only suitable for destruction or being moved-to.">Struct_builder::Struct_builder()</a>: implemented concept. </dd></dl>
 
 </div>
 </div>
 <a id="ac5d54e207503b67b6d2d75c5eb44e76d" name="ac5d54e207503b67b6d2d75c5eb44e76d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5d54e207503b67b6d2d75c5eb44e76d">&#9670;&nbsp;</a></span>Builder() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5d54e207503b67b6d2d75c5eb44e76d">&#9670;&nbsp;</a></span>Builder() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -306,11 +277,10 @@ template&lt;typename Shm_arena &gt; </div>
 <p>Implements concept API. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">src</td><td>See above.</td></tr>
+    <tr><td class="paramname">src</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a460aa187c0aaa5adfb81ecc902c7eca9" title="Default ctor, leaving *this in a state only suitable for destruction or being moved-to.">Struct_builder::Struct_builder()</a>: implemented concept. </dd></dl>
 
 </div>
 </div>
@@ -330,17 +300,16 @@ template&lt;typename Shm_arena &gt; </div>
 
 <p>Implements concept API. </p>
 <p >In this impl:</p><ul>
-<li>frees the top-serialization 1 segment containing the SHM handle;</li>
-<li>unregisters this process as an owner of the bottom-serialization (the bulky serialization of 1+ segments in SHM). These bulky SHM-stored segments, therefore, will either be deallocated right now (either because <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> was not called; or it was, and the counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#aceb5816f4e9f312a8ce2ef17feb81223" title="Implements concept API.">Reader::deserialization()</a> <em>and dtor</em> ran before us) or not (if <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> was called, but either the counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#aceb5816f4e9f312a8ce2ef17feb81223" title="Implements concept API.">shm::Reader::deserialization()</a> or dtor has not yet executed). In other words it's a ref-count (of owner processes) with a max value of 2; and this dtor decrements it by 1.</li>
+<li>frees the outer-serialization 1 segment containing the SHM handle;</li>
+<li>unregisters this process as an owner of the inner-serialization (the bulky serialization of 1+ segments in SHM). These bulky SHM-stored segments, therefore, will either be deallocated right now (either because <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a6b8fbd9d5b77d41f6637f321383f39c8" title="Implements concept API.">emit_serialization()</a> was not called; or it was, and the counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#acd3d5381f8437c7134d8a155c8f1f4f5" title="Implements concept API.">Reader::deserialization()</a> <em>and dtor</em> ran before us) or not (if <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a6b8fbd9d5b77d41f6637f321383f39c8" title="Implements concept API.">emit_serialization()</a> was called, but either the counterpart <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Reader.html#acd3d5381f8437c7134d8a155c8f1f4f5" title="Implements concept API.">shm::Reader::deserialization()</a> or dtor has not yet executed). In other words it's a ref-count (of owner processes) with a max value of 2; and this dtor decrements it by 1.</li>
 </ul>
-<p >If <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> is used more than once (and hence deserialized more than once), then the ref-count can grow further beyond 2.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a008f6b6456a4b2dab63cdda5f9e4cfe5" title="Destructor. Do not use *payload_msg_builder() or any copies thereof past this.">Struct_builder::~Struct_builder()</a>: implemented concept. </dd></dl>
+<p >If <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a6b8fbd9d5b77d41f6637f321383f39c8" title="Implements concept API.">emit_serialization()</a> is used more than once (and hence deserialized more than once), then the ref-count can grow further beyond 2. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7909a2d1e1d24037fb8af5338fffa783" name="a7909a2d1e1d24037fb8af5338fffa783"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7909a2d1e1d24037fb8af5338fffa783">&#9670;&nbsp;</a></span>emit_serialization()</h2>
+<a id="a6b8fbd9d5b77d41f6637f321383f39c8" name="a6b8fbd9d5b77d41f6637f321383f39c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b8fbd9d5b77d41f6637f321383f39c8">&#9670;&nbsp;</a></span>emit_serialization()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -350,8 +319,20 @@ template&lt;typename Shm_arena &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html">ipc::transport::struc::shm::Builder</a>&lt; Shm_arena &gt;::emit_serialization </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a82a69eaa39cbe8a002de1266f1cbb5cb">Segment_ptrs</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983">Segment_bufs</a> *&#160;</td>
           <td class="paramname"><em>target_blobs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> *&#160;</td>
+          <td class="paramname"><em>hdr_blob</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929">Split_segments</a> *&#160;</td>
+          <td class="paramname"><em>split_segs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -363,7 +344,7 @@ template&lt;typename Shm_arena &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -376,16 +357,17 @@ template&lt;typename Shm_arena &gt; </div>
 <p>Implements concept API. </p>
 <h3>Errors</h3>
 <p ><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#a25a6db383af491442917e2dc8ff944a8a80f5c2d8f8e819b23122a4fa1ea08500" title="Structured message serialization: SHM-session lend_object() indicated failure when preparing an encod...">error::Code::S_SERIALIZE_FAILED_SESSION_HOSED</a> is eminently possible with at least some providers (as of this writing not SHM-classic, yes SHM-jemalloc). Be ready for this eventuality.</p>
-<p >See also "Failure mode" notes in <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> doc header. These would manifest before one would have a chance to <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a7909a2d1e1d24037fb8af5338fffa783" title="Implements concept API.">emit_serialization()</a> though.</p>
+<p >See also "Failure mode" notes in <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> doc header. These would manifest before one would have a chance to <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a6b8fbd9d5b77d41f6637f321383f39c8" title="Implements concept API.">emit_serialization()</a> though.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target_blobs</td><td>See above. Also recall (see ctor) that for each returned <code>blob</code> (realistically just one): individual segment sizes shall never exceed Config::m_segment_sz (for the [<code>begin()</code>, <code>end()</code>) area), with <code>start() == Config::m_frame_prefix_sz</code>, and with <code>capacity() - start() - size() &gt;= Config::m_frame_postfix_sz</code>. Config::m_segment_sz is ceiling-nearest-word-adjusted. </td></tr>
-    <tr><td class="paramname">session</td><td>See above. In this case... just... see <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#a2d9808d9b0c04cf84c8e439b1643506d" title="Implements concept API.">Session</a>. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See above. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#a25a6db383af491442917e2dc8ff944a8a80f5c2d8f8e819b23122a4fa1ea08500" title="Structured message serialization: SHM-session lend_object() indicated failure when preparing an encod...">error::Code::S_SERIALIZE_FAILED_SESSION_HOSED</a> (the SHM-session was unable to encode the location of the serialization in SHM, for the benefit of the opposing process that would deserialize this, because session's <code>lend_object()</code> method indicated the session is down).</td></tr>
+    <tr><td class="paramname">target_blobs</td><td>See above. </td></tr>
+    <tr><td class="paramname">hdr_blob</td><td>See above. </td></tr>
+    <tr><td class="paramname">split_segs</td><td>See above. In this impl: if non-null then <code>split_segs-&gt;empty()</code> shall always be the case on return anyway. </td></tr>
+    <tr><td class="paramname">session</td><td>See above. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See above. Generated codes: <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1error.html#a25a6db383af491442917e2dc8ff944a8a80f5c2d8f8e819b23122a4fa1ea08500" title="Structured message serialization: SHM-session lend_object() indicated failure when preparing an encod...">error::Code::S_SERIALIZE_FAILED_SESSION_HOSED</a> (the SHM-session was unable to encode the location of the serialization in SHM, for the benefit of the opposing process that would deserialize this, because session's <code>lend_object()</code> method indicated the session is down). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#af5085934123f075c6d0701e9e45e4bcc" title="Returns the serialization in the form of a sequence of 1+ pointers to Blobs which are guaranteed to r...">Struct_builder::emit_serialization()</a>: implemented concept. </dd></dl>
 
 </div>
 </div>
@@ -404,9 +386,8 @@ template&lt;typename Shm_arena &gt; </div>
 </div><div class="memdoc">
 
 <p>Implements concept API. </p>
-<p >Additionally: this <em>always</em> returns 1. You may rely on this.</p>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#ae1516b0d68c48f2e13baf6aca366ac6c" title="Returns what target_blobs.size() would return after calling emit_serialization(&amp;target_blobs) (with a...">Struct_builder::n_serialization_segments()</a>: implemented concept. </dd></dl>
+<p >Additionally: this <em>always</em> returns 1.</p>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -443,8 +424,7 @@ template&lt;typename Shm_arena &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a460aa187c0aaa5adfb81ecc902c7eca9" title="Default ctor, leaving *this in a state only suitable for destruction or being moved-to.">Struct_builder::Struct_builder()</a>: implemented concept. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -463,9 +443,8 @@ template&lt;typename Shm_arena &gt; </div>
 </div><div class="memdoc">
 
 <p>Implements concept API. </p>
-<p >Please see "Failure mode" discussion in our class doc header which notes that any mutation of what <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> returns may throw a bad-alloc exception, if the SHM provider cannot satisfy a capnp-required segment-allocation request.</p>
-<dl class="section return"><dt>Returns</dt><dd>See above.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html#a9a4b9587c162f85ad4d3e0a5fad8dffb" title="Pointer to the payload Capnp_msg_builder_interface, suitable for mutation by the user.">Struct_builder::payload_msg_builder()</a>: implemented concept. </dd></dl>
+<p >Please see "Failure mode" discussion in our class doc header which notes that any mutation of what <a class="el" href="classipc_1_1transport_1_1struc_1_1shm_1_1Builder.html#aaeceaccf183170b1785aa240921ae893" title="Implements concept API.">payload_msg_builder()</a> returns may throw a bad-alloc exception, if the SHM-provider cannot satisfy a capnp-required segment-allocation request.</p>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
 </div>
 </div>
@@ -525,7 +504,7 @@ template&lt;typename Shm_arena &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

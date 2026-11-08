@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -71,6 +71,7 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-types">Private Types</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver-members.html">List of all members</a>  </div>
@@ -78,7 +79,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Internal-use type that adapts a given PEER-state <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> <em>core</em> into the async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a>.  
+<p>Type that adapts a given PEER-state <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> <em>core</em> into the async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a>.  
  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>&gt;</code></p>
@@ -97,8 +98,11 @@ Collaboration diagram for ipc::transport::sync_io::Async_adapter_receiver&lt; Co
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html">User_request</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data store representing a deficit user async-receive request: either one being currently handled by <code>m_sync_io</code> &ndash; which can handle one <code>m_sync_io.async_receive_*()</code> at a time, no more &ndash; or one queued up behind it, if <code>async_receive_*()</code> was called before the current one could complete.  <a href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__batch.html">User_request_batch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analogous to <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">User_request_one</a> but for a batch async-receive request as opposed to single-message request.  <a href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__batch.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html">User_request_one</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data store representing a deficit user single-message async-receive request: either one being currently handled by <code>m_sync_io</code> &ndash; which can handle one <code>m_sync_io.async_receive_*()</code> at a time, no more &ndash; or one queued up behind it, if <code>async_receive_*()</code> was called before the current one could complete.  <a href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
@@ -116,40 +120,76 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a80428aeb0d3f9e836fe897fc1e42601a"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be invoked after <code>-&gt;stop()</code>ping <code>*worker</code> (from ctor), as well as flushing any still-queued tasks in its <code>Task_engine</code> (via <code>.restart()</code> and <code>.poll()</code>), this satisfies the customer adapter dtor's contract which is to invoke any not-yet-fired completion handlers with special operation-aborted error code.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a80428aeb0d3f9e836fe897fc1e42601a">More...</a><br /></td></tr>
 <tr class="separator:a80428aeb0d3f9e836fe897fc1e42601a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcbc91de36b298c68e5461997a9a0263"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263">async_receive_native_handle</a> (<a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">Native_handle</a> *target_hndl, const <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> &amp;target_meta_blob, flow::async::Task_asio_err_sz &amp;&amp;on_done_func)</td></tr>
-<tr class="memdesc:abcbc91de36b298c68e5461997a9a0263"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263">More...</a><br /></td></tr>
+<tr class="memdesc:abcbc91de36b298c68e5461997a9a0263"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Native_handle_receiver</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263">More...</a><br /></td></tr>
 <tr class="separator:abcbc91de36b298c68e5461997a9a0263"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade3098cb69a47a374cf0354677e2fb0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b">async_receive_blob</a> (const <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> &amp;target_blob, flow::async::Task_asio_err_sz &amp;&amp;on_done_func)</td></tr>
-<tr class="memdesc:ade3098cb69a47a374cf0354677e2fb0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b">More...</a><br /></td></tr>
+<tr class="memdesc:ade3098cb69a47a374cf0354677e2fb0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b">More...</a><br /></td></tr>
 <tr class="separator:ade3098cb69a47a374cf0354677e2fb0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa83a7bf941a197ae02f5ee756fdcdcbc"><td class="memTemplParams" colspan="2">template&lt;typename Batch &gt; </td></tr>
+<tr class="memitem:aa83a7bf941a197ae02f5ee756fdcdcbc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa83a7bf941a197ae02f5ee756fdcdcbc">async_receive_native_handle_batch</a> (Batch *batch, bool assume_would_block, flow::async::Task_asio_err &amp;&amp;on_done_func)</td></tr>
+<tr class="memdesc:aa83a7bf941a197ae02f5ee756fdcdcbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Native_handle_receiver</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa83a7bf941a197ae02f5ee756fdcdcbc">More...</a><br /></td></tr>
+<tr class="separator:aa83a7bf941a197ae02f5ee756fdcdcbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a893557c5c1800e8f4b152c1868a9048f"><td class="memTemplParams" colspan="2">template&lt;typename Batch &gt; </td></tr>
+<tr class="memitem:a893557c5c1800e8f4b152c1868a9048f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f">async_receive_blob_batch</a> (Batch *batch, bool assume_would_block, flow::async::Task_asio_err &amp;&amp;on_done_func)</td></tr>
+<tr class="memdesc:a893557c5c1800e8f4b152c1868a9048f"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f">More...</a><br /></td></tr>
+<tr class="separator:a893557c5c1800e8f4b152c1868a9048f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2067b525e54efd90bdc584cf77f7ae4b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a2067b525e54efd90bdc584cf77f7ae4b">idle_timer_run</a> (<a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> timeout)</td></tr>
-<tr class="memdesc:a2067b525e54efd90bdc584cf77f7ae4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a2067b525e54efd90bdc584cf77f7ae4b">More...</a><br /></td></tr>
+<tr class="memdesc:a2067b525e54efd90bdc584cf77f7ae4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Native_handle_receiver</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a2067b525e54efd90bdc584cf77f7ae4b">More...</a><br /></td></tr>
 <tr class="separator:a2067b525e54efd90bdc584cf77f7ae4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57abc3796a5c386d57a4010d447eaf16"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__rcv__stats.html">stat::Blob_rcv_stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a57abc3796a5c386d57a4010d447eaf16">blob_receive_stats</a> () const</td></tr>
+<tr class="memdesc:a57abc3796a5c386d57a4010d447eaf16"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a57abc3796a5c386d57a4010d447eaf16">More...</a><br /></td></tr>
+<tr class="separator:a57abc3796a5c386d57a4010d447eaf16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a878e5398c8d2554826a89d1f93d9c133"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a878e5398c8d2554826a89d1f93d9c133">blob_receive_stats_reset</a> ()</td></tr>
+<tr class="memdesc:a878e5398c8d2554826a89d1f93d9c133"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a878e5398c8d2554826a89d1f93d9c133">More...</a><br /></td></tr>
+<tr class="separator:a878e5398c8d2554826a89d1f93d9c133"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af18e6d33531c739857acaa3dd594e5a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__rcv__stats.html">stat::Blob_rcv_stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af18e6d33531c739857acaa3dd594e5a7">native_handle_receive_stats</a> () const</td></tr>
+<tr class="memdesc:af18e6d33531c739857acaa3dd594e5a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af18e6d33531c739857acaa3dd594e5a7">More...</a><br /></td></tr>
+<tr class="separator:af18e6d33531c739857acaa3dd594e5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5a0097711135d63e08350c6c8e8ef80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ab5a0097711135d63e08350c6c8e8ef80">native_handle_receive_stats_reset</a> ()</td></tr>
+<tr class="memdesc:ab5a0097711135d63e08350c6c8e8ef80"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ab5a0097711135d63e08350c6c8e8ef80">More...</a><br /></td></tr>
+<tr class="separator:ab5a0097711135d63e08350c6c8e8ef80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
+Private Types</h2></td></tr>
+<tr class="memitem:aa1216084a031d94f9bcd6b13f306af88"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa1216084a031d94f9bcd6b13f306af88">User_request</a> = std::variant&lt; <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html">User_request_one</a>, <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__batch.html">User_request_batch</a> &gt;</td></tr>
+<tr class="memdesc:aa1216084a031d94f9bcd6b13f306af88"><td class="mdescLeft">&#160;</td><td class="mdescRight">An async-receive request made by user, to be stored in <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> and/or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa1216084a031d94f9bcd6b13f306af88">More...</a><br /></td></tr>
+<tr class="separator:aa1216084a031d94f9bcd6b13f306af88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b88fe92f5f08af21660b2b440198213"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a5b88fe92f5f08af21660b2b440198213">User_req_ptr</a> = boost::movelib::unique_ptr&lt; <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa1216084a031d94f9bcd6b13f306af88">User_request</a> &gt;</td></tr>
+<tr class="memdesc:a5b88fe92f5f08af21660b2b440198213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-hand for smart-pointer handle to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa1216084a031d94f9bcd6b13f306af88" title="An async-receive request made by user, to be stored in m_user_request and/or m_pending_user_requests_...">User_request</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a5b88fe92f5f08af21660b2b440198213">More...</a><br /></td></tr>
+<tr class="separator:a5b88fe92f5f08af21660b2b440198213"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a6cf425ab8e3258924e6d1db12da2fbf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a6cf425ab8e3258924e6d1db12da2fbf5">async_receive_native_handle_impl</a> (<a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">Native_handle</a> *target_hndl_or_null, const <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> &amp;target_meta_blob, flow::async::Task_asio_err_sz &amp;&amp;on_done_func)</td></tr>
-<tr class="memdesc:a6cf425ab8e3258924e6d1db12da2fbf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Body of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See Blob_receiver counterpart.">async_receive_blob()</a>; with <code>target_hndl</code> null if and only if it's the latter as opposed to the former.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a6cf425ab8e3258924e6d1db12da2fbf5">More...</a><br /></td></tr>
-<tr class="separator:a6cf425ab8e3258924e6d1db12da2fbf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98d7b3caa0f0b00c75671278e7971017"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a98d7b3caa0f0b00c75671278e7971017">on_sync_io_rcv_done</a> (const <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> &amp;err_code, size_t sz)</td></tr>
-<tr class="memdesc:a98d7b3caa0f0b00c75671278e7971017"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked via active-event API, handles the async completion of <code>m_sync_io.async_receive_*()</code> operation.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a98d7b3caa0f0b00c75671278e7971017">More...</a><br /></td></tr>
-<tr class="separator:a98d7b3caa0f0b00c75671278e7971017"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa5b0ab6ad54e0d3c93550226bfe2b33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#afa5b0ab6ad54e0d3c93550226bfe2b33">process_msg_or_error</a> (const <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> &amp;err_code, size_t sz)</td></tr>
-<tr class="memdesc:afa5b0ab6ad54e0d3c93550226bfe2b33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked from thread U/W (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a6cf425ab8e3258924e6d1db12da2fbf5" title="Body of async_receive_native_handle() and async_receive_blob(); with target_hndl null if and only if ...">async_receive_native_handle_impl()</a>) or thread W (active-event API), handles a completed <code>m_sync_io.async_receive_*()</code> &ndash; whose results are to be given as args &ndash; by (1) updating <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a> and (2) posting any appropriate handlers onto thread W.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#afa5b0ab6ad54e0d3c93550226bfe2b33">More...</a><br /></td></tr>
-<tr class="separator:afa5b0ab6ad54e0d3c93550226bfe2b33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38df462222b07f086707f4c560db2c5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a38df462222b07f086707f4c560db2c5c">async_receive_impl</a> (<a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">Native_handle</a> *target_hndl_or_null, const <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> &amp;target_meta_blob, flow::async::Task_asio_err_sz &amp;&amp;on_done_func)</td></tr>
+<tr class="memdesc:a38df462222b07f086707f4c560db2c5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Body of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle()</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See transport::Blob_receiver counterpart.">async_receive_blob()</a>; with <code>target_hndl</code> null if and only if it's the latter as opposed to the former.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a38df462222b07f086707f4c560db2c5c">More...</a><br /></td></tr>
+<tr class="separator:a38df462222b07f086707f4c560db2c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c977bd50b99495f88a5369ca687303b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a9c977bd50b99495f88a5369ca687303b">sync_receive</a> (const <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html">User_request_one</a> &amp;req, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *sync_err_code, <a class="el" href="classsize__t.html">size_t</a> *sz)</td></tr>
+<tr class="memdesc:a9c977bd50b99495f88a5369ca687303b"><td class="mdescLeft">&#160;</td><td class="mdescRight">With the pre-condition that <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> is of type <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">User_request_one</a> (that is originating from a single-message async-receive user request as opposed to batch-receive), executes the core synchronous call to single-message <code>m_sync_io.async_receive_{native_handle|blob}()</code>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a9c977bd50b99495f88a5369ca687303b">More...</a><br /></td></tr>
+<tr class="separator:a9c977bd50b99495f88a5369ca687303b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32b21d4a0464ba01173ab694bf0b3fd3"><td class="memTemplParams" colspan="2">template&lt;typename Batch , bool HNDL_ELSE_BLOB&gt; </td></tr>
+<tr class="memitem:a32b21d4a0464ba01173ab694bf0b3fd3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a32b21d4a0464ba01173ab694bf0b3fd3">async_receive_batch_impl</a> (Batch *batch, bool assume_would_block, flow::async::Task_asio_err &amp;&amp;on_done_func)</td></tr>
+<tr class="memdesc:a32b21d4a0464ba01173ab694bf0b3fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Body of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa83a7bf941a197ae02f5ee756fdcdcbc" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle_batch()</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f" title="See transport::Blob_receiver counterpart.">async_receive_blob_batch()</a>; with t-param <code>HNDL_ELSE_BLOB</code> <code>true</code> or <code>false</code> depending on whether it's the latter as opposed to the former.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a32b21d4a0464ba01173ab694bf0b3fd3">More...</a><br /></td></tr>
+<tr class="separator:a32b21d4a0464ba01173ab694bf0b3fd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a741990693fa5fb01131c14e21c77256b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a741990693fa5fb01131c14e21c77256b">on_sync_io_rcv_done</a> (const <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> &amp;err_code, <a class="el" href="classsize__t.html">size_t</a> sz_if_applicable)</td></tr>
+<tr class="memdesc:a741990693fa5fb01131c14e21c77256b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked via active-event API, handles the async completion of <code>m_sync_io.async_receive_*()</code> operation.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a741990693fa5fb01131c14e21c77256b">More...</a><br /></td></tr>
+<tr class="separator:a741990693fa5fb01131c14e21c77256b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ddb28106820a68cb395e0331d307aa1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a8ddb28106820a68cb395e0331d307aa1">process_msg_or_error</a> (const <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> &amp;err_code, <a class="el" href="classsize__t.html">size_t</a> sz_if_applicable)</td></tr>
+<tr class="memdesc:a8ddb28106820a68cb395e0331d307aa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked from thread U/W (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a38df462222b07f086707f4c560db2c5c" title="Body of async_receive_native_handle() and async_receive_blob(); with target_hndl null if and only if ...">async_receive_impl()</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a32b21d4a0464ba01173ab694bf0b3fd3" title="Body of async_receive_native_handle_batch() and async_receive_blob_batch(); with t-param HNDL_ELSE_BL...">async_receive_batch_impl()</a>) or W (active-event API), handles a completed <code>m_sync_io.async_receive_*()</code> &ndash; whose results are to be given as args &ndash; by (1) updating <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a> and (2) posting any appropriate handlers onto thread W.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a8ddb28106820a68cb395e0331d307aa1">More...</a><br /></td></tr>
+<tr class="separator:a8ddb28106820a68cb395e0331d307aa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a5dd1bf37b817a3ebbb968d34f0d240b1"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a5dd1bf37b817a3ebbb968d34f0d240b1">m_log_pfx</a></td></tr>
 <tr class="memdesc:a5dd1bf37b817a3ebbb968d34f0d240b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <code>log_pfx</code> arg of ctor.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a5dd1bf37b817a3ebbb968d34f0d240b1">More...</a><br /></td></tr>
 <tr class="separator:a5dd1bf37b817a3ebbb968d34f0d240b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76d81cb59e1b91c7f379064dd285aa93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html#ad716a5458992596636d5e3e4f9d83e9b">User_request::Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93">m_user_request</a></td></tr>
-<tr class="memdesc:a76d81cb59e1b91c7f379064dd285aa93"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <em>head slot</em> containing the currently-being-serviced "deficit" async-receive request, with a meta-blob <em>potentially</em> being async-written to; null if there is no pending <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93">More...</a><br /></td></tr>
-<tr class="separator:a76d81cb59e1b91c7f379064dd285aa93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13a636ca275a188bd3727e2d7c247f0e"><td class="memItemLeft" align="right" valign="top">std::queue&lt; typename <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html#ad716a5458992596636d5e3e4f9d83e9b">User_request::Ptr</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e">m_pending_user_requests_q</a></td></tr>
-<tr class="memdesc:a13a636ca275a188bd3727e2d7c247f0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue storing deficit async-receive requests queued up due to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> being not null while more <code>async_receive_*()</code> invocations being made by user.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e">More...</a><br /></td></tr>
-<tr class="separator:a13a636ca275a188bd3727e2d7c247f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1162777f69550ae8cc0f9fe84090e7c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a5b88fe92f5f08af21660b2b440198213">User_req_ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8">m_user_request</a></td></tr>
+<tr class="memdesc:a1162777f69550ae8cc0f9fe84090e7c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <em>head slot</em> containing the currently-being-serviced "deficit" async-receive request, with meta-blob(s) <em>potentially</em> being async-written to; null if there is no pending <code>async_receive_*()</code>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8">More...</a><br /></td></tr>
+<tr class="separator:a1162777f69550ae8cc0f9fe84090e7c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9b7525af206cacd70873226ec4a6fdb"><td class="memItemLeft" align="right" valign="top">std::queue&lt; <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a5b88fe92f5f08af21660b2b440198213">User_req_ptr</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb">m_pending_user_requests_q</a></td></tr>
+<tr class="memdesc:af9b7525af206cacd70873226ec4a6fdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue storing deficit async-receive requests queued up due to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> being not null while more <code>async_receive_*()</code> invocations being made by user.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb">More...</a><br /></td></tr>
+<tr class="separator:af9b7525af206cacd70873226ec4a6fdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a113a43c175209f7e3293f75ab4bcd794"><td class="memItemLeft" align="right" valign="top">flow::util::Mutex_non_recursive&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a113a43c175209f7e3293f75ab4bcd794">m_mutex</a></td></tr>
-<tr class="memdesc:a113a43c175209f7e3293f75ab4bcd794"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protects <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>, and receive-ops data of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a113a43c175209f7e3293f75ab4bcd794">More...</a><br /></td></tr>
+<tr class="memdesc:a113a43c175209f7e3293f75ab4bcd794"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protects <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>, and receive-ops data of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a113a43c175209f7e3293f75ab4bcd794">More...</a><br /></td></tr>
 <tr class="separator:a113a43c175209f7e3293f75ab4bcd794"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0df3c0d0291cb4d3ea7fbd8214a12cb8"><td class="memItemLeft" align="right" valign="top">flow::async::Single_thread_task_loop &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a0df3c0d0291cb4d3ea7fbd8214a12cb8">m_worker</a></td></tr>
 <tr class="memdesc:a0df3c0d0291cb4d3ea7fbd8214a12cb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-thread worker pool for all internal async work. Referred to as thread W in comments.  <a href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a0df3c0d0291cb4d3ea7fbd8214a12cb8">More...</a><br /></td></tr>
@@ -160,26 +200,34 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename Core_t&gt;<br />
-class ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;</div><p >Internal-use type that adapts a given PEER-state <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> <em>core</em> into the async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a>. </p>
+class ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;</div><p >Type that adapts a given PEER-state <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> <em>core</em> into the async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a>. </p>
 <p >State-mutating logic of the latter is forwarded to a <code>*this</code>; while trivial <code>const</code> (in PEER state) things like <code>.receive_blob_max_size()</code> are forwarded directly to the core <code>sync_io::X</code>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of Native_socket_stream class.">transport::Native_socket_stream::Impl</a> uses this for 99% of its incoming-direction (PEER-state by definition) logic. </dd>
+<p >Flow-IPC uses a <code>*this</code> to implement each of <a class="el" href="classipc_1_1transport_1_1Native__socket__stream.html" title="Implements both Native_handle_sender and Native_handle_receiver concepts by using a Unix domain socke...">transport::Native_socket_stream</a> (in-direction) and <a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver.html" title="Implements Blob_receiver concept by using an adopted Persistent_mq_handle MQ handle to an MQ (message...">transport::Blob_stream_mq_receiver</a>; but this is a public API, as one can implement any custom <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a> (et al) in terms of the corresponding custom <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a> (et al) impl. It would be an advanced task but nevertheless fully supported/intended.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html" title="Internal, non-movable pImpl-lite implementation of Native_socket_stream class.">transport::Native_socket_stream_impl</a> uses this for 99% of its incoming-direction (PEER-state by definition) logic. </dd>
 <dd>
-<a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_receiver class template.">transport::Blob_stream_mq_receiver_impl</a> uses this for 99% of its logic.</dd>
-<dd>
-<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html" title="Internal-use type that adapts a given PEER-state sync_io::Native_handle_sender or sync_io::Blob_sende...">Async_adapter_sender</a> for the opposite-direction thing. E.g., <a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of Native_socket_stream class.">transport::Native_socket_stream::Impl</a> uses that for 99% of its outgoing-direction logic.</dd></dl>
+<a class="el" href="classipc_1_1transport_1_1Blob__stream__mq__receiver__impl.html" title="Internal, non-movable pImpl-lite implementation of Blob_stream_mq_receiver class template.">transport::Blob_stream_mq_receiver_impl</a> uses this for 99% of its logic. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html" title="Type that adapts a given PEER-state sync_io::Native_handle_sender or sync_io::Blob_sender core into t...">Async_adapter_sender</a> for the opposite-direction thing. E.g., <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html" title="Internal, non-movable pImpl-lite implementation of Native_socket_stream class.">transport::Native_socket_stream_impl</a> uses that for 99% of its outgoing-direction logic.</dd></dl>
+<h2>Impl </h2>
 <h3>Threads and thread nomenclature; locking</h3>
-<p >Thread U, thread W... locking... just see those sections in <a class="el" href="classipc_1_1transport_1_1Native__socket__stream_1_1Impl.html" title="Internal, non-movable pImpl implementation of Native_socket_stream class.">transport::Native_socket_stream::Impl</a> class doc header. We adopt that nomenclature and logic. However, as we are concerned with only one direction (op-type), we only deal with code in either thread U or W concerned with that. The other-direction code &ndash; if applicable (e.g., applicable for <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> which deals with both over 1 socket connection; N/A for <code>Blob_stream_mq_*</code> which uses separate objects entirely) &ndash; simply co-exists in the same thread W and "thread" U. (If <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> wanted to, it could even parallelize stuff in thread W by using separate worker threads Ws and Wr. As of this writing it does not, but it could &ndash; nothing in <code>*this</code> would change.)</p>
-<p >Note, again, that we have our own <code>m_mutex</code>. If there is an opposing-direction counterpart <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html" title="Internal-use type that adapts a given PEER-state sync_io::Native_handle_sender or sync_io::Blob_sende...">Async_adapter_sender</a>, then it has its own <code>m_mutex</code>; hence things can proceed concurrently.</p>
+<p >Thread U, thread W... locking... just see those sections in <a class="el" href="classipc_1_1transport_1_1Native__socket__stream__impl.html" title="Internal, non-movable pImpl-lite implementation of Native_socket_stream class.">transport::Native_socket_stream_impl</a> class doc header. We adopt that nomenclature and logic. However, as we are concerned with only one direction (op-type), we only deal with code in either thread U or W concerned with that. The other-direction code &ndash; if applicable (e.g., applicable for <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> which deals with both over 1 socket connection; N/A for <code>Blob_stream_mq_*</code> which uses separate objects entirely) &ndash; simply co-exists in the same thread W and "thread" U. (If <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> wanted to, it could even parallelize stuff in thread W by using separate worker threads Ws and Wr. As of this writing it does not, but it could &ndash; nothing in <code>*this</code> would change.)</p>
+<p >Note, again, that we have our own <code>m_mutex</code>. If there is an opposing-direction counterpart <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__sender.html" title="Type that adapts a given PEER-state sync_io::Native_handle_sender or sync_io::Blob_sender core into t...">Async_adapter_sender</a>, then it has its own <code>m_mutex</code>; hence things can proceed concurrently.</p>
 <h3>Impl design</h3>
-<p >This is almost entirely subsumed by our <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> core, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aeb37be595e9cfce9e0185acee7eeac80" title="The sync_io::X type being adapted into async-I/O-pattern X.">Async_adapter_receiver::Core</a>, an instance of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a>. It has a receive op-type (possibly among others), so we invoke its <code>"sync_io::*_sender:start_receive_blob_ops()"</code> during our initialization. After that:</p>
-<p >For <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a2067b525e54efd90bdc584cf77f7ae4b" title="See Native_handle_receiver counterpart.">idle_timer_run()</a>, we can again just forward it to <code>m_sync_io</code>. There's no completion handler either, unlike with <code>.async_end_sending()</code>, so it's even simpler &ndash; just straight forwarding to the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> core.</p>
-<p >For <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a> (and its degenerate version <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See Blob_receiver counterpart.">async_receive_blob()</a>) the <code>*_receiver</code> concept we implement has an extra feature on top of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> (and degenerate version, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a>): when 1 <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a> is in progress asynchronously, it is allowed to invoke it again an arbitrary number of times, and they are to be served in the order they were called. Therefore:</p><ul>
-<li>We maintain a "deficit" queue of these requests. The currently-served request is stored in <code><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">User_request</a> m_user_request</code>. The queued-up subsequent ones are stored in queue with that same element type, <code>m_pending_user_requests_q</code>.</li>
-<li>When the ongoing (single) <code>m_sync_io.async_receive_*()</code> does complete &ndash; which occurs in thread W &ndash; we emit the result (<code>Error_code</code>, <code>sz</code>) to the <code>"User_request::m_on_done_func"</code> (the completion handler from the user). Then we pop <code>m_pending_user_requests_q</code> (unless empty &ndash; no further "deficit") into <code>m_user_request</code> and service <em>that</em> one via <code>m_sync_io.async_receive_*()</code>. Rinse/repeat.</li>
+<p >This is almost entirely subsumed by our <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> core, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aeb37be595e9cfce9e0185acee7eeac80" title="The sync_io::X type being adapted into async-I/O-pattern X.">Async_adapter_receiver::Core</a>, an instance of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a>. It has a receive op-type (possibly among others), so we invoke its <code>"sync_io::*_receiver::start_receive_blob_ops()"</code> during our initialization. After that:</p>
+<p >For <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a2067b525e54efd90bdc584cf77f7ae4b" title="See transport::Native_handle_receiver counterpart.">idle_timer_run()</a>, we can again just forward it to <code>m_sync_io</code>. There's no completion handler either, unlike with <code>.async_end_sending()</code>, so it's even simpler &ndash; just straight forwarding to the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> core.</p>
+<p >For <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle()</a> (and its degenerate version <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See transport::Blob_receiver counterpart.">async_receive_blob()</a>) the <code>*_receiver</code> concept we implement has an extra feature on top of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">sync_io::Native_handle_receiver</a> (and degenerate version, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">sync_io::Blob_receiver</a>): when 1 <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle()</a> is in progress asynchronously, it is allowed to invoke it again an arbitrary number of times, and they are to be served in the order they were called. Therefore:</p><ul>
+<li>We maintain a "deficit" queue of these requests. The currently-served request is stored in <code>User_request m_user_request</code>. The queued-up subsequent ones are stored in queue with that same element type, <code>m_pending_user_requests_q</code>.</li>
+<li>When the ongoing (single) <code>m_sync_io.async_receive_*()</code> does complete &ndash; which occurs in thread W &ndash; we emit the result (<code>Error_code</code>, <code>sz</code>) to the <code>User_request</code>-stored <code>m_on_done_func</code> (the completion handler from the user). Then we pop <code>m_pending_user_requests_q</code> (unless empty &ndash; no further "deficit") into <code>m_user_request</code> and service <em>that</em> one via <code>m_sync_io.async_receive_*()</code>. Rinse/repeat.</li>
 </ul>
-<p >If the destructor is invoked before <code>m_user_request</code> can get serviced, then in the dtor we execute <code>on_done_func(E)</code>, where E is operation-aborted. Once that's done the dtor can finish. </p>
+<p >If the destructor is invoked before <code>m_user_request</code> can get serviced, then in the dtor we execute <code>on_done_func(E)</code>, where E is operation-aborted. Once that's done the dtor can finish.</p>
+<p >Update: The above remains quite accurate; but we added batch-receiving APIs to the <code>*_receiver</code> concepts and therefore impls and therefore <code>*this</code>. These are <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa83a7bf941a197ae02f5ee756fdcdcbc" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle_batch()</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f" title="See transport::Blob_receiver counterpart.">async_receive_blob_batch()</a>. All that changes is that a given user-request can now be either a single-message receive request, or a batch receive request. So <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa1216084a031d94f9bcd6b13f306af88" title="An async-receive request made by user, to be stored in m_user_request and/or m_pending_user_requests_...">User_request</a> can encode one or the other; so it is a <code>variant</code> to that effect. Hence when processing a <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa1216084a031d94f9bcd6b13f306af88" title="An async-receive request made by user, to be stored in m_user_request and/or m_pending_user_requests_...">User_request</a> in <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> (or the queue, if we need to look in there directly), we check which one it is and then invoke the appropriate <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aeb37be595e9cfce9e0185acee7eeac80" title="The sync_io::X type being adapted into async-I/O-pattern X.">Core</a> API (e.g., <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See transport::Blob_receiver counterpart.">async_receive_blob()</a></code> versus <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f" title="See transport::Blob_receiver counterpart.">async_receive_blob_batch()</a></code>). </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Core_t</td><td>The <code>sync_io::X</code> type being adapted into async-I/O-pattern <code>X</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00084">84</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00112">112</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aeb37be595e9cfce9e0185acee7eeac80" name="aeb37be595e9cfce9e0185acee7eeac80"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb37be595e9cfce9e0185acee7eeac80">&#9670;&nbsp;</a></span>Core</h2>
@@ -197,7 +245,63 @@ template&lt;typename Core_t &gt; </div>
 
 <p>The <code>sync_io::X</code> type being adapted into async-I/O-pattern <code>X</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00092">92</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00120">120</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a5b88fe92f5f08af21660b2b440198213" name="a5b88fe92f5f08af21660b2b440198213"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b88fe92f5f08af21660b2b440198213">&#9670;&nbsp;</a></span>User_req_ptr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::User_req_ptr =  boost::movelib::unique_ptr&lt;<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa1216084a031d94f9bcd6b13f306af88">User_request</a>&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Short-hand for smart-pointer handle to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa1216084a031d94f9bcd6b13f306af88" title="An async-receive request made by user, to be stored in m_user_request and/or m_pending_user_requests_...">User_request</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00332">332</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aa1216084a031d94f9bcd6b13f306af88" name="aa1216084a031d94f9bcd6b13f306af88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1216084a031d94f9bcd6b13f306af88">&#9670;&nbsp;</a></span>User_request</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::User_request =  std::variant&lt;<a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html">User_request_one</a>, <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__batch.html">User_request_batch</a>&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>An async-receive request made by user, to be stored in <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> and/or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00329">329</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -247,15 +351,15 @@ template&lt;typename Core_t &gt; </div>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>Logger to use for logging subsequently. </td></tr>
     <tr><td class="paramname">log_pfx</td><td>String that shall precede ~all logged messages (e.g., <code>lexical_cast&lt;string&gt;(x)</code>, where <code>x</code> is an <code>X</code>.) </td></tr>
-    <tr><td class="paramname">worker</td><td>The worker thread loop of <code>X</code>. Background work, as needed, will be posted onto this "thread W." Note that <code>X</code> may (or may not) share this thread with unrelated tasks; for example <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> uses it for both a <code>*this</code> (outgoing-direction) and an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html" title="Internal-use type that adapts a given PEER-state sync_io::Native_handle_receiver or sync_io::Blob_rec...">Async_adapter_receiver</a> (incoming-direction). <code>*worker* must already be</code>-&gt;start()`ed. </td></tr>
+    <tr><td class="paramname">worker</td><td>The worker thread loop of <code>X</code>. Background work, as needed, will be posted onto this "thread W." Note that <code>X</code> may (or may not) share this thread with unrelated tasks; for example <code><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a></code> uses it for both a <code>*this</code> (outgoing-direction) and an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html" title="Type that adapts a given PEER-state sync_io::Native_handle_receiver or sync_io::Blob_receiver core in...">Async_adapter_receiver</a> (incoming-direction). <code>worker</code> must already be <code>-&gt;start()</code>ed. </td></tr>
     <tr><td class="paramname"><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></td><td>The core object of <code>X</code>. It should have just (irreversibly) entered state PEER. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00303">303</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00485">485</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="async__adapter__rcv_8hpp_source.html#l00250">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_log_pfx</a>, <a class="el" href="async__adapter__rcv_8hpp_source.html#l00282">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_mutex</a>, and <a class="el" href="async__adapter__rcv_8hpp_source.html#l00297">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_sync_io</a>.</p>
+<p class="reference">References <a class="el" href="async__adapter__rcv_8hpp_source.html#l00432">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_log_pfx</a>, <a class="el" href="async__adapter__rcv_8hpp_source.html#l00464">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_mutex</a>, and <a class="el" href="async__adapter__rcv_8hpp_source.html#l00479">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::m_sync_io</a>.</p>
 
 </div>
 </div>
@@ -274,15 +378,82 @@ template&lt;typename Core_t &gt; </div>
 </div><div class="memdoc">
 
 <p>To be invoked after <code>-&gt;stop()</code>ping <code>*worker</code> (from ctor), as well as flushing any still-queued tasks in its <code>Task_engine</code> (via <code>.restart()</code> and <code>.poll()</code>), this satisfies the customer adapter dtor's contract which is to invoke any not-yet-fired completion handlers with special operation-aborted error code. </p>
-<p >In our case that is either nothing or 1 <code>async_end_sending()</code> completion handler. If applicable the dtor returns once that handler has completed in an unspecified thread that is not the calling thread. </p>
+<p >In our case that is either nothing or 1+ <code>async_receive_*()</code> completion handler(s). If applicable the dtor returns once such handler(s) has/have completed in an unspecified thread that is not the calling thread. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00376">376</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00557">557</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297afe29343445a7bf167cc186a44bd2c6ed">ipc::transport::error::S_OBJECT_SHUTDOWN_ABORTED_COMPLETION_HANDLER</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a32b21d4a0464ba01173ab694bf0b3fd3" name="a32b21d4a0464ba01173ab694bf0b3fd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32b21d4a0464ba01173ab694bf0b3fd3">&#9670;&nbsp;</a></span>async_receive_batch_impl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+<div class="memtemplate">
+template&lt;typename Batch , bool HNDL_ELSE_BLOB&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::async_receive_batch_impl </td>
+          <td>(</td>
+          <td class="paramtype">Batch *&#160;</td>
+          <td class="paramname"><em>batch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>assume_would_block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">flow::async::Task_asio_err &amp;&amp;&#160;</td>
+          <td class="paramname"><em>on_done_func</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Body of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa83a7bf941a197ae02f5ee756fdcdcbc" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle_batch()</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f" title="See transport::Blob_receiver counterpart.">async_receive_blob_batch()</a>; with t-param <code>HNDL_ELSE_BLOB</code> <code>true</code> or <code>false</code> depending on whether it's the latter as opposed to the former. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">HNDL_ELSE_BLOB</td><td><code>true</code> if implementing <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa83a7bf941a197ae02f5ee756fdcdcbc" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle_batch()</a>; <code>false</code> if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f" title="See transport::Blob_receiver counterpart.">async_receive_blob_batch()</a>. </td></tr>
+    <tr><td class="paramname">Batch</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa83a7bf941a197ae02f5ee756fdcdcbc" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle_batch()</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f" title="See transport::Blob_receiver counterpart.">async_receive_blob_batch()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">batch</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa83a7bf941a197ae02f5ee756fdcdcbc" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle_batch()</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f" title="See transport::Blob_receiver counterpart.">async_receive_blob_batch()</a>. </td></tr>
+    <tr><td class="paramname">assume_would_block</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa83a7bf941a197ae02f5ee756fdcdcbc" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle_batch()</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f" title="See transport::Blob_receiver counterpart.">async_receive_blob_batch()</a>. </td></tr>
+    <tr><td class="paramname">on_done_func</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#aa83a7bf941a197ae02f5ee756fdcdcbc" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle_batch()</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a893557c5c1800e8f4b152c1868a9048f" title="See transport::Blob_receiver counterpart.">async_receive_blob_batch()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00795">795</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
+
+</div>
+</div>
 <a id="ade3098cb69a47a374cf0354677e2fb0b" name="ade3098cb69a47a374cf0354677e2fb0b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade3098cb69a47a374cf0354677e2fb0b">&#9670;&nbsp;</a></span>async_receive_blob()</h2>
 
@@ -311,17 +482,132 @@ template&lt;typename Core_t &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> counterpart. </p>
+<p>See <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a> counterpart. </p>
 <p >However, this one is <code>void</code>, as there is no way <code>*this</code> is not in PEER state (by definition).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target_blob</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> counterpart. </td></tr>
-    <tr><td class="paramname">on_done_func</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Blob__receiver.html" title="A documentation-only concept: what transport::Blob_receiver is to transport::Native_handle_receiver (...">Blob_receiver</a> counterpart. </td></tr>
+    <tr><td class="paramname">target_blob</td><td>See above. </td></tr>
+    <tr><td class="paramname">on_done_func</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00432">432</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00631">631</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a893557c5c1800e8f4b152c1868a9048f" name="a893557c5c1800e8f4b152c1868a9048f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a893557c5c1800e8f4b152c1868a9048f">&#9670;&nbsp;</a></span>async_receive_blob_batch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+<div class="memtemplate">
+template&lt;typename Batch &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::async_receive_blob_batch </td>
+          <td>(</td>
+          <td class="paramtype">Batch *&#160;</td>
+          <td class="paramname"><em>batch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>assume_would_block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">flow::async::Task_asio_err &amp;&amp;&#160;</td>
+          <td class="paramname"><em>on_done_func</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Blob_receiver</a> counterpart. </p>
+<p >However, this one is <code>void</code>, as there is no way <code>*this</code> is not in PEER state (by definition).</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Batch</td><td><code>Core::Blob_batch_in&lt;Msg_resource&gt;</code> for some type <code>Msg_resource</code> which... see above. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">batch</td><td>See above. </td></tr>
+    <tr><td class="paramname">assume_would_block</td><td>See above. </td></tr>
+    <tr><td class="paramname">on_done_func</td><td>See above. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00787">787</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a38df462222b07f086707f4c560db2c5c" name="a38df462222b07f086707f4c560db2c5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38df462222b07f086707f4c560db2c5c">&#9670;&nbsp;</a></span>async_receive_impl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::async_receive_impl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">Native_handle</a> *&#160;</td>
+          <td class="paramname"><em>target_hndl_or_null</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> &amp;&#160;</td>
+          <td class="paramname"><em>target_meta_blob</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">flow::async::Task_asio_err_sz &amp;&amp;&#160;</td>
+          <td class="paramname"><em>on_done_func</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Body of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle()</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See transport::Blob_receiver counterpart.">async_receive_blob()</a>; with <code>target_hndl</code> null if and only if it's the latter as opposed to the former. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_hndl_or_null</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle()</a>; or null if it's the other API. If <code>!(Core::S_TRANSMIT_NATIVE_HANDLES)</code> this must be null. </td></tr>
+    <tr><td class="paramname">target_meta_blob</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle()</a>. </td></tr>
+    <tr><td class="paramname">on_done_func</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See transport::Native_handle_receiver counterpart.">async_receive_native_handle()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00638">638</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
 
 </div>
 </div>
@@ -359,48 +645,47 @@ template&lt;typename Core_t &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </p>
+<p>See <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Native_handle_receiver</a> counterpart. </p>
 <p >However, this one is <code>void</code>, as there is no way <code>*this</code> is not in PEER state (by definition).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target_hndl</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </td></tr>
-    <tr><td class="paramname">target_meta_blob</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </td></tr>
-    <tr><td class="paramname">on_done_func</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_sender</a> counterpart. </td></tr>
+    <tr><td class="paramname">target_hndl</td><td>See above. </td></tr>
+    <tr><td class="paramname">target_meta_blob</td><td>See above. </td></tr>
+    <tr><td class="paramname">on_done_func</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00418">418</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00617">617</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a6cf425ab8e3258924e6d1db12da2fbf5" name="a6cf425ab8e3258924e6d1db12da2fbf5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6cf425ab8e3258924e6d1db12da2fbf5">&#9670;&nbsp;</a></span>async_receive_native_handle_impl()</h2>
+<a id="aa83a7bf941a197ae02f5ee756fdcdcbc" name="aa83a7bf941a197ae02f5ee756fdcdcbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa83a7bf941a197ae02f5ee756fdcdcbc">&#9670;&nbsp;</a></span>async_receive_native_handle_batch()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Core_t &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+<div class="memtemplate">
+template&lt;typename Batch &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::async_receive_native_handle_impl </td>
+          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::async_receive_native_handle_batch </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceipc_1_1transport.html#a7ee4551983d9df16ec16a3139bac50e8">Native_handle</a> *&#160;</td>
-          <td class="paramname"><em>target_hndl_or_null</em>, </td>
+          <td class="paramtype">Batch *&#160;</td>
+          <td class="paramname"><em>batch</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">util::Blob_mutable</a> &amp;&#160;</td>
-          <td class="paramname"><em>target_meta_blob</em>, </td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>assume_would_block</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">flow::async::Task_asio_err_sz &amp;&amp;&#160;</td>
+          <td class="paramtype">flow::async::Task_asio_err &amp;&amp;&#160;</td>
           <td class="paramname"><em>on_done_func</em>&#160;</td>
         </tr>
         <tr>
@@ -409,26 +694,67 @@ template&lt;typename Core_t &gt; </div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Body of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#ade3098cb69a47a374cf0354677e2fb0b" title="See Blob_receiver counterpart.">async_receive_blob()</a>; with <code>target_hndl</code> null if and only if it's the latter as opposed to the former. </p>
+<p>See <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Native_handle_receiver</a> counterpart. </p>
+<p >However, this one is <code>void</code>, as there is no way <code>*this</code> is not in PEER state (by definition).</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Batch</td><td><code>Core::Native_handle_batch_in&lt;Msg_resource&gt;</code> for some type <code>Msg_resource</code> which... see above. </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target_hndl_or_null</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a>; or null if it's the other API. If <code>!(Core::S_TRANSMIT_NATIVE_HANDLES)</code> this must be null. </td></tr>
-    <tr><td class="paramname">target_meta_blob</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a>. </td></tr>
-    <tr><td class="paramname">on_done_func</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a>. </td></tr>
+    <tr><td class="paramname">batch</td><td>See above. </td></tr>
+    <tr><td class="paramname">assume_would_block</td><td>See above. </td></tr>
+    <tr><td class="paramname">on_done_func</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00439">439</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00779">779</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
+</div>
+</div>
+<a id="a57abc3796a5c386d57a4010d447eaf16" name="a57abc3796a5c386d57a4010d447eaf16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57abc3796a5c386d57a4010d447eaf16">&#9670;&nbsp;</a></span>blob_receive_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__rcv__stats.html">stat::Blob_rcv_stats</a> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::blob_receive_stats</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </p>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l01105">1105</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a878e5398c8d2554826a89d1f93d9c133" name="a878e5398c8d2554826a89d1f93d9c133"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a878e5398c8d2554826a89d1f93d9c133">&#9670;&nbsp;</a></span>blob_receive_stats_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::blob_receive_stats_reset</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </p>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l01114">1114</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -450,21 +776,62 @@ template&lt;typename Core_t &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> counterpart. </p>
+<p>See <a class="el" href="classipc_1_1transport_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">transport::Native_handle_receiver</a> counterpart. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> counterpart. </td></tr>
+    <tr><td class="paramname">timeout</td><td>See above. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__handle__receiver.html" title="A documentation-only concept defining the behavior of an object that is the sync_io-pattern counterpa...">Native_handle_receiver</a> counterpart. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00762">762</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l01094">1094</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a98d7b3caa0f0b00c75671278e7971017" name="a98d7b3caa0f0b00c75671278e7971017"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98d7b3caa0f0b00c75671278e7971017">&#9670;&nbsp;</a></span>on_sync_io_rcv_done()</h2>
+<a id="af18e6d33531c739857acaa3dd594e5a7" name="af18e6d33531c739857acaa3dd594e5a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af18e6d33531c739857acaa3dd594e5a7">&#9670;&nbsp;</a></span>native_handle_receive_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__rcv__stats.html">stat::Blob_rcv_stats</a> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::native_handle_receive_stats</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </p>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l01123">1123</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ab5a0097711135d63e08350c6c8e8ef80" name="ab5a0097711135d63e08350c6c8e8ef80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5a0097711135d63e08350c6c8e8ef80">&#9670;&nbsp;</a></span>native_handle_receive_stats_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::native_handle_receive_stats_reset</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Native__socket__stream.html" title="Implements both sync_io::Native_handle_sender and sync_io::Native_handle_receiver concepts by using a...">Native_socket_stream</a> counterpart. </p>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l01132">1132</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a741990693fa5fb01131c14e21c77256b" name="a741990693fa5fb01131c14e21c77256b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a741990693fa5fb01131c14e21c77256b">&#9670;&nbsp;</a></span>on_sync_io_rcv_done()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -483,8 +850,8 @@ template&lt;typename Core_t &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>sz</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="classsize__t.html">size_t</a>&#160;</td>
+          <td class="paramname"><em>sz_if_applicable</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -500,26 +867,26 @@ template&lt;typename Core_t &gt; </div>
 </div><div class="memdoc">
 
 <p>Invoked via active-event API, handles the async completion of <code>m_sync_io.async_receive_*()</code> operation. </p>
-<p >Can be invoked from thread W only, and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a113a43c175209f7e3293f75ab4bcd794" title="Protects m_user_request, m_pending_user_requests_q, and receive-ops data of m_sync_io.">m_mutex</a> must be locked. <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> must not be null.</p>
-<p >This method iteratively, synchronously leverages <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> to read as many in-messages available in the transport as possible, until: the request deficit is met (either by reading enough messages to satisfy <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>; or by encountering pipe-hosing error) or would-block. In the latter case another async-wait is initiated by this method synchronously.</p>
-<p >The first action, before those potential further reads, is to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#afa5b0ab6ad54e0d3c93550226bfe2b33" title="Invoked from thread U/W (async_receive_native_handle_impl()) or thread W (active-event API),...">process_msg_or_error()</a> the just-received (or pipe-hosing would-be) message. Then for each further in-message <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#afa5b0ab6ad54e0d3c93550226bfe2b33" title="Invoked from thread U/W (async_receive_native_handle_impl()) or thread W (active-event API),...">process_msg_or_error()</a> is again invoked.</p>
+<p >Can be invoked from thread W only, and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a113a43c175209f7e3293f75ab4bcd794" title="Protects m_user_request, m_pending_user_requests_q, and receive-ops data of m_sync_io.">m_mutex</a> must be locked. <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> must not be null.</p>
+<p >This method iteratively, synchronously leverages <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> to read as many in-messages available in the transport as possible, until: the request deficit is met (either by reading enough messages to satisfy <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>; or by encountering pipe-hosing error) or would-block. In the latter case another async-wait is initiated by this method synchronously.</p>
+<p >The first action, before those potential further reads, is to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a8ddb28106820a68cb395e0331d307aa1" title="Invoked from thread U/W (async_receive_impl() or async_receive_batch_impl()) or W (active-event API),...">process_msg_or_error()</a> the just-received (or pipe-hosing would-be) single-message or batch (sized 1+ messages). Then for each further in-message/in-batch <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a8ddb28106820a68cb395e0331d307aa1" title="Invoked from thread U/W (async_receive_impl() or async_receive_batch_impl()) or W (active-event API),...">process_msg_or_error()</a> is again invoked.</p>
 <p >For each request satisfied, a separate user handler is posted onto thread W to execute in order.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">err_code</td><td>Result to pass to user (if truthy, all pending requests; else to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> only). </td></tr>
-    <tr><td class="paramname">sz</td><td>Result to pass to user (ditto). </td></tr>
+    <tr><td class="paramname">err_code</td><td>Result to pass to user (if truthy, all pending requests; else to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> only). </td></tr>
+    <tr><td class="paramname">sz_if_applicable</td><td>Result to pass to user (ditto); ignored/zero if <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> encodes a <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__batch.html" title="Analogous to User_request_one but for a batch async-receive request as opposed to single-message requ...">User_request_batch</a>; used/applicable (if <code>!err_code</code> and) if <code>m_user_request</code> encodes a <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">User_request_one</a>. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00676">676</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l01032">1032</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
 
 </div>
 </div>
-<a id="afa5b0ab6ad54e0d3c93550226bfe2b33" name="afa5b0ab6ad54e0d3c93550226bfe2b33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa5b0ab6ad54e0d3c93550226bfe2b33">&#9670;&nbsp;</a></span>process_msg_or_error()</h2>
+<a id="a8ddb28106820a68cb395e0331d307aa1" name="a8ddb28106820a68cb395e0331d307aa1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ddb28106820a68cb395e0331d307aa1">&#9670;&nbsp;</a></span>process_msg_or_error()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -538,7 +905,65 @@ template&lt;typename Core_t &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype"><a class="el" href="classsize__t.html">size_t</a>&#160;</td>
+          <td class="paramname"><em>sz_if_applicable</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Invoked from thread U/W (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a38df462222b07f086707f4c560db2c5c" title="Body of async_receive_native_handle() and async_receive_blob(); with target_hndl null if and only if ...">async_receive_impl()</a> or <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a32b21d4a0464ba01173ab694bf0b3fd3" title="Body of async_receive_native_handle_batch() and async_receive_blob_batch(); with t-param HNDL_ELSE_BL...">async_receive_batch_impl()</a>) or W (active-event API), handles a completed <code>m_sync_io.async_receive_*()</code> &ndash; whose results are to be given as args &ndash; by (1) updating <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a> and (2) posting any appropriate handlers onto thread W. </p>
+<p >See notes for <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a741990693fa5fb01131c14e21c77256b" title="Invoked via active-event API, handles the async completion of m_sync_io.async_receive_*() operation.">on_sync_io_rcv_done()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">err_code</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a741990693fa5fb01131c14e21c77256b" title="Invoked via active-event API, handles the async completion of m_sync_io.async_receive_*() operation.">on_sync_io_rcv_done()</a>. </td></tr>
+    <tr><td class="paramname">sz_if_applicable</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a741990693fa5fb01131c14e21c77256b" title="Invoked via active-event API, handles the async completion of m_sync_io.async_receive_*() operation.">on_sync_io_rcv_done()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00900">900</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
+
+</div>
+</div>
+<a id="a9c977bd50b99495f88a5369ca687303b" name="a9c977bd50b99495f88a5369ca687303b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c977bd50b99495f88a5369ca687303b">&#9670;&nbsp;</a></span>sync_receive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Core_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::sync_receive </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html">User_request_one</a> &amp;&#160;</td>
+          <td class="paramname"><em>req</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
+          <td class="paramname"><em>sync_err_code</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classsize__t.html">size_t</a> *&#160;</td>
           <td class="paramname"><em>sz</em>&#160;</td>
         </tr>
         <tr>
@@ -554,19 +979,21 @@ template&lt;typename Core_t &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Invoked from thread U/W (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a6cf425ab8e3258924e6d1db12da2fbf5" title="Body of async_receive_native_handle() and async_receive_blob(); with target_hndl null if and only if ...">async_receive_native_handle_impl()</a>) or thread W (active-event API), handles a completed <code>m_sync_io.async_receive_*()</code> &ndash; whose results are to be given as args &ndash; by (1) updating <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> and <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a> and (2) posting any appropriate handlers onto thread W. </p>
-<p >See notes for <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a98d7b3caa0f0b00c75671278e7971017" title="Invoked via active-event API, handles the async completion of m_sync_io.async_receive_*() operation.">on_sync_io_rcv_done()</a>.</p>
+<p>With the pre-condition that <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> is of type <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">User_request_one</a> (that is originating from a single-message async-receive user request as opposed to batch-receive), executes the core synchronous call to single-message <code>m_sync_io.async_receive_{native_handle|blob}()</code>. </p>
+<p >If it succeeds synchronously, the result is indicated via the out-args. If it encounters would-block, <code>*sync_err_code</code> indicates this on return, and async-wait is issued, and when/if user reports the completion of that wait, our <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a741990693fa5fb01131c14e21c77256b" title="Invoked via active-event API, handles the async completion of m_sync_io.async_receive_*() operation.">on_sync_io_rcv_done()</a> shall execute.</p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__batch.html#ac9d578f8c5050a3931611c2cdd9c86d6" title="See Rcv_batch_func doc header. Again though: This is the equivalent of sync_receive() for batch-recei...">User_request_batch::m_sync_rcv_batch_func</a> is the equivalent of us for batch-receives.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">err_code</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a98d7b3caa0f0b00c75671278e7971017" title="Invoked via active-event API, handles the async completion of m_sync_io.async_receive_*() operation.">on_sync_io_rcv_done()</a>. </td></tr>
-    <tr><td class="paramname">sz</td><td>See <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a98d7b3caa0f0b00c75671278e7971017" title="Invoked via active-event API, handles the async completion of m_sync_io.async_receive_*() operation.">on_sync_io_rcv_done()</a>. </td></tr>
+    <tr><td class="paramname">req</td><td><code>get&lt;<a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request__one.html" title="Data store representing a deficit user single-message async-receive request: either one being current...">User_request_one</a>&gt;(*m_user_request)()</code>. It is an arg for perf only, as (as of this writing anyway) the caller would already have this. </td></tr>
+    <tr><td class="paramname">sync_err_code</td><td>See above. </td></tr>
+    <tr><td class="paramname">sz</td><td>See above; if <code>*sync_err_code</code> ends up falsy, <code>*sz</code> is set to 1+, the number of bytes received; else to 0. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00565">565</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00734">734</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aa667487757f9d6300f6888bac40bcc24">ipc::transport::error::S_SYNC_IO_WOULD_BLOCK</a>.</p>
+<p class="reference">References <a class="el" href="async__adapter__rcv_8hpp_source.html#l00258">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::User_request_one::m_target_hndl_ptr</a>, and <a class="el" href="async__adapter__rcv_8hpp_source.html#l00261">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::User_request_one::m_target_meta_blob</a>.</p>
 
 </div>
 </div>
@@ -595,9 +1022,9 @@ template&lt;typename Core_t &gt; </div>
 
 <p>See <code>log_pfx</code> arg of ctor. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00250">250</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00432">432</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00303">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00485">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
 
 </div>
 </div>
@@ -623,16 +1050,16 @@ template&lt;typename Core_t &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Protects <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>, and receive-ops data of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>. </p>
+<p>Protects <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a>, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>, and receive-ops data of <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00282">282</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00464">464</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00303">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00485">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
 
 </div>
 </div>
-<a id="a13a636ca275a188bd3727e2d7c247f0e" name="a13a636ca275a188bd3727e2d7c247f0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13a636ca275a188bd3727e2d7c247f0e">&#9670;&nbsp;</a></span>m_pending_user_requests_q</h2>
+<a id="af9b7525af206cacd70873226ec4a6fdb" name="af9b7525af206cacd70873226ec4a6fdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9b7525af206cacd70873226ec4a6fdb">&#9670;&nbsp;</a></span>m_pending_user_requests_q</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -643,7 +1070,7 @@ template&lt;typename Core_t &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::queue&lt;typename <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html#ad716a5458992596636d5e3e4f9d83e9b">User_request::Ptr</a>&gt; <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::m_pending_user_requests_q</td>
+          <td class="memname">std::queue&lt;<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a5b88fe92f5f08af21660b2b440198213">User_req_ptr</a>&gt; <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::m_pending_user_requests_q</td>
         </tr>
       </table>
   </td>
@@ -653,13 +1080,13 @@ template&lt;typename Core_t &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Queue storing deficit async-receive requests queued up due to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> being not null while more <code>async_receive_*()</code> invocations being made by user. </p>
-<p >One can think of the "overall" queue as being <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> followed by the elements in this <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>. See class doc header for design discussion.</p>
+<p>Queue storing deficit async-receive requests queued up due to <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> being not null while more <code>async_receive_*()</code> invocations being made by user. </p>
+<p >One can think of the "overall" queue as being <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> followed by the elements in this <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a>. See class doc header for design discussion.</p>
 <p >Protected by <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a113a43c175209f7e3293f75ab4bcd794" title="Protects m_user_request, m_pending_user_requests_q, and receive-ops data of m_sync_io.">m_mutex</a>.</p>
-<h3>Rationale for not subsuming <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> directly into this queue</h3>
-<p >It's the same amount of stuff; so the reason is stylistic in a subjective way. Basically a low-level async read-op will target the meta-blob <em>directly</em> inside the head <a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html" title="Data store representing a deficit user async-receive request: either one being currently handled by m...">User_request</a> in the "overall" queue but never any of the subsequently queued requests; in my (ygoldfel) view it is clearer to express it as always targeting <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a76d81cb59e1b91c7f379064dd285aa93" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> rather than <code>*(m_pending_user_requests_q.front())</code>. </p>
+<h3>Rationale for not subsuming <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> directly into this queue</h3>
+<p >It's the same amount of stuff; so the reason is stylistic in a subjective way. Basically a low-level async read-op will target the meta-blob <em>directly</em> inside the head User_request in the "overall" queue but never any of the subsequently queued requests; in my (ygoldfel) view it is clearer to express it as always targeting <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a1162777f69550ae8cc0f9fe84090e7c8" title="The head slot containing the currently-being-serviced &quot;deficit&quot; async-receive request,...">m_user_request</a> rather than <code>*(m_pending_user_requests_q.front())</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00279">279</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00461">461</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -689,14 +1116,14 @@ template&lt;typename Core_t &gt; </div>
 <p >See our class doc header for overview of how we use it (the aforementioned <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> doc header talks about the <code><a class="el" href="namespaceipc_1_1transport_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport.">sync_io</a></code> pattern generally).</p>
 <p >Thus, <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> is the synchronous engine that we use to perform our work in our asynchronous boost.asio loop running in thread W (<a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a0df3c0d0291cb4d3ea7fbd8214a12cb8" title="Single-thread worker pool for all internal async work. Referred to as thread W in comments.">m_worker</a>) while collaborating with user thread(s) a/k/a thread U. (Recall that the user may choose to set up their own event loop/thread(s) &ndash; boost.asio-based or otherwise &ndash; and use their own equivalent of an <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af07534b8b9beb4e47b1af513d82d7460" title="The core Core engine, implementing the sync_io pattern (see util::sync_io doc header).">m_sync_io</a> instead.) </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00297">297</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00479">479</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00303">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="async__adapter__rcv_8hpp_source.html#l00485">ipc::transport::sync_io::Async_adapter_receiver&lt; Core_t &gt;::Async_adapter_receiver()</a>.</p>
 
 </div>
 </div>
-<a id="a76d81cb59e1b91c7f379064dd285aa93" name="a76d81cb59e1b91c7f379064dd285aa93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76d81cb59e1b91c7f379064dd285aa93">&#9670;&nbsp;</a></span>m_user_request</h2>
+<a id="a1162777f69550ae8cc0f9fe84090e7c8" name="a1162777f69550ae8cc0f9fe84090e7c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1162777f69550ae8cc0f9fe84090e7c8">&#9670;&nbsp;</a></span>m_user_request</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -707,7 +1134,7 @@ template&lt;typename Core_t &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver_1_1User__request.html#ad716a5458992596636d5e3e4f9d83e9b">User_request::Ptr</a> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::m_user_request</td>
+          <td class="memname"><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a5b88fe92f5f08af21660b2b440198213">User_req_ptr</a> <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html">ipc::transport::sync_io::Async_adapter_receiver</a>&lt; Core_t &gt;::m_user_request</td>
         </tr>
       </table>
   </td>
@@ -717,12 +1144,12 @@ template&lt;typename Core_t &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>The <em>head slot</em> containing the currently-being-serviced "deficit" async-receive request, with a meta-blob <em>potentially</em> being async-written to; null if there is no pending <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#abcbc91de36b298c68e5461997a9a0263" title="See Native_handle_sender counterpart.">async_receive_native_handle()</a>. </p>
+<p>The <em>head slot</em> containing the currently-being-serviced "deficit" async-receive request, with meta-blob(s) <em>potentially</em> being async-written to; null if there is no pending <code>async_receive_*()</code>. </p>
 <p >It is the "fulcrum" of the consumer-producer state machine described in doc header impl section's design discussion: If null there is no deficit; if not null there is an <em>overall deficit</em>. In the former case, at steady state, <code>m_pending_user_requests_q.empty() == true</code>.</p>
 <p >Protected by <a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a113a43c175209f7e3293f75ab4bcd794" title="Protects m_user_request, m_pending_user_requests_q, and receive-ops data of m_sync_io.">m_mutex</a>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#a13a636ca275a188bd3727e2d7c247f0e" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1sync__io_1_1Async__adapter__receiver.html#af9b7525af206cacd70873226ec4a6fdb" title="Queue storing deficit async-receive requests queued up due to m_user_request being not null while mor...">m_pending_user_requests_q</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00263">263</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00445">445</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
@@ -750,18 +1177,18 @@ template&lt;typename Core_t &gt; </div>
 
 <p>Single-thread worker pool for all internal async work. Referred to as thread W in comments. </p>
 
-<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00285">285</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="async__adapter__rcv_8hpp_source.html#l00467">467</a> of file <a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>transport/detail/<a class="el" href="detail_2transport__fwd_8hpp_source.html">transport_fwd.hpp</a></li>
-<li>transport/sync_io/detail/<a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a></li>
+<li>transport/sync_io/<a class="el" href="async__adapter__rcv_8hpp_source.html">async_adapter_rcv.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

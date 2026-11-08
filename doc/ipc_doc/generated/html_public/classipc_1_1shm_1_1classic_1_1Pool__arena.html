@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -101,29 +101,51 @@ Public Types</h2></td></tr>
 <tr class="memitem:a662a55c9ba6eb5c389ddf9780ee801cb"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb">Handle</a> = boost::shared_ptr&lt; T &gt;</td></tr>
 <tr class="memdesc:a662a55c9ba6eb5c389ddf9780ee801cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outer handle to a SHM-stored object; really a regular-looking <code>shared_ptr</code> but with custom deleter that ensures deallocation via <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> as well as cross-process ref-count semantics.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb">More...</a><br /></td></tr>
 <tr class="separator:a662a55c9ba6eb5c389ddf9780ee801cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39e2a4232f1d38d0556b90cfc92e3ec1"><td class="memItemLeft" align="right" valign="top"><a id="a39e2a4232f1d38d0556b90cfc92e3ec1" name="a39e2a4232f1d38d0556b90cfc92e3ec1"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Activator</b> = <a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html">stl::Arena_activator</a>&lt; <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html">Pool_arena</a> &gt;</td></tr>
+<tr class="memdesc:a39e2a4232f1d38d0556b90cfc92e3ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience alias for a <a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of the given thread&#39;s currently active SHM-aware Arena...">shm::stl::Arena_activator</a> w/r/t <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>. <br /></td></tr>
+<tr class="separator:a39e2a4232f1d38d0556b90cfc92e3ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9576be0ba8821ea71de561c2b992cf5b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9576be0ba8821ea71de561c2b992cf5b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9576be0ba8821ea71de561c2b992cf5b">Allocator</a> = <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">stl::Stateless_allocator</a>&lt; T, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html">Pool_arena</a> &gt;</td></tr>
+<tr class="memdesc:a9576be0ba8821ea71de561c2b992cf5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience alias for a <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">shm::stl::Stateless_allocator</a>&gt; w/r/t <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>; use with <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a39e2a4232f1d38d0556b90cfc92e3ec1" title="Convenience alias for a shm::stl::Arena_activator w/r/t Pool_arena.">Activator</a>.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9576be0ba8821ea71de561c2b992cf5b">More...</a><br /></td></tr>
+<tr class="separator:a9576be0ba8821ea71de561c2b992cf5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72867ce6e363dbc1ab1666768d8a7a09"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a72867ce6e363dbc1ab1666768d8a7a09">Blob</a> = flow::util::Blob_sans_log_context</td></tr>
 <tr class="memdesc:a72867ce6e363dbc1ab1666768d8a7a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for a light-weight blob.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a72867ce6e363dbc1ab1666768d8a7a09">More...</a><br /></td></tr>
 <tr class="separator:a72867ce6e363dbc1ab1666768d8a7a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0803f4c2b4c2be6fe509fff3aa60ecc4"><td class="memItemLeft" align="right" valign="top"><a id="a0803f4c2b4c2be6fe509fff3aa60ecc4" name="a0803f4c2b4c2be6fe509fff3aa60ecc4"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Mem_algo</b> = ::ipc::bipc::rbtree_best_fit&lt;::ipc::bipc::mutex_family &gt;</td></tr>
+<tr class="memdesc:a0803f4c2b4c2be6fe509fff3aa60ecc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The boost.interprocess memory-algorithm used by the pools we set up. <br /></td></tr>
+<tr class="separator:a0803f4c2b4c2be6fe509fff3aa60ecc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab4041e7a2fe59e4c1d23f1d6cbec4be"><td class="memItemLeft" align="right" valign="top"><a id="aab4041e7a2fe59e4c1d23f1d6cbec4be" name="aab4041e7a2fe59e4c1d23f1d6cbec4be"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Info_dump</b> = <a class="el" href="structipc_1_1shm_1_1classic_1_1stat_1_1Arena__info__dump.html">stat::Arena_info_dump</a></td></tr>
+<tr class="memdesc:aab4041e7a2fe59e4c1d23f1d6cbec4be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for a stats/info bundle type. <br /></td></tr>
+<tr class="separator:aab4041e7a2fe59e4c1d23f1d6cbec4be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a77acacecacdd45514ebf9db99b4ab4c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a77acacecacdd45514ebf9db99b4ab4c3">Pool_arena</a> (flow::log::Logger *logger_ptr, const <a class="el" href="namespaceipc_1_1shm_1_1classic.html#ac0a52218467710995cc6c74538be6012">Shared_name</a> &amp;pool_name, <a class="el" href="namespaceipc_1_1util.html#a9d84c2bab504e6de32b20c77ca9723a2">util::Create_only</a> mode_tag, size_t pool_sz, const <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">util::Permissions</a> &amp;perms=<a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">util::Permissions</a>{}, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
-<tr class="memdesc:a77acacecacdd45514ebf9db99b4ab4c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> accessor object to non-existing named SHM pool, creating it first.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a77acacecacdd45514ebf9db99b4ab4c3">More...</a><br /></td></tr>
-<tr class="separator:a77acacecacdd45514ebf9db99b4ab4c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ed1d91a35c6df22dc8eedccfb693016"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a3ed1d91a35c6df22dc8eedccfb693016">Pool_arena</a> (flow::log::Logger *logger_ptr, const <a class="el" href="namespaceipc_1_1shm_1_1classic.html#ac0a52218467710995cc6c74538be6012">Shared_name</a> &amp;pool_name, <a class="el" href="namespaceipc_1_1util.html#a9571de958538d7a4a8649bbfecfac0b9">util::Open_or_create</a> mode_tag, size_t pool_sz, const <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">util::Permissions</a> &amp;perms_on_create=<a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">util::Permissions</a>{}, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memitem:a2de53400257ce8d934024287e1135bb3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a2de53400257ce8d934024287e1135bb3">Pool_arena</a> (flow::log::Logger *logger_ptr, const <a class="el" href="namespaceipc_1_1shm.html#a6596ee36a467c6972aaf50a78b62f547">Shared_name</a> &amp;pool_name, <a class="el" href="namespaceipc_1_1util.html#a9d84c2bab504e6de32b20c77ca9723a2">util::Create_only</a> mode_tag, size_t pool_sz, const <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">util::Permissions</a> &amp;perms={}, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:a2de53400257ce8d934024287e1135bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> accessor object to non-existing named SHM pool, creating it first.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a2de53400257ce8d934024287e1135bb3">More...</a><br /></td></tr>
+<tr class="separator:a2de53400257ce8d934024287e1135bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ed1d91a35c6df22dc8eedccfb693016"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a3ed1d91a35c6df22dc8eedccfb693016">Pool_arena</a> (flow::log::Logger *logger_ptr, const <a class="el" href="namespaceipc_1_1shm.html#a6596ee36a467c6972aaf50a78b62f547">Shared_name</a> &amp;pool_name, <a class="el" href="namespaceipc_1_1util.html#a9571de958538d7a4a8649bbfecfac0b9">util::Open_or_create</a> mode_tag, size_t pool_sz, const <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">util::Permissions</a> &amp;perms_on_create=<a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">util::Permissions</a>{}, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
 <tr class="memdesc:a3ed1d91a35c6df22dc8eedccfb693016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> accessor object to non-existing named SHM pool, or else if it does not exist creates it first and opens it (atomically).  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a3ed1d91a35c6df22dc8eedccfb693016">More...</a><br /></td></tr>
 <tr class="separator:a3ed1d91a35c6df22dc8eedccfb693016"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4672ba67e2ee657b744675972d582e5f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a4672ba67e2ee657b744675972d582e5f">Pool_arena</a> (flow::log::Logger *logger_ptr, const <a class="el" href="namespaceipc_1_1shm_1_1classic.html#ac0a52218467710995cc6c74538be6012">Shared_name</a> &amp;pool_name, <a class="el" href="namespaceipc_1_1util.html#a3e03491b5b2b5fac26551a220946d6e5">util::Open_only</a> mode_tag, bool read_only=false, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memitem:a4672ba67e2ee657b744675972d582e5f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a4672ba67e2ee657b744675972d582e5f">Pool_arena</a> (flow::log::Logger *logger_ptr, const <a class="el" href="namespaceipc_1_1shm.html#a6596ee36a467c6972aaf50a78b62f547">Shared_name</a> &amp;pool_name, <a class="el" href="namespaceipc_1_1util.html#a3e03491b5b2b5fac26551a220946d6e5">util::Open_only</a> mode_tag, bool read_only=false, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
 <tr class="memdesc:a4672ba67e2ee657b744675972d582e5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> accessor object to existing named SHM pool.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a4672ba67e2ee657b744675972d582e5f">More...</a><br /></td></tr>
 <tr class="separator:a4672ba67e2ee657b744675972d582e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca8bf9fe738df70fd502111330089c90"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#aca8bf9fe738df70fd502111330089c90">~Pool_arena</a> ()</td></tr>
 <tr class="memdesc:aca8bf9fe738df70fd502111330089c90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> accessor object.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#aca8bf9fe738df70fd502111330089c90">More...</a><br /></td></tr>
 <tr class="separator:aca8bf9fe738df70fd502111330089c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a131985501028c26f9ffedecaf954cc1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a">commit</a> (<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:a131985501028c26f9ffedecaf954cc1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool cannot fail for lack of RAM.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a">More...</a><br /></td></tr>
+<tr class="separator:a131985501028c26f9ffedecaf954cc1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdf3f53680a96fcc440f5e1827e0549"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#accdf3f53680a96fcc440f5e1827e0549">close_shm_object_handle</a> ()</td></tr>
+<tr class="memdesc:accdf3f53680a96fcc440f5e1827e0549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the pool's OS handle (FD) that <code>*this</code> keeps open only to enable <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a" title="Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool ...">commit()</a>, returning that resource to the system; <code>*this</code> remains otherwise fully operational, except that <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a" title="Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool ...">commit()</a> shall subsequently no-op.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#accdf3f53680a96fcc440f5e1827e0549">More...</a><br /></td></tr>
+<tr class="separator:accdf3f53680a96fcc440f5e1827e0549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9da3a100a0b7199644edbadacc9083c9"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9">allocate</a> (size_t n)</td></tr>
-<tr class="memdesc:a9da3a100a0b7199644edbadacc9083c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable address to the first byte.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9">More...</a><br /></td></tr>
+<tr class="memdesc:a9da3a100a0b7199644edbadacc9083c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable address to the first byte.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9">More...</a><br /></td></tr>
 <tr class="separator:a9da3a100a0b7199644edbadacc9083c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a394973b7cfb67b67113043810804337d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d">deallocate</a> (void *buf_not_null) noexcept</td></tr>
-<tr class="memdesc:a394973b7cfb67b67113043810804337d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undoes effects of local <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable ad...">allocate()</a> that returned <code>buf_not_null</code>; or another-process's <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable ad...">allocate()</a> that returned pointer whose locally-dereferenceable equivalent is <code>but_not_null</code>.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d">More...</a><br /></td></tr>
+<tr class="memdesc:a394973b7cfb67b67113043810804337d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undoes effects of local <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> that returned <code>buf_not_null</code>; or another-process's <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> that returned pointer whose locally-dereferenceable equivalent is <code>but_not_null</code>.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d">More...</a><br /></td></tr>
 <tr class="separator:a394973b7cfb67b67113043810804337d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9f7ea056a55183d00dcbce573afcf36"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Ctor_args&gt; </td></tr>
 <tr class="memitem:ab9f7ea056a55183d00dcbce573afcf36"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb">Handle</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36">construct</a> (Ctor_args &amp;&amp;... ctor_args)</td></tr>
@@ -141,10 +163,31 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad2d54cc87b56613bba32aabd2c52ef13"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2d54cc87b56613bba32aabd2c52ef13">is_handle_in_arena</a> (const <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb">Handle</a>&lt; T &gt; &amp;handle) const</td></tr>
 <tr class="memdesc:ad2d54cc87b56613bba32aabd2c52ef13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if <code>handle</code> came from either <code>this-&gt;construct&lt;T&gt;()</code> or <code>this-&gt;borrow_object&lt;T&gt;()</code>.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2d54cc87b56613bba32aabd2c52ef13">More...</a><br /></td></tr>
 <tr class="separator:ad2d54cc87b56613bba32aabd2c52ef13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93">arena_size</a> () const</td></tr>
+<tr class="memdesc:a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arena (in this case, arena=pool) size in bytes as configured at arena/pool creation; never changes.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93">More...</a><br /></td></tr>
+<tr class="separator:a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a638d32f21b3ed455e3b583f096686149"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a638d32f21b3ed455e3b583f096686149">arena_stat_free_size</a> () const</td></tr>
+<tr class="memdesc:a638d32f21b3ed455e3b583f096686149"><td class="mdescLeft">&#160;</td><td class="mdescRight">How much of <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93" title="Arena (in this case, arena=pool) size in bytes as configured at arena/pool creation; never changes.">arena_size()</a> is currently available for allocations; that is, not currently used by currently allocated items/internally required small metadata.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a638d32f21b3ed455e3b583f096686149">More...</a><br /></td></tr>
+<tr class="separator:a638d32f21b3ed455e3b583f096686149"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1693d5be7b8162e853cb21aa22ff5caf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structipc_1_1shm_1_1classic_1_1stat_1_1Arena__stats.html">stat::Arena_stats</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf">arena_stats</a> () const</td></tr>
+<tr class="memdesc:a1693d5be7b8162e853cb21aa22ff5caf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cumulative stats relevant to one SHM-classic arena &ndash; in this case single SHM-pool in shared memory, accessed via 1+ <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> objects (like this one) over time.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf">More...</a><br /></td></tr>
+<tr class="separator:a1693d5be7b8162e853cb21aa22ff5caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a976772509dde5ff29a46455af2810280"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a976772509dde5ff29a46455af2810280">arena_stats_reset</a> ()</td></tr>
+<tr class="memdesc:a976772509dde5ff29a46455af2810280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a>.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a976772509dde5ff29a46455af2810280">More...</a><br /></td></tr>
+<tr class="separator:a976772509dde5ff29a46455af2810280"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a295e3d3917e8792d67083561da0148"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structipc_1_1shm_1_1classic_1_1stat_1_1Local__stats.html">stat::Local_stats</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9a295e3d3917e8792d67083561da0148">local_stats</a> () const</td></tr>
+<tr class="memdesc:a9a295e3d3917e8792d67083561da0148"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cumulative stats relevant to <code>*this</code> <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> <em>object</em> &ndash; a <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> &ndash; and excluding those in <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a> which track the underlying in-SHM arena (pool) itself.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9a295e3d3917e8792d67083561da0148">More...</a><br /></td></tr>
+<tr class="separator:a9a295e3d3917e8792d67083561da0148"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf5c5a5945c3ef9362d2fbf1900f1873"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#adf5c5a5945c3ef9362d2fbf1900f1873">local_stats_reset</a> ()</td></tr>
+<tr class="memdesc:adf5c5a5945c3ef9362d2fbf1900f1873"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9a295e3d3917e8792d67083561da0148" title="Cumulative stats relevant to *this Pool_arena object – a Pool_arena – and excluding those in arena_st...">local_stats()</a>.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#adf5c5a5945c3ef9362d2fbf1900f1873">More...</a><br /></td></tr>
+<tr class="separator:adf5c5a5945c3ef9362d2fbf1900f1873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa20085981ff5ed193d4bb2d7b93823a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#afa20085981ff5ed193d4bb2d7b93823a">info_dump</a> (<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#aab4041e7a2fe59e4c1d23f1d6cbec4be">Info_dump</a> *target_info_dump) const</td></tr>
+<tr class="memdesc:afa20085981ff5ed193d4bb2d7b93823a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills-out the stats/info contents of the given <a class="el" href="structipc_1_1shm_1_1classic_1_1stat_1_1Arena__info__dump.html" title="Printable (with knobs in contained util::stat::Info_dump_format) bundling of stats/info pertaining to...">stat::Arena_info_dump</a>: a printable bundling of all stats/info pertaining to <code>*this</code> <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> at this point in time.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#afa20085981ff5ed193d4bb2d7b93823a">More...</a><br /></td></tr>
+<tr class="separator:afa20085981ff5ed193d4bb2d7b93823a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9487dcff44fde9a2c12d64b51c16c85e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9487dcff44fde9a2c12d64b51c16c85e">remove_persistent</a> (flow::log::Logger *logger_ptr, const <a class="el" href="namespaceipc_1_1shm_1_1classic.html#ac0a52218467710995cc6c74538be6012">Shared_name</a> &amp;name, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memitem:a9487dcff44fde9a2c12d64b51c16c85e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9487dcff44fde9a2c12d64b51c16c85e">remove_persistent</a> (flow::log::Logger *logger_ptr, const <a class="el" href="namespaceipc_1_1shm.html#a6596ee36a467c6972aaf50a78b62f547">Shared_name</a> &amp;name, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
 <tr class="memdesc:a9487dcff44fde9a2c12d64b51c16c85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the named SHM pool object.  <a href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9487dcff44fde9a2c12d64b51c16c85e">More...</a><br /></td></tr>
 <tr class="separator:a9487dcff44fde9a2c12d64b51c16c85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e720283945eefe3d941b185e95d2ce1"><td class="memTemplParams" colspan="2">template&lt;typename Handle_name_func &gt; </td></tr>
@@ -155,7 +198,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a71009bb725b4cd68bea4ac99fa81ee2e"><td class="memItemLeft" align="right" valign="top"><a id="a71009bb725b4cd68bea4ac99fa81ee2e" name="a71009bb725b4cd68bea4ac99fa81ee2e"></a>
-const <a class="el" href="namespaceipc_1_1shm_1_1classic.html#ac0a52218467710995cc6c74538be6012">Shared_name</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_pool_name</b></td></tr>
+const <a class="el" href="namespaceipc_1_1shm.html#a6596ee36a467c6972aaf50a78b62f547">Shared_name</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_pool_name</b></td></tr>
 <tr class="memdesc:a71009bb725b4cd68bea4ac99fa81ee2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHM pool name as set immutably at construction. <br /></td></tr>
 <tr class="separator:a71009bb725b4cd68bea4ac99fa81ee2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -171,16 +214,16 @@ Related Functions</h2></td></tr>
 <div class="textblock"><p >A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost.interprocess, as in <code>bipc::managed_shared_memory</code>, with symmetric read/write semantics, compatible with <a class="el" href="namespaceipc_1_1shm_1_1stl.html" title="ipc::shm sub-module providing integration between STL-compliant components (including containers) and...">ipc::shm::stl</a> STL-compliance and SHM-handle borrowing manually or via <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a>. </p>
 <h3>When to use</h3>
 <p >Generally, this is a simple way to work with SHM. It is very easy to set up and has very little infrastructure on top of what is provided by a typically-used subset of bipc's SHM API &ndash; which, itself, is essentially a thin wrapper around a classic OS-supplied SHM pool (segment) API, plus a Boost-supplied heap-like allocation algorithm. Nevertheless this wrapper, when combined with <a class="el" href="namespaceipc_1_1shm_1_1stl.html" title="ipc::shm sub-module providing integration between STL-compliant components (including containers) and...">ipc::shm::stl</a>, is eminently usable and flexible. Its main limitations may or may not be serious in production use, depending on the context. These limitations include the following.</p><ul>
-<li>When buffers are allocated and deallocated, bipc's default memory allocation algorithm &ndash; <code>rbtree_best_fit</code> &ndash; is what is used. (We could also allow for the other supplied algo, <code>simple_seq_fit</code>, or a custom user-supplied one.) While surely care was taken in writing this, in production one might demand something with thread caching and just general, like, industry relevance/experience; a jemalloc or tcmalloc maybe.<ul>
+<li>When buffers are allocated and deallocated, bipc's default memory allocation algorithm &ndash; <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a0803f4c2b4c2be6fe509fff3aa60ecc4" title="The boost.interprocess memory-algorithm used by the pools we set up.">Mem_algo</a> &ndash; is what is used. (We could also allow for the other supplied algo, <code>simple_seq_fit</code>, or a custom user-supplied one.) While surely care was taken in writing this, in production one might demand something with thread caching and just general, like, industry relevance/experience; a jemalloc or tcmalloc maybe.<ul>
 <li>Possible contingency: Not really. In many cases this does not matter too much; but if one wants general performance equal to that of the general heap in a loaded production environment, then <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">classic::Pool_arena</a> is probably not for you. Consider jemalloc-based SHM provided elsewhere in <a class="el" href="namespaceipc_1_1shm.html" title="Modules for SHared Memory (SHM) support.">ipc::shm</a>.</li>
 </ul>
 </li>
 <li>It works within exactly one <em>pool</em> a/k/a <code>mmap()</code>ped segment, and that pool's max size must be specified at creation. Once it is exhausted via un-deallocated allocations, it'll throw exceptions likely to wreak havoc in your application.<ul>
-<li>Possible contingency: You may set the max pool size to a giant value. This will <em>not</em> take it from the OS like Linux: only when a page is actually touched, such as by allocating in it, does that actual RAM get assigned to your application(s). There is unfortunately, at least in Linux, some configurable kernel parameters as to the sum of max pool sizes active at a given time &ndash; <code>ENOSPC</code> (No space left on device) may be emitted when trying to open a pool beyond this. All in all it is a viable approach but may need a measure of finesse.</li>
+<li>Possible contingency: You may set the max pool size to a giant value. This will <em>not</em> take it from the OS like Linux: only when a page is actually touched, such as by allocating in it, does that actual RAM get assigned to your application(s). See the section on RAM use below. All in all it is a viable approach but may need a measure of finesse.</li>
 </ul>
 </li>
 <li>The ability to allocate in a given backing pool via any process's <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> handle to that backing pool &ndash; not to mention deallocate in process B what was allocated in process A &ndash; requires guaranteed read-write capability in all <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a></code>s accessing a given pool. That read-write capability in and of itself (orthogonally to allocations) provides algorithmic possibilities which are not easily available in an asymmetric setup, where only one process can write or deallocate, while others can only borrow handles and read. How is this a limitation, you ask? While providing power and simplicity, it also hugely increases the number and difficulty of dealing with unexpected conditions. That is &ndash; any process can write and corrupt the pool's contents, thus "poisoning" other processes; any process crashing means the others cannot trust the integrity of the pool's contents; things of that nature.<ul>
-<li>Possible contingency: It would not be difficult to enable read-only access from all but one process; we provide such a constructor argument. However, one cannot use the SHM-handle borrowing method <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a> which severely stunts the usefulness of the class in that process and therefore across the system. That said one could imagine somewhat extending <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> to enable lend-borrow and delegated deallocation (and maybe delegated allocation while at it) by adding some internal message-passing (maybe through a supplied <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> or something). Doable but frankly goes against the spirit of simplicty and closeness-to-the-"source-material" cultivated by <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">classic::Pool_arena</a>. The jemalloc-based API available elsewhere in <a class="el" href="namespaceipc_1_1shm.html" title="Modules for SHared Memory (SHM) support.">ipc::shm</a> is the one that happily performs message-passing IPC internally for such reasons. It's a thought though.</li>
+<li>Possible contingency: It would not be difficult to enable read-only access from all but one process; we provide such a constructor argument. However, one cannot use the SHM-handle borrowing method <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a> which severely stunts the usefulness of the class in that process and therefore across the system. That said one could imagine somewhat extending <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> to enable lend-borrow and delegated deallocation (and maybe delegated allocation while at it) by adding some internal message-passing (maybe through a supplied <a class="el" href="classipc_1_1transport_1_1Channel.html" title="Peer to a bundle of 1-2 full-duplex pipe(s), one for transmitting unstructured binary blobs; the othe...">transport::Channel</a> or something). Doable but frankly goes against the spirit of simplicity and closeness-to-the-"source-material" cultivated by <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">classic::Pool_arena</a>. The jemalloc-based API available elsewhere in <a class="el" href="namespaceipc_1_1shm.html" title="Modules for SHared Memory (SHM) support.">ipc::shm</a> is the one that happily performs message-passing IPC internally for such reasons. It's a thought though.</li>
 </ul>
 </li>
 </ul>
@@ -190,20 +233,32 @@ Related Functions</h2></td></tr>
 <li>Any <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a></code> can allocate (and deallocate what it has allocated).</li>
 <li>Any <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a></code> can deallocate what any other <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a></code> has allocated (as long as the correct locally-dereferenceable <code>void*</code> has been obtained in the deallocating process).</li>
 </ul>
-<p >Allocation algorithm: As of this writing the bipc default, <code>rbtree_best_fit</code>. See its description in bipc docs. Note it does not perform any thread-caching like modern <code>malloc()</code>s.</p>
+<p >Allocation algorithm: As of this writing the bipc default, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a0803f4c2b4c2be6fe509fff3aa60ecc4" title="The boost.interprocess memory-algorithm used by the pools we set up.">Mem_algo</a>. See its description in bipc docs. Note it does not perform any thread-caching like modern <code>malloc()</code>s.</p>
 <p >Allocation/deallocation API: See section below for proper use techniques.</p>
 <p >Cleanup: The underlying SHM pool is deleted if and only if one calls <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9487dcff44fde9a2c12d64b51c16c85e" title="Removes the named SHM pool object.">remove_persistent()</a>, supplying it the pool name. This is not invoked internally at all, so it is the user's responsibility. <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a>-managed <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a></code>s will be automatically cleaned up, as <a class="el" href="namespaceipc_1_1session.html" title="Flow-IPC module providing the broad lifecycle and shared-resource organization – via the session conc...">ipc::session</a> strives to clean all persistent shared resources via a general algorithm. See <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9487dcff44fde9a2c12d64b51c16c85e" title="Removes the named SHM pool object.">remove_persistent()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9e720283945eefe3d941b185e95d2ce1" title="Lists all named SHM pool objects currently persisting, invoking the given handler synchronously on ea...">for_each_persistent()</a> doc headers.</p>
 <p >Satisfies <code>Arena</code> requirements for <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">shm::stl::Stateless_allocator</a>: Yes. I.e., it is easy to store STL-compliant containers directly in SHM by using <code>Stateless_allocator&lt;<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>&gt;</code> as the allocator at all levels.</p><ul>
 <li>SHM-stored pointer type provided: Yes, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a07fec7ff0ba494dca0f0a010270cc35f" title="SHM-storable fancy-pointer.">Pointer</a>. This is, in reality, <code>bipc::offset_ptr</code>.</li>
-<li>Non-STL-compliant data structures with pointers, such as linked lists, can be written in terms of <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable ad...">allocate()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d" title="Undoes effects of local allocate() that returned buf_not_null; or another-process&#39;s allocate() that r...">deallocate()</a>, but only if one uses <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a07fec7ff0ba494dca0f0a010270cc35f" title="SHM-storable fancy-pointer.">Pointer</a> as opposed to raw <code>T*</code> pointers. We recommend against this, but if it cannot be avoided due to legacy code or what-not....</li>
+<li>Non-STL-compliant data structures with pointers, such as linked lists, can be written in terms of <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d" title="Undoes effects of local allocate() that returned buf_not_null; or another-process&#39;s allocate() that r...">deallocate()</a>, but only if one uses <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a07fec7ff0ba494dca0f0a010270cc35f" title="SHM-storable fancy-pointer.">Pointer</a> as opposed to raw <code>T*</code> pointers. We recommend against this, but if it cannot be avoided due to legacy code or what-not....</li>
 </ul>
 <p >Handle borrowing support: Yes. <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> directly provides an API for this. Internally it uses minimalistic atomic ref-counting directly in SHM without any IPC messaging used. Due to this internal simplicity this support is symmetric and supports unlimited proxying out of the box. That is, any process of N, each with a <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> open to the same pool named P, can construct a borrowable object, then lend it to any other process which can also lend it to any other of the N processes. Internally the last <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>'s borrowed (or originally lent) handle to reach 0 intra-process ref-count shall invoke the object's dtor and deallocate the underlying buffer. (Algorithms like this = why symmetric read/write capability is fairly central to <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> as written.)</p><ul>
 <li>However, as of this writing, this support is deliberately basic. In particular if a borrower process dies ungracefully (crash that does not execute all destructors, and so on), then the memory will leak until cleanup via <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9487dcff44fde9a2c12d64b51c16c85e" title="Removes the named SHM pool object.">remove_persistent()</a>.</li>
 </ul>
+<p >Thread safety: On a given <code>*this</code> all APIs are safe to call concurrently unless stated otherwise (or qualified) in a specific API's doc header (as of this writing: <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a976772509dde5ff29a46455af2810280" title="Resets arena_stats().">arena_stats_reset()</a>, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#adf5c5a5945c3ef9362d2fbf1900f1873" title="Resets local_stats().">local_stats_reset()</a>) &ndash; with one more exception: <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a" title="Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool ...">commit()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#accdf3f53680a96fcc440f5e1827e0549" title="Closes the pool&#39;s OS handle (FD) that *this keeps open only to enable commit(), returning that resour...">close_shm_object_handle()</a> must not be called concurrently with each other.</p>
+<p >Performance: We omit a high-level assessment here; it depends on the use-case, and a <code>*this</code> provides access to essentially a memory-manager/heap which is a very general data structure. The most relevant factors to use in a high-level analysis are as follows.</p><ul>
+<li>The boost.interprocess memory-algorithm currently selected is <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a0803f4c2b4c2be6fe509fff3aa60ecc4" title="The boost.interprocess memory-algorithm used by the pools we set up.">Mem_algo</a>; it is described in Boost docs.</li>
+<li>Every <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d" title="Undoes effects of local allocate() that returned buf_not_null; or another-process&#39;s allocate() that r...">deallocate()</a> call shall lock one per-arena-in-SHM mutex (itself an in-SHM mutex), do most of its work, and unlock. We emphasize this is (typically) cross-process locking in every <code>[de]<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a></code> from anywhere that executes these ops against a given SHM-pool (not merely <code>*this</code>).<ul>
+<li>Recall that <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> can be called directly; for <code>sizeof(T)</code> in <code>construct&lt;T&gt;()</code>; and potentially many times on behalf of <code>T</code> from its ctor and other allocating ops, if <code>T</code> is <em>or involves</em> STL-compliant type(s) that use(s) (SHM-enabled) allocator(s) (such as the recommended <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">stl::Stateless_allocator</a>).</li>
+<li>Each of those <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> calls is likely to eventually involve a matching <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d" title="Undoes effects of local allocate() that returned buf_not_null; or another-process&#39;s allocate() that r...">deallocate()</a>.</li>
+</ul>
+</li>
+</ul>
+<h3>RAM use: sparse by default; <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a" title="Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool ...">commit()</a> if desired</h3>
+<p >Creating a pool of size <code>pool_sz</code> does not take <code>pool_sz</code> bytes of RAM: a page of it takes RAM (is <em>committed</em>) only once first touched &ndash; by allocation-algorithm book-keeping or by your data. So a large <code>pool_sz</code> costs little up-front. The flip side: should the system be out of RAM-for-SHM (Linux: the configurable size limit of the tmpfs underlying POSIX SHM) at the moment a new page is first touched, there is no error to report; the touching process is killed (SIGBUS).</p>
+<p >If you would rather pay up-front &ndash; and learn of a shortage then, as a civilized error &ndash; call <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a" title="Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool ...">commit()</a>: it commits the entire pool, at any time after construction. Conversely, if you know you won't do so, you may call <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#accdf3f53680a96fcc440f5e1827e0549" title="Closes the pool&#39;s OS handle (FD) that *this keeps open only to enable commit(), returning that resour...">close_shm_object_handle()</a> to release the OS handle (FD) kept around (one per <code>*this</code>) for <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a" title="Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool ...">commit()</a></code>'s sake.</p>
 <h3>Allocation API and how to properly use it</h3>
-<p >The most basic and lowest-level API consists of <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable ad...">allocate()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d" title="Undoes effects of local allocate() that returned buf_not_null; or another-process&#39;s allocate() that r...">deallocate()</a>. We recommend against user code using these, as it is easy to leak and double-free (same as with <code>new</code> and <code>delete</code> in regular heap, except as usual with SHM anything that was not allocated will persist in RAM until <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9487dcff44fde9a2c12d64b51c16c85e" title="Removes the named SHM pool object.">remove_persistent()</a>).</p><ul>
+<p >The most basic and lowest-level API consists of <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d" title="Undoes effects of local allocate() that returned buf_not_null; or another-process&#39;s allocate() that r...">deallocate()</a>. We recommend against user code using these, as it is easy to leak and double-free (same as with <code>new</code> and <code>delete</code> in regular heap, except as usual with SHM anything that was not allocated will persist in RAM until <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9487dcff44fde9a2c12d64b51c16c85e" title="Removes the named SHM pool object.">remove_persistent()</a>).</p><ul>
 <li><a class="el" href="namespaceipc_1_1shm_1_1stl.html" title="ipc::shm sub-module providing integration between STL-compliant components (including containers) and...">shm::stl</a> allocator(s) will use these APIs safely.</li>
-<li>As noted earlier, if one writes a non-STL-compliant data structure (such as a manually written linked list), it is appropriate to use <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable ad...">allocate()</a>, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d" title="Undoes effects of local allocate() that returned buf_not_null; or another-process&#39;s allocate() that r...">deallocate()</a>, and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a07fec7ff0ba494dca0f0a010270cc35f" title="SHM-storable fancy-pointer.">Pointer</a>. It is best to avoid such data structures in favor of <a class="el" href="namespaceipc_1_1shm_1_1stl.html" title="ipc::shm sub-module providing integration between STL-compliant components (including containers) and...">shm::stl</a>-aided STL-compliant structures.</li>
+<li>As noted earlier, if one writes a non-STL-compliant data structure (such as a manually written linked list), it is appropriate to use <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a>, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d" title="Undoes effects of local allocate() that returned buf_not_null; or another-process&#39;s allocate() that r...">deallocate()</a>, and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a07fec7ff0ba494dca0f0a010270cc35f" title="SHM-storable fancy-pointer.">Pointer</a>. It is best to avoid such data structures in favor of <a class="el" href="namespaceipc_1_1shm_1_1stl.html" title="ipc::shm sub-module providing integration between STL-compliant components (including containers) and...">shm::stl</a>-aided STL-compliant structures.</li>
 </ul>
 <p >The next level of API is <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36" title="Constructs an object of given type with given ctor args, having allocated space directly in attached ...">construct()</a>. <code>construct&lt;T&gt;()</code> returns a regular-looking <code>shared_ptr</code>. If it is never lent to another process, then the constructed <code>T</code> will be destroyed automatically as one would expect. If one <em>does</em> properly lend such a <code>shared_ptr</code> (which we call a <em>handle</em>) to another process (and which it can proxy-lend to another process still), then the <code>T</code> will be destroyed by the last process whose handle reaches ref-count 0. No explicit locking on the user's part is required to make this work.</p><ul>
 <li>If <code>T</code> is a POD (plain old data-type), then that's that.</li>
@@ -213,6 +268,30 @@ Related Functions</h2></td></tr>
 </ul>
 <p ><code>T</code> cannot be a native array; and there is no facility for constructing such. Use <code>std::array</code> or <code>boost::array</code> as <code>T</code> if desired. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a9576be0ba8821ea71de561c2b992cf5b" name="a9576be0ba8821ea71de561c2b992cf5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9576be0ba8821ea71de561c2b992cf5b">&#9670;&nbsp;</a></span>Allocator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9576be0ba8821ea71de561c2b992cf5b">ipc::shm::classic::Pool_arena::Allocator</a> =  <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">stl::Stateless_allocator</a>&lt;T, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html">Pool_arena</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convenience alias for a <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">shm::stl::Stateless_allocator</a>&gt; w/r/t <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>; use with <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a39e2a4232f1d38d0556b90cfc92e3ec1" title="Convenience alias for a shm::stl::Arena_activator w/r/t Pool_arena.">Activator</a>. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Pointed-to type for the allocator. See standard C++ <code>Allocator</code> concept. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a72867ce6e363dbc1ab1666768d8a7a09" name="a72867ce6e363dbc1ab1666768d8a7a09"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a72867ce6e363dbc1ab1666768d8a7a09">&#9670;&nbsp;</a></span>Blob</h2>
 
@@ -286,8 +365,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a77acacecacdd45514ebf9db99b4ab4c3" name="a77acacecacdd45514ebf9db99b4ab4c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77acacecacdd45514ebf9db99b4ab4c3">&#9670;&nbsp;</a></span>Pool_arena() <span class="overload">[1/3]</span></h2>
+<a id="a2de53400257ce8d934024287e1135bb3" name="a2de53400257ce8d934024287e1135bb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2de53400257ce8d934024287e1135bb3">&#9670;&nbsp;</a></span>Pool_arena() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -304,7 +383,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceipc_1_1shm_1_1classic.html#ac0a52218467710995cc6c74538be6012">Shared_name</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceipc_1_1shm.html#a6596ee36a467c6972aaf50a78b62f547">Shared_name</a> &amp;&#160;</td>
           <td class="paramname"><em>pool_name</em>, </td>
         </tr>
         <tr>
@@ -323,7 +402,7 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">util::Permissions</a> &amp;&#160;</td>
-          <td class="paramname"><em>perms</em> = <code><a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">util::Permissions</a>{}</code>, </td>
+          <td class="paramname"><em>perms</em> = <code>{}</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -352,8 +431,8 @@ template&lt;typename T &gt; </div>
     <tr><td class="paramname">pool_name</td><td>Absolute name at which the persistent SHM pool lives. </td></tr>
     <tr><td class="paramname">mode_tag</td><td>API-choosing tag <a class="el" href="namespaceipc_1_1util.html#ad1ca1cab79a35e1eb1c47037a0973cd8" title="Tag value indicating an atomic create-unless-exists-else-fail operation.">util::CREATE_ONLY</a>. </td></tr>
     <tr><td class="paramname">perms</td><td>Permissions to use for creation. Suggest the use of <a class="el" href="namespaceipc_1_1util.html#abda2ce5bcdbc26ca63d667b87818439c" title="Maps general Permissions_level specifier to low-level Permissions value, when the underlying resource...">util::shared_resource_permissions()</a> to translate from one of a small handful of levels of access; these apply almost always in practice. The applied permissions shall <em>ignore</em> the process umask and shall thus exactly match <code>perms</code>, unless an error occurs. </td></tr>
-    <tr><td class="paramname">pool_sz</td><td>Pool size. Note: OS, namely Linux, shall not in fact take (necessarily) this full amount from general availability but rather a small amount. Chunks of RAM (pages) shall be later reserved as they begin to be used, namely via the allocation API. It may be viable to set this to a quite large value to avoid running out of pool space. However watch out for (typically configurable) kernel parameters as to the sum of sizes of active pools. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: various. Most likely creation failed due to permissions, or it already existed. An <code>ENOSPC</code> (No space left on device) error means the aforementioned kernel parameter has been hit (Linux at least); pool size rebalancing in your overall system may be required (or else one might tweak the relevant kernel parameter(s)). </td></tr>
+    <tr><td class="paramname">pool_sz</td><td>The value to be returned by <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93" title="Arena (in this case, arena=pool) size in bytes as configured at arena/pool creation; never changes.">arena_size()</a>. See potentially non-trivial notes on that method, particularly regarding the viability of setting this to a large value + effect thereof on actual RAM use over time. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: various. Most likely creation failed due to permissions, or it already existed. </td></tr>
   </table>
   </dd>
 </dl>
@@ -378,7 +457,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceipc_1_1shm_1_1classic.html#ac0a52218467710995cc6c74538be6012">Shared_name</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceipc_1_1shm.html#a6596ee36a467c6972aaf50a78b62f547">Shared_name</a> &amp;&#160;</td>
           <td class="paramname"><em>pool_name</em>, </td>
         </tr>
         <tr>
@@ -426,8 +505,8 @@ template&lt;typename T &gt; </div>
     <tr><td class="paramname">pool_name</td><td>Absolute name at which the persistent SHM pool lives. </td></tr>
     <tr><td class="paramname">mode_tag</td><td>API-choosing tag <a class="el" href="namespaceipc_1_1util.html#a5664539b3d75d6d10cdfebf6eac5382d" title="Tag value indicating an open-if-exists-else-create operation.">util::OPEN_OR_CREATE</a>. </td></tr>
     <tr><td class="paramname">perms_on_create</td><td>Permissions to use for creation. Suggest the use of <a class="el" href="namespaceipc_1_1util.html#abda2ce5bcdbc26ca63d667b87818439c" title="Maps general Permissions_level specifier to low-level Permissions value, when the underlying resource...">util::shared_resource_permissions()</a> to translate from one of a small handful of levels of access; these apply almost always in practice. The applied permissions shall <em>ignore</em> the process umask and shall thus exactly match <code>perms_on_create</code>, unless an error occurs. </td></tr>
-    <tr><td class="paramname">pool_sz</td><td>Pool size. See note in first ctor. </td></tr>
-    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: various. Most likely creation failed due to permissions, or it already existed. </td></tr>
+    <tr><td class="paramname">pool_sz</td><td>The value to be returned by <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93" title="Arena (in this case, arena=pool) size in bytes as configured at arena/pool creation; never changes.">arena_size()</a> (ignored unless creation occurs). See potentially non-trivial notes on that method, particularly regarding the viability of setting this to a large value + effect thereof on actual RAM use over time. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: various. Most likely creation failed due to permissions. </td></tr>
   </table>
   </dd>
 </dl>
@@ -452,7 +531,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceipc_1_1shm_1_1classic.html#ac0a52218467710995cc6c74538be6012">Shared_name</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceipc_1_1shm.html#a6596ee36a467c6972aaf50a78b62f547">Shared_name</a> &amp;&#160;</td>
           <td class="paramname"><em>pool_name</em>, </td>
         </tr>
         <tr>
@@ -488,13 +567,14 @@ template&lt;typename T &gt; </div>
 
 <p>Construct <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> accessor object to existing named SHM pool. </p>
 <p >If it does not exist, it is an error. If an error is emitted via <code>*err_code</code>, methods shall return sentinel/<code>false</code> values.</p>
+<dl class="section warning"><dt>Warning</dt><dd>Be careful with <code>read_only = true</code>. See the requirements and notes below. Furthermore note that it is wrong to rely on <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999ba26670db5520749a54efb3aa9210a99e4" title="SHM-classic pool/arena, requested to be opened in native read-only mode, was found by name,...">error::Code::S_SHM_POOL_OPEN_READ_ONLY_FOUND_BUT_UNINIT</a> as merely a safe eventuality like pool-name-not-found. That is: if it is indeed emitted, you only got lucky; it is possible that, instead, the lockless internal check for initialized-state <em>does</em> pass, but the internal metadata are in some halfway state. Instead be sure to complete a creating-ctor invocation (in any process) before attempting this ctor form.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">logger_ptr</td><td>Logger to use for subsequently logging. </td></tr>
     <tr><td class="paramname">pool_name</td><td>Absolute name at which the persistent SHM pool lives. </td></tr>
     <tr><td class="paramname">mode_tag</td><td>API-choosing tag <a class="el" href="namespaceipc_1_1util.html#a6a3a6ec85242d073df96978c63464078" title="Tag value indicating an atomic open-if-exists-else-fail operation.">util::OPEN_ONLY</a>. </td></tr>
-    <tr><td class="paramname">read_only</td><td>If and only if <code>true</code> the calling process will be prevented by the OS from writing into the pages mapped by <code>*this</code> subsequently. Such attempts will lead to undefined behavior. Note that this includes any attempt at allocating as well as writing into allocated (or otherwise) address space. Further note that, internally, deallocation &ndash; directly or otherwise &ndash; involves (in this implementation) writing and is thus also disallowed. Lastly, and quite significantly, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a> can be called, but undefined behavior shall result when the resulting <code>shared_ptr</code> (<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a662a55c9ba6eb5c389ddf9780ee801cb" title="Outer handle to a SHM-stored object; really a regular-looking shared_ptr but with custom deleter that...">Handle</a>) group reaches ref-count 0, as internally that requires a decrement of a counter (which is a write). Therefore <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a> cannot be used either. Therefore it is up to you, in that case, to (1) never call <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d" title="Undoes effects of local allocate() that returned buf_not_null; or another-process&#39;s allocate() that r...">deallocate()</a> directly or otherwise (i.e., through an allocator); and (2) to design your algorithms in such a way as to never require lending to this <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>. In practice this would be quite a low-level, stunted use of <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a></code> across 2+ processes; but it is not necessarily useless. (There might be, say, test/debug/reporting use cases.) </td></tr>
-    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: various. Most likely creation failed due to permissions, or it already existed. </td></tr>
+    <tr><td class="paramname">read_only</td><td>If and only if <code>true</code> the calling process will be prevented by the OS from writing into the pages mapped by <code>*this</code> subsequently. Such attempts will lead to undefined behavior (Linux: segmentation fault). Note that this includes any attempt at allocating as well as writing into allocated (or otherwise) address space. Further note that, internally, deallocation &ndash; directly or otherwise &ndash; involves (in this implementation) writing and is thus also disallowed. Moreover, and quite significantly, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a> cannot be called. Therefore it is up to you, in that case, to (1) never call <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a394973b7cfb67b67113043810804337d" title="Undoes effects of local allocate() that returned buf_not_null; or another-process&#39;s allocate() that r...">deallocate()</a> directly or otherwise (i.e., through an allocator); and (2) to design your algorithms in such a way as to never require lending to this <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>. In practice this would be quite a low-level, stunted use of <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a></code> across 2+ processes; but it is not necessarily useless. (There might be, say, test/debug/reporting use cases. In particular it's possible to read <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a> which is a clean use-case. See <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a> doc header.) Lastly, a caution: Do not use this ctor form (with <code>read_only = true</code>) until you know <code>pool_name</code> has been fully created/initialized via a creating ctor. </td></tr>
+    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: various. Most likely <code>pool_name</code> could not be found, or an access control error, or &ndash; with <code>read_only = true</code> only &ndash; <a class="el" href="namespaceipc_1_1shm_1_1classic_1_1error.html#ab01754e54c67d287addcf7a5c6ce999ba26670db5520749a54efb3aa9210a99e4" title="SHM-classic pool/arena, requested to be opened in native read-only mode, was found by name,...">error::Code::S_SHM_POOL_OPEN_READ_ONLY_FOUND_BUT_UNINIT</a>. (If you see the latter you are not using the read-only ctor form properly as indicated above; per the warning above undefined behavior could have occurred instead.) </td></tr>
   </table>
   </dd>
 </dl>
@@ -538,15 +618,15 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable address to the first byte. </p>
-<p >Returns null if no pool attached to <code>*this</code>. Throws exception if ran out of space.</p>
+<p>Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable address to the first byte. </p>
+<p >Returns null if and only if no pool attached to <code>*this</code>. Throws on any other error (details below).</p>
 <p >Take care to only use this when and as appropriate; see class doc header notes on this.</p>
-<h3>Rationale for throwing exception instead of returning null</h3>
-<p >This does go against the precedent in most of <a class="el" href="namespaceipc.html" title="Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performanc...">ipc</a>, which either returns sentinel values or uses Flow-style <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> based emission (out-arg or exception). The original reason may appear somewhat arbitrary and is 2-fold:</p><ul>
-<li>It's what bipc does (throws <code>bipc::bad_alloc_exception</code>), and indeed we propagate what it throws.</li>
-<li>It's what STL-compliant allocators (such as our own in <a class="el" href="namespaceipc_1_1shm_1_1stl.html" title="ipc::shm sub-module providing integration between STL-compliant components (including containers) and...">shm::stl</a>) must do; and they will invoke this (certainly not exclusively).</li>
-</ul>
-<p >I (ygoldfel) claim it's a matter of... synergy, maybe, or tradition. It really is an exceptional situation to run out of pool space. Supposing some system is built on-top of N pools, of which <code>*this</code> is one, it can certainly catch it (and in that case it shouldn't be frequent enough to seriously affect perf by virtue of slowness of exception-throwing/catching) and use another pool. Granted, it could use Flow semantics, which would throw only if an <code>Error_code*</code> supplied were null, but that misses the point that <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable ad...">allocate()</a> failing to allocate due to lack of space is the only thing that can really go wrong and is exceptional. Adding an <code>Error_code* err_code</code> out-arg would hardly add much value.</p>
+<h3>On running out of space</h3>
+<p >If there is no space for <code>n</code> bytes and associated book-keeping: Throws exception <code>std::bad_alloc</code>.</p>
+<dl class="section note"><dt>Note</dt><dd>Attention: that's <code>std::</code> and not <code>boost::interprocess::</code>. This is intended to be consistent across SHM-providers like SHM-classic and SHM-jemalloc (jemalloc::Ipc_arena::allocate()).</dd></dl>
+<p>It is salient that an allocator's (e.g., our <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">stl::Stateless_allocator</a>) <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a></code> may forward to us and is allowed to "throw exceptions" (no particular exception type is mandated or recommended). So we are behaving consistently with letting an allocator's <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a></code> simply forward to this method (of some <code>*this</code>) and let it throw. Assuming one operates on an active <code>*this</code> (that did not fail construction), there is no need to check for null return.</p>
+<h3>Other errors</h3>
+<p >They throw exceptions. All are out of the mainstream. (One we know of as of this writing is a bipc <code>lock_exception</code>, probably if a process crashed while holding the in-SHM-pool lock.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>Desired buffer size in bytes. Must not be 0 (behavior undefined/assertion may trip). </td></tr>
@@ -554,6 +634,113 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Non-null on success (see above); null if ctor failed to attach pool. </dd></dl>
+
+</div>
+</div>
+<a id="a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93" name="a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93">&#9670;&nbsp;</a></span>arena_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ipc::shm::classic::Pool_arena::arena_size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Arena (in this case, arena=pool) size in bytes as configured at arena/pool creation; never changes. </p>
+<p >This shall equal <code>pool_sz</code> given to the <code>Create_only</code> or <code>Open_or_create</code> ctor overload; but recall that that may or may not have been <code>*this</code> particular <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a></code> ctor &ndash; but the one that actually was the first to in fact create the SHM-pool.</p>
+<dl class="section note"><dt>Note</dt><dd>OS, namely Linux, shall not in fact take (necessarily) this full amount from general availability but rather a small amount. Chunks of RAM (pages) shall be later reserved as they begin to be used, namely via the allocation API. It may be viable to set this to a quite large value to avoid running out of pool space. </dd>
+<dd>
+It is not named <code>stat_arena_size()</code> to indicate it's more of a config value rather than a dynamically-moving stat. See also <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a638d32f21b3ed455e3b583f096686149" title="How much of arena_size() is currently available for allocations; that is, not currently used by curre...">arena_stat_free_size()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. (Corner case: If ctor failed to attach a pool, we return zero.) </dd></dl>
+
+</div>
+</div>
+<a id="a638d32f21b3ed455e3b583f096686149" name="a638d32f21b3ed455e3b583f096686149"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a638d32f21b3ed455e3b583f096686149">&#9670;&nbsp;</a></span>arena_stat_free_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ipc::shm::classic::Pool_arena::arena_stat_free_size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How much of <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93" title="Arena (in this case, arena=pool) size in bytes as configured at arena/pool creation; never changes.">arena_size()</a> is currently available for allocations; that is, not currently used by currently allocated items/internally required small metadata. </p>
+<p >Perf: Internally, it forwards to a boost.ipc accessor which, as of this writing, is doing an unsynchronized load. Basically: a normal memory read of small (safe against corruption from concurrency) datum &ndash; of a datum that can change concurrently (due to allocation/deallocations).</p>
+<p >Corollary: Use only as a guide for logging/reporting/monitoring. It may not be perfectly coherent among threads, and so on.</p>
+<dl class="section note"><dt>Note</dt><dd>As with <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93" title="Arena (in this case, arena=pool) size in bytes as configured at arena/pool creation; never changes.">arena_size()</a>, do not treat this as a reflection of general RAM availability. The free-size reported here may include pages currently available for general use (not yet touched by preceding, now-freed allocations et al) and ones now reserved for this SHM-pool (touched previously but now not-allocated), or an unknown mix thereof.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. (Corner case: If ctor failed to attach a pool, we return zero.) </dd></dl>
+
+</div>
+</div>
+<a id="a1693d5be7b8162e853cb21aa22ff5caf" name="a1693d5be7b8162e853cb21aa22ff5caf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1693d5be7b8162e853cb21aa22ff5caf">&#9670;&nbsp;</a></span>arena_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structipc_1_1shm_1_1classic_1_1stat_1_1Arena__stats.html">stat::Arena_stats</a> * ipc::shm::classic::Pool_arena::arena_stats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cumulative stats relevant to one SHM-classic arena &ndash; in this case single SHM-pool in shared memory, accessed via 1+ <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> objects (like this one) over time. </p>
+<p >(Returns null in a pathological corner case; see below.) A few interrelated, essential points about the returned value and its pointee:</p><ul>
+<li>The returned value is a pointer into something stored in-SHM, and since <code>*this</code> guarantees the mapping to that SHM area (pool), the pointee shall remain valid through <code>*this</code> lifetime; after that accessing it is undefined behavior.</li>
+<li>The individual data members (a/k/a stats, stat-members) are all <code>atomic</code>s or essentially atomic in nature (the latter = any <code>Histogram_counter</code>s) and may change at any time. Please see <code>flow::util::stat</code> doc header for background on atomic, concurrently-changing stats for a full picture; also about <code>flow::util::stat::stat[_set]_*()</code> utilities that help consume them. The highlights:<ul>
+<li>Again, they can change at any time, so there can be a slight mutual incoherence between any two values one grabs (by dereferencing returned pointer) even in immediate succession.</li>
+<li>For best performance &ndash; though admittedly typically a stats-accessor like this is assumed not to be called frequently enough to matter &ndash; the <code>atomic</code> fields should be accessed via <code>util::stat::load()</code>.</li>
+<li>If <code>S</code> is the returned pointer, it may be useful to give <code>*S</code> as the source arg to <code>flow::util::stat::stats_assign()</code> and/or <code>ostream &lt;&lt; flow::util::stat::print()</code> (et al). The latter and/or <code>stat::stats_to_ostream()</code> pretty-print the stats.<ul>
+<li>Tip: If also grabbing/printing <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9a295e3d3917e8792d67083561da0148" title="Cumulative stats relevant to *this Pool_arena object – a Pool_arena – and excluding those in arena_st...">local_stats()</a>: Suggest identifying <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9a295e3d3917e8792d67083561da0148" title="Cumulative stats relevant to *this Pool_arena object – a Pool_arena – and excluding those in arena_st...">local_stats()</a> with a disambiguating qualifier like <code>"arena[]"</code> and <code>"local[]"</code> respectively. Some fields may look ~duplicate otherwise and thus confuse people.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p >A use-case for the <code>OPEN_ONLY</code>/<code>read_only = true</code> ctor form: One can monitor <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a> through such a <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> object all while ensuring at the OS-level that it is impossible to modify the pool's contents through it. So it becomes potentially a pure/safe stats-observer; pretty clean.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9a295e3d3917e8792d67083561da0148" title="Cumulative stats relevant to *this Pool_arena object – a Pool_arena – and excluding those in arena_st...">local_stats()</a> which tracks stats relevant to <code>*this</code> particular <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> <em>object</em>, as opposed to <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a> that tracks events in the in-SHM arena regardless of <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> object. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Does not include <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93" title="Arena (in this case, arena=pool) size in bytes as configured at arena/pool creation; never changes.">arena_size()</a> or <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a638d32f21b3ed455e3b583f096686149" title="How much of arena_size() is currently available for allocations; that is, not currently used by curre...">arena_stat_free_size()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See above. (Corner case: If ctor failed to attach a pool, we return null.) </dd></dl>
+
+</div>
+</div>
+<a id="a976772509dde5ff29a46455af2810280" name="a976772509dde5ff29a46455af2810280"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a976772509dde5ff29a46455af2810280">&#9670;&nbsp;</a></span>arena_stats_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ipc::shm::classic::Pool_arena::arena_stats_reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resets <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a>. </p>
+<p >The formal meaning of a reset is discussed in <code>flow::util::stat</code> doc header.</p>
+<dl class="section note"><dt>Note</dt><dd>Does not affect <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93" title="Arena (in this case, arena=pool) size in bytes as configured at arena/pool creation; never changes.">arena_size()</a> or <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a638d32f21b3ed455e3b583f096686149" title="How much of arena_size() is currently available for allocations; that is, not currently used by curre...">arena_stat_free_size()</a>.</dd></dl>
+<h3>Thread safety</h3>
+<p >Generally safe to call not just versus any API on <code>*this</code> but also on any other <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>'s referring to the same SHM-pool. (<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a> called concurrently will return potentially some values pre-reset and some values post-; but we consider that known and safe behavior under concurrent stat updates.)</p>
+<p >There is potentially some question whether it is safe to call concurrently with <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a976772509dde5ff29a46455af2810280" title="Resets arena_stats().">arena_stats_reset()</a> also being called (whether on <code>*this</code> or other same-pool-pointing <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>). It is safe as of this writing, because <code>flow::util::stat::stats_reset()</code> is formally documented as safe if called properly (which we, internally, do).</p>
+<p >Informally, though, we recommend against calling this method during itself on the same SHM-pool/arena; and somewhat less strongly but also recommend against calling it concurrently with <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a>. Doing so suggests a potentially unpleasantly behaving application w/r/t stat consumption and/or may make reasoning about and maintenance of the application more difficult. </p>
 
 </div>
 </div>
@@ -599,7 +786,61 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Non-null on success; <code>null</code> if ctor failed to attach a pool, or if <code>serialization</code> is invalid (best-effort check). </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Non-null on success; <code>nullptr</code> if ctor failed to attach a pool, or if <code>serialization</code> is invalid (best-effort check). </dd></dl>
+
+</div>
+</div>
+<a id="accdf3f53680a96fcc440f5e1827e0549" name="accdf3f53680a96fcc440f5e1827e0549"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accdf3f53680a96fcc440f5e1827e0549">&#9670;&nbsp;</a></span>close_shm_object_handle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::shm::classic::Pool_arena::close_shm_object_handle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Closes the pool's OS handle (FD) that <code>*this</code> keeps open only to enable <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a" title="Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool ...">commit()</a>, returning that resource to the system; <code>*this</code> remains otherwise fully operational, except that <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a" title="Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool ...">commit()</a> shall subsequently no-op. </p>
+<p >Returns <code>false</code> without doing anything if no pool is attached to <code>*this</code>. Idempotent.</p>
+<p >Once you know you won't <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a" title="Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool ...">commit()</a> (ever or subsequently), it is reasonable to call this, if FDs are a concern as a resource.</p>
+<dl class="section return"><dt>Returns</dt><dd><code>false</code> if ctor failed to attach a pool; else <code>true</code> (also logs INFO message). </dd></dl>
+
+</div>
+</div>
+<a id="a131985501028c26f9ffedecaf954cc1a" name="a131985501028c26f9ffedecaf954cc1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a131985501028c26f9ffedecaf954cc1a">&#9670;&nbsp;</a></span>commit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ipc::shm::classic::Pool_arena::commit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool cannot fail for lack of RAM. </p>
+<p >Returns <code>false</code> without doing anything if no pool is attached to <code>*this</code>; or after <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#accdf3f53680a96fcc440f5e1827e0549" title="Closes the pool&#39;s OS handle (FD) that *this keeps open only to enable commit(), returning that resour...">close_shm_object_handle()</a>. Otherwise returns <code>true</code>.</p>
+<dl class="section see"><dt>See also</dt><dd>class doc header section on RAM use.</dd></dl>
+<p>It can be called on any <code>*this</code> accessing the pool, regardless of whether it created the pool (except one opened with <code>read_only</code>: that may emit an error), at any time, any number of times. A repeat call does nothing unless pages were decommitted since (holes punched, e.g., in Linux via <code>madvise(MADV_REMOVE)</code> on the mapping).</p>
+<p >Be ready for it to fail when the attempt would exceed a system limit on RAM use (Linux: the configurable size limit of the tmpfs underlying POSIX SHM; might default to half of physical RAM or, in containers, something like 64Mi bytes). In that case the pool remains as it was (sparse) and fully usable; and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a131985501028c26f9ffedecaf954cc1a" title="Commits (takes RAM for) every page of the pool not yet committed, so that subsequent use of the pool ...">commit()</a> may be retried later.</p>
+<p >Logs WARNING on error; other at most TRACE-logs.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">err_code</td><td>See <code>flow::Error_code</code> docs for error reporting semantics. <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> generated: various. Most likely it'll be the no-space-left error described above: this would likely be a <code>no_space_on_device</code> code. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if the operation was attempted (even if <code>*err_code</code> came out truthy!); <code>false</code> if no-op (see above: ctor failed to attach a pool; or already did <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#accdf3f53680a96fcc440f5e1827e0549" title="Closes the pool&#39;s OS handle (FD) that *this keeps open only to enable commit(), returning that resour...">close_shm_object_handle()</a>). </dd></dl>
 
 </div>
 </div>
@@ -622,15 +863,21 @@ template&lt;typename T , typename... Ctor_args&gt; </div>
 </div><div class="memdoc">
 
 <p>Constructs an object of given type with given ctor args, having allocated space directly in attached SHM pool, and returns a ref-counted handle that (1) guarantees destruction and deallocation shall occur once no owners hold a reference; and (2) can be lent to other processes (and other processes still indefinitely), thus adding owners beyond this process, via <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#acb300e64f92ab0aa5b70f8313c79a899" title="Adds an owner process to the owner count of the given construct()-created handle, and returns an opaq...">lend_object()</a>/borrow_object(). </p>
-<p >Returns null if no pool attached to <code>*this</code>. Throws exception if ran out of space.</p>
-<p >Is better to use this than <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable ad...">allocate()</a> whenever possible; see class doc header notes on this.</p>
+<p >Returns null if no pool attached to <code>*this</code>. Throws on any other error (details below).</p>
+<p >Is better to use this than <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> whenever possible; see class doc header notes on this.</p>
 <p >Note that that there is no way to <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ab9f7ea056a55183d00dcbce573afcf36" title="Constructs an object of given type with given ctor args, having allocated space directly in attached ...">construct()</a></code> a native array. If that is your aim please use <code>T = std::array&lt;&gt;</code> or similar.</p>
+<h3>On running out of space (or otherwise failing) in <code>allocate(sizeof(T) + ...)</code></h3>
+<p >The first step in this method is to allocate the outer-layer buffer sized for the new <code>T</code> itself along with some internal book-keeping bytes. If this fails: the method throws as <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> doc header which describes the relevant throwing semantics.</dd></dl>
+<h3>If <code>T</code> constructor throws</h3>
+<p >The thrown exception propagates to our caller upon undoing the <code>allocate(sizeof(T) + ...)</code> preceding the ctor call.</p>
+<p >Corollary + context: A particular sub-case of this is that, while executing <code>T</code> ctor, a subordinate &ndash; typically/recommendedly via allocator-furnished container-containing type <code>T</code> &ndash; <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a></code> threw. We guarantee that our <code>allocate(sizeof(T) + ...)</code> is undone. In addition: A properly coded (at all nesting-layers) container-containing type <code>T</code>, using (at all nesting-layers) a proper SHM-supporting allocator shall undo all <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a></code>s that had succeeded up to the one that failed. This method itself can only take care of its own <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a></code>, which as just noted it does.</p>
 <h3>Integration with <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">shm::stl::Stateless_allocator</a></h3>
-<p >This method, bracketing the invocation of the <code>T</code> ctor, sets the thread-local <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of a the given thread&#39;s currently active SHM-aware Are...">shm::stl::Arena_activator</a>&lt;<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>&gt;</code> context to <code>this</code>. Therefore the caller need not do so. If <code>T</code> does not store an STL-compliant structure that uses <code>Stateless_allocator</code>, then this is harmless albeit a small perf hit. If <code>T</code> does do so, then it is a convenience.</p>
-<p >Arguably more importantly: The returned <code>shared_ptr</code> is such that when garbage-collection of the created data structure does occur &ndash; which may occur in this process, but via <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#acb300e64f92ab0aa5b70f8313c79a899" title="Adds an owner process to the owner count of the given construct()-created handle, and returns an opaq...">lend_object()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a> may well occur in another process &ndash; the <code>T::~T()</code> <em>dtor</em> call shall also be bracketed by the aforementioned context. Again: If <code>T</code> does not rely on <code>Stateless_allocator</code>, then it's harmless; but if it <em>does</em> then doing this is quite essential. That is because the user cannot, typically (or at least sufficiently easily), control the per-thread allocator context at the time of dtor call &ndash; simply because who knows who or what will be running when the cross-process ref-count reaches 0.</p>
+<p >This method, bracketing the invocation of the <code>T</code> ctor, sets the thread-local <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Arena__activator.html" title="RAII-style class operating a stack-like notion of the given thread&#39;s currently active SHM-aware Arena...">shm::stl::Arena_activator</a>&lt;<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a>&gt;</code> context to <code>this</code>. Therefore the caller need not do so. If <code>T</code> does not store an STL-compliant structure that uses <code>Stateless_allocator</code>, then this is harmless albeit a small perf hit (also skipped for all trivially-destructible <code>T</code>). If <code>T</code> does do so, then it is a convenience.</p>
+<p >Arguably more importantly: The returned <code>shared_ptr</code> is such that when garbage-collection of the created data structure does occur &ndash; which may occur in this process, but via <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#acb300e64f92ab0aa5b70f8313c79a899" title="Adds an owner process to the owner count of the given construct()-created handle, and returns an opaq...">lend_object()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#ad2f2b767d7da42e7e57592cc029386e5" title="Completes the cross-process operation begun by lend_object() that returned serialization; to be invok...">borrow_object()</a> may well occur in another process &ndash; the <code>T::~T()</code> <em>dtor</em> call shall also be bracketed by the aforementioned context. Again: If <code>T</code> does not rely on <code>Stateless_allocator</code>, then it's harmless; but if it <em>does</em>, then doing this is quite essential. That is because the user cannot, typically (or at least sufficiently easily), control the per-thread allocator context at the time of dtor call &ndash; simply because who knows who or what will be running when the cross-process ref-count reaches 0.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>Object type. See class doc header for discussion on appropriate properties of <code>T</code>. Short version: PODs work; STL nested container+POD combos work, as long as a <a class="el" href="namespaceipc_1_1shm_1_1stl.html" title="ipc::shm sub-module providing integration between STL-compliant components (including containers) and...">shm::stl</a> allocator is used at all levels; manually-implemented non-STL-compliant data structures work if care is taken to use <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable ad...">allocate()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a07fec7ff0ba494dca0f0a010270cc35f" title="SHM-storable fancy-pointer.">Pointer</a>. </td></tr>
+    <tr><td class="paramname">T</td><td>Object type. See class doc header for discussion on appropriate properties of <code>T</code>. Short version: PODs work; STL nested container+POD combos work, as long as a <a class="el" href="namespaceipc_1_1shm_1_1stl.html" title="ipc::shm sub-module providing integration between STL-compliant components (including containers) and...">shm::stl</a> allocator is used at all levels; manually-implemented non-STL-compliant data structures work if care is taken to use <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a07fec7ff0ba494dca0f0a010270cc35f" title="SHM-storable fancy-pointer.">Pointer</a>. </td></tr>
     <tr><td class="paramname">Ctor_args</td><td><code>T</code> ctor arg types. </td></tr>
   </table>
   </dd>
@@ -641,7 +888,7 @@ template&lt;typename T , typename... Ctor_args&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Non-null on success; <code>null</code> if ctor failed to attach a pool. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Non-null on success; <code>nullptr</code> if ctor failed to attach a pool. </dd></dl>
 
 </div>
 </div>
@@ -669,7 +916,7 @@ template&lt;typename T , typename... Ctor_args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Undoes effects of local <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable ad...">allocate()</a> that returned <code>buf_not_null</code>; or another-process's <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-derefernceable ad...">allocate()</a> that returned pointer whose locally-dereferenceable equivalent is <code>but_not_null</code>. </p>
+<p>Undoes effects of local <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> that returned <code>buf_not_null</code>; or another-process's <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9da3a100a0b7199644edbadacc9083c9" title="Allocates buffer of specified size, in bytes, in the accessed pool; returns locally-dereferenceable a...">allocate()</a> that returned pointer whose locally-dereferenceable equivalent is <code>but_not_null</code>. </p>
 <p >Returns <code>false</code> if and only if no pool attached to <code>*this</code>. Does not throw exception. Behavior is undefined if <code>buf_not_null</code> is not as described above; in particular if it is null.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -725,6 +972,41 @@ template&lt;typename Handle_name_func &gt; </div>
 
 </div>
 </div>
+<a id="afa20085981ff5ed193d4bb2d7b93823a" name="afa20085981ff5ed193d4bb2d7b93823a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa20085981ff5ed193d4bb2d7b93823a">&#9670;&nbsp;</a></span>info_dump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ipc::shm::classic::Pool_arena::info_dump </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#aab4041e7a2fe59e4c1d23f1d6cbec4be">Info_dump</a> *&#160;</td>
+          <td class="paramname"><em>target_info_dump</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fills-out the stats/info contents of the given <a class="el" href="structipc_1_1shm_1_1classic_1_1stat_1_1Arena__info__dump.html" title="Printable (with knobs in contained util::stat::Info_dump_format) bundling of stats/info pertaining to...">stat::Arena_info_dump</a>: a printable bundling of all stats/info pertaining to <code>*this</code> <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> at this point in time. </p>
+<p >To summarize the resulting <code>*target_info_dump</code>:</p><ul>
+<li>Stats/info stored by-value; can be queried in peace. They won't concurrently change nor become invalid when <code>*this</code> <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> is destroyed.</li>
+<li>Can be printed to an <code>ostream</code> via <code>ostream&lt;&lt;</code>. <code>-&gt;m_fmt</code> (<code>Info_dump_format</code>) has output-format knobs, adjusting which ahead of the <code>&lt;&lt;</code> will affect the output.<ul>
+<li>As usual: can <code>FLOW_LOG_...(*target_info_dump)</code>, <code>boost::lexical_cast&lt;string&gt;(*target_info_dump)</code>, <code>flow::util::ostream_op_string(*target_info_dump)</code>.</li>
+</ul>
+</li>
+</ul>
+<h3>Rationale</h3>
+<p >This is a "get me everything this-arena-related, all in one nicely-printable thing" operation. For finer-grained access to the same information, use the individual accessors &ndash; <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a>, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9a295e3d3917e8792d67083561da0148" title="Cumulative stats relevant to *this Pool_arena object – a Pool_arena – and excluding those in arena_st...">local_stats()</a>, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a772cc8b0c5ae8f8b3b1e1e9c0f9b1f93" title="Arena (in this case, arena=pool) size in bytes as configured at arena/pool creation; never changes.">arena_size()</a>, <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a638d32f21b3ed455e3b583f096686149" title="How much of arena_size() is currently available for allocations; that is, not currently used by curre...">arena_stat_free_size()</a> &ndash; each of which the corresponding <a class="el" href="structipc_1_1shm_1_1classic_1_1stat_1_1Arena__info__dump.html" title="Printable (with knobs in contained util::stat::Info_dump_format) bundling of stats/info pertaining to...">stat::Arena_info_dump</a> member documents as its source. (The stat-sets can also be <code>&lt;&lt; print(...)</code>ed individually and post-processed via <code>flow::util::stat</code> utilities; the reset ops <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a976772509dde5ff29a46455af2810280" title="Resets arena_stats().">arena_stats_reset()</a> and <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#adf5c5a5945c3ef9362d2fbf1900f1873" title="Resets local_stats().">local_stats_reset()</a> are likewise available.)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target_info_dump</td><td>The non-<code>-&gt;m_fmt</code> parts shall be assigned. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ad2d54cc87b56613bba32aabd2c52ef13" name="ad2d54cc87b56613bba32aabd2c52ef13"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad2d54cc87b56613bba32aabd2c52ef13">&#9670;&nbsp;</a></span>is_handle_in_arena()</h2>
 
@@ -744,7 +1026,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Returns <code>true</code> if and only if <code>handle</code> came from either <code>this-&gt;construct&lt;T&gt;()</code> or <code>this-&gt;borrow_object&lt;T&gt;()</code>. </p>
-<p >Another way of saying that is: if and only if <code>handle</code> may be passed to <code>this-&gt;lend_object&lt;T&gt;()</code>. (The words "came from" mean "was returned by or is a copy/move of one that was," or equivalently "belongs to the `shared_ptr` group of one that was returned by.")</p>
+<p >Another way of saying that is: if and only if <code>handle</code> may be passed to <code>this-&gt;lend_object&lt;T&gt;()</code>. (The words "came from" mean "was returned by or is a copy/move of one that was," or equivalently "belongs to the ref-counting pointer group of one that was returned by.")</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">handle</td><td>An object, or copy/move of an object, returned by <code>construct&lt;T&gt;()</code> or <code>borrow_object&lt;T&gt;()</code> of <em>a</em> <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> (not necessarily <code>*this</code>). </td></tr>
@@ -792,6 +1074,52 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a9a295e3d3917e8792d67083561da0148" name="a9a295e3d3917e8792d67083561da0148"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a295e3d3917e8792d67083561da0148">&#9670;&nbsp;</a></span>local_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structipc_1_1shm_1_1classic_1_1stat_1_1Local__stats.html">stat::Local_stats</a> &amp; ipc::shm::classic::Pool_arena::local_stats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cumulative stats relevant to <code>*this</code> <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> <em>object</em> &ndash; a <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a> &ndash; and excluding those in <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a> which track the underlying in-SHM arena (pool) itself. </p>
+<p >Notes in <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a1693d5be7b8162e853cb21aa22ff5caf" title="Cumulative stats relevant to one SHM-classic arena – in this case single SHM-pool in shared memory,...">arena_stats()</a> doc header apply here, except that:</p><ul>
+<li>we return a ref, not a pointer (but still to <code>const</code>); and</li>
+<li>the pointee lives simply in <code>*this</code>, not in SHM (shared memory).</li>
+</ul>
+<dl class="section return"><dt>Returns</dt><dd>See above. (Corner case: If ctor failed to attach a pool, the returned pointee shall simply hold only initial &ndash; zero &ndash; values forever.) </dd></dl>
+
+</div>
+</div>
+<a id="adf5c5a5945c3ef9362d2fbf1900f1873" name="adf5c5a5945c3ef9362d2fbf1900f1873"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf5c5a5945c3ef9362d2fbf1900f1873">&#9670;&nbsp;</a></span>local_stats_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ipc::shm::classic::Pool_arena::local_stats_reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resets <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9a295e3d3917e8792d67083561da0148" title="Cumulative stats relevant to *this Pool_arena object – a Pool_arena – and excluding those in arena_st...">local_stats()</a>. </p>
+<p >The formal meaning of a reset is discussed in <code>flow::util::stat</code> doc header.</p>
+<h3>Thread safety</h3>
+<p >All thread-safety notes in <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a976772509dde5ff29a46455af2810280" title="Resets arena_stats().">arena_stats_reset()</a> doc header apply here, except that <code>this-&gt;<a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#adf5c5a5945c3ef9362d2fbf1900f1873" title="Resets local_stats().">local_stats_reset()</a></code> under-concurrency behavior is only controversial against other <code>this-&gt;</code> API calls; other <code><a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html" title="A SHM-classic interface around a single SHM pool with allocation-algorithm services by boost....">Pool_arena</a></code>s maintain their own <a class="el" href="classipc_1_1shm_1_1classic_1_1Pool__arena.html#a9a295e3d3917e8792d67083561da0148" title="Cumulative stats relevant to *this Pool_arena object – a Pool_arena – and excluding those in arena_st...">local_stats()</a>. </p>
+
+</div>
+</div>
 <a id="a9487dcff44fde9a2c12d64b51c16c85e" name="a9487dcff44fde9a2c12d64b51c16c85e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9487dcff44fde9a2c12d64b51c16c85e">&#9670;&nbsp;</a></span>remove_persistent()</h2>
 
@@ -810,7 +1138,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceipc_1_1shm_1_1classic.html#ac0a52218467710995cc6c74538be6012">Shared_name</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceipc_1_1shm.html#a6596ee36a467c6972aaf50a78b62f547">Shared_name</a> &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
@@ -904,7 +1232,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

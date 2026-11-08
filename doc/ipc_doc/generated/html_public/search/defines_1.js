@@ -10,11 +10,9 @@ var searchData=
   ['template_5fjem_5fsrv_5fsession_7',['TEMPLATE_JEM_SRV_SESSION',['../ipc__shm__arena__lend_2src_2ipc_2session_2shm_2arena__lend_2jemalloc_2server__session_8hpp.html#a19315836a0055d73f3f1b43ddec1a207',1,'server_session.hpp']]],
   ['template_5fsession_5fmv_8',['TEMPLATE_SESSION_MV',['../ipc__session_2src_2ipc_2session_2session_8hpp.html#aa9659b660994645cb26d232d9fc64133',1,'session.hpp']]],
   ['template_5fsession_5fserver_9',['TEMPLATE_SESSION_SERVER',['../ipc__session_2src_2ipc_2session_2session__server_8hpp.html#a1cf999dcc632f8556891d91597f13111',1,'session_server.hpp']]],
-  ['template_5fshm_5fbuilder_10',['TEMPLATE_SHM_BUILDER',['../ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#a0a2bd7de6f7becc91a76aae897d6821d',1,'serializer.hpp']]],
-  ['template_5fshm_5freader_11',['TEMPLATE_SHM_READER',['../ipc__shm_2src_2ipc_2transport_2struc_2shm_2serializer_8hpp.html#aa1f45b4161ee9cad33108b8f94f981f5',1,'serializer.hpp']]],
-  ['template_5fsio_5fstruct_5fchannel_12',['TEMPLATE_SIO_STRUCT_CHANNEL',['../ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp.html#a50e1bb663274c68c760263342ddfdcbc',1,'channel.hpp']]],
-  ['template_5fsrv_5fsession_5fmv_13',['TEMPLATE_SRV_SESSION_MV',['../ipc__session_2src_2ipc_2session_2server__session_8hpp.html#a69260d5c8589278b93cdc40e9db3f100',1,'server_session.hpp']]],
-  ['template_5fstruct_5fmsg_5fin_14',['TEMPLATE_STRUCT_MSG_IN',['../msg_8hpp.html#af03d0377672ffdd140776914e4b98872',1,'msg.hpp']]],
-  ['template_5fstruct_5fmsg_5fout_15',['TEMPLATE_STRUCT_MSG_OUT',['../msg_8hpp.html#a0052ea1afda1ed94e008805d40264c20',1,'msg.hpp']]],
-  ['template_5fstructured_5fchannel_16',['TEMPLATE_STRUCTURED_CHANNEL',['../ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html#a8646782bf9b3daa107f2aa818f6345cb',1,'channel.hpp']]]
+  ['template_5fsio_5fstruct_5fchannel_10',['TEMPLATE_SIO_STRUCT_CHANNEL',['../ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp.html#a50e1bb663274c68c760263342ddfdcbc',1,'channel.hpp']]],
+  ['template_5fsrv_5fsession_5fmv_11',['TEMPLATE_SRV_SESSION_MV',['../ipc__session_2src_2ipc_2session_2server__session_8hpp.html#a69260d5c8589278b93cdc40e9db3f100',1,'server_session.hpp']]],
+  ['template_5fstruct_5fmsg_5fin_12',['TEMPLATE_STRUCT_MSG_IN',['../msg_8hpp.html#af03d0377672ffdd140776914e4b98872',1,'msg.hpp']]],
+  ['template_5fstruct_5fmsg_5fout_13',['TEMPLATE_STRUCT_MSG_OUT',['../msg_8hpp.html#a0052ea1afda1ed94e008805d40264c20',1,'msg.hpp']]],
+  ['template_5fstructured_5fchannel_14',['TEMPLATE_STRUCTURED_CHANNEL',['../ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html#a8646782bf9b3daa107f2aa818f6345cb',1,'channel.hpp']]]
 ];

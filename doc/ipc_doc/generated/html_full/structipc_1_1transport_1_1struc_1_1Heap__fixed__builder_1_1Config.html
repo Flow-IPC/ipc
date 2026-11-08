@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -82,7 +82,7 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for ipc::transport::struc::Heap_fixed_builder::Config:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config__coll__graph.svg" width="244" height="167"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config__coll__graph.svg" width="715" height="395"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -97,26 +97,27 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a8e16bef50eeda7c1af3b7caaa862fe73"><td class="memItemLeft" align="right" valign="top">flow::log::Logger *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a8e16bef50eeda7c1af3b7caaa862fe73">m_logger_ptr</a></td></tr>
 <tr class="memdesc:a8e16bef50eeda7c1af3b7caaa862fe73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logger to use for logging subsequently.  <a href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a8e16bef50eeda7c1af3b7caaa862fe73">More...</a><br /></td></tr>
 <tr class="separator:a8e16bef50eeda7c1af3b7caaa862fe73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e759098107b22d8e40238eeb74c7f0b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b">m_segment_sz</a></td></tr>
-<tr class="memdesc:a9e759098107b22d8e40238eeb74c7f0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <code>struct</code> doc header.  <a href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b">More...</a><br /></td></tr>
-<tr class="separator:a9e759098107b22d8e40238eeb74c7f0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb6fcd8308642adbcb6edcd564375c88"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#aeb6fcd8308642adbcb6edcd564375c88">m_frame_prefix_sz</a></td></tr>
-<tr class="memdesc:aeb6fcd8308642adbcb6edcd564375c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <code>struct</code> doc header.  <a href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#aeb6fcd8308642adbcb6edcd564375c88">More...</a><br /></td></tr>
+<tr class="memitem:a25baf52e8b3c82a9bfa6a9982d47f0ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a25baf52e8b3c82a9bfa6a9982d47f0ef">m_seg_and_frame_sz_cap</a></td></tr>
+<tr class="memdesc:a25baf52e8b3c82a9bfa6a9982d47f0ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cap for how large a buffer size to choose for any header+segment buffer.  <a href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a25baf52e8b3c82a9bfa6a9982d47f0ef">More...</a><br /></td></tr>
+<tr class="separator:a25baf52e8b3c82a9bfa6a9982d47f0ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3adf8bb7f01b728893200e36932fb5b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a3adf8bb7f01b728893200e36932fb5b3">m_segment_sz_init</a></td></tr>
+<tr class="memdesc:a3adf8bb7f01b728893200e36932fb5b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seg 1 size; a value exceeding <code>m_seg_and_frame_sz_cap - m_frame_prefix_sz</code> is clamped to that.  <a href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a3adf8bb7f01b728893200e36932fb5b3">More...</a><br /></td></tr>
+<tr class="separator:a3adf8bb7f01b728893200e36932fb5b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb6fcd8308642adbcb6edcd564375c88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsize__t.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#aeb6fcd8308642adbcb6edcd564375c88">m_frame_prefix_sz</a></td></tr>
+<tr class="memdesc:aeb6fcd8308642adbcb6edcd564375c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of header to precede seg 1 in the first buffer allocated by the <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a>.  <a href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#aeb6fcd8308642adbcb6edcd564375c88">More...</a><br /></td></tr>
 <tr class="separator:aeb6fcd8308642adbcb6edcd564375c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0f5855ff005915ead9b7b109423408c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#ac0f5855ff005915ead9b7b109423408c">m_frame_postfix_sz</a></td></tr>
-<tr class="memdesc:ac0f5855ff005915ead9b7b109423408c"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <code>struct</code> doc header.  <a href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#ac0f5855ff005915ead9b7b109423408c">More...</a><br /></td></tr>
-<tr class="separator:ac0f5855ff005915ead9b7b109423408c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5965aab798c7a3d606be633bf14939c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structipc_1_1transport_1_1struc_1_1stat_1_1Serializer__stats_1_1Snd.html">stat::Serializer_stats::Snd</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#af5965aab798c7a3d606be633bf14939c">m_stats</a></td></tr>
+<tr class="memdesc:af5965aab798c7a3d606be633bf14939c"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> concept.  <a href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#af5965aab798c7a3d606be633bf14939c">More...</a><br /></td></tr>
+<tr class="separator:af5965aab798c7a3d606be633bf14939c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Implements <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> sub-concept. </p>
-<p >In this impl: The data members control <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a>'s behavior as follows:</p>
-<p ><a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> ctor configured by <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html" title="Implements Struct_builder::Config sub-concept.">Config</a> creates builder that shall heap-allocate segments of the given size on demand subsequently. A successful <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517" title="Implements concept API.">Heap_fixed_builder::emit_serialization()</a> call shall return individual segment sizes never exceeding <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a9e759098107b22d8e40238eeb74c7f0b" title="See struct doc header.">m_segment_sz</a> (for the [<code>begin()</code>, <code>end()</code>) area), with <code>start() == #m_frame_prefix_sz</code>, and with <code>capacity() - start() - size() &gt;= #m_frame_postfix_sz</code>.</p>
-<p >However, internally, larger segments may still be allocated, namely if a <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a0c054e351753ce326620aa1dec12d923" title="Implements concept API.">Heap_fixed_builder::payload_msg_builder()</a> mutation supplies a too-large leaf &ndash; but, if this occurs, <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517" title="Implements concept API.">Heap_fixed_builder::emit_serialization()</a> shall emit an error and no successful serialization. That said be aware you'll still be charged for the resulting RAM use in the meantime. Informal recommendations:</p><ul>
-<li>Do not use <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> if this is a danger given the schema in question. See <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="Implements Struct_builder concept by straightforwardly allocating fixed-size segments on-demand in th...">Heap_fixed_builder</a> doc header for discussion of alternative approaches.</li>
-<li>If the problem does occur (<a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#a9fb6b2727c7cc0fb8fe7d231385b5517" title="Implements concept API.">Heap_fixed_builder::emit_serialization()</a> does emit the error) nevertheless, it is pointless to keep using <code>*this</code>; destroy it and take the appropriate exceptional-error-contingency steps. </li>
-</ul>
+<p >In particular, since this is the core outer-serialization <a class="el" href="classipc_1_1transport_1_1struc_1_1Struct__builder.html" title="A documentation-only concept defining the behavior of an object capable of zero-copy-serializing,...">Struct_builder</a> impl &ndash; used either by itself or (realistically) in any other impl for its mandated outer-serialization aspect &ndash; it takes most of its members directly from the concept description. Namely: <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#aeb6fcd8308642adbcb6edcd564375c88" title="Size of header to precede seg 1 in the first buffer allocated by the Heap_fixed_builder.">m_frame_prefix_sz</a>; and (since indeed <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a> <em>can</em> produce non-small segments) <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a25baf52e8b3c82a9bfa6a9982d47f0ef" title="Cap for how large a buffer size to choose for any header+segment buffer.">m_seg_and_frame_sz_cap</a>. The latter is the max size of each segment (<a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html#abf7204182668ac541dbf8b12521698f6" title="Implements concept API.">emit_serialization()</a> will split any segment if it was forced to make a larger one). Lastly there is <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#a3adf8bb7f01b728893200e36932fb5b3" title="Seg 1 size; a value exceeding m_seg_and_frame_sz_cap - m_frame_prefix_sz is clamped to that.">m_segment_sz_init</a> which is first (ideally only) segment's size.</p>
+<dl class="section note"><dt>Note</dt><dd>If <code>m_segment_sz_init == m_seg_and_frame_sz_cap</code> (ignoring <code>m_frame_prefix_sz</code> for simplicity of exposition), then subsequent segments cannot grow any further (the cap is already reached). This is in effect how <code>MallocMessageBuilder</code>'s <code>FIXED_SIZE</code> strategy acts, whereas if <code>m_segment_sz_init</code> is smaller, then we work like <code>GROW_HEURISTICALLY</code> strategy instead.</dd>
+<dd>
+<a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder__capnp__message__builder.html" title="A capnp::MessageBuilder used by Heap_fixed_builder: similar to a capnp::MallocMessageBuilder (albeit ...">Heap_fixed_builder_capnp_message_builder</a> is internally used. It implements <code>capnp::MessageBuilder</code> much as capnp's out-of-the-box <code>MallocMessageBuilder</code> does. We mention this in case you needed a <code>MessageBuilder</code> directly for whatever reason. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00154">154</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00127">127</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a9fa5b2a78f33981eaee67e48de29c73c" name="a9fa5b2a78f33981eaee67e48de29c73c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9fa5b2a78f33981eaee67e48de29c73c">&#9670;&nbsp;</a></span>Builder</h2>
@@ -132,29 +133,11 @@ Public Attributes</h2></td></tr>
 
 <p>Implements concept API. </p>
 
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00159">159</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00132">132</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ac0f5855ff005915ead9b7b109423408c" name="ac0f5855ff005915ead9b7b109423408c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0f5855ff005915ead9b7b109423408c">&#9670;&nbsp;</a></span>m_frame_postfix_sz</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t ipc::transport::struc::Heap_fixed_builder::Config::m_frame_postfix_sz</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>See <code>struct</code> doc header. </p>
-
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00170">170</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
-
-</div>
-</div>
 <a id="aeb6fcd8308642adbcb6edcd564375c88" name="aeb6fcd8308642adbcb6edcd564375c88"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb6fcd8308642adbcb6edcd564375c88">&#9670;&nbsp;</a></span>m_frame_prefix_sz</h2>
 
@@ -162,14 +145,18 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t ipc::transport::struc::Heap_fixed_builder::Config::m_frame_prefix_sz</td>
+          <td class="memname"><a class="el" href="classsize__t.html">size_t</a> ipc::transport::struc::Heap_fixed_builder::Config::m_frame_prefix_sz</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>See <code>struct</code> doc header. </p>
+<p>Size of header to precede seg 1 in the first buffer allocated by the <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a>. </p>
+<p >The size must be alignment-friendly (per align-size <code>sizeof(capnp::word)</code>). Zero is allowed.</p>
+<p >No segment after seg 1 shall be preceded by such a header. </p>
 
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00168">168</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00178">178</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="heap__serializer_8cpp_source.html#l00042">ipc::transport::struc::Heap_fixed_builder::Heap_fixed_builder()</a>.</p>
 
 </div>
 </div>
@@ -187,25 +174,71 @@ Public Attributes</h2></td></tr>
 
 <p>Logger to use for logging subsequently. </p>
 
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00164">164</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00137">137</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a9e759098107b22d8e40238eeb74c7f0b" name="a9e759098107b22d8e40238eeb74c7f0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e759098107b22d8e40238eeb74c7f0b">&#9670;&nbsp;</a></span>m_segment_sz</h2>
+<a id="a25baf52e8b3c82a9bfa6a9982d47f0ef" name="a25baf52e8b3c82a9bfa6a9982d47f0ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25baf52e8b3c82a9bfa6a9982d47f0ef">&#9670;&nbsp;</a></span>m_seg_and_frame_sz_cap</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t ipc::transport::struc::Heap_fixed_builder::Config::m_segment_sz</td>
+          <td class="memname"><a class="el" href="classsize__t.html">size_t</a> ipc::transport::struc::Heap_fixed_builder::Config::m_seg_and_frame_sz_cap</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>See <code>struct</code> doc header. </p>
+<p>Cap for how large a buffer size to choose for any header+segment buffer. </p>
+<p >The header size is controlled by <a class="el" href="structipc_1_1transport_1_1struc_1_1Heap__fixed__builder_1_1Config.html#aeb6fcd8308642adbcb6edcd564375c88" title="Size of header to precede seg 1 in the first buffer allocated by the Heap_fixed_builder.">m_frame_prefix_sz</a>; and is that value for seg 1 but zero for all subsequent ones.</p>
+<h3>capnp behavior discussion</h3>
+<p >Let N be this value minus the header size for that segment (so <code>m_frame_prefix_sz</code> or 0). Per capnp rules, a given segment may still exceed N, namely if capnp asks &ndash; when calling <code>capnp::MessageBuilder::allocateSegment()</code> API &ndash; for a value exceeding N. This occurs if and only if a particular capnp-leaf, probably a list/blob/string, is by itself of that size; a leaf can't be split across segments. </p>
 
-<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00166">166</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00150">150</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a3adf8bb7f01b728893200e36932fb5b3" name="a3adf8bb7f01b728893200e36932fb5b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3adf8bb7f01b728893200e36932fb5b3">&#9670;&nbsp;</a></span>m_segment_sz_init</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classsize__t.html">size_t</a> ipc::transport::struc::Heap_fixed_builder::Config::m_segment_sz_init</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Seg 1 size; a value exceeding <code>m_seg_and_frame_sz_cap - m_frame_prefix_sz</code> is clamped to that. </p>
+<h3>capnp behavior discussion</h3>
+<p >capnp will request a segment 1 of size ~0 regardless of how the user acts; as I (ygoldfel) recall before even any capnp-generated mutators are called by the user. Therefore seg 1 shall be sized according to this value (as the larger of ~0 and X is X; in this case X being <code>m_seg_and_frame_sz_cap - m_frame_prefix_sz</code>); it doesn't matter what the first leaf the user adds to the message. Subsequent <code>allocateSegment()</code> calls, however, will actually be based on what the capnp-user needs from that point on.</p>
+<p >The point here is that seg 1 has a known, certain size, which is a nice thing to be deterministic about; after that it depends. In particular if <code>m_seg_and_frame_sz_cap - m_frame_prefix_sz</code> is sufficient for the entire message, then that's it.</p>
+<p >Therefore it is important for efficiency to select a nice <code>m_segment_sz_init</code> that's larger (ideally) than what is ultimately necessary for the whole message but doesn't leave too much slack. Zero-filling allocations are fairly expensive (that is to say, <code>calloc(N)</code> is more expensive than <code>calloc(M)</code>, where N &gt; M). </p>
+
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00170">170</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="heap__serializer_8cpp_source.html#l00042">ipc::transport::struc::Heap_fixed_builder::Heap_fixed_builder()</a>.</p>
+
+</div>
+</div>
+<a id="af5965aab798c7a3d606be633bf14939c" name="af5965aab798c7a3d606be633bf14939c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5965aab798c7a3d606be633bf14939c">&#9670;&nbsp;</a></span>m_stats</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structipc_1_1transport_1_1struc_1_1stat_1_1Serializer__stats_1_1Snd.html">stat::Serializer_stats::Snd</a>* ipc::transport::struc::Heap_fixed_builder::Config::m_stats</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See <a class="el" href="structipc_1_1transport_1_1struc_1_1Struct__builder_1_1Config.html" title="Copy-ctible, copy-assignable, default-ctible type – informally, cheaply copyable and likely an aggreg...">Struct_builder::Config</a> concept. </p>
+<p >Pointee (null OK = no stats kept) for cumulative snd-stats; must outlive each <a class="el" href="classipc_1_1transport_1_1struc_1_1Heap__fixed__builder.html" title="~Simplest possible impl of Struct_builder concept that represents the capnp payload directly in heap ...">Heap_fixed_builder</a> built with <code>*this</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="heap__serializer_8hpp_source.html#l00184">184</a> of file <a class="el" href="heap__serializer_8hpp_source.html">heap_serializer.hpp</a>.</p>
 
 </div>
 </div>
@@ -215,7 +248,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

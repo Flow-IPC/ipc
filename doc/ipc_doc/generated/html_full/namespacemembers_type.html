@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -66,7 +66,9 @@ $(function() {
 &#160;
 
 <h3><a id="index_a" name="index_a"></a>- a -</h3><ul>
-<li>Acceptor&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a154986f10d30d850de86fc3924766e66">ipc::transport::asio_local_stream_socket</a></li>
+<li>Acceptor&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#ac6e45abfc3ab7cf7c9ee89a68b0d6010">ipc::transport::asio_local_stream_socket</a></li>
+<li>arena_id_t&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1jemalloc.html#a049d904a78d56dd5efdfce518fef7a56">ipc::shm::arena_lend::jemalloc</a></li>
+<li>Arena_ptr&#160;:&#160;<a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic.html#a93569828aa7a76c4d9c439c410510d02">ipc::session::shm::classic</a></li>
 <li>Arena_to_borrower_allocator_arena_t&#160;:&#160;<a class="el" href="namespaceipc_1_1shm.html#a6c8474d5b7dda220ed1f6693fc2e3c89">ipc::shm</a></li>
 <li>Arena_to_shm_session_t&#160;:&#160;<a class="el" href="namespaceipc_1_1session_1_1shm.html#af2acc444cc9664e57df8143b66b78d70">ipc::session::shm</a></li>
 </ul>
@@ -79,21 +81,26 @@ $(function() {
 <li>Bipc_mqs_socket_stream_channel&#160;:&#160;<a class="el" href="namespaceipc_1_1transport.html#ac45516512da3a843daf95ea05e09510d">ipc::transport</a>, <a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#a3e2d0e5a2457d462ba80dbed0d37e062">ipc::transport::sync_io</a></li>
 <li>Blob_const&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">ipc::util</a></li>
 <li>Blob_mutable&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a6cb62ae434900f3a8915b33ec5d61a96">ipc::util</a></li>
+<li>Borrower_pool_stats_list&#160;:&#160;<a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend.html#a66c6fba35162880d79f4946c87028a31">ipc::session::shm::arena_lend</a></li>
 <li>Builder&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1arena__lend_1_1jemalloc.html#a95831556fc3cacf93de0bc96f4db3e13">ipc::transport::struc::shm::arena_lend::jemalloc</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1classic.html#abfde278018c84aa1542475e9a4089c29">ipc::transport::struc::shm::classic</a></li>
 </ul>
 
 
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
 <li>Capnp_msg_builder_interface&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a52405569bf63eaef55f3c2435c885abc">ipc::transport::struc</a></li>
+<li>Capnp_msg_reader_interface&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a90b9b36797dd428f7ac4b409d2e2a1fc">ipc::transport::struc</a></li>
 <li>Channel&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1arena__lend_1_1jemalloc.html#ab68a69ad42d97d754f4e77c8cadd3a5e">ipc::transport::struc::shm::arena_lend::jemalloc</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1classic.html#ac543b500a85f556564e592cbbefb6185">ipc::transport::struc::shm::classic</a></li>
-<li>Channel_via_heap&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#aca041b0efd4a9ae18e10088b2ee3c052">ipc::transport::struc</a></li>
-<li>Client_session&#160;:&#160;<a class="el" href="namespaceipc_1_1session.html#a77d8fda00e1e17f595a6a5d4c44375e7">ipc::session</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a837b4566cb2a734eb0ba58f285d084fe">ipc::session::shm::arena_lend::jemalloc</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic.html#ac6c443a72e0f22710c83bb1e8c229618">ipc::session::shm::classic</a></li>
+<li>Channel_via_heap&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3dadd21d3e18e526bd01cd5824c74e41">ipc::transport::struc</a></li>
+<li>Client_session&#160;:&#160;<a class="el" href="namespaceipc_1_1session.html#a1e6a18310889666975a0a8464a9c561a">ipc::session</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc.html#a90e935790e426087f28dd886d2d62f94">ipc::session::shm::arena_lend::jemalloc</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1rpc.html#a26c72d6ef12dde7f4f7befd6d28ed42f">ipc::session::shm::arena_lend::jemalloc::rpc</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic.html#a027af2fb147d37cce937d83d82b94e53">ipc::session::shm::classic</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html#a413975308be04f1dd900f4b53e805b25">ipc::session::shm::classic::rpc</a></li>
+<li>collection_id_t&#160;:&#160;<a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1detail.html#a4182066d7430e9d57256b7f5aaeb71da">ipc::session::shm::arena_lend::detail</a>, <a class="el" href="namespaceipc_1_1shm_1_1arena__lend.html#ab524bbd5bf7d40cff14d2eeab6a5e202">ipc::shm::arena_lend</a></li>
+<li>Core_serializer_global_stats&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1stat.html#a83e1d4151e4dc6abae1b1018a80adf3a">ipc::transport::struc::shm::stat</a></li>
+<li>Core_serializer_stats&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1stat.html#a2e276d489cdc4f7f951f561a32d56214">ipc::transport::struc::shm::stat</a></li>
 <li>Create_only&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a9d84c2bab504e6de32b20c77ca9723a2">ipc::util</a></li>
 </ul>
 
 
 <h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
-<li>Endpoint&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a05656e297b98f4c370841d2f9be52a5f">ipc::transport::asio_local_stream_socket</a></li>
+<li>Endpoint&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a952615e0cd71b53694fddd1fdd651fde">ipc::transport::asio_local_stream_socket</a></li>
 <li>Error_code&#160;:&#160;<a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">ipc</a></li>
 <li>Event_wait_func&#160;:&#160;<a class="el" href="namespaceipc_1_1util_1_1sync__io.html#aa0b9a3cc6bdc7dedbef4f9e06851aa24">ipc::util::sync_io</a></li>
 </ul>
@@ -111,6 +118,17 @@ $(function() {
 </ul>
 
 
+<h3><a id="index_h" name="index_h"></a>- h -</h3><ul>
+<li>Heap_serializer_global_stats&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1stat.html#a004861ccb3ae06f8e3e8bdd6eca1c275">ipc::transport::struc::stat</a></li>
+<li>Heap_serializer_stats&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1stat.html#a57248935ef128887cd83d57ee3fe3ab3">ipc::transport::struc::stat</a></li>
+</ul>
+
+
+<h3><a id="index_l" name="index_l"></a>- l -</h3><ul>
+<li>Lend_tracker_shm&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1detail.html#a84655f5ddae760b34dbecd1157c0a63b">ipc::shm::arena_lend::detail</a></li>
+</ul>
+
+
 <h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
 <li>msg_id_t&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#af7f35fc7588d97a838274fa25700ead9">ipc::transport::struc</a></li>
 </ul>
@@ -122,37 +140,52 @@ $(function() {
 
 
 <h3><a id="index_o" name="index_o"></a>- o -</h3><ul>
+<li>Obj_handle&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend.html#acc800000b85abb07c662119b3cd9027d">ipc::shm::arena_lend</a></li>
 <li>Open_only&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a3e03491b5b2b5fac26551a220946d6e5">ipc::util</a></li>
 <li>Open_or_create&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a9571de958538d7a4a8649bbfecfac0b9">ipc::util</a></li>
+<li>Outer_serializer_global_stats&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1stat.html#a4d57c13a8eaf57e407578f12ded6bfc0">ipc::transport::struc::shm::stat</a></li>
+<li>Outer_serializer_stats&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1stat.html#aafafe32968f933c7ebcd390970346b53">ipc::transport::struc::shm::stat</a></li>
+<li>Own_native_handle&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#aeabf2feb5c96b0a90acc026b964d4c40">ipc::util</a></li>
+<li>owner_id_t&#160;:&#160;<a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1detail.html#af726b9d2a5e3f3debddbf59824e95b40">ipc::session::shm::arena_lend::detail</a>, <a class="el" href="namespaceipc_1_1shm_1_1arena__lend.html#afded3780fcd86cd710a16365a74b02c1">ipc::shm::arena_lend</a></li>
 </ul>
 
 
 <h3><a id="index_p" name="index_p"></a>- p -</h3><ul>
-<li>Peer_socket&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a1788f9dbd896bb71b3693f9ae25b40ae">ipc::transport::asio_local_stream_socket</a></li>
+<li>Peer_socket&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a136cd3f0fecfeb572962630c4e6bcce8">ipc::transport::asio_local_stream_socket</a></li>
 <li>Permissions&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152">ipc::util</a></li>
 <li>Pipe_reader&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#aaf368acf8243bb25de3eef4e836c15de">ipc::util</a></li>
 <li>Pipe_writer&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a844d5ca9c17b672644fc8d9dbe758db0">ipc::util</a></li>
-<li>Pool_arena_activator&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1classic.html#a82a112f42002eca08a819b9b00a71245">ipc::shm::classic</a></li>
-<li>Pool_arena_allocator&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1classic.html#ae783c814337577d6e06a65e1b43de043">ipc::shm::classic</a></li>
+<li>pool_id_t&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1detail.html#a0aab893c888879bb797ba67dfec7cada">ipc::shm::arena_lend::detail</a></li>
 <li>Posix_mq_receiver&#160;:&#160;<a class="el" href="namespaceipc_1_1transport.html#a3adeb04565914b4b54e41cd3840e1527">ipc::transport</a>, <a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#a84b0e915da5f820cf6e89aa21c6925a0">ipc::transport::sync_io</a></li>
 <li>Posix_mq_sender&#160;:&#160;<a class="el" href="namespaceipc_1_1transport.html#af0f375d61e295ddd19a31a69955343f1">ipc::transport</a>, <a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#a5d20c78a07e5db1b1f1ce4271edf27c6">ipc::transport::sync_io</a></li>
 <li>Posix_mqs_channel_of_blobs&#160;:&#160;<a class="el" href="namespaceipc_1_1transport.html#a9408a46c8565a42c537a02c9c11d5b1b">ipc::transport</a>, <a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#add71694105c85fca3fabb84845485c68">ipc::transport::sync_io</a></li>
 <li>Posix_mqs_socket_stream_channel&#160;:&#160;<a class="el" href="namespaceipc_1_1transport.html#a8259bc93cc6a52fe192cf56196f32417">ipc::transport</a>, <a class="el" href="namespaceipc_1_1transport_1_1sync__io.html#ae3271e118e027ead7f3d82f5ee7a8c36">ipc::transport::sync_io</a></li>
 <li>process_id_t&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a0c44028a45451ebf21f6af8e806b2682">ipc::util</a></li>
-<li>Protocol&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a0ad6afc0bbf995a5b84528f96315f4a2">ipc::transport::asio_local_stream_socket</a></li>
+<li>Protocol_byte_stream&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a9812c19326f757f90e65dbcc47263b9b">ipc::transport::asio_local_stream_socket</a></li>
+<li>Protocol_pkt_stream&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1asio__local__stream__socket.html#a791e91e9c2cdca1a7fe8b5aeb9d06d30">ipc::transport::asio_local_stream_socket</a></li>
 </ul>
 
 
 <h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
 <li>Reader&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1arena__lend_1_1jemalloc.html#a94304eb7db7c7d7c8df1ff8aa3806913">ipc::transport::struc::shm::arena_lend::jemalloc</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1classic.html#af94f8698ca62a84d6366aaa931375d41">ipc::transport::struc::shm::classic</a></li>
+<li>Rpc_conn&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1rpc.html#a389ca67c9d1e99d4e55e2bafb5e53b3d">ipc::transport::struc::shm::rpc</a></li>
+<li>Rpc_msg_in&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1rpc.html#a9b441319574be5127b79fccdecedbe93">ipc::transport::struc::shm::rpc</a></li>
+<li>Rpc_msg_out&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1rpc.html#a0f319e1448f2f4b069364389c3ae468d">ipc::transport::struc::shm::rpc</a></li>
+<li>Rpc_system&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1rpc.html#a5c1b2284360a0c6d3de0cdc291803322">ipc::transport::struc::shm::rpc</a></li>
 </ul>
 
 
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
-<li>Segment_ptrs&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a82a69eaa39cbe8a002de1266f1cbb5cb">ipc::transport::struc</a></li>
-<li>Server_session&#160;:&#160;<a class="el" href="namespaceipc_1_1session.html#ab01d5bce0ab2f3435ca9dd88d27609dc">ipc::session</a></li>
+<li>Segment_blob_in&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#aef611314925f13e1ff34e5d03e2fce35">ipc::transport::struc</a></li>
+<li>Segment_bufs&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#af6f4b1f3071a5f648cbf9e44ba80d983">ipc::transport::struc</a></li>
+<li>Segment_ptrs&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#aa7c19464ac8ecc5db765f660d9fd2433">ipc::transport::struc</a></li>
+<li>Server_session&#160;:&#160;<a class="el" href="namespaceipc_1_1session.html#a961e318f69fac2b45e55346591ea46e1">ipc::session</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1rpc.html#ab67a0b8955e2b77c24a4d0e5a6978cb7">ipc::session::shm::arena_lend::jemalloc::rpc</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html#a022362c0cce3badd16f5c7b97039fbb0">ipc::session::shm::classic::rpc</a></li>
+<li>Session_server&#160;:&#160;<a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1jemalloc_1_1rpc.html#ab3b02e6291661ccca16c9ad178cb1e37">ipc::session::shm::arena_lend::jemalloc::rpc</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1classic_1_1rpc.html#a5887c53cc020854f26a8160bb698707c">ipc::session::shm::classic::rpc</a></li>
 <li>Session_token&#160;:&#160;<a class="el" href="namespaceipc_1_1session.html#ade2b302f1a3623e8adc9694568d94d2c">ipc::session</a>, <a class="el" href="namespaceipc_1_1transport_1_1struc.html#a6751c05fb6582a34c7c47ac470c4a48b">ipc::transport::struc</a></li>
-<li>Shared_name&#160;:&#160;<a class="el" href="namespaceipc_1_1session.html#a6d07d9996af19e57eb42416e914110ea">ipc::session</a>, <a class="el" href="namespaceipc_1_1shm_1_1classic.html#ac0a52218467710995cc6c74538be6012">ipc::shm::classic</a>, <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">ipc::transport</a></li>
+<li>Set_logger_registry&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend.html#a11e41df04653d23678daaa27c73ff46c">ipc::shm::arena_lend</a></li>
+<li>Sharded_stats&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1detail_1_1stat.html#abc032ebebb6beb6f2793f404299eb932">ipc::shm::arena_lend::detail::stat</a></li>
+<li>Shared_name&#160;:&#160;<a class="el" href="namespaceipc_1_1session.html#a6d07d9996af19e57eb42416e914110ea">ipc::session</a>, <a class="el" href="namespaceipc_1_1session_1_1shm_1_1arena__lend_1_1detail.html#a3e4df9b534262c1a6b629f6805946058">ipc::session::shm::arena_lend::detail</a>, <a class="el" href="namespaceipc_1_1shm_1_1arena__lend.html#aff53dfbc16506750429a3eabeb6306ce">ipc::shm::arena_lend</a>, <a class="el" href="namespaceipc_1_1shm.html#a6596ee36a467c6972aaf50a78b62f547">ipc::shm</a>, <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb3964b839dc2dd407d24">ipc::transport</a></li>
+<li>Split_segments&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc.html#a3a1f3387713930f0bb9f074e7a631929">ipc::transport::struc</a></li>
 <li>String_view&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#ae6ac47812a90d1287c61e0b7de7bc4f5">ipc::util</a></li>
 </ul>
 
@@ -160,16 +193,24 @@ $(function() {
 <h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
 <li>Task&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a31e67d3a017477a04b313927e2f2c733">ipc::util</a></li>
 <li>Task_ptr&#160;:&#160;<a class="el" href="namespaceipc_1_1util_1_1sync__io.html#ac6973c71fc70c6d867b0f2255c642532">ipc::util::sync_io</a></li>
+<li>tcache_id_t&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1jemalloc.html#a79cb0572eeba864c3a310a6c144cd964">ipc::shm::arena_lend::jemalloc</a></li>
 </ul>
 
 
 <h3><a id="index_u" name="index_u"></a>- u -</h3><ul>
+<li>Uniq_collection_id&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1detail.html#aa5d8194edbf1f9ab63783cde74b2e94a">ipc::shm::arena_lend::detail</a></li>
+<li>use_ct_idx_t&#160;:&#160;<a class="el" href="namespaceipc_1_1shm_1_1arena__lend_1_1detail.html#a69067e5dc79a5b0baf6a196da8f7353f">ipc::shm::arena_lend::detail</a></li>
 <li>user_id_t&#160;:&#160;<a class="el" href="namespaceipc_1_1util.html#a6435c1b48ec8684c24ca406d1d17208e">ipc::util</a></li>
+</ul>
+
+
+<h3><a id="index_v" name="index_v"></a>- v -</h3><ul>
+<li>Vat_id&#160;:&#160;<a class="el" href="namespaceipc_1_1transport_1_1struc_1_1shm_1_1rpc.html#a0d488466acd4d60f98b1072ce8b1d4dd">ipc::transport::struc::shm::rpc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:45 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:56 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

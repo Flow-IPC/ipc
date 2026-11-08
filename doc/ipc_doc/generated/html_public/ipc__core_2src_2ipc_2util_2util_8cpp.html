@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -81,7 +81,7 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespaceipc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performance communication between processes. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1util"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html">ipc::util</a></td></tr>
-<tr class="memdesc:namespaceipc_1_1util"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module containing miscellaneous general-use facilities that ubiquitously used by ~all Flow-IPC modules and/or do not fit into any other Flow-IPC module. <br /></td></tr>
+<tr class="memdesc:namespaceipc_1_1util"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module containing miscellaneous general-use facilities that are ubiquitously used by ~all Flow-IPC modules and/or do not fit into any other Flow-IPC module. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -89,12 +89,12 @@ Functions</h2></td></tr>
 <tr class="memitem:abda2ce5bcdbc26ca63d667b87818439c"><td class="memItemLeft" align="right" valign="top">Permissions&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#abda2ce5bcdbc26ca63d667b87818439c">ipc::util::shared_resource_permissions</a> (Permissions_level permissions_lvl)</td></tr>
 <tr class="memdesc:abda2ce5bcdbc26ca63d667b87818439c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps general Permissions_level specifier to low-level <a class="el" href="namespaceipc_1_1util.html#a1b398ae730d1e6040687cb2397115152" title="Short-hand for Unix (POSIX) permissions class.">Permissions</a> value, when the underlying resource is in the file-system and is either accessible (read-write in terms of file system) or inaccessible.  <a href="namespaceipc_1_1util.html#abda2ce5bcdbc26ca63d667b87818439c">More...</a><br /></td></tr>
 <tr class="separator:abda2ce5bcdbc26ca63d667b87818439c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbba79fcaee378f433e7ce3093e5c435"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435">ipc::util::set_resource_permissions</a> (flow::log::Logger *logger_ptr, const fs::path &amp;path, const Permissions &amp;perms, Error_code *err_code=0)</td></tr>
-<tr class="memdesc:abbba79fcaee378f433e7ce3093e5c435"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that sets the permissions of the given resource (at the supplied file system path) to specified POSIX value.  <a href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435">More...</a><br /></td></tr>
-<tr class="separator:abbba79fcaee378f433e7ce3093e5c435"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8b2f5a0cd9fe9db4511c9a3e685b6ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#af8b2f5a0cd9fe9db4511c9a3e685b6ae">ipc::util::set_resource_permissions</a> (flow::log::Logger *logger_ptr, Native_handle handle, const Permissions &amp;perms, Error_code *err_code=0)</td></tr>
-<tr class="memdesc:af8b2f5a0cd9fe9db4511c9a3e685b6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to the other <a class="el" href="namespaceipc_1_1util.html#abbba79fcaee378f433e7ce3093e5c435" title="Utility that sets the permissions of the given resource (at the supplied file system path) to specifi...">set_resource_permissions()</a> overload but operates on a pre-opened <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> (a/k/a handle, socket, file descriptor) to the resource in question.  <a href="namespaceipc_1_1util.html#af8b2f5a0cd9fe9db4511c9a3e685b6ae">More...</a><br /></td></tr>
-<tr class="separator:af8b2f5a0cd9fe9db4511c9a3e685b6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5bcdc841a80102c6a3f035d3d6a5d51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ac5bcdc841a80102c6a3f035d3d6a5d51">ipc::util::set_resource_permissions</a> (flow::log::Logger *logger_ptr, const fs::path &amp;path, const Permissions &amp;perms, Error_code *err_code=nullptr)</td></tr>
+<tr class="memdesc:ac5bcdc841a80102c6a3f035d3d6a5d51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that sets the permissions of the given resource (at the supplied file system path) to specified POSIX value.  <a href="namespaceipc_1_1util.html#ac5bcdc841a80102c6a3f035d3d6a5d51">More...</a><br /></td></tr>
+<tr class="separator:ac5bcdc841a80102c6a3f035d3d6a5d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a941459cff197f5cae7ada334c15c1eb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a941459cff197f5cae7ada334c15c1eb2">ipc::util::set_resource_permissions</a> (flow::log::Logger *logger_ptr, Native_handle handle, const Permissions &amp;perms, Error_code *err_code=nullptr)</td></tr>
+<tr class="memdesc:a941459cff197f5cae7ada334c15c1eb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identical to the other <a class="el" href="namespaceipc_1_1util.html#ac5bcdc841a80102c6a3f035d3d6a5d51" title="Utility that sets the permissions of the given resource (at the supplied file system path) to specifi...">set_resource_permissions()</a> overload but operates on a pre-opened <a class="el" href="structipc_1_1util_1_1Native__handle.html" title="A monolayer-thin wrapper around a native handle, a/k/a descriptor a/k/a FD.">Native_handle</a> (a/k/a handle, socket, file descriptor) to the resource in question.  <a href="namespaceipc_1_1util.html#a941459cff197f5cae7ada334c15c1eb2">More...</a><br /></td></tr>
+<tr class="separator:a941459cff197f5cae7ada334c15c1eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a924cd56daf7eeaa0b07edb352367f9ec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a924cd56daf7eeaa0b07edb352367f9ec">ipc::util::process_running</a> (process_id_t process_id)</td></tr>
 <tr class="memdesc:a924cd56daf7eeaa0b07edb352367f9ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if and only if the given process (by PID) is reported as running by the OS.  <a href="namespaceipc_1_1util.html#a924cd56daf7eeaa0b07edb352367f9ec">More...</a><br /></td></tr>
 <tr class="separator:a924cd56daf7eeaa0b07edb352367f9ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,7 +127,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>ipc::uti
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:40 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

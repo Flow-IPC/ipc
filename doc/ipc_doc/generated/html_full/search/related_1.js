@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['swap_0',['swap',['../classipc_1_1transport_1_1Bipc__mq__handle.html#af0610dff5efd418a8ff393f0ad9dd5c2',1,'ipc::transport::Bipc_mq_handle::swap()'],['../classipc_1_1transport_1_1Posix__mq__handle.html#a65015c97813a6609da035fe86d1a36c0',1,'ipc::transport::Posix_mq_handle::swap()'],['../classipc_1_1util_1_1Shared__name.html#a9ea22a64cfbc6de66181c278ff5f6975',1,'ipc::util::Shared_name::swap()']]]
+  ['info_5fcollector_5fdtl_0',['Info_collector_dtl',['../classipc_1_1session_1_1Info__collector.html#abd498944dfdc03063d4bc4a719ce3659',1,'ipc::session::Info_collector']]]
 ];

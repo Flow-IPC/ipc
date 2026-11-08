@@ -1,8 +1,20 @@
 var searchData=
 [
-  ['persistent_5fmq_5fhandle_0',['Persistent_mq_handle',['../classipc_1_1transport_1_1Persistent__mq__handle.html',1,'ipc::transport']]],
-  ['pool_5farena_1',['Pool_arena',['../classipc_1_1shm_1_1classic_1_1Pool__arena.html',1,'ipc::shm::classic']]],
-  ['posix_5fmq_5fhandle_2',['Posix_mq_handle',['../classipc_1_1transport_1_1Posix__mq__handle.html',1,'ipc::transport']]],
-  ['process_5fcredentials_3',['Process_credentials',['../classipc_1_1util_1_1Process__credentials.html',1,'ipc::util']]],
-  ['protocol_5fnegotiator_4',['Protocol_negotiator',['../classipc_1_1transport_1_1Protocol__negotiator.html',1,'ipc::transport']]]
+  ['obj_5fdb_5faux_5fpool_5fglobal_5fstats_0',['Obj_db_aux_pool_global_stats',['../structipc_1_1shm_1_1arena__lend_1_1stat_1_1Obj__db__aux__pool__global__stats.html',1,'ipc::shm::arena_lend::stat']]],
+  ['obj_5fdb_5faux_5fpool_5fstats_1',['Obj_db_aux_pool_stats',['../structipc_1_1shm_1_1arena__lend_1_1stat_1_1Obj__db__aux__pool__stats.html',1,'ipc::shm::arena_lend::stat']]],
+  ['object_2',['Object',['../structipc_1_1shm_1_1arena__lend_1_1detail_1_1Thread__lcl__obj__db__admin_1_1Collection__db_1_1Object.html',1,'ipc::shm::arena_lend::detail::Thread_lcl_obj_db_admin::Collection_db']]],
+  ['offset_5fptr_5frep_3',['Offset_ptr_rep',['../structipc_1_1shm_1_1arena__lend_1_1detail_1_1Shm__pool__offset__ptr__data__base_1_1Offset__ptr__rep.html',1,'ipc::shm::arena_lend::detail::Shm_pool_offset_ptr_data_base']]],
+  ['open_5fchannel_5freq_4',['Open_channel_req',['../structipc_1_1session_1_1Server__session__impl_1_1Open__channel__req.html',1,'ipc::session::Server_session_impl']]],
+  ['opt_5fpeer_5fprocess_5fcredentials_5',['Opt_peer_process_credentials',['../classipc_1_1transport_1_1asio__local__stream__socket_1_1Opt__peer__process__credentials.html',1,'ipc::transport::asio_local_stream_socket']]],
+  ['ostreamable_5fcapnp_5fbrief_6',['Ostreamable_capnp_brief',['../structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__brief.html',1,'ipc::transport::struc']]],
+  ['ostreamable_5fcapnp_5ffull_7',['Ostreamable_capnp_full',['../structipc_1_1transport_1_1struc_1_1Ostreamable__capnp__full.html',1,'ipc::transport::struc']]],
+  ['outer_5fserializer_5fstats_5fcfg_8',['Outer_serializer_stats_cfg',['../structipc_1_1transport_1_1struc_1_1shm_1_1stat_1_1Outer__serializer__stats__cfg.html',1,'ipc::transport::struc::shm::stat']]],
+  ['owner_5fobj_5fdisposer_5fand_5fmdt_9',['Owner_obj_disposer_and_mdt',['../structipc_1_1shm_1_1arena__lend_1_1detail_1_1Owner__obj__disposer__and__mdt.html',1,'ipc::shm::arena_lend::detail']]],
+  ['owner_5fobj_5fstats_10',['Owner_obj_stats',['../structipc_1_1shm_1_1arena__lend_1_1stat_1_1Owner__obj__stats.html',1,'ipc::shm::arena_lend::stat::Owner_obj_stats'],['../structipc_1_1shm_1_1stat_1_1Owner__obj__stats.html',1,'ipc::shm::stat::Owner_obj_stats']]],
+  ['owner_5fpool_5flookup_5fglobal_5fstats_11',['Owner_pool_lookup_global_stats',['../structipc_1_1shm_1_1arena__lend_1_1stat_1_1Owner__pool__lookup__global__stats.html',1,'ipc::shm::arena_lend::stat']]],
+  ['owner_5fpool_5fstats_12',['Owner_pool_stats',['../structipc_1_1shm_1_1arena__lend_1_1stat_1_1Owner__pool__stats.html',1,'ipc::shm::arena_lend::stat']]],
+  ['owner_5fshm_5fpool_5fcollection_13',['Owner_shm_pool_collection',['../classOwner__shm__pool__collection.html',1,'']]],
+  ['owner_5fshm_5fpool_5flistener_14',['Owner_shm_pool_listener',['../classipc_1_1shm_1_1arena__lend_1_1Owner__shm__pool__listener.html',1,'ipc::shm::arena_lend']]],
+  ['owner_5fshm_5fpool_5frepository_15',['Owner_shm_pool_repository',['../classipc_1_1shm_1_1arena__lend_1_1detail_1_1Owner__shm__pool__repository.html',1,'ipc::shm::arena_lend::detail']]],
+  ['owner_5fspc_5fimpl_16',['Owner_spc_impl',['../structipc_1_1shm_1_1arena__lend_1_1detail_1_1Owner__spc__impl.html',1,'ipc::shm::arena_lend::detail']]]
 ];

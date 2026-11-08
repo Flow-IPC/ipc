@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -77,12 +77,13 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ipc__session_2src_2ipc_2session_2server__session_8hpp_source.html">ipc/session/server_session.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="session__server__impl_8hpp_source.html">ipc/session/detail/session_server_impl.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="transport__fwd_8hpp_source.html">ipc/transport/transport_fwd.hpp</a>&quot;</code><br />
 </div>
 <p><a href="ipc__session_2src_2ipc_2session_2session__server_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server.html">ipc::session::Session_server&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1session_1_1Session__server.html">ipc::session::Session_server&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be instantiated typically once in a given process, an object of this type asynchronously listens for <a class="el" href="structipc_1_1session_1_1Client__app.html" title="An App that is used as a client in at least one client-server IPC split.">Client_app</a> processes each of which wishes to establish a <em>session</em> with this server process; emits resulting Server_session objects locally.  <a href="classipc_1_1session_1_1Session__server.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -97,19 +98,19 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a1cf999dcc632f8556891d91597f13111"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp.html#a1cf999dcc632f8556891d91597f13111">TEMPLATE_SESSION_SERVER</a>&#160;&#160;&#160;  template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;</td></tr>
+<tr class="memitem:a1cf999dcc632f8556891d91597f13111"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp.html#a1cf999dcc632f8556891d91597f13111">TEMPLATE_SESSION_SERVER</a>&#160;&#160;&#160;  template&lt;schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;</td></tr>
 <tr class="memdesc:a1cf999dcc632f8556891d91597f13111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="ipc__session_2src_2ipc_2session_2session__server_8hpp.html#a1cf999dcc632f8556891d91597f13111">More...</a><br /></td></tr>
 <tr class="separator:a1cf999dcc632f8556891d91597f13111"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09f0b9ebdcfae182d71e2b2ae500eac9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp.html#a09f0b9ebdcfae182d71e2b2ae500eac9">CLASS_SESSION_SERVER</a>&#160;&#160;&#160;  Session_server&lt;S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;</td></tr>
+<tr class="memitem:a09f0b9ebdcfae182d71e2b2ae500eac9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp.html#a09f0b9ebdcfae182d71e2b2ae500eac9">CLASS_SESSION_SERVER</a>&#160;&#160;&#160;  Session_server&lt;MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;</td></tr>
 <tr class="memdesc:a09f0b9ebdcfae182d71e2b2ae500eac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="ipc__session_2src_2ipc_2session_2session__server_8hpp.html#a09f0b9ebdcfae182d71e2b2ae500eac9">More...</a><br /></td></tr>
 <tr class="separator:a09f0b9ebdcfae182d71e2b2ae500eac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:addd131b7a844d2a22a7436ed0c8597bc"><td class="memTemplParams" colspan="2">template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </td></tr>
-<tr class="memitem:addd131b7a844d2a22a7436ed0c8597bc"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#addd131b7a844d2a22a7436ed0c8597bc">ipc::session::operator&lt;&lt;</a> (std::ostream &amp;os, const Session_server&lt; S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &amp;val)</td></tr>
-<tr class="memdesc:addd131b7a844d2a22a7436ed0c8597bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1session.html#addd131b7a844d2a22a7436ed0c8597bc">More...</a><br /></td></tr>
-<tr class="separator:addd131b7a844d2a22a7436ed0c8597bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5267d55280365f57787839c08941f6ca"><td class="memTemplParams" colspan="2">template&lt;schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload &gt; </td></tr>
+<tr class="memitem:a5267d55280365f57787839c08941f6ca"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1session.html#a5267d55280365f57787839c08941f6ca">ipc::session::operator&lt;&lt;</a> (std::ostream &amp;os, const Session_server&lt; MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload &gt; &amp;val)</td></tr>
+<tr class="memdesc:a5267d55280365f57787839c08941f6ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1session_1_1Session__server.html" title="To be instantiated typically once in a given process, an object of this type asynchronously listens f...">Session_server</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1session.html#a5267d55280365f57787839c08941f6ca">More...</a><br /></td></tr>
+<tr class="separator:a5267d55280365f57787839c08941f6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a09f0b9ebdcfae182d71e2b2ae500eac9" name="a09f0b9ebdcfae182d71e2b2ae500eac9"></a>
@@ -119,14 +120,14 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CLASS_SESSION_SERVER&#160;&#160;&#160;  Session_server&lt;S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;</td>
+          <td class="memname">#define CLASS_SESSION_SERVER&#160;&#160;&#160;  Session_server&lt;MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp_source.html#l00464">464</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp_source.html">session_server.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp_source.html#l00560">560</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp_source.html">session_server.hpp</a>.</p>
 
 </div>
 </div>
@@ -137,21 +138,21 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TEMPLATE_SESSION_SERVER&#160;&#160;&#160;  template&lt;schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;</td>
+          <td class="memname">#define TEMPLATE_SESSION_SERVER&#160;&#160;&#160;  template&lt;schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES, typename Mdt_payload&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp_source.html#l00461">461</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp_source.html">session_server.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp_source.html#l00557">557</a> of file <a class="el" href="ipc__session_2src_2ipc_2session_2session__server_8hpp_source.html">session_server.hpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

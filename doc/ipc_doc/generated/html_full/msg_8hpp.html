@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -78,19 +78,34 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="transport__fwd_8hpp_source.html">ipc/transport/transport_fwd.hpp</a>&quot;</code><br />
 <code>#include &quot;ipc/transport/struc/schema/detail/structured_msg.capnp.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2error_8hpp_source.html">ipc/transport/struc/error.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="heap__serializer_8hpp_source.html">ipc/transport/struc/heap_serializer.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="struc__fwd_8hpp_source.html">ipc/transport/struc/struc_fwd.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="detail_2struc__fwd_8hpp_source.html">ipc/transport/struc/detail/struc_fwd.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="sync__io_2channel__stats_8hpp_source.html">ipc/transport/struc/sync_io/channel_stats.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html">ipc/transport/struc/util.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="asio__local__stream__socket__fwd_8hpp_source.html">ipc/transport/asio_local_stream_socket_fwd.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="native__handle_8hpp_source.html">ipc/util/native_handle.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="util__fwd_8hpp_source.html">ipc/util/util_fwd.hpp</a>&quot;</code><br />
+<code>#include &lt;flow/error/error.hpp&gt;</code><br />
 <code>#include &lt;boost/endian.hpp&gt;</code><br />
 <code>#include &lt;boost/move/make_unique.hpp&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 </div>
 <p><a href="msg_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html">ipc::transport::struc::Msg_out&lt; Message_body, Struct_builder_t &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structured out-message suitable to be sent via <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#ae645cb58ad9ea6374970f1f32c5da448" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">struc::Channel::send()</a> (et al).  <a href="classipc_1_1transport_1_1struc_1_1Msg__out.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Capped__sz__capnp__message__builder.html">ipc::transport::struc::Capped_sz_capnp_message_builder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple utility: a capnp <code>MessageBuilder</code> operating over a single, contiguous, user-supplied area in virtual memory.  <a href="classipc_1_1transport_1_1struc_1_1Capped__sz__capnp__message__builder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html">ipc::transport::struc::Msg_in&lt; Message_body, Struct_reader_config &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Capped__sz__capnp__message__reader.html">ipc::transport::struc::Capped_sz_capnp_message_reader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple utility: a capnp <code>MessageReader</code> operating over a single, contiguous, user-supplied area in virtual memory.  <a href="classipc_1_1transport_1_1struc_1_1Capped__sz__capnp__message__reader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html">ipc::transport::struc::Msg_out&lt; Body_t, Builder_t &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structured out-message suitable to be sent via <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html#aa6c9fafeadca475296e2cc4c0e28403f" title="In the synchronous/non-blocking manner of Blob_sender::send_blob() or Native_handle_sender::send_nati...">struc::Channel::send()</a> (et al).  <a href="classipc_1_1transport_1_1struc_1_1Msg__out.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html">ipc::transport::struc::Msg_in&lt; Body_t, Reader_config_t &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structured in-message <em>instance</em> suitable as received and emittable (to user) by <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">struc::Channel</a>.  <a href="classipc_1_1transport_1_1struc_1_1Msg__in.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -108,29 +123,29 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a0052ea1afda1ed94e008805d40264c20"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msg_8hpp.html#a0052ea1afda1ed94e008805d40264c20">TEMPLATE_STRUCT_MSG_OUT</a>&#160;&#160;&#160;  template&lt;typename Message_body, typename Struct_builder_t&gt;</td></tr>
+<tr class="memitem:a0052ea1afda1ed94e008805d40264c20"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msg_8hpp.html#a0052ea1afda1ed94e008805d40264c20">TEMPLATE_STRUCT_MSG_OUT</a>&#160;&#160;&#160;  template&lt;typename Body_t, typename Builder_t&gt;</td></tr>
 <tr class="memdesc:a0052ea1afda1ed94e008805d40264c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="msg_8hpp.html#a0052ea1afda1ed94e008805d40264c20">More...</a><br /></td></tr>
 <tr class="separator:a0052ea1afda1ed94e008805d40264c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8ab263935b3bae1c9ee6355a55fa94a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msg_8hpp.html#af8ab263935b3bae1c9ee6355a55fa94a">CLASS_STRUCT_MSG_OUT</a>&#160;&#160;&#160;  Msg_out&lt;Message_body, Struct_builder_t&gt;</td></tr>
+<tr class="memitem:af8ab263935b3bae1c9ee6355a55fa94a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msg_8hpp.html#af8ab263935b3bae1c9ee6355a55fa94a">CLASS_STRUCT_MSG_OUT</a>&#160;&#160;&#160;  Msg_out&lt;Body_t, Builder_t&gt;</td></tr>
 <tr class="memdesc:af8ab263935b3bae1c9ee6355a55fa94a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="msg_8hpp.html#af8ab263935b3bae1c9ee6355a55fa94a">More...</a><br /></td></tr>
 <tr class="separator:af8ab263935b3bae1c9ee6355a55fa94a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af03d0377672ffdd140776914e4b98872"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msg_8hpp.html#af03d0377672ffdd140776914e4b98872">TEMPLATE_STRUCT_MSG_IN</a>&#160;&#160;&#160;  template&lt;typename Message_body, typename Struct_reader_config&gt;</td></tr>
+<tr class="memitem:af03d0377672ffdd140776914e4b98872"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msg_8hpp.html#af03d0377672ffdd140776914e4b98872">TEMPLATE_STRUCT_MSG_IN</a>&#160;&#160;&#160;  template&lt;typename Body_t, typename Reader_config_t&gt;</td></tr>
 <tr class="memdesc:af03d0377672ffdd140776914e4b98872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="msg_8hpp.html#af03d0377672ffdd140776914e4b98872">More...</a><br /></td></tr>
 <tr class="separator:af03d0377672ffdd140776914e4b98872"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a679f25e8d9dc9d3ad750442e92b640f0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msg_8hpp.html#a679f25e8d9dc9d3ad750442e92b640f0">CLASS_STRUCT_MSG_IN</a>&#160;&#160;&#160;  Msg_in&lt;Message_body, Struct_reader_config&gt;</td></tr>
+<tr class="memitem:a679f25e8d9dc9d3ad750442e92b640f0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="msg_8hpp.html#a679f25e8d9dc9d3ad750442e92b640f0">CLASS_STRUCT_MSG_IN</a>&#160;&#160;&#160;  Msg_in&lt;Body_t, Reader_config_t&gt;</td></tr>
 <tr class="memdesc:a679f25e8d9dc9d3ad750442e92b640f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>).  <a href="msg_8hpp.html#a679f25e8d9dc9d3ad750442e92b640f0">More...</a><br /></td></tr>
 <tr class="separator:a679f25e8d9dc9d3ad750442e92b640f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a134e737e55ae825527efd6a9e68bf37e"><td class="memTemplParams" colspan="2">template&lt;typename Message_body , typename Struct_builder_t &gt; </td></tr>
-<tr class="memitem:a134e737e55ae825527efd6a9e68bf37e"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a134e737e55ae825527efd6a9e68bf37e">ipc::transport::struc::operator&lt;&lt;</a> (std::ostream &amp;os, const Msg_out&lt; Message_body, Struct_builder_t &gt; &amp;val)</td></tr>
-<tr class="memdesc:a134e737e55ae825527efd6a9e68bf37e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a134e737e55ae825527efd6a9e68bf37e">More...</a><br /></td></tr>
-<tr class="separator:a134e737e55ae825527efd6a9e68bf37e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad52996a4d66f74e21e4f2e74c93c763"><td class="memTemplParams" colspan="2">template&lt;typename Message_body , typename Struct_reader_config &gt; </td></tr>
-<tr class="memitem:aad52996a4d66f74e21e4f2e74c93c763"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#aad52996a4d66f74e21e4f2e74c93c763">ipc::transport::struc::operator&lt;&lt;</a> (std::ostream &amp;os, const Msg_in&lt; Message_body, Struct_reader_config &gt; &amp;val)</td></tr>
-<tr class="memdesc:aad52996a4d66f74e21e4f2e74c93c763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#aad52996a4d66f74e21e4f2e74c93c763">More...</a><br /></td></tr>
-<tr class="separator:aad52996a4d66f74e21e4f2e74c93c763"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a949bd239aa536f1a8a78afa045900f01"><td class="memTemplParams" colspan="2">template&lt;typename Body_t , typename Struct_builder_t &gt; </td></tr>
+<tr class="memitem:a949bd239aa536f1a8a78afa045900f01"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a949bd239aa536f1a8a78afa045900f01">ipc::transport::struc::operator&lt;&lt;</a> (std::ostream &amp;os, const Msg_out&lt; Body_t, Struct_builder_t &gt; &amp;val)</td></tr>
+<tr class="memdesc:a949bd239aa536f1a8a78afa045900f01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__out.html" title="A structured out-message suitable to be sent via struc::Channel::send() (et al).">Msg_out</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a949bd239aa536f1a8a78afa045900f01">More...</a><br /></td></tr>
+<tr class="separator:a949bd239aa536f1a8a78afa045900f01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f22cc38e6a79bc8d79d9f10bb7764ec"><td class="memTemplParams" colspan="2">template&lt;typename Body_t , typename Reader_config_t &gt; </td></tr>
+<tr class="memitem:a8f22cc38e6a79bc8d79d9f10bb7764ec"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1transport_1_1struc.html#a8f22cc38e6a79bc8d79d9f10bb7764ec">ipc::transport::struc::operator&lt;&lt;</a> (std::ostream &amp;os, const Msg_in&lt; Body_t, Reader_config_t &gt; &amp;val)</td></tr>
+<tr class="memdesc:a8f22cc38e6a79bc8d79d9f10bb7764ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints string representation of the given <code><a class="el" href="classipc_1_1transport_1_1struc_1_1Msg__in.html" title="A structured in-message instance suitable as received and emittable (to user) by struc::Channel.">Msg_in</a></code> to the given <code>ostream</code>.  <a href="namespaceipc_1_1transport_1_1struc.html#a8f22cc38e6a79bc8d79d9f10bb7764ec">More...</a><br /></td></tr>
+<tr class="separator:a8f22cc38e6a79bc8d79d9f10bb7764ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a679f25e8d9dc9d3ad750442e92b640f0" name="a679f25e8d9dc9d3ad750442e92b640f0"></a>
@@ -140,14 +155,14 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CLASS_STRUCT_MSG_IN&#160;&#160;&#160;  Msg_in&lt;Message_body, Struct_reader_config&gt;</td>
+          <td class="memname">#define CLASS_STRUCT_MSG_IN&#160;&#160;&#160;  Msg_in&lt;Body_t, Reader_config_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l00861">861</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l01217">1217</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
 
 </div>
 </div>
@@ -158,14 +173,14 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CLASS_STRUCT_MSG_OUT&#160;&#160;&#160;  Msg_out&lt;Message_body, Struct_builder_t&gt;</td>
+          <td class="memname">#define CLASS_STRUCT_MSG_OUT&#160;&#160;&#160;  Msg_out&lt;Body_t, Builder_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l00855">855</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l01211">1211</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
 
 </div>
 </div>
@@ -176,14 +191,14 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TEMPLATE_STRUCT_MSG_IN&#160;&#160;&#160;  template&lt;typename Message_body, typename Struct_reader_config&gt;</td>
+          <td class="memname">#define TEMPLATE_STRUCT_MSG_IN&#160;&#160;&#160;  template&lt;typename Body_t, typename Reader_config_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l00858">858</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l01214">1214</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
 
 </div>
 </div>
@@ -194,21 +209,21 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TEMPLATE_STRUCT_MSG_OUT&#160;&#160;&#160;  template&lt;typename Message_body, typename Struct_builder_t&gt;</td>
+          <td class="memname">#define TEMPLATE_STRUCT_MSG_OUT&#160;&#160;&#160;  template&lt;typename Body_t, typename Builder_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2channel_8hpp.html">struc/channel.hpp</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l00852">852</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="msg_8hpp_source.html#l01208">1208</a> of file <a class="el" href="msg_8hpp_source.html">msg.hpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

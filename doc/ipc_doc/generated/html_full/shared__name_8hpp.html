@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -76,6 +76,14 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="shared__name__fwd_8hpp_source.html">ipc/util/shared_name_fwd.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="common_8hpp_source.html">ipc/common.hpp</a>&quot;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;charconv&gt;</code><br />
+<code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;string_view&gt;</code><br />
+<code>#include &lt;typeinfo&gt;</code><br />
 </div>
 <p><a href="shared__name_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -91,7 +99,7 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespaceipc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Catch-all namespace for the Flow-IPC project: A library/API in modern C++17 providing high-performance communication between processes. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceipc_1_1util"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html">ipc::util</a></td></tr>
-<tr class="memdesc:namespaceipc_1_1util"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module containing miscellaneous general-use facilities that ubiquitously used by ~all Flow-IPC modules and/or do not fit into any other Flow-IPC module. <br /></td></tr>
+<tr class="memdesc:namespaceipc_1_1util"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow-IPC module containing miscellaneous general-use facilities that are ubiquitously used by ~all Flow-IPC modules and/or do not fit into any other Flow-IPC module. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -114,17 +122,17 @@ Functions</h2></td></tr>
 <tr class="separator:a462b81d34ba23c968f63d9805fa74538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a150051ee7e308ba7c9269b2d1e2c6c37"><td class="memTemplParams" colspan="2">template&lt;typename Persistent_object , typename Filter_func &gt; </td></tr>
 <tr class="memitem:a150051ee7e308ba7c9269b2d1e2c6c37"><td class="memTemplItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37">ipc::util::remove_each_persistent_if</a> (flow::log::Logger *logger_ptr, const Filter_func &amp;filter_func)</td></tr>
-<tr class="memdesc:a150051ee7e308ba7c9269b2d1e2c6c37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that invokes <code>Persistent_object::for_each_persistent(name_prefix_or_empty)</code> and synchronously invokes <code>Persistent_object::remove_persistent()</code> on each resulting item that passes the given filter, where <code>Persistent_object</code> is a type that handles objects &ndash; such as SHM pools or POSIX MQs &ndash; with kernel-persistent semantics.  <a href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37">More...</a><br /></td></tr>
+<tr class="memdesc:a150051ee7e308ba7c9269b2d1e2c6c37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that invokes <code>Persistent_object::for_each_persistent()</code> and synchronously invokes <code>Persistent_object::remove_persistent()</code> on each resulting item that passes the given filter, where <code>Persistent_object</code> is a type that handles objects &ndash; such as SHM pools or POSIX MQs &ndash; with kernel-persistent semantics.  <a href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37">More...</a><br /></td></tr>
 <tr class="separator:a150051ee7e308ba7c9269b2d1e2c6c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6be904bf1b0fe6659a11dec0fabbf6b"><td class="memTemplParams" colspan="2">template&lt;typename Persistent_object &gt; </td></tr>
 <tr class="memitem:ad6be904bf1b0fe6659a11dec0fabbf6b"><td class="memTemplItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1util.html#ad6be904bf1b0fe6659a11dec0fabbf6b">ipc::util::remove_each_persistent_with_name_prefix</a> (flow::log::Logger *logger_ptr, const Shared_name &amp;name_prefix_or_empty)</td></tr>
-<tr class="memdesc:ad6be904bf1b0fe6659a11dec0fabbf6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that invokes <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent(name_prefix_or_empty) and synchronously i...">remove_each_persistent_if()</a> with the filter that returns <code>true</code> (yes, remove) if and only if the item's name optionally matches a given <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> prefix.  <a href="namespaceipc_1_1util.html#ad6be904bf1b0fe6659a11dec0fabbf6b">More...</a><br /></td></tr>
+<tr class="memdesc:ad6be904bf1b0fe6659a11dec0fabbf6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility that invokes <a class="el" href="namespaceipc_1_1util.html#a150051ee7e308ba7c9269b2d1e2c6c37" title="Utility that invokes Persistent_object::for_each_persistent() and synchronously invokes Persistent_ob...">remove_each_persistent_if()</a> with the filter that returns <code>true</code> (yes, remove) if and only if the item's name optionally matches a given <a class="el" href="classipc_1_1util_1_1Shared__name.html" title="String-wrapping abstraction representing a name uniquely distinguishing a kernel-persistent entity fr...">Shared_name</a> prefix.  <a href="namespaceipc_1_1util.html#ad6be904bf1b0fe6659a11dec0fabbf6b">More...</a><br /></td></tr>
 <tr class="separator:ad6be904bf1b0fe6659a11dec0fabbf6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

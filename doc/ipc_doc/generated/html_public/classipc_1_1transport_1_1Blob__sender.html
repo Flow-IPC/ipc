@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -68,6 +68,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classipc_1_1transport_1_1Blob__sender-members.html">List of all members</a>  </div>
@@ -86,6 +87,12 @@ Collaboration diagram for ipc::transport::Blob_sender:</div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a27aabc14c50dfd4670b49a7f52d716e1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a27aabc14c50dfd4670b49a7f52d716e1">Blob_snd_stats</a> = value</td></tr>
+<tr class="memdesc:a27aabc14c50dfd4670b49a7f52d716e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return type, typically a <code>struct</code>, for <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#ac50bde6a1f4301872f20aba69a677af6" title="Returns the accumulated transport statistics as of this call.">blob_send_stats()</a>.  <a href="classipc_1_1transport_1_1Blob__sender.html#a27aabc14c50dfd4670b49a7f52d716e1">More...</a><br /></td></tr>
+<tr class="separator:a27aabc14c50dfd4670b49a7f52d716e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a072e2f3b5c18d1188c75501bc5620f6f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a072e2f3b5c18d1188c75501bc5620f6f">Blob_sender</a> ()</td></tr>
@@ -112,21 +119,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a76dd2dbaf101fdf2a1506231663672f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disallow copying. <br /></td></tr>
 <tr class="separator:a76dd2dbaf101fdf2a1506231663672f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5d889f8a209353b3d69f70b44a2095c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#af5d889f8a209353b3d69f70b44a2095c">send_blob_max_size</a> () const</td></tr>
-<tr class="memdesc:af5d889f8a209353b3d69f70b44a2095c"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state: Returns max <code>blob.size()</code> such that <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a776b55ae93e65592b90c3943ca99e948" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">send_blob()</a> shall not fail due to too-long payload with <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ac416e988563e44bf15fc6a81743eef53" title="User called an API with 1 or more arguments against the API spec.">error::Code::S_INVALID_ARGUMENT</a>.  <a href="classipc_1_1transport_1_1Blob__sender.html#af5d889f8a209353b3d69f70b44a2095c">More...</a><br /></td></tr>
+<tr class="memdesc:af5d889f8a209353b3d69f70b44a2095c"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state: Returns max <code>blob.size()</code> such that <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a097a08242e02875c0ded6b1b84c13108" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">send_blob()</a> shall not fail due to too-long payload with <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ac416e988563e44bf15fc6a81743eef53" title="User called an API with 1 or more arguments against the API spec.">error::Code::S_INVALID_ARGUMENT</a>.  <a href="classipc_1_1transport_1_1Blob__sender.html#af5d889f8a209353b3d69f70b44a2095c">More...</a><br /></td></tr>
 <tr class="separator:af5d889f8a209353b3d69f70b44a2095c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a776b55ae93e65592b90c3943ca99e948"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a776b55ae93e65592b90c3943ca99e948">send_blob</a> (const <a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a> &amp;blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=0)</td></tr>
-<tr class="memdesc:a776b55ae93e65592b90c3943ca99e948"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order, to the opposing peer; the message consists of the provided binary blob (of length at least 1 byte).  <a href="classipc_1_1transport_1_1Blob__sender.html#a776b55ae93e65592b90c3943ca99e948">More...</a><br /></td></tr>
-<tr class="separator:a776b55ae93e65592b90c3943ca99e948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a097a08242e02875c0ded6b1b84c13108"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a097a08242e02875c0ded6b1b84c13108">send_blob</a> (const <a class="el" href="namespaceipc_1_1util.html#ae0be7edba7e30ffa3f8b742af621f2ab">util::Blob_const</a> &amp;blob, <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *err_code=nullptr)</td></tr>
+<tr class="memdesc:a097a08242e02875c0ded6b1b84c13108"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order, to the opposing peer; the message consists of the provided binary blob (of length at least 1 byte).  <a href="classipc_1_1transport_1_1Blob__sender.html#a097a08242e02875c0ded6b1b84c13108">More...</a><br /></td></tr>
+<tr class="separator:a097a08242e02875c0ded6b1b84c13108"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a440ecfbfc9bda7d824c0acfa54b23ca9"><td class="memTemplParams" colspan="2">template&lt;typename Task_err &gt; </td></tr>
 <tr class="memitem:a440ecfbfc9bda7d824c0acfa54b23ca9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a440ecfbfc9bda7d824c0acfa54b23ca9">async_end_sending</a> (Task_err &amp;&amp;on_done_func)</td></tr>
-<tr class="memdesc:a440ecfbfc9bda7d824c0acfa54b23ca9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a776b55ae93e65592b90c3943ca99e948" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">send_blob()</a> but sends a graceful-close message instead of the usual payload; the opposing peer's <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a> shall receive it reliably and in-order via <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a8bc6642dbf4b5e3fdee9f3442f2bbe84" title="In PEER state: Asynchronously awaits one discrete message – as sent by the opposing peer via Blob_sen...">Blob_receiver::async_receive_blob()</a> in the form of <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> = <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aad44f87d53255ba573d57086dfeab805" title="Will not receive message: either opposing user sent graceful-close via API.">error::Code::S_RECEIVES_FINISHED_CANNOT_RECEIVE</a>.  <a href="classipc_1_1transport_1_1Blob__sender.html#a440ecfbfc9bda7d824c0acfa54b23ca9">More...</a><br /></td></tr>
+<tr class="memdesc:a440ecfbfc9bda7d824c0acfa54b23ca9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a097a08242e02875c0ded6b1b84c13108" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">send_blob()</a> but sends a graceful-close message instead of the usual payload; the opposing peer's <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a> shall receive it reliably and in-order via <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a8bc6642dbf4b5e3fdee9f3442f2bbe84" title="In PEER state: Asynchronously awaits one discrete message – as sent by the opposing peer via Blob_sen...">Blob_receiver::async_receive_blob()</a> in the form of <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> = <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aad44f87d53255ba573d57086dfeab805" title="Will not receive message: opposing user sent graceful-close via API.">error::Code::S_RECEIVES_FINISHED_CANNOT_RECEIVE</a>.  <a href="classipc_1_1transport_1_1Blob__sender.html#a440ecfbfc9bda7d824c0acfa54b23ca9">More...</a><br /></td></tr>
 <tr class="separator:a440ecfbfc9bda7d824c0acfa54b23ca9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a14c51a9d8b03008b567917589ab813"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a2a14c51a9d8b03008b567917589ab813">end_sending</a> ()</td></tr>
 <tr class="memdesc:a2a14c51a9d8b03008b567917589ab813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to <code>async_end_sending(F)</code> wherein <code>F()</code> does nothing.  <a href="classipc_1_1transport_1_1Blob__sender.html#a2a14c51a9d8b03008b567917589ab813">More...</a><br /></td></tr>
 <tr class="separator:a2a14c51a9d8b03008b567917589ab813"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac41990a469e61a26ca9cefaf6a291a2e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#ac41990a469e61a26ca9cefaf6a291a2e">auto_ping</a> ()</td></tr>
-<tr class="memdesc:ac41990a469e61a26ca9cefaf6a291a2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state: Irreversibly enables periodic auto-pinging of opposing receiver with low-level messages that are ignored except that they reset any idle timer as enabled via <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a5be288e0479a91e352fdea6d54460b22" title="In PEER state: Irreversibly enables a conceptual idle timer whose potential side effect is,...">Blob_receiver::idle_timer_run()</a> (or similar).  <a href="classipc_1_1transport_1_1Blob__sender.html#ac41990a469e61a26ca9cefaf6a291a2e">More...</a><br /></td></tr>
-<tr class="separator:ac41990a469e61a26ca9cefaf6a291a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a822ca64e07d1ce75ebe7b3648da6d76f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a822ca64e07d1ce75ebe7b3648da6d76f">auto_ping</a> (<a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a> period=default_value)</td></tr>
+<tr class="memdesc:a822ca64e07d1ce75ebe7b3648da6d76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">In PEER state: Irreversibly enables periodic auto-pinging of opposing receiver with low-level messages that are ignored except that they reset any idle timer as enabled via <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a4d77590ade568415a1944f0211af9b48" title="In PEER state: Irreversibly enables a conceptual idle timer whose potential side effect is,...">Blob_receiver::idle_timer_run()</a> (or similar).  <a href="classipc_1_1transport_1_1Blob__sender.html#a822ca64e07d1ce75ebe7b3648da6d76f">More...</a><br /></td></tr>
+<tr class="separator:a822ca64e07d1ce75ebe7b3648da6d76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac50bde6a1f4301872f20aba69a677af6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a27aabc14c50dfd4670b49a7f52d716e1">Blob_snd_stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#ac50bde6a1f4301872f20aba69a677af6">blob_send_stats</a> () const</td></tr>
+<tr class="memdesc:ac50bde6a1f4301872f20aba69a677af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the accumulated transport statistics as of this call.  <a href="classipc_1_1transport_1_1Blob__sender.html#ac50bde6a1f4301872f20aba69a677af6">More...</a><br /></td></tr>
+<tr class="separator:ac50bde6a1f4301872f20aba69a677af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a49ce7cb91a6d4e32b5dc096d175614"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a1a49ce7cb91a6d4e32b5dc096d175614">blob_send_stats_reset</a> ()</td></tr>
+<tr class="memdesc:a1a49ce7cb91a6d4e32b5dc096d175614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the transport statistics as of this call.  <a href="classipc_1_1transport_1_1Blob__sender.html#a1a49ce7cb91a6d4e32b5dc096d175614">More...</a><br /></td></tr>
+<tr class="separator:a1a49ce7cb91a6d4e32b5dc096d175614"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -141,7 +154,34 @@ static const <a class="el" href="namespaceipc_1_1transport.html#a33de1c256addb39
 <p >The concept is exactly identical to <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a> except that in the latter each message consists of 0-1 native handles and 0-1 binary blobs; whereas here it is always exactly 1 of the latter. More precisely, each message contains 1 binary blob, whose length must be at least 1 byte. You may interpret notes in common-sense fashion; for example <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#af5d889f8a209353b3d69f70b44a2095c" title="In PEER state: Returns max blob.size() such that send_blob() shall not fail due to too-long payload w...">send_blob_max_size()</a> here corresponds to <code>send_meta_blob_max_size()</code> there.</p>
 <p >Therefore we keep the documentation very light, only pointing out the differences against <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a> &ndash; which are summarized in the preceding paragraph. All other notes from <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a> apply here.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Native_handle_sender</a>, an identical concept with 1 feature (native handle transmission) added. </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a27aabc14c50dfd4670b49a7f52d716e1" name="a27aabc14c50dfd4670b49a7f52d716e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27aabc14c50dfd4670b49a7f52d716e1">&#9670;&nbsp;</a></span>Blob_snd_stats</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a27aabc14c50dfd4670b49a7f52d716e1">ipc::transport::Blob_sender::Blob_snd_stats</a> =  value</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return type, typically a <code>struct</code>, for <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#ac50bde6a1f4301872f20aba69a677af6" title="Returns the accumulated transport statistics as of this call.">blob_send_stats()</a>. </p>
+<p >In addition: the impl must choose one of the following paths. Note that <a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html" title="Cumulative stats from the outgoing-direction (send) pipe of a Blob_sender or Native_handle_sender con...">stat::Blob_snd_stats</a> defines statistics relevant to any concept impl of <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a>.</p><ol type="1">
+<li>This type <em>is</em> <a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html" title="Cumulative stats from the outgoing-direction (send) pipe of a Blob_sender or Native_handle_sender con...">stat::Blob_snd_stats</a>. Therefore, given a value <code>S</code> of this type, you can count on this: <code>using <a class="el" href="namespaceipc_1_1transport_1_1stat.html#ad50da9da15631037e9e9310d13287c61" title="Maps a stats struct type to its core Blob_snd_stats; identity for Blob_snd_stats itself.">ipc::transport::stat::blob_snd_stats</a>; assert(&amp;(blob_snd_stats(S)) == &amp;S)</code>.<ul>
+<li>That is: your impl adds no stats beyond the concept-level ones.</li>
+</ul>
+</li>
+<li>This type <em>is not</em> <a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html" title="Cumulative stats from the outgoing-direction (send) pipe of a Blob_sender or Native_handle_sender con...">stat::Blob_snd_stats</a> but contains one via some type of composition. Therefore your <a class="el" href="classipc_1_1transport_1_1Blob__sender.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order sending ...">Blob_sender</a> impl must be accompanied (in the same namespace, for ADL) with a free function such that this works: <code>using <a class="el" href="namespaceipc_1_1transport_1_1stat.html#ad50da9da15631037e9e9310d13287c61" title="Maps a stats struct type to its core Blob_snd_stats; identity for Blob_snd_stats itself.">ipc::transport::stat::blob_snd_stats</a>; const <a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html" title="Cumulative stats from the outgoing-direction (send) pipe of a Blob_sender or Native_handle_sender con...">stat::Blob_snd_stats</a>&amp; core_stats = blob_snd_stats(S)</code>.<ul>
+<li>That is: your impl adds some stats on top of the concept-level ones. </li>
+</ul>
+</li>
+</ol>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a072e2f3b5c18d1188c75501bc5620f6f" name="a072e2f3b5c18d1188c75501bc5620f6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a072e2f3b5c18d1188c75501bc5620f6f">&#9670;&nbsp;</a></span>Blob_sender() <span class="overload">[1/3]</span></h2>
 
@@ -253,7 +293,7 @@ template&lt;typename Task_err &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Equivalent to <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a776b55ae93e65592b90c3943ca99e948" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">send_blob()</a> but sends a graceful-close message instead of the usual payload; the opposing peer's <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a> shall receive it reliably and in-order via <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a8bc6642dbf4b5e3fdee9f3442f2bbe84" title="In PEER state: Asynchronously awaits one discrete message – as sent by the opposing peer via Blob_sen...">Blob_receiver::async_receive_blob()</a> in the form of <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> = <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aad44f87d53255ba573d57086dfeab805" title="Will not receive message: either opposing user sent graceful-close via API.">error::Code::S_RECEIVES_FINISHED_CANNOT_RECEIVE</a>. </p>
+<p>Equivalent to <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a097a08242e02875c0ded6b1b84c13108" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">send_blob()</a> but sends a graceful-close message instead of the usual payload; the opposing peer's <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html" title="A documentation-only concept defining the behavior of an object capable of reliably/in-order receivin...">Blob_receiver</a> shall receive it reliably and in-order via <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a8bc6642dbf4b5e3fdee9f3442f2bbe84" title="In PEER state: Asynchronously awaits one discrete message – as sent by the opposing peer via Blob_sen...">Blob_receiver::async_receive_blob()</a> in the form of <a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89" title="Short-hand for flow::Error_code which is very common.">Error_code</a> = <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297aad44f87d53255ba573d57086dfeab805" title="Will not receive message: opposing user sent graceful-close via API.">error::Code::S_RECEIVES_FINISHED_CANNOT_RECEIVE</a>. </p>
 <p >All notes from <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html#a4c92fe4e43ddf819a2c767cc53cbe477" title="Equivalent to send_native_handle() but sends a graceful-close message instead of the usual payload; t...">Native_handle_sender::async_end_sending()</a> doc header apply.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -271,8 +311,8 @@ template&lt;typename Task_err &gt; </div>
 
 </div>
 </div>
-<a id="ac41990a469e61a26ca9cefaf6a291a2e" name="ac41990a469e61a26ca9cefaf6a291a2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac41990a469e61a26ca9cefaf6a291a2e">&#9670;&nbsp;</a></span>auto_ping()</h2>
+<a id="a822ca64e07d1ce75ebe7b3648da6d76f" name="a822ca64e07d1ce75ebe7b3648da6d76f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a822ca64e07d1ce75ebe7b3648da6d76f">&#9670;&nbsp;</a></span>auto_ping()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -280,14 +320,15 @@ template&lt;typename Task_err &gt; </div>
         <tr>
           <td class="memname">bool ipc::transport::Blob_sender::auto_ping </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="namespaceipc_1_1util.html#ac66141280c3b7295a86b65209f31cc58">util::Fine_duration</a>&#160;</td>
+          <td class="paramname"><em>period</em> = <code>default_value</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>In PEER state: Irreversibly enables periodic auto-pinging of opposing receiver with low-level messages that are ignored except that they reset any idle timer as enabled via <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a5be288e0479a91e352fdea6d54460b22" title="In PEER state: Irreversibly enables a conceptual idle timer whose potential side effect is,...">Blob_receiver::idle_timer_run()</a> (or similar). </p>
-<p >All notes from Native_handle_receiver::auto_ping() doc header apply.</p>
+<p>In PEER state: Irreversibly enables periodic auto-pinging of opposing receiver with low-level messages that are ignored except that they reset any idle timer as enabled via <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a4d77590ade568415a1944f0211af9b48" title="In PEER state: Irreversibly enables a conceptual idle timer whose potential side effect is,...">Blob_receiver::idle_timer_run()</a> (or similar). </p>
+<p >All notes from <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html#a8a2f1282c18faec36aabf29c99b87054" title="In PEER state: Irreversibly enables periodic auto-pinging of opposing receiver with low-level message...">Native_handle_sender::auto_ping()</a> doc header apply.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">period</td><td>See above. </td></tr>
@@ -295,6 +336,50 @@ template&lt;typename Task_err &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
+
+</div>
+</div>
+<a id="ac50bde6a1f4301872f20aba69a677af6" name="ac50bde6a1f4301872f20aba69a677af6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac50bde6a1f4301872f20aba69a677af6">&#9670;&nbsp;</a></span>blob_send_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a27aabc14c50dfd4670b49a7f52d716e1">Blob_snd_stats</a> ipc::transport::Blob_sender::blob_send_stats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the accumulated transport statistics as of this call. </p>
+<p >If not in PEER state returns a zeroed-out stats object.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a27aabc14c50dfd4670b49a7f52d716e1" title="Return type, typically a struct, for blob_send_stats().">Blob_snd_stats</a> doc header about how to obtain a <a class="el" href="structipc_1_1transport_1_1stat_1_1Blob__snd__stats.html" title="Cumulative stats from the outgoing-direction (send) pipe of a Blob_sender or Native_handle_sender con...">transport::stat::Blob_snd_stats</a> core from the returned <code>struct</code>.</dd></dl>
+<p>Thread-safe: can be called concurrently with any other method including <code>send_*()</code>. The returned copy is a consistent snapshot.</p>
+<dl class="section return"><dt>Returns</dt><dd>Stats snapshot by value. </dd></dl>
+
+</div>
+</div>
+<a id="a1a49ce7cb91a6d4e32b5dc096d175614" name="a1a49ce7cb91a6d4e32b5dc096d175614"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a49ce7cb91a6d4e32b5dc096d175614">&#9670;&nbsp;</a></span>blob_send_stats_reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ipc::transport::Blob_sender::blob_send_stats_reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resets the transport statistics as of this call. </p>
+<p >The formal meaning of a reset is discussed in <code>flow::util::stat</code> doc header. If not in PEER state this is a no-op.</p>
+<p >Thread-safe: can be called concurrently with any other method including <code>send_*()</code>. </p>
 
 </div>
 </div>
@@ -348,8 +433,8 @@ template&lt;typename Task_err &gt; </div>
 
 </div>
 </div>
-<a id="a776b55ae93e65592b90c3943ca99e948" name="a776b55ae93e65592b90c3943ca99e948"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a776b55ae93e65592b90c3943ca99e948">&#9670;&nbsp;</a></span>send_blob()</h2>
+<a id="a097a08242e02875c0ded6b1b84c13108" name="a097a08242e02875c0ded6b1b84c13108"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a097a08242e02875c0ded6b1b84c13108">&#9670;&nbsp;</a></span>send_blob()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -364,7 +449,7 @@ template&lt;typename Task_err &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceipc.html#aa3192e586cc45d3e7c22463bf2760f89">Error_code</a> *&#160;</td>
-          <td class="paramname"><em>err_code</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>err_code</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -376,7 +461,7 @@ template&lt;typename Task_err &gt; </div>
 
 <p>In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order, to the opposing peer; the message consists of the provided binary blob (of length at least 1 byte). </p>
 <p >Providing a null blob results in undefined behavior (assertion may trip).</p>
-<p >All notes from <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html#ac96b0aa01c286d525f9dcfa6dacc4220" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably/in-order,...">Native_handle_sender::send_native_handle()</a> doc header apply.</p>
+<p >All notes from <a class="el" href="classipc_1_1transport_1_1Native__handle__sender.html#a8861f962d6ea029413c74c520db58a7f" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably/in-order,...">Native_handle_sender::send_native_handle()</a> doc header apply.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">blob</td><td>A binary blob to send; behavior undefined unless <code>blob.size() &gt;= 1</code>. </td></tr>
@@ -403,8 +488,8 @@ template&lt;typename Task_err &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>In PEER state: Returns max <code>blob.size()</code> such that <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a776b55ae93e65592b90c3943ca99e948" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">send_blob()</a> shall not fail due to too-long payload with <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ac416e988563e44bf15fc6a81743eef53" title="User called an API with 1 or more arguments against the API spec.">error::Code::S_INVALID_ARGUMENT</a>. </p>
-<p >Always the same value once in PEER state. The opposing Native_handle_receiver::receive_blob_max_size()` shall return the same value (in the opposing object potentially in a different process).</p>
+<p>In PEER state: Returns max <code>blob.size()</code> such that <a class="el" href="classipc_1_1transport_1_1Blob__sender.html#a097a08242e02875c0ded6b1b84c13108" title="In PEER state: Synchronously, non-blockingly sends one discrete message, reliably and in-order,...">send_blob()</a> shall not fail due to too-long payload with <a class="el" href="namespaceipc_1_1transport_1_1error.html#adfef15ef4e76cc55d652fbd9c2797297ac416e988563e44bf15fc6a81743eef53" title="User called an API with 1 or more arguments against the API spec.">error::Code::S_INVALID_ARGUMENT</a>. </p>
+<p >Always the same value once in PEER state. The opposing <a class="el" href="classipc_1_1transport_1_1Blob__receiver.html#a454ed6207aeba777f779260c142603df" title="In PEER state: Returns min target-blob size such that (1) async_receive_blob() shall not fail with er...">Blob_receiver::receive_blob_max_size()</a> shall return the same value (in the opposing object potentially in a different process).</p>
 <p >If <code>*this</code> is not in PEER state (in particular if it is default-cted or moved-from), returns zero; else a positive value.</p>
 <dl class="section return"><dt>Returns</dt><dd>See above. </dd></dl>
 
@@ -416,7 +501,7 @@ template&lt;typename Task_err &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Full implementation reference.</div>
   </td>
@@ -74,33 +74,58 @@ $(function() {
   <div class="headertitle"><div class="title">channel.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="channel__base_8hpp_source.html">ipc/transport/struc/channel_base.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="sync__io_2channel__stats_8hpp_source.html">ipc/transport/struc/sync_io/channel_stats.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="channel__base_8hpp_source.html">ipc/transport/struc/channel_base.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="msg__impl_8hpp_source.html">ipc/transport/struc/detail/msg_impl.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="msg__mdt__out_8hpp_source.html">ipc/transport/struc/detail/msg_mdt_out.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="heap__serializer_8hpp_source.html">ipc/transport/struc/heap_serializer.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2util_8hpp_source.html">ipc/transport/struc/util.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__core_2src_2ipc_2transport_2channel_8hpp_source.html">ipc/transport/channel.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ipc__core_2src_2ipc_2transport_2error_8hpp_source.html">ipc/transport/error.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="protocol__negotiator_8hpp_source.html">ipc/transport/protocol_negotiator.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="process__credentials_8hpp_source.html">ipc/util/process_credentials.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="native__handle_8hpp_source.html">ipc/util/native_handle.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="util__fwd_8hpp_source.html">ipc/util/util_fwd.hpp</a>&quot;</code><br />
 <code>#include &lt;flow/async/single_thread_task_loop.hpp&gt;</code><br />
-<code>#include &lt;capnp/pretty-print.h&gt;</code><br />
+<code>#include &lt;flow/util/blob.hpp&gt;</code><br />
+<code>#include &lt;flow/error/error.hpp&gt;</code><br />
 <code>#include &lt;boost/uuid/random_generator.hpp&gt;</code><br />
 <code>#include &lt;boost/uuid/uuid_io.hpp&gt;</code><br />
+<code>#include &lt;boost/container/deque.hpp&gt;</code><br />
 <code>#include &lt;boost/array.hpp&gt;</code><br />
 <code>#include &lt;boost/move/make_unique.hpp&gt;</code><br />
+<code>#include &lt;boost/logic/tribool.hpp&gt;</code><br />
+<code>#include &lt;boost/unordered/unordered_flat_map.hpp&gt;</code><br />
 <code>#include &lt;queue&gt;</code><br />
 <code>#include &lt;optional&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="namespaceipc_1_1transport_1_1struc_1_1sync__io.html" title="sync_io-pattern counterparts to async-I/O-pattern object types in parent namespace ipc::transport::st...">sync_io</a></code>-pattern counterpart to async-I/O-pattern <a class="el" href="classipc_1_1transport_1_1struc_1_1Channel.html" title="Owning and wrapping a pre-connected transport::Channel peer (an endpoint of an established channel ov...">transport::struc::Channel</a>.  <a href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Expecting_response</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Policy for how to act upon receiving a response in-message that indicates its originating out-message is the message associated with this object in <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a3d4c8da3dd620d113479f5c6a3f96c3a" title="Table mapping originating out-message to the policy for handling an in-message that indicates that ou...">Expecting_response_map</a>.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_msg</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Policy for how to act upon receiving an expected message of one kind or another.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__msg.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Msg__in__pipe.html">ipc::transport::struc::sync_io::Channel&lt; Channel_obj, Message_body, Struct_builder_config, Struct_reader_config &gt;::Msg_in_pipe</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Expecting_response</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Policy for how to act upon receiving a response in-message that indicates its originating out-message is the message associated with this object in <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a7b70be013b6cf859411eb9ccdd314745" title="Table mapping originating out-message to the policy for handling an in-message that indicates that ou...">Expecting_response_map</a>.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Expecting__response.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Msg__in__pipe.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Msg_in_pipe&lt; LEAD_HNDL_EXPECTATION &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data and policy with respect to receipt of the next/currently-incomplete in-message.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Msg__in__pipe.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Handlers</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Just groups the varieties of user-facing handler executed via <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#ad4ea00aa7fd205543c35508266f6256f" title="Synchronously executes a user-facing handler of the given variety, right then and there: constructs a...">handlers_post()</a>; one nested <code>struct</code> (aggregate) per variety, its <code>execute()</code> being what runs.  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Message.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Handlers::Message</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executor for handler indicating receipt of a message (an expected response as via <code><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#ac45cb425caf6ccabbfbf8d60c01dc175" title="See Async_io_obj counterpart; though naturally on_rsp_func() is invoked in the sync_io-pattern fashio...">async_request()</a></code>, an expected notification as via <code>expect_*()</code>, or an unexpected response as via <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#af17115c0dd164f481f49bd91e5a40182" title="See Async_io_obj counterpart; though naturally on_func() is invoked in the sync_io-pattern fashion.">set_unexpected_response_handler()</a>).  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Message.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Remote__unexpected__response.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Handlers::Remote_unexpected_response</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executor for handler indicating being informed by opposing side that <em>it</em> received a response to a message that was not issued as a response-expecting request (as via <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a41f2b1338b4d70d8b1e0cbdf4c0bb402" title="See Async_io_obj counterpart; though naturally on_func() is invoked in the sync_io-pattern fashion.">set_remote_unexpected_response_handler()</a>).  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Remote__unexpected__response.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Error.html">ipc::transport::struc::sync_io::Channel&lt; Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t &gt;::Handlers::Error</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executor for handler indicating <code><a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html" title="sync_io-pattern counterpart to async-I/O-pattern transport::struc::Channel.">Channel</a></code> error (as via <a class="el" href="classipc_1_1transport_1_1struc_1_1sync__io_1_1Channel.html#a4d023db82fd4b5af62b5ea1297d57d35" title="Permanently memorizes the incoming-direction on-error handler, thus authorizing the emission of any i...">start_and_poll()</a> arg). Empty (<code>daddy</code> arg is enough).  <a href="structipc_1_1transport_1_1struc_1_1sync__io_1_1Channel_1_1Handlers_1_1Error.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -123,7 +148,7 @@ Macros</h2></td></tr>
 <tr class="memitem:a50e1bb663274c68c760263342ddfdcbc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp.html#a50e1bb663274c68c760263342ddfdcbc">TEMPLATE_SIO_STRUCT_CHANNEL</a></td></tr>
 <tr class="memdesc:a50e1bb663274c68c760263342ddfdcbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in ../structured_channel.hpp).  <a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp.html#a50e1bb663274c68c760263342ddfdcbc">More...</a><br /></td></tr>
 <tr class="separator:a50e1bb663274c68c760263342ddfdcbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefc68934c89912e7b5d0706bdb2be6e5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp.html#aefc68934c89912e7b5d0706bdb2be6e5">CLASS_SIO_STRUCT_CHANNEL</a>&#160;&#160;&#160;  Channel&lt;Channel_obj, Message_body, Struct_builder_config, Struct_reader_config&gt;</td></tr>
+<tr class="memitem:aefc68934c89912e7b5d0706bdb2be6e5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp.html#aefc68934c89912e7b5d0706bdb2be6e5">CLASS_SIO_STRUCT_CHANNEL</a>&#160;&#160;&#160;  Channel&lt;Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t&gt;</td></tr>
 <tr class="memdesc:aefc68934c89912e7b5d0706bdb2be6e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internally used macro; public API users should disregard (same deal as in ../structured_channel.hpp).  <a href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp.html#aefc68934c89912e7b5d0706bdb2be6e5">More...</a><br /></td></tr>
 <tr class="separator:aefc68934c89912e7b5d0706bdb2be6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -135,14 +160,14 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CLASS_SIO_STRUCT_CHANNEL&#160;&#160;&#160;  Channel&lt;Channel_obj, Message_body, Struct_builder_config, Struct_reader_config&gt;</td>
+          <td class="memname">#define CLASS_SIO_STRUCT_CHANNEL&#160;&#160;&#160;  Channel&lt;Owned_channel_t, Msg_body_t, Builder_config_t, Reader_config_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internally used macro; public API users should disregard (same deal as in ../structured_channel.hpp). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l02210">2210</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l02729">2729</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
@@ -157,19 +182,19 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Channel_obj, <span class="keyword">typename</span> Message_body, \</div>
-<div class="line">           typename Struct_builder_config, <span class="keyword">typename</span> Struct_reader_config&gt;</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Owned_channel_t, <span class="keyword">typename</span> Msg_body_t, \</div>
+<div class="line">           typename Builder_config_t, <span class="keyword">typename</span> Reader_config_t&gt;</div>
 </div><!-- fragment -->
 <p>Internally used macro; public API users should disregard (same deal as in ../structured_channel.hpp). </p>
 
-<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l02206">2206</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html#l02725">2725</a> of file <a class="el" href="ipc__transport__structured_2src_2ipc_2transport_2struc_2sync__io_2channel_8hpp_source.html">channel.hpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:44 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:55 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>

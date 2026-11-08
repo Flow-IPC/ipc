@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;2.0.0</span>
+   <div id="projectname">Flow-IPC<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Flow-IPC project: Public API.</div>
   </td>
@@ -77,7 +77,7 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator&lt; T, Arena &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html">ipc::shm::stl::Stateless_allocator&lt; T, Arena_t &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in SHM in a given SHM-aware <code>Arena</code>.  <a href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -95,19 +95,19 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a96ccf3e4cf39d59d0a80e9026507b206"><td class="memTemplParams" colspan="2">template&lt;typename Arena , typename T1 , typename T2 &gt; </td></tr>
-<tr class="memitem:a96ccf3e4cf39d59d0a80e9026507b206"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1shm_1_1stl.html#a96ccf3e4cf39d59d0a80e9026507b206">ipc::shm::stl::operator==</a> (const Stateless_allocator&lt; T1, Arena &gt; &amp;val1, const Stateless_allocator&lt; T2, Arena &gt; &amp;val2)</td></tr>
-<tr class="memdesc:a96ccf3e4cf39d59d0a80e9026507b206"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena_obj</a>.  <a href="namespaceipc_1_1shm_1_1stl.html#a96ccf3e4cf39d59d0a80e9026507b206">More...</a><br /></td></tr>
-<tr class="separator:a96ccf3e4cf39d59d0a80e9026507b206"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1b059d00a9cbdc54a917e051c1aecdf"><td class="memTemplParams" colspan="2">template&lt;typename Arena , typename T1 , typename T2 &gt; </td></tr>
-<tr class="memitem:ab1b059d00a9cbdc54a917e051c1aecdf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1shm_1_1stl.html#ab1b059d00a9cbdc54a917e051c1aecdf">ipc::shm::stl::operator!=</a> (const Stateless_allocator&lt; T1, Arena &gt; &amp;val1, const Stateless_allocator&lt; T2, Arena &gt; &amp;val2)</td></tr>
-<tr class="memdesc:ab1b059d00a9cbdc54a917e051c1aecdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>false</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#ab8733c1237be93ee28664e4b983d535c" title="Short-hand for the Arena type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena_obj</a>.  <a href="namespaceipc_1_1shm_1_1stl.html#ab1b059d00a9cbdc54a917e051c1aecdf">More...</a><br /></td></tr>
-<tr class="separator:ab1b059d00a9cbdc54a917e051c1aecdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73ed547acbf63463f0dbd89ccbe38fb4"><td class="memTemplParams" colspan="2">template&lt;typename Arena_t , typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:a73ed547acbf63463f0dbd89ccbe38fb4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1shm_1_1stl.html#a73ed547acbf63463f0dbd89ccbe38fb4">ipc::shm::stl::operator==</a> (const Stateless_allocator&lt; T1, Arena_t &gt; &amp;val1, const Stateless_allocator&lt; T2, Arena_t &gt; &amp;val2)</td></tr>
+<tr class="memdesc:a73ed547acbf63463f0dbd89ccbe38fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena</a>.  <a href="namespaceipc_1_1shm_1_1stl.html#a73ed547acbf63463f0dbd89ccbe38fb4">More...</a><br /></td></tr>
+<tr class="separator:a73ed547acbf63463f0dbd89ccbe38fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a207db5c3896924801f5bae1455fffe"><td class="memTemplParams" colspan="2">template&lt;typename Arena_t , typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:a7a207db5c3896924801f5bae1455fffe"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceipc_1_1shm_1_1stl.html#a7a207db5c3896924801f5bae1455fffe">ipc::shm::stl::operator!=</a> (const Stateless_allocator&lt; T1, Arena_t &gt; &amp;val1, const Stateless_allocator&lt; T2, Arena_t &gt; &amp;val2)</td></tr>
+<tr class="memdesc:a7a207db5c3896924801f5bae1455fffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>false</code> for any 2 <code><a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html" title="Stateless allocator usable with STL-compliant containers to store (or merely read) them directly in S...">Stateless_allocator</a></code>s managing the same <a class="el" href="classipc_1_1shm_1_1stl_1_1Stateless__allocator.html#a3eddbef44d845c7ec642b6904a81fed9" title="Alias for the Arena_t type this uses for allocation/deallocation/pointer semantics.">Stateless_allocator::Arena</a>.  <a href="namespaceipc_1_1shm_1_1stl.html#a7a207db5c3896924801f5bae1455fffe">More...</a><br /></td></tr>
+<tr class="separator:a7a207db5c3896924801f5bae1455fffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 24 2026 10:46:41 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+Generated on Sun Nov 8 2026 04:29:53 for Flow-IPC by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
 </small></address>
 </body>
 </html>
