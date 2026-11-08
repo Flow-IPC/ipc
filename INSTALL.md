@@ -12,7 +12,7 @@ We do assume you've grabbed everything per [README: Obtaining the source code](.
 
 ## Installation
 
-An exported Flow-IPC consists of C++ header files installed under "ipc/..." and "flow/..." in the
+An exported Flow-IPC consists of C++ header files installed under `ipc/...` and `flow/...` in the
 include-root; and libraries such as `libflow.a` and `lipipc_*.a` (as of this writing 5 of the latter).
 Certain items are also exported for people who use CMake to build their own
 projects; we make it particularly easy to use Flow and Flow-IPC proper in that case
@@ -99,9 +99,9 @@ To build Flow-IPC (including Flow):
      but the basics are as follows.  CMake is very flexible and powerful; we've tried not to mess with that principle
      in our build script(s).
      1. Choose a tool.  `ccmake` will allow you to interactively configure aspects of the build system, including
-        showing docs for various knobs our CMakeLists.txt (and friends) have made availale.  `cmake` will do so without
-        asking questions; you'll need to provide all required inputs on the command line.  Let's assume `cmake` below,
-        but you can use whichever makes sense for you.
+        showing docs for various knobs our `CMakeLists.txt` (and friends) have made available.  `cmake` will do so
+        without asking questions; you'll need to provide all required inputs on the command line.  Let's assume `cmake`
+        below, but you can use whichever makes sense for you.
      2. Choose a working *build directory*, somewhere outside the present `ipc` distribution.  Let's call this
         `$BUILD`: please `mkdir -p $BUILD`.  Below we'll refer to the directory containing the present `README.md` file
         as `$SRC`.

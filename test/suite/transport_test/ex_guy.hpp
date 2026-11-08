@@ -22,7 +22,6 @@
 #include <flow/async/single_thread_task_loop.hpp>
 #include <flow/util/basic_blob.hpp>
 #include <flow/common.hpp>
-
 // Yeah, it's an internal header.  We wanna print some `Text::Reader`s, and we're inside ipc::transport{} so sue me.
 #include "ipc/util/detail/util.hpp"
 
@@ -110,7 +109,7 @@ private:
  * specializing to avoid those errors.  Point is, user probably wouldn't need to wrap it in a specialized
  * struct template; could just have the aliases defined directly (or not defined at all, if they're not doing
  * SHM-backed things). */
-template<typename Session_t, bool S_SHM_ENABLED_V>
+template<typename Session_t, bool SHM_ENABLED>
 struct Shm_traits
 {
   using Payload_list_ptr = int;

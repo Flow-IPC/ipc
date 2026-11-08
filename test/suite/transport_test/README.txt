@@ -10,7 +10,7 @@ In this mode it is an interactive(ish) tool that:
     up to the transport::Channel level (wherein various pipes are bundled together)).
   - Can be used at a whim to test various patterns of API use without constant laborious code editing and recompiling.
     - This is already achieved.  I (ygoldfel) wrote it b/c testing what I wanted to test the usual way seemed painful.
-    - C/f EXERCISE MODE below.
+    - Cf. EXERCISE MODE below.
   - Can be used as *part* of a test suite.
     - This is partially achieved but not fully.  It does test all major things, as I keep adding them.
       - Some things cannot be tested without having hooks inside the actual code that instrument certain conditions that
@@ -57,7 +57,7 @@ In this mode it is a non-interactive tool that:
   zero-copy structured data as structured (capnp) messages as well as handles to native C++/STL data structures
   sitting in SHM.
   - Requires writing C++ code and recompiling to add/modify tests.
-    - C/f SCRIPTED MODE above.  A scriptable/interactive tool I (ygoldfel) deemed too hairy to write for the
+    - Cf. SCRIPTED MODE above.  A scriptable/interactive tool I (ygoldfel) deemed too hairy to write for the
     ipc::session and structured-layer-ipc::transport areas of Flow-IPC.  Could be wrong.
   - Can be used as *part* of a test suite.  (See notes for SCRIPTED MODE regarding this.  They apply here too.)
 

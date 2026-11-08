@@ -27,7 +27,14 @@ This page concerns advanced high-level situations wherein three or more applicat
 
 (Or go back to preceding page: @ref safety_perms.  @ref session_setup, particularly the parts about the ipc::session::App hierarchy, would also be a natural immediate pre-requisite for the current page.)
 
-This page is under construction; it is referred-to but not yet written.
+The rules are a direct extension of what we've covered:
+  - **One IPC universe description.**  All `App`s, `Client_app`s, and `Server_app`s of all the applications form *one* description, built by the same code in every application, as described in @ref session_setup.  `MASTER_APPS_AS_CLI` lists every application that acts as a session-client in *any* split.
+  - **Roles are per split.**  An application that is a session-server in one split and a session-client in another has both a `Server_app` and a `Client_app` (each containing the same `App`).
+  - **A session-server serves all its splits with one `Session_server`.**  If Ap is the server in both Ap-Bp and Ap-Cp, its ipc::session::Server_app::m_allowed_client_apps lists both Bp and Cp.  A single `Session_server` accepts sessions from either; ipc::session::Server_session::client_app() tells you which one connected (see @ref session_app_org for one way to dispatch on it).
+  - **A session-client opens one `Client_session` per split.**  If Ap is also the client in a Cp-Ap split, it constructs a `Client_session`, as in @ref session_setup, giving it Ap's `Client_app` and Cp's `Server_app`.  (A process may hold a `Session_server` and `Client_session`s at the same time.)
+  - **Sessions are independent.**  Each session, in each split, has its own channels and per-session SHM arena.  Nothing is shared across splits except app-scope data, which belongs to a particular session-server and client application; see @ref session_app_org.
+
+Everything else in this Manual applies to each split as-is.
 
 The next page is: @ref chan_struct.
 

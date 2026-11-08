@@ -23,7 +23,14 @@
 
 ---
 
-Here we discuss the important task of handling session-ending events (errors); and recommended an approach to structuring your subject-to-IPC objects within your application code.  (Or go back to preceding page: @ref chan_open.  The penultimate-to-us @ref session_setup "page" may be even more directly relevant however.)
+Here we discuss the important task of handling session-ending events (errors); and recommend an approach to structuring your subject-to-IPC objects within your application code.  (Or go back to preceding page: @ref chan_open.  The penultimate-to-us @ref session_setup "page" may be even more directly relevant however.)
+
+---
+
+@par capnp-RPC users
+This page's code-organization advice does not carry over as-is to capnp-RPC, where capnp-RPC's own conventions (KJ promises, capability lifetimes) govern.  The straightforward lifetime rules that *do* apply -- in particular regarding the `App` objects and `Logger`, which must outlive the KJ event loop -- are covered in @ref chan_rpc.
+
+---
 
 Page summary
 ------------
@@ -42,7 +49,7 @@ Therefore, a session's closure in a *given* process P has two basic **trigger ty
 That said:
 
 ### Topic 1: Session teardown ###
-In @ref session_setup, we talked plenty about how to *open* a session, but we almost completely skipped over *closing* it.   In particular when it came time to supply a session error handler (in `Client_session` constructor and `Session_server::init_handlers()`), our example code said `...` and punted to the present Manual page.  Explaining this, in and of itself, is straightforward enough; and we will do so below.
+In @ref session_setup, we talked plenty about how to *open* a session, but we almost completely skipped over *closing* it.   In particular when it came time to supply a session error handler (in `Client_session` constructor and `Server_session::init_handlers()`), our example code said `...` and punted to the present Manual page.  Explaining this, in and of itself, is straightforward enough; and we will do so below.
 
 ### Topic 2: Organizing application code around sessions ###
 However conceptually that topic touches on another, much less clear-cut, discussion: How to organize one's application code (on each side) in such a way as to avoid making the program an unmaintainable mess, particularly around session deinitialization time.  We did, briefly, mention that after the session is closed, on the client one would attempt to open another, identically; and on the server potentially one would do so immediately after *opening* a session, so that multiple sessions at a time could be ongoing.  How to make all this happen in code?  How to make the session-client and session-server code as mutually symmetrical as possible?  How to keep one session's IPC resources (channels, SHM arenas, SHM-allocated objects) segregated in code from another session's?  That is the topic here.  *Please understand that this is informal advice, which you're free to ignore or modify for yourself.*  In many cases tutorial-style documentation of a library like this would omit such advice; but we felt it important to help you save pain and time.  As long as you understand the reasoning here, we feel this page's mission is accomplished.
@@ -53,11 +60,21 @@ So let's get into the relatively easy topic: the API for closing an open session
 
 If the closing trigger is *local*, then one simply destroys the `Session` object (its destructor getting called), or in the case of the server side potentially 1+ `Session` object(s).  That's it.  Then it can exit the process.
 
-@note When locally-triggered (process is exiting gracefully), a session-server should, also, destroy the `Session_server` object (its destrctuctor getting called).  The order does not matter; for example `Session_server` can be destroyed first.
+When locally-triggered (process is exiting gracefully), a session-server should also destroy the `Session_server` object.  This brings us to the order of destruction.  Here are the lifetime tenets to follow (the Reference doc of @link ipc::session::Session_server Session_server@endlink repeats them):
+  -# **Per-session things before their `Session`.**  Channels, structured messages, SHM handles and objects: destroy them; then the `Session`.  This applies on both sides; the `App_session` class below is built around it.  At a minimum it is the clean order; for SHM-backed items it avoids use-after-free.
+  -# **Each `Session` before its `Session_server`.**  Construction goes `Session_server`, then sessions; destruction the reverse.
+  -# **One `Session_server` per `Server_app` at a time.**  A new one may follow an old one -- typically because the session-server process restarted -- but never while any `Session` or channel from the old one still exists: the new `Session_server`'s startup cleanup removes their kernel-persistent names (MQs, SHM pools).
+
+Some departures from the above do work; informally we recommend against relying on them, as doing so tends to indicate a design that will cause pain later.  Namely:
+  - a channel outliving its source `Session` (they are formally independent; though if the session was hosed by the opposing side, the channel usually goes down with it);
+  - a `Server_session` outliving its `Session_server` (it keeps working -- including, with the SHM-enabled variants, its app-scope arena -- and a `Server_session` emitted by a `Session_server` whose destructor is already running, per that destructor's Reference doc, merely needs destroying);
+  - a `Session_server` following another within one process.
 
 If the closing trigger is the peer *partner*, then one... also simply destroys the one, relevant `Session` object.  Then one either attempts to start another session (if a session-client, or server acting equally to a client), or does nothing (if acting as a server that can accept arbitrary number of concurrent sessions anyway).
 
 Any `Session` or `Session_server` destructor has essentially synchronous effects.  There is no lagging activity of which one need to be particularly aware.
+
+@note SHM-jemalloc: Do not destroy a `Session` or `Session_server` concurrently with the exit of a thread that has worked with SHM objects from its arena(s).  Either join such threads first, or destroy the `Session`/`Session_server` first.  (Formally the rule concerns the arena itself; see the warning in the ipc::shm::arena_lend::jemalloc::Ipc_arena doc header.)
 
 ---
 
@@ -78,13 +95,13 @@ In case of ungraceful shutdown, usually via `abort()`: The RAM may leak temporar
 
 ---
 
-Okay, but -- in the case of partner-triggered session closure -- how do we detect that the partner has indeed closed it, either gracefully or ungracefully, or has become become unhealthy/zombified?  This is more complex than destroying the `Session` (plus possibly other `Session`(s) and/or `Session_server`) that follows it, but it's also done via a well-defined API.  To wit: this is the error handler which we've omitted in (@ref session_setup) examples so far.  As shown in that Manual page, the error handler is supplied to @link ipc::session::Client_session::Client_session() `Client_session` constructor@endlink or @link ipc::session::Server_session::init_handlers() Server_session::init_handlers()@endlink.  Recall these both must be called strictly before the session is officially considered opened.
+Okay, but -- in the case of partner-triggered session closure -- how do we detect that the partner has indeed closed it, either gracefully or ungracefully, or has become unhealthy/zombified?  This is more complex than destroying the `Session` (plus possibly other `Session`(s) and/or `Session_server`) that follows it, but it's also done via a well-defined API.  To wit: this is the error handler which we've omitted in (@ref session_setup) examples so far.  As shown in that Manual page, the error handler is supplied to @link ipc::session::Client_session::Client_session() `Client_session` constructor@endlink or @link ipc::session::Server_session::init_handlers() Server_session::init_handlers()@endlink.  Recall these both must be called strictly before the session is officially considered opened.
 
 `Session` keeps track of partner-triggered session closure, which we term the **session becoming hosed** (a/k/a **session-hosing conditions**).  Yes, really.  Once detected, it *immediately* triggers the error handler you supplied.  Since it is potentially important for your peace of mind, at least the following (internal) conditions will lead to session-hosing:
-  - An internally maintained (for various needs but most importantly channel-opening negotiations) *session master channel* uses a local (Unix-domain) stream socket connection; and that socket connection has become gracefully, or ungracefully, closed by the opposing side.  A graceful closure would (internally) involve a TCP-FIN-like end-of-"file" condition being received from the opposing side; usually indicating a clean `exit()`.  An ungraceful closure would (internally) involve a TCP-RST-like error condition (ECONNRESET, EPIPE) being received from the opposing side; usually indicating an `abort()` or similar.
-    - This (internally) occurs, at the *latest* as part of the OS tearing down the opposing process, as thus is generally rather responsive.  There is still time for chaos in the ungraceful-shutdown scenario, but generally it's pretty quick, once things go down.
+  - An internally maintained (for various needs but most importantly channel-opening negotiations) *session master channel* uses a local (Unix-domain) socket connection; and that socket connection has become gracefully, or ungracefully, closed by the opposing side.  A graceful closure would (internally) involve a TCP-FIN-like end-of-"file" condition being received from the opposing side; usually indicating a clean `exit()`.  An ungraceful closure would (internally) involve a TCP-RST-like error condition (ECONNRESET, EPIPE) being received from the opposing side; usually indicating an `abort()` or similar.
+    - This (internally) occurs, at the *latest* as part of the OS tearing down the opposing process, and thus is generally rather responsive.  There is still time for chaos in the ungraceful-shutdown scenario, but generally it's pretty quick, once things go down.
   - Some other error occurred while operating along that same (internally maintained) socket connection, either when sending or receiving internal data.  The aforementioned end-of-"file," connection-reset, broken-pipe are the conditions we typically see in practice.
-  - That same (internally maintained) connection remains open without system errors popping up, but no (internally tracked) keep-alive messages have been received for some time (low seconds).  Probably the opposing process has become zombified or otherwise unhealthy.
+  - That same (internally maintained) connection remains open without system errors popping up, but no (internally tracked) keep-alive messages have been received for some time (seconds; see ipc::session::Session_cfg).  Probably the opposing process has become zombified or otherwise unhealthy.
     - This is, by design, a heuristic; the time (seconds) of having received no traffic (user-triggered or internal pings) is non-trivial.  During this time the opposing process may have already been unresponsive for a significant portion of it, so there's a higher chance of entropy in this case.  Hopefully it does not come to that, and the harder-edged socket error path described above is the one detected the vast majority of the time.
 
 In any case an `Error_code` passed to your error handler will indicate the triggering condition, while logs (at least WARNING message(s) by Flow-IPC) will contain further details.  The `Error_code` itself is for your logging/reporting/alerting purposes only; it is not advised to make algorithmic decisions based on it.  If the error handler was invoked, the session *is* hosed, period.
@@ -97,14 +114,14 @@ The Manual author(s) must stress that much of the following does not represent h
 
 @anchor scope
 ### Basic concept: data scope ###
-The basic problem we are solving here is this: You have your algorithms and data structures, in your meta-application Ap-Bp, and in service of these it is required that you perform IPC.  To perform IPC, in the ipc::session paradigm, Flow-IPC *requires* that you use its abtractions, most notably those of `Session_server`, `Server_session` (on open, just `Session`), and `Client_session` (ditto).  How to organize your code given your existing algorithms/structures and the aforementioned Flow-IPC abstractions?
+The basic problem we are solving here is this: You have your algorithms and data structures, in your meta-application Ap-Bp, and in service of these it is required that you perform IPC.  To perform IPC, in the ipc::session paradigm, Flow-IPC *requires* that you use its abstractions, most notably those of `Session_server`, `Server_session` (on open, just `Session`), and `Client_session` (ditto).  How to organize your code given your existing algorithms/structures and the aforementioned Flow-IPC abstractions?
 
 The key point is that each of your own (IPC-relevant) data structures (and probably related algorithms) should be very cleanly and explicitly classified to have a particular *scope*, a/k/a lifetime.  Generally, the scope of each (IPC-relevant) datum is one of the following:
-  - **[Per-]session scope**: The datum begins life no earlier than the creation of the (*opened*!) `Session` (A-B process-to-process conversation) and no later than the (opened) `Session`'s destruction.  If the session ends (as earlier noted, when the process exits -- or, far more interestingly, when the *opposing* process exits or dies or gets zombified), then this datum is no longer relevant by definition: The process reponsible for ~half of the algorithm that uses the datum is simply out of commission permanently, at a minimum.
+  - **[Per-]session scope**: The datum begins life no earlier than the creation of the (*opened*!) `Session` (A-B process-to-process conversation) and no later than the (opened) `Session`'s destruction.  If the session ends (as earlier noted, when the process exits -- or, far more interestingly, when the *opposing* process exits or dies or gets zombified), then this datum is no longer relevant by definition: The process responsible for ~half of the algorithm that uses the datum is simply out of commission permanently, at a minimum.
   - **Cross-session scope** a/k/a **app scope**: The datum may be accessed by possibly multiple sessions concurrently; and possibly by sessions that do not yet exist.  For example, an in-memory cache of web objects might be relevant to any processes that might connect later to make use of (and add to) the cache, not to mention any processes currently connected into the IPC-engaged system.
-    - Consider a given `Session_server`.  App-scope data, if they even exist in your meta-application at all, do not simply apply to all sessions to start via this `Session_server`.  Instead each cross-section datum must pertain to a particular partner (client) *application* (not process -- that'd be per-session).  For example, if your server Ap supports (as listed in ipc::session::Server_app::m_allowed_client_apps) two possible partner applications Bp and Cp, then a given datum must be classified (by you) to be either per-app-B or per-app-C.
-    - Such a datum begins life no earlier than the *first* session pertaining to the particular `Client_app` becoming open (which can occur only after `Session_server` construction).  Its life ends no later than the `Session_server`'s destruction.
-    - *Note well: Flow-IPC does NOT allow for IPC-relevant, ipc::session-managed data to persist beyond the lifetime of a session-server process.*  (Certainly such data can be maintained in the meta-application -- but not as part of ipc::session-managed data.)
+    - Consider a given `Session_server`.  App-scope data, if they even exist in your meta-application at all, do not simply apply to all sessions to start via this `Session_server`.  Instead each cross-session datum must pertain to a particular partner (client) *application* (not process -- that'd be per-session).  For example, if your server Ap supports (as listed in ipc::session::Server_app::m_allowed_client_apps) two possible partner applications Bp and Cp, then a given datum must be classified (by you) to be either per-app-B or per-app-C.
+    - Such a datum begins life no earlier than the *first* session pertaining to the particular `Client_app` becoming open (which can occur only after `Session_server` construction).  Its life ends no later than the `Session_server`'s destruction (or, should a `Server_session` outlive the `Session_server` -- see the lifetime tenets above -- that session's destruction).
+    - *Note well: Flow-IPC does not allow for IPC-relevant, ipc::session-managed data to persist beyond the lifetime of a session-server process.*  (Certainly such data can be maintained in the meta-application -- but not as part of ipc::session-managed data.)
 
 About what kinds of data are we even speaking?  Answer:
   - *Channels*: A given open ipc::transport::Channel (and thus @link ipc::transport::struc::Channel struc::Channel@endlink) is by definition session-scope.
@@ -112,15 +129,15 @@ About what kinds of data are we even speaking?  Answer:
   - *Structured-channel messages*: A given ipc::transport::struc::Msg_in or @link ipc::transport::struc::Msg_out struc::Msg_out@endlink is often, but *not* necessarily, session-scope.
     - A `struc::Msg_out` (a/k/a ipc::transport::struc::Channel::Msg_out) is a container of sorts, living usually in SHM.  If you chose to put it into session-scope SHM arena, it is session-scope.  If you chose (an) app-scope SHM arena, it is app-scope.  The details of this are out of our scope here (it's an ipc::transport thing), but rest assured specifying which one you want is not difficult and involves no thinking about SHM, specifically.
   - *C++ data structures*: A given direct-SHM-stored C++ data structure -- referred to via `shared_ptr<T>` a/k/a `Arena::Handle<T>` -- is often, but *not* necessarily, session-scope.
-    - Much like with `struc::Msg_out`, but more explicitly specified on your part, this (potentially container-involving) data structure will live in a SHM arena of your choice.  Spoiler alert (even though this is an ipc::transport topic): `Session::session_shm()->construct<T>()` = session-cope; `Session::app_shm()->construct<T>()` (or equivalently `Session_server::app_shm(app)->construct<T>()`, where `app` is a `Client_app`) = app-scope.
+    - Much like with `struc::Msg_out`, but more explicitly specified on your part, this (potentially container-involving) data structure will live in a SHM arena of your choice.  Spoiler alert (even though this is an ipc::transport topic): `Session::session_shm()->construct<T>()` = session-scope; `Session::app_shm()->construct<T>()` (or equivalently `Session_server::app_shm(app)->construct<T>()`, where `app` is a `Client_app`) = app-scope.
 
 @note - Recall that we, generally, consider the latter bullet point (direct-stored-in-SHM data structures) an advanced use case.  It has full support, and in fact is used internally a-la-eat-own-dog-food in our own structured-message implementation.  That said one could argue that if one can represent IPC-shared data as `Msg_*`s exclusively, it is a good idea to do so.  (There are, certainly, reasons to go beyond it.)
 
-@note - As for `Msg_*` (the middle bullet point), it is often entirely possible -- and reasonable, as it tends to simplify algorithms -- to only store them on-the-go, on the stack, letting them go out of scope after (as sender) creating/building or (as receiver) receiving/reading them.  Such messages should always be session-scope but, from your point of view, don't really apply to this discussion at all.  E.g., suppose you receive an message with the latest traffic stats for your HTTP server; synchronously report these to some central server (or whatever); and that's it.  In that case your handler would receive an ipc::transport::struc::Channel::Msg_in_ptr (a `shared_ptr<Msg_in>`), read from it via capnp-generated accessors, and then let the `Msg_in_ptr` lapse right there.
+@note - As for `Msg_*` (the middle bullet point), it is often entirely possible -- and reasonable, as it tends to simplify algorithms -- to only store them on-the-go, on the stack, letting them go out of scope after (as sender) creating/building or (as receiver) receiving/reading them.  Such messages should always be session-scope but, from your point of view, don't really apply to this discussion at all.  E.g., suppose you receive a message with the latest traffic stats for your HTTP server; synchronously report these to some central server (or whatever); and that's it.  In that case your handler would receive an ipc::transport::struc::Channel::Msg_in_ptr (a `shared_ptr<Msg_in>`), read from it via capnp-generated accessors, and then let the `Msg_in_ptr` lapse right there.
 
 @anchor recs
 ### Organizing your objects: Up to sessions ###
-So, bottom line, you've got `Session` (possibly multiple), possibly a `Session_server`, `Channel`s and/or `struc::Channel`s, and then IPC-shared data (structured messages and/or C++ data structured).  How to organize them in your code on each side?  And, in a strongly related topic, what's the best way to hook up the `Session` error handler?  Our recommendations follow.  Again: it's the communicated principles that matter; the exact code snippets are an informal guide.  Or, perhaps, it can be looked at a *case study* (of a reasonably complex situation) which you can morph for your own needs.
+So, bottom line, you've got `Session` (possibly multiple), possibly a `Session_server`, `Channel`s and/or `struc::Channel`s, and then IPC-shared data (structured messages and/or C++ data structures).  How to organize them in your code on each side?  And, in a strongly related topic, what's the best way to hook up the `Session` error handler?  Our recommendations follow.  Again: it's the communicated principles that matter; the exact code snippets are an informal guide.  Or, perhaps, it can be looked at as a *case study* (of a reasonably complex situation) which you can morph for your own needs.
 
 Let's have a (singleton, really) `class Process {}` just to bracket things nicely.  (It's certainly optional but helps to communicate subsequent topics.)  It applies to both the session-server app A and session-client app B.  To do any ipc::session-based IPC, you'll definitely need to set up your `App`s, `Client_app`s, and `Server_app`s -- [IPC universe description](./session_setup.html#universe_desc), exactly as described in that link.  As it says, run the same code at the start of each `Process` lifecycle (perhaps in its constructor).  Store them in the `Process` as data members as needed, namely:
   - Session-client `Process`:
@@ -129,11 +146,11 @@ Let's have a (singleton, really) `class Process {}` just to bracket things nicel
   - Session-server `Process`:
     - The local `Server_app` is needed when constructing the `Session_server`.  This is normally done only once, and it is reasonable to do so in `Process` constructor; but if that action is delayed beyond that point, then you'll need the `Server_app` available and may wish to keep it as a data member in `Process`.
     - Same for the master `Client_app` list, which we in the past called `MASTER_APPS_AS_CLI`.
-    - Lastly, each individial `Client_app` that is listed in ipc::session::Server_app::m_allowed_client_apps -- as individual data members (like `Client_app m_cli_app_b` and `Client_app m_cli_app_c`), may be helpful for multi-client-application setups (i.e., if we are Ap, and Bp and Cp may establish sessions we us).  For example, when deciding which part of your session-server application shall deal with a newly-opened `Session`, `Session::client_app()` is the actual `Client_app connecting_cli` as a handler argument.  So then you could do, like, `if (session.client_app()->m_name == m_cli_app_b.m_name) { ...start the app Bp session... } else ...etc...`.
+    - Lastly, each individual `Client_app` that is listed in ipc::session::Server_app::m_allowed_client_apps -- as individual data members (like `Client_app m_cli_app_b` and `Client_app m_cli_app_c`), may be helpful for multi-client-application setups (i.e., if we are Ap, and Bp and Cp may establish sessions with us).  For example, when deciding which part of your session-server application shall deal with a newly-opened `Session`, `Session::client_app()` returns (a pointer to) the connecting `Client_app`.  So then you could do, like, `if (session.client_app()->m_name == m_cli_app_b.m_name) { ...start the app Bp session... } else ...etc...`.
 
 Whatever you do store should be listed in `Process { private: }` section first, as subsequent data items will need them.
 
-Now it's time to set up some session(s).  The more difficult task is on the server side; let us assume you do need to support multiple sessions concurrently.  In this discussion we will assume your application's main loop is single-threaded.  Your process will need a main-loop thread, and we will continue to assume the same proactor-pattern-with-Flow-IPC-internally-starting-threads-as-needed pattern as we have been (see @ref async_loop for discussion including other possiblities).  In this example I will use the `flow::async` API (as stated in the afore-linked Manual page, direct boost.asio use is similar, just with more boiler-plate).  So, something like the following would work.  Note we use the techniques explained in @ref session_setup (and, to a lesser extent, @ref chan_open), but now in the context of our recommended organization of the program.
+Now it's time to set up some session(s).  The more difficult task is on the server side; let us assume you do need to support multiple sessions concurrently.  In this discussion we will assume your application's main loop is single-threaded.  Your process will need a main-loop thread, and we will continue to assume the same proactor-pattern-with-Flow-IPC-internally-starting-threads-as-needed pattern as we have been (see @ref async_loop for discussion including other possibilities).  In this example we will use the `flow::async` API (as stated in the afore-linked Manual page, direct boost.asio use is similar, just with more boiler-plate).  So, something like the following would work.  Note we use the techniques explained in @ref session_setup (and, to a lesser extent, @ref chan_open), but now in the context of our recommended organization of the program.
 
   ~~~
   class Process : // In session-server app A.
@@ -143,9 +160,9 @@ Now it's time to set up some session(s).  The more difficult task is on the serv
     // ...Your IPC universe description members go here....
 
     // Alias your session-related types here.
-    template<ipc::session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES,
+    template<ipc::session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES,
              typename Mdt_payload = ::capnp::Void>
-    using Session_server_t = ipc::session::shm::classic::Session_server<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+    using Session_server_t = ipc::session::shm::classic::Session_server<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
     using Session_server = Session_server_t<...knobs...>;
     using Session = Session_server::Server_session_obj;
 
@@ -153,13 +170,15 @@ Now it's time to set up some session(s).  The more difficult task is on the serv
     // Wrapping it in std::optional<> or unique_ptr<> may be helpful, depending on what you need to do first.
     flow::async::Single_thread_task_loop m_worker;
 
-    // The big Kahuna.  m_session_srv->async_accept() will repeatedly give you a `Session`, at which point you will
-    // in thread U kick-off its further handling.
-    std::optional<Session_server> m_session_srv;
-
     // Accessed from thread U only, this is the target of the current m_session_srv->async_accept() of which there
     // is (in our example; and it is generally reasonable) one outstanding at a time.
     Session m_next_session;
+
+    // The big Kahuna.  m_session_srv->async_accept() will repeatedly give you a `Session`, at which point you will
+    // in thread U kick-off its further handling.
+    // (Declared after m_next_session, so that it is destroyed first: destroying it is what ends the outstanding
+    // async_accept() targeting m_next_session.)
+    std::optional<Session_server> m_session_srv;
 
   public:
     Process(...) :
@@ -179,7 +198,7 @@ Now it's time to set up some session(s).  The more difficult task is on the serv
         {
           m_session_srv.reset(); // It did not initialize, so it is useless.
 
-          // Problem setting up server are pretty common when first trying this: permissions, etc.
+          // Problems setting up server are pretty common when first trying this: permissions, etc.
           // In any case we can't really continue at all.  See Session_server doc headers for details.
 
           // ...Get out, in whatever style makes sense for you....  Possibly just log and exit().
@@ -200,6 +219,13 @@ Now it's time to set up some session(s).  The more difficult task is on the serv
       }); // m_worker.post()
     } // Process()
 
+    ~Process()
+    {
+      // Stop thread U first: our other members are accessed there.  (A post() onto it after this is harmless:
+      // the task never runs.)  Then the members are destroyed in reverse order: m_session_srv first.
+      m_worker.stop();
+    }
+
   private:
     void on_new_session(const Error_code& err_code)
     {
@@ -215,7 +241,7 @@ Now it's time to set up some session(s).  The more difficult task is on the serv
       {
         // else: Success!
 
-        process_session(); // We'll explain what do inside here, next.
+        process_session(); // We'll explain what to do inside here, next.
         // m_next_session is empty again.
       }
 
@@ -255,9 +281,9 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
     ipc::session::Client_app m_cli_app;
 
     // Alias your session-related types here.
-    template<ipc::session::schema::MqType S_MQ_TYPE_OR_NONE, bool S_TRANSMIT_NATIVE_HANDLES,
+    template<ipc::session::schema::MqType MQ_TYPE_OR_NONE, bool TRANSMIT_NATIVE_HANDLES,
              typename Mdt_payload = ::capnp::Void>
-    using Client_session_t = ipc::session::shm::classic::Client_session<S_MQ_TYPE_OR_NONE, S_TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
+    using Client_session_t = ipc::session::shm::classic::Client_session<MQ_TYPE_OR_NONE, TRANSMIT_NATIVE_HANDLES, Mdt_payload>;
     using Session = Client_session_t<...knobs...>;
 
     // Your main loop (a/k/a thread U).  All your code will be post()ed here.
@@ -265,8 +291,8 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
     flow::async::Single_thread_task_loop m_worker;
 
     // Accessed from thread U only, this is -- at a given point in time, not counting non-blocking synchronous
-    // calls into `Client_session::sync_connect() -- either (1) sitting there empty (as-if default-constructed),
-    // because *m_active_session is currently open; or (2) sitting there empty (as-if default-constructed), because
+    // calls into `Client_session::sync_connect()` -- either (1) sitting there empty (as-if default-constructed),
+    // because *m_active_session is currently open; or (2) holding a not-connected Session, because
     // the last `.sync_connect()` failed (server inactive/not listening), so we're waiting a bit to check again.
     Session m_next_session;
 
@@ -290,13 +316,20 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
       });
     }
 
+    ~Process()
+    {
+      // Stop thread U first: our other members are accessed there.  (A post() onto it after this is harmless:
+      // the task never runs.)  Then the members are destroyed in reverse order.
+      m_worker.stop();
+    }
+
   private:
     void open_next_session()
     {
-      // When not connecting, m_session is empty.  We are about to connect, so let's get it into shape.
+      // When not connecting, m_next_session is empty.  We are about to connect, so let's get it into shape.
       // Note Session is (efficiently) move()able.
       m_next_session
-        = Session(get_logger(), m_cli_app, m_srv_app,
+        = Session{get_logger(), m_cli_app, m_srv_app,
                   ..., // Possible channel-passive-open handler (discussed elsewhere).
                   [this](const Error_code& err_code)
       {
@@ -308,7 +341,7 @@ What about the client side?  It is simpler, as there are no concurrent sessions;
           // We just forward it; otherwise it's not in the purview of class Process:
           m_active_session->on_session_hosed(err_code);
         });
-      });
+      }};
 
       // It's not doing anything; now we attempt connect.  Don't worry; that forwarding error handler does not
       // matter yet -- only once the sync_connect() succeeds.
@@ -407,7 +440,9 @@ Therefore we will *begin* by describing `App_session`.  So what about `process_s
 
       // Then, inform Process via the callback it provided.  This should cause it to destroy *this.
       // (There are certainly other ways of organizing this, but this way works as well as any.)
-      m_worker->post([this]() { m_on_session_closed_func(); });
+      // Note: We move the callback out of *this into the posted task: it will destroy *this, so it must not itself
+      // live inside *this while it runs.
+      m_worker.post(std::move(m_on_session_closed_func));
     }
   };
   ~~~
@@ -447,12 +482,11 @@ Server is somewhat more complex as usual.
   class Process
   {
   private:
-    using App_session_ptr = shared_ptr<App_session>;
+    // ...m_worker, m_next_session, m_session_srv, as shown earlier....
 
-    // This may or may not be necessary.  It is possible to just capture it in a lambda and not save it in
-    // `*this` directly.  Still it might be nice; like for instance m_app_sessions.size() can be logged/reported
-    // periodically.
-    unordered_set<App_session_ptr> m_app_sessions;
+    // The App_sessions currently open; each owned here.  Declared *after* m_session_srv, so that they are destroyed
+    // first: `Session`s before their `Session_server`.  (Keyed by raw pointer; the callbacks below capture only that.)
+    std::unordered_map<App_session*, std::unique_ptr<App_session>> m_app_sessions;
 
     void process_session()
     {
@@ -466,15 +500,17 @@ Server is somewhat more complex as usual.
       // The third one, same as on the client side, is an explicit function argument to App_session::go().
 
       // Create the App_session; note the ctor does not require `session` (go() does).
-      auto app_session = make_shared<App_session>(..., &m_worker);
-      m_app_sessions.insert(app_session); // Save it, since we track them in a set.  (May not be necessary.)
+      auto app_session_own = std::make_unique<App_session>(..., &m_worker);
+      const auto app_session = app_session_own.get();
+      m_app_sessions.emplace(app_session, std::move(app_session_own));
 
       // Last step required for Session becoming open, as go() needs.
-      m_next_session->init_handlers(..., // Possible channel-passive-open handler (discussed elsewhere).
-                                    [this, app_session]
-                                      (const Error_code& err_code) mutable
+      // Capturing the raw `app_session` is safe: this fires at most once, and the posted task runs before the one
+      // (posted by on_session_hosed()) that destroys *app_session.
+      m_next_session.init_handlers(..., // Possible channel-passive-open handler (discussed elsewhere).
+                                   [this, app_session](const Error_code& err_code)
       {
-        m_worker.post([this, app_session = std::move(app_session), err_code]()
+        m_worker.post([app_session, err_code]()
         {
           app_session->on_session_hosed(err_code); // Just forward it; same as in client.
         });
@@ -484,11 +520,8 @@ Server is somewhat more complex as usual.
       app_session->go(std::move(m_next_session), // Let it eat it, making it empty (as-if default-cted) again.
                       [this, app_session]()
       {
-        // It's going away.
-        m_app_sessions.erase(app_session);
-
         // As promised -- destroy the App_session, together with all its stuff.
-        app_session.reset();
+        m_app_sessions.erase(app_session);
 
         // That's it.  Process main loop already expects more (possibly concurrent) `Session`s arriving whenever.
       });
@@ -501,7 +534,7 @@ The separation of App_session ctor and `go()` ensures that the differently-order
 ### What did we miss? ###
 Answer: not much.  What remains -- assuming one grokked all of the above -- can probably be left as an exercise for the reader.  Nevertheless:
 
-We've covered partner-triggered session closing, which is the hard part; what about locally-triggered?  One way to approach it might be a SIGTERM/SIGINT handler outside `Process` that destroys said `Process`.  On either side the `App_session` (or `App_session`s) will be destroyed, hence their stored open `Session`s will too.  (The way we wrote the code in the server side, `app_session` is captured in a callback lambda saved by `m_worker`, but `m_worker` too will be destroyed with all its stored closures.)  In the server side, the `Session_server` will also be destroyed as part of the process.
+We've covered partner-triggered session closing, which is the hard part; what about locally-triggered?  One way to approach it might be a SIGTERM/SIGINT handler outside `Process` that destroys said `Process`.  On either side the `App_session` (or `App_session`s) will be destroyed, hence their stored open `Session`s will too.  (The callbacks in our case study capture only raw pointers, so they keep nothing alive: destroying `Process` destroys each `App_session`, and the `Session` inside it.)  In the server side, the `Session_server` will also be destroyed as part of the process -- after the `App_session`s, per the order of data members.
 
 We ignored the case of a session-server that speaks with 2+ different client applications (Bp, Cp, ...).  A good way to handle that would be to have multiple `App_session` classes, one for each partner application.  `Process::process_session()` can then query `m_next_session.client_app()` and create/save/activate whichever one is appropriate based on that.
 
@@ -509,13 +542,11 @@ We skipped over channel-opening considerations.
   - Init-channel object(s) or list(s) thereof could be passed-through into `App_session` in its constructor on each side.
   - We omitted the passive-open handler, on each side, in our case study.  If it is necessary to use these, one would probably add `App_session::on_passive_channel_open(Channel&&, Mdt_reader_ptr)` and have the `Session` ctor (client-side) or `Session::init_handlers()` (server-side) forward to that.  (We reiterate that, generally, init-channels are easier to set up, as it involves less asynchronicity on at least one side.)
 
-Lastly we omitted mention of app-scope (as opposed session-scope) data.  In short, assuming you understand @ref scope "scopes in general", the above case-study code would be expanded as follows:
+Lastly we omitted mention of app-scope (as opposed to session-scope) data.  In short, assuming you understand @ref scope "scopes in general", the above case-study code would be expanded as follows:
   - Client side: Not much is different.  All logic and data are still in `App_session`.  Certainly the logic therein must be aware that some of data members in `App_session` would potentially refer to app-scope data, meaning data that would remain in SHM past the life of `*this App_session`, but the data members would still live in `App_session`.  In a session-client there is no other place for them by their nature.
   - Server side: The session-server, most likely, would store app-scope (cross-session) data members outside `App_session`; perhaps in `Process`, or in some individual-`Client_app`-specific (possibly nested in `Process`) class.  For example, if there is a memory cache object, it could be a data member in `Process`.  In the opposing (client-side) `App_session` there might be a mirror data member.
 
 Unlike per-session algorithms and data, wherein the server and client are equal from Flow-IPC's point of view, by definition of app-scope there is an asymmetry here between the two sides.  Generally one tries to avoid this, but that's the nature of the beast in this case.
-
----
 
 And that's that.  If you want to use ipc::session -- and unless you enjoy avoidable pain, you probably should -- then the preceding pages provide more than enough information to proceed.  What's left now are some odds and ends that can be quite important in production but are arguably not going to be a mainstream worry during the bulk of development and design.  The next couple (or so) pages deal with such ipc::session topics.
 

@@ -47,7 +47,7 @@ class IpcRecipe(ConanFile):
         #
         # This affects `ipc` CMake only; meaning flow, ipc_*, ipc objects will have this overridden; while
         # Boost libs, jemalloc lib, capnp/kj, gtest libs will build how they would've built anyway.
-        "build_type_cflags_override": "ANY",
+        "build_type_cflags_override": ["ANY"],
 
         # 0 => default (let build script decide, as of this writing 17 meaning C++17) or a #, probably `20` as of
         # this writing.
@@ -102,7 +102,7 @@ class IpcRecipe(ConanFile):
             # while elsewhere we use a fallback to pkg_check_modules() which is why we need not, here, try to
             # determine the lib/header locations and supply them manually as well.  Once resolved delete this comment
             # and the next line.  (Elsewhere = ipc_shm_arena_lend/src/CMakeLists.txt; see the analogous TODO there.)
-            toolchain.variables["FLOW_IPC_JEMALLOC_PREFIX"] = self.options["jemalloc"].prefix
+            toolchain.variables["FLOW_IPC_JEMALLOC_PREFIX"] = self.dependencies["jemalloc"].options.prefix
 
             if self.options.build_no_lto:
                 toolchain.variables["CFG_NO_LTO"] = "ON"
@@ -136,7 +136,8 @@ class IpcRecipe(ConanFile):
             flow_version = load_version_from_file("./flow/VERSION")
             self.requires("capnproto/1.0.2")
             self.requires(f"flow/{flow_version}")
-            self.requires("jemalloc/5.2.1")
+            # 5.3.0 (from 2022) is the min supported version.
+            self.requires("jemalloc/5.3.0")
 
     def build_requirements(self):
         self.tool_requires("cmake/3.26.3")

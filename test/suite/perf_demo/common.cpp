@@ -43,7 +43,7 @@ const std::string CLI_NAME = "cli";
 // Universe of server apps: Just one.
 const ipc::session::Server_app::Master_set SRV_APPS
         ({ { SRV_NAME,
-             { { SRV_NAME, WORK_DIR / (S_EXEC_PREFIX + SRV_NAME + S_EXEC_PRE_POSTFIX + S_EXEC_POSTFIX),
+             { { SRV_NAME, fs::path(".") / (S_EXEC_PREFIX + SRV_NAME + S_EXEC_PRE_POSTFIX + S_EXEC_POSTFIX),
                  ::geteuid(), ::getegid() },
                { CLI_NAME }, // Allowed cli-apps that can open sessions.
                WORK_DIR,

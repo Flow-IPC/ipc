@@ -17,7 +17,7 @@
 
 #include "ipc/session/shm/arena_lend/jemalloc/session_server.hpp"
 #include "ipc/session/shm/arena_lend/jemalloc/client_session.hpp"
-#include "ipc/session/standalone/shm/arena_lend/borrower_shm_pool_collection_repository.hpp"
+#include "ipc/shm/arena_lend/util.hpp"
 #include "ipc/session/shm/classic/session_server.hpp"
 #include "ipc/session/shm/classic/client_session.hpp"
 #include "script_interpreter.hpp"
@@ -83,7 +83,7 @@ int Driver::main(int argc, char const * const * argv)
     m_console_logger_cfg.reset(new log::Config(sev));
     m_console_logger.reset(new log::Simple_ostream_logger(m_console_logger_cfg.get()));
     // get_logger() now works; so logging can begin.
-    log::Logger::Logger::this_thread_set_logged_nickname("main", get_logger());
+    log::Logger::this_thread_set_logged_nickname("main", get_logger());
     log::beautify_chrono_logger_this_thread(get_logger());
 
     FLOW_LOG_INFO_WITHOUT_CHECKING("ipc::transport test tool started; logging to console; severity [" << sev << "].");
@@ -190,8 +190,7 @@ int Driver::main(int argc, char const * const * argv)
 
   /* Instructed to do so by ipc::session::shm::arena_lend public docs (short version: this is basically a global,
    * and it would not be cool for ipc::session non-global objects to impose their individual loggers on it). */
-  session::shm::arena_lend::Borrower_shm_pool_collection_repository_singleton::get_instance()
-    .set_logger(ipc_logger.get());
+  shm::arena_lend::set_logger(ipc_logger.get());
 
   if (mode_ex_srv)
   {
@@ -230,6 +229,9 @@ int Driver::main(int argc, char const * const * argv)
     assert(false);
     ok = false; // Avoid warning.
   }
+
+  shm::arena_lend::set_logger(nullptr);
+
   return ok ? 0 : BAD_EXIT;
 } // Driver::main()
 

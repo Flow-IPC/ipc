@@ -19,6 +19,7 @@
 #include "ipc/shm/arena_lend/shm_pool.hpp"
 #include "ipc/shm/arena_lend/test/test_borrower.hpp"
 #include "ipc/test/test_logger.hpp"
+#include "ipc/util/shared_name.hpp"
 #include <flow/test/test_common_util.hpp>
 #include <flow/test/test_config.hpp>
 #include <flow/log/log.hpp>
@@ -31,6 +32,7 @@ using std::size_t;
 using std::shared_ptr;
 using std::make_shared;
 
+using ipc::Error_code;
 using ipc::Log_component;
 using ipc::shm::arena_lend::Borrower_shm_pool_collection;
 using ipc::shm::arena_lend::Shm_pool;
@@ -39,7 +41,7 @@ using ipc::shm::arena_lend::test::Test_borrower;
 using ipc::test::Test_logger;
 using flow::test::Test_config;
 
-using Collection_id = ipc::shm::arena_lend::Collection_id;
+using collection_id_t = ipc::shm::arena_lend::collection_id_t;
 using pool_id_t = ipc::shm::arena_lend::Shm_pool::pool_id_t;
 
 namespace
@@ -54,9 +56,9 @@ enum class Status_code : int
 };
 
 static bool execute_read_check(Test_logger& test_logger,
-                               Collection_id shm_pool_collection_id,
+                               collection_id_t shm_pool_collection_id,
                                pool_id_t shm_pool_id,
-                               const string& shm_object_name,
+                               const string& shm_object_name_base,
                                size_t shm_object_size,
                                size_t data_offset,
                                const string& expected_data);
@@ -65,9 +67,9 @@ static int parse_and_execute(int argc, char** argv)
 {
   namespace po = boost::program_options;
 
-  Collection_id shm_pool_collection_id;
+  collection_id_t shm_pool_collection_id;
   pool_id_t shm_pool_id;
-  string shm_object_name;
+  string shm_object_name_base;
   size_t shm_object_size;
   size_t data_offset;
   string expected_data;
@@ -81,10 +83,11 @@ static int parse_and_execute(int argc, char** argv)
     ("min-log-severity,l", po::value<flow::log::Sev>(&Test_config::get_singleton().m_sev),
       "minimum log severity")
     ((Test_borrower::S_SHM_POOL_COLLECTION_ID_PARAM + ",c").c_str(),
-     po::value<Collection_id>(&shm_pool_collection_id),
+     po::value<collection_id_t>(&shm_pool_collection_id),
      "SHM pool collection id")
     ((Test_borrower::S_SHM_POOL_ID_PARAM + ",i").c_str(), po::value<pool_id_t>(&shm_pool_id), "SHM pool ID")
-    ((Test_borrower::S_SHM_OBJECT_NAME_PARAM + ",o").c_str(), po::value<string>(&shm_object_name), "SHM object name")
+    ((Test_borrower::S_SHM_OBJECT_NAME_BASE_PARAM + ",o").c_str(), po::value<string>(&shm_object_name_base),
+     "SHM object name-base")
     ((Test_borrower::S_SHM_OBJECT_SIZE_PARAM + ",z").c_str(), po::value<size_t>(&shm_object_size), "SHM object size")
     ((Test_borrower::S_DATA_OFFSET_PARAM + ",f").c_str(), po::value<size_t>(&data_offset), "data offset")
     ((Test_borrower::S_EXPECTED_DATA_PARAM + ",d").c_str(), po::value<string>(&expected_data), "expected data");
@@ -112,7 +115,7 @@ static int parse_and_execute(int argc, char** argv)
   bool result = execute_read_check(test_logger,
                                    shm_pool_collection_id,
                                    shm_pool_id,
-                                   shm_object_name,
+                                   shm_object_name_base,
                                    shm_object_size,
                                    data_offset,
                                    expected_data);
@@ -121,19 +124,20 @@ static int parse_and_execute(int argc, char** argv)
 }
 
 bool execute_read_check(Test_logger& test_logger,
-                        Collection_id shm_pool_collection_id,
+                        collection_id_t shm_pool_collection_id,
                         pool_id_t shm_pool_id,
-                        const string& shm_object_name,
+                        const string& shm_object_name_base,
                         size_t shm_object_size,
                         size_t data_offset,
                         const string& expected_data)
 {
-  Borrower_shm_pool_collection borrower_collection(&test_logger, shm_pool_collection_id);
+  Borrower_shm_pool_collection borrower_collection(&test_logger, shm_pool_collection_id,
+                                                   ipc::util::Shared_name::ct(shm_object_name_base));
 
   FLOW_LOG_SET_CONTEXT(&test_logger, Log_component::S_TEST);
 
   FLOW_LOG_TRACE("Checking SHM object pool collection id " << shm_pool_collection_id <<
-                 ", id " << shm_pool_id << ", name '" << shm_object_name << "', size " << shm_object_size <<
+                 ", id " << shm_pool_id << ", name-base '" << shm_object_name_base << "', size " << shm_object_size <<
                  ", data offset " << data_offset << ", expected_data '" << expected_data << "'");
 
   if (expected_data.size() > shm_object_size)
@@ -149,13 +153,15 @@ bool execute_read_check(Test_logger& test_logger,
     return false;
   }
 
-  shared_ptr<Shm_pool> shm_pool = borrower_collection.open_shm_pool(shm_pool_id, shm_object_name, shm_object_size);
+  Error_code ec;
+  shared_ptr<Shm_pool> shm_pool = borrower_collection.open_shm_pool(shm_pool_id, shm_object_size, &ec);
   if (shm_pool == nullptr)
   {
     return false;
   }
 
-  if (memcmp(shm_pool->get_address(), expected_data.c_str(), expected_data.size()) != 0)
+  if (memcmp(reinterpret_cast<const uint8_t*>(shm_pool->get_address()) + data_offset,
+             expected_data.c_str(), expected_data.size()) != 0)
   {
     FLOW_LOG_WARNING("SHM pool data != expected");
     return false;

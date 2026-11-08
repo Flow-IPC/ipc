@@ -1,0 +1,208 @@
+/* Flow-IPC
+ * Copyright 2023 Akamai Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in
+ * compliance with the License.  You may obtain a copy
+ * of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in
+ * writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing
+ * permissions and limitations under the License. */
+
+/**
+
+@page chan_rpc Zero-copy capnp-RPC
+
+<center>**MANUAL NAVIGATION:** @ref chan_struct_advanced "Preceding Page" - @ref transport_shm "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
+
+---
+
+This page explains how to use Cap'n Proto's Remote Procedure Call layer (**capnp-RPC**) with Flow-IPC's help.  capnp-RPC is an optional, advanced layer of Cap'n Proto; with Flow-IPC you can use this feature while adding zero-copy.  (Or go back to preceding page: @ref chan_struct_advanced.  @ref universe_desc "IPC universe description" is the one true prerequisite for the current page; @ref chan_struct is useful context but not required.)
+
+What it is; why you might want it
+---------------------------------
+capnp has two layers.  The serialization layer -- schemas, `MessageBuilder`, `MessageReader`, and so on -- is what ipc::transport::struc::Channel builds on (see @ref chan_struct).  On top of that sits capnp-RPC: you define `interface`s in your schema; one process implements them; another calls their methods, receiving *promises* for the results.  Interface references (*capabilities*) can be passed around as values, including as arguments and results of other calls; and calls can be *pipelined*: call a method on the not-yet-returned result of an earlier call, without waiting for a round trip.  The capnp web site explains all of this well; we suggest it as background reading for those unfamiliar with capnp-RPC: see [the RPC introduction](https://capnproto.org/rpc.html) and [the C++ RPC page](https://capnproto.org/cxxrpc.html).
+
+If capnp-RPC's programming model appeals to you, and your conversing processes are on the same machine, then Flow-IPC can help:
+  - chiefly, by adding zero-copy (so message size stops mattering, perf-wise); and
+  - secondarily, with discovery/initial connection (adds simple ipc::session hooks when opening a conversation).
+
+Below we'll walk through how to set this up in code.  In summary, though: a vanilla capnp-RPC-using application's code will be very similar to the Flow-IPC-zero-copy-enabled version of the same application.  Most notably it is all still based on the capnp-RPC-mandated use of the **KJ event loop**.
+
+The part that is different is, more or less, the initial connection step on either side; even there the program's structure is the same -- but the discovery/addressing (I'm the server, I'm listening here / I'm the client, I connect there) looks different.  That is, Flow-IPC handles conversation (session) establishment in the same way it does for its other features: finding the opposing process, the safety checks at connection time (see @ref safety_perms), and setting up and cleaning up the SHM resources.  You describe your applications using the same ipc::session::App structures, a/k/a the @ref universe_desc "IPC universe description," as in @ref session_setup; no socket addresses are involved.
+
+Briefly about how we achieve zero-copy without replacing much of vanilla capnp-RPC: Vanilla capnp-RPC between two local processes uses the core class `capnp::TwoPartyVatNetwork` over a Unix domain socket: therein each message, including your capnp-encoded call parameters and results, is serialized, copied into the socket, and copied out of it on the other side.  Flow-IPC provides ipc::transport::struc::shm::rpc::Session_vat_network, an implementation of the same `capnp::VatNetwork` interface, which instead keeps each message in shared memory (SHM) and transmits only a small handle to it.  The result is end-to-end zero-copy.  Everything above the `VatNetwork` -- your interfaces, `RpcSystem`, the promises -- is basically unchanged.
+
+For those who know vanilla capnp-RPC, here is the mapping.  With vanilla capnp-RPC there are two ways to set up a conversation:
+  - **The easy way**: `capnp::EzRpcClient` and `capnp::EzRpcServer` set up the KJ event loop and the connection(s) for you.  `EzRpcServer` keeps accepting, and serving, connections on its own for as long as it exists.
+  - **The flexible way**: Set up the KJ event loop yourself.  Connect (client); or listen and `accept()` connections when and if you choose (server).  Wrap each resulting stream in a `TwoPartyVatNetwork`; create an `RpcSystem` over that via `makeRpcClient()` or `makeRpcServer()` (the latter supplying the bootstrap interface to the other side).  Each `VatNetwork`, and hence `RpcSystem`, represents one connection.
+
+With Flow-IPC each of these has a direct counterpart:
+
+| Vanilla capnp-RPC | Flow-IPC zero-copy capnp-RPC |
+|---|---|
+| `EzRpcClient`, `EzRpcServer` | ipc::transport::struc::shm::rpc::Ez_rpc_client, @link ipc::transport::struc::shm::rpc::Ez_rpc_server Ez_rpc_server@endlink |
+| Connect a socket; wrap it in a `TwoPartyVatNetwork` | ipc::transport::struc::shm::rpc::Client_context: `.sync_connect()`; then `.vat_network()` |
+| Listen; `accept()` a socket; wrap it in a `TwoPartyVatNetwork` | ipc::transport::struc::shm::rpc::Context_server: `.accept()`, yielding a `Server_context`; then `.vat_network()` |
+| The connection: socket + `TwoPartyVatNetwork` | A connected `Client_context` or `Server_context`: Flow-IPC session (+ SHM resources) + `Session_vat_network` |
+| `TwoPartyVatNetwork` | ipc::transport::struc::shm::rpc::Session_vat_network |
+| `makeRpcClient()`, `makeRpcServer()`, `RpcSystem`, your interfaces, promises | Unchanged |
+
+Throughout, the addresses (host and port, socket path) are replaced by the `App`s of the IPC universe description.
+
+---
+
+@par Relationship between Flow-IPC's capnp-RPC API and `ipc::transport::struc::Channel`
+They are cousins.  Both carry capnp-encoded data between processes with SHM-enabled zero-copy; they differ in programming model.  `struc::Channel` transmits a stream of your own capnp messages (plus, optionally, native handles), adding message-type demultiplexing and request/response; it is simple to set up and can be slotted into nearly any event loop (see @ref async_loop).  capnp-RPC is semantically far more powerful, but one must use (or integrate with) KJ, capnp's promise-based single-threaded event loop.  Both are viable; the ipc::transport::struc::shm::rpc namespace doc header and the ipc::transport::struc::Channel doc header each discuss the trade-off.
+
+---
+
+Now we show how to use this feature.
+
+What you need
+-------------
+As with vanilla capnp-RPC, there are a couple of approaches, but you'll need some things either way.
+
+  - **An IPC universe description.**  Exactly as in @ref universe_desc "this section" of @ref session_setup -- an ipc::session::Server_app for the server application, an ipc::session::Client_app for each client application, and the master sets thereof.  The roles matter only for connecting: the session-client application connects to the session-server application.  Once connected, either side can implement and/or call interfaces.  (If your universe comprises more than one split, see @ref universes.  Also note the rule in @ref pid_namespace "this section" of @ref safety_perms.)
+  - **A choice of SHM-provider.**  This is a compile-time choice made via a type alias:
+    - SHM-classic: ipc::session::shm::classic::rpc::Client_session and @link ipc::session::shm::classic::rpc::Session_server Session_server@endlink.
+    - SHM-jemalloc: ipc::session::shm::arena_lend::jemalloc::rpc::Client_session and @link ipc::session::shm::arena_lend::jemalloc::rpc::Session_server Session_server@endlink.
+
+    For RPC purposes either works.  (To choose: see @ref shm_choice "this section" of @ref transport_shm; and @ref shm_safety "this one" of @ref safety_perms.)  Each side must use the same SHM-provider.
+  - **Your schema and capnp-RPC code**, written the usual capnp way.
+
+@note Incidentally you'd need these same things if using `transport::struc::Channel`.
+
+Having made these decisions, proceed to set up your application loops.
+
+The easy way: `Ez_rpc_client`, `Ez_rpc_server`
+----------------------------------------------
+capnp provides `capnp::EzRpcClient` and `capnp::EzRpcServer` to get one up and running quickly: they set up the KJ event loop and the connection, leaving you to just implement and call interfaces.  Flow-IPC provides the counterparts ipc::transport::struc::shm::rpc::Ez_rpc_client and ipc::transport::struc::shm::rpc::Ez_rpc_server.  The only real difference in use is how one specifies the opposing side: via `App`s instead of a network address.
+
+We will use capnp's well-known [Calculator sample](https://github.com/capnproto/capnproto/tree/v2/c++/samples) (`c++/samples/calculator-*` in the capnp source).  Flow-IPC's own `test/suite/rpc_demo` program is a port of it (plus a couple of additions); look there for complete, working code.  The schema and the interface implementations (`CalculatorImpl` et al) are unchanged from capnp's sample, so we skip them.
+
+First, on both sides, the IPC universe description and the SHM-provider choice; e.g., in a header shared by both applications:
+
+  ~~~
+  // As described in session_setup Manual page.  (rpc_demo's common.cpp shows a complete example.)
+  extern const ipc::session::Server_app::Master_set SRV_APPS;
+  extern const ipc::session::Client_app::Master_set CLI_APPS;
+  extern const std::string SRV_NAME; // Key into SRV_APPS.
+  extern const std::string CLI_NAME; // Key into CLI_APPS.
+
+  // SHM-classic chosen here.  For SHM-jemalloc: ipc::session::shm::arena_lend::jemalloc::rpc.
+  using Client_session = ipc::session::shm::classic::rpc::Client_session<>;
+  using Session_server = ipc::session::shm::classic::rpc::Session_server<>;
+  ~~~
+
+The server:
+
+  ~~~
+  ipc::transport::struc::shm::rpc::Ez_rpc_server<Session_server>
+    server{&logger, // Or nullptr to not log.
+           // Invoked for each new connection; returns the bootstrap interface impl to serve to that client.
+           [](const ipc::session::Client_app&) { return kj::heap<CalculatorImpl>(); },
+           SRV_APPS.find(SRV_NAME)->second, // This application.
+           CLI_APPS};                       // The client applications (only allowed ones may connect).
+  // It is now listening and will accept and serve any number of connections.
+
+  // From here: same as capnp's calculator-server.c++.  Run forever.
+  kj::NEVER_DONE.wait(*(server.get_wait_scope()));
+  ~~~
+
+The client:
+
+  ~~~
+  // Connects in the constructor (instantly; it throws if, e.g., the server is not running).
+  ipc::transport::struc::shm::rpc::Ez_rpc_client<Client_session>
+    client{&logger,
+           CLI_APPS.find(CLI_NAME)->second,  // This application.
+           SRV_APPS.find(SRV_NAME)->second}; // The opposing application.
+
+  // From here: same as capnp's calculator-client.c++.  E.g.:
+  Calculator::Client calculator = client.get_main<Calculator>();
+  auto& wait_scope = *(client.get_wait_scope());
+
+  auto request = calculator.evaluateRequest();
+  request.getExpression().setLiteral(123);
+  auto eval_promise = request.send();
+  // Pipelining: call read() on the not-yet-returned Value; no waiting so far.
+  auto read_promise = eval_promise.getValue().readRequest().send();
+  auto response = read_promise.wait(wait_scope); // One round trip for both calls.
+  assert(response.getValue() == 123);
+  ~~~
+
+That's it.  As with their capnp counterparts, `Ez_rpc_client` and `Ez_rpc_server` create the KJ event loop for the current thread (or share it, if another `Ez_rpc_*` object in that thread already did); so they are not suitable if you want to set up your own.  Do keep the `App` objects and the `Logger` alive at least until the `Ez_rpc_*` objects are destroyed; see the ipc::transport::struc::shm::rpc::Ez_rpc_client doc header for the exact rule.
+
+Using `RpcSystem` directly: `Client_context`, `Context_server`
+--------------------------------------------------------------
+As the capnp docs note, the `Ez` classes hide details that serious applications may want to control: notably the KJ event loop and the `capnp::RpcSystem`.  With vanilla capnp-RPC one would then connect a socket, wrap it in a `capnp::TwoPartyVatNetwork`, create an `RpcSystem` over that, and proceed.  With Flow-IPC the steps are the same, except the first two are done for you by ipc::transport::struc::shm::rpc::Client_context (client side) or ipc::transport::struc::shm::rpc::Context_server (server side); and the `VatNetwork` you get is a `Session_vat_network` instead of the vanilla counterpart.
+
+A connected `Client_context` or `Server_context` is, in vanilla terms, your connection: in place of the socket plus `TwoPartyVatNetwork`, it holds a Flow-IPC session (including its SHM resources) plus the `Session_vat_network` that relies on it.  So keep it alive for as long as the `RpcSystem` built on its `vat_network()`.
+
+The client:
+
+  ~~~
+  auto kj_io = kj::setupAsyncIo(); // Your KJ event loop, as usual.
+
+  ipc::transport::struc::shm::rpc::Client_context<Client_session>
+    ctx{&logger, &kj_io, CLI_APPS.find(CLI_NAME)->second, SRV_APPS.find(SRV_NAME)->second};
+  ctx.sync_connect(); // Instant; throws on failure.
+
+  // From here: as with TwoPartyVatNetwork, but using ctx.vat_network().
+  auto rpc_system = capnp::makeRpcClient(*(ctx.vat_network()));
+  capnp::MallocMessageBuilder vat_id_msg;
+  auto server_id = vat_id_msg.getRoot<capnp::rpc::twoparty::VatId>();
+  server_id.setSide(capnp::rpc::twoparty::Side::SERVER);
+  Calculator::Client calculator = rpc_system.bootstrap(server_id).castAs<Calculator>();
+  // ...
+  ~~~
+
+The server: `Context_server` listens upon construction; its `.accept()` returns a `kj::Promise` fulfilled with the next connection, represented by an ipc::transport::struc::shm::rpc::Server_context.  Unlike `Ez_rpc_server` it does not accept in a loop automatically; you call `.accept()` whenever you want another connection.
+
+  ~~~
+  auto kj_io = kj::setupAsyncIo();
+
+  ipc::transport::struc::shm::rpc::Context_server<Session_server>
+    ctx_srv{&logger, &kj_io, SRV_APPS.find(SRV_NAME)->second, CLI_APPS};
+  // It is listening now.
+
+  auto accept_result = ctx_srv.accept().wait(kj_io.waitScope); // Or chain it via .then(), as is usual with KJ.
+  auto& ctx = *(accept_result.m_context); // A Server_context: equivalent to a connected Client_context.
+
+  // From here: as with TwoPartyVatNetwork, but using ctx.vat_network().
+  auto rpc_system = capnp::makeRpcServer(*(ctx.vat_network()), kj::heap<CalculatorImpl>());
+  ctx.vat_network()->on_disconnect().wait(kj_io.waitScope); // Serve until the client goes away.
+  ~~~
+
+Note the order of destruction: destroy the `RpcSystem` before the `Client_context` or `Server_context` whose `.vat_network()` it uses; and destroy each `Server_context` before its `Context_server`.  The `App` objects and `Logger` must stay alive longer still: past the KJ event loop.  The ipc::transport::struc::shm::rpc::Session_vat_network doc header, section "Object lifetimes," explains why.  The easy approach: create those first; destroy them last.
+
+`Client_context` and `Server_context` also give access to the underlying ipc::session::Session (via `.session()`), and through it to the rest of Flow-IPC: SHM arenas for directly placing C++ data structures in SHM (see @ref transport_shm); and additional channels opened alongside the RPC conversation (akin to the init-channels in @ref chan_open; such a channel can be upgraded to a `struc::Channel` per @ref chan_struct).  See the ipc::transport::struc::shm::rpc::Client_context doc header, section "For Flow-IPC-savvy users / Direct SHM use."
+
+Lastly, one can go a level lower still and construct a `Session_vat_network` directly, from a SHM-enabled ipc::session::Session obtained in the usual Flow-IPC way (@ref session_setup) plus a connected local (Unix domain) socket of your choosing.  The `*_context` classes are thin wrappers that do just that; usually there's no need.
+
+Performance notes
+-----------------
+`Session_vat_network` is zero-copy-enabled: your messages are never copied, so message size ceases to be a perf consideration.  A call carrying a large structure costs about the same as one carrying a small one.  For small messages, which are cheap to copy anyway, expect perf similar to vanilla `TwoPartyVatNetwork`.  (Planned: an adaptive serializer that sends small messages directly and places only larger ones in SHM; see [this ticket](https://github.com/Flow-IPC/ipc/issues/160).  It would apply to ipc::transport::struc::Channel as well.)
+
+To compare the two on your own workload, the zero-copy transport can be disabled at run time, making things work identically to vanilla capnp-RPC underneath.  See the `sans_shm_transport` argument of the ipc::transport::struc::shm::rpc::Ez_rpc_client constructor (and the corresponding `Ez_rpc_server` constructor), or `Client_context::sync_connect_sans_shm_transport()`.  `rpc_demo` exposes this as its `--no-zc` command-line option.
+
+If you use capnp-RPC's [streaming feature](https://capnproto.org/news/2020-04-23-capnproto-0.8.html) (`-> stream` methods), the flow-control window is determined differently than in vanilla capnp-RPC; it is available as a knob via `.vat_network()->streaming_flow_window_ki()`.  See ipc::transport::struc::shm::rpc::Session_vat_network::streaming_flow_window_ki().
+
+Stats
+-----
+Flow-IPC's capnp-RPC integration module has no (Flow-IPC) stats of its own.  Those of the underlying ipc::session::Session (@ref session_setup_stats "see here") and its SHM arenas (@ref transport_shm_stats "see here") are available via `.session()` as described above.  (See @ref api_overview_stats "the stats synopsis" for the general approach.)
+
+The next page is: @ref transport_shm.
+
+---
+
+<center>**MANUAL NAVIGATION:** @ref chan_struct_advanced "Preceding Page" - @ref transport_shm "Next Page" - [**Table of Contents**](./pages.html) - @link ::ipc **Reference**@endlink</center>
+
+*/

@@ -1,8 +1,9 @@
 # Flow-IPC: Modern C++ toolkit for fast inter-process communication (IPC)
 
-In this context, IPC means the sharing or transmission of a *data structure* from *one process to another*.
-In C++ systems programing, this is a common activity with significant impact on system performance.  E.g.,
-it is used heavily in microservices.
+In this context, IPC means the sharing or transmission of a *data structure* from *one process to another* on the
+same machine.  In C++ systems programming, this is a common activity with significant impact on system performance.
+E.g., it is central when a large application is split into multiple processes, or when co-located services
+communicate.
 
 In serious C++ applications, high-performance IPC code tends to be difficult to develop and reuse,
 and the most obvious and effective technique to combat latency -- avoiding copying -- further increases the difficulty
@@ -136,7 +137,7 @@ Observations (tested using decent server-grade hardware):
     - Also significantly more RAM might be used at points.
   - For very small messages the two techniques perform similarly: ~100 microseconds.
 
-The code for this, when using Flow-IPC, is straighforward.  Here's how it might look on the client side:
+The code for this, when using Flow-IPC, is straightforward.  Here's how it might look on the client side:
 
   ~~~cpp
   // Specify that we *do* want zero-copy behavior, by merely choosing our backing-session type.
@@ -186,7 +187,7 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
   auto req_msg = ipc_channel.create_msg();
   req_msg.body_root()
     ->initGetCacheReq().setFileName("huge-file.bin"); // Vanilla capnp code: call Cap'n Proto-generated-API: mutators.
-  const auto rsp_msg = ipc_channel.sync_request(req_msg); // Send message; get ~instant reply.
+  const auto rsp_msg = ipc_channel.sync_request(&req_msg); // Send message; get ~instant reply.
   const auto rsp_root = rsp_msg->body_root().getGetCacheRsp(); // More vanilla capnp work: accessors.
   // <-- TIMING FOR ABOVE GRAPH STOPS HERE.
   // ...
@@ -200,7 +201,7 @@ The code for this, when using Flow-IPC, is straighforward.  Here's how it might 
     const auto file_part = rsp_root.getFileParts()[idx];
     if (file_part.getHashToVerify() != compute_hash(file_part.getData()))
     {
-      throw Bad_hash_exception(...);
+      throw Bad_hash_exception{...};
     }
   }
   ~~~
@@ -219,6 +220,9 @@ The preceding example was chosen for 2 reasons:
 ## So Flow-IPC is for transmitting Cap'n Proto messages?
 
 Yes... but only among other things!
+  - It supports Cap'n Proto's own RPC layer too: *capnp-RPC* (interfaces, capabilities, promise pipelining),
+    zero-copy-enabled.  Flow-IPC supplies a drop-in replacement for capnp's `TwoPartyVatNetwork`, plus counterparts
+    of capnp's connection-setup helpers; the rest of your capnp-RPC code stays the same.
   - It transmits native C++ data structures (including STL-compliant containers and pointers); native handles (FDs);
     and (at a lower layer) binary blobs.  Schema-based data structures are not always an ideal representation for many
     algorithms!
@@ -242,7 +246,7 @@ merely a "black box" of capabilities.  E.g., for advanced users:
     accessed directly.  You can also plug-in your own transports.
     - (Networked channels and sessions are in the works.)
   - By implementing/accessing some of the handful of key C++ concepts, you can customize behaviors at all layers,
-    including serialization-memory backing, additional SHM providers, and C-style native data structures that use raw
+    including serialization-memory backing, additional SHM-providers, and C-style native data structures that use raw
     pointers.
 
 ---
