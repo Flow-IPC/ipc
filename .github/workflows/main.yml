@@ -869,12 +869,13 @@ jobs:
         # This gets us Conan (plus other Python deps, like PyYAML)
         # at the versions specified in requirements.in, without touching the runner's global Python setup.
         # Note: Each subsequent Conan-wrangling step must first source the venv to have `conan` available.
+        # The venv and the compiled requirements.txt go outside the checkout, so it stays exactly as in git.
         pip install virtualenv
-        virtualenv ${{ github.workspace }}/conan_virtual_env
-        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        virtualenv ${{ runner.temp }}/conan_virtual_env
+        source ${{ runner.temp }}/conan_virtual_env/bin/activate
         pip install pip-tools
-        pip-compile ${{ github.workspace }}/.github/workflows/requirements.in
-        pip-sync ${{ github.workspace }}/.github/workflows/requirements.txt
+        pip-compile -o ${{ runner.temp }}/requirements.txt ${{ github.workspace }}/.github/workflows/requirements.in
+        pip-sync ${{ runner.temp }}/requirements.txt
 
     - name: Add custom settings for Conan packages
       if: |
@@ -885,7 +886,7 @@ jobs:
         # Conan keeps custom settings in settings_user.yml, an overlay merged onto the built-in settings.yml;
         # so simply write the overlay dict from our matrix higher-up.
         # (`conan config home` auto-creates the home dir if needed.)
-        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        source ${{ runner.temp }}/conan_virtual_env/bin/activate
         CONAN_USER_SETTINGS_PATH=$(conan config home)/settings_user.yml
         python -c "
         import yaml
@@ -1071,7 +1072,7 @@ jobs:
       if: env.cell-selected == 'true'
       run: |
         # Install Flow-IPC dependencies with Conan using the profile.
-        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        source ${{ runner.temp }}/conan_virtual_env/bin/activate
         ${{ env.setup-run-env }}
         # Flag-snapshot guard (see conan-cache-restore comment above).  An exact-key restore is
         # trusted by definition: the key hashes the whole profile.  Otherwise -- fallback restore, or none --
@@ -1137,7 +1138,7 @@ jobs:
       if: env.cell-selected == 'true'
       run: |
         # Build libraries and demos/tests with Conan.
-        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        source ${{ runner.temp }}/conan_virtual_env/bin/activate
         ${{ env.setup-run-env }}
         # At least capnp compiler binary is built with our build-settings, so $BUILT_CMD_PREFIX is required.
         # (`conan build` recomputes the dep-graph and hence needs the profile, just like `conan install`.)
@@ -1775,11 +1776,11 @@ jobs:
         # Prepare Python virtual environment containing Conan.
         # (See comment in the build-and-test job's analogous step.)
         pip install virtualenv
-        virtualenv ${{ github.workspace }}/conan_virtual_env
-        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        virtualenv ${{ runner.temp }}/conan_virtual_env
+        source ${{ runner.temp }}/conan_virtual_env/bin/activate
         pip install pip-tools
-        pip-compile ${{ github.workspace }}/.github/workflows/requirements.in
-        pip-sync ${{ github.workspace }}/.github/workflows/requirements.txt
+        pip-compile -o ${{ runner.temp }}/requirements.txt ${{ github.workspace }}/.github/workflows/requirements.in
+        pip-sync ${{ runner.temp }}/requirements.txt
 
     # In our process (and this is typical, though it is also possible to create tag without release) we
     # hit Publish on a new Release in GitHub; and this creates both the Release and tag, by convention both named
@@ -1819,15 +1820,17 @@ jobs:
         ARCHIVE_NAME=$REPO-${VERSION}_full
         TGZ_NAME=$ARCHIVE_NAME.tar.gz
         ZIP_NAME=$ARCHIVE_NAME.zip
-        cd ..
+        # Package a fresh clone of the tag (with submodules), not the working checkout: the latter may contain
+        # files written by earlier steps (or tools), which do not belong in the source package.
+        cd ${{ runner.temp }}
         pwd
-        mv -v $REPO $ARCHIVE_NAME
+        git clone --depth 1 --branch v$VERSION --recurse-submodules --shallow-submodules \
+          https://github.com/Flow-IPC/$REPO.git $ARCHIVE_NAME
         # When making archives exclude .git directories and files.  (.gitignore and .gitmodules, among others,
         # must stay.)  tar --exclude-vcs sounds delightful, but it'll exclude .gitignore and .gitmodules at least;
         # but they are legit code.)
         tar cvzf $TGZ_NAME --exclude=.git $ARCHIVE_NAME
         zip -r $ZIP_NAME $ARCHIVE_NAME --exclude '*/.git/*' '*/.git'
-        mv -v $ARCHIVE_NAME $REPO
         # Soon we will need the upload URL, but unfortunately github.event.release.upload_url is only auto-populated
         # on `release` trigger; whereas we want to be triggerable manually on `push` to tag v* (so a superset
         # of `release` trigger).  So we must figure it out via API call.  Also, if workflow is invoked a 2nd (etc.)
@@ -1920,7 +1923,7 @@ jobs:
     - name: Install Flow-IPC dependencies (like Doxygen) with Conan using the profile
       run: |
         # Install Flow-IPC dependencies (like Doxygen) with Conan using the profile.
-        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        source ${{ runner.temp }}/conan_virtual_env/bin/activate
         conan install . -pr:a ./conan_profile --build=missing
         # (See comment in the build-and-test job's analogous step.)
         conan cache clean '*' --source --build
@@ -1935,7 +1938,7 @@ jobs:
     - name: Generate code documentation using Conan and Doxygen
       run: |
         # Generate code documentation using Conan and Doxygen.
-        source ${{ github.workspace }}/conan_virtual_env/bin/activate
+        source ${{ runner.temp }}/conan_virtual_env/bin/activate
         # (`conan build` recomputes the dep-graph and hence needs the profile, just like `conan install`.)
         conan build . -pr:a ./conan_profile
 
