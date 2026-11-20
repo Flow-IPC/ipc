@@ -647,3 +647,13 @@ Add `Owner_obj_stats`, `Lender_obj_stats`, `Borrower_obj_stats`, `Live_obj_stats
   * `session_shm_builder_config()`, `app_shm_builder_config()`: Add optional `segment1_sz` arg.
   * `error::Code`: Add `S_MASTER_SHM_UNEXPECTED_TRANSPORT_ERROR`.
   * `rpc`: Add `Client_session`, `Server_session`, `Session_server` aliases.
+
+# Version 3.0.1 (Nov 2026)
+* Note: This is a small, fixes-only follow-up to v3.0.0 -- which is a major release.
+  * If upgrading from pre-v3.0.0, please peruse v3.0.0 notes.
+* Dependency bump: Flow v3.0.0 to v3.0.1.
+  * Flow v3.0.1 fixes a build break in flow.cfg (regression from Flow v2.0.0 to v3.0.0) and makes other small flow.cfg fixes.
+    * Flow-IPC functionality was not affected by any of the Flow issues fixed.
+  * The Flow-IPC source archive bundles Flow, hence this release.
+* Build fix (test suite only): Unit test `sparse_shm_test.cpp` could fail to build due to a false-positive compiler warning with gcc and certain GoogleTest versions.
+* GitHub CI pipeline: Internal cleanliness tweaks, including to how the source archive is packaged on release.
