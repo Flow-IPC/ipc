@@ -284,15 +284,32 @@ jobs:
       #     the local Conan cache.  (Alternatively, if it appears pragmatically appropriate, we might go with
       #     the conan-center-highest-or-least-broken version instead; e.g., as of this writing Boost-1.91 recipe
       #     has a bug w/r/t boost_regex exclusion.)
-      #   - How, pt2: `newest` is confined (via `exclude`s below) to gcc-13 and clang-17 (the newest of each), to debug
-      #     and relwithdebinfo, and to C++17: 4 cells.  Thus each `newest` cell varies exactly one thing versus its
-      #     `floor` twin (dependency versions), while each C++20 cell varies exactly one other thing (the language
+      #   - How, pt2: `newest` is confined (via `exclude`s below) to gcc-13 and clang-17 (this choice discussed below),
+      #     to debug and relwithdebinfo, and to C++17: 4 cells.  Thus each `newest` cell varies exactly one thing versus
+      #     its `floor` twin (dependency versions), while each C++20 cell varies exactly one other thing (the language
       #     standard); a red cell in either sub-matrix has ~one suspect.  (C++20 + `newest` is deliberately not
       #     covered: least likely to fail uniquely; small `exclude` edit below if we change our minds on that.)
       #     Sanitizers are not part of `newest` either: they bring their own rabbit holes, and the `floor` cells carry
       #     the sanitizer load already with plenty of coverage and variation.
       #   - Cell naming: `newest` cells get the suffix `-deps-newest` (so `job-filter` can target them); `floor`
       #     cells' names just lack this suffix.
+      #
+      # Notes regarding choice of compiler-version for special (spot) jobs.  The special/spot jobs are (to
+      # reiterate) as follows:
+      #   - `newest` (spot-test newest-versions of dependencies): We chose one version of each compiler, at the
+      #     time (2023) incidentally the newest ones: gcc-13, clang-17.  (Reminder: the term `newest` refers
+      #     to *not* the compiler but rather dependencies.  The choice to use new-ish compiler versions for these
+      #     spot-checks is largely incidental, not essential.)  Since then the main matrix added gcc-15 and
+      #     clang-21, but the compiler version for `newest` jobs did not change so as to avoid rocking the boat.
+      #   - C++20 spot checks: Similarly we chose gcc-13, clang-17 and then kept that to avoid rocking the boat.
+      #   - Sanitizers: The compiler type(s) and versions are chosen for specific reasons having to do with the
+      #     feature itself (cf. the prev 2 bullets, where the choice is incidental).  These reasons are discussed
+      #     below closer to the exclusion matrix.
+      #
+      # (TODO: A later more comprehensive update (tracked in a ticket) shall further adapt to the passage of time;
+      # perhaps (1) advancing the main matrix compiler-versions into 2026+, (2) finally dropping the oldest
+      # versions like gcc-9, and (3) updating the special/spot jobs to use the newest versions from (1), if only
+      # to avoid drift.  This will rock the boat more (inevitable with time).)
       #
       # So now do all that.
       matrix:
@@ -313,13 +330,6 @@ jobs:
             # Very-RAM-hungry when generating debug info (see also high-mem-build in build-test-cfg axis; as of this
             # writing if both are true then some step(s) may tweak some knobs to reduce RAM use).
             high-mem-build: True
-          - id: gcc-10
-            name: gcc
-            version: 10
-            c-path: /usr/bin/gcc-10
-            cpp-path: /usr/bin/g++-10
-            # See comment on first occurrence.
-            high-mem-build: True
           - id: gcc-11
             name: gcc
             version: 11
@@ -335,6 +345,14 @@ jobs:
             install: True
             # See comment on first occurrence.
             high-mem-build: True
+          - id: gcc-15
+            name: gcc
+            version: 15
+            c-path: /usr/bin/gcc-15
+            cpp-path: /usr/bin/g++-15
+            install: True
+            # See comment on first occurrence.
+            high-mem-build: True
           - id: clang-13
             name: clang
             version: 13
@@ -345,17 +363,17 @@ jobs:
             version: 15
             c-path: /usr/bin/clang-15
             cpp-path: /usr/bin/clang++-15
-          - id: clang-16
-            name: clang
-            version: 16
-            c-path: /usr/bin/clang-16
-            cpp-path: /usr/bin/clang++-16
-            install: True
           - id: clang-17
             name: clang
             version: 17
             c-path: /usr/bin/clang-17
             cpp-path: /usr/bin/clang++-17
+            install: True
+          - id: clang-21
+            name: clang
+            version: 21
+            c-path: /usr/bin/clang-21
+            cpp-path: /usr/bin/clang++-21
             install: True
         # Last axis are the many build/test configs.
         build-test-cfg:
@@ -555,46 +573,58 @@ jobs:
         #     like added problems due to the incomplete stack traces.  In general scanning through clang-13-produced
         #     TSAN output, there is a chaotic feel to it, when it comes to stack output.  Meanwhile so far
         #     there has been zero evidence that a lower-version clang has actual added problems versus the other
-        #     compiler-versions, due to generating code differently.  Since we have at least 3 other compiler-versions
+        #     compiler-versions, due to generating code differently.  Since we have at least 2 other compiler-versions
         #     running all the *SAN, I (ygoldfel) decided to exclude clang-13 *SAN, until the chaotic *SAN messages can
         #     be at least reduced.  In the meantime our *SAN coverage is still quite good.
+        #
+        # TODO: Thus *SAN configs = clang-15, clang-17 (with gcc and clang-13 omitted as explained); but clang-21
+        # is also omitted.  Should it be?  Probably not.  Historically we didn't have clang-21 coverage at all, so
+        # having added it (late 2026), to avoid rocking the boat, we left it out for *SAN purposes.  The to-do is
+        # to add it if practical (and possibly -- not necessarily -- drop an older version in this context).  It will
+        # probably involve new findings to triage.  (The task is also tracked in a ticket.)
         exclude:
           - build-test-cfg: { id: relwithdebinfo-msan }
           - compiler: { id: gcc-9 }
             build-test-cfg: { id: relwithdebinfo-asan }
-          - compiler: { id: gcc-10 }
-            build-test-cfg: { id: relwithdebinfo-asan }
           - compiler: { id: gcc-11 }
             build-test-cfg: { id: relwithdebinfo-asan }
           - compiler: { id: gcc-13 }
             build-test-cfg: { id: relwithdebinfo-asan }
+          - compiler: { id: gcc-15 }
+            build-test-cfg: { id: relwithdebinfo-asan }
           - compiler: { id: clang-13 }
+            build-test-cfg: { id: relwithdebinfo-asan }
+          - compiler: { id: clang-21 }
             build-test-cfg: { id: relwithdebinfo-asan }
           - compiler: { id: gcc-9 }
             build-test-cfg: { id: relwithdebinfo-ubsan }
-          - compiler: { id: gcc-10 }
-            build-test-cfg: { id: relwithdebinfo-ubsan }
           - compiler: { id: gcc-11 }
             build-test-cfg: { id: relwithdebinfo-ubsan }
           - compiler: { id: gcc-13 }
             build-test-cfg: { id: relwithdebinfo-ubsan }
+          - compiler: { id: gcc-15 }
+            build-test-cfg: { id: relwithdebinfo-ubsan }
           - compiler: { id: clang-13 }
+            build-test-cfg: { id: relwithdebinfo-ubsan }
+          - compiler: { id: clang-21 }
             build-test-cfg: { id: relwithdebinfo-ubsan }
           - compiler: { id: gcc-9 }
             build-test-cfg: { id: relwithdebinfo-tsan }
-          - compiler: { id: gcc-10 }
-            build-test-cfg: { id: relwithdebinfo-tsan }
           - compiler: { id: gcc-11 }
             build-test-cfg: { id: relwithdebinfo-tsan }
           - compiler: { id: gcc-13 }
             build-test-cfg: { id: relwithdebinfo-tsan }
+          - compiler: { id: gcc-15 }
+            build-test-cfg: { id: relwithdebinfo-tsan }
           - compiler: { id: clang-13 }
+            build-test-cfg: { id: relwithdebinfo-tsan }
+          - compiler: { id: clang-21 }
             build-test-cfg: { id: relwithdebinfo-tsan }
           # Now the exclusions from the C++20 sub-matrix.
           # The basic strategy is noted in the large-ish comment atop the matrix; but specifically release-oriented
           # builds tend to go down different paths/produce different warnings vs debug-oriented builds -- so we want
           # to try both; and as for which compilers to use, on one hand we'll definitely want at least 1 of gcc and
-          # clang each, but beyond that just the highest version of each is sufficient.  TODO: Revisit, especially
+          # clang each, but beyond that just one version of each is sufficient.  TODO: Revisit, especially
           # if users report C++20 problems in other environments, and therefore we will have had to fix them; hence
           # test coverage should increase.
           #
@@ -621,15 +651,15 @@ jobs:
           - cxx-std: { id: cxx20 }
             compiler: { id: gcc-9 }
           - cxx-std: { id: cxx20 }
-            compiler: { id: gcc-10 }
-          - cxx-std: { id: cxx20 }
             compiler: { id: gcc-11 }
+          - cxx-std: { id: cxx20 }
+            compiler: { id: gcc-15 }
           - cxx-std: { id: cxx20 }
             compiler: { id: clang-13 }
           - cxx-std: { id: cxx20 }
             compiler: { id: clang-15 }
           - cxx-std: { id: cxx20 }
-            compiler: { id: clang-16 }
+            compiler: { id: clang-21 }
           #   - Second, among the remaining C++20 configs eliminate all but debug and relwithdebinfo ones.
           - cxx-std: { id: cxx20 }
             build-test-cfg: { id: release }
@@ -647,15 +677,15 @@ jobs:
           - deps: { id: newest }
             compiler: { id: gcc-9 }
           - deps: { id: newest }
-            compiler: { id: gcc-10 }
-          - deps: { id: newest }
             compiler: { id: gcc-11 }
+          - deps: { id: newest }
+            compiler: { id: gcc-15 }
           - deps: { id: newest }
             compiler: { id: clang-13 }
           - deps: { id: newest }
             compiler: { id: clang-15 }
           - deps: { id: newest }
-            compiler: { id: clang-16 }
+            compiler: { id: clang-21 }
           - deps: { id: newest }
             build-test-cfg: { id: release }
           - deps: { id: newest }
