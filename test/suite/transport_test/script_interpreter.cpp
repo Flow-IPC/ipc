@@ -710,7 +710,7 @@ Value Script_interpreter::next_required_typed_value()
   const Token tok = next_required_token(false, ostream_op_string("value of type [", typeid(Value).name(), ']'));
 
   // If Value=std::string, this is a no-op, but we don't care about such perf; good enough for test code.
-  Value value;
+  Value value{}; // ({} unnecessary in reality, but some compilers with some build-flags give warning here otherwise.)
   try
   {
     value = lexical_cast<Value>(tok.m_str);
